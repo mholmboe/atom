@@ -1,6 +1,6 @@
 %% cat_atom.m
 % * This is a special script (and not a function) that imports and appends atom structs into a
-% * .gro trajectory file. It is useful forgenerating trajectories where
+% * .gro trajectory file. It is useful for generating trajectories where
 % * water molecules are evaporated during the simulations, since VMD and
 % * other trajectory viewers cannot handle non-constant number of particles
 % * in a trajectory

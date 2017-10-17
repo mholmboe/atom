@@ -7,10 +7,10 @@ function atom = sort_atom(atom,varargin)
 % * Please report bugs to michael.holmboe@umu.se
 
 %% Examples
-% * atom = sort_atom(atom)
+% * atom = sort_atom(atom) % Not working yet
 % * atom = sort_atom(atom,'x') % Not working yet
 % * atom = sort_atom(atom,'y') % Not working yet
-% * atom = sort_atom(atom,'z')
+% * atom = sort_atom(atom,'z') % Not working yet
 % * atom = sort_atom(atom,'molid') % Not working yet
 % * atom = sort_atom(atom,'resname') % Not working yet
 

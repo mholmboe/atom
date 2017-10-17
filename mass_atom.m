@@ -1,6 +1,5 @@
 %% mass_atom.m
-% * This function fetches the mass for each atomtype and put it into
-% * atom.mass
+% * This function fetches the mass for each atomtype and put it into atom.mass
 % * Tested 15/04/2017
 % * Please report bugs to michael.holmboe@umu.se
 

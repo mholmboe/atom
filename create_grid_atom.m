@@ -5,9 +5,9 @@
 % * Please report bugs to michael.holmboe@umu.se
 
 %% Examples
-atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])
+% * atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])
 
-function atom = grid2atom(atom_label,nM,limits,dim,varargin)
+function atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
  
 
 % if length(limits) == 3;

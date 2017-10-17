@@ -1,6 +1,7 @@
 %% import_traj.m
-% * This function imports an structure and a xtc, trr, dcd, xyz or gro trajectory file.
-% * Does it work?
+% * This general function imports an structure and a xtc, trr, dcd, xyz or gro trajectory file.
+% * For more options, look into each repsective import function, to use
+% * stride and other thingies.
 % * Please report bugs to michael.holmboe@umu.se
 
 %% Examples
@@ -12,30 +13,38 @@
 
 
 function atom = import_traj(filenameconf,filenametraj,varargin)
-%
-
-% Its always nice to import a structure file first
-atom = import_atom(filenameconf);
 
 if regexp(filenametraj,'.xtc') > 1
-    disp('Found .xtc file, will use the excellent Gro2Mat scripts');
-    disp('See Journal of Computational Chemistry,Volume 35, Issue 20')
+    disp('This function imports a structure file and a xtc file')
+    disp('and relies on the mxdrfile by Jon Kapla')
+    disp('http://kaplajon.github.io/mxdrfile/')
+    atom = import_xtc(filenameconf,filenametraj);
     
-    disp('Note that in maxTol, startFrame, endFrame values can be set,')
-    disp('look into Gro2Mat parseTrj function for help')
-    disp('Note that lines 55-56 in parseTrj can give unneccesary problems')
-    import_xtc(filenameconf,filenametraj);
-    delete('./#*'); delete('./temp*');
-    assignin('caller','trj',trj);
-%     assignin('caller','traj',traj);
+    disp('Alternatively, use the Gro2Mat package with the function:')
+    disp('import_xtcv2(filenameconf,filenametraj)')
+    disp('Look into import_traj.m and in the Journal of Computational Chemistry,')
+    disp('Volume 35, Issue 20')
+    %     disp('Found .xtc file, will use the excellent Gro2Mat scripts');
+    %     disp('Note that in maxTol, startFrame, endFrame values can be set,')
+    %     disp('look into Gro2Mat parseTrj function for help')
+    %     disp('Note that lines 55-56 in parseTrj can give unneccesary problems')
+    %     import_xtcv2(filenameconf,filenametraj);
+    %     delete('./#*'); delete('./temp*');
+    %     assignin('caller','trj',trj);
+    
 elseif regexp(filenametraj,'.trr') > 1
-    disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');
-    disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
+    disp('This function imports a structure file and a trr file')
+    disp('and relies on the mxdrfile by Jon Kapla')
+    disp('http://kaplajon.github.io/mxdrfile/')
+    atom = import_trr(filenameconf,filenametraj);
     
-    disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')
-    disp('Look into Evans readGmx2Matlab and trr2matlab functions for options')
-    import_trr(filenametraj);
-    assignin('caller','trj',trj);
+    disp('Alternatively, use Evans readGmx2Matlab and trr2matlab functions')
+    disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
+    disp('and in the the given import_trrv2.m function')
+    % disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');
+    % disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')
+    % import_trrv2(filenametraj);
+    % assignin('caller','trj',trj);
 elseif regexp(filenametraj,'.dcd') > 1
     disp('Found .dcd file, will use the Justin Gullingsrud excellent matdcd script');
     disp('See http://www.ks.uiuc.edu/Development/MDTools/matdcd for some documentation')
@@ -50,6 +59,11 @@ elseif regexp(filenametraj,'.xyz') > 1
     % Note that varagin can be used for importing n frames or using stride
     disp('Found .xyz trajectory');
     atom = import_xyz_traj(filenametraj);
+end
+
+if ~exist('atom','var')
+    disp('Its always nice to import a structure file first')
+    atom = import_atom(filenameconf);
 end
 
 assignin('caller','atom',atom)

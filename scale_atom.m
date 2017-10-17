@@ -28,7 +28,6 @@ x_shift=num2cell([atom(ind_resname).x]*scale_vec(1)); [atom(ind_resname).x]=deal
 y_shift=num2cell([atom(ind_resname).y]*scale_vec(2)); [atom(ind_resname).y]=deal(y_shift{:});
 
 z_shift=num2cell([atom(ind_resname).z]*scale_vec(3)); [atom(ind_resname).z]=deal(z_shift{:});
-
 Box_dim(1:3)=Box_dim(1:3).*scale_vec;
 
 atom=update_atom(atom);

@@ -1,5 +1,5 @@
 %% solvate_atom.m
-% * This function generates a certain region defined by <limits> with a water structure of density <density>
+% * This function generates a certain region defined by <limits> with a solvent structure of density <density>
 % * Tested 15/07/2017
 % * Please report bugs to michael.holmboe@umu.se
 
@@ -34,7 +34,7 @@ end
 % Old way of doing it...
 % SOL=import_atom_gro(strcat('spc864_',num2str(density,'%3.2f'),'.gro')); % I was fastest... [2 2 1]*216.gro
 
-if nargin==6
+if nargin>5
     watermodel=varargin(1);
     if iscell(watermodel)
         assignin('caller','watermodel',watermodel)
@@ -58,6 +58,11 @@ if nargin==6
         SOL=import_atom_gro('864_tip4p.gro');
     elseif strncmpi(watermodel,'tip5p',5)
         SOL=import_atom_gro('864_tip5p.gro');
+    elseif strncmpi(watermodel,'custom',5)
+        SOL=varargin{2};
+        if nargin>7
+            Box_dim=varargin{3};
+        end
     end
 else
     SOL=import_atom_gro('864_spc.gro');
@@ -109,39 +114,39 @@ SOL=update_atom(SOL);
 
 % If the whole atom struct contains water
 if sum(strcmpi([SOL(1:atomsperSOL:end).type],'OW')) == size(SOL,2)/atomsperSOL
-        % Randomize the order of for water molecules
-        nSOL=size(SOL,2);
-        ind_rand=randperm(nSOL);
-        ind_sel=ismember(ind_rand,1:atomsperSOL:nSOL);
-        OW_ind=ind_rand(ind_sel);
-        if atomsperSOL == 3
-            HW1_ind=OW_ind+1;
-            HW2_ind=OW_ind+2;
-            ind=reshape([OW_ind;HW1_ind;HW2_ind],[],1);
-            SOL=SOL(ind);
-        elseif atomsperSOL == 4
-            HW1_ind=OW_ind+1;
-            HW2_ind=OW_ind+2;
-            MW_ind=OW_ind+3;
-            ind=reshape([OW_ind;HW1_ind;HW2_ind;MW_ind],[],1);
-            SOL=SOL(ind);
-        elseif atomsperSOL == 5
-            HW1_ind=OW_ind+1;
-            HW2_ind=OW_ind+2;
-            LP1_ind=OW_ind+3;
-            LP2_ind=OW_ind+4;
-            ind=reshape([OW_ind;HW1_ind;HW2_ind;LP1_ind;LP2_ind],[],1);
-            SOL=SOL(ind);
-        else
-            disp('Something went wrong with the randomization process...')
-        end
+    % Randomize the order of for water molecules
+    nSOL=size(SOL,2);
+    ind_rand=randperm(nSOL);
+    ind_sel=ismember(ind_rand,1:atomsperSOL:nSOL);
+    OW_ind=ind_rand(ind_sel);
+    if atomsperSOL == 3
+        HW1_ind=OW_ind+1;
+        HW2_ind=OW_ind+2;
+        ind=reshape([OW_ind;HW1_ind;HW2_ind],[],1);
+        SOL=SOL(ind);
+    elseif atomsperSOL == 4
+        HW1_ind=OW_ind+1;
+        HW2_ind=OW_ind+2;
+        MW_ind=OW_ind+3;
+        ind=reshape([OW_ind;HW1_ind;HW2_ind;MW_ind],[],1);
+        SOL=SOL(ind);
+    elseif atomsperSOL == 5
+        HW1_ind=OW_ind+1;
+        HW2_ind=OW_ind+2;
+        LP1_ind=OW_ind+3;
+        LP2_ind=OW_ind+4;
+        ind=reshape([OW_ind;HW1_ind;HW2_ind;LP1_ind;LP2_ind],[],1);
+        SOL=SOL(ind);
+    else
+        disp('Something went wrong with the randomization process...')
+    end
 end
 
 % Delete water molecules if not using the <maxsol> option
 if iscellstr({maxsol}) == 0
     if atomsperSOL*maxsol > size(SOL,2)
-        disp('Ooops, you asked for too much water...')
-        disp('Maximum number of waters allowed without changing the water density or rmin is:')
+        disp('Ooops, you asked for too much solvent...')
+        disp('Maximum number of solvent molecules allowed without changing the density or rmin is:')
         size(SOL,2)/atomsperSOL
         SOL=SOL(1:atomsperSOL*maxsol);
     else
