@@ -1,0 +1,362 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>heal_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="heal_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>heal_atom.m</h1><!--introduction--><div><ul><li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li><li>Note that you first need to find which sites that should be healed, using for instance the bond_valende_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom</p><h2 id="2">Version</h2><p>2.0</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])</li><li>healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He',1.87)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He','Shannon')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> healed_atom = heal_atom(atom,Box_dim,ind,varargin) <span class="comment">% optional varargs == rmaxlong,heal_type,r|'Shannon');</span>
+
+<span class="keyword">if</span> nargin==2
+    disp(<span class="string">'You must supply an index vector indicating which sites that should be healed'</span>);
+    pause
+<span class="keyword">end</span>
+<span class="keyword">if</span> nargin==3
+    rmaxlong=2.25;
+<span class="keyword">else</span>
+    rmaxlong=varargin{1};
+<span class="keyword">end</span>
+<span class="keyword">if</span> nargin&lt;4
+    heal_type={<span class="string">'H'</span>};
+<span class="keyword">else</span>
+    heal_type=varargin{2};
+    <span class="keyword">if</span> ~iscell(heal_type)
+        heal_type={heal_type};
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+element = element_atom(atom);
+element = neigh_atom(element,Box_dim,1.25,rmaxlong);
+
+bonddist=ones(1,numel(ind));
+<span class="keyword">if</span> nargin==6
+    rtype=varargin{3};
+    <span class="keyword">if</span> ~isnumeric(rtype)
+        load(<span class="string">'Revised_Shannon_radii.mat'</span>) <span class="comment">% To heal metal sites with Oxygen atoms</span>
+        n=1;
+        <span class="keyword">for</span> i=ind
+            Ion_M_ind=find(strcmp([element(i).type],Ion));
+            <span class="keyword">if</span> numel(Ion_M_ind)==0
+                Ion_M_ind=find(strncmpi([element(i).type],Ion,1));
+            <span class="keyword">end</span>
+            CN_M=numel(element(i).neigh.index)+1; <span class="comment">% +1 since we have not added the extra ligand yet</span>
+            CN_M_ind=find(CN_M==CN);
+            ind_M=intersect(Ion_M_ind,CN_M_ind);
+            crysradii_M=CrysRadii(ind_M);
+
+            Ion_O_ind=find(strcmp(Ion,<span class="string">'O'</span>));
+            <span class="keyword">if</span> CN_M==1
+                CN_M=2;
+            <span class="keyword">elseif</span> CN_M==5
+                CN_M=6;
+            <span class="keyword">elseif</span> CN_M==7 || CN_M&gt;8
+                CN_M=8;
+            <span class="keyword">end</span>
+            CN_O_ind=find(CN_M==CN);
+            ind_O=intersect(Ion_O_ind,CN_O_ind);
+            crysradii_O=CrysRadii(ind_O);
+            bonddist(n)=crysradii_M+crysradii_O
+            n=n+1;
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        bonddist=rtype*ones(numel(ind)); <span class="comment">% Set the bond-bond distance manually</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    danglingtype_radii = radius_ion([element(ind(1)).type]);
+    <span class="keyword">if</span> ~strncmpi(heal_type,<span class="string">'H'</span>,1)
+        healtype_radii = radius_ion(heal_type);
+        bonddist=0.8*(danglingtype_radii+healtype_radii)*ones(numel(ind));
+        <span class="keyword">if</span> bonddist(1) &lt; 1.5
+            bonddist=1.5*ones(numel(ind));
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        bonddist=0.95*ones(numel(ind)); <span class="comment">% like in O-H</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+healed_atom=[];n=1;
+<span class="keyword">for</span> i=ind
+    Neigh_cell = sort([element(i).neigh.type]);
+    <span class="keyword">if</span> isempty(Neigh_cell) &gt; 0 &amp;&amp; iscell(Neigh_cell)
+        Neighbours=strcat(Neigh_cell{:});
+    <span class="keyword">else</span>
+        Neighbours={<span class="string">'Nan'</span>};
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> numel(healed_atom)==0
+        healed_atom=element(1);
+    <span class="keyword">else</span>
+        healed_atom(size(healed_atom,2)+1)=healed_atom(end);
+    <span class="keyword">end</span>
+    [healed_atom(end).type]=heal_type;[healed_atom(end).fftype]=heal_type;
+    healed_atom(end).index=size(healed_atom,2);
+    r_vec=element(i).neigh.r_vec;
+    XYZ_data=num2cell([element(i).x element(i).y (element(i).z)]-bonddist(n)*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+    [healed_atom(end).x,healed_atom(end).y,healed_atom(end).z]=deal(XYZ_data{:});
+    n=n+1;
+<span class="keyword">end</span>
+
+dist_matrix=dist_matrix_atom(healed_atom,Box_dim);
+
+i=1;rmind_tot=[];
+<span class="keyword">while</span> i &lt; size(healed_atom,2)
+    rmind=find(dist_matrix(:,i)&lt;rmax);
+    <span class="keyword">if</span> numel(rmind)&gt;1
+        x1=[healed_atom(i).x];
+        y1=[healed_atom(i).y];
+        z1=[healed_atom(i).z];
+
+        healed_atom(rmind) = translate_atom(healed_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        healed_atom(rmind) = wrap_atom(healed_atom(rmind),Box_dim);
+
+        [healed_atom(i).x]=mean([healed_atom(rmind).x]);
+        [healed_atom(i).y]=mean([healed_atom(rmind).y]);
+        [healed_atom(i).z]=mean([healed_atom(rmind).z]);
+
+        healed_atom(rmind) = translate_atom(healed_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+        rmind_tot=[rmind_tot rmind(rmind&gt;i)];
+    <span class="keyword">end</span>
+    i=i+1;
+<span class="keyword">end</span>
+healed_atom(rmind_tot)=[];
+
+<span class="keyword">if</span> isstruct(healed_atom)
+    <span class="keyword">try</span>
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'element'</span>)
+            healed_atom=rmfield(healed_atom,<span class="string">'element'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">catch</span>
+    <span class="keyword">end</span>
+
+<span class="comment">%     try</span>
+<span class="comment">%         if isfield(healed_atom,'xfrac')</span>
+<span class="comment">%             healed_atom=rmfield(healed_atom,'xfrac');</span>
+<span class="comment">%             healed_atom=rmfield(healed_atom,'yfrac');</span>
+<span class="comment">%             healed_atom=rmfield(healed_atom,'zfrac');</span>
+<span class="comment">%         end</span>
+<span class="comment">%     catch</span>
+<span class="comment">%     end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% heal_atom.m
+% * This function heals sites in the atom struct given by the index
+% vector ind, by adding a certain atomtype to a new atom struct called
+% healed_atom. It does so by placing the new atom type opposite to the
+% mean position of all neighbours within rcut [Å] of the healed site.
+% * Note that you first need to find which sites that should be healed,
+% using for instance the bond_valende_atom function, and then decide with
+% what atomtypes the unsaturated sites should be healed with.
+%
+%% Similar
+% fuse_atom
+% protonate_atom
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])
+% # healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He',1.87)
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He','Shannon')
+
+function healed_atom = heal_atom(atom,Box_dim,ind,varargin) % optional varargs == rmaxlong,heal_type,r|'Shannon');
+
+if nargin==2
+    disp('You must supply an index vector indicating which sites that should be healed');
+    pause
+end
+if nargin==3
+    rmaxlong=2.25;
+else
+    rmaxlong=varargin{1};
+end
+if nargin<4
+    heal_type={'H'};
+else
+    heal_type=varargin{2};
+    if ~iscell(heal_type)
+        heal_type={heal_type};
+    end
+end
+
+element = element_atom(atom);
+element = neigh_atom(element,Box_dim,1.25,rmaxlong);
+
+bonddist=ones(1,numel(ind));
+if nargin==6
+    rtype=varargin{3};
+    if ~isnumeric(rtype)
+        load('Revised_Shannon_radii.mat') % To heal metal sites with Oxygen atoms
+        n=1;
+        for i=ind
+            Ion_M_ind=find(strcmp([element(i).type],Ion));
+            if numel(Ion_M_ind)==0
+                Ion_M_ind=find(strncmpi([element(i).type],Ion,1));
+            end
+            CN_M=numel(element(i).neigh.index)+1; % +1 since we have not added the extra ligand yet
+            CN_M_ind=find(CN_M==CN);
+            ind_M=intersect(Ion_M_ind,CN_M_ind);
+            crysradii_M=CrysRadii(ind_M);
+            
+            Ion_O_ind=find(strcmp(Ion,'O'));
+            if CN_M==1
+                CN_M=2;
+            elseif CN_M==5
+                CN_M=6;
+            elseif CN_M==7 || CN_M>8
+                CN_M=8;
+            end
+            CN_O_ind=find(CN_M==CN);
+            ind_O=intersect(Ion_O_ind,CN_O_ind);
+            crysradii_O=CrysRadii(ind_O);
+            bonddist(n)=crysradii_M+crysradii_O
+            n=n+1;
+        end
+    else
+        bonddist=rtype*ones(numel(ind)); % Set the bond-bond distance manually
+    end
+else
+    danglingtype_radii = radius_ion([element(ind(1)).type]);
+    if ~strncmpi(heal_type,'H',1)
+        healtype_radii = radius_ion(heal_type);
+        bonddist=0.8*(danglingtype_radii+healtype_radii)*ones(numel(ind));
+        if bonddist(1) < 1.5
+            bonddist=1.5*ones(numel(ind));
+        end
+    else
+        bonddist=0.95*ones(numel(ind)); % like in O-H
+    end
+end
+
+healed_atom=[];n=1;
+for i=ind
+    Neigh_cell = sort([element(i).neigh.type]);
+    if isempty(Neigh_cell) > 0 && iscell(Neigh_cell)
+        Neighbours=strcat(Neigh_cell{:});
+    else
+        Neighbours={'Nan'};
+    end
+    if numel(healed_atom)==0
+        healed_atom=element(1);
+    else
+        healed_atom(size(healed_atom,2)+1)=healed_atom(end);
+    end
+    [healed_atom(end).type]=heal_type;[healed_atom(end).fftype]=heal_type;
+    healed_atom(end).index=size(healed_atom,2);
+    r_vec=element(i).neigh.r_vec;
+    XYZ_data=num2cell([element(i).x element(i).y (element(i).z)]-bonddist(n)*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+    [healed_atom(end).x,healed_atom(end).y,healed_atom(end).z]=deal(XYZ_data{:});
+    n=n+1;
+end
+
+dist_matrix=dist_matrix_atom(healed_atom,Box_dim);
+
+i=1;rmind_tot=[];
+while i < size(healed_atom,2)
+    rmind=find(dist_matrix(:,i)<rmax);
+    if numel(rmind)>1
+        x1=[healed_atom(i).x];
+        y1=[healed_atom(i).y];
+        z1=[healed_atom(i).z];
+
+        healed_atom(rmind) = translate_atom(healed_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        healed_atom(rmind) = wrap_atom(healed_atom(rmind),Box_dim);
+        
+        [healed_atom(i).x]=mean([healed_atom(rmind).x]);
+        [healed_atom(i).y]=mean([healed_atom(rmind).y]);
+        [healed_atom(i).z]=mean([healed_atom(rmind).z]);
+        
+        healed_atom(rmind) = translate_atom(healed_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+        rmind_tot=[rmind_tot rmind(rmind>i)];
+    end
+    i=i+1;
+end
+healed_atom(rmind_tot)=[];
+
+if isstruct(healed_atom)
+    try
+        if ~isfield(atom,'element')
+            healed_atom=rmfield(healed_atom,'element');
+        end
+    catch
+    end
+    
+%     try
+%         if isfield(healed_atom,'xfrac')
+%             healed_atom=rmfield(healed_atom,'xfrac');
+%             healed_atom=rmfield(healed_atom,'yfrac');
+%             healed_atom=rmfield(healed_atom,'zfrac');
+%         end
+%     catch
+%     end
+end
+
+##### SOURCE END #####
+--></body></html>

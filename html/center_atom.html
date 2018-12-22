@@ -1,0 +1,229 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>center_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="center_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>center_atom.m</h1><!--introduction--><div><ul><li>This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>resname is the Resnames ofthe atoms ou want to move, can be 'all'</li><li>dim is a string containing for example x, xy, xyz</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><div><ul><li>atom = center_atom(atom,Box_dim,'all','xy')</li><li>atom = center_atom(atom,Box_dim,'SOL','Z')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
+disp(<span class="string">'Center to box'</span>)
+
+nAtoms=size(atom,2);
+
+<span class="keyword">if</span> nargin == 2
+    resname=<span class="string">'all'</span>;
+    dim=<span class="string">'xyz'</span>;
+<span class="keyword">elseif</span> nargin == 3
+    resname=varargin{1};
+    dim=<span class="string">'xyz'</span>;
+<span class="keyword">elseif</span> nargin == 4
+    resname=varargin{1};
+    dim=varargin{2};
+<span class="keyword">end</span>
+
+tric_Box_dim=Box_dim;
+<span class="keyword">if</span> size(tric_Box_dim(1,:),2)&gt;3
+   atom=orto_atom(atom,Box_dim);
+   Box_dim=orto_Box_dim;
+<span class="keyword">end</span>
+
+
+<span class="comment">% Box_dim=newBox_dim;</span>
+
+<span class="comment">% atom = wrap_atom(atom,Box_dim);</span>
+
+<span class="keyword">if</span> strcmpi(resname,<span class="string">'all'</span>)
+    ind_resname=1:nAtoms;
+<span class="keyword">else</span>
+    <span class="keyword">if</span> sum(find(strcmp([atom.resname],resname)))&gt;0
+        ind_resname=find(strcmp([atom.resname],resname));
+    <span class="keyword">elseif</span> sum(find(strcmp([atom.type],resname)))&gt;0
+        ind_resname=find(strcmp([atom.type],resname));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> strfind(dim,<span class="string">'x'</span>) | strfind(dim,<span class="string">'X'</span>)
+    disp(<span class="string">'centering along x'</span>)
+    x_shift=num2cell([atom.x]-median([atom(ind_resname).x])+Box_dim(1)/2); [atom(:).x]=deal(x_shift{:});
+    x_shift=num2cell([atom.x]-mean([atom(ind_resname).x])+Box_dim(1)/2); [atom(:).x]=deal(x_shift{:});
+<span class="keyword">end</span>
+<span class="keyword">if</span> strfind(dim,<span class="string">'y'</span>) | strfind(dim,<span class="string">'Y'</span>)
+    disp(<span class="string">'centering along y'</span>)
+    y_shift=num2cell([atom.y]-median([atom(ind_resname).y])+Box_dim(2)/2); [atom(:).y]=deal(y_shift{:});
+    y_shift=num2cell([atom.y]-mean([atom(ind_resname).y])+Box_dim(2)/2); [atom(:).y]=deal(y_shift{:});
+<span class="keyword">end</span>
+<span class="keyword">if</span> strfind(dim,<span class="string">'z'</span>) | strfind(dim,<span class="string">'Z'</span>)
+    disp(<span class="string">'centering along z'</span>)
+    median([atom(ind_resname).z])
+    z_shift=num2cell([atom.z]-median([atom(ind_resname).z])+Box_dim(3)/2);   [atom(:).z]=deal(z_shift{:});
+    z_shift=num2cell([atom.z]-mean([atom(ind_resname).z])+Box_dim(3)/2); [atom(:).z]=deal(z_shift{:});
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(tric_Box_dim(1,:),2)&gt;3
+   xy=tric_Box_dim(6); xz=tric_Box_dim(8); yz=tric_Box_dim(9);
+   atom=triclinic_atom(atom,Box_dim,[xy xz yz],<span class="string">'tilt'</span>);
+   Box_dim=tric_Box_dim;
+
+   <span class="keyword">if</span> sum(abs(triclinic_Box_dim-tric_Box_dim))&gt;0.01
+      disp(<span class="string">'Canged box dimensions between initial and temp triclinic cell'</span>)
+      triclinic_Box_dim
+      tric_Box_dim
+      pause
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,[[atom.x]' [atom.y]' [atom.z]']);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,[atom.type]');
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% center_atom.m
+% * This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim
+% * atom is the atom struct
+% * Box_dim is the box dimension vector
+% * resname is the Resnames ofthe atoms ou want to move, can be 'all'
+% * dim is a string containing for example x, xy, xyz
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+% * atom = center_atom(atom,Box_dim,'all','xy')
+% * atom = center_atom(atom,Box_dim,'SOL','Z')
+%
+function atom = center_atom(atom,Box_dim,varargin)
+disp('Center to box')
+
+nAtoms=size(atom,2);
+
+if nargin == 2
+    resname='all';
+    dim='xyz';
+elseif nargin == 3
+    resname=varargin{1};
+    dim='xyz';
+elseif nargin == 4
+    resname=varargin{1};
+    dim=varargin{2};
+end
+
+tric_Box_dim=Box_dim;
+if size(tric_Box_dim(1,:),2)>3
+   atom=orto_atom(atom,Box_dim);
+   Box_dim=orto_Box_dim;
+end
+
+
+% Box_dim=newBox_dim;
+
+% atom = wrap_atom(atom,Box_dim);
+
+if strcmpi(resname,'all')
+    ind_resname=1:nAtoms;
+else
+    if sum(find(strcmp([atom.resname],resname)))>0
+        ind_resname=find(strcmp([atom.resname],resname));
+    elseif sum(find(strcmp([atom.type],resname)))>0
+        ind_resname=find(strcmp([atom.type],resname));
+    end
+end
+
+if strfind(dim,'x') | strfind(dim,'X')
+    disp('centering along x')
+    x_shift=num2cell([atom.x]-median([atom(ind_resname).x])+Box_dim(1)/2); [atom(:).x]=deal(x_shift{:});
+    x_shift=num2cell([atom.x]-mean([atom(ind_resname).x])+Box_dim(1)/2); [atom(:).x]=deal(x_shift{:});
+end
+if strfind(dim,'y') | strfind(dim,'Y')
+    disp('centering along y')
+    y_shift=num2cell([atom.y]-median([atom(ind_resname).y])+Box_dim(2)/2); [atom(:).y]=deal(y_shift{:});
+    y_shift=num2cell([atom.y]-mean([atom(ind_resname).y])+Box_dim(2)/2); [atom(:).y]=deal(y_shift{:});
+end
+if strfind(dim,'z') | strfind(dim,'Z')
+    disp('centering along z')
+    median([atom(ind_resname).z])
+    z_shift=num2cell([atom.z]-median([atom(ind_resname).z])+Box_dim(3)/2);   [atom(:).z]=deal(z_shift{:});
+    z_shift=num2cell([atom.z]-mean([atom(ind_resname).z])+Box_dim(3)/2); [atom(:).z]=deal(z_shift{:});
+end
+
+if size(tric_Box_dim(1,:),2)>3
+   xy=tric_Box_dim(6); xz=tric_Box_dim(8); yz=tric_Box_dim(9);
+   atom=triclinic_atom(atom,Box_dim,[xy xz yz],'tilt');
+   Box_dim=tric_Box_dim;
+   
+   if sum(abs(triclinic_Box_dim-tric_Box_dim))>0.01
+      disp('Canged box dimensions between initial and temp triclinic cell')
+      triclinic_Box_dim
+      tric_Box_dim
+      pause 
+   end
+end
+
+assignin('caller','Box_dim',Box_dim);
+assignin('caller','XYZ_data',[[atom.x]' [atom.y]' [atom.z]']);
+assignin('caller','XYZ_labels',[atom.type]');
+
+##### SOURCE END #####
+--></body></html>

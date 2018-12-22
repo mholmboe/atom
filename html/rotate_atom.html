@@ -1,0 +1,243 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>atom_rotate.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="rotate_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>atom_rotate.m</h1><!--introduction--><div><ul><li>This function rotate the atom randomly or by the angles given by the rotate vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = rotate_atom(atom,Box_dim,'random')</li><li>atom = rotate_atom(atom,Box_dim,[0 0 90])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = rotate_atom(atom,Box_dim,rotate)
+
+
+angles=[0 0 0];
+<span class="keyword">if</span> ischar(rotate)
+    angles=[180-360*rand(1) 180-360*rand(1) 180-360*rand(1)];
+<span class="keyword">elseif</span> iscell(rotate)
+    <span class="keyword">if</span> size(rotate,2)==3
+        <span class="keyword">for</span> i=1:3
+            <span class="keyword">if</span> iscell(rotate(i))
+                angles(i)=90*rand(i);
+            <span class="keyword">else</span>
+                angles(i)=cell2mat(rotate(i));
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    <span class="keyword">if</span> size(rotate,2)==3
+        disp(<span class="string">'Set the angles to..'</span>)
+        angles(1)=rotate(1);
+        angles(2)=rotate(2);
+        angles(3)=rotate(3);
+    <span class="keyword">else</span>
+        disp(<span class="string">'Did not catch any angles'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+alfa=angles(1);
+beta=angles(2);
+gamma=angles(3);
+
+atom = COM_atom(atom,Box_dim);
+x_shift=num2cell([atom.x]-COM(1)); [atom.x]=deal(x_shift{:});
+y_shift=num2cell([atom.y]-COM(2)); [atom.y]=deal(y_shift{:});
+z_shift=num2cell([atom.z]-COM(3)); [atom.z]=deal(z_shift{:});
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=XYZ_data*roty(alfa)*rotx(beta)*rotz(gamma);
+
+x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
+y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
+z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
+
+rot_atom=atom;
+atom = rmfield(atom,<span class="string">'Mw'</span>);
+atom = rmfield(atom,<span class="string">'element'</span>);
+atom = rmfield(atom,<span class="string">'COM_x'</span>);
+atom = rmfield(atom,<span class="string">'COM_y'</span>);
+atom = rmfield(atom,<span class="string">'COM_z'</span>);
+
+assignin(<span class="string">'caller'</span>,<span class="string">'rot_atom'</span>,rot_atom);
+
+<span class="comment">% write_atom_gro(atom,Box_dim,'out.gro');</span>
+<span class="comment">%</span>
+<span class="comment">% plot_atom('out.gro')</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> rotmat = rotx(alpha)
+eml_assert_no_varsize(1,alpha);
+sigdatatypes.validateAngle(alpha,<span class="string">'rotx'</span>,<span class="string">'ALPHA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% rotate in the direction of y-&gt;z, counter-clockwise</span>
+rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> rotmat = roty(beta)
+eml_assert_no_varsize(1,beta);
+sigdatatypes.validateAngle(beta,<span class="string">'roty'</span>,<span class="string">'BETA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% rotate in the direction of z-&gt;x, counter-clockwise</span>
+rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> rotmat = rotz(gamma)
+eml_assert_no_varsize(1,gamma);
+sigdatatypes.validateAngle(gamma,<span class="string">'rotz'</span>,<span class="string">'GAMMA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% rotate in the direction of x-&gt;y, counter-clockwise</span>
+rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% atom_rotate.m
+% * This function rotate the atom randomly or by the angles given by the
+% rotate vector
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = rotate_atom(atom,Box_dim,'random')
+% # atom = rotate_atom(atom,Box_dim,[0 0 90])
+%
+function atom = rotate_atom(atom,Box_dim,rotate)
+
+
+angles=[0 0 0];
+if ischar(rotate)
+    angles=[180-360*rand(1) 180-360*rand(1) 180-360*rand(1)];
+elseif iscell(rotate)
+    if size(rotate,2)==3
+        for i=1:3
+            if iscell(rotate(i))
+                angles(i)=90*rand(i);
+            else
+                angles(i)=cell2mat(rotate(i));
+            end
+        end
+    end
+else 
+    if size(rotate,2)==3
+        disp('Set the angles to..')
+        angles(1)=rotate(1);
+        angles(2)=rotate(2);
+        angles(3)=rotate(3);
+    else
+        disp('Did not catch any angles')
+    end
+end
+
+alfa=angles(1);
+beta=angles(2);
+gamma=angles(3);
+
+atom = COM_atom(atom,Box_dim);
+x_shift=num2cell([atom.x]-COM(1)); [atom.x]=deal(x_shift{:});
+y_shift=num2cell([atom.y]-COM(2)); [atom.y]=deal(y_shift{:});
+z_shift=num2cell([atom.z]-COM(3)); [atom.z]=deal(z_shift{:});
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=XYZ_data*roty(alfa)*rotx(beta)*rotz(gamma);
+
+x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
+y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
+z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
+
+rot_atom=atom;
+atom = rmfield(atom,'Mw');
+atom = rmfield(atom,'element');
+atom = rmfield(atom,'COM_x');
+atom = rmfield(atom,'COM_y');
+atom = rmfield(atom,'COM_z');
+
+assignin('caller','rot_atom',rot_atom);
+
+% write_atom_gro(atom,Box_dim,'out.gro');
+%
+% plot_atom('out.gro')
+
+end
+
+function rotmat = rotx(alpha)
+eml_assert_no_varsize(1,alpha);
+sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});
+% rotate in the direction of y->z, counter-clockwise
+rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
+end
+
+function rotmat = roty(beta)
+eml_assert_no_varsize(1,beta);
+sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});
+% rotate in the direction of z->x, counter-clockwise
+rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
+end
+
+function rotmat = rotz(gamma)
+eml_assert_no_varsize(1,gamma);
+sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});
+% rotate in the direction of x->y, counter-clockwise
+rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
+end
+
+##### SOURCE END #####
+--></body></html>

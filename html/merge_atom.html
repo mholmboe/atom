@@ -1,0 +1,399 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>merge_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="merge_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>merge_atom.m</h1><!--introduction--><div><ul><li>This function returns the atom2 struct with atoms in the atom2 struct with a distance r [1x1 or 1x2] away from the atoms in the atom1 struct.</li><li>There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting r(2) to a smaller value than r(1).</li><li>You must decide if atom1w should be wrapped or not before running this function</li><li>Do not wrap atomw1 here, do it before calling this function since Box1 does not always equal the full Box_dim, but ratherr a region in the full Box_dim</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)</li><li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,r)
+</pre><pre class="codeinput"><span class="comment">% % % %% For testing the script</span>
+<span class="comment">% % % clear all;</span>
+<span class="comment">% % % format compact;</span>
+<span class="comment">% % % atom1=import_atom('newTCH.gro');Box1=Box_dim;% atom1=translate_atom(atom1,[0 0 Box1(3)/2],'all');</span>
+<span class="comment">% % % atom2=import_atom('spc216_1.00.gro');Box2=Box_dim;</span>
+<span class="comment">% % % atom2 = replicate_atom(atom2,Box2,[5 5 3]);Box2=Box_dim;</span>
+<span class="comment">% % % atom1=center_atom(atom1,Box1,'all','xyz');</span>
+<span class="comment">% % % atom2=center_atom(atom2,Box2,'all','xyz');</span>
+<span class="comment">% % % r=[2.2 3.2];</span>
+<span class="comment">% % % limits=[0 0 0 Box1]</span>
+<span class="comment">% % % Atom_label={'H' 'O'};</span>
+<span class="comment">% % % type='molid';</span>
+<span class="comment">% % %%</span>
+
+<span class="comment">% if max([atom1.x])&gt;Box1(1)</span>
+<span class="comment">%     disp('Box1 smaller that Box_dim in x direction, perhaps using unwrapped atom1?')</span>
+<span class="comment">%     disp('Will set Box1(1) to max([atom1.x])+.001')</span>
+<span class="comment">%     Box1(1)=max([atom1.x])+.001;</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% if max([atom1.y])&gt;Box1(2)</span>
+<span class="comment">%     disp('Box1 smaller that Box_dim in y direction, perhaps using unwrapped atom1?')</span>
+<span class="comment">%     disp('Will set Box1(2) to max([atom1.y])+.001')</span>
+<span class="comment">%     Box1(2)=max([atom1.y])+.001;</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% if max([atom1.z])&gt;Box1(3)</span>
+<span class="comment">%     disp('Box1 smaller that Box_dim in z direction, perhaps using unwrapped atom1?')</span>
+<span class="comment">%     disp('Will set Box1(3) to max([atom1.z])+.001')</span>
+<span class="comment">%     Box1(3)=max([atom1.z])+.001;</span>
+<span class="comment">% end</span>
+
+minAtom=Atom_label(1);
+atom1w=wrap_atom(atom1,Box1);
+<span class="comment">% atom1w=atom1;% atom1 should hence be wrapped beforehand</span>
+atom2w=slice_molid(atom2,[0 0 0 Box1]);
+nAtoms1=size(atom1w,2);
+nAtoms2=size(atom2w,2);
+indvec=zeros(1,nAtoms2);
+
+<span class="keyword">if</span> size(atom2w,2)&gt;6000
+    <span class="comment">% To do it stepwise to save memory...</span>
+    disp(<span class="string">'Splitting up the distance matrix'</span>)
+    size(atom1w);
+    size(atom2w);
+    X1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(1:floor(nAtoms2/2)).x]');X1_dist(X1_dist&gt;Box1(1)/2)=X1_dist(X1_dist&gt;Box1(1)/2)-Box1(1);
+    Y1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(1:floor(nAtoms2/2)).y]');Y1_dist(Y1_dist&gt;Box1(2)/2)=Y1_dist(Y1_dist&gt;Box1(2)/2)-Box1(2);
+    Z1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(1:floor(nAtoms2/2)).z]');Z1_dist(Z1_dist&gt;Box1(3)/2)=Z1_dist(Z1_dist&gt;Box1(3)/2)-Box1(3);
+
+    X2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');X2_dist(X2_dist&gt;Box1(1)/2)=X2_dist(X2_dist&gt;Box1(1)/2)-Box1(1);
+    Y2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');Y2_dist(Y2_dist&gt;Box1(2)/2)=Y2_dist(Y2_dist&gt;Box1(2)/2)-Box1(2);
+    Z2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');Z2_dist(Z2_dist&gt;Box1(3)/2)=Z2_dist(Z2_dist&gt;Box1(3)/2)-Box1(3);
+
+    X3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(1:floor(nAtoms2/2)).x]');X3_dist(X3_dist&gt;Box1(1)/2)=X3_dist(X3_dist&gt;Box1(1)/2)-Box1(1);
+    Y3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(1:floor(nAtoms2/2)).y]');Y3_dist(Y3_dist&gt;Box1(2)/2)=Y3_dist(Y3_dist&gt;Box1(2)/2)-Box1(2);
+    Z3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(1:floor(nAtoms2/2)).z]');Z3_dist(Z3_dist&gt;Box1(3)/2)=Z3_dist(Z3_dist&gt;Box1(3)/2)-Box1(3);
+
+    X4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');X4_dist(X4_dist&gt;Box1(1)/2)=X4_dist(X4_dist&gt;Box1(1)/2)-Box1(1);
+    Y4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');Y4_dist(Y4_dist&gt;Box1(2)/2)=Y4_dist(Y4_dist&gt;Box1(2)/2)-Box1(2);
+    Z4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');Z4_dist(Z4_dist&gt;Box1(3)/2)=Z4_dist(Z4_dist&gt;Box1(3)/2)-Box1(3);
+
+    X_dist=[X1_dist X2_dist;X3_dist X4_dist];
+    Y_dist=[Y1_dist Y2_dist;Y3_dist Y4_dist];
+    Z_dist=[Z1_dist Z2_dist;Z3_dist Z4_dist];
+
+    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
+    clear <span class="string">X*dist</span> <span class="string">Y*dist</span> <span class="string">Z*dist</span>;
+<span class="keyword">elseif</span> size(atom2w,2)&gt;0
+</pre><pre class="codeinput">    <span class="comment">% To do them all at once</span>
+    <span class="comment">%disp('Single distance matrix')</span>
+    size([atom1w.x]');
+    size([atom2w.x]');
+    X_dist=pdist2([atom1w.x]',[atom2w.x]');
+    X_dist(X_dist&gt;Box1(1)/2)=X_dist(X_dist&gt;Box1(1)/2)-Box1(1);
+    Y_dist=pdist2([atom1w.y]',[atom2w.y]');
+    Y_dist(Y_dist&gt;Box1(2)/2)=Y_dist(Y_dist&gt;Box1(2)/2)-Box1(2);
+    Z_dist=pdist2([atom1w.z]',[atom2w.z]');
+    Z_dist(Z_dist&gt;Box1(3)/2)=Z_dist(Z_dist&gt;Box1(3)/2)-Box1(3);
+</pre><pre class="codeinput">    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
+    clear <span class="string">X*dist</span> <span class="string">Y*dist</span> <span class="string">Z*dist</span>;
+</pre><pre class="codeinput"><span class="keyword">else</span>
+    disp(<span class="string">'atom2w is empty'</span>)
+<span class="keyword">end</span>
+
+<span class="comment">% vmd([atom1w atom2w],Box1)</span>
+<span class="comment">% disp('sizes X,Y,Z and distance matrix')</span>
+<span class="comment">% size(X_dist)</span>
+<span class="comment">%</span>
+<span class="comment">% size(Y_dist)</span>
+<span class="comment">%</span>
+<span class="comment">% size(Z_dist)</span>
+<span class="comment">%</span>
+<span class="comment">% size(dist_matrix)</span>
+
+
+
+<span class="comment">% This section loops though the atom1 atoms</span>
+<span class="comment">% indvec=zeros(1,size(dist_matrix,2));</span>
+<span class="comment">% for i=1:size(dist_matrix,1);</span>
+<span class="comment">%     indvec(dist_matrix(i,:)&lt;r)=1;</span>
+<span class="comment">% end</span>
+<span class="keyword">if</span> exist(<span class="string">'dist_matrix'</span>,<span class="string">'var'</span>)
+    <span class="comment">% This section loops though the atom2 atoms, using rsmall and rlarge, where rsmall operates on minAtom=Atom_label(1)</span>
+    <span class="keyword">if</span> numel(r)==1
+        rsmall=r;
+        rlarge=r;
+    <span class="keyword">else</span>
+        rsmall=r(1);
+        rlarge=r(2);
+    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> i=1:size(dist_matrix,2)
+        <span class="keyword">if</span> strncmpi([atom2w(i).type],minAtom,1)
+            <span class="keyword">if</span> any((dist_matrix(:,i)-rsmall)&lt;0)
+                indvec(1,i)=1;
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            <span class="keyword">if</span> any((dist_matrix(:,i)-rlarge)&lt;0)
+                indvec(1,i)=1;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    clear <span class="string">dist_matrix</span>;
+
+    removed_molid=unique([atom2w(find(indvec)).molid]);
+    removed_molid_index=[atom2w(ismember([atom2w.molid],removed_molid)).index];
+    removed_index=find(indvec);
+
+    pre_size=size(atom2w,2);
+    <span class="keyword">if</span> strcmpi(type,<span class="string">'molid'</span>)
+        atom2w(ismember([atom2w.molid],removed_molid))=[];
+    <span class="keyword">else</span>
+        atom2w(removed_index)=[];
+    <span class="keyword">end</span>
+    post_size=size(atom2w,2);
+
+<span class="comment">%     vmd([atom1w atom2w],Box1)</span>
+
+    <span class="comment">% disp('Removed this many atoms')</span>
+    <span class="comment">% pre_size-post_size</span>
+
+    assignin(<span class="string">'caller'</span>,<span class="string">'removed_molid'</span>,removed_molid);
+    assignin(<span class="string">'caller'</span>,<span class="string">'removed_molid_index'</span>,removed_molid_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'removed_index'</span>,removed_index);
+
+<span class="keyword">end</span>
+<span class="comment">% vmd([atom1w atom2w],Box1)</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% merge_atom.m
+% * This function returns the atom2 struct with atoms in the atom2 struct
+% with a distance r [1x1 or 1x2] away from the atoms in the atom1 struct. 
+% * There is also a possibility to use a twin-range cutoff approach 
+% (suitable for OH2), by setting r(2) to a smaller value than r(1).
+% * You must decide if atom1w should be wrapped or not before running this
+% function
+% * Do not wrap atomw1 here, do it before calling this function since 
+% Box1 does not always equal the full Box_dim, but ratherr a region in the 
+% full Box_dim
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)
+% # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])
+%
+function atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,r)
+%%
+
+% % % %% For testing the script
+% % % clear all;
+% % % format compact;
+% % % atom1=import_atom('newTCH.gro');Box1=Box_dim;% atom1=translate_atom(atom1,[0 0 Box1(3)/2],'all');
+% % % atom2=import_atom('spc216_1.00.gro');Box2=Box_dim;
+% % % atom2 = replicate_atom(atom2,Box2,[5 5 3]);Box2=Box_dim;
+% % % atom1=center_atom(atom1,Box1,'all','xyz');
+% % % atom2=center_atom(atom2,Box2,'all','xyz');
+% % % r=[2.2 3.2];
+% % % limits=[0 0 0 Box1]
+% % % Atom_label={'H' 'O'};
+% % % type='molid';
+% % %%
+
+% if max([atom1.x])>Box1(1)
+%     disp('Box1 smaller that Box_dim in x direction, perhaps using unwrapped atom1?')
+%     disp('Will set Box1(1) to max([atom1.x])+.001')
+%     Box1(1)=max([atom1.x])+.001;
+% end
+% 
+% if max([atom1.y])>Box1(2)
+%     disp('Box1 smaller that Box_dim in y direction, perhaps using unwrapped atom1?')
+%     disp('Will set Box1(2) to max([atom1.y])+.001')
+%     Box1(2)=max([atom1.y])+.001;
+% end
+% 
+% if max([atom1.z])>Box1(3)
+%     disp('Box1 smaller that Box_dim in z direction, perhaps using unwrapped atom1?')
+%     disp('Will set Box1(3) to max([atom1.z])+.001')
+%     Box1(3)=max([atom1.z])+.001;
+% end
+
+minAtom=Atom_label(1);
+atom1w=wrap_atom(atom1,Box1);
+% atom1w=atom1;% atom1 should hence be wrapped beforehand
+atom2w=slice_molid(atom2,[0 0 0 Box1]);
+nAtoms1=size(atom1w,2);
+nAtoms2=size(atom2w,2);
+indvec=zeros(1,nAtoms2);
+
+if size(atom2w,2)>6000
+    % To do it stepwise to save memory...
+    disp('Splitting up the distance matrix')
+    size(atom1w);
+    size(atom2w);
+    X1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(1:floor(nAtoms2/2)).x]');X1_dist(X1_dist>Box1(1)/2)=X1_dist(X1_dist>Box1(1)/2)-Box1(1);
+    Y1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(1:floor(nAtoms2/2)).y]');Y1_dist(Y1_dist>Box1(2)/2)=Y1_dist(Y1_dist>Box1(2)/2)-Box1(2);
+    Z1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(1:floor(nAtoms2/2)).z]');Z1_dist(Z1_dist>Box1(3)/2)=Z1_dist(Z1_dist>Box1(3)/2)-Box1(3);
+    
+    X2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');X2_dist(X2_dist>Box1(1)/2)=X2_dist(X2_dist>Box1(1)/2)-Box1(1);
+    Y2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');Y2_dist(Y2_dist>Box1(2)/2)=Y2_dist(Y2_dist>Box1(2)/2)-Box1(2);
+    Z2_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');Z2_dist(Z2_dist>Box1(3)/2)=Z2_dist(Z2_dist>Box1(3)/2)-Box1(3);
+    
+    X3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(1:floor(nAtoms2/2)).x]');X3_dist(X3_dist>Box1(1)/2)=X3_dist(X3_dist>Box1(1)/2)-Box1(1);
+    Y3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(1:floor(nAtoms2/2)).y]');Y3_dist(Y3_dist>Box1(2)/2)=Y3_dist(Y3_dist>Box1(2)/2)-Box1(2);
+    Z3_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(1:floor(nAtoms2/2)).z]');Z3_dist(Z3_dist>Box1(3)/2)=Z3_dist(Z3_dist>Box1(3)/2)-Box1(3);
+    
+    X4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');X4_dist(X4_dist>Box1(1)/2)=X4_dist(X4_dist>Box1(1)/2)-Box1(1);
+    Y4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');Y4_dist(Y4_dist>Box1(2)/2)=Y4_dist(Y4_dist>Box1(2)/2)-Box1(2);
+    Z4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');Z4_dist(Z4_dist>Box1(3)/2)=Z4_dist(Z4_dist>Box1(3)/2)-Box1(3);
+    
+    X_dist=[X1_dist X2_dist;X3_dist X4_dist];
+    Y_dist=[Y1_dist Y2_dist;Y3_dist Y4_dist];
+    Z_dist=[Z1_dist Z2_dist;Z3_dist Z4_dist];
+    
+    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
+    clear X*dist Y*dist Z*dist;
+elseif size(atom2w,2)>0
+    % To do them all at once
+    %disp('Single distance matrix')
+    size([atom1w.x]');
+    size([atom2w.x]');
+    X_dist=pdist2([atom1w.x]',[atom2w.x]');
+    X_dist(X_dist>Box1(1)/2)=X_dist(X_dist>Box1(1)/2)-Box1(1);
+    Y_dist=pdist2([atom1w.y]',[atom2w.y]');
+    Y_dist(Y_dist>Box1(2)/2)=Y_dist(Y_dist>Box1(2)/2)-Box1(2);
+    Z_dist=pdist2([atom1w.z]',[atom2w.z]');
+    Z_dist(Z_dist>Box1(3)/2)=Z_dist(Z_dist>Box1(3)/2)-Box1(3);
+    %%
+    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
+    clear X*dist Y*dist Z*dist;
+else
+    disp('atom2w is empty')
+end
+
+% vmd([atom1w atom2w],Box1)
+% disp('sizes X,Y,Z and distance matrix')
+% size(X_dist)
+%
+% size(Y_dist)
+%
+% size(Z_dist)
+%
+% size(dist_matrix)
+
+
+
+% This section loops though the atom1 atoms
+% indvec=zeros(1,size(dist_matrix,2));
+% for i=1:size(dist_matrix,1);
+%     indvec(dist_matrix(i,:)<r)=1;
+% end
+if exist('dist_matrix','var')
+    % This section loops though the atom2 atoms, using rsmall and rlarge, where rsmall operates on minAtom=Atom_label(1)
+    if numel(r)==1
+        rsmall=r;
+        rlarge=r;
+    else
+        rsmall=r(1);
+        rlarge=r(2);
+    end
+    
+    for i=1:size(dist_matrix,2)
+        if strncmpi([atom2w(i).type],minAtom,1)
+            if any((dist_matrix(:,i)-rsmall)<0)
+                indvec(1,i)=1;
+            end
+        else
+            if any((dist_matrix(:,i)-rlarge)<0)
+                indvec(1,i)=1;
+            end
+        end
+    end
+    
+    clear dist_matrix;
+    
+    removed_molid=unique([atom2w(find(indvec)).molid]);
+    removed_molid_index=[atom2w(ismember([atom2w.molid],removed_molid)).index];
+    removed_index=find(indvec);
+    
+    pre_size=size(atom2w,2);
+    if strcmpi(type,'molid')
+        atom2w(ismember([atom2w.molid],removed_molid))=[];
+    else
+        atom2w(removed_index)=[];
+    end
+    post_size=size(atom2w,2);
+    
+%     vmd([atom1w atom2w],Box1)
+    
+    % disp('Removed this many atoms')
+    % pre_size-post_size
+    
+    assignin('caller','removed_molid',removed_molid);
+    assignin('caller','removed_molid_index',removed_molid_index);
+    assignin('caller','removed_index',removed_index);
+    
+end
+% vmd([atom1w atom2w],Box1)
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

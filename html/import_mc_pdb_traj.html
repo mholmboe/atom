@@ -1,0 +1,246 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_mc_pdb_traj.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_mc_pdb_traj.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_mc_pdb_traj.m</h1><!--introduction--><div><ul><li>This function imports several .pdb traj files into a full traj, and can even handle trajs with varying number of particles</li><li>varargin can be used to set max frames to import, or set a value for nevery frame to import, i.e. a stride value</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_mc_pdb_traj('molecule.pdb')</li><li>atom = import_mc_pdb_traj('molecule.pdb',1000)</li><li>atom = import_mc_pdb_traj('molecule.pdb',10000,10)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_mc_pdb_traj(filename,varargin)
+
+<span class="comment">% maxframes=100;</span>
+<span class="comment">% stride=1;</span>
+<span class="comment">% filenames={...</span>
+<span class="comment">%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_frameworks.pdb';...</span>
+<span class="comment">%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_Ca_0.pdb';...</span>
+<span class="comment">%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_spce_1.pdb';...</span>
+<span class="comment">%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_glycol_2.pdb';...</span>
+<span class="comment">%     };</span>
+
+<span class="keyword">for</span> i=1:size(filename,1)
+    i
+    <span class="keyword">if</span> nargin&gt;1
+        maxframes=varargin{1};
+        <span class="keyword">if</span> nargin&gt;2
+            stride=varargin{2};
+            <span class="keyword">try</span>
+                temp_atom = import_pdb_traj(char(filename(i)),maxframes,stride);
+            <span class="keyword">catch</span>
+                temp_atom = import_pdb_traj(filename,maxframes,stride);
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            <span class="keyword">try</span>
+                temp_atom = import_pdb_traj(char(filename(i)),maxframes);
+            <span class="keyword">catch</span>
+                temp_atom = import_pdb_traj(filename,maxframes);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="keyword">try</span>
+            temp_atom = import_pdb_traj(char(filename(i)));
+        <span class="keyword">catch</span>
+            temp_atom = import_pdb_traj(filename);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> i==1;framework=temp_atom;framework_traj=traj;<span class="keyword">end</span> <span class="comment">% traj comes from import_pdb_traj() above</span>
+    <span class="keyword">if</span> i==2;component0=temp_atom;component0_traj=traj;<span class="keyword">end</span>
+    <span class="keyword">if</span> i==3;component1=temp_atom;component1_traj=traj;<span class="keyword">end</span>
+    <span class="keyword">if</span> i==4;component2=temp_atom;component2_traj=traj;<span class="keyword">end</span>
+    <span class="keyword">if</span> i==5;component3=temp_atom;component3_traj=traj;<span class="keyword">end</span>
+    <span class="keyword">if</span> i==6;component4=temp_atom;component4_traj=traj;<span class="keyword">end</span>
+    <span class="keyword">if</span> i&gt;6;disp(<span class="string">'You have to many components for this little script...'</span>); pause;<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(filename,2)==1;atom=framework;<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==2;atom=update_atom({framework component0});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==3;atom=update_atom({framework component0 component1});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==4;atom=update_atom({framework component0 component1 component2});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==5;atom=update_atom({framework component0 component1 component2 component3});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==6;atom=update_atom({framework component0 component1 component2 component3 component4});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==7;atom=update_atom({framework component0 component1 component2 component3 component4 component5});<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==8;atom=update_atom({framework component0 component1 component2 component3 component4 component5 component6});<span class="keyword">end</span>
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_labels=[atom.type]';
+
+<span class="keyword">if</span> size(filename,2)==1;traj=framework_traj;<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==2;traj=[framework_traj component0_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==3;traj=[framework_traj component0_traj component1_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==4;traj=[framework_traj component0_traj component1_traj component2_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==5;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==6;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==7;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj component5_traj];<span class="keyword">end</span>
+<span class="keyword">if</span> size(filename,2)==8;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj component5_traj component6_traj];<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    filename_out=varargin{3};
+    write_pdb_traj(atom,traj,Box_dim,filename_out)
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom);
+assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj);
+assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,size(atom,2));
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_mc_pdb_traj.m
+% * This function imports several .pdb traj files into a full traj, and can
+% even handle trajs with varying number of particles
+% * varargin can be used to set max frames to import, or set a value for
+% nevery frame to import, i.e. a stride value
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_mc_pdb_traj('molecule.pdb')
+% # atom = import_mc_pdb_traj('molecule.pdb',1000)
+% # atom = import_mc_pdb_traj('molecule.pdb',10000,10)
+%
+function atom = import_mc_pdb_traj(filename,varargin)
+
+% maxframes=100;
+% stride=1;
+% filenames={...
+%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_frameworks.pdb';...
+%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_Ca_0.pdb';...
+%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_spce_1.pdb';...
+%     'Movie_MMTx2_1.1.1_298.000000_101325.000000_component_glycol_2.pdb';...
+%     };
+
+for i=1:size(filename,1)
+    i
+    if nargin>1
+        maxframes=varargin{1};
+        if nargin>2
+            stride=varargin{2};
+            try
+                temp_atom = import_pdb_traj(char(filename(i)),maxframes,stride);
+            catch
+                temp_atom = import_pdb_traj(filename,maxframes,stride);
+            end
+        else
+            try
+                temp_atom = import_pdb_traj(char(filename(i)),maxframes);
+            catch
+                temp_atom = import_pdb_traj(filename,maxframes);
+            end
+        end
+    else
+        try
+            temp_atom = import_pdb_traj(char(filename(i)));
+        catch
+            temp_atom = import_pdb_traj(filename);
+        end
+    end
+    
+    if i==1;framework=temp_atom;framework_traj=traj;end % traj comes from import_pdb_traj() above
+    if i==2;component0=temp_atom;component0_traj=traj;end
+    if i==3;component1=temp_atom;component1_traj=traj;end
+    if i==4;component2=temp_atom;component2_traj=traj;end
+    if i==5;component3=temp_atom;component3_traj=traj;end
+    if i==6;component4=temp_atom;component4_traj=traj;end
+    if i>6;disp('You have to many components for this little script...'); pause;end
+end
+
+if size(filename,2)==1;atom=framework;end
+if size(filename,2)==2;atom=update_atom({framework component0});end
+if size(filename,2)==3;atom=update_atom({framework component0 component1});end
+if size(filename,2)==4;atom=update_atom({framework component0 component1 component2});end
+if size(filename,2)==5;atom=update_atom({framework component0 component1 component2 component3});end
+if size(filename,2)==6;atom=update_atom({framework component0 component1 component2 component3 component4});end
+if size(filename,2)==7;atom=update_atom({framework component0 component1 component2 component3 component4 component5});end
+if size(filename,2)==8;atom=update_atom({framework component0 component1 component2 component3 component4 component5 component6});end
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_labels=[atom.type]';
+
+if size(filename,2)==1;traj=framework_traj;end
+if size(filename,2)==2;traj=[framework_traj component0_traj];end
+if size(filename,2)==3;traj=[framework_traj component0_traj component1_traj];end
+if size(filename,2)==4;traj=[framework_traj component0_traj component1_traj component2_traj];end
+if size(filename,2)==5;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj];end
+if size(filename,2)==6;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj];end
+if size(filename,2)==7;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj component5_traj];end
+if size(filename,2)==8;traj=[framework_traj component0_traj component1_traj component2_traj component3_traj component4_traj component5_traj component6_traj];end
+
+if nargin>3
+    filename_out=varargin{3};
+    write_pdb_traj(atom,traj,Box_dim,filename_out)
+end
+
+assignin('caller','atom',atom);
+assignin('caller','traj',traj);
+assignin('caller','nAtoms',size(atom,2));
+assignin('caller','Box_dim',Box_dim);
+assignin('caller','XYZ_labels',XYZ_labels);
+assignin('caller','XYZ_data',XYZ_data);
+
+##### SOURCE END #####
+--></body></html>

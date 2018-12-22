@@ -1,0 +1,109 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>List of topology functions</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-09"><meta name="DC.source" content="List_topology_functions.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>List of topology functions</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Custom toplogy tools</a></li><li><a href="#2">Clayff, with atomtypes by MHolmboe</a></li><li><a href="#3">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</a></li><li><a href="#4">Graphene oxide modeled with OPLS/aa stuff</a></li><li><a href="#5">Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</a></li></ul></div><h2 id="1">Custom toplogy tools</h2><h2 id="2">Clayff, with atomtypes by MHolmboe</h2><div><ol><li><a href="clayff_atom(atom,Box_dim,varargin)">clayff_atom(atom,Box_dim,varargin)</a> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges</li><li><a href="clayffmod_atom(atom,Box_dim,varargin)">clayffmod_atom(atom,Box_dim,varargin)</a> % Assigns the modififed Clayff atom types. Can also 'heal' edges&nbsp;</li><li><a href="clayff_param(Atom_label,varargin)">clayff_param(Atom_label,varargin)</a> % Holds the ion and Clayff atomtype parameters</li><li><a href="charge_clayff_atom(atom,Box_dim,varargin)">charge_clayff_atom(atom,Box_dim,varargin)</a> % Sets the charge for Clayff atomtypes&nbsp;</li><li><a href="check_clayff_charge(atom)">check_clayff_charge(atom)</a> %&nbsp;This checks the charge of the Clayff atomtypes by Mholmboe</li><li><a href="check_clayff_H2Odens(atom,Box_dim)">check_clayff_H2Odens(atom,Box_dim)</a> % Specific function that calculates the approx. water density in heterogeneous systems</li><li><a href="mass_atom_clayff(atom,varargin)">mass_atom_clayff(atom,varargin)</a> % This function fetches the atom weight from the clayff and interface ff's</li><li><a href="tweak_charge_atom(atom)">tweak_charge_atom(atom)</a> % This function tries to tweak the charge of the atom struct in case of rounding errors</li></ol></div><h2 id="3">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</h2><div><ol><li><a href="interface_atom(atom,Box_dim,varargin)">interface_atom(atom,Box_dim,varargin)</a> % This function tries to assign all atoms according to the interface atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li><a href="interface_param(Atom_label,water_model)">interface_param(Atom_label,water_model)</a> %&nbsp; This holds the extended INTERFACE ff parameters</li><li><a href="interface15_atom(atom,Box_dim,varargin)">interface15_atom(atom,Box_dim,varargin)</a> % This function tries to assign all atoms according to the interface1.5 atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li><a href="interface15_param(Atom_label,water_model)">interface15_param(Atom_label,water_model)</a> %&nbsp; This holds the extended INTERFACE1.5 ff parameters</li><li><a href="check_interface_charge(atom)">check_interface_charge(atom)</a> %&nbsp; This checks the charge of the INTERFACE atomtypes by Mholmboe</li><li><a href="check_interface15_charge(atom)">check_interface15_charge(atom)</a> %&nbsp; This checks the charge of the INTERFACE 1.5 atomtypes by Mholmboe</li><li><a href="charge_interface_atom(atom,Box_dim,varargin)">charge_interface_atom(atom,Box_dim,varargin)</a> % Sets the charge for Interface atomtypes&nbsp;</li><li><a href="charge_interface15_atom(atom,Box_dim,varargin)">charge_interface15_atom(atom,Box_dim,varargin)</a> % Sets the charge for Interface 1.5 atomtypes</li><li><a href="mass_atom_clayff(atom,varargin)">mass_atom_clayff(atom,varargin)</a> % This function fetches the atom weight from the clayff and interface ff's</li><li><a href="tweak_charge_atom(atom)">tweak_charge_atom(atom)</a> % This function tries to tweak the charge of the atom struct in case of rounding errors</li></ol></div><h2 id="4">Graphene oxide modeled with OPLS/aa stuff</h2><div><ol><li><a href="opls_go_atom(atom,Box_dim,rmin,rlarge)">opls_go_atom(atom,Box_dim,rmin,rlarge)</a> % This function tries to smear out the charge at around -OH and epoxides in GO</li><li><a href="oplsaa_go_param(Atom_label,water_model)">oplsaa_go_param(Atom_label,water_model)</a> % This custom function holds the extended oplsaa_aa ff for graphite oxide</li><li><a href="charge_opls_go_atom(atom,Box_dim,varargin)">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Sets the charge for some specific OPLS atomtypes</li></ol></div><h2 id="5">Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</h2><div><ol><li><a href="write_atom(atom,Box_dim,filename_out,varargin)">write_atom(atom,Box_dim,filename_out,varargin)</a> % This function tries to write various files for you. Works best for systems designed for Clayff...</li><li><a href="write_atom_lmp(atom,Box_dim,filename,varargin)">write_atom_lmp(atom,Box_dim,filename,varargin)</a> % This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li><li><a href="write_atom_itp(atom,Box_dim,filename,varargin)">write_atom_itp(atom,Box_dim,filename,varargin)</a> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p</li><li><a href="write_atom_oplsaa_go_itp(atom,Box_dim,filename,varargin)">write_atom_oplsaa_go_itp(atom,Box_dim,filename,varargin)</a> % This custom made script creates and prints a gromacs .itp file for&nbsp;</li><li><a href="write_atom_psf(atom,Box_dim,filename_out,varargin)">write_atom_psf(atom,Box_dim,filename_out,varargin)</a> % This function writes an .psf file from the atom struct</li></ol></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% List of topology functions
+
+%% Custom toplogy tools
+%% Clayff, with atomtypes by MHolmboe
+% # <clayff_atom(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges
+% # <clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <clayff_param(Atom_label,varargin)> % Holds the ion and Clayff atomtype parameters
+% # <charge_clayff_atom(atom,Box_dim,varargin)> % Sets the charge for Clayff atomtypes 
+% # <check_clayff_charge(atom)> % This checks the charge of the Clayff atomtypes by Mholmboe
+% # <check_clayff_H2Odens(atom,Box_dim)> % Specific function that calculates the approx. water density in heterogeneous systems
+% # <mass_atom_clayff(atom,varargin)> % This function fetches the atom weight from the clayff and interface ff's
+% # <tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
+
+%% INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe
+% # <interface_atom(atom,Box_dim,varargin)> % This function tries to assign all atoms according to the interface atom types (with modified atom names by MHolmboe), with some modifications for edges...
+% # <interface_param(Atom_label,water_model)> %  This holds the extended INTERFACE ff parameters
+% # <interface15_atom(atom,Box_dim,varargin)> % This function tries to assign all atoms according to the interface1.5 atom types (with modified atom names by MHolmboe), with some modifications for edges...
+% # <interface15_param(Atom_label,water_model)> %  This holds the extended INTERFACE1.5 ff parameters
+% # <check_interface_charge(atom)> %  This checks the charge of the INTERFACE atomtypes by Mholmboe
+% # <check_interface15_charge(atom)> %  This checks the charge of the INTERFACE 1.5 atomtypes by Mholmboe
+% # <charge_interface_atom(atom,Box_dim,varargin)> % Sets the charge for Interface atomtypes 
+% # <charge_interface15_atom(atom,Box_dim,varargin)> % Sets the charge for Interface 1.5 atomtypes
+% # <mass_atom_clayff(atom,varargin)> % This function fetches the atom weight from the clayff and interface ff's
+% # <tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
+
+%% Graphene oxide modeled with OPLS/aa stuff
+% # <opls_go_atom(atom,Box_dim,rmin,rlarge)> % This function tries to smear out the charge at around -OH and epoxides in GO
+% # <oplsaa_go_param(Atom_label,water_model)> % This custom function holds the extended oplsaa_aa ff for graphite oxide
+% # <charge_opls_go_atom(atom,Box_dim,varargin)> % Sets the charge for some specific OPLS atomtypes
+
+%% Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)
+% # <write_atom(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...
+% # <write_atom_lmp(atom,Box_dim,filename,varargin)> % This script creates and prints a lammps data file (.lj). Works best for Clayff systems
+% # <write_atom_itp(atom,Box_dim,filename,varargin)> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p
+% # <write_atom_oplsaa_go_itp(atom,Box_dim,filename,varargin)> % This custom made script creates and prints a gromacs .itp file for 
+% # <write_atom_psf(atom,Box_dim,filename_out,varargin)> % This function writes an .psf file from the atom struct
+
+##### SOURCE END #####
+--></body></html>

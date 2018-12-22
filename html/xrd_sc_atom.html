@@ -1,0 +1,606 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>xrd_sc_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="xrd_sc_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>xrd_sc_atom.m</h1><!--introduction--><div><ul><li>This experimental function calculates theoretical XRD patterns from a .pdb|.gro etc. and differs from xrd_atom in that it tries to implement the supercell concept by Ufer, 2008. Does it work?</li><li>The script was heavily inpired by MOF-FIT:</li><li><a href="http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf">http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Various settings</a></li><li><a href="#6">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</a></li><li><a href="#7">Import the structure into an atom struct</a></li><li><a href="#9">Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax &lt;= h &lt;= hmax; -kmax&lt;= k &lt;= kmax; -lmax &lt;= l &lt;= lmax</a></li><li><a href="#10">Enter the degree (number greater than or equal to 0) and direction of preferential orientation</a></li><li><a href="#11">Set the unit cell parameters</a></li><li><a href="#12">Converting to radians</a></li><li><a href="#13">Setting up the different h,k,l values</a></li><li><a href="#14">Now we have all the h,k,l values with 0,0,0 taken out</a></li><li><a href="#15">Determine the twotheta values for each h,k,l</a></li><li><a href="#16">Order the hkl after decreasing d-spacings and increasing two_theta</a></li><li><a href="#17">Calculate the corresponding discrete twotheta in degrees</a></li><li><a href="#18">Calculate the structure factor for each reflection</a></li><li><a href="#19">Square each term in the structure factor vector</a></li><li><a href="#20">Correction for preferred orientation angle between h,k,l and preferrential orientation direction</a></li><li><a href="#21">Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction</a></li><li><a href="#22">Lorentz factor</a></li><li><a href="#23">Lorentz * Polarization factors</a></li><li><a href="#24">Divergence slit</a></li><li><a href="#25">Surface roughness</a></li><li><a href="#26">Plot the results</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[twotheta,intensity] = xrd_atom(filename)</li><li>[twotheta,intensity] = xrd_atom(atom,Box_dim))</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [twotheta,intensity] = xrd_sc_atom(varargin)
+</pre><h2 id="5">Various settings</h2><pre class="codeinput">mode=1; <span class="comment">% Activate sigma_star, DIV, surface roughness</span>
+FWHM=.8; <span class="comment">% Specify the full width at half maximum of your choice</span>
+num_hkl=10;
+lambda=1.54187; <span class="comment">% &Aring;ngstrom</span>
+anglestep=0.02; <span class="comment">% The incremental twotheta angle step</span>
+exp_twotheta=2:anglestep:70; <span class="comment">% The twotheta range of interest</span>
+Bfactor=2; <span class="comment">% Debye-Waller factor &Aring;ngstrom</span>
+Lorentzian_factor=1; <span class="comment">% Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function</span>
+Sample_length = 4; <span class="comment">% cm</span>
+Gonio_radius = 24; <span class="comment">% cm</span>
+Div_slit = .1; <span class="comment">% Divergence slit setting, 0 for automatic</span>
+roughness = 0; <span class="comment">% Surface roughness</span>
+<span class="comment">% misalignment=0.0; % Not yet implemented</span>
+<span class="comment">% alfa_strain = 0; % Not yet implemented</span>
+sigma_star=45; <span class="comment">% Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite</span>
+RNDPWD = 0; <span class="comment">% Random powder</span>
+<span class="comment">% mu_star=45; % Not yet implemented</span>
+L_type=<span class="string">'normal'</span>; <span class="comment">% Lorent polarization type, else 'Reynolds';</span>
+S1=2.3;S2=2.3; <span class="comment">% Primary and secondary Soller slit , in deg</span>
+</pre><h2 id="6">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</h2><pre class="codeinput"><span class="keyword">if</span> nargin==1
+    filename=varargin{1};
+    atom=import_atom(filename);
+<span class="keyword">else</span>
+    atom=varargin{1};
+    Box_dim=varargin{2};
+<span class="keyword">end</span>
+</pre><h2 id="7">Import the structure into an atom struct</h2><pre class="codeinput">atom=wrap_atom(atom,Box_dim);
+<span class="comment">% atom=replicate_atom(atom,Box_dim,[4 4 4]); % If we want to replicate the struct</span>
+</pre><pre class="codeinput">frac=orto_atom(atom,Box_dim);
+<span class="comment">% frac = round_atom(frac,Box_dim,3,'orto');</span>
+frac=element_atom(frac);
+atom_type=[frac.type];<span class="comment">% atom_type(2:length(atom_type));</span>
+x=[frac.xfrac]';y=[frac.yfrac]';z=[frac.zfrac]';
+<span class="keyword">if</span> ~isfield(frac,<span class="string">'occupancy'</span>)
+    [frac.occupancy]=deal(1);
+<span class="keyword">end</span>
+
+occupancy=[frac.occupancy]';
+
+PROPcycle=1;tot_intensity=[];
+<span class="keyword">for</span> i=num_hkl
+</pre><h2 id="9">Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax &lt;= h &lt;= hmax; -kmax&lt;= k &lt;= kmax; -lmax &lt;= l &lt;= lmax</h2><pre class="codeinput">    hmax=num_hkl;
+    kmax=num_hkl;
+    lmax=num_hkl;
+</pre><h2 id="10">Enter the degree (number greater than or equal to 0) and direction of preferential orientation</h2><pre class="codeinput">    pref=1;
+    preferred_h=0;
+    preferred_k=0;
+    preferred_l=1;
+</pre><h2 id="11">Set the unit cell parameters</h2><pre>   if size(Box_dim,2) == 9
+       lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+       xy=Box_dim(6);    xz=Box_dim(8);    yz=Box_dim(9);
+   elseif size(Box_dim,2) == 3
+       lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+       xy=0;    xz=0;    yz=0;
+   end</pre><pre class="codeinput">    <span class="keyword">if</span> size(Box_dim,2) == 9
+        lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3)*i;
+        xy=Box_dim(6);    xz=Box_dim(8)*i;  yz=Box_dim(9)*i;
+    <span class="keyword">elseif</span> size(Box_dim,2) == 3
+        lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3)*i;
+        xy=0;    xz=0;    yz=0;
+    <span class="keyword">end</span>
+
+    x=[frac.xfrac]'./i;y=[frac.yfrac]'./i;z=[frac.zfrac]'./i;
+
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+</pre><h2 id="12">Converting to radians</h2><pre class="codeinput">    <span class="comment">%%%%% From MOF-FIT %%%%%%</span>
+    alfa_rad=alfa*pi/180;
+    beta_rad=beta*pi/180;
+    gamma_rad=gamma*pi/180;
+</pre><h2 id="13">Setting up the different h,k,l values</h2><pre class="codeinput">    l_values_temp=repmat(-1*lmax:lmax,1,(2*kmax+1)*(2*hmax+1));
+    k_repeat_unit=repmat(-1*kmax:kmax,(2*lmax+1),1);
+    k_values_temp=repmat(reshape(k_repeat_unit,1,(2*lmax+1)*(2*kmax+1)),1,(2*hmax+1));
+    h_values_temp=reshape(repmat(-1*hmax:hmax,(2*kmax+1)*(2*lmax+1),1),1,(2*hmax+1)*(2*kmax+1)*(2*lmax+1));
+
+    h_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+    k_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+    l_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+
+    h=h_values_temp;
+    k=k_values_temp;
+    l=l_values_temp;
+    assignin(<span class="string">'caller'</span>,<span class="string">'l'</span>,l);
+    ind_hk0=find(h==0&amp;k==0);
+    ind_l0=setdiff(1:numel(l),ind_hk0);
+<span class="comment">%     l(ind_l0)=l(ind_l0)*0;</span>
+    l(ind_hk0)=l(ind_hk0)*num_hkl;
+<span class="comment">%     assignin('caller','lsc',l);</span>
+<span class="comment">%     h=zeros(1,numel(h));</span>
+<span class="comment">%     k=zeros(1,numel(k));</span>
+<span class="comment">%     assignin('caller','supercell_ind',supercell_ind);</span>
+<span class="comment">%     assignin('caller','h',h);</span>
+<span class="comment">%     assignin('caller','k',k);</span>
+
+    hkl=[h' k' l'];
+
+    <span class="comment">%     assignin('caller','hkl1',hkl);</span>
+</pre><h2 id="14">Now we have all the h,k,l values with 0,0,0 taken out</h2><h2 id="15">Determine the twotheta values for each h,k,l</h2><pre class="codeinput">    V_cell=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
+    one_over_dhkl=1/V_cell.*<span class="keyword">...</span>
+        (h.^2*b^2*c^2*sin(alfa_rad)^2+<span class="keyword">...</span>
+        k.^2*a^2*c^2*sin(beta_rad)^2+<span class="keyword">...</span>
+        l.^2*a^2*b^2*sin(gamma_rad)^2+<span class="keyword">...</span>
+        2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+<span class="keyword">...</span>
+        2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+<span class="keyword">...</span>
+        2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
+    one_over_dhkl=real(one_over_dhkl);
+    <span class="comment">%%%%% End MOF-FIT %%%%%%</span>
+    <span class="comment">%      assignin('caller','one_over_dhkl1',one_over_dhkl);</span>
+</pre><h2 id="16">Order the hkl after decreasing d-spacings and increasing two_theta</h2><pre class="codeinput">    d_hkl=1./one_over_dhkl;
+    twotheta_rad=2.*asin(one_over_dhkl*lambda/2);
+    [d_hkl,hkl_order]=sort(d_hkl,<span class="string">'ascend'</span>);
+    twotheta_rad=twotheta_rad(hkl_order);
+    hkl=hkl(hkl_order,:);
+    assignin(<span class="string">'caller'</span>,<span class="string">'hkl'</span>,hkl);
+    assignin(<span class="string">'caller'</span>,<span class="string">'d_hkl'</span>,d_hkl);
+    h=h(hkl_order);
+    k=k(hkl_order);
+    l=l(hkl_order);
+<span class="comment">%     h=zeros(1,numel(h));</span>
+<span class="comment">%     k=zeros(1,numel(k));</span>
+<span class="comment">%     assignin('caller','supercell_ind',supercell_ind);</span>
+<span class="comment">%      assignin('caller','h',h);</span>
+<span class="comment">%      assignin('caller','k',k);</span>
+    <span class="comment">%     h=hkl(:,1);</span>
+    <span class="comment">%     k=hkl(:,2);</span>
+    <span class="comment">%     l=hkl(:,3);</span>
+</pre><h2 id="17">Calculate the corresponding discrete twotheta in degrees</h2><pre class="codeinput">    two_theta_disc=real(180*twotheta_rad/pi);
+</pre><h2 id="18">Calculate the structure factor for each reflection</h2><p>Can we speed this up by fetching the scattering factor only once for each atom type?</p><pre class="codeinput">    n=1;
+    structure_factor=0;
+    <span class="keyword">while</span> (n&lt;=length(atom_type))
+        scattering_factor = atomic_scattering_factors(atom_type(n),lambda,two_theta_disc,Bfactor);
+<span class="comment">%         structure_factor=structure_factor+scattering_factor.*occupancy(n).*exp(2*pi*1i.*(h*x(n)+k*y(n)+l*z(n)));</span>
+        structure_factor=structure_factor+scattering_factor.*occupancy(n).*exp(2*pi*1i.*(l*z(n)));
+
+        n=n+1;
+    <span class="keyword">end</span>
+</pre><h2 id="19">Square each term in the structure factor vector</h2><pre class="codeinput">    F_squared=structure_factor.*conj(structure_factor);
+</pre><h2 id="20">Correction for preferred orientation angle between h,k,l and preferrential orientation direction</h2><pre class="codeinput">    theta_pref_orient=acos((h*preferred_h + k*preferred_k + l*preferred_l)./((h.^2+k.^2+l.^2).^0.5*(preferred_h^2+preferred_k^2+preferred_l^2)^0.5));
+    <span class="keyword">if</span> theta_pref_orient&gt;pi/2
+        theta_pref_orient=pi-theta_pref_orient;
+    <span class="keyword">end</span>
+    F_squared=F_squared.*exp(pref*cos(2*theta_pref_orient));
+
+    twotheta=real(180*twotheta_rad/pi);
+</pre><h2 id="21">Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction</h2><p>Gaussian part</p><pre class="codeinput">    n=1;gauss_component=0;c_=FWHM/(2*(2*log(2))^0.5);
+    <span class="keyword">while</span>(n&lt;=length(twotheta))
+        temp_gauss=F_squared(n).*exp(-(exp_twotheta-twotheta(n)).^2/(2*c_^2));
+        gauss_component=gauss_component+temp_gauss;
+        n=n+1;
+    <span class="keyword">end</span>
+    gauss_part=gauss_component/max(gauss_component);
+    <span class="comment">% Lorentzian part</span>
+    n=1;lorentz_component=0;
+    <span class="keyword">while</span>(n&lt;length(twotheta))
+        temp_lorentz=F_squared(n)./((exp_twotheta-twotheta(n)).^2+(0.5*FWHM)^2);
+        lorentz_component=lorentz_component+temp_lorentz;
+        n=n+1;
+    <span class="keyword">end</span>
+    lorentz_part=lorentz_component/max(lorentz_component);
+    <span class="comment">% Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function</span>
+    intensity=Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part;
+</pre><h2 id="22">Lorentz factor</h2><pre class="codeinput">    S_bar=((S1/2)^2+(S2/2)^2)^.5;
+    Q=S_bar./(2*2^0.5*sin(exp_twotheta/2*pi()/180)*sigma_star);
+    PSI=erf(Q)*(2*pi())^.5/(2*sigma_star*S_bar)-2*sin(exp_twotheta/2*pi()/180)/S_bar^2.*(1-exp(-Q.^2));
+</pre><h2 id="23">Lorentz * Polarization factors</h2><pre class="codeinput">    Lorentz=(1+cos(exp_twotheta*pi()/180).^2);
+    SingXtalLorentz=sin(exp_twotheta/2*pi()/180);
+    <span class="keyword">if</span> strcmp(L_type,<span class="string">'Reynolds'</span>)
+        LP=Lorentz./ ( sin(exp_twotheta*pi()/180).*(sin(exp_twotheta/2*pi()/180)).^0.8);
+    <span class="keyword">else</span>
+        LP=Lorentz./SingXtalLorentz.*PSI;
+    <span class="keyword">end</span>
+    LP_random = Lorentz./(sin(exp_twotheta/2*pi()/180)) * 1./sin(exp_twotheta*pi()/180);
+
+    <span class="keyword">if</span> RNDPWD == 1
+        LP=LP_random;
+    <span class="keyword">end</span>
+</pre><h2 id="24">Divergence slit</h2><pre class="codeinput">    <span class="keyword">if</span> Div_slit&gt;0
+        DIV=Sample_length/(Gonio_radius*Div_slit*pi()/180).*sin(exp_twotheta./2*pi()/180);
+        DIV(DIV&gt;1)=1;
+    <span class="keyword">else</span>
+        DIV=[sin(exp_twotheta/2*pi()/180)];
+    <span class="keyword">end</span>
+</pre><h2 id="25">Surface roughness</h2><pre class="codeinput">    SR=0.5*(1+(sin((exp_twotheta/2-roughness)*pi()/180)./sin((exp_twotheta/2+roughness)*pi()/180)));
+
+    <span class="keyword">if</span> mode==1
+        intensity=SR.*DIV.*LP.*intensity;
+        intensity=intensity-min(intensity);
+        intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
+    <span class="keyword">else</span>
+        intensity=intensity.*(1+cos(exp_twotheta*pi/180).^2)./(8*sin(exp_twotheta*pi/180/2).^2.*cos(exp_twotheta*pi/180/2));
+        <span class="comment">%     intensity=real(intensity/max(intensity));</span>
+        <span class="comment">%    intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));</span>
+    <span class="keyword">end</span>
+</pre><h2 id="26">Plot the results</h2><pre class="codeinput">    hold <span class="string">on</span>;
+    plot(exp_twotheta,intensity,<span class="string">'b'</span>);
+
+    <span class="comment">%     if i==1</span>
+    <span class="comment">%         tot_intensity=intensity;</span>
+    <span class="comment">%     elseif i==10</span>
+    <span class="comment">%         tot_intensity=intensity;</span>
+    <span class="comment">%     else</span>
+    <span class="comment">%         size('tot_intensity')</span>
+    <span class="comment">%         size('intensity')</span>
+    <span class="comment">%         tot_intensity=tot_intensity+intensity*exp(-i/4);</span>
+    <span class="comment">%     end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="comment">% intensity=tot_intensity;</span>
+<span class="comment">%</span>
+<span class="comment">% plot(exp_twotheta,intensity,'k');</span>
+
+<span class="comment">% plot(exp_twotheta,intensity+(rand(1,length(intensity))-.5)/100,'k');</span>
+<span class="comment">% text(locs+.02,pks,num2str((1:numel(pks))'));</span>
+[pks,locs]=findpeaks(intensity,exp_twotheta);
+<span class="comment">% stem(locs,-.05*ones(numel(locs),1),'Color','black','MarkerEdgeColor','none');</span>
+stem(two_theta_disc(two_theta_disc&lt;exp_twotheta(end)),-.05*ones(numel(two_theta_disc(two_theta_disc&lt;exp_twotheta(end))),1),<span class="string">'Color'</span>,<span class="string">'black'</span>,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>);
+<span class="comment">%</span>
+ind_diff=[1 find(diff(two_theta_disc(two_theta_disc&lt;exp_twotheta(end)+5)))];
+<span class="keyword">if</span> length(ind_diff) &lt; 20
+    <span class="keyword">for</span> i=2:length(ind_diff)
+        <span class="comment">%     temp_ind_matrix=hkl(ind_diff(i):ind_diff(i),:);</span>
+        <span class="comment">%     [temp_max,temp_max_ind]=max(sum(temp_ind_matrix,2));</span>
+        <span class="comment">%     ind_diff(i)</span>
+        <span class="comment">%     temp_max_ind</span>
+        Miller_index=num2str(hkl(ind_diff(i),:));
+        text(two_theta_disc(ind_diff(i))-1.2,-.08,Miller_index(~isspace(Miller_index)));
+        ind_peaks=find(ismember(exp_twotheta,locs));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+xlim([0 max(exp_twotheta)])
+<span class="keyword">try</span>
+    ylim([-.2 max(intensity)])
+<span class="keyword">catch</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% xrd_sc_atom.m
+% * This experimental function calculates theoretical XRD patterns from a 
+% .pdb|.gro etc. and differs from xrd_atom in that it tries to implement 
+% the supercell concept by Ufer, 2008. Does it work?
+% * The script was heavily inpired by MOF-FIT:
+% * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [twotheta,intensity] = xrd_atom(filename)
+% # [twotheta,intensity] = xrd_atom(atom,Box_dim))
+
+function [twotheta,intensity] = xrd_sc_atom(varargin)
+
+%% Various settings
+mode=1; % Activate sigma_star, DIV, surface roughness
+FWHM=.8; % Specify the full width at half maximum of your choice
+num_hkl=10;
+lambda=1.54187; % Ångstrom
+anglestep=0.02; % The incremental twotheta angle step
+exp_twotheta=2:anglestep:70; % The twotheta range of interest
+Bfactor=2; % Debye-Waller factor Ångstrom
+Lorentzian_factor=1; % Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
+Sample_length = 4; % cm
+Gonio_radius = 24; % cm
+Div_slit = .1; % Divergence slit setting, 0 for automatic
+roughness = 0; % Surface roughness
+% misalignment=0.0; % Not yet implemented
+% alfa_strain = 0; % Not yet implemented
+sigma_star=45; % Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite
+RNDPWD = 0; % Random powder
+% mu_star=45; % Not yet implemented
+L_type='normal'; % Lorent polarization type, else 'Reynolds';
+S1=2.3;S2=2.3; % Primary and secondary Soller slit , in deg
+
+%% Fetch either a .pdb|.gro file or use an atom struct with its Box_dim
+if nargin==1
+    filename=varargin{1};
+    atom=import_atom(filename);
+else
+    atom=varargin{1};
+    Box_dim=varargin{2};
+end
+%% Import the structure into an atom struct
+atom=wrap_atom(atom,Box_dim);
+% atom=replicate_atom(atom,Box_dim,[4 4 4]); % If we want to replicate the struct
+%%
+frac=orto_atom(atom,Box_dim);
+% frac = round_atom(frac,Box_dim,3,'orto');
+frac=element_atom(frac);
+atom_type=[frac.type];% atom_type(2:length(atom_type));
+x=[frac.xfrac]';y=[frac.yfrac]';z=[frac.zfrac]';
+if ~isfield(frac,'occupancy')
+    [frac.occupancy]=deal(1);
+end
+
+occupancy=[frac.occupancy]';
+
+PROPcycle=1;tot_intensity=[];
+for i=num_hkl
+    %% Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax <= h <= hmax; -kmax<= k <= kmax; -lmax <= l <= lmax
+    hmax=num_hkl;
+    kmax=num_hkl;
+    lmax=num_hkl;
+    %% Enter the degree (number greater than or equal to 0) and direction of preferential orientation
+    pref=1;
+    preferred_h=0;
+    preferred_k=0;
+    preferred_l=1;
+    
+    %% Set the unit cell parameters
+    %     if size(Box_dim,2) == 9
+    %         lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+    %         xy=Box_dim(6);    xz=Box_dim(8);    yz=Box_dim(9);
+    %     elseif size(Box_dim,2) == 3
+    %         lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+    %         xy=0;    xz=0;    yz=0;
+    %     end
+    
+    if size(Box_dim,2) == 9
+        lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3)*i;
+        xy=Box_dim(6);    xz=Box_dim(8)*i;  yz=Box_dim(9)*i;
+    elseif size(Box_dim,2) == 3
+        lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3)*i;
+        xy=0;    xz=0;    yz=0;
+    end
+    
+    x=[frac.xfrac]'./i;y=[frac.yfrac]'./i;z=[frac.zfrac]'./i;
+    
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    
+    %% Converting to radians
+    %%%%% From MOF-FIT %%%%%%
+    alfa_rad=alfa*pi/180;
+    beta_rad=beta*pi/180;
+    gamma_rad=gamma*pi/180;
+    %% Setting up the different h,k,l values
+    l_values_temp=repmat(-1*lmax:lmax,1,(2*kmax+1)*(2*hmax+1));
+    k_repeat_unit=repmat(-1*kmax:kmax,(2*lmax+1),1);
+    k_values_temp=repmat(reshape(k_repeat_unit,1,(2*lmax+1)*(2*kmax+1)),1,(2*hmax+1));
+    h_values_temp=reshape(repmat(-1*hmax:hmax,(2*kmax+1)*(2*lmax+1),1),1,(2*hmax+1)*(2*kmax+1)*(2*lmax+1));
+    
+    h_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+    k_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+    l_values_temp(hmax*(2*kmax+1)*(2*lmax+1)+kmax*(2*lmax+1)+lmax+1)=[];
+    
+    h=h_values_temp;
+    k=k_values_temp;
+    l=l_values_temp;
+    assignin('caller','l',l);
+    ind_hk0=find(h==0&k==0);
+    ind_l0=setdiff(1:numel(l),ind_hk0);
+%     l(ind_l0)=l(ind_l0)*0;
+    l(ind_hk0)=l(ind_hk0)*num_hkl;
+%     assignin('caller','lsc',l);
+%     h=zeros(1,numel(h));
+%     k=zeros(1,numel(k));
+%     assignin('caller','supercell_ind',supercell_ind);
+%     assignin('caller','h',h);
+%     assignin('caller','k',k);
+   
+    hkl=[h' k' l'];
+    
+    %     assignin('caller','hkl1',hkl);
+    %% Now we have all the h,k,l values with 0,0,0 taken out
+    %% Determine the twotheta values for each h,k,l
+    V_cell=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
+    one_over_dhkl=1/V_cell.*...
+        (h.^2*b^2*c^2*sin(alfa_rad)^2+...
+        k.^2*a^2*c^2*sin(beta_rad)^2+...
+        l.^2*a^2*b^2*sin(gamma_rad)^2+...
+        2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+...
+        2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+...
+        2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
+    one_over_dhkl=real(one_over_dhkl);
+    %%%%% End MOF-FIT %%%%%%
+    %      assignin('caller','one_over_dhkl1',one_over_dhkl);
+    %% Order the hkl after decreasing d-spacings and increasing two_theta
+    d_hkl=1./one_over_dhkl;
+    twotheta_rad=2.*asin(one_over_dhkl*lambda/2);
+    [d_hkl,hkl_order]=sort(d_hkl,'ascend');
+    twotheta_rad=twotheta_rad(hkl_order);
+    hkl=hkl(hkl_order,:);
+    assignin('caller','hkl',hkl);
+    assignin('caller','d_hkl',d_hkl);
+    h=h(hkl_order);
+    k=k(hkl_order);
+    l=l(hkl_order);
+%     h=zeros(1,numel(h));
+%     k=zeros(1,numel(k));
+%     assignin('caller','supercell_ind',supercell_ind);
+%      assignin('caller','h',h);
+%      assignin('caller','k',k);
+    %     h=hkl(:,1);
+    %     k=hkl(:,2);
+    %     l=hkl(:,3);    
+    %% Calculate the corresponding discrete twotheta in degrees
+    two_theta_disc=real(180*twotheta_rad/pi);
+    
+    %% Calculate the structure factor for each reflection
+    % Can we speed this up by fetching the scattering factor only once for each atom type?
+    n=1;
+    structure_factor=0;
+    while (n<=length(atom_type))
+        scattering_factor = atomic_scattering_factors(atom_type(n),lambda,two_theta_disc,Bfactor);
+%         structure_factor=structure_factor+scattering_factor.*occupancy(n).*exp(2*pi*1i.*(h*x(n)+k*y(n)+l*z(n)));
+        structure_factor=structure_factor+scattering_factor.*occupancy(n).*exp(2*pi*1i.*(l*z(n)));
+
+        n=n+1;
+    end
+    
+    %% Square each term in the structure factor vector
+    F_squared=structure_factor.*conj(structure_factor);
+    
+    %% Correction for preferred orientation angle between h,k,l and preferrential orientation direction
+    theta_pref_orient=acos((h*preferred_h + k*preferred_k + l*preferred_l)./((h.^2+k.^2+l.^2).^0.5*(preferred_h^2+preferred_k^2+preferred_l^2)^0.5));
+    if theta_pref_orient>pi/2
+        theta_pref_orient=pi-theta_pref_orient;
+    end
+    F_squared=F_squared.*exp(pref*cos(2*theta_pref_orient));
+    
+    twotheta=real(180*twotheta_rad/pi);
+    %% Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction
+    % Gaussian part
+    n=1;gauss_component=0;c_=FWHM/(2*(2*log(2))^0.5);
+    while(n<=length(twotheta))
+        temp_gauss=F_squared(n).*exp(-(exp_twotheta-twotheta(n)).^2/(2*c_^2));
+        gauss_component=gauss_component+temp_gauss;
+        n=n+1;
+    end
+    gauss_part=gauss_component/max(gauss_component);
+    % Lorentzian part
+    n=1;lorentz_component=0;
+    while(n<length(twotheta))
+        temp_lorentz=F_squared(n)./((exp_twotheta-twotheta(n)).^2+(0.5*FWHM)^2);
+        lorentz_component=lorentz_component+temp_lorentz;
+        n=n+1;
+    end
+    lorentz_part=lorentz_component/max(lorentz_component);
+    % Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function
+    intensity=Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part;
+    
+    %% Lorentz factor
+    S_bar=((S1/2)^2+(S2/2)^2)^.5;
+    Q=S_bar./(2*2^0.5*sin(exp_twotheta/2*pi()/180)*sigma_star);
+    PSI=erf(Q)*(2*pi())^.5/(2*sigma_star*S_bar)-2*sin(exp_twotheta/2*pi()/180)/S_bar^2.*(1-exp(-Q.^2));
+    
+    %% Lorentz * Polarization factors
+    Lorentz=(1+cos(exp_twotheta*pi()/180).^2);
+    SingXtalLorentz=sin(exp_twotheta/2*pi()/180);
+    if strcmp(L_type,'Reynolds')
+        LP=Lorentz./ ( sin(exp_twotheta*pi()/180).*(sin(exp_twotheta/2*pi()/180)).^0.8);
+    else
+        LP=Lorentz./SingXtalLorentz.*PSI;
+    end
+    LP_random = Lorentz./(sin(exp_twotheta/2*pi()/180)) * 1./sin(exp_twotheta*pi()/180);
+    
+    if RNDPWD == 1
+        LP=LP_random;
+    end
+    
+    %% Divergence slit
+    if Div_slit>0
+        DIV=Sample_length/(Gonio_radius*Div_slit*pi()/180).*sin(exp_twotheta./2*pi()/180);
+        DIV(DIV>1)=1;
+    else
+        DIV=[sin(exp_twotheta/2*pi()/180)];
+    end
+    %% Surface roughness
+    SR=0.5*(1+(sin((exp_twotheta/2-roughness)*pi()/180)./sin((exp_twotheta/2+roughness)*pi()/180)));
+    
+    if mode==1
+        intensity=SR.*DIV.*LP.*intensity;
+        intensity=intensity-min(intensity);
+        intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
+    else
+        intensity=intensity.*(1+cos(exp_twotheta*pi/180).^2)./(8*sin(exp_twotheta*pi/180/2).^2.*cos(exp_twotheta*pi/180/2));
+        %     intensity=real(intensity/max(intensity));
+        %    intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
+    end
+    
+    %% Plot the results
+    hold on;
+    plot(exp_twotheta,intensity,'b');
+    
+    %     if i==1
+    %         tot_intensity=intensity;
+    %     elseif i==10
+    %         tot_intensity=intensity;
+    %     else
+    %         size('tot_intensity')
+    %         size('intensity')
+    %         tot_intensity=tot_intensity+intensity*exp(-i/4);
+    %     end
+    
+end
+
+% intensity=tot_intensity;
+%
+% plot(exp_twotheta,intensity,'k');
+
+% plot(exp_twotheta,intensity+(rand(1,length(intensity))-.5)/100,'k');
+% text(locs+.02,pks,num2str((1:numel(pks))'));
+[pks,locs]=findpeaks(intensity,exp_twotheta);
+% stem(locs,-.05*ones(numel(locs),1),'Color','black','MarkerEdgeColor','none');
+stem(two_theta_disc(two_theta_disc<exp_twotheta(end)),-.05*ones(numel(two_theta_disc(two_theta_disc<exp_twotheta(end))),1),'Color','black','MarkerEdgeColor','none');
+%
+ind_diff=[1 find(diff(two_theta_disc(two_theta_disc<exp_twotheta(end)+5)))];
+if length(ind_diff) < 20
+    for i=2:length(ind_diff)
+        %     temp_ind_matrix=hkl(ind_diff(i):ind_diff(i),:);
+        %     [temp_max,temp_max_ind]=max(sum(temp_ind_matrix,2));
+        %     ind_diff(i)
+        %     temp_max_ind
+        Miller_index=num2str(hkl(ind_diff(i),:));
+        text(two_theta_disc(ind_diff(i))-1.2,-.08,Miller_index(~isspace(Miller_index)));
+        ind_peaks=find(ismember(exp_twotheta,locs));
+    end
+end
+xlim([0 max(exp_twotheta)])
+try
+    ylim([-.2 max(intensity)])
+catch
+end
+
+##### SOURCE END #####
+--></body></html>

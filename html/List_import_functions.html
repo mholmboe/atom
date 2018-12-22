@@ -1,0 +1,99 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>List of import functions</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="List_import_functions.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>List of import functions</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Import of data files</a></li><li><a href="#2">Import of structure files</a></li><li><a href="#3">Import of trajectory files (these functions may depend other third party functions...)</a></li></ul></div><h2 id="1">Import of data files</h2><div><ol><li><a href="import_xvg(filename)">import_xvg(filename)</a> % This function imports a Gromacs .xvg file</li></ol></div><h2 id="2">Import of structure files</h2><div><ol><li><a href="import_atom_car(filename,varargin)">import_atom_car(filename,varargin)</a> % This function imports .car files from Hendrik Heinz INTERFACE ff distribution, and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file</li><li><a href="import_atom_gro(filename)">import_atom_gro(filename)</a> %&nbsp;This function imports .gro files into the atom struct</li><li><a href="import_atom_multiple_gro(filename,nFrames)">import_atom_multiple_gro(filename,nFrames)</a> %&nbsp;This function import multiple .gro files</li><li><a href="import_atom_pdb(filename)">import_atom_pdb(filename)</a> %&nbsp;This function imports .pdb files into the atom struct</li><li><a href="import_atom_xyz_matlab(filename)">import_atom_xyz_matlab(filename)</a> %&nbsp;This function imports an .xyz file into the atom struct</li><li><a href="import_atom_xyz(filename)">import_atom_xyz(filename)</a> % This imports an .xyz file into the atom struct</li><li><a href="import_atom(filename)">import_atom(filename)</a> %&nbsp;import_atom.m - This imports a .xyz/.gro/.pdb file and puts the data in a structure variable called atom</li><li><a href="import_xyz(filename)">import_xyz(filename)</a> % This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...</li></ol></div><h2 id="3">Import of trajectory files (these functions may depend other third party functions...)</h2><div><ol><li><a href="import_gro_traj(filename,varargin)">import_gro_traj(filename,varargin)</a> %&nbsp;This function imports an strcture and an .gro trajectory file</li><li><a href="import_pdb_traj(filename,varargin)">import_pdb_traj(filename,varargin)</a> %&nbsp;This function imports an strcture and an .pdb trajectory file.</li><li><a href="import_traj(filenameconf,filenametraj)">import_traj(filenameconf,filenametraj)</a> %&nbsp;This function imports an strcture and an dcd, trr, xtc, xyz or gro&nbsp; trajectory file.</li><li><a href="import_trr(filenameconf,filenametraj)">import_trr(filenameconf,filenametraj)</a> %&nbsp;This function imports an strcture and an trr&nbsp; trajectory file</li><li><a href="import_trrv2(filenameconf,filenametraj)">import_trrv2(filenameconf,filenametraj)</a> %&nbsp;This function imports an strcture and an trr&nbsp; trajectory file</li><li><a href="import_xtc(filenameconf,filenamextc)">import_xtc(filenameconf,filenamextc)</a> %&nbsp;import_atom_xtc.m - This imports a structure file and a xtc file</li><li><a href="import_xtcv2(filenameconf,filenamextc)">import_xtcv2(filenameconf,filenamextc)</a> %&nbsp;import_atom_xtc.m - This imports a structure file and a xtc file</li><li><a href="import_atom_xtc_v2(filenameconf,filenamextc)">import_atom_xtc_v2(filenameconf,filenamextc)</a> % This function imports a structure file and a xtc file</li><li><a href="import_atom_xtc(filenameconf,filenamextc)">import_atom_xtc(filenameconf,filenamextc)</a> % This function imports a structure file and a xtc file</li><li><a href="import_xyz_traj(filenametraj)">import_xyz_traj(filenametraj)</a> %&nbsp;import_xyz_traj.m - This imports an strcture and an .xyz trajectory file.</li></ol></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% List of import functions
+
+%% Import of data files
+% # <import_xvg(filename)> % This function imports a Gromacs .xvg file
+
+%% Import of structure files
+% # <import_atom_car(filename,varargin)> % This function imports .car files from Hendrik Heinz INTERFACE ff distribution, and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file
+% # <import_atom_gro(filename)> % This function imports .gro files into the atom struct
+% # <import_atom_multiple_gro(filename,nFrames)> % This function import multiple .gro files
+% # <import_atom_pdb(filename)> % This function imports .pdb files into the atom struct
+% # <import_atom_xyz_matlab(filename)> % This function imports an .xyz file into the atom struct
+% # <import_atom_xyz(filename)> % This imports an .xyz file into the atom struct
+% # <import_atom(filename)> % import_atom.m - This imports a .xyz/.gro/.pdb file and puts the data in a structure variable called atom
+% # <import_xyz(filename)> % This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...
+
+%% Import of trajectory files (these functions may depend other third party functions...)
+% # <import_gro_traj(filename,varargin)> % This function imports an strcture and an .gro trajectory file
+% # <import_pdb_traj(filename,varargin)> % This function imports an strcture and an .pdb trajectory file.
+% # <import_traj(filenameconf,filenametraj)> % This function imports an strcture and an dcd, trr, xtc, xyz or gro  trajectory file.
+% # <import_trr(filenameconf,filenametraj)> % This function imports an strcture and an trr  trajectory file
+% # <import_trrv2(filenameconf,filenametraj)> % This function imports an strcture and an trr  trajectory file
+% # <import_xtc(filenameconf,filenamextc)> % import_atom_xtc.m - This imports a structure file and a xtc file
+% # <import_xtcv2(filenameconf,filenamextc)> % import_atom_xtc.m - This imports a structure file and a xtc file
+% # <import_atom_xtc_v2(filenameconf,filenamextc)> % This function imports a structure file and a xtc file
+% # <import_atom_xtc(filenameconf,filenamextc)> % This function imports a structure file and a xtc file
+% # <import_xyz_traj(filenametraj)> % import_xyz_traj.m - This imports an strcture and an .xyz trajectory file.
+
+##### SOURCE END #####
+--></body></html>

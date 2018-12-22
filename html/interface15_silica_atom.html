@@ -1,0 +1,244 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>interface15_silica_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="interface15_silica_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>interface15_silica_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the interface15 ff atom types for Silica made up by me...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = interface15_silica_atom(atom,Box_dim,1.1,1.8)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = interface15_silica_atom(atom,Box_dim,varargin)
+
+<span class="keyword">if</span> nargin &gt; 2
+    rmin=cell2mat(varargin(1));
+    rlarge=cell2mat(varargin(2));
+<span class="keyword">else</span>
+    rmin=1.1; <span class="comment">% Maximum allowed H-O bond distance</span>
+    rlarge=2.1; <span class="comment">% Maximum allowed M-O bond distance</span>
+<span class="keyword">end</span>
+
+atom = element_atom(atom);
+[atom.element] = atom.type;
+[atom.molid]=deal(1);
+
+atom=bond_angle_atom(atom,Box_dim,rmin,rlarge,<span class="string">'more'</span>); <span class="comment">% Scan all bonds and angles</span>
+
+<span class="keyword">for</span> i=1:size(atom,2)
+    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'H'</span>,1)
+        [atom(i).type]=deal({<span class="string">'H'</span>});
+        [atom(i).fftype]=deal({<span class="string">'HOY'</span>});
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:size(atom,2)
+    i;
+    Neighbours=sort([atom(i).neigh.type])';
+    Neighbours=strcat(Neighbours{:});
+    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1)
+        <span class="keyword">if</span> contains(Neighbours,<span class="string">'SiSi'</span>)
+            [atom(i).type]=deal({<span class="string">'Ob'</span>});
+            [atom(i).fftype]=deal({<span class="string">'OC23'</span>});
+        <span class="keyword">elseif</span> contains(Neighbours,<span class="string">'HSi'</span>)
+            [atom(i).type]=deal({<span class="string">'Osih'</span>});
+            [atom(i).fftype]=deal({<span class="string">'OC24'</span>});
+        <span class="keyword">elseif</span> strncmpi(Neighbours,<span class="string">'Si'</span>,2)
+            [atom(i).type]=deal({<span class="string">'Osi'</span>});
+            [atom(i).fftype]=deal({<span class="string">'OC25'</span>});
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+atom=bond_angle_atom(atom,Box_dim,rmin,rlarge,<span class="string">'more'</span>); <span class="comment">% Scan all bonds and angles</span>
+
+<span class="keyword">for</span> i=1:size(atom,2)
+    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'Si'</span>,1)
+        Neighbours=sort([atom(i).neigh.type])';
+        Neighbours=strcat(Neighbours{:});
+        [atom(i).type]=deal({<span class="string">'Si'</span>});
+        [atom(i).fftype]=deal({<span class="string">'SC4'</span>});
+        <span class="keyword">if</span> contains(Neighbours,<span class="string">'Osi'</span>)
+            [atom(i).type]=deal({<span class="string">'Si'</span>});
+            [atom(i).fftype]=deal({<span class="string">'SC5'</span>});
+        <span class="keyword">end</span>
+        Neigh_ind=[atom(i).neigh.index];
+        Second_neighbours=0;
+        <span class="keyword">for</span> nn=1:numel(Neigh_ind)
+            Second_neighbours=Second_neighbours+length([atom(Neigh_ind(nn)).neigh.index]);
+        <span class="keyword">end</span>
+        <span class="comment">%         if Second_neighbours==8</span>
+        <span class="comment">%             atom(i).fftype={'SC4'};</span>
+        <span class="comment">%             atom(i).type={'Si'};</span>
+        <span class="comment">%         elseif Second_neighbours==7</span>
+        <span class="comment">%             atom(i).fftype={'SC5'};</span>
+        <span class="comment">%             atom(i).type={'Si'};</span>
+        <span class="comment">%         else</span>
+        <span class="keyword">if</span> Second_neighbours &lt; 7
+            atom(i).fftype={<span class="string">'SC5'</span>};
+            atom(i).type={<span class="string">'Si'</span>};
+            disp(<span class="string">'Si has more than one undercoordinated oxygen neighbours'</span>)
+            Second_neighbours
+            i
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+atom = check_interface15_charge(atom,<span class="string">'SILICA'</span>);
+
+composition_atom(atom);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% interface15_silica_atom.m
+% * This function tries to assign all atoms according to the interface15 ff
+% atom types for Silica made up by me...
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = interface15_silica_atom(atom,Box_dim,1.1,1.8)
+
+
+function atom = interface15_silica_atom(atom,Box_dim,varargin)
+
+if nargin > 2
+    rmin=cell2mat(varargin(1));
+    rlarge=cell2mat(varargin(2));
+else
+    rmin=1.1; % Maximum allowed H-O bond distance
+    rlarge=2.1; % Maximum allowed M-O bond distance
+end
+
+atom = element_atom(atom);
+[atom.element] = atom.type;
+[atom.molid]=deal(1);
+
+atom=bond_angle_atom(atom,Box_dim,rmin,rlarge,'more'); % Scan all bonds and angles
+
+for i=1:size(atom,2)
+    if strncmpi([atom(i).type],'H',1)
+        [atom(i).type]=deal({'H'});
+        [atom(i).fftype]=deal({'HOY'});
+    end
+end
+
+for i=1:size(atom,2)
+    i;
+    Neighbours=sort([atom(i).neigh.type])';
+    Neighbours=strcat(Neighbours{:});
+    if strncmpi([atom(i).type],'O',1)
+        if contains(Neighbours,'SiSi')
+            [atom(i).type]=deal({'Ob'});
+            [atom(i).fftype]=deal({'OC23'});
+        elseif contains(Neighbours,'HSi')
+            [atom(i).type]=deal({'Osih'});
+            [atom(i).fftype]=deal({'OC24'});
+        elseif strncmpi(Neighbours,'Si',2)
+            [atom(i).type]=deal({'Osi'});
+            [atom(i).fftype]=deal({'OC25'});
+        end
+    end
+end
+
+atom=bond_angle_atom(atom,Box_dim,rmin,rlarge,'more'); % Scan all bonds and angles
+
+for i=1:size(atom,2)
+    if strncmpi([atom(i).type],'Si',1)
+        Neighbours=sort([atom(i).neigh.type])';
+        Neighbours=strcat(Neighbours{:});
+        [atom(i).type]=deal({'Si'});
+        [atom(i).fftype]=deal({'SC4'});
+        if contains(Neighbours,'Osi')
+            [atom(i).type]=deal({'Si'});
+            [atom(i).fftype]=deal({'SC5'});
+        end
+        Neigh_ind=[atom(i).neigh.index];
+        Second_neighbours=0;
+        for nn=1:numel(Neigh_ind)
+            Second_neighbours=Second_neighbours+length([atom(Neigh_ind(nn)).neigh.index]);
+        end
+        %         if Second_neighbours==8
+        %             atom(i).fftype={'SC4'};
+        %             atom(i).type={'Si'};
+        %         elseif Second_neighbours==7
+        %             atom(i).fftype={'SC5'};
+        %             atom(i).type={'Si'};
+        %         else
+        if Second_neighbours < 7
+            atom(i).fftype={'SC5'};
+            atom(i).type={'Si'};
+            disp('Si has more than one undercoordinated oxygen neighbours')
+            Second_neighbours
+            i
+        end
+    end
+end
+
+atom = check_interface15_charge(atom,'SILICA');
+
+composition_atom(atom);
+
+
+##### SOURCE END #####
+--></body></html>

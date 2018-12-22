@@ -1,0 +1,523 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>solvate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="solvate_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>solvate_atom.m</h1><!--introduction--><div><ul><li>This function generates a certain region defined by <a href="limits">limits</a> with a</li><li>solvent structure of density <a href="density">density</a>, or a solvent shell with</li><li>thickness shell10|15|20|25|30 &Aring;ngstr&ouml;m around the any given solute</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Version</a></li><li><a href="#4">Contact</a></li><li><a href="#5">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>[limits] is a 1x3 or 1x6 volume variable</li><li>density (number) is the density</li><li>r is a number and the minimum distance between solvent-solute particles.</li><li>maxsol (number) maxsol is the max number of solvent molecules, or a</li><li>string 'maxsol' (allowing maximal solvation), or a string like shell10|15|20|25|30</li><li>indicating a solvatin shell around the solute.</li><li>solute_atom is the existing atom struct which needs solvation</li><li>Optional string can be the desired water model, like 'SPC' or 'TIP4P', or with 'custom' be used to solvate with a custom structure, like a ethanol slab</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>import_atom_gro</li><li>scale_atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix</li><li>cell_list_distance_matrix</li></ul></div><h2 id="3">Version</h2><p>2.0</p><h2 id="4">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="5">Examples</h2><div><ul><li>SOL = solvate_atom(limits,density,r,maxsol)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'maxsol',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'shell15',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct</li></ul></div><pre class="codeinput"><span class="keyword">function</span> SOL = solvate_atom(limits,density,r,maxsol,varargin)
+
+<span class="comment">% Solvent shell thickness</span>
+<span class="keyword">if</span> strcmpi(maxsol,<span class="string">'shell10'</span>)
+    shellthickness=10;
+<span class="keyword">elseif</span> strcmpi(maxsol,<span class="string">'shell15'</span>)
+    shellthickness=15;
+<span class="keyword">elseif</span> strcmpi(maxsol,<span class="string">'shell20'</span>)
+    shellthickness=20;
+<span class="keyword">elseif</span> strcmpi(maxsol,<span class="string">'shell25'</span>)
+    shellthickness=25;
+<span class="keyword">elseif</span> strcmpi(maxsol,<span class="string">'shell30'</span>)
+    shellthickness=30;
+<span class="keyword">elseif</span> strncmpi(maxsol,<span class="string">'shell'</span>,5)
+    shellthickness=10;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(limits)==1
+    limits(4:6)=limits(1);
+    limits(1:3)=0;
+    Lx=limits(4);
+    Ly=limits(5);
+    Lz=limits(6);
+<span class="keyword">elseif</span> numel(limits)==3
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
+<span class="keyword">elseif</span> numel(limits)&gt;3
+    Lx=limits(4)-limits(1);
+    Ly=limits(5)-limits(2);
+    Lz=limits(6)-limits(3);
+<span class="keyword">end</span>
+
+<span class="comment">% Old way of doing it...</span>
+<span class="comment">% SOL=import_atom_gro(strcat('spc864_',num2str(density,'%3.2f'),'.gro')); % I was fastest... [2 2 1]*216.gro</span>
+
+<span class="keyword">if</span> nargin == 4
+    solute_atom=[];
+<span class="keyword">else</span>
+    solute_atom=varargin{1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;5
+    watermodel=varargin(2);
+    <span class="keyword">if</span> iscell(watermodel)
+        assignin(<span class="string">'caller'</span>,<span class="string">'watermodel'</span>,watermodel)
+        watermodel=char(watermodel{1});
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> strncmpi(watermodel,<span class="string">'spc_ice'</span>,7)
+        SOL=import_atom_gro(<span class="string">'96spc_hex_ice_h.gro'</span>);
+        pause(1)
+        disp(<span class="string">'Adding hexagonal spc ice!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'tip4p_ice'</span>,9)
+        SOL=import_atom_gro(<span class="string">'96tip4p_hex_ice_h.gro'</span>);
+        pause(1)
+        disp(<span class="string">'Adding hexagonal tip4p ice!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'spce'</span>,4)
+        SOL=import_atom_gro(<span class="string">'864_spce.gro'</span>);
+        disp(<span class="string">'Adding spc/e!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'spc'</span>,3)
+        SOL=import_atom_gro(<span class="string">'864_spc.gro'</span>);
+        disp(<span class="string">'Adding spc!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'tip3p'</span>,5)
+        SOL=import_atom_gro(<span class="string">'864_tip3p.gro'</span>);
+        disp(<span class="string">'Adding tip3p!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'tip4p'</span>,5)
+        SOL=import_atom_gro(<span class="string">'864_tip4p.gro'</span>);
+        disp(<span class="string">'Adding tip4p!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'tip5p'</span>,5)
+        SOL=import_atom_gro(<span class="string">'864_tip5p.gro'</span>);
+        disp(<span class="string">'Adding tip5p!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'swm4'</span>,4)
+        SOL=import_atom_gro(<span class="string">'864_swm4_ndp.gro'</span>);
+        disp(<span class="string">'Adding swm4_ndp!!!'</span>)
+    <span class="keyword">elseif</span> strncmpi(watermodel,<span class="string">'custom'</span>,5)
+        disp(<span class="string">'You use your own solvent, you brave'</span>)
+        SOL=varargin{3};
+        <span class="keyword">if</span> nargin&gt;7
+            Box_dim=varargin{4};
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    SOL=import_atom_gro(<span class="string">'864_spc.gro'</span>);
+    disp(<span class="string">'Adding spc / spc/e!!!'</span>)
+<span class="keyword">end</span>
+
+atomsperSOL=sum([SOL.molid]==1);
+
+SOL=scale_atom(SOL,Box_dim,[1 1 1]./density,<span class="string">'all'</span>)
+
+nx=ceil(Lx/Box_dim(1))
+ny=ceil(Ly/Box_dim(2))
+nz=ceil(Lz/Box_dim(3))
+SOL=replicate_atom(SOL,Box_dim,[nx ny nz],<span class="string">'xzy'</span>);
+disp(<span class="string">'Replicated n times'</span>);
+nx*ny*nz;
+
+<span class="keyword">if</span> (limits(1)+limits(2)+limits(3)) ~= 0
+    disp(<span class="string">'Translating the solvent box'</span>);
+    SOL=translate_atom(SOL,[limits(1) limits(2) limits(3)],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+<span class="comment">% assignin('caller','SOL',SOL);</span>
+<span class="comment">% pause</span>
+disp(<span class="string">'nSOL before merge'</span>);
+size(SOL,2)/atomsperSOL;
+
+<span class="comment">% limits</span>
+<span class="comment">% min([SOL.x])</span>
+<span class="comment">% min([SOL.y])</span>
+<span class="comment">% min([SOL.z])</span>
+<span class="comment">% max([SOL.x])</span>
+<span class="comment">% max([SOL.y])</span>
+<span class="comment">% max([SOL.z])</span>
+<span class="comment">% pause</span>
+<span class="comment">% vmd([solute_atom SOL],limits(4:6))</span>
+
+<span class="keyword">if</span> size(solute_atom,2) &gt; 0
+    <span class="keyword">if</span> size(SOL,2) &gt; 10000 || size(solute_atom,2) &gt; 10000
+        nSOL_block=size(SOL,2)/(nx*ny*nz);
+        SOL_count=1;SOL_merged=[];count=1;
+        <span class="keyword">while</span> SOL_count&lt; size(SOL,2)
+            SOL_block= SOL(SOL_count:SOL_count+nSOL_block-1);
+            SOL_block = merge_atom(solute_atom,limits(4:6)-.4,SOL_block,<span class="string">'molid'</span>,<span class="string">'Hw'</span>,[r-.4 r]); <span class="comment">% Can shell be implemented here instead?</span>
+            SOL_merged = [SOL_merged SOL_block];
+            SOL_count=SOL_count+nSOL_block;
+            disp(<span class="string">'Number of solvent molecules...'</span>);
+            count=count+1;
+            size(SOL_merged,2)/atomsperSOL
+        <span class="keyword">end</span>
+        SOL=SOL_merged;
+    <span class="keyword">else</span>
+        SOL = merge_atom(solute_atom,limits(4:6)-.4,SOL,<span class="string">'molid'</span>,<span class="string">'Hw'</span>,[r-.4 r]); <span class="comment">% Can shell be implemented here instead?</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    SOL=slice_atom(SOL,[limits(1) limits(2) limits(3) limits(4:6)-.4],0);
+<span class="keyword">end</span>
+
+SOL=update_atom(SOL);
+
+<span class="comment">% Randomize the order of the SOL molecules, and check for 'max' or 'shell' option</span>
+nSOL=size(SOL,2);
+<span class="keyword">if</span> iscellstr({maxsol}) == 1
+    <span class="keyword">if</span> strncmpi(maxsol,<span class="string">'max'</span>,3)
+        maxsol=nSOL/atomsperSOL;
+    <span class="keyword">elseif</span> strncmpi(maxsol,<span class="string">'shell'</span>,5)
+        disp(<span class="string">'Will solvate a shell around the solute molecule'</span>)
+        nSolute=size(solute_atom,2);
+        <span class="keyword">if</span> (size(SOL,2)+size(solute_atom,2))&gt;10000
+            dist_matrix = cell_list_dist_matrix_atom(update_atom({solute_atom SOL}),Box_dim);
+            dist_matrix(dist_matrix==0)=2*shellthickness; <span class="comment">% Set some high dummy value</span>
+        <span class="keyword">else</span>
+            dist_matrix = dist_matrix_atom(update_atom({solute_atom SOL}),Box_dim);
+        <span class="keyword">end</span>
+        ind=[];
+        <span class="keyword">for</span> i=1:size(SOL,2) <span class="comment">% Vectorize this!!!</span>
+            <span class="keyword">if</span> min(dist_matrix(nSolute+i,1:nSolute))&gt;shellthickness
+                ind=[ind i];
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        molid=unique([SOL(intersect([SOL.index],ind)).molid]);
+        rm_ind = ismember([SOL.molid],molid);
+        SOL(rm_ind)=[];
+        nSOL=size(SOL,2);
+        maxsol=size(SOL,2)/atomsperSOL;
+        SOL=update_atom(SOL);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+rand_molid=randperm(nSOL/atomsperSOL);
+
+<span class="keyword">if</span> maxsol&gt;size(rand_molid,2)
+    maxsol
+    size(rand_molid,2)
+<span class="keyword">end</span>
+rand_molid=rand_molid(1:maxsol);
+
+rand_index=ismember([SOL.molid],rand_molid);
+SOL=SOL(rand_index);
+
+<span class="comment">% vmd([solute_atom SOL],limits(4:6))</span>
+
+<span class="comment">% Delete water molecules if not using the &lt;maxsol&gt; option</span>
+<span class="keyword">if</span> iscellstr({maxsol}) == 0
+    <span class="keyword">if</span> atomsperSOL*maxsol &gt; size(SOL,2)
+        disp(<span class="string">'Ooops, you asked for too much solvent...'</span>)
+        maxsol
+        disp(<span class="string">'Maximum number of solvent molecules allowed without changing the density or rmin is:'</span>)
+        size(SOL,2)/atomsperSOL
+        SOL=SOL(1:atomsperSOL*maxsol);
+    <span class="keyword">else</span>
+        <span class="comment">% Use randperm instead... ?</span>
+        SOL=SOL(1:atomsperSOL*maxsol);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+SOL=update_atom(SOL);
+
+disp(<span class="string">'nSOL after merge'</span>)
+size(SOL,2)/atomsperSOL
+
+assignin(<span class="string">'caller'</span>,<span class="string">'SOL'</span>,SOL);
+assignin(<span class="string">'caller'</span>,<span class="string">'limits'</span>,limits);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% solvate_atom.m
+% * This function generates a certain region defined by <limits> with a 
+% * solvent structure of density <density>, or a solvent shell with
+% * thickness shell10|15|20|25|30 Ångström around the any given solute
+%
+%% Function arguments
+% * [limits] is a 1x3 or 1x6 volume variable
+% * density (number) is the density
+% * r is a number and the minimum distance between solvent-solute particles.
+% * maxsol (number) maxsol is the max number of solvent molecules, or a
+% * string 'maxsol' (allowing maximal solvation), or a string like shell10|15|20|25|30
+% * indicating a solvatin shell around the solute.
+% * solute_atom is the existing atom struct which needs solvation
+% * Optional string can be the desired water model, like 'SPC' or 'TIP4P',
+% or with 'custom' be used to solvate with a custom structure, like a
+% ethanol slab
+%
+%% Dependencies
+% * import_atom_gro
+% * scale_atom
+% * replicate_atom
+% * translate_atom
+% * merge_atom
+% * slice_atom
+% * update_atom
+% * distance_matrix
+% * cell_list_distance_matrix
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% * SOL = solvate_atom(limits,density,r,maxsol)
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom)
+% * SOL = solvate_atom(limits,density,r,'maxsol',solute_atom)
+% * SOL = solvate_atom(limits,density,r,'shell15',solute_atom)
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p')
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice')
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct
+%
+function SOL = solvate_atom(limits,density,r,maxsol,varargin)
+
+% Solvent shell thickness
+if strcmpi(maxsol,'shell10')
+    shellthickness=10;
+elseif strcmpi(maxsol,'shell15')
+    shellthickness=15;
+elseif strcmpi(maxsol,'shell20')
+    shellthickness=20;
+elseif strcmpi(maxsol,'shell25')
+    shellthickness=25;
+elseif strcmpi(maxsol,'shell30')
+    shellthickness=30;
+elseif strncmpi(maxsol,'shell',5)
+    shellthickness=10;
+end
+
+if numel(limits)==1
+    limits(4:6)=limits(1);
+    limits(1:3)=0;
+    Lx=limits(4);
+    Ly=limits(5);
+    Lz=limits(6);
+elseif numel(limits)==3
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
+elseif numel(limits)>3
+    Lx=limits(4)-limits(1);
+    Ly=limits(5)-limits(2);
+    Lz=limits(6)-limits(3);
+end
+
+% Old way of doing it...
+% SOL=import_atom_gro(strcat('spc864_',num2str(density,'%3.2f'),'.gro')); % I was fastest... [2 2 1]*216.gro
+
+if nargin == 4
+    solute_atom=[];
+else
+    solute_atom=varargin{1};
+end
+
+if nargin>5
+    watermodel=varargin(2);
+    if iscell(watermodel)
+        assignin('caller','watermodel',watermodel)
+        watermodel=char(watermodel{1});
+    end
+    if strncmpi(watermodel,'spc_ice',7)
+        SOL=import_atom_gro('96spc_hex_ice_h.gro');
+        pause(1)
+        disp('Adding hexagonal spc ice!!!')
+    elseif strncmpi(watermodel,'tip4p_ice',9)
+        SOL=import_atom_gro('96tip4p_hex_ice_h.gro');
+        pause(1)
+        disp('Adding hexagonal tip4p ice!!!')
+    elseif strncmpi(watermodel,'spce',4)
+        SOL=import_atom_gro('864_spce.gro');
+        disp('Adding spc/e!!!')
+    elseif strncmpi(watermodel,'spc',3)
+        SOL=import_atom_gro('864_spc.gro');
+        disp('Adding spc!!!')
+    elseif strncmpi(watermodel,'tip3p',5)
+        SOL=import_atom_gro('864_tip3p.gro');
+        disp('Adding tip3p!!!')
+    elseif strncmpi(watermodel,'tip4p',5)
+        SOL=import_atom_gro('864_tip4p.gro');
+        disp('Adding tip4p!!!')
+    elseif strncmpi(watermodel,'tip5p',5)
+        SOL=import_atom_gro('864_tip5p.gro');
+        disp('Adding tip5p!!!')
+    elseif strncmpi(watermodel,'swm4',4)
+        SOL=import_atom_gro('864_swm4_ndp.gro');
+        disp('Adding swm4_ndp!!!')
+    elseif strncmpi(watermodel,'custom',5)
+        disp('You use your own solvent, you brave')
+        SOL=varargin{3};
+        if nargin>7
+            Box_dim=varargin{4};
+        end
+    end
+else
+    SOL=import_atom_gro('864_spc.gro');
+    disp('Adding spc / spc/e!!!')
+end
+
+atomsperSOL=sum([SOL.molid]==1);
+
+SOL=scale_atom(SOL,Box_dim,[1 1 1]./density,'all')
+
+nx=ceil(Lx/Box_dim(1))
+ny=ceil(Ly/Box_dim(2))
+nz=ceil(Lz/Box_dim(3))
+SOL=replicate_atom(SOL,Box_dim,[nx ny nz],'xzy');
+disp('Replicated n times');
+nx*ny*nz;
+
+if (limits(1)+limits(2)+limits(3)) ~= 0
+    disp('Translating the solvent box');
+    SOL=translate_atom(SOL,[limits(1) limits(2) limits(3)],'all');
+end
+% assignin('caller','SOL',SOL);
+% pause
+disp('nSOL before merge');
+size(SOL,2)/atomsperSOL;
+
+% limits
+% min([SOL.x])
+% min([SOL.y])
+% min([SOL.z])
+% max([SOL.x])
+% max([SOL.y])
+% max([SOL.z])
+% pause
+% vmd([solute_atom SOL],limits(4:6))
+
+if size(solute_atom,2) > 0
+    if size(SOL,2) > 10000 || size(solute_atom,2) > 10000
+        nSOL_block=size(SOL,2)/(nx*ny*nz);
+        SOL_count=1;SOL_merged=[];count=1;
+        while SOL_count< size(SOL,2)
+            SOL_block= SOL(SOL_count:SOL_count+nSOL_block-1);
+            SOL_block = merge_atom(solute_atom,limits(4:6)-.4,SOL_block,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
+            SOL_merged = [SOL_merged SOL_block];
+            SOL_count=SOL_count+nSOL_block;
+            disp('Number of solvent molecules...');
+            count=count+1;
+            size(SOL_merged,2)/atomsperSOL
+        end
+        SOL=SOL_merged;
+    else
+        SOL = merge_atom(solute_atom,limits(4:6)-.4,SOL,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
+    end
+else
+    SOL=slice_atom(SOL,[limits(1) limits(2) limits(3) limits(4:6)-.4],0);
+end
+
+SOL=update_atom(SOL);
+
+% Randomize the order of the SOL molecules, and check for 'max' or 'shell' option
+nSOL=size(SOL,2);
+if iscellstr({maxsol}) == 1
+    if strncmpi(maxsol,'max',3)
+        maxsol=nSOL/atomsperSOL;
+    elseif strncmpi(maxsol,'shell',5)
+        disp('Will solvate a shell around the solute molecule')
+        nSolute=size(solute_atom,2);
+        if (size(SOL,2)+size(solute_atom,2))>10000
+            dist_matrix = cell_list_dist_matrix_atom(update_atom({solute_atom SOL}),Box_dim);
+            dist_matrix(dist_matrix==0)=2*shellthickness; % Set some high dummy value
+        else
+            dist_matrix = dist_matrix_atom(update_atom({solute_atom SOL}),Box_dim);
+        end
+        ind=[];
+        for i=1:size(SOL,2) % Vectorize this!!!
+            if min(dist_matrix(nSolute+i,1:nSolute))>shellthickness
+                ind=[ind i];
+            end
+        end
+        molid=unique([SOL(intersect([SOL.index],ind)).molid]);
+        rm_ind = ismember([SOL.molid],molid);
+        SOL(rm_ind)=[];
+        nSOL=size(SOL,2);
+        maxsol=size(SOL,2)/atomsperSOL;
+        SOL=update_atom(SOL);
+    end
+end
+rand_molid=randperm(nSOL/atomsperSOL);
+
+if maxsol>size(rand_molid,2)
+    maxsol
+    size(rand_molid,2)
+end
+rand_molid=rand_molid(1:maxsol);
+
+rand_index=ismember([SOL.molid],rand_molid);
+SOL=SOL(rand_index);
+
+% vmd([solute_atom SOL],limits(4:6))
+
+% Delete water molecules if not using the <maxsol> option
+if iscellstr({maxsol}) == 0
+    if atomsperSOL*maxsol > size(SOL,2)
+        disp('Ooops, you asked for too much solvent...')
+        maxsol
+        disp('Maximum number of solvent molecules allowed without changing the density or rmin is:')
+        size(SOL,2)/atomsperSOL
+        SOL=SOL(1:atomsperSOL*maxsol);
+    else
+        % Use randperm instead... ?
+        SOL=SOL(1:atomsperSOL*maxsol);
+    end
+end
+SOL=update_atom(SOL);
+
+disp('nSOL after merge')
+size(SOL,2)/atomsperSOL
+
+assignin('caller','SOL',SOL);
+assignin('caller','limits',limits);
+##### SOURCE END #####
+--></body></html>

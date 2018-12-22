@@ -1,0 +1,956 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>change_atom</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="change_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">This script translates a certain residue</a></li><li><a href="#3">This script can be used to sort all atoms based on median z of each residue</a></li><li><a href="#4">This script is used to remove residue with resid/molids</a></li><li><a href="#5">This script is used to remove residue with atomytypes...</a></li><li><a href="#6">This script is used to solvate with SPC water, optionally remove water somewhere and then</a></li><li><a href="#7">dilute the number of h2o to a certain number</a></li><li><a href="#8">This script is used to remove residues</a></li><li><a href="#9">in the simulation box between zlo and zhi</a></li><li><a href="#10">What does this script do??</a></li><li><a href="#11">This script removes atoms below certain z</a></li><li><a href="#12">This script sets the residue length with regard to nAtoms in resname 1</a></li><li><a href="#13">This script is used to translate residues</a></li><li><a href="#14">in the simulation box</a></li><li><a href="#15">This script is used to remove all but 'Resname' from the stated</a></li><li><a href="#16">I think this script is used to remove all but 'Resname' from and moliID's from the stated conf</a></li><li><a href="#17">This script is used to move water</a></li><li><a href="#18">from somewhere in Z to somewhere else in Z</a></li><li><a href="#19">This script adds ions on top of water</a></li><li><a href="#20">in the simulation box</a></li><li><a href="#21">This script is used to translate all 'Resname' above/below certain ave_z</a></li><li><a href="#22">This script is used to remove residues from a bilayer</a></li><li><a href="#23">in the simulation box</a></li><li><a href="#24">%% This script orders to atoms with respect to z</a></li><li><a href="#25">This script is used to remove residue</a></li><li><a href="#26">from the box, ie like and inverse 'replicate' function</a></li><li><a href="#27">Do not update atom...</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>;
+format <span class="string">short</span>;
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+filename=<span class="string">'new_8x7MMT_Skipper.gro'</span>; Title=filename;
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+plot = 1; <span class="comment">% 1/0 for yes/no</span>
+writepdb  =  0; <span class="comment">% 1/0 for yes/no</span>
+writemol2 =  0; <span class="comment">% 1/0 for yes/no</span>
+writexyz  =  0; <span class="comment">% 1/0 for yes/no</span>
+writegro  =  1; <span class="comment">% 1/0 for yes/no</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="keyword">if</span> regexp(filename,<span class="string">'.pdb'</span>) &gt; 1; import_atom(filename); filename_out=regexprep(filename,<span class="string">'.pdb'</span>,<span class="string">' '</span>); disp(<span class="string">'Found .pdb file'</span>); <span class="keyword">end</span>
+<span class="keyword">if</span> regexp(filename,<span class="string">'.mol2'</span>) &gt; 1; filename_out=regexprep(filename,<span class="string">'.mol2'</span>,<span class="string">' '</span>);disp(<span class="string">'Found .mol2 file'</span>); <span class="keyword">end</span>
+<span class="keyword">if</span> regexp(filename,<span class="string">'.gro'</span>) &gt; 1; import_atom_gro(filename); filename_out=regexprep(filename,<span class="string">'.gro'</span>,<span class="string">' '</span>); disp(<span class="string">'Found .gro file'</span>); <span class="keyword">end</span>
+<span class="keyword">if</span> regexp(filename,<span class="string">'.xyz'</span>) &gt; 1; import_atom_xyz(filename); filename_out=regexprep(filename,<span class="string">'.xyz'</span>,<span class="string">' '</span>); disp(<span class="string">'Found .xyz file'</span>);
+    Box_dim = [42.210    120  37.800000	0.000000	0.000000	0.000000]; <span class="comment">% optional, [x_hi y_hi z_hi xy xz yz] in &Aring;ngstr&ouml;ms</span>
+<span class="keyword">end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+filename_out=strcat(<span class="string">'new_'</span>,filename_out);
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+atom = ave_atom_func(atom);
+<span class="comment">% atom = median_atom_func(atom);</span>
+atom = wrap_molid_func(atom,Box_dim)
+<span class="comment">% atom = unwrap_atom_func(atom,Box_dim,'z');</span>
+
+atom = atom_update_func(atom);
+<span class="comment">% atom = translate_atom_func(atom,[0 0 0],'MMT')</span>
+<span class="comment">% atom = wrap_atom_func(atom,Box_dim);</span>
+<span class="comment">% atom = center_atom_func(atom,[Box_dim(1) Box_dim(2) Box_dim(3) 0 0 0],'all','z')</span>
+<span class="comment">% atom = scale_atom_func(atom,[.64/.575 .64/.575 1],Box_dim,'all')</span>
+<span class="comment">% atom = remove_molid_func(atom,MolID)</span>
+<span class="comment">% atom = remove_residues_func(atom,'OW',0,120,'z')</span>
+<span class="comment">% atom = remove_type_func(atom,typescell)</span>
+<span class="comment">% atom = remove_resname_func(atom,{'SOL' 'NA' 'CL'});</span>
+<span class="comment">% atom = COM_atom_func(atom,Box_dim,72);</span>
+<span class="comment">% atom = translate_molid_func(atom,[0 0 Box_dim(3)/2-COM_molid(end,3)],72);</span>
+<span class="comment">% atom = ave_atom_func(atom);</span>
+<span class="comment">% atom = median_atom_func(atom);</span>
+<span class="comment">% atom = wrap_molid_func(atom,Box_dim)</span>
+<span class="comment">% atom = unwrap_atom_func(atom,Box_dim,'z');</span>
+<span class="comment">% atom = atom_update_func(atom,MolID);</span>
+<span class="comment">% atom = translate_atom_func(atom,[0 0 0],'MMT')</span>
+<span class="comment">% atom = wrap_atom_func(atom,Box_dim);</span>
+<span class="comment">% atom = center_atom_func(atom,[4.567 4.567 120 0 0 0],'all','z')</span>
+<span class="comment">% atom = scale_atom_func(atom,[.64/.575 .64/.575 1],Box_dim,'all')</span>
+<span class="comment">% atom = remove_molid_func(atom,MolID)</span>
+<span class="comment">% atom = remove_residues_func(atom,'OW',0,120,'z')</span>
+<span class="comment">% atom = remove_type_func(atom,typescell)</span>
+<span class="comment">% atom = remove_resname_func(atom,{'SOL' 'NA' 'CL'});</span>
+<span class="comment">% atom = COM_atom_func(atom,Box_dim,72);</span>
+<span class="comment">% atom = translate_molid_func(atom,[0 0 -50],2);</span>
+<span class="comment">% atom = duplicate_atom_func(atom,1); % atom,molid</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="2">This script translates a certain residue</h2><pre class="codeinput"><span class="comment">% ind_resname=find(strcmp([atom.resname],'TCHH'));</span>
+<span class="comment">% ave_atom_func(atom(ind_resname));</span>
+<span class="comment">% translate_atom_func(atom,-[[26.9567500000000,18.4087500000000,7.01150000000000]],'TCHH');</span>
+<span class="comment">% translate_atom_func(atom,[Box_dim(1)/2,Box_dim(1)/2,10],'TCHH');</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="3">This script can be used to sort all atoms based on median z of each residue</h2><p>atom_ind_lo_z=find([atom.med_z]&lt;=Box_dim(3)/2); atom_ind_hi_z=find([atom.med_z]&gt;Box_dim(3)/2); atom=atom(atom_ind_hi_z); atom=atom_update_func(atom);</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="4">This script is used to remove residue with resid/molids</h2><pre class="codeinput"><span class="comment">% atom=remove_resname_func(atom,{'SOL' 'NA' 'CL'});</span>
+
+<span class="comment">% ind_rm = setdiff(unique([atom.molid]),[1:64 219 258 293 261 198 273 122 319]);</span>
+<span class="comment">% atom = remove_molid_func(atom,ind_rm);</span>
+<span class="comment">% atom = median_atom_func(atom);</span>
+<span class="comment">% atom = unwrap_atom_func(atom,Box_dim,'xyz');</span>
+<span class="comment">% atom = translate_atom_func(atom,[0 0 Box_dim(3)*.6],'DLiPC');</span>
+<span class="comment">% atom = translate_molid_func(atom,[0 0 (160-530)],1:32);</span>
+<span class="comment">% atom = condense_atom_func(atom,Box_dim,3); % 5.290000 9.920000 18.139999 90.000000 90.000000 90.000000</span>
+<span class="comment">% atom = unwrap_atom_func(atom,Box_dim,'xyz');</span>
+<span class="comment">% atom = center_atom_func(atom,Box_dim,'DLiPC','z')</span>
+<span class="comment">% atom = remove_molid_func(atom,[2 3 4 70 71 72]);</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="5">This script is used to remove residue with atomytypes...</h2><pre class="codeinput"><span class="comment">%atom=remove_type_func(atom,{'H12S' 'H13S' 'H12Y' 'H13Y'});</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="6">This script is used to solvate with SPC water, optionally remove water somewhere and then</h2><h2 id="7">dilute the number of h2o to a certain number</h2><p>nRes1=64;nRes2=8; nH2O=30*(nRes1+nRes2); Ion1='NA';nIon1=ceil(0.15*nH2O/55.3); Ion2='CL';nIon2=ceil(0.15*nH2O/55.3);</p><p>atom=center_atom_func(atom,[Box_dim(1) Box_dim(2) 90],'DLiPC','z');write_atom_gro(atom,Box_dim,'temp'); lo_limit=Box_dim(3)/2-25; hi_limit=Box_dim(3)/2+25; str=strcat('genbox -cp',{' '},'temp',{' '},'-cs spc216.gro',{' '},'-o temp.gro &amp;&gt;/dev/null'); system(strcat(char({PATH2GMX}),char(str))); import_atom_gro('temp.gro'); atom=remove_residues_func(atom,'OW',lo_limit,hi_limit,'z'); atom=dilute_water_func(atom,nH2O); nSOL=size(find(strcmp([atom.type],'OW')),2) atom=add_ions_func(atom,'OW','z',Ion1,nIon1,Ion2,nIon2); %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</p><h2 id="8">This script is used to remove residues</h2><h2 id="9">in the simulation box between zlo and zhi</h2><p>% atomname='OW'; xlo=10;ylo=10;zlo=10; xhi=50;yhi=50;zhi=50;</p><p>nAtoms=size([atom.x],2); ind=find(strcmp([atom.type],atomname)); ind_lo=find([atom.x]&gt;xlo);ind_lo=intersect(ind_lo,ind); ind_hi=find([atom.x]&lt;xhi);ind_hi=intersect(ind_hi,ind); ind=intersect(ind_lo,ind_hi); if strcmp(atomname,'OW')     ind_HW1=ind+1;ind_HW2=ind+2;     ind=sort([ind ind_HW1 ind_HW2]); end change_ind=sort(setdiff([1:nAtoms],ind)); atom=atom(change_ind);</p><p>nAtoms=size([atom.x],2); ind=find(strcmp([atom.type],atomname)); ind_lo=find([atom.y]&gt;ylo);ind_lo=intersect(ind_lo,ind); ind_hi=find([atom.y]&lt;yhi);ind_hi=intersect(ind_hi,ind); ind=intersect(ind_lo,ind_hi); if strcmp(atomname,'OW')     ind_HW1=ind+1;ind_HW2=ind+2;     ind=sort([ind ind_HW1 ind_HW2]); end change_ind=sort(setdiff([1:nAtoms],ind)); atom=atom(change_ind);</p><p>nAtoms=size([atom.x],2); ind=find(strcmp([atom.type],atomname)); ind_lo=find([atom.z]&gt;zlo);ind_lo=intersect(ind_lo,ind); ind_hi=find([atom.z]&lt;zhi);ind_hi=intersect(ind_hi,ind); ind=intersect(ind_lo,ind_hi); if strcmp(atomname,'OW')     ind_HW1=ind+1;ind_HW2=ind+2;     ind=sort([ind ind_HW1 ind_HW2]); end change_ind=sort(setdiff([1:nAtoms],ind)); atom=atom(change_ind);</p><p>center_atom_func(atom,[10 10 10 0 0 0],'all','y'); translate_atom_func(atom,-Box_dim/2,'all')</p><p>nAtoms=size(atom,2); size(find(strcmp([atom.resname],atomname)),2); nSOL=size(find(strcmp([atom.type],'OW')),2) % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</p><h2 id="10">What does this script do??</h2><pre class="codeinput"><span class="comment">% nresname=0;j=1;</span>
+<span class="comment">% for i=1:nAtoms;</span>
+<span class="comment">%     if i == 1</span>
+<span class="comment">%         nresname=nresname+1;</span>
+<span class="comment">%         ResNameTable(j,1)=atom(i).resname;</span>
+<span class="comment">%     elseif i &gt; 1 &amp;&amp; strcmp(atom(i).resname,atom(i-1).resname)==0;</span>
+<span class="comment">%         ResNameTable(j,2)={nresname};</span>
+<span class="comment">%         j=j+1;</span>
+<span class="comment">%         ResNameTable(j,1)=atom(i).resname;</span>
+<span class="comment">%         nresname=1;</span>
+<span class="comment">%     elseif i &gt; 1</span>
+<span class="comment">%         nresname=nresname+1;</span>
+<span class="comment">%     else</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% ResNameTable(j,2)={nresname};</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="11">This script removes atoms below certain z</h2><pre class="codeinput"><span class="comment">% ind_keep=find([atom.z]&gt;25);</span>
+<span class="comment">% atom=atom(ind_keep);</span>
+<span class="comment">% ind_keep=find([atom.z]&lt;45);</span>
+<span class="comment">% atom=atom(ind_keep);</span>
+<span class="comment">% nAtoms=size(atom,2);</span>
+<span class="comment">% ind_Si=find(strncmp([atom.type],'Si',2));</span>
+<span class="comment">% z_shift=num2cell([atom.z]-mean([atom(ind_Si).z])); [atom(:).z]=deal(z_shift{:});</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="12">This script sets the residue length with regard to nAtoms in resname 1</h2><p>nAtoms=size(atom,2); natomsinresidue=length(find([atom(:).molid]==1)); for i=1:size(atom,2)     atom(i).molid=ceil(i/natomsinresidue);     %% Test this: atom(i).molid=mod(i,54)(+1?);     atom(i).index=mod(i,100000); end</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="13">This script is used to translate residues</h2><h2 id="14">in the simulation box</h2><p>for i=1:max([atom(:).index])     atom(i).molid     if atom(i).molid==129;         i     atom(i).x=atom(i).x;     atom(i).y=atom(i).y;     atom(i).z=atom(i).z-5;     end end i</p><pre class="codeinput"><span class="comment">% Box_dim=[4.28552   4.28552  11.20336]</span>
+<span class="comment">%</span>
+<span class="comment">% Residue= 'TCH'; % resname to be translated</span>
+<span class="comment">% x_ave=mean([atom.x]);</span>
+<span class="comment">% y_ave=mean([atom.y]);</span>
+<span class="comment">% z_ave=mean([atom.z]);</span>
+<span class="comment">% % x_shift=0;</span>
+<span class="comment">% % y_shift=0;</span>
+<span class="comment">% % z_shift=0;</span>
+
+<span class="comment">%x_shift=num2cell([[atom.x]-mean([atom.x]-Box_dim(1)/2)]'); [atom(:).x]=deal(x_shift{:});</span>
+<span class="comment">%x_shift=num2cell([[atom.x]-Box_dim(1)/2]'); [atom(:).x]=deal(x_shift{:});</span>
+<span class="comment">% ind_Si=find(strncmp([atom.type],'Si',2));</span>
+<span class="comment">%y_shift=num2cell([atom.y]-(mean([atom(ind_Si).y]-Box_dim(2)/2))); [atom(:).y]=deal(y_shift{:});</span>
+<span class="comment">% z_shift=num2cell([atom.z]-mean([atom(ind_Si).z])); [atom(:).z]=deal(z_shift{:});</span>
+<span class="comment">%z_shift=num2cell([[atom.z]-min([atom.z])]'); [atom(:).z]=deal(z_shift{:});</span>
+<span class="comment">%z_shift=num2cell([[atom.z]-Box_dim(3)/6]'); [atom(:).z]=deal(z_shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">% S=num2cell(1:39);</span>
+<span class="comment">% [atom(:).index]=deal(S{:});</span>
+
+<span class="comment">% i=1; Index=zeros(size(dataArray{1,1}(:,1),1),1);</span>
+<span class="comment">% while i&lt;size(Index,1)</span>
+<span class="comment">%     if strcmp(strtrim(Resname{i}),'TCH');% == 1 &amp; (Z_coord(i) &gt; Zlo) &amp; (Z_coord(i) &lt; Zhi);</span>
+<span class="comment">%         i</span>
+<span class="comment">%         dataArray{:,5}(i)=dataArray{:,5}(i)+x_shift;</span>
+<span class="comment">%         dataArray{:,6}(i)=dataArray{:,6}(i)+y_shift;</span>
+<span class="comment">%         dataArray{:,7}(i)=dataArray{:,7}(i)+z_shift;</span>
+<span class="comment">%     end</span>
+<span class="comment">%     i=i+1;</span>
+<span class="comment">% end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="15">This script is used to remove all but 'Resname' from the stated</h2><p>Resname1='DLiPC' %Resname2='TCH' %Resname3='SOL' ind1=find(strcmp([atom.resname],Resname1)); %ind2=find(strcmp([atom.resname],Resname2)); %ind3=find(strcmp([atom.resname],Resname3)); ind=[ind1]; atom=atom(ind);MolID=MolID(ind);nAtoms=size(atom,2); nAtoms=size([atom.x],2);</p><p>atom=atom_update_func(atom);</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="16">I think this script is used to remove all but 'Resname' from and moliID's from the stated conf</h2><pre class="codeinput"><span class="comment">% ind_Resname=find(strcmp([atom.resname],Resname));</span>
+<span class="comment">% ind_molid=molid=[atom(ind_Resname).molid]; molid=unique(molid);</span>
+<span class="comment">%</span>
+<span class="comment">% keep_molid=[134 137 167 168 195 199 202 228];keep_ind=[];</span>
+<span class="comment">% for i=1:length(keep_molid);</span>
+<span class="comment">%     find([atom.molid]==keep_molid(i));</span>
+<span class="comment">%     keep_ind=[keep_ind find([atom.molid]==keep_molid(i))];</span>
+<span class="comment">% end</span>
+<span class="comment">% keep_ind = sort(keep_ind);</span>
+<span class="comment">% atom=atom(keep_ind);MolID=MolID(keep_ind);nAtoms=size(atom,2);</span>
+<span class="comment">% atom=atom_update_func(atom,MolID);</span>
+
+
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="17">This script is used to move water</h2><h2 id="18">from somewhere in Z to somewhere else in Z</h2><pre class="codeinput"><span class="comment">% atomname='OW';</span>
+<span class="comment">% zlo=37;</span>
+<span class="comment">% zhi=63;</span>
+<span class="comment">% z_translate=30;</span>
+<span class="comment">% zmiddle=Box_dim(3)/2;</span>
+<span class="comment">% nAtoms=size([atom.x],2);</span>
+<span class="comment">% ind=find(strcmp([atom.type],atomname));</span>
+<span class="comment">% ind_lo=find([atom.z]&gt;zlo);ind_lo=intersect(ind_lo,ind);</span>
+<span class="comment">% ind_hi=find([atom.z]&lt;zmiddle);ind_hi=intersect(ind_hi,ind);</span>
+<span class="comment">% ind=intersect(ind_lo,ind_hi);</span>
+<span class="comment">% if strcmp(atomname,'OW')</span>
+<span class="comment">%     ind_HW1=ind+1;ind_HW2=ind+2;</span>
+<span class="comment">%     ind=sort([ind ind_HW1 ind_HW2]);</span>
+<span class="comment">% end</span>
+<span class="comment">% z_shift=num2cell([[atom(ind).z]-z_translate]'); [atom(ind).z]=deal(z_shift{:});</span>
+<span class="comment">% disp('Moving some SOL down')</span>
+<span class="comment">% size(ind,2)/3</span>
+<span class="comment">%</span>
+<span class="comment">% % And repeat...</span>
+<span class="comment">% ind=find(strcmp([atom.type],atomname));</span>
+<span class="comment">% ind_lo=find([atom.z]&gt;zmiddle);ind_lo=intersect(ind_lo,ind);</span>
+<span class="comment">% ind_hi=find([atom.z]&lt;zhi);ind_hi=intersect(ind_hi,ind);</span>
+<span class="comment">% ind=intersect(ind_lo,ind_hi);</span>
+<span class="comment">% if strcmp(atomname,'OW')</span>
+<span class="comment">%     ind_HW1=ind+1;ind_HW2=ind+2;</span>
+<span class="comment">%     ind=sort([ind ind_HW1 ind_HW2]);</span>
+<span class="comment">% end</span>
+<span class="comment">% z_shift=num2cell([[atom(ind).z]+z_translate]'); [atom(ind).z]=deal(z_shift{:});</span>
+<span class="comment">% disp('Moving some SOL upp')</span>
+<span class="comment">% size(ind,2)/3</span>
+
+<span class="comment">% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="19">This script adds ions on top of water</h2><h2 id="20">in the simulation box</h2><p>Ion1='NA' Ion2='CL' replace_atom='OW' nIon1=129+38; nIon2=38;</p><p>nIon1=nIon1+nIon2; ind_rep=find(strcmp([atom.type],replace_atom)); ind_add_Ion1=ind_rep(randperm(length(ind_rep),nIon1)); Ion1_atom=atom(ind_add_Ion1);</p><p>XCoords=num2cell([[Ion1_atom.x]-0.5]'); YCoords=num2cell([[Ion1_atom.y]-0.5]'); ZCoords=num2cell([[Ion1_atom.z]-0.5]');</p><p>[Ion1_atom(:).x]=deal(XCoords{:}); [Ion1_atom(:).y]=deal(YCoords{:}); [Ion1_atom(:).z]=deal(ZCoords{:});</p><p>[Ion1_atom(:).resname]=deal({Ion1}); [Ion1_atom(:).type]=deal({Ion1}); [Ion1_atom(:).fftype]=deal({Ion1});</p><p>ind_Ion1=find(strcmp([Ion1_atom.type],Ion1)); ind_add_Ion2=ind_Ion1(randperm(length(ind_Ion1),nIon2)); Ion2_atom=Ion1_atom(ind_add_Ion2); Ion1_atom(ind_add_Ion2)=[];</p><p>[Ion2_atom(:).resname]=deal({Ion2}); [Ion2_atom(:).type]=deal({Ion2}); [Ion2_atom(:).fftype]=deal({Ion2});</p><p>atom=[atom, Ion1_atom, Ion2_atom];</p><p>atom=atom_update_func(atom,MolID);</p><p>All_resnames=sort(unique([atom.resname])); for i=1:length(All_resnames)     All_resnames(i) size(find(strcmp([atom.resname],All_resnames(i))),2) end</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="21">This script is used to translate all 'Resname' above/below certain ave_z</h2><p>ind_resname=find(strcmp([atom.resname],'TCH')) % ind_z=find([atom.ave_z]&lt;5) % ind_resname=intersect(ind_resname,ind_z)</p><p>x_shift=0.0; x_shift=num2cell([[atom(ind_resname).x]+x_shift]'); [atom((ind_resname)).x]=deal(x_shift{:}); z_shift=-.15; z_shift=num2cell([[atom(ind_resname).z]+z_shift]'); [atom((ind_resname)).z]=deal(z_shift{:});</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="22">This script is used to remove residues from a bilayer</h2><h2 id="23">in the simulation box</h2><p>keepnresidues=512; Box_dim=[150 150 Box_dim(3)] natomsinresidue=length(find([atom(:).molid]==1)); ind_zlo=find([atom.med_z]&lt;mean([atom.med_z])); ind_zhi=find([atom.med_z]&gt;mean([atom.med_z]));</p><p>ind_xhi=find([atom.med_x]&lt;Box_dim(1)); ind_yhi=find([atom.med_y]&lt;Box_dim(2)); ind_xy  = intersect(ind_xhi,ind_yhi); ind_zlo = intersect(ind_xy,ind_zlo); ind_zhi = intersect(ind_xy,ind_zhi);</p><p>molid_zlo=unique([atom(ind_zlo).molid]); molid_zhi=unique([atom(ind_zhi).molid]);</p><p>zlo_residues_left=length(ind_zlo)/natomsinresidue-keepnresidues/2; zhi_residues_left=length(ind_zhi)/natomsinresidue-keepnresidues/2;</p><p>molid_zlo=molid_zlo(randperm(length(molid_zlo),zlo_residues_left)); molid_zhi=molid_zhi(randperm(length(molid_zhi),zhi_residues_left));</p><p>molid_rm=sort([molid_zlo molid_zhi]); rm_index=find(ismember([atom.molid],molid_rm)); keep_ind=setdiff([ind_zlo ind_zhi],rm_index); atom=atom(keep_ind)</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="24">%% This script orders to atoms with respect to z</h2><p>sorted_coords=sortrows([[atom.index];[atom.molid];[atom.x];[atom.y];[atom.z];[atom.med_z]]',6); nAtoms=size(atom,2); Index=sorted_coords(:,1); MolID=sorted_coords(:,2); X_coord=sorted_coords(:,3); Y_coord=sorted_coords(:,4); Z_coord=sorted_coords(:,5);</p><p>nmol=1;first_in=[1];last_in=[]; for i=1:nAtoms;     if i &gt; 1 &amp;&amp; MolID(i) ~= MolID(i-1)         nmol=nmol+1;         atom(i).molid=nmol;         first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;     elseif i &gt; 1 &amp;&amp; MolID(i) == MolID(i-1)         atom(i).molid=atom(i-1).molid;     elseif i == 1         atom(i).molid=1;     end</p><pre>   %atom(i).resname=Resname(i);
+   %atom(i).type=Atomtype(i);
+   %atom(i).fftype=Atomtype(i);
+   %atom(i).index=mod(i,100000);
+   %atom(i).neigh.type  = {};
+   atom(i).neigh.index  = zeros(6,1);
+   atom(i).neigh.dist  = zeros(6,1);
+   atom(i).bond.type  = zeros(6,1);
+   atom(i).bond.index  = zeros(6,1);
+   atom(i).x=X_coord(i);
+   atom(i).y=Y_coord(i);
+   atom(i).z=Z_coord(i);
+end
+last_in(atom(end).molid,1)=nAtoms;</pre><p>for i=1:max([atom(:).molid])     ind=find([atom.molid]==i);     [atom(ind).ave_x]=deal(mean([atom(ind).x]));     [atom(ind).ave_y]=deal(mean([atom(ind).y]));     [atom(ind).ave_z]=deal(mean([atom(ind).z])); end</p><pre class="codeinput"><span class="comment">% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="25">This script is used to remove residue</h2><h2 id="26">from the box, ie like and inverse 'replicate' function</h2><h2 id="27">Do not update atom...</h2><pre class="codeinput"><span class="comment">% natomsinresidue=length(find([atom(:).molid]==1));</span>
+<span class="comment">% nresidues=size(atom,2)/natomsinresidue;</span>
+<span class="comment">% leftresidues=nresidues;</span>
+<span class="comment">% newnresidues=64; % Edit manually</span>
+<span class="comment">% i=1;nlo=0;nhi=0;rm=0;</span>
+<span class="comment">% new_Box_dim=[1.1*Box_dim(1)/(nresidues/newnresidues)^.5 1.1*Box_dim(2)/(nresidues/newnresidues)^.5 Box_dim(3)];</span>
+<span class="comment">% new_Box_dim=[75 75 95.75];</span>
+<span class="comment">% while i&lt;size(atom,2)</span>
+<span class="comment">%             if mean([atom(i:(i-1)+natomsinresidue).z]) &gt; Box_dim(3)/2 &amp;&amp; nhi &lt; newnresidues/2 &amp;&amp; mean([atom(i:(i-1)+natomsinresidue).x]) &lt; new_Box_dim(1) &amp;&amp; mean([atom(i:(i-1)+natomsinresidue).y]) &lt; new_Box_dim(2);</span>
+<span class="comment">%                 nhi=nhi+1;</span>
+<span class="comment">%                 i=i+natomsinresidue;</span>
+<span class="comment">%             elseif mean([atom(i:(i-1)+natomsinresidue).z]) &lt; Box_dim(3)/2 &amp;&amp; nlo &lt; newnresidues/2 &amp;&amp; mean([atom(i:(i-1)+natomsinresidue).x]) &lt; new_Box_dim(1) &amp;&amp; mean([atom(i:(i-1)+natomsinresidue).y]) &lt; new_Box_dim(2);</span>
+<span class="comment">%                 nlo=nlo+1;</span>
+<span class="comment">%                 i=i+natomsinresidue;</span>
+<span class="comment">%             else</span>
+<span class="comment">%                 ind=[atom.molid]==atom(i).molid;</span>
+<span class="comment">%                 atom(ind)=[];</span>
+<span class="comment">%                 rm=rm+1;</span>
+<span class="comment">%             end</span>
+<span class="comment">%             if size(atom,2)/natomsinresidue&lt;leftresidues;</span>
+<span class="comment">%             leftresidues=size(atom,2)/natomsinresidue</span>
+<span class="comment">%             end</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% if rm == (nresidues-newnresidues); disp('Success!'); end</span>
+<span class="comment">%</span>
+<span class="comment">% for i=1:size(atom,2)</span>
+<span class="comment">%     atom(i).molid=ceil(i/natomsinresidue);</span>
+<span class="comment">%     atom(i).index=i;</span>
+<span class="comment">% end</span>
+<span class="comment">% nAtoms=size(atom,2);</span>
+<span class="comment">%</span>
+<span class="comment">% % x_shift=num2cell([[atom.x]-min([atom.x])]'); [atom(:).x]=deal(x_shift{:});</span>
+<span class="comment">% % y_shift=num2cell([[atom.y]-min([atom.y])]'); [atom(:).y]=deal(y_shift{:});</span>
+<span class="comment">% % z_shift=num2cell([[atom.z]-min([atom.z])]'); [atom(:).z]=deal(z_shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">% min([atom.x])</span>
+<span class="comment">% min([atom.y])</span>
+<span class="comment">% min([atom.z])</span>
+<span class="comment">% max([atom.x])</span>
+<span class="comment">% max([atom.y])</span>
+<span class="comment">% max([atom.z])</span>
+<span class="comment">%</span>
+<span class="comment">% Box_dim=[max([atom.x]) max([atom.y]) Box_dim(3)];</span>
+
+<span class="comment">% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">% And now update the atoms script...</span>
+<span class="comment">% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% nAtoms=size(dataArray{:,5}(:),1);</span>
+<span class="comment">% MolID = str2double((dataArray{:,1}));</span>
+<span class="comment">% Resname = strtrim(dataArray{:,2});</span>
+<span class="comment">% Atomtype = strtrim(dataArray{:,3});</span>
+<span class="comment">% AtomID = dataArray{:,4};</span>
+<span class="comment">% X_coord = dataArray{:,5};</span>
+<span class="comment">% Y_coord = dataArray{:,6};</span>
+<span class="comment">% Z_coord = dataArray{:,7};</span>
+<span class="comment">% X_velo = dataArray{:,8};</span>
+<span class="comment">% Y_velo = dataArray{:,9};</span>
+<span class="comment">% Z_velo = dataArray{:,10};</span>
+<span class="comment">% disp('.gro file imported')</span>
+<span class="comment">% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+nAtoms=size([atom.x],2);
+atom=atom_update_func(atom);
+
+<span class="comment">% if length(MolID) &lt; nAtoms;</span>
+<span class="comment">%     MolID=[MolID;[MolID(end)+1:nAtoms]'];</span>
+<span class="comment">% end</span>
+<span class="comment">% % clear atom</span>
+<span class="comment">% nmol=1;first_in=[1];last_in=[];</span>
+<span class="comment">% for i=1:nAtoms;</span>
+<span class="comment">%     if i &gt; 1 &amp;&amp; MolID(i) ~= MolID(i-1)</span>
+<span class="comment">%         nmol=nmol+1;</span>
+<span class="comment">%         atom(i).molid=nmol;</span>
+<span class="comment">%         first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;</span>
+<span class="comment">%     elseif i &gt; 1</span>
+<span class="comment">%         atom(i).molid=atom(i-1).molid;</span>
+<span class="comment">%     elseif i == 1</span>
+<span class="comment">%         atom(i).molid=1;</span>
+<span class="comment">%     end</span>
+<span class="comment">%     %         atom(i).resname=Resname(i);</span>
+<span class="comment">%     %         atom(i).type=Atomtype(i);</span>
+<span class="comment">%     %         atom(i).fftype=Atomtype(i);</span>
+<span class="comment">%     atom(i).index=mod(i,100000);</span>
+<span class="comment">%     %         atom(i).neigh.type  = {};</span>
+<span class="comment">%     %         atom(i).neigh.index  = zeros(6,1);</span>
+<span class="comment">%     %         atom(i).neigh.dist  = zeros(6,1);</span>
+<span class="comment">%     %         atom(i).bond.type  = zeros(6,1);</span>
+<span class="comment">%     %         atom(i).bond.index  = zeros(6,1);</span>
+<span class="comment">%     %         atom(i).x=X_coord(i);</span>
+<span class="comment">%     %         atom(i).y=Y_coord(i);</span>
+<span class="comment">%     %         atom(i).z=Z_coord(i);</span>
+<span class="comment">%     %         atom(i).vx=X_velo(i);</span>
+<span class="comment">%     %         atom(i).vy=Y_velo(i);</span>
+<span class="comment">%     %         atom(i).vz=Z_velo(i);</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">%%%%%% Write structure to file %%%%%%</span>
+<span class="keyword">if</span> writepdb  &gt; 0; write_atom_pdb(atom,Bond_index,Box_dim,filename_out); <span class="keyword">end</span> <span class="comment">% Not finished</span>
+<span class="keyword">if</span> writemol2 &gt; 0; write_atom_mol2(atom,Bond_index,Box_dim,filename_out); <span class="keyword">end</span> <span class="comment">% Not finished</span>
+<span class="keyword">if</span> writegro  &gt; 0; write_atom_gro(atom,Box_dim,filename_out); <span class="keyword">end</span>
+<span class="keyword">if</span> writexyz  &gt; 0; write_atom_xyz(atom,Box_dim,filename_out); <span class="keyword">end</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">%%%%%% Plot the structure %%%%%%%%%%%</span>
+<span class="keyword">if</span> plot == 1 &amp;&amp; (writepdb+writemol2+writexyz+writegro)&gt;0;
+    <span class="keyword">if</span> writemol2  &gt; 0;  system(strcat(char({PATH2VMD}),char(strcat({<span class="string">' '</span>},{strcat(filename_out,<span class="string">'.mol2'</span>)})))); <span class="comment">% Use VMD to plot the simulation box with no cell size data</span>
+    <span class="keyword">elseif</span> writepdb  &gt; 0;  system(strcat(char({PATH2VMD}),char(strcat({<span class="string">' '</span>},{strcat(filename_out,<span class="string">'.pdb'</span>)})))); <span class="comment">% Use VMD to plot the simulation box</span>
+    <span class="keyword">elseif</span> writegro  &gt; 0;  system(strcat(char({PATH2VMD}),char(strcat({<span class="string">' '</span>},{strcat(filename_out,<span class="string">'.gro'</span>)})))); <span class="comment">% Use VMD to plot the simulation box</span>
+    <span class="keyword">else</span> writexyz  &gt; 0;  system(strcat(char({PATH2VMD}),char(strcat({<span class="string">' '</span>},{strcat(filename_out,<span class="string">'.xyz'</span>)})))); <span class="keyword">end</span> <span class="comment">% Use VMD to plot the simulation box</span>
+<span class="keyword">end</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all;
+format short;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+filename='new_8x7MMT_Skipper.gro'; Title=filename;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+plot = 1; % 1/0 for yes/no
+writepdb  =  0; % 1/0 for yes/no
+writemol2 =  0; % 1/0 for yes/no
+writexyz  =  0; % 1/0 for yes/no
+writegro  =  1; % 1/0 for yes/no
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if regexp(filename,'.pdb') > 1; import_atom(filename); filename_out=regexprep(filename,'.pdb',' '); disp('Found .pdb file'); end
+if regexp(filename,'.mol2') > 1; filename_out=regexprep(filename,'.mol2',' ');disp('Found .mol2 file'); end
+if regexp(filename,'.gro') > 1; import_atom_gro(filename); filename_out=regexprep(filename,'.gro',' '); disp('Found .gro file'); end
+if regexp(filename,'.xyz') > 1; import_atom_xyz(filename); filename_out=regexprep(filename,'.xyz',' '); disp('Found .xyz file');
+    Box_dim = [42.210    120  37.800000	0.000000	0.000000	0.000000]; % optional, [x_hi y_hi z_hi xy xz yz] in Ångströms
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+filename_out=strcat('new_',filename_out);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+atom = ave_atom_func(atom);
+% atom = median_atom_func(atom);
+atom = wrap_molid_func(atom,Box_dim)
+% atom = unwrap_atom_func(atom,Box_dim,'z');
+
+atom = atom_update_func(atom);
+% atom = translate_atom_func(atom,[0 0 0],'MMT')
+% atom = wrap_atom_func(atom,Box_dim);
+% atom = center_atom_func(atom,[Box_dim(1) Box_dim(2) Box_dim(3) 0 0 0],'all','z')
+% atom = scale_atom_func(atom,[.64/.575 .64/.575 1],Box_dim,'all')
+% atom = remove_molid_func(atom,MolID)
+% atom = remove_residues_func(atom,'OW',0,120,'z')
+% atom = remove_type_func(atom,typescell)
+% atom = remove_resname_func(atom,{'SOL' 'NA' 'CL'});
+% atom = COM_atom_func(atom,Box_dim,72);
+% atom = translate_molid_func(atom,[0 0 Box_dim(3)/2-COM_molid(end,3)],72);
+% atom = ave_atom_func(atom);
+% atom = median_atom_func(atom);
+% atom = wrap_molid_func(atom,Box_dim)
+% atom = unwrap_atom_func(atom,Box_dim,'z');
+% atom = atom_update_func(atom,MolID);
+% atom = translate_atom_func(atom,[0 0 0],'MMT')
+% atom = wrap_atom_func(atom,Box_dim);
+% atom = center_atom_func(atom,[4.567 4.567 120 0 0 0],'all','z')
+% atom = scale_atom_func(atom,[.64/.575 .64/.575 1],Box_dim,'all')
+% atom = remove_molid_func(atom,MolID)
+% atom = remove_residues_func(atom,'OW',0,120,'z')
+% atom = remove_type_func(atom,typescell)
+% atom = remove_resname_func(atom,{'SOL' 'NA' 'CL'});
+% atom = COM_atom_func(atom,Box_dim,72);
+% atom = translate_molid_func(atom,[0 0 -50],2);
+% atom = duplicate_atom_func(atom,1); % atom,molid
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script translates a certain residue
+
+% ind_resname=find(strcmp([atom.resname],'TCHH'));
+% ave_atom_func(atom(ind_resname));
+% translate_atom_func(atom,-[[26.9567500000000,18.4087500000000,7.01150000000000]],'TCHH');
+% translate_atom_func(atom,[Box_dim(1)/2,Box_dim(1)/2,10],'TCHH');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script can be used to sort all atoms based on median z of each residue
+%
+% atom_ind_lo_z=find([atom.med_z]<=Box_dim(3)/2);
+% atom_ind_hi_z=find([atom.med_z]>Box_dim(3)/2);
+% atom=atom(atom_ind_hi_z);
+% atom=atom_update_func(atom);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove residue with resid/molids
+
+% atom=remove_resname_func(atom,{'SOL' 'NA' 'CL'});
+
+% ind_rm = setdiff(unique([atom.molid]),[1:64 219 258 293 261 198 273 122 319]);
+% atom = remove_molid_func(atom,ind_rm);
+% atom = median_atom_func(atom);
+% atom = unwrap_atom_func(atom,Box_dim,'xyz');
+% atom = translate_atom_func(atom,[0 0 Box_dim(3)*.6],'DLiPC');
+% atom = translate_molid_func(atom,[0 0 (160-530)],1:32);
+% atom = condense_atom_func(atom,Box_dim,3); % 5.290000 9.920000 18.139999 90.000000 90.000000 90.000000
+% atom = unwrap_atom_func(atom,Box_dim,'xyz');
+% atom = center_atom_func(atom,Box_dim,'DLiPC','z')
+% atom = remove_molid_func(atom,[2 3 4 70 71 72]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove residue with atomytypes...
+
+%atom=remove_type_func(atom,{'H12S' 'H13S' 'H12Y' 'H13Y'});
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to solvate with SPC water, optionally remove water somewhere and then
+%% dilute the number of h2o to a certain number
+% nRes1=64;nRes2=8;
+% nH2O=30*(nRes1+nRes2);
+% Ion1='NA';nIon1=ceil(0.15*nH2O/55.3);
+% Ion2='CL';nIon2=ceil(0.15*nH2O/55.3);
+%
+% atom=center_atom_func(atom,[Box_dim(1) Box_dim(2) 90],'DLiPC','z');write_atom_gro(atom,Box_dim,'temp');
+% lo_limit=Box_dim(3)/2-25;
+% hi_limit=Box_dim(3)/2+25;
+% str=strcat('genbox -cp',{' '},'temp',{' '},'-cs spc216.gro',{' '},'-o temp.gro &>/dev/null');
+% system(strcat(char({PATH2GMX}),char(str)));
+% import_atom_gro('temp.gro');
+% atom=remove_residues_func(atom,'OW',lo_limit,hi_limit,'z');
+% atom=dilute_water_func(atom,nH2O);
+% nSOL=size(find(strcmp([atom.type],'OW')),2)
+% atom=add_ions_func(atom,'OW','z',Ion1,nIon1,Ion2,nIon2);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove residues
+%% in the simulation box between zlo and zhi
+% %
+% atomname='OW';
+% xlo=10;ylo=10;zlo=10;
+% xhi=50;yhi=50;zhi=50;
+%
+% nAtoms=size([atom.x],2);
+% ind=find(strcmp([atom.type],atomname));
+% ind_lo=find([atom.x]>xlo);ind_lo=intersect(ind_lo,ind);
+% ind_hi=find([atom.x]<xhi);ind_hi=intersect(ind_hi,ind);
+% ind=intersect(ind_lo,ind_hi);
+% if strcmp(atomname,'OW')
+%     ind_HW1=ind+1;ind_HW2=ind+2;
+%     ind=sort([ind ind_HW1 ind_HW2]);
+% end
+% change_ind=sort(setdiff([1:nAtoms],ind));
+% atom=atom(change_ind);
+%
+% nAtoms=size([atom.x],2);
+% ind=find(strcmp([atom.type],atomname));
+% ind_lo=find([atom.y]>ylo);ind_lo=intersect(ind_lo,ind);
+% ind_hi=find([atom.y]<yhi);ind_hi=intersect(ind_hi,ind);
+% ind=intersect(ind_lo,ind_hi);
+% if strcmp(atomname,'OW')
+%     ind_HW1=ind+1;ind_HW2=ind+2;
+%     ind=sort([ind ind_HW1 ind_HW2]);
+% end
+% change_ind=sort(setdiff([1:nAtoms],ind));
+% atom=atom(change_ind);
+%
+% nAtoms=size([atom.x],2);
+% ind=find(strcmp([atom.type],atomname));
+% ind_lo=find([atom.z]>zlo);ind_lo=intersect(ind_lo,ind);
+% ind_hi=find([atom.z]<zhi);ind_hi=intersect(ind_hi,ind);
+% ind=intersect(ind_lo,ind_hi);
+% if strcmp(atomname,'OW')
+%     ind_HW1=ind+1;ind_HW2=ind+2;
+%     ind=sort([ind ind_HW1 ind_HW2]);
+% end
+% change_ind=sort(setdiff([1:nAtoms],ind));
+% atom=atom(change_ind);
+%
+% center_atom_func(atom,[10 10 10 0 0 0],'all','y');
+% translate_atom_func(atom,-Box_dim/2,'all')
+%
+% nAtoms=size(atom,2);
+% size(find(strcmp([atom.resname],atomname)),2);
+% nSOL=size(find(strcmp([atom.type],'OW')),2)
+% %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% What does this script do??
+
+% nresname=0;j=1;
+% for i=1:nAtoms;
+%     if i == 1
+%         nresname=nresname+1;
+%         ResNameTable(j,1)=atom(i).resname;
+%     elseif i > 1 && strcmp(atom(i).resname,atom(i-1).resname)==0;
+%         ResNameTable(j,2)={nresname};
+%         j=j+1;
+%         ResNameTable(j,1)=atom(i).resname;
+%         nresname=1;
+%     elseif i > 1
+%         nresname=nresname+1;
+%     else
+%     end
+% end
+% ResNameTable(j,2)={nresname};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script removes atoms below certain z
+
+% ind_keep=find([atom.z]>25);
+% atom=atom(ind_keep);
+% ind_keep=find([atom.z]<45);
+% atom=atom(ind_keep);
+% nAtoms=size(atom,2);
+% ind_Si=find(strncmp([atom.type],'Si',2));
+% z_shift=num2cell([atom.z]-mean([atom(ind_Si).z])); [atom(:).z]=deal(z_shift{:});
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script sets the residue length with regard to nAtoms in resname 1
+% nAtoms=size(atom,2);
+% natomsinresidue=length(find([atom(:).molid]==1));
+% for i=1:size(atom,2)
+%     atom(i).molid=ceil(i/natomsinresidue);
+%     %% Test this: atom(i).molid=mod(i,54)(+1?);
+%     atom(i).index=mod(i,100000);
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to translate residues
+%% in the simulation box
+% for i=1:max([atom(:).index])
+%     atom(i).molid
+%     if atom(i).molid==129;
+%         i
+%     atom(i).x=atom(i).x;
+%     atom(i).y=atom(i).y;
+%     atom(i).z=atom(i).z-5;
+%     end
+% end
+% i
+
+% Box_dim=[4.28552   4.28552  11.20336]
+%
+% Residue= 'TCH'; % resname to be translated
+% x_ave=mean([atom.x]);
+% y_ave=mean([atom.y]);
+% z_ave=mean([atom.z]);
+% % x_shift=0;
+% % y_shift=0;
+% % z_shift=0;
+
+%x_shift=num2cell([[atom.x]-mean([atom.x]-Box_dim(1)/2)]'); [atom(:).x]=deal(x_shift{:});
+%x_shift=num2cell([[atom.x]-Box_dim(1)/2]'); [atom(:).x]=deal(x_shift{:});
+% ind_Si=find(strncmp([atom.type],'Si',2));
+%y_shift=num2cell([atom.y]-(mean([atom(ind_Si).y]-Box_dim(2)/2))); [atom(:).y]=deal(y_shift{:});
+% z_shift=num2cell([atom.z]-mean([atom(ind_Si).z])); [atom(:).z]=deal(z_shift{:});
+%z_shift=num2cell([[atom.z]-min([atom.z])]'); [atom(:).z]=deal(z_shift{:});
+%z_shift=num2cell([[atom.z]-Box_dim(3)/6]'); [atom(:).z]=deal(z_shift{:});
+%
+% S=num2cell(1:39);
+% [atom(:).index]=deal(S{:});
+
+% i=1; Index=zeros(size(dataArray{1,1}(:,1),1),1);
+% while i<size(Index,1)
+%     if strcmp(strtrim(Resname{i}),'TCH');% == 1 & (Z_coord(i) > Zlo) & (Z_coord(i) < Zhi);
+%         i
+%         dataArray{:,5}(i)=dataArray{:,5}(i)+x_shift;
+%         dataArray{:,6}(i)=dataArray{:,6}(i)+y_shift;
+%         dataArray{:,7}(i)=dataArray{:,7}(i)+z_shift;
+%     end
+%     i=i+1;
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove all but 'Resname' from the stated
+% Resname1='DLiPC'
+% %Resname2='TCH'
+% %Resname3='SOL'
+% ind1=find(strcmp([atom.resname],Resname1));
+% %ind2=find(strcmp([atom.resname],Resname2));
+% %ind3=find(strcmp([atom.resname],Resname3));
+% ind=[ind1];
+% atom=atom(ind);MolID=MolID(ind);nAtoms=size(atom,2);
+% nAtoms=size([atom.x],2);
+%
+% atom=atom_update_func(atom);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% I think this script is used to remove all but 'Resname' from and moliID's from the stated conf
+
+% ind_Resname=find(strcmp([atom.resname],Resname));
+% ind_molid=molid=[atom(ind_Resname).molid]; molid=unique(molid);
+%
+% keep_molid=[134 137 167 168 195 199 202 228];keep_ind=[];
+% for i=1:length(keep_molid);
+%     find([atom.molid]==keep_molid(i));
+%     keep_ind=[keep_ind find([atom.molid]==keep_molid(i))];
+% end
+% keep_ind = sort(keep_ind);
+% atom=atom(keep_ind);MolID=MolID(keep_ind);nAtoms=size(atom,2);
+% atom=atom_update_func(atom,MolID);
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to move water
+%% from somewhere in Z to somewhere else in Z
+
+% atomname='OW';
+% zlo=37;
+% zhi=63;
+% z_translate=30;
+% zmiddle=Box_dim(3)/2;
+% nAtoms=size([atom.x],2);
+% ind=find(strcmp([atom.type],atomname));
+% ind_lo=find([atom.z]>zlo);ind_lo=intersect(ind_lo,ind);
+% ind_hi=find([atom.z]<zmiddle);ind_hi=intersect(ind_hi,ind);
+% ind=intersect(ind_lo,ind_hi);
+% if strcmp(atomname,'OW')
+%     ind_HW1=ind+1;ind_HW2=ind+2;
+%     ind=sort([ind ind_HW1 ind_HW2]);
+% end
+% z_shift=num2cell([[atom(ind).z]-z_translate]'); [atom(ind).z]=deal(z_shift{:});
+% disp('Moving some SOL down')
+% size(ind,2)/3
+%
+% % And repeat...
+% ind=find(strcmp([atom.type],atomname));
+% ind_lo=find([atom.z]>zmiddle);ind_lo=intersect(ind_lo,ind);
+% ind_hi=find([atom.z]<zhi);ind_hi=intersect(ind_hi,ind);
+% ind=intersect(ind_lo,ind_hi);
+% if strcmp(atomname,'OW')
+%     ind_HW1=ind+1;ind_HW2=ind+2;
+%     ind=sort([ind ind_HW1 ind_HW2]);
+% end
+% z_shift=num2cell([[atom(ind).z]+z_translate]'); [atom(ind).z]=deal(z_shift{:});
+% disp('Moving some SOL upp')
+% size(ind,2)/3
+
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script adds ions on top of water
+%% in the simulation box
+%
+% Ion1='NA'
+% Ion2='CL'
+% replace_atom='OW'
+% nIon1=129+38;
+% nIon2=38;
+%
+% nIon1=nIon1+nIon2;
+% ind_rep=find(strcmp([atom.type],replace_atom));
+% ind_add_Ion1=ind_rep(randperm(length(ind_rep),nIon1));
+% Ion1_atom=atom(ind_add_Ion1);
+%
+% XCoords=num2cell([[Ion1_atom.x]-0.5]');
+% YCoords=num2cell([[Ion1_atom.y]-0.5]');
+% ZCoords=num2cell([[Ion1_atom.z]-0.5]');
+%
+% [Ion1_atom(:).x]=deal(XCoords{:});
+% [Ion1_atom(:).y]=deal(YCoords{:});
+% [Ion1_atom(:).z]=deal(ZCoords{:});
+%
+% [Ion1_atom(:).resname]=deal({Ion1});
+% [Ion1_atom(:).type]=deal({Ion1});
+% [Ion1_atom(:).fftype]=deal({Ion1});
+%
+% ind_Ion1=find(strcmp([Ion1_atom.type],Ion1));
+% ind_add_Ion2=ind_Ion1(randperm(length(ind_Ion1),nIon2));
+% Ion2_atom=Ion1_atom(ind_add_Ion2);
+% Ion1_atom(ind_add_Ion2)=[];
+%
+% [Ion2_atom(:).resname]=deal({Ion2});
+% [Ion2_atom(:).type]=deal({Ion2});
+% [Ion2_atom(:).fftype]=deal({Ion2});
+%
+% atom=[atom, Ion1_atom, Ion2_atom];
+%
+% atom=atom_update_func(atom,MolID);
+%
+% All_resnames=sort(unique([atom.resname]));
+% for i=1:length(All_resnames)
+%     All_resnames(i)
+% size(find(strcmp([atom.resname],All_resnames(i))),2)
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to translate all 'Resname' above/below certain ave_z
+% ind_resname=find(strcmp([atom.resname],'TCH'))
+% % ind_z=find([atom.ave_z]<5)
+% % ind_resname=intersect(ind_resname,ind_z)
+%
+% x_shift=0.0;
+% x_shift=num2cell([[atom(ind_resname).x]+x_shift]');
+% [atom((ind_resname)).x]=deal(x_shift{:});
+% z_shift=-.15;
+% z_shift=num2cell([[atom(ind_resname).z]+z_shift]');
+% [atom((ind_resname)).z]=deal(z_shift{:});
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove residues from a bilayer
+%% in the simulation box
+% keepnresidues=512;
+% Box_dim=[150 150 Box_dim(3)]
+% natomsinresidue=length(find([atom(:).molid]==1));
+% ind_zlo=find([atom.med_z]<mean([atom.med_z]));
+% ind_zhi=find([atom.med_z]>mean([atom.med_z]));
+%
+% ind_xhi=find([atom.med_x]<Box_dim(1));
+% ind_yhi=find([atom.med_y]<Box_dim(2));
+% ind_xy  = intersect(ind_xhi,ind_yhi);
+% ind_zlo = intersect(ind_xy,ind_zlo);
+% ind_zhi = intersect(ind_xy,ind_zhi);
+%
+% molid_zlo=unique([atom(ind_zlo).molid]);
+% molid_zhi=unique([atom(ind_zhi).molid]);
+%
+% zlo_residues_left=length(ind_zlo)/natomsinresidue-keepnresidues/2;
+% zhi_residues_left=length(ind_zhi)/natomsinresidue-keepnresidues/2;
+%
+% molid_zlo=molid_zlo(randperm(length(molid_zlo),zlo_residues_left));
+% molid_zhi=molid_zhi(randperm(length(molid_zhi),zhi_residues_left));
+%
+% molid_rm=sort([molid_zlo molid_zhi]);
+% rm_index=find(ismember([atom.molid],molid_rm));
+% keep_ind=setdiff([ind_zlo ind_zhi],rm_index);
+% atom=atom(keep_ind)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %% This script orders to atoms with respect to z
+% sorted_coords=sortrows([[atom.index];[atom.molid];[atom.x];[atom.y];[atom.z];[atom.med_z]]',6);
+% nAtoms=size(atom,2);
+% Index=sorted_coords(:,1);
+% MolID=sorted_coords(:,2);
+% X_coord=sorted_coords(:,3);
+% Y_coord=sorted_coords(:,4);
+% Z_coord=sorted_coords(:,5);
+%
+% nmol=1;first_in=[1];last_in=[];
+% for i=1:nAtoms;
+%     if i > 1 && MolID(i) ~= MolID(i-1)
+%         nmol=nmol+1;
+%         atom(i).molid=nmol;
+%         first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;
+%     elseif i > 1 && MolID(i) == MolID(i-1)
+%         atom(i).molid=atom(i-1).molid;
+%     elseif i == 1
+%         atom(i).molid=1;
+%     end
+%
+%     %atom(i).resname=Resname(i);
+%     %atom(i).type=Atomtype(i);
+%     %atom(i).fftype=Atomtype(i);
+%     %atom(i).index=mod(i,100000);
+%     %atom(i).neigh.type  = {};
+%     atom(i).neigh.index  = zeros(6,1);
+%     atom(i).neigh.dist  = zeros(6,1);
+%     atom(i).bond.type  = zeros(6,1);
+%     atom(i).bond.index  = zeros(6,1);
+%     atom(i).x=X_coord(i);
+%     atom(i).y=Y_coord(i);
+%     atom(i).z=Z_coord(i);
+% end
+% last_in(atom(end).molid,1)=nAtoms;
+%
+% for i=1:max([atom(:).molid])
+%     ind=find([atom.molid]==i);
+%     [atom(ind).ave_x]=deal(mean([atom(ind).x]));
+%     [atom(ind).ave_y]=deal(mean([atom(ind).y]));
+%     [atom(ind).ave_z]=deal(mean([atom(ind).z]));
+% end
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This script is used to remove residue
+%% from the box, ie like and inverse 'replicate' function
+%% Do not update atom...
+
+% natomsinresidue=length(find([atom(:).molid]==1));
+% nresidues=size(atom,2)/natomsinresidue;
+% leftresidues=nresidues;
+% newnresidues=64; % Edit manually
+% i=1;nlo=0;nhi=0;rm=0;
+% new_Box_dim=[1.1*Box_dim(1)/(nresidues/newnresidues)^.5 1.1*Box_dim(2)/(nresidues/newnresidues)^.5 Box_dim(3)];
+% new_Box_dim=[75 75 95.75];
+% while i<size(atom,2)
+%             if mean([atom(i:(i-1)+natomsinresidue).z]) > Box_dim(3)/2 && nhi < newnresidues/2 && mean([atom(i:(i-1)+natomsinresidue).x]) < new_Box_dim(1) && mean([atom(i:(i-1)+natomsinresidue).y]) < new_Box_dim(2);
+%                 nhi=nhi+1;
+%                 i=i+natomsinresidue;
+%             elseif mean([atom(i:(i-1)+natomsinresidue).z]) < Box_dim(3)/2 && nlo < newnresidues/2 && mean([atom(i:(i-1)+natomsinresidue).x]) < new_Box_dim(1) && mean([atom(i:(i-1)+natomsinresidue).y]) < new_Box_dim(2);
+%                 nlo=nlo+1;
+%                 i=i+natomsinresidue;
+%             else
+%                 ind=[atom.molid]==atom(i).molid;
+%                 atom(ind)=[];
+%                 rm=rm+1;
+%             end
+%             if size(atom,2)/natomsinresidue<leftresidues;
+%             leftresidues=size(atom,2)/natomsinresidue
+%             end
+% end
+%
+% if rm == (nresidues-newnresidues); disp('Success!'); end
+%
+% for i=1:size(atom,2)
+%     atom(i).molid=ceil(i/natomsinresidue);
+%     atom(i).index=i;
+% end
+% nAtoms=size(atom,2);
+%
+% % x_shift=num2cell([[atom.x]-min([atom.x])]'); [atom(:).x]=deal(x_shift{:});
+% % y_shift=num2cell([[atom.y]-min([atom.y])]'); [atom(:).y]=deal(y_shift{:});
+% % z_shift=num2cell([[atom.z]-min([atom.z])]'); [atom(:).z]=deal(z_shift{:});
+%
+% min([atom.x])
+% min([atom.y])
+% min([atom.z])
+% max([atom.x])
+% max([atom.y])
+% max([atom.z])
+%
+% Box_dim=[max([atom.x]) max([atom.y]) Box_dim(3)];
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% And now update the atoms script...
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% nAtoms=size(dataArray{:,5}(:),1);
+% MolID = str2double((dataArray{:,1}));
+% Resname = strtrim(dataArray{:,2});
+% Atomtype = strtrim(dataArray{:,3});
+% AtomID = dataArray{:,4};
+% X_coord = dataArray{:,5};
+% Y_coord = dataArray{:,6};
+% Z_coord = dataArray{:,7};
+% X_velo = dataArray{:,8};
+% Y_velo = dataArray{:,9};
+% Z_velo = dataArray{:,10};
+% disp('.gro file imported')
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+nAtoms=size([atom.x],2);
+atom=atom_update_func(atom);
+
+% if length(MolID) < nAtoms;
+%     MolID=[MolID;[MolID(end)+1:nAtoms]'];
+% end
+% % clear atom
+% nmol=1;first_in=[1];last_in=[];
+% for i=1:nAtoms;
+%     if i > 1 && MolID(i) ~= MolID(i-1)
+%         nmol=nmol+1;
+%         atom(i).molid=nmol;
+%         first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;
+%     elseif i > 1
+%         atom(i).molid=atom(i-1).molid;
+%     elseif i == 1
+%         atom(i).molid=1;
+%     end
+%     %         atom(i).resname=Resname(i);
+%     %         atom(i).type=Atomtype(i);
+%     %         atom(i).fftype=Atomtype(i);
+%     atom(i).index=mod(i,100000);
+%     %         atom(i).neigh.type  = {};
+%     %         atom(i).neigh.index  = zeros(6,1);
+%     %         atom(i).neigh.dist  = zeros(6,1);
+%     %         atom(i).bond.type  = zeros(6,1);
+%     %         atom(i).bond.index  = zeros(6,1);
+%     %         atom(i).x=X_coord(i);
+%     %         atom(i).y=Y_coord(i);
+%     %         atom(i).z=Z_coord(i);
+%     %         atom(i).vx=X_velo(i);
+%     %         atom(i).vy=Y_velo(i);
+%     %         atom(i).vz=Z_velo(i);
+% end
+%
+%%%%%% Write structure to file %%%%%%
+if writepdb  > 0; write_atom_pdb(atom,Bond_index,Box_dim,filename_out); end % Not finished
+if writemol2 > 0; write_atom_mol2(atom,Bond_index,Box_dim,filename_out); end % Not finished
+if writegro  > 0; write_atom_gro(atom,Box_dim,filename_out); end
+if writexyz  > 0; write_atom_xyz(atom,Box_dim,filename_out); end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% Plot the structure %%%%%%%%%%%
+if plot == 1 && (writepdb+writemol2+writexyz+writegro)>0;
+    if writemol2  > 0;  system(strcat(char({PATH2VMD}),char(strcat({' '},{strcat(filename_out,'.mol2')})))); % Use VMD to plot the simulation box with no cell size data
+    elseif writepdb  > 0;  system(strcat(char({PATH2VMD}),char(strcat({' '},{strcat(filename_out,'.pdb')})))); % Use VMD to plot the simulation box
+    elseif writegro  > 0;  system(strcat(char({PATH2VMD}),char(strcat({' '},{strcat(filename_out,'.gro')})))); % Use VMD to plot the simulation box
+    else writexyz  > 0;  system(strcat(char({PATH2VMD}),char(strcat({' '},{strcat(filename_out,'.xyz')})))); end % Use VMD to plot the simulation box
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+##### SOURCE END #####
+--></body></html>

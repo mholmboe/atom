@@ -1,0 +1,219 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_traj.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_traj.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_traj.m</h1><!--introduction--><div><ul><li>This general function imports an structure and a xtc, trr, dcd, xyz or gro trajectory file.</li><li>For more options, look into each repsective import function, to use</li><li>stride and other thingies.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_traj('conf.gro',traj.xtc)</li><li>atom = import_traj('conf.gro',traj.trr)</li><li>atom = import_traj('conf.gro',traj.dcd)</li><li>atom = import_traj('traj.xyz')</li><li>atom = import_traj('traj.gro')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_traj(filenameconf,filenametraj,varargin)
+
+<span class="keyword">if</span> regexp(filenametraj,<span class="string">'.xtc'</span>) &gt; 1
+    disp(<span class="string">'This function imports a structure file and a xtc file'</span>)
+    disp(<span class="string">'and relies on the mxdrfile by Jon Kapla'</span>)
+    disp(<span class="string">'http://kaplajon.github.io/mxdrfile/'</span>)
+    atom = import_xtc(filenameconf,filenametraj);
+
+    disp(<span class="string">'Alternatively, use the Gro2Mat package with the function:'</span>)
+    disp(<span class="string">'import_xtcv2(filenameconf,filenametraj)'</span>)
+    disp(<span class="string">'Look into import_traj.m and in the Journal of Computational Chemistry,'</span>)
+    disp(<span class="string">'Volume 35, Issue 20'</span>)
+    <span class="comment">%     disp('Found .xtc file, will use the excellent Gro2Mat scripts');</span>
+    <span class="comment">%     disp('Note that in maxTol, startFrame, endFrame values can be set,')</span>
+    <span class="comment">%     disp('look into Gro2Mat parseTrj function for help')</span>
+    <span class="comment">%     disp('Note that lines 55-56 in parseTrj can give unneccesary problems')</span>
+    <span class="comment">%     import_xtcv2(filenameconf,filenametraj);</span>
+    <span class="comment">%     delete('./#*'); delete('./temp*');</span>
+    <span class="comment">%     assignin('caller','trj',trj);</span>
+
+<span class="keyword">elseif</span> regexp(filenametraj,<span class="string">'.trr'</span>) &gt; 1
+    disp(<span class="string">'This function imports a structure file and a trr file'</span>)
+    disp(<span class="string">'and relies on the mxdrfile by Jon Kapla'</span>)
+    disp(<span class="string">'http://kaplajon.github.io/mxdrfile/'</span>)
+    atom = import_trr(filenameconf,filenametraj);
+
+    disp(<span class="string">'Alternatively, use Evans readGmx2Matlab and trr2matlab functions'</span>)
+    disp(<span class="string">'See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix'</span>)
+    disp(<span class="string">'and in the the given import_trrv2.m function'</span>)
+    <span class="comment">% disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');</span>
+    <span class="comment">% disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')</span>
+    <span class="comment">% import_trrv2(filenametraj);</span>
+    <span class="comment">% assignin('caller','trj',trj);</span>
+<span class="keyword">elseif</span> regexp(filenametraj,<span class="string">'.dcd'</span>) &gt; 1
+    disp(<span class="string">'Found .dcd file, will use the Justin Gullingsrud excellent matdcd script'</span>);
+    disp(<span class="string">'See http://www.ks.uiuc.edu/Development/MDTools/matdcd for some documentation'</span>)
+    disp(<span class="string">' '</span>)
+    disp(<span class="string">' '</span>)
+    traj = readdcd(filenametraj,1:nAtoms);
+<span class="keyword">elseif</span> regexp(filenametraj,<span class="string">'.pdb'</span>) &gt; 1
+    <span class="comment">% Note that varargin can be used for importing n frames or using stride</span>
+    disp(<span class="string">'Found .pdb trajectory'</span>);
+    atom = import_mc_pdb_traj(filenametraj);
+<span class="keyword">elseif</span> regexp(filenametraj,<span class="string">'.gro'</span>) &gt; 1
+    <span class="comment">% Note that varargin can be used for importing n frames or using stride</span>
+    disp(<span class="string">'Found .gro trajectory'</span>);
+    atom = import_gro_traj(filenametraj);
+<span class="keyword">elseif</span> regexp(filenametraj,<span class="string">'.xyz'</span>) &gt; 1
+    <span class="comment">% Note that varargin can be used for importing n frames or using stride</span>
+    disp(<span class="string">'Found .xyz trajectory'</span>);
+    atom = import_xyz_traj(filenametraj);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~exist(<span class="string">'atom'</span>,<span class="string">'var'</span>)
+    disp(<span class="string">'Its always nice to import a structure file first'</span>)
+    atom = import_atom(filenameconf);
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom)
+assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj);
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_traj.m
+% * This general function imports an structure and a xtc, trr, dcd, xyz or gro trajectory file.
+% * For more options, look into each repsective import function, to use
+% * stride and other thingies.
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_traj('conf.gro',traj.xtc)
+% # atom = import_traj('conf.gro',traj.trr)
+% # atom = import_traj('conf.gro',traj.dcd)
+% # atom = import_traj('traj.xyz')
+% # atom = import_traj('traj.gro')
+%
+function atom = import_traj(filenameconf,filenametraj,varargin)
+
+if regexp(filenametraj,'.xtc') > 1
+    disp('This function imports a structure file and a xtc file')
+    disp('and relies on the mxdrfile by Jon Kapla')
+    disp('http://kaplajon.github.io/mxdrfile/')
+    atom = import_xtc(filenameconf,filenametraj);
+    
+    disp('Alternatively, use the Gro2Mat package with the function:')
+    disp('import_xtcv2(filenameconf,filenametraj)')
+    disp('Look into import_traj.m and in the Journal of Computational Chemistry,')
+    disp('Volume 35, Issue 20')
+    %     disp('Found .xtc file, will use the excellent Gro2Mat scripts');
+    %     disp('Note that in maxTol, startFrame, endFrame values can be set,')
+    %     disp('look into Gro2Mat parseTrj function for help')
+    %     disp('Note that lines 55-56 in parseTrj can give unneccesary problems')
+    %     import_xtcv2(filenameconf,filenametraj);
+    %     delete('./#*'); delete('./temp*');
+    %     assignin('caller','trj',trj);
+    
+elseif regexp(filenametraj,'.trr') > 1
+    disp('This function imports a structure file and a trr file')
+    disp('and relies on the mxdrfile by Jon Kapla')
+    disp('http://kaplajon.github.io/mxdrfile/')
+    atom = import_trr(filenameconf,filenametraj);
+    
+    disp('Alternatively, use Evans readGmx2Matlab and trr2matlab functions')
+    disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
+    disp('and in the the given import_trrv2.m function')
+    % disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');
+    % disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')
+    % import_trrv2(filenametraj);
+    % assignin('caller','trj',trj);
+elseif regexp(filenametraj,'.dcd') > 1
+    disp('Found .dcd file, will use the Justin Gullingsrud excellent matdcd script');
+    disp('See http://www.ks.uiuc.edu/Development/MDTools/matdcd for some documentation')
+    disp(' ')
+    disp(' ')
+    traj = readdcd(filenametraj,1:nAtoms);
+elseif regexp(filenametraj,'.pdb') > 1
+    % Note that varargin can be used for importing n frames or using stride
+    disp('Found .pdb trajectory');
+    atom = import_mc_pdb_traj(filenametraj);
+elseif regexp(filenametraj,'.gro') > 1
+    % Note that varargin can be used for importing n frames or using stride
+    disp('Found .gro trajectory');
+    atom = import_gro_traj(filenametraj);
+elseif regexp(filenametraj,'.xyz') > 1
+    % Note that varargin can be used for importing n frames or using stride
+    disp('Found .xyz trajectory');
+    atom = import_xyz_traj(filenametraj);
+end
+
+if ~exist('atom','var')
+    disp('Its always nice to import a structure file first')
+    atom = import_atom(filenameconf);
+end
+
+assignin('caller','atom',atom)
+assignin('caller','traj',traj);
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','XYZ_labels',XYZ_labels);
+assignin('caller','XYZ_data',XYZ_data);
+
+
+
+##### SOURCE END #####
+--></body></html>

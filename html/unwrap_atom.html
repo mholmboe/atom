@@ -1,0 +1,465 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>unwrap_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="unwrap_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>unwrap_atom.m</h1><!--introduction--><div><ul><li>This function unwraps the atom struct along the dimension dim</li><li>Tested 21/07/2016, there has been bugs.. does it work?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = unwrap_atom(atom,Box_dim,'x')</li><li>atom = unwrap_atom(atom,Box_dim,'xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = unwrap_atom(atom,Box_dim,dim)
+
+atom_Tot=atom;
+
+<span class="keyword">for</span> m=unique([atom_Tot.molid])
+
+atom = atom_Tot([atom_Tot.molid]==m);
+<span class="comment">%Broken_molid=[];</span>
+<span class="keyword">if</span> sum(ismember(dim,<span class="string">'x'</span>))&gt;0
+    Broken_molid=[];
+    disp(<span class="string">'Unwrap in x'</span>)
+
+<span class="comment">%     for i=1:max([atom(:).molid])</span>
+<span class="comment">%         ind=find([atom.molid]==i);</span>
+<span class="comment">%         for j=ind(2:end)</span>
+<span class="comment">%             if abs(atom(j).x-atom(j-1).x)&gt;Box_dim(1)/2;</span>
+<span class="comment">%                 Broken_molid=[Broken_molid i];</span>
+<span class="comment">%             end</span>
+<span class="comment">%         end</span>
+<span class="comment">%     end</span>
+<span class="comment">%</span>
+<span class="comment">%     Broken_ind=find(ismember([atom.molid],Broken_molid));</span>
+<span class="comment">%</span>
+<span class="comment">%     atom = median_atom(atom);</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_hi=find([atom.med_x]&gt;=Box_dim(1)/2);</span>
+<span class="comment">%     ind_med_hi=intersect(ind_med_hi,Broken_ind);</span>
+<span class="comment">%     ind_lo=find([atom.x]&lt;Box_dim(1)/2&amp;[atom.x]&lt;([atom.med_x]-1.1*Box_dim(1)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_hi,ind_lo);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).x]+Box_dim(1));</span>
+<span class="comment">%     [atom((ind_wrap)).x]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_lo=find([atom.med_x]&lt;=Box_dim(1)/2);</span>
+<span class="comment">%     ind_med_lo=intersect(ind_med_lo,Broken_ind);</span>
+<span class="comment">%     ind_hi=find([atom.x]&gt;Box_dim(1)/2);</span>
+<span class="comment">%     ind_hi=find([atom.x]&gt;Box_dim(1)/2&amp;[atom.x]&gt;([atom.med_x]+1.1*Box_dim(1)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_lo,ind_hi);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).x]-Box_dim(1));</span>
+<span class="comment">%     [atom((ind_wrap)).x]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2hi=find([atom.x]&gt;Box_dim(1)/2+.7*Box_dim(1));</span>
+<span class="comment">%     shift=num2cell([atom(ind_2hi).x]-Box_dim(1));</span>
+<span class="comment">%     [atom((ind_2hi)).x]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2lo=find([atom.x]&lt;Box_dim(1)/2-.7*Box_dim(1));</span>
+<span class="comment">%     shift=num2cell([atom(ind_2lo).x]+Box_dim(1));</span>
+<span class="comment">%     [atom((ind_2lo)).x]=deal(shift{:});</span>
+
+        <span class="keyword">for</span> k=2:size(atom,2)
+            <span class="keyword">if</span> (atom(k).x-mean([atom(1:k-1).x]))&lt;-Box_dim(1)/2
+                atom(k).x=atom(k).x+Box_dim(1);
+            <span class="keyword">elseif</span> (atom(k).x-mean([atom(1:k-1).x]))&gt;Box_dim(1)/2
+                atom(k).x=atom(k).x-Box_dim(1);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> sum(ismember(dim,<span class="string">'y'</span>))&gt;0
+    Broken_molid=[];
+    disp(<span class="string">'Unwrap in y'</span>)
+
+<span class="comment">%     for i=1:max([atom(:).molid])</span>
+<span class="comment">%         ind=find([atom.molid]==i);</span>
+<span class="comment">%         for j=ind(2:end)</span>
+<span class="comment">%             if abs(atom(j).y-atom(j-1).y)&gt;Box_dim(2)/2;</span>
+<span class="comment">%                 Broken_molid=[Broken_molid i];</span>
+<span class="comment">%             end</span>
+<span class="comment">%         end</span>
+<span class="comment">%     end</span>
+<span class="comment">%</span>
+<span class="comment">%     Broken_ind=find(ismember([atom.molid],Broken_molid));</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_hi=find([atom.med_y]&gt;=Box_dim(2)/2);</span>
+<span class="comment">%     ind_med_hi=intersect(ind_med_hi,Broken_ind);</span>
+<span class="comment">%     ind_lo=find([atom.y]&lt;Box_dim(2)/2&amp;[atom.y]&lt;([atom.med_y]-1.1*Box_dim(2)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_hi,ind_lo);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).y]+Box_dim(2));</span>
+<span class="comment">%     [atom((ind_wrap)).y]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_lo=find([atom.med_y]&lt;=Box_dim(2)/2);</span>
+<span class="comment">%     ind_med_lo=intersect(ind_med_lo,Broken_ind);</span>
+<span class="comment">%     ind_hi=find([atom.y]&gt;Box_dim(2)/2&amp;[atom.y]&gt;([atom.med_y]+1.1*Box_dim(2)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_lo,ind_hi);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).y]-Box_dim(2));</span>
+<span class="comment">%     [atom((ind_wrap)).y]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2hi=find([atom.y]&gt;Box_dim(2)/2+.7*Box_dim(2))</span>
+<span class="comment">%     shift=num2cell([atom(ind_2hi).y]-Box_dim(2));</span>
+<span class="comment">%     [atom((ind_2hi)).y]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2lo=find([atom.y]&lt;Box_dim(2)/2-.7*Box_dim(2))</span>
+<span class="comment">%     shift=num2cell([atom(ind_2lo).y]+Box_dim(2));</span>
+<span class="comment">%     [atom((ind_2lo)).y]=deal(shift{:});</span>
+
+        <span class="keyword">for</span> k=2:size(atom,2)
+            <span class="keyword">if</span> (atom(k).y-mean([atom(1:k-1).y]))&lt;-Box_dim(2)/2
+                atom(k).y=atom(k).y+Box_dim(2);
+            <span class="keyword">elseif</span> (atom(k).y-mean([atom(1:k-1).y]))&gt;Box_dim(2)/2
+                atom(k).y=atom(k).y-Box_dim(2);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> sum(ismember(dim,<span class="string">'z'</span>))&gt;0
+    Broken_molid=[];
+    disp(<span class="string">'Unwrap in z'</span>)
+
+<span class="comment">%     for i=1:max([atom(:).molid])</span>
+<span class="comment">%         ind=find([atom.molid]==i);</span>
+<span class="comment">%         for j=ind(2:end)</span>
+<span class="comment">%             if abs(atom(j).z-atom(j-1).z)&gt;Box_dim(3)/2;</span>
+<span class="comment">%                 Broken_molid=[Broken_molid i];</span>
+<span class="comment">%             end</span>
+<span class="comment">%         end</span>
+<span class="comment">%     end</span>
+<span class="comment">%</span>
+<span class="comment">%     Broken_ind=find(ismember([atom.molid],Broken_molid));</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_hi=find([atom.med_z]&gt;=Box_dim(3)/2);</span>
+<span class="comment">%     ind_med_hi=intersect(ind_med_hi,Broken_ind);</span>
+<span class="comment">%     ind_lo=find([atom.z]&lt;Box_dim(3)/2&amp;[atom.z]&lt;([atom.med_z]-1.1*Box_dim(3)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_hi,ind_lo);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).z]+Box_dim(3));</span>
+<span class="comment">%     [atom((ind_wrap)).z]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_med_lo=find([atom.med_z]&lt;=Box_dim(3)/2);</span>
+<span class="comment">%     ind_med_lo=intersect(ind_med_lo,Broken_ind);</span>
+<span class="comment">%     ind_hi=find([atom.z]&gt;Box_dim(3)/2&amp;[atom.z]&gt;([atom.med_z]+1.1*Box_dim(3)/2));</span>
+<span class="comment">%     ind_wrap=intersect(ind_med_lo,ind_hi);</span>
+<span class="comment">%     shift=num2cell([atom(ind_wrap).z]-Box_dim(3));</span>
+<span class="comment">%     [atom((ind_wrap)).z]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2hi=find([atom.z]&gt;Box_dim(3)/2+.7*Box_dim(3));</span>
+<span class="comment">%     shift=num2cell([atom(ind_2hi).z]-Box_dim(3));</span>
+<span class="comment">%     [atom((ind_2hi)).z]=deal(shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%     ind_2lo=find([atom.z]&lt;Box_dim(3)/2-.7*Box_dim(3));</span>
+<span class="comment">%     shift=num2cell([atom(ind_2lo).z]+Box_dim(3));</span>
+<span class="comment">%     [atom((ind_2lo)).z]=deal(shift{:});</span>
+
+        <span class="keyword">for</span> k=2:size(atom,2)
+            <span class="keyword">if</span> (atom(k).z-mean([atom(1:k-1).z]))&lt;-Box_dim(3)/2
+                atom(k).z=atom(k).z+Box_dim(3);
+            <span class="keyword">elseif</span> (atom(k).z-mean([atom(1:k-1).z]))&gt;Box_dim(3)/2
+                atom(k).z=atom(k).z-Box_dim(3);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        atom = median_atom(atom);
+
+        xshift=0;yshift=0;zshift=0;
+        <span class="keyword">if</span> [atom(1).med_x]&gt;Box_dim(1)
+            xshift=-Box_dim(1);
+        <span class="keyword">elseif</span> [atom(1).med_x]&lt;0
+            xshift=Box_dim(1);
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> [atom(1).med_y]&gt;Box_dim(2)
+            yshift=-Box_dim(2);
+        <span class="keyword">elseif</span> [atom(1).med_y]&lt;0
+            yshift=Box_dim(2);
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> [atom(1).med_z]&gt;Box_dim(3)
+            zshift=-Box_dim(3);
+        <span class="keyword">elseif</span> [atom(1).med_z]&lt;0
+            zshift=Box_dim(3);
+        <span class="keyword">end</span>
+
+        atom=translate_atom(atom,[xshift yshift zshift],<span class="string">'all'</span>);
+
+
+<span class="keyword">end</span>
+
+[atom_Tot([atom_Tot.molid]==m).x]=atom.x;
+[atom_Tot([atom_Tot.molid]==m).y]=atom.y;
+[atom_Tot([atom_Tot.molid]==m).z]=atom.z;
+
+<span class="keyword">end</span>
+
+<span class="comment">% atom_Tot = rmfield(atom_Tot,'med_x');</span>
+<span class="comment">% atom_Tot = rmfield(atom_Tot,'med_y');</span>
+<span class="comment">% atom_Tot = rmfield(atom_Tot,'med_z');</span>
+
+atom = atom_Tot;
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% unwrap_atom.m
+% * This function unwraps the atom struct along the dimension dim
+% * Tested 21/07/2016, there has been bugs.. does it work?
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = unwrap_atom(atom,Box_dim,'x')
+% # atom = unwrap_atom(atom,Box_dim,'xyz')
+%
+function atom = unwrap_atom(atom,Box_dim,dim)
+
+atom_Tot=atom;
+
+for m=unique([atom_Tot.molid])
+
+atom = atom_Tot([atom_Tot.molid]==m);
+%Broken_molid=[];
+if sum(ismember(dim,'x'))>0
+    Broken_molid=[];
+    disp('Unwrap in x')
+    
+%     for i=1:max([atom(:).molid])
+%         ind=find([atom.molid]==i);
+%         for j=ind(2:end)
+%             if abs(atom(j).x-atom(j-1).x)>Box_dim(1)/2;
+%                 Broken_molid=[Broken_molid i];
+%             end
+%         end
+%     end
+%     
+%     Broken_ind=find(ismember([atom.molid],Broken_molid));
+%     
+%     atom = median_atom(atom);
+%     
+%     ind_med_hi=find([atom.med_x]>=Box_dim(1)/2);
+%     ind_med_hi=intersect(ind_med_hi,Broken_ind);
+%     ind_lo=find([atom.x]<Box_dim(1)/2&[atom.x]<([atom.med_x]-1.1*Box_dim(1)/2));
+%     ind_wrap=intersect(ind_med_hi,ind_lo);
+%     shift=num2cell([atom(ind_wrap).x]+Box_dim(1));
+%     [atom((ind_wrap)).x]=deal(shift{:});
+%     
+%     ind_med_lo=find([atom.med_x]<=Box_dim(1)/2);
+%     ind_med_lo=intersect(ind_med_lo,Broken_ind);
+%     ind_hi=find([atom.x]>Box_dim(1)/2);
+%     ind_hi=find([atom.x]>Box_dim(1)/2&[atom.x]>([atom.med_x]+1.1*Box_dim(1)/2));
+%     ind_wrap=intersect(ind_med_lo,ind_hi);
+%     shift=num2cell([atom(ind_wrap).x]-Box_dim(1));
+%     [atom((ind_wrap)).x]=deal(shift{:});
+%     
+%     ind_2hi=find([atom.x]>Box_dim(1)/2+.7*Box_dim(1));
+%     shift=num2cell([atom(ind_2hi).x]-Box_dim(1));
+%     [atom((ind_2hi)).x]=deal(shift{:});
+%     
+%     ind_2lo=find([atom.x]<Box_dim(1)/2-.7*Box_dim(1));
+%     shift=num2cell([atom(ind_2lo).x]+Box_dim(1));
+%     [atom((ind_2lo)).x]=deal(shift{:});
+    
+        for k=2:size(atom,2)
+            if (atom(k).x-mean([atom(1:k-1).x]))<-Box_dim(1)/2
+                atom(k).x=atom(k).x+Box_dim(1);
+            elseif (atom(k).x-mean([atom(1:k-1).x]))>Box_dim(1)/2
+                atom(k).x=atom(k).x-Box_dim(1);
+            end
+        end
+    
+end
+
+if sum(ismember(dim,'y'))>0
+    Broken_molid=[];
+    disp('Unwrap in y')
+    
+%     for i=1:max([atom(:).molid])
+%         ind=find([atom.molid]==i);
+%         for j=ind(2:end)
+%             if abs(atom(j).y-atom(j-1).y)>Box_dim(2)/2;
+%                 Broken_molid=[Broken_molid i];
+%             end
+%         end
+%     end
+%     
+%     Broken_ind=find(ismember([atom.molid],Broken_molid));
+%     
+%     ind_med_hi=find([atom.med_y]>=Box_dim(2)/2);
+%     ind_med_hi=intersect(ind_med_hi,Broken_ind);
+%     ind_lo=find([atom.y]<Box_dim(2)/2&[atom.y]<([atom.med_y]-1.1*Box_dim(2)/2));
+%     ind_wrap=intersect(ind_med_hi,ind_lo);
+%     shift=num2cell([atom(ind_wrap).y]+Box_dim(2));
+%     [atom((ind_wrap)).y]=deal(shift{:});
+%     
+%     ind_med_lo=find([atom.med_y]<=Box_dim(2)/2);
+%     ind_med_lo=intersect(ind_med_lo,Broken_ind);
+%     ind_hi=find([atom.y]>Box_dim(2)/2&[atom.y]>([atom.med_y]+1.1*Box_dim(2)/2));
+%     ind_wrap=intersect(ind_med_lo,ind_hi);
+%     shift=num2cell([atom(ind_wrap).y]-Box_dim(2));
+%     [atom((ind_wrap)).y]=deal(shift{:});
+%     
+%     ind_2hi=find([atom.y]>Box_dim(2)/2+.7*Box_dim(2))
+%     shift=num2cell([atom(ind_2hi).y]-Box_dim(2));
+%     [atom((ind_2hi)).y]=deal(shift{:});
+%     
+%     ind_2lo=find([atom.y]<Box_dim(2)/2-.7*Box_dim(2))
+%     shift=num2cell([atom(ind_2lo).y]+Box_dim(2));
+%     [atom((ind_2lo)).y]=deal(shift{:});
+    
+        for k=2:size(atom,2)
+            if (atom(k).y-mean([atom(1:k-1).y]))<-Box_dim(2)/2
+                atom(k).y=atom(k).y+Box_dim(2);
+            elseif (atom(k).y-mean([atom(1:k-1).y]))>Box_dim(2)/2
+                atom(k).y=atom(k).y-Box_dim(2);
+            end
+        end
+    
+end
+
+if sum(ismember(dim,'z'))>0
+    Broken_molid=[];
+    disp('Unwrap in z')
+    
+%     for i=1:max([atom(:).molid])
+%         ind=find([atom.molid]==i);
+%         for j=ind(2:end)
+%             if abs(atom(j).z-atom(j-1).z)>Box_dim(3)/2;
+%                 Broken_molid=[Broken_molid i];
+%             end
+%         end
+%     end
+%     
+%     Broken_ind=find(ismember([atom.molid],Broken_molid));
+%     
+%     ind_med_hi=find([atom.med_z]>=Box_dim(3)/2);
+%     ind_med_hi=intersect(ind_med_hi,Broken_ind);
+%     ind_lo=find([atom.z]<Box_dim(3)/2&[atom.z]<([atom.med_z]-1.1*Box_dim(3)/2));
+%     ind_wrap=intersect(ind_med_hi,ind_lo);
+%     shift=num2cell([atom(ind_wrap).z]+Box_dim(3));
+%     [atom((ind_wrap)).z]=deal(shift{:});
+%     
+%     ind_med_lo=find([atom.med_z]<=Box_dim(3)/2);
+%     ind_med_lo=intersect(ind_med_lo,Broken_ind);
+%     ind_hi=find([atom.z]>Box_dim(3)/2&[atom.z]>([atom.med_z]+1.1*Box_dim(3)/2));
+%     ind_wrap=intersect(ind_med_lo,ind_hi);
+%     shift=num2cell([atom(ind_wrap).z]-Box_dim(3));
+%     [atom((ind_wrap)).z]=deal(shift{:});
+%     
+%     ind_2hi=find([atom.z]>Box_dim(3)/2+.7*Box_dim(3));
+%     shift=num2cell([atom(ind_2hi).z]-Box_dim(3));
+%     [atom((ind_2hi)).z]=deal(shift{:});
+%     
+%     ind_2lo=find([atom.z]<Box_dim(3)/2-.7*Box_dim(3));
+%     shift=num2cell([atom(ind_2lo).z]+Box_dim(3));
+%     [atom((ind_2lo)).z]=deal(shift{:});
+
+        for k=2:size(atom,2)
+            if (atom(k).z-mean([atom(1:k-1).z]))<-Box_dim(3)/2
+                atom(k).z=atom(k).z+Box_dim(3);
+            elseif (atom(k).z-mean([atom(1:k-1).z]))>Box_dim(3)/2
+                atom(k).z=atom(k).z-Box_dim(3);
+            end
+        end
+        
+        atom = median_atom(atom);
+        
+        xshift=0;yshift=0;zshift=0;
+        if [atom(1).med_x]>Box_dim(1)
+            xshift=-Box_dim(1);
+        elseif [atom(1).med_x]<0
+            xshift=Box_dim(1);
+        end
+        
+        if [atom(1).med_y]>Box_dim(2)
+            yshift=-Box_dim(2);
+        elseif [atom(1).med_y]<0
+            yshift=Box_dim(2);
+        end
+        
+        if [atom(1).med_z]>Box_dim(3)
+            zshift=-Box_dim(3);
+        elseif [atom(1).med_z]<0
+            zshift=Box_dim(3);
+        end
+    
+        atom=translate_atom(atom,[xshift yshift zshift],'all');
+        
+        
+end
+
+[atom_Tot([atom_Tot.molid]==m).x]=atom.x;
+[atom_Tot([atom_Tot.molid]==m).y]=atom.y;
+[atom_Tot([atom_Tot.molid]==m).z]=atom.z;
+
+end
+
+% atom_Tot = rmfield(atom_Tot,'med_x');
+% atom_Tot = rmfield(atom_Tot,'med_y');
+% atom_Tot = rmfield(atom_Tot,'med_z');
+
+atom = atom_Tot;
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,21 @@
+[ bondtypes ]
+;i      j	   func     b0	    kb
+;OW      HW		1   	0.1 	463700
+;Ow      Hw		1   	0.1 	463700
+Oh      H		1   	0.1 	437225 ; 3605 cm-1 Bonds - should give 3626 cm-1 due to small blueshift - scale by 0.95 to give 0.95 if running edges with nrexcl 1
+Ohmg    H		1   	0.1 	437225 ; 3605 cm-1 Bonds - should give 3626 cm-1 due to small blueshift -scale by 0.95 to give 0.95 if running edges with nrexcl 1
+Oalh    H		1   	0.1 	437225 ; 3605 cm-1 Bonds - should give 3626 cm-1 due to small blueshift -scale by 0.95 to give 0.95 if running edges with nrexcl 1
+Oalhh   H		1   	0.1 	437225 ; 3605 cm-1 Bonds - should give 3626 cm-1 due to small blueshift -scale by 0.95 to give 0.95 if running edges with nrexcl 1
+Osih    H		1   	0.1 	437225 ; 3605 cm-1 Bonds - should give 3626 cm-1 due to small blueshift -scale by 0.95 to give 0.95 if running edges with nrexcl 1
+Al		Oalh    1   	0.205 	463700 ; Dummy bonds scaled by 0.95 to give ~0.195
+Si		Osih	1   	0.165 	463700 ; Dummy bonds scaled by 0.95 to give ~0.157
+
+[ angletypes ]
+;i      j       k	func	th0	cth
+;HW       OW      HW	1	109.47	383
+;Hw       Ow      Hw	1	109.47	383
+H        Oalhh   H	1	109.47	383
+Al       Oalh    H	1	110.00	83.68  ; Pouvreau, Greathouse, Cygan, Kalinichev 2017
+Mgo      Oalh    H	1	110.00 	51.208 ; Pouvreau, Greathouse, Cygan, Kalinichev 2017
+Si       Osih    H	1	109.47	251.04
+

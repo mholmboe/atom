@@ -1,0 +1,485 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>write_atom_pdb.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="write_atom_pdb.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>write_atom_pdb.m</h1><!--introduction--><div><ul><li>This function writes an pdb file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Remove this if you do not need it...</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pdb(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pdb(atom,Box_dim,filename_out,varargin)
+</pre><pre class="codeinput"><span class="keyword">if</span> regexp(filename_out,<span class="string">'.pdb'</span>) ~= false
+    filename_out = filename_out;
+<span class="keyword">else</span>
+    filename_out = strcat(filename_out,<span class="string">'.pdb'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+<span class="keyword">end</span>
+
+nAtoms=length(atom);
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, <span class="string">'wt'</span>);
+
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'REMARK    GENERATED BY MATLAB'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'REMARK    THIS IS A SIMULATION BOX'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'MODEL        1'</span>);
+
+<span class="comment">% % %  1 -  6       Record name    "CRYST1"</span>
+<span class="comment">% % %  7 - 15       Real(9.3)      a (Angstroms)</span>
+<span class="comment">% % % 16 - 24       Real(9.3)      b (Angstroms)</span>
+<span class="comment">% % % 25 - 33       Real(9.3)      c (Angstroms)</span>
+<span class="comment">% % % 34 - 40       Real(7.2)      alpha (degrees)</span>
+<span class="comment">% % % 41 - 47       Real(7.2)      beta (degrees)</span>
+<span class="comment">% % % 48 - 54       Real(7.2)      gamma (degrees)</span>
+<span class="comment">% % % 56 - 66       LString        Space group</span>
+<span class="comment">% % % 67 - 70       Integer        Z value</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % Example:</span>
+<span class="comment">% % %</span>
+<span class="comment">% % %          1         2         3         4         5         6         7</span>
+<span class="comment">% % % 1234567890123456789012345678901234567890123456789012345678901234567890</span>
+<span class="comment">% % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8</span>
+
+<span class="comment">% % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1</span>
+disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'</span>)
+<span class="keyword">if</span> length(Box_dim)==3
+<span class="comment">%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);</span>
+    fprintf(fid, <span class="string">'%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n'</span>,<span class="string">'CRYST1'</span>, Box_dim(1:3), 90.00, 90.00, 90.00, <span class="string">'P1'</span>); <span class="comment">% For mercury</span>
+<span class="keyword">elseif</span> length(Box_dim)==9
+
+    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+<span class="comment">%     if sum(find(Box_dim(4:end)))&lt;0.0001;</span>
+<span class="comment">%         Box_dim=Box_dim(1:3);</span>
+<span class="comment">%     end</span>
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+
+    <span class="comment">%     a=Box_dim(1);</span>
+    <span class="comment">%     b=Box_dim(2);</span>
+    <span class="comment">%     c=Box_dim(3);</span>
+    <span class="comment">%     xy=Box_dim(6);</span>
+    <span class="comment">%     xz=Box_dim(8);</span>
+    <span class="comment">%     yz=Box_dim(9);</span>
+    <span class="comment">%     lx = a;</span>
+    <span class="comment">%     ly = (b^2-xy^2)^.5;</span>
+    <span class="comment">%     lz = (c^2 - xz^2 - yz^2)^0.5;</span>
+    <span class="comment">%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))</span>
+    <span class="comment">%     beta=rad2deg(acos(xz/c));</span>
+    <span class="comment">%     gamma=rad2deg(acos(xy/b));</span>
+<span class="comment">%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);</span>
+      fprintf(fid, <span class="string">'%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n'</span>,<span class="string">'CRYST1'</span>, a, b, c, alfa, beta, gamma, <span class="string">'P1'</span>); <span class="comment">% For mercury</span>
+<span class="keyword">else</span>
+    disp(<span class="string">'No proper box_dim information'</span>)
+<span class="keyword">end</span>
+
+<span class="comment">% See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html</span>
+<span class="comment">% COLUMNS        DATA  TYPE    FIELD        DEFINITION</span>
+<span class="comment">% -------------------------------------------------------------------------------------</span>
+<span class="comment">% 1 -  6         Record name   "ATOM  "</span>
+<span class="comment">% 7 - 11         Integer       Serial       Atom  serial number.</span>
+<span class="comment">% 13 - 16        Atom          Atom type    Atom name.   -&gt;17 by MH</span>
+<span class="comment">% 17             Character     AltLoc       Alternate location indicator.</span>
+<span class="comment">% 18 - 20        Residue name  ResName      Residue name.</span>
+<span class="comment">% 22             Character     ChainID      Chain identifier.</span>
+<span class="comment">% 23 - 26        Integer       ResSeq       Residue sequence number.</span>
+<span class="comment">% 27             AChar         Code         Code for insertion of residues.</span>
+<span class="comment">% 31 - 38        Real(8.3)     X            Orthogonal coordinates for X in Angstroms.</span>
+<span class="comment">% 39 - 46        Real(8.3)     Y            Orthogonal coordinates for Y in Angstroms.</span>
+<span class="comment">% 47 - 54        Real(8.3)     Z            Orthogonal coordinates for Z in Angstroms.</span>
+<span class="comment">% 55 - 60        Real(6.2)     Occupancy    Occupancy.</span>
+<span class="comment">% 61 - 66        Real(6.2)     TempFactor   Temperature  factor.</span>
+<span class="comment">% 73 - 76        LString(4)    Segment identifier, left-justified. % Not used</span>
+<span class="comment">% 77 - 78        LString(2)    Element      Element symbol, right-justified.</span>
+<span class="comment">% 79 - 80        LString(2)    Charge       Charge on the atom.</span>
+
+<span class="comment">% .pqr format usually something like</span>
+<span class="comment">% Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius</span>
+<span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>)
+    [atom.occupancy]=deal(1);
+<span class="keyword">end</span>
+
+
+
+<span class="keyword">for</span> i=1:size(atom,2)
+    <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};atom(i).formalcharge=4;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SY'</span>},2);atom(i).element={<span class="string">'Si'</span>};atom(i).formalcharge=4;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SC'</span>},2);atom(i).element={<span class="string">'Si'</span>};atom(i).formalcharge=4;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'S'</span>},1);atom(i).element={<span class="string">'S'</span>};atom(i).formalcharge=2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'AC'</span>},2);atom(i).element={<span class="string">'Al'</span>};atom(i).formalcharge=3;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'AY'</span>},2);atom(i).element={<span class="string">'Al'</span>};atom(i).formalcharge=3;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};atom(i).formalcharge=3;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};atom(i).formalcharge=2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};atom(i).formalcharge=3;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'O'</span>},1);atom(i).element={<span class="string">'O'</span>};atom(i).formalcharge=-2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};atom(i).formalcharge=1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'K'</span>},1);atom(i).element={<span class="string">'K'</span>};atom(i).formalcharge=1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Na'</span>},1);atom(i).element={<span class="string">'Na'</span>};atom(i).formalcharge=0;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Cl'</span>},2);atom(i).element={<span class="string">'Cl'</span>};atom(i).formalcharge=-1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Br'</span>},2);atom(i).element={<span class="string">'Br'</span>};atom(i).formalcharge=-1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ca'</span>},2);atom(i).element={<span class="string">'Ca'</span>};atom(i).formalcharge=2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'C'</span>},1);atom(i).element={<span class="string">'C'</span>};atom(i).formalcharge=0;
+    <span class="keyword">else</span>
+        [atom(i).element]=atom(i).type;atom(i).formalcharge=0;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ATOM      1   Na  Na A   1       9.160   6.810   1.420  1.00  1.00          Na 0</span>
+<span class="comment">% ATOM      1  Si  MMT A   1       2.140   8.380   2.710  1.00  0.00           S</span>
+</pre><h2 id="5">Remove this if you do not need it...</h2><pre class="codeinput"><span class="keyword">for</span> i = 1:nAtoms
+    <span class="keyword">if</span> size(atom(i).type{1},2) &gt; 4
+        disp(<span class="string">'Hey, this atom type name is actually too long for pdb'</span>)
+        disp(<span class="string">'chopping it down to 4 characters'</span>)
+        [atom(i).index atom(i).type]
+        atom(i).type=atom(i).type{1}(1:4);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Try also this if problems arise</span>
+<span class="comment">% fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s\n',Atom_section{1:12});</span>
+<span class="comment">%</span>
+<span class="keyword">for</span> i = 1:nAtoms
+    Atom_section(1:12) = [<span class="string">'ATOM  '</span>, atom(i).index, atom(i).type, atom(i).resname, <span class="string">'A'</span>,atom(i).molid, atom(i).x, atom(i).y, atom(i).z,atom(i).occupancy,1,atom(i).element];
+    fprintf(fid,<span class="string">'%-6s%5i  %-4s%3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s\n'</span>,Atom_section{1:12});
+<span class="keyword">end</span>
+
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     Atom_section(1:13) = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,1,1,atom(i).element,atom(i).formalcharge];</span>
+<span class="comment">%     fprintf(fid,'%-6s%5i %-4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s%2i\n',Atom_section{1:13});</span>
+<span class="comment">% end</span>
+
+<span class="comment">% Write conect records</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    <span class="keyword">if</span> nargin&gt;4
+        short_r=cell2mat(varargin(1));
+        long_r=cell2mat(varargin(2));
+    <span class="keyword">else</span>
+        short_r=1.25;
+        long_r=2.25;
+    <span class="keyword">end</span>
+
+    short_r
+    long_r
+
+    atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+    <span class="comment">%     assignin('caller','Dist_matrix',Dist_matrix);</span>
+    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
+    assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</span>,nAngles);
+
+    B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
+    b1=sortrows(B);
+    <span class="keyword">for</span> i=min(b1(:,1)):max(b1(:,1))
+        ind=find(b1(:,1)==i);
+        b2=b1(ind,2);
+        fprintf(fid,<span class="string">'CONECT%5i%5i%5i%5i%5i%5i%5i'</span>,[i;b2]);
+        fprintf(fid,<span class="string">'\n'</span>);
+    <span class="keyword">end</span>
+    fprintf(fid,<span class="string">'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\n'</span>,[0    0    0    0    0    0    0    0 nAtoms    0 i    0]);
+    fprintf(fid,<span class="string">'END'</span>);
+    fprintf(fid,<span class="string">'\n'</span>);
+<span class="keyword">else</span>
+    fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'TER'</span>);
+    fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'ENDMDL'</span>);
+<span class="keyword">end</span>
+fclose(fid);
+disp(<span class="string">'.pdb structure file written'</span>)
+<span class="comment">%</span>
+<span class="comment">% assignin('caller','Bond_index',Bond_index);</span>
+<span class="comment">% assignin('caller','Angle_index',Angle_index);</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% write_atom_pdb.m
+% * This function writes an pdb file from the atom struct
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # write_atom_pdb(atom,Box_dim,filename_out)
+%
+function write_atom_pdb(atom,Box_dim,filename_out,varargin)
+
+if regexp(filename_out,'.pdb') ~= false
+    filename_out = filename_out;
+else
+    filename_out = strcat(filename_out,'.pdb');
+end
+
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+end
+
+nAtoms=length(atom);
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, 'wt');
+
+fprintf(fid, '%s\n','REMARK    GENERATED BY MATLAB');
+fprintf(fid, '%s\n','REMARK    THIS IS A SIMULATION BOX');
+fprintf(fid, '%s\n','MODEL        1');
+
+% % %  1 -  6       Record name    "CRYST1"
+% % %  7 - 15       Real(9.3)      a (Angstroms)
+% % % 16 - 24       Real(9.3)      b (Angstroms)
+% % % 25 - 33       Real(9.3)      c (Angstroms)
+% % % 34 - 40       Real(7.2)      alpha (degrees)
+% % % 41 - 47       Real(7.2)      beta (degrees)
+% % % 48 - 54       Real(7.2)      gamma (degrees)
+% % % 56 - 66       LString        Space group
+% % % 67 - 70       Integer        Z value
+% % %
+% % % Example:
+% % %
+% % %          1         2         3         4         5         6         7
+% % % 1234567890123456789012345678901234567890123456789012345678901234567890
+% % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8
+
+% % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
+disp('Assuming P1 space group. Box can still be triclinic')
+if length(Box_dim)==3
+%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
+    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1'); % For mercury
+elseif length(Box_dim)==9
+    
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+%     if sum(find(Box_dim(4:end)))<0.0001;
+%         Box_dim=Box_dim(1:3);
+%     end
+    
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+    
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    
+    %     a=Box_dim(1);
+    %     b=Box_dim(2);
+    %     c=Box_dim(3);
+    %     xy=Box_dim(6);
+    %     xz=Box_dim(8);
+    %     yz=Box_dim(9);
+    %     lx = a;
+    %     ly = (b^2-xy^2)^.5;
+    %     lz = (c^2 - xz^2 - yz^2)^0.5;
+    %     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
+    %     beta=rad2deg(acos(xz/c));
+    %     gamma=rad2deg(acos(xy/b));
+%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
+      fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
+else
+    disp('No proper box_dim information')
+end
+
+% See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html
+% COLUMNS        DATA  TYPE    FIELD        DEFINITION
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% 1 -  6         Record name   "ATOM  "
+% 7 - 11         Integer       Serial       Atom  serial number.
+% 13 - 16        Atom          Atom type    Atom name.   ->17 by MH
+% 17             Character     AltLoc       Alternate location indicator.
+% 18 - 20        Residue name  ResName      Residue name.
+% 22             Character     ChainID      Chain identifier.
+% 23 - 26        Integer       ResSeq       Residue sequence number.
+% 27             AChar         Code         Code for insertion of residues.
+% 31 - 38        Real(8.3)     X            Orthogonal coordinates for X in Angstroms.
+% 39 - 46        Real(8.3)     Y            Orthogonal coordinates for Y in Angstroms.
+% 47 - 54        Real(8.3)     Z            Orthogonal coordinates for Z in Angstroms.
+% 55 - 60        Real(6.2)     Occupancy    Occupancy.
+% 61 - 66        Real(6.2)     TempFactor   Temperature  factor.
+% 73 - 76        LString(4)    Segment identifier, left-justified. % Not used
+% 77 - 78        LString(2)    Element      Element symbol, right-justified.
+% 79 - 80        LString(2)    Charge       Charge on the atom.
+
+% .pqr format usually something like
+% Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
+if ~isfield(atom,'occupancy')
+    [atom.occupancy]=deal(1);
+end
+    
+
+
+for i=1:size(atom,2)
+    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+    elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+    elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+    elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
+    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=0;
+    elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;
+    elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;
+    elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'C'},1);atom(i).element={'C'};atom(i).formalcharge=0;
+    else
+        [atom(i).element]=atom(i).type;atom(i).formalcharge=0;
+    end
+end
+
+% ATOM      1   Na  Na A   1       9.160   6.810   1.420  1.00  1.00          Na 0
+% ATOM      1  Si  MMT A   1       2.140   8.380   2.710  1.00  0.00           S
+
+
+%% Remove this if you do not need it...
+for i = 1:nAtoms
+    if size(atom(i).type{1},2) > 4
+        disp('Hey, this atom type name is actually too long for pdb')
+        disp('chopping it down to 4 characters')
+        [atom(i).index atom(i).type]
+        atom(i).type=atom(i).type{1}(1:4);
+    end
+end
+
+% Try also this if problems arise
+% fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s\n',Atom_section{1:12});
+%
+for i = 1:nAtoms
+    Atom_section(1:12) = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,atom(i).occupancy,1,atom(i).element];
+    fprintf(fid,'%-6s%5i  %-4s%3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s\n',Atom_section{1:12});
+end
+
+% for i = 1:nAtoms
+%     Atom_section(1:13) = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,1,1,atom(i).element,atom(i).formalcharge];
+%     fprintf(fid,'%-6s%5i %-4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s%2i\n',Atom_section{1:13});
+% end
+
+% Write conect records
+
+if nargin>3
+    if nargin>4
+        short_r=cell2mat(varargin(1));
+        long_r=cell2mat(varargin(2));
+    else
+        short_r=1.25;
+        long_r=2.25;
+    end
+    
+    short_r
+    long_r
+    
+    atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+    %     assignin('caller','Dist_matrix',Dist_matrix);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Angle_index',Angle_index);
+    assignin('caller','nBonds',nBonds);
+    assignin('caller','nAngles',nAngles);
+    
+    B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
+    b1=sortrows(B);
+    for i=min(b1(:,1)):max(b1(:,1))
+        ind=find(b1(:,1)==i);
+        b2=b1(ind,2);
+        fprintf(fid,'CONECT%5i%5i%5i%5i%5i%5i%5i',[i;b2]);
+        fprintf(fid,'\n');
+    end
+    fprintf(fid,'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\n',[0    0    0    0    0    0    0    0 nAtoms    0 i    0]);
+    fprintf(fid,'END');
+    fprintf(fid,'\n');
+else
+    fprintf(fid, '%s\n','TER');
+    fprintf(fid, '%s\n','ENDMDL');
+end
+fclose(fid);
+disp('.pdb structure file written')
+%
+% assignin('caller','Bond_index',Bond_index);
+% assignin('caller','Angle_index',Angle_index);
+
+
+
+##### SOURCE END #####
+--></body></html>

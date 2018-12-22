@@ -1,0 +1,374 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_xtc.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_xtc.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_xtc.m</h1><!--introduction--><div><ul><li>This function imports a structure file and a xtc file and relies on the 'mxdrfile' by Jon Kapla, see below</li><li><a href="http://kaplajon.github.io/mxdrfile/">http://kaplajon.github.io/mxdrfile/</a></li><li>Hence you need to download his mxdrfile package and add it to your Matlab path, see the installation inctructions on Jon's website.</li><li>This particular function basically just stores the trajectory with coordinates as columns and timesteps as rows, and writes the box dimensions to Box_dim</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_xtc('conf.gro',traj.xtc)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10,10000)</li></ol></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% This script imports an xtc trajectory file</span>
+<span class="comment">% xtc files with libxdrfile from gmx</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% This file is part of mxdrfile.</span>
+<span class="comment">%</span>
+<span class="comment">% Copyright &Acirc;&copy; 2014 Jon Kapla. All Rights Reserved.</span>
+<span class="comment">%</span>
+<span class="comment">% Redistribution and use in source and binary forms, with or without</span>
+<span class="comment">% modification, are permitted provided that the following conditions are</span>
+<span class="comment">% met:</span>
+<span class="comment">%</span>
+<span class="comment">% 1. Redistributions of source code must retain the above copyright</span>
+<span class="comment">%    notice,this list of conditions and the following disclaimer.</span>
+<span class="comment">%</span>
+<span class="comment">% 2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="comment">%    notice, this list of conditions and the following disclaimer in the</span>
+<span class="comment">%    documentation and/or other materials provided with the distribution.</span>
+<span class="comment">%</span>
+<span class="comment">% 3. The name of the author may not be used to endorse or promote products</span>
+<span class="comment">%    derived from this software without specific prior written permission.</span>
+<span class="comment">%</span>
+<span class="comment">% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"</span>
+<span class="comment">% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="comment">% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</span>
+<span class="comment">% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY</span>
+<span class="comment">% DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="comment">% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span>
+<span class="comment">% SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</span>
+<span class="comment">% HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</span>
+<span class="comment">% STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN</span>
+<span class="comment">% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="comment">% POSSIBILITY OF SUCH DAMAGE.</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="keyword">function</span> atom = import_xtc(filenameconf,filenamextc,varargin)
+
+PATH=getenv(<span class="string">'PATH'</span>);
+
+setenv(<span class="string">'PATH'</span>, [getenv(<span class="string">'PATH'</span>),<span class="string">':'</span>,<span class="string">'/usr/local/gromacs-2016.2/bin'</span>]);
+
+<span class="keyword">if</span> regexp(filenameconf,<span class="string">'.gro'</span>) &gt; 1
+    disp(<span class="string">'Found .gro file'</span>);
+    atom=import_atom_gro(filenameconf);
+<span class="keyword">elseif</span> regexp(filenameconf,<span class="string">'.pdb'</span>) &gt; 1
+    disp(<span class="string">'Found .pdb file'</span>);
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+<span class="keyword">elseif</span> regexp(filenameconf,<span class="string">'.xyz'</span>) &gt; 1
+    disp(<span class="string">'Found .xyz file'</span>);
+    disp(<span class="string">'Does it carry any Box size info?'</span>);
+    disp(<span class="string">'Its better to use a .ggro or .pdb file...'</span>);
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+<span class="keyword">else</span>
+    disp(<span class="string">'Unknown format of the structure file,'</span>);
+    disp(<span class="string">'it should be a .gro or .pdb file'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;2
+    stride=varargin{1};
+<span class="keyword">else</span>
+    stride=1;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    MaxFrames=varargin{2};
+<span class="keyword">else</span>
+    MaxFrames=20000; <span class="comment">% Decrease this one if slow...</span>
+<span class="keyword">end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+loadmxdrfile
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+[~,rTraj]=inittraj(filenamextc,<span class="string">'r'</span>);
+nAtoms=rTraj.natoms;
+Box_dim=zeros(MaxFrames,9);
+traj=zeros(MaxFrames,3*nAtoms);
+trajstep=zeros(MaxFrames,1);
+trajtime=zeros(MaxFrames,1);
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+rframe=0;frame=1;
+<span class="keyword">while</span> true <span class="comment">% Frameloop</span>
+    [rstatus,rtraj]=read_xtc(rTraj);
+    <span class="keyword">if</span>(not(rstatus))
+        rframe=rframe+stride;
+    <span class="keyword">else</span>
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+
+    trajstep(frame,1)=rtraj.step;
+    trajtime(frame,1)=rtraj.time;
+
+    traj(frame,1:3:end)=rtraj.x.value(1,:)';
+    traj(frame,2:3:end)=rtraj.x.value(2,:)';
+    traj(frame,3:3:end)=rtraj.x.value(3,:)';
+
+    Box_dim(frame,1)=rtraj.box.value(1,1);
+    Box_dim(frame,2)=rtraj.box.value(2,2);
+    Box_dim(frame,3)=rtraj.box.value(3,3);
+
+    Box_dim(frame,4)=rtraj.box.value(2,1);
+    Box_dim(frame,5)=rtraj.box.value(3,1);
+
+    Box_dim(frame,6)=rtraj.box.value(1,2); <span class="comment">% #6 xy</span>
+
+    Box_dim(frame,7)=rtraj.box.value(3,2);
+
+    Box_dim(frame,8)=rtraj.box.value(1,3); <span class="comment">% #8 xz</span>
+    Box_dim(frame,9)=rtraj.box.value(2,3); <span class="comment">% #9 yz</span>
+
+    frame=frame+1;
+
+    <span class="keyword">if</span> mod(rframe,100)==0
+        frame-1
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+[status,rTraj]=closetraj(rTraj);
+
+traj(frame:end,:)=[];
+Box_dim(frame:end,:)=[];
+<span class="keyword">if</span> sum(sum(Box_dim(:,4:9))) == 0
+    Box_dim(:,4:end)=[];
+<span class="keyword">end</span>
+
+traj=10*traj; <span class="comment">% nm to &Aring;</span>
+Box_dim=10*Box_dim; <span class="comment">% nm to &Aring;</span>
+
+disp(<span class="string">'Note the units, length in &Aring; and not in nm'</span>)
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom)
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj)
+assignin(<span class="string">'caller'</span>,<span class="string">'trajstep'</span>,trajstep)
+assignin(<span class="string">'caller'</span>,<span class="string">'trajtime'</span>,trajtime)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_xtc.m
+% * This function imports a structure file and a xtc file
+% and relies on the 'mxdrfile' by Jon Kapla, see below
+% * http://kaplajon.github.io/mxdrfile/
+% * Hence you need to download his mxdrfile package and add it to your
+% Matlab path, see the installation inctructions on Jon's website.
+% * This particular function basically just stores the trajectory with 
+% coordinates as columns and timesteps as rows, and writes the box 
+% dimensions to Box_dim
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_xtc('conf.gro',traj.xtc)
+% # atom = import_xtc('conf.pdb',traj.xtc,10)
+% # atom = import_xtc('conf.pdb',traj.xtc,10,10000)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This script imports an xtc trajectory file
+% xtc files with libxdrfile from gmx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This file is part of mxdrfile.
+%
+% Copyright Â© 2014 Jon Kapla. All Rights Reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are
+% met:
+%
+% 1. Redistributions of source code must retain the above copyright
+%    notice,this list of conditions and the following disclaimer.
+%
+% 2. Redistributions in binary form must reproduce the above copyright
+%    notice, this list of conditions and the following disclaimer in the
+%    documentation and/or other materials provided with the distribution.
+%
+% 3. The name of the author may not be used to endorse or promote products
+%    derived from this software without specific prior written permission.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"
+% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+% DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+% SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+% HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+% STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+% POSSIBILITY OF SUCH DAMAGE.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function atom = import_xtc(filenameconf,filenamextc,varargin)
+
+PATH=getenv('PATH');
+
+setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);
+
+if regexp(filenameconf,'.gro') > 1
+    disp('Found .gro file');
+    atom=import_atom_gro(filenameconf);
+elseif regexp(filenameconf,'.pdb') > 1
+    disp('Found .pdb file');
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+elseif regexp(filenameconf,'.xyz') > 1
+    disp('Found .xyz file');
+    disp('Does it carry any Box size info?');
+    disp('Its better to use a .ggro or .pdb file...');
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+else
+    disp('Unknown format of the structure file,');
+    disp('it should be a .gro or .pdb file');
+end
+
+if nargin>2
+    stride=varargin{1};
+else
+    stride=1;
+end
+
+if nargin>3
+    MaxFrames=varargin{2};
+else
+    MaxFrames=20000; % Decrease this one if slow...
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+loadmxdrfile
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[~,rTraj]=inittraj(filenamextc,'r');
+nAtoms=rTraj.natoms;
+Box_dim=zeros(MaxFrames,9);
+traj=zeros(MaxFrames,3*nAtoms);
+trajstep=zeros(MaxFrames,1);
+trajtime=zeros(MaxFrames,1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rframe=0;frame=1;
+while true % Frameloop
+    [rstatus,rtraj]=read_xtc(rTraj);
+    if(not(rstatus))
+        rframe=rframe+stride;
+    else
+        break
+    end
+    
+    trajstep(frame,1)=rtraj.step;
+    trajtime(frame,1)=rtraj.time;
+
+    traj(frame,1:3:end)=rtraj.x.value(1,:)';
+    traj(frame,2:3:end)=rtraj.x.value(2,:)';
+    traj(frame,3:3:end)=rtraj.x.value(3,:)';
+    
+    Box_dim(frame,1)=rtraj.box.value(1,1);
+    Box_dim(frame,2)=rtraj.box.value(2,2);
+    Box_dim(frame,3)=rtraj.box.value(3,3);
+    
+    Box_dim(frame,4)=rtraj.box.value(2,1);
+    Box_dim(frame,5)=rtraj.box.value(3,1);
+    
+    Box_dim(frame,6)=rtraj.box.value(1,2); % #6 xy
+    
+    Box_dim(frame,7)=rtraj.box.value(3,2);
+         
+    Box_dim(frame,8)=rtraj.box.value(1,3); % #8 xz
+    Box_dim(frame,9)=rtraj.box.value(2,3); % #9 yz
+
+    frame=frame+1;
+    
+    if mod(rframe,100)==0
+        frame-1
+    end
+    
+end
+[status,rTraj]=closetraj(rTraj);
+
+traj(frame:end,:)=[];
+Box_dim(frame:end,:)=[];
+if sum(sum(Box_dim(:,4:9))) == 0
+    Box_dim(:,4:end)=[];
+end
+
+traj=10*traj; % nm to Å
+Box_dim=10*Box_dim; % nm to Å
+
+disp('Note the units, length in Å and not in nm')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+delete('./#*'); delete('./temp*');
+assignin('caller','atom',atom)
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','traj',traj)
+assignin('caller','trajstep',trajstep)
+assignin('caller','trajtime',trajtime)
+assignin('caller','XYZ_labels',XYZ_labels)
+assignin('caller','XYZ_data',XYZ_data)
+
+##### SOURCE END #####
+--></body></html>

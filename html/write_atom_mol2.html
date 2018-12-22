@@ -1,0 +1,283 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>write_atom_mol2.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="write_atom_mol2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>write_atom_mol2.m</h1><!--introduction--><div><ul><li>This function writes a basic file in the mol2 format from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_mol2(atom,Box_dim,filename_out,varargin)
+
+filename_out=strcat(filename_out,<span class="string">'.mol2'</span>);
+
+<span class="keyword">if</span> nargin &gt; 3
+    short_r=cell2mat(varargin(1));
+    long_r=cell2mat(varargin(2));
+<span class="keyword">else</span>
+    short_r=1.25;
+    long_r=2.25;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;5;
+    ffname=varargin(3);
+    <span class="keyword">if</span> nargin&gt;6;
+        watermodel=varargin(4);
+    <span class="keyword">else</span>
+        disp(<span class="string">'Unknown watermodel, will try SPC/E'</span>)
+        watermodel=<span class="string">'SPC/E'</span>;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5);
+        clayff_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_clayff_charge(atom)
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface'</span>);
+        interface_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_interface_charge(atom)
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface15'</span>);
+        interface15_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_interface_charge(atom)
+    <span class="keyword">else</span>
+        disp(<span class="string">'Unknown forcefield, will try clayff'</span>)
+        clayff_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_clayff_charge(atom)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% This file could write out the Box_dim as a comment!</span>
+atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+residuename=<span class="string">'MOL'</span>;
+<span class="comment">%filename_out='MMT_matlab.mol2';</span>
+nAtoms=size(atom,2);
+nBonds=size(Bond_index,1);
+
+Atom_label=sort(unique([atom.type]'));
+Element=[atom.type]'; Atom_label_ID=zeros(size(Element,1),1);
+<span class="comment">% clayff_param(unique([atom(:).type]),'SPC/E');</span>
+<span class="keyword">for</span> i=1:size(Element,1)
+    Atom_label_ID(i,1)=find(ismember(Atom_label,strtrim(atom(i).type))==1);
+    atom(i).charge=Charge(Atom_label_ID(i,1));
+    Element(i)={Element{i}(1)};
+    <span class="keyword">if</span> strcmp(Element(i),{<span class="string">'A'</span>})
+        Element(i)={<span class="string">'Al'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'M'</span>})
+        Element(i)={<span class="string">'Mg'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'S'</span>})
+        Element(i)={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'F'</span>})
+        Element(i)={<span class="string">'Fe'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'H'</span>})
+        Element(i)={<span class="string">'H'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'O'</span>})
+        Element(i)={<span class="string">'O'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'N'</span>})
+        Element(i)={<span class="string">'Na'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'C'</span>})
+        Element(i)={<span class="string">'Ca'</span>};
+    <span class="keyword">elseif</span> strcmp(Element(i),{<span class="string">'K'</span>})
+        Element(i)={<span class="string">'K'</span>};
+    <span class="keyword">else</span>
+        Element(i)=Element(i);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+nAtoms=size([atom.x],2)
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, <span class="string">'wt'</span>);
+fprintf(fid, <span class="string">'@&lt;TRIPOS&gt;MOLECULE\n'</span>);
+fprintf(fid, <span class="string">'MMT\n'</span>);
+fprintf(fid, <span class="string">'%5i%6i%6i%6i%6i\n'</span>,[nAtoms nBonds 1  0 1]);
+fprintf(fid, <span class="string">'SMALL\n'</span>);
+fprintf(fid, <span class="string">'USER_CHARGES\n'</span>);
+fprintf(fid, <span class="string">'@&lt;TRIPOS&gt;ATOM\n'</span>);
+
+<span class="keyword">for</span> i = 1:nAtoms
+    Atom_section(1:10) = [atom(i).index atom(i).type atom(i).x atom(i).y atom(i).z Element(i) 1 residuename atom(i).charge <span class="string">'****'</span>];
+    fprintf(fid, <span class="string">'%3i%3s%18.6f%12.6f%12.6f%3s%10i%4s%14.4f%5s\n'</span>, Atom_section{1:10});
+<span class="keyword">end</span>
+fprintf(fid, <span class="string">'@&lt;TRIPOS&gt;BOND\n'</span>);
+<span class="keyword">for</span> i = 1:size(Bond_index,1)
+    Bonds_section = [i Bond_index(i,1) Bond_index(i,2) 1];
+    fprintf(fid, <span class="string">'%5i%6i%6i%2i\n'</span>, Bonds_section);
+<span class="keyword">end</span>
+fprintf(fid, <span class="string">'@&lt;TRIPOS&gt;SUBSTRUCTURE\n'</span>);
+fprintf(fid, <span class="string">'      1  RES              1 ****               0 ****  ****'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fclose(fid);
+disp(<span class="string">'.mol2 structure file written'</span>)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% write_atom_mol2.m
+% * This function writes a basic file in the mol2 format from the atom struct
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')
+%
+function write_atom_mol2(atom,Box_dim,filename_out,varargin)
+
+filename_out=strcat(filename_out,'.mol2');
+
+if nargin > 3
+    short_r=cell2mat(varargin(1));
+    long_r=cell2mat(varargin(2));
+else
+    short_r=1.25;
+    long_r=2.25;
+end
+
+if nargin>5;
+    ffname=varargin(3);
+    if nargin>6;
+        watermodel=varargin(4);
+    else
+        disp('Unknown watermodel, will try SPC/E')
+        watermodel='SPC/E';
+    end
+    if strncmpi(ffname,'clayff',5);
+        clayff_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_clayff_charge(atom)
+    elseif strcmpi(ffname,'interface');
+        interface_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_interface_charge(atom)
+    elseif strcmpi(ffname,'interface15');
+        interface15_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_interface_charge(atom)
+    else
+        disp('Unknown forcefield, will try clayff')
+        clayff_param(sort(unique([atom.type])),watermodel);
+        Total_charge = check_clayff_charge(atom)
+    end
+end
+
+% This file could write out the Box_dim as a comment!
+atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+residuename='MOL';
+%filename_out='MMT_matlab.mol2';
+nAtoms=size(atom,2);
+nBonds=size(Bond_index,1);
+
+Atom_label=sort(unique([atom.type]'));
+Element=[atom.type]'; Atom_label_ID=zeros(size(Element,1),1);
+% clayff_param(unique([atom(:).type]),'SPC/E');
+for i=1:size(Element,1)
+    Atom_label_ID(i,1)=find(ismember(Atom_label,strtrim(atom(i).type))==1);
+    atom(i).charge=Charge(Atom_label_ID(i,1));
+    Element(i)={Element{i}(1)};
+    if strcmp(Element(i),{'A'})
+        Element(i)={'Al'};
+    elseif strcmp(Element(i),{'M'})
+        Element(i)={'Mg'};
+    elseif strcmp(Element(i),{'S'})
+        Element(i)={'Si'};
+    elseif strcmp(Element(i),{'F'})
+        Element(i)={'Fe'};
+    elseif strcmp(Element(i),{'H'})
+        Element(i)={'H'};
+    elseif strcmp(Element(i),{'O'})
+        Element(i)={'O'};
+    elseif strcmp(Element(i),{'N'})
+        Element(i)={'Na'};
+    elseif strcmp(Element(i),{'C'})
+        Element(i)={'Ca'};
+    elseif strcmp(Element(i),{'K'})
+        Element(i)={'K'};
+    else
+        Element(i)=Element(i);
+    end
+end
+
+nAtoms=size([atom.x],2)
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, 'wt');
+fprintf(fid, '@<TRIPOS>MOLECULE\n');
+fprintf(fid, 'MMT\n');
+fprintf(fid, '%5i%6i%6i%6i%6i\n',[nAtoms nBonds 1  0 1]);
+fprintf(fid, 'SMALL\n');
+fprintf(fid, 'USER_CHARGES\n');
+fprintf(fid, '@<TRIPOS>ATOM\n');
+
+for i = 1:nAtoms
+    Atom_section(1:10) = [atom(i).index atom(i).type atom(i).x atom(i).y atom(i).z Element(i) 1 residuename atom(i).charge '****'];
+    fprintf(fid, '%3i%3s%18.6f%12.6f%12.6f%3s%10i%4s%14.4f%5s\n', Atom_section{1:10});
+end
+fprintf(fid, '@<TRIPOS>BOND\n');
+for i = 1:size(Bond_index,1)
+    Bonds_section = [i Bond_index(i,1) Bond_index(i,2) 1];
+    fprintf(fid, '%5i%6i%6i%2i\n', Bonds_section);
+end
+fprintf(fid, '@<TRIPOS>SUBSTRUCTURE\n');
+fprintf(fid, '      1  RES              1 ****               0 ****  ****');
+fprintf(fid, '\r\n');
+fprintf(fid, '\r\n');
+
+fclose(fid);
+disp('.mol2 structure file written')
+
+##### SOURCE END #####
+--></body></html>

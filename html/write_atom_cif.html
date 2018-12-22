@@ -1,0 +1,464 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>write_atom_cif.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="write_atom_cif.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>write_atom_cif.m</h1><!--introduction--><div><ul><li>This function writes a basic 'P 1' cif file with fractional coordinates from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_cif(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_cif(atom,Box_dim,filename_out)
+
+<span class="comment">% atom=wrap_atom(atom,Box_dim); % Do we need this</span>
+
+<span class="keyword">if</span> regexp(filename_out,<span class="string">'.cif'</span>) ~= false
+    filename_out = filename_out;
+<span class="keyword">else</span>
+    filename_out = strcat(filename_out,<span class="string">'.cif'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(Box_dim)&lt;9
+    <span class="keyword">if</span> numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    <span class="keyword">end</span>
+    Box_dim(4:9)=0;
+<span class="keyword">end</span>
+
+disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'</span>)
+
+Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+
+lx=Box_dim(1);
+ly=Box_dim(2);
+lz=Box_dim(3);
+xy=Box_dim(6);
+xz=Box_dim(8);
+yz=Box_dim(9);
+
+a=lx;
+b=(ly^2+xy^2)^.5;
+c=(lz^2+xz^2+yz^2)^.5;
+
+<span class="keyword">if</span> numel(find(Box_dim(4:9)))&gt;0
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+<span class="keyword">else</span>
+    alfa=90;
+    beta=90;
+    gamma=90;
+<span class="keyword">end</span>
+
+<span class="comment">%     a=Box_dim(1);</span>
+<span class="comment">%     b=Box_dim(2);</span>
+<span class="comment">%     c=Box_dim(3);</span>
+<span class="comment">%     xy=Box_dim(6);</span>
+<span class="comment">%     xz=Box_dim(8);</span>
+<span class="comment">%     yz=Box_dim(9);</span>
+<span class="comment">%     lx = a;</span>
+<span class="comment">%     ly = (b^2-xy^2)^.5;</span>
+<span class="comment">%     lz = (c^2 - xz^2 - yz^2)^0.5;</span>
+<span class="comment">%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))</span>
+<span class="comment">%     beta=rad2deg(acos(xz/c));</span>
+<span class="comment">%     gamma=rad2deg(acos(xy/b));</span>
+
+
+<span class="keyword">for</span> i=1:size(atom,2)
+
+    <span class="comment">%     [atom(i).type]=atom(i).type{1}(1:2); % Elements do not have more than two characters;</span>
+
+    <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'OW'</span>},2);atom(i).type={<span class="string">'Ow'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Hw'</span>},2);atom(i).type={<span class="string">'Hw'</span>};
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SY'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SC'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'S'</span>},1);atom(i).element={<span class="string">'S'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'st'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'s'</span>},1);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'a'</span>},1);atom(i).element={<span class="string">'Al'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'AC'</span>},2);atom(i).element={<span class="string">'Al'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'AY'</span>},2);atom(i).element={<span class="string">'Al'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Br'</span>},2);atom(i).element={<span class="string">'Br'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'B'</span>},1);atom(i).element={<span class="string">'B'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'I'</span>},1);atom(i).element={<span class="string">'I'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'F'</span>},1);atom(i).element={<span class="string">'F'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'U'</span>},1);atom(i).element={<span class="string">'U'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'V'</span>},1);atom(i).element={<span class="string">'V'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Y'</span>},1);atom(i).element={<span class="string">'Y'</span>};
+        <span class="comment">%     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={water_O};</span>
+        <span class="comment">%     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={water_H};</span>
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ow'</span>},2);atom(i).element={<span class="string">'O'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Hw'</span>},2);atom(i).element={<span class="string">'H'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Li'</span>},2);atom(i).element={<span class="string">'Li'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mn'</span>},2);atom(i).element={<span class="string">'Mn'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Na'</span>},2);atom(i).element={<span class="string">'Na'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ni'</span>},2);atom(i).element={<span class="string">'Ni'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Nh'</span>},2);atom(i).element={<span class="string">'Nh'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Nb'</span>},2);atom(i).element={<span class="string">'Nb'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ne'</span>},2);atom(i).element={<span class="string">'Ne'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'No'</span>},2);atom(i).element={<span class="string">'No'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'N'</span>},1);atom(i).element={<span class="string">'N'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'K'</span>},1);atom(i).element={<span class="string">'K'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ca'</span>},2);atom(i).element={<span class="string">'Ca'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'O'</span>},1);atom(i).element={<span class="string">'O'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'o'</span>},1);atom(i).element={<span class="string">'O'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};
+    <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'h'</span>},1);atom(i).element={<span class="string">'H'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ca'</span>},2);atom(i).element={<span class="string">'Ca'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Cl'</span>},2);atom(i).element={<span class="string">'Cl'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'C'</span>},1);atom(i).element={<span class="string">'C'</span>};
+    <span class="keyword">else</span>
+        [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
+        <span class="keyword">if</span> size([atom(i).type{:}],2)&gt;1
+            [atom(i).element{1}(2)]=lower(atom(1).type{1}(2));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+nAtoms=length(atom);
+Atom_section=cell(nAtoms,10);
+
+atom=orto_atom(atom,Box_dim);
+
+<span class="comment">%atom = number_type(atom);</span>
+
+<span class="comment">% Write the file</span>
+fid = fopen(filename_out, <span class="string">'wt'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'data_matlab_gen'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+timestamp = datetime;
+fprintf(fid, <span class="string">'%s     %s\r\n'</span>,<span class="string">'_audit_creation_date'</span>,timestamp);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_audit_creation_method   generated by the Matlab ATOM scripts'</span>);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_length_a'</span>,a);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_length_b'</span>,b);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_length_c'</span>,c);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_angle_alpha'</span>,alfa);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_angle_beta'</span>,beta);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_angle_gamma'</span>,gamma);
+fprintf(fid, <span class="string">'%-22s   %8.4f\r\n'</span>,<span class="string">'_cell_volume'</span>,Box_volume);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_symmetry_cell_setting          triclinic'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_symmetry_space_group_name_Hall ''P 1'''</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_symmetry_space_group_name_H-M  ''P 1'''</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_symmetry_Int_Tables_number     1'</span>);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_symmetry_equiv_pos_as_xyz ''x,y,z'''</span>);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'loop_'</span>);
+<span class="comment">%fprintf(fid, '%s\r\n','1 x,y,z');</span>
+<span class="comment">% fprintf(fid, '\r\n');</span>
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'loop_'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_label'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_type_symbol'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_x'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_y'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_z'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_charge'</span>);
+
+<span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+    <span class="keyword">for</span> i = 1:nAtoms
+        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, atom(i).charge];
+        fprintf(fid,<span class="string">'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n'</span>,Atom_section{1:6});
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    <span class="keyword">for</span> i = 1:nAtoms
+        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, 0.0];
+        fprintf(fid,<span class="string">'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n'</span>,Atom_section{1:6});
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+<span class="comment">% fprintf(fid, '%s\r\n','#END');</span>
+
+fclose(fid);
+
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     Atom_section(1:13) = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,1,1,atom(i).element,atom(i).formalcharge];</span>
+<span class="comment">%     fprintf(fid,'%-6s%5i %-4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s%2i\n',Atom_section{1:13});</span>
+<span class="comment">% end</span>
+<span class="comment">% assignin('caller','Bond_index',Bond_index);</span>
+<span class="comment">% assignin('caller','Angle_index',Angle_index);</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% write_atom_cif.m
+% * This function writes a basic 'P 1' cif file with fractional coordinates
+% from the atom struct
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # write_atom_cif(atom,Box_dim,filename_out)
+%
+function write_atom_cif(atom,Box_dim,filename_out)
+
+% atom=wrap_atom(atom,Box_dim); % Do we need this
+
+if regexp(filename_out,'.cif') ~= false
+    filename_out = filename_out;
+else
+    filename_out = strcat(filename_out,'.cif');
+end
+
+if numel(Box_dim)<9
+    if numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    end
+    Box_dim(4:9)=0;
+end
+
+disp('Assuming P1 space group. Box can still be triclinic')
+
+Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+
+lx=Box_dim(1);
+ly=Box_dim(2);
+lz=Box_dim(3);
+xy=Box_dim(6);
+xz=Box_dim(8);
+yz=Box_dim(9);
+
+a=lx;
+b=(ly^2+xy^2)^.5;
+c=(lz^2+xz^2+yz^2)^.5;
+
+if numel(find(Box_dim(4:9)))>0
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+else
+    alfa=90;
+    beta=90;
+    gamma=90;
+end
+
+%     a=Box_dim(1);
+%     b=Box_dim(2);
+%     c=Box_dim(3);
+%     xy=Box_dim(6);
+%     xz=Box_dim(8);
+%     yz=Box_dim(9);
+%     lx = a;
+%     ly = (b^2-xy^2)^.5;
+%     lz = (c^2 - xz^2 - yz^2)^0.5;
+%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
+%     beta=rad2deg(acos(xz/c));
+%     gamma=rad2deg(acos(xy/b));
+
+
+for i=1:size(atom,2)
+    
+    %     [atom(i).type]=atom(i).type{1}(1:2); % Elements do not have more than two characters;
+    
+    if strncmp(atom(i).type,{'OW'},2);atom(i).type={'Ow'};
+    elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).type={'Hw'};
+    end
+    
+    if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+    elseif strncmp(atom(i).type,{'S'},1);atom(i).element={'S'};
+    elseif strncmp(atom(i).type,{'st'},2);atom(i).element={'Si'};
+    elseif strncmp(atom(i).type,{'s'},1);atom(i).element={'Si'};
+    elseif strncmp(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+    elseif strncmp(atom(i).type,{'a'},1);atom(i).element={'Al'};
+    elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};
+    elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};
+    elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};
+    elseif strncmpi(atom(i).type,{'B'},1);atom(i).element={'B'};
+    elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};
+    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
+    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+    elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};
+    elseif strncmpi(atom(i).type,{'U'},1);atom(i).element={'U'};
+    elseif strncmpi(atom(i).type,{'V'},1);atom(i).element={'V'};
+    elseif strncmpi(atom(i).type,{'Y'},1);atom(i).element={'Y'};
+        %     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={water_O};
+        %     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={water_H};
+    elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'O'};
+    elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'H'};
+    elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};
+    elseif strncmpi(atom(i).type,{'Mn'},2);atom(i).element={'Mn'};
+    elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};
+    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};
+    elseif strncmpi(atom(i).type,{'Nh'},2);atom(i).element={'Nh'};
+    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};
+    elseif strncmpi(atom(i).type,{'Ne'},2);atom(i).element={'Ne'};
+    elseif strncmpi(atom(i).type,{'No'},2);atom(i).element={'No'};
+    elseif strncmpi(atom(i).type,{'N'},1);atom(i).element={'N'};
+    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};
+    elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};
+    elseif strncmp(atom(i).type,{'O'},1);atom(i).element={'O'};
+    elseif strncmp(atom(i).type,{'o'},1);atom(i).element={'O'};
+    elseif strncmp(atom(i).type,{'H'},1);atom(i).element={'H'};
+    elseif strncmp(atom(i).type,{'h'},1);atom(i).element={'H'};
+    elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};
+    elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};
+    elseif strncmpi(atom(i).type,{'C'},1);atom(i).element={'C'};
+    else
+        [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
+        if size([atom(i).type{:}],2)>1
+            [atom(i).element{1}(2)]=lower(atom(1).type{1}(2));
+        end
+    end
+end
+
+
+nAtoms=length(atom);
+Atom_section=cell(nAtoms,10);
+
+atom=orto_atom(atom,Box_dim);
+
+%atom = number_type(atom);
+
+% Write the file
+fid = fopen(filename_out, 'wt');
+fprintf(fid, '%s\r\n','data_matlab_gen');
+fprintf(fid, '\r\n');
+timestamp = datetime;
+fprintf(fid, '%s     %s\r\n','_audit_creation_date',timestamp);
+fprintf(fid, '%s\r\n','_audit_creation_method   generated by the Matlab ATOM scripts');
+
+fprintf(fid, '\r\n');
+
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_length_a',a);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_length_b',b);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_length_c',c);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_angle_alpha',alfa);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_angle_beta',beta);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_angle_gamma',gamma);
+fprintf(fid, '%-22s   %8.4f\r\n','_cell_volume',Box_volume);
+
+fprintf(fid, '\r\n');
+
+fprintf(fid, '%s\r\n','_symmetry_cell_setting          triclinic');
+fprintf(fid, '%s\r\n','_symmetry_space_group_name_Hall ''P 1''');
+fprintf(fid, '%s\r\n','_symmetry_space_group_name_H-M  ''P 1''');
+fprintf(fid, '%s\r\n','_symmetry_Int_Tables_number     1');
+
+fprintf(fid, '\r\n');
+
+fprintf(fid, '%s\r\n','_symmetry_equiv_pos_as_xyz ''x,y,z''');
+
+fprintf(fid, '\r\n');
+
+fprintf(fid, '%s\r\n','loop_');
+%fprintf(fid, '%s\r\n','1 x,y,z');
+% fprintf(fid, '\r\n');
+fprintf(fid, '%s\r\n','loop_');
+fprintf(fid, '%s\r\n','_atom_site_label');
+fprintf(fid, '%s\r\n','_atom_site_type_symbol');
+fprintf(fid, '%s\r\n','_atom_site_fract_x');
+fprintf(fid, '%s\r\n','_atom_site_fract_y');
+fprintf(fid, '%s\r\n','_atom_site_fract_z');
+fprintf(fid, '%s\r\n','_atom_site_charge');
+
+if isfield(atom,'charge')
+    for i = 1:nAtoms
+        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, atom(i).charge];
+        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
+    end
+else
+    for i = 1:nAtoms
+        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, 0.0];
+        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
+    end
+end
+fprintf(fid, '\r\n');
+fprintf(fid, '\r\n');
+% fprintf(fid, '%s\r\n','#END');
+
+fclose(fid);
+
+% for i = 1:nAtoms
+%     Atom_section(1:13) = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,1,1,atom(i).element,atom(i).formalcharge];
+%     fprintf(fid,'%-6s%5i %-4s %3s %1s%4i    %8.3f%8.3f%8.3f%6.2f%6.2f          %2s%2i\n',Atom_section{1:13});
+% end
+% assignin('caller','Bond_index',Bond_index);
+% assignin('caller','Angle_index',Angle_index);
+
+
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,265 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_atom_from_XYZ_text</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_atom_from_XYZ_text.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%// Read lines from input file</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+filename=<span class="string">'test1.txt'</span>;
+outfilename=<span class="string">'Na12H2O-2L-Mt-D-vdW-DF.gro'</span>;
+resname=<span class="string">'MMT'</span>;
+numColumns=4;
+
+<span class="comment">%// Edit these lines with the cif data</span>
+<span class="comment">% a = 13.7100959</span>
+<span class="comment">% b = 14.0372098</span>
+<span class="comment">% c = 50;</span>
+<span class="comment">% alfa = 90; % Angles</span>
+<span class="comment">% beta = 90;</span>
+<span class="comment">% gamma = 90.049927</span>
+
+in_Box_dim=[5.297602060 0.001107473 -0.075521525;<span class="keyword">...</span>
+    0.003337687 9.181726505 0.010987329;<span class="keyword">...</span>
+-0.187064721 -0.000079513 15.912446655;<span class="keyword">...</span>
+    ];
+
+lx=in_Box_dim(1);
+ly=in_Box_dim(5);
+lz=in_Box_dim(9);
+xy=in_Box_dim(4);
+xz=in_Box_dim(7);
+yx=in_Box_dim(2);
+yz=in_Box_dim(8);
+zx=in_Box_dim(3);
+zy=in_Box_dim(6);
+
+<span class="comment">% lx = a;</span>
+<span class="comment">% xy = b * cos(deg2rad(gamma));</span>
+<span class="comment">% ly = (b^2-xy^2)^.5;</span>
+<span class="comment">% xz = c*cos(deg2rad(beta));</span>
+<span class="comment">% yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;</span>
+<span class="comment">% lz = (c^2 - xz^2 - yz^2)^0.5;</span>
+
+Box_dim=[lx ly lz xy xz yx yz zx zy];
+<span class="comment">% Box_dim=[lx ly lz 0 0 xy 0 xy xz];</span>
+
+<span class="comment">% Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;</span>
+<span class="comment">% if sum(Box_dim(4:end))== 0</span>
+<span class="comment">%     Box_dim=Box_dim(1:3);</span>
+<span class="comment">% end</span>
+
+File_as_char = fileread(filename);
+File_cell=strsplit(File_as_char);
+
+XYZ=reshape(File_cell(1:end),numColumns,[])';
+
+XYZ_labels=XYZ(:,1);
+XYZ_data=zeros(size(XYZ(:,numColumns-2:end),1),size(XYZ(:,numColumns-2:end),2));
+XYZ_data=str2double(XYZ(:,numColumns-2:end));
+
+atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,<span class="string">'molid'</span>);
+[atom.molid]=deal(1);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% % % Straight from wikipedia</span>
+<span class="comment">% % % From fractional coordinates</span>
+<span class="comment">% % % v=a*b*c*(1 - cos(deg2rad(alpha))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alpha))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;</span>
+<span class="comment">% % v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;</span>
+<span class="comment">% %</span>
+<span class="comment">% % FromFrac=[a b*cos(deg2rad(gamma)) c*cos(deg2rad(beta));...</span>
+<span class="comment">% %     0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));...</span>
+<span class="comment">% %     0 0 c*v/sin(deg2rad(gamma))];</span>
+<span class="comment">% %</span>
+<span class="comment">% % % % To fractional coordinates</span>
+<span class="comment">% % % ToFrac=[1/a -cos(deg2rad(gamma))/(a*sin(deg2rad(gamma))) (cos(deg2rad(alpha))*cos(deg2rad(gamma))-cos(deg2rad(beta)))/(a*v*sin(deg2rad(gamma)));...</span>
+<span class="comment">% % %     0 1/(b*sin(deg2rad(gamma)))  (cos(deg2rad(beta))*cos(deg2rad(gamma))-cos(deg2rad(alpha)))/(b*v*sin(deg2rad(gamma)));...</span>
+<span class="comment">% % %     0 0 sin(deg2rad(gamma))/(c*v)];</span>
+<span class="comment">% %</span>
+<span class="comment">% % % XYZ_labels=[atom.type]';</span>
+<span class="comment">% % % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];</span>
+<span class="comment">% % XYZ_data_frac=XYZ_data;XYZ_data_tric=XYZ_data;</span>
+<span class="comment">% % for i=1:size(atom,2)</span>
+<span class="comment">% %     %     XYZ_data_frac(i,:)=[XYZ_data(i,1)/lx XYZ_data(i,2)/ly XYZ_data(i,3)/lz]';</span>
+<span class="comment">% %     XYZ_data_tric(i,:)=FromFrac*[XYZ_data_frac(i,1) XYZ_data_frac(i,2) XYZ_data_frac(i,3)]';</span>
+<span class="comment">% %     atom(i).x=XYZ_data_tric(i,1);</span>
+<span class="comment">% %     atom(i).y=XYZ_data_tric(i,2);</span>
+<span class="comment">% %     atom(i).z=XYZ_data_tric(i,3);</span>
+<span class="comment">% % end</span>
+
+atom = rotate_atom(atom,Box_dim,[-rad2deg(asin(zx/lx)) 0 0]);
+atom = rotate_atom(atom,Box_dim,[0 -rad2deg(asin(yx/lx)) 0]);
+atom = rotate_atom(atom,Box_dim,[0 0 -rad2deg(asin(zy/ly))]);
+atom = translate_atom(atom,-[atom(15).x atom(15).y atom(15).z]);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+filename(regexp(filename,<span class="string">'.txt'</span>))=[];
+filename(regexp(filename,<span class="string">'.cif'</span>))=[];
+filename(regexp(filename,<span class="string">'.dat'</span>))=[];
+write_atom_gro(atom,Box_dim,outfilename)
+<span class="comment">% write_atom_pdb(atom,Box_dim,strcat('out_',filename,'.pdb'))</span>
+vmd(atom,Box_dim)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%// Read lines from input file
+clear all
+close all
+filename='test1.txt';
+outfilename='Na12H2O-2L-Mt-D-vdW-DF.gro';
+resname='MMT';
+numColumns=4;
+
+%// Edit these lines with the cif data
+% a = 13.7100959
+% b = 14.0372098
+% c = 50;
+% alfa = 90; % Angles
+% beta = 90;
+% gamma = 90.049927
+
+in_Box_dim=[5.297602060 0.001107473 -0.075521525;...
+    0.003337687 9.181726505 0.010987329;...
+-0.187064721 -0.000079513 15.912446655;...
+    ];
+
+lx=in_Box_dim(1);
+ly=in_Box_dim(5);
+lz=in_Box_dim(9);
+xy=in_Box_dim(4);
+xz=in_Box_dim(7);
+yx=in_Box_dim(2);
+yz=in_Box_dim(8);
+zx=in_Box_dim(3);
+zy=in_Box_dim(6);
+
+% lx = a;
+% xy = b * cos(deg2rad(gamma));
+% ly = (b^2-xy^2)^.5;
+% xz = c*cos(deg2rad(beta));
+% yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+% lz = (c^2 - xz^2 - yz^2)^0.5;
+
+Box_dim=[lx ly lz xy xz yx yz zx zy];
+% Box_dim=[lx ly lz 0 0 xy 0 xy xz];
+
+% Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+% if sum(Box_dim(4:end))== 0
+%     Box_dim=Box_dim(1:3);
+% end
+
+File_as_char = fileread(filename);
+File_cell=strsplit(File_as_char);
+
+XYZ=reshape(File_cell(1:end),numColumns,[])';
+
+XYZ_labels=XYZ(:,1);
+XYZ_data=zeros(size(XYZ(:,numColumns-2:end),1),size(XYZ(:,numColumns-2:end),2));
+XYZ_data=str2double(XYZ(:,numColumns-2:end));
+
+atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,'molid');
+[atom.molid]=deal(1);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % % Straight from wikipedia
+% % % From fractional coordinates
+% % % v=a*b*c*(1 - cos(deg2rad(alpha))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alpha))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+% % v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+% %
+% % FromFrac=[a b*cos(deg2rad(gamma)) c*cos(deg2rad(beta));...
+% %     0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));...
+% %     0 0 c*v/sin(deg2rad(gamma))];
+% %
+% % % % To fractional coordinates
+% % % ToFrac=[1/a -cos(deg2rad(gamma))/(a*sin(deg2rad(gamma))) (cos(deg2rad(alpha))*cos(deg2rad(gamma))-cos(deg2rad(beta)))/(a*v*sin(deg2rad(gamma)));...
+% % %     0 1/(b*sin(deg2rad(gamma)))  (cos(deg2rad(beta))*cos(deg2rad(gamma))-cos(deg2rad(alpha)))/(b*v*sin(deg2rad(gamma)));...
+% % %     0 0 sin(deg2rad(gamma))/(c*v)];
+% %
+% % % XYZ_labels=[atom.type]';
+% % % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+% % XYZ_data_frac=XYZ_data;XYZ_data_tric=XYZ_data;
+% % for i=1:size(atom,2)
+% %     %     XYZ_data_frac(i,:)=[XYZ_data(i,1)/lx XYZ_data(i,2)/ly XYZ_data(i,3)/lz]';
+% %     XYZ_data_tric(i,:)=FromFrac*[XYZ_data_frac(i,1) XYZ_data_frac(i,2) XYZ_data_frac(i,3)]';
+% %     atom(i).x=XYZ_data_tric(i,1);
+% %     atom(i).y=XYZ_data_tric(i,2);
+% %     atom(i).z=XYZ_data_tric(i,3);
+% % end
+
+atom = rotate_atom(atom,Box_dim,[-rad2deg(asin(zx/lx)) 0 0]);
+atom = rotate_atom(atom,Box_dim,[0 -rad2deg(asin(yx/lx)) 0]);
+atom = rotate_atom(atom,Box_dim,[0 0 -rad2deg(asin(zy/ly))]);
+atom = translate_atom(atom,-[atom(15).x atom(15).y atom(15).z]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+filename(regexp(filename,'.txt'))=[];
+filename(regexp(filename,'.cif'))=[];
+filename(regexp(filename,'.dat'))=[];
+write_atom_gro(atom,Box_dim,outfilename)
+% write_atom_pdb(atom,Box_dim,strcat('out_',filename,'.pdb'))
+vmd(atom,Box_dim)
+
+##### SOURCE END #####
+--></body></html>

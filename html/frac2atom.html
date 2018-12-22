@@ -1,0 +1,155 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>frac2atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="frac2atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>frac2atom.m</h1><!--introduction--><div><ul><li>This function transforms fractional coordinates to cartesian</li><li>Its assumed the fractional coordinates are stored in the atom.x/atom.y/atom.z</li><li>Box_dim(1:3) should contain the real a,b,c unit cell lengths</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = frac2atom(atom,Box_dim(1:3),[82 93.1212 104.3232],'angle')</li><li>atom = frac2atom(atom,Box_dim(1:3),[0.0232 0.002131 0.0],'tiltfactors')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = frac2atom(atom,Box_dim,angleparam,angletype)
+
+a=Box_dim(1);
+b=Box_dim(2);
+c=Box_dim(3);
+
+alfa=angleparam(1);
+beta=angleparam(2);
+gamma=angleparam(3);
+
+lx = a;
+xy = b * cos(deg2rad(gamma));
+ly = (b^2-xy^2)^.5;
+xz = c*cos(deg2rad(beta));
+yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+lz = (c^2 - xz^2 - yz^2)^0.5;
+
+Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+<span class="keyword">if</span> sum(Box_dim(4:end))== 0
+    Box_dim=Box_dim(1:3);
+<span class="keyword">end</span>
+
+<span class="comment">% atom_orto = orto_atom(atom,Box_dim,angleparam,angletype);</span>
+
+X=num2cell([atom.x]*lx);[atom(:).x]=deal(X{:});
+Y=num2cell([atom.y]*ly);[atom(:).y]=deal(Y{:});
+Z=num2cell([atom.z]*lz);[atom(:).z]=deal(Z{:});
+<span class="comment">%</span>
+atom = triclinic_atom(atom,[a b c],[alfa beta gamma],<span class="string">'angle'</span>);
+
+<span class="comment">% Box_dim(1:3)=[lx ly lz];</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% frac2atom.m
+% * This function transforms fractional coordinates to cartesian
+% * Its assumed the fractional coordinates are stored in the atom.x/atom.y/atom.z
+% * Box_dim(1:3) should contain the real a,b,c unit cell lengths
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = frac2atom(atom,Box_dim(1:3),[82 93.1212 104.3232],'angle')
+% # atom = frac2atom(atom,Box_dim(1:3),[0.0232 0.002131 0.0],'tiltfactors')
+%
+function atom = frac2atom(atom,Box_dim,angleparam,angletype)
+
+a=Box_dim(1);
+b=Box_dim(2);
+c=Box_dim(3);
+
+alfa=angleparam(1);
+beta=angleparam(2);
+gamma=angleparam(3);
+
+lx = a;
+xy = b * cos(deg2rad(gamma));
+ly = (b^2-xy^2)^.5;
+xz = c*cos(deg2rad(beta));
+yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+lz = (c^2 - xz^2 - yz^2)^0.5;
+
+Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+if sum(Box_dim(4:end))== 0
+    Box_dim=Box_dim(1:3);
+end
+
+% atom_orto = orto_atom(atom,Box_dim,angleparam,angletype);
+
+X=num2cell([atom.x]*lx);[atom(:).x]=deal(X{:});
+Y=num2cell([atom.y]*ly);[atom(:).y]=deal(Y{:});
+Z=num2cell([atom.z]*lz);[atom(:).z]=deal(Z{:});
+%
+atom = triclinic_atom(atom,[a b c],[alfa beta gamma],'angle');
+
+% Box_dim(1:3)=[lx ly lz];
+
+assignin('caller','Box_dim',Box_dim);
+
+
+##### SOURCE END #####
+--></body></html>

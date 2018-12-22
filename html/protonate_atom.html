@@ -1,0 +1,328 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>protonate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="protonate_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>protonate_atom.m</h1><!--introduction--><div><ul><li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hatom = protonate_atom(atom,Box_dim)</li><li>Hatom = protonate_atom(atom,Box_dim,ind)</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.5 &Aring;ngstr&ouml;m</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</li></ol></div><pre class="codeinput"><span class="keyword">function</span> H_atom = protonate_atom(atom,Box_dim,varargin)
+
+<span class="keyword">if</span> numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+    xy=0;xz=0;yz=0;
+<span class="keyword">elseif</span> numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+<span class="keyword">else</span>
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin==2
+    disp(<span class="string">'Assuming all oxygen atoms should have 2 neighbours...'</span>);
+    disp(<span class="string">'else also supply an ind vector for sites to protonate!'</span>);
+<span class="keyword">end</span>
+
+atom = element_atom(atom);
+
+<span class="keyword">if</span> nargin &gt; 2
+    ind=varargin{1};
+<span class="keyword">else</span>
+    ind=[];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 3
+    rmaxlong=varargin{2};
+<span class="keyword">else</span>
+    rmaxlong=2.25;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &lt; 4
+    heal_type={<span class="string">'H'</span>};
+<span class="keyword">else</span>
+    heal_type=varargin{3};
+    <span class="keyword">if</span> ~iscell(heal_type)
+        heal_type={heal_type};
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
+
+<span class="keyword">if</span> numel(ind)==0
+    i=1; H_atom=[];
+    <span class="keyword">while</span> i&lt;=size(atom,2)
+        Neigh_cell = sort([atom(i).neigh.type]);
+        <span class="keyword">if</span> isempty(Neigh_cell) &gt; 0 &amp;&amp; iscell(Neigh_cell)
+            Neighbours=strcat(Neigh_cell{:});
+        <span class="keyword">else</span>
+            Neighbours={<span class="string">'Nan'</span>};
+        <span class="keyword">end</span>
+        numel(atom(i).neigh.index)
+        <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1) &amp;&amp; numel(atom(i).neigh.index) &lt; 2
+            disp(<span class="string">'Adding H to O'</span>)
+            <span class="keyword">if</span> numel(H_atom)==0
+                H_atom=atom(1);
+            <span class="keyword">else</span>
+                H_atom(size(H_atom,2)+1)=H_atom(end);
+            <span class="keyword">end</span>
+            [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+            H_atom(end).index=size(H_atom,2);
+            r_vec=atom(i).neigh.r_vec;
+            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+            [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
+        <span class="keyword">end</span>
+        i=i+1;
+    <span class="keyword">end</span>
+<span class="keyword">elseif</span> nargin &gt; 2
+    ind=varargin{1};
+    H_atom=[];
+    <span class="keyword">for</span> i=ind
+        Neigh_cell = sort([atom(i).neigh.type]);
+        <span class="keyword">if</span> isempty(Neigh_cell) &gt; 0 &amp;&amp; iscell(Neigh_cell)
+            Neighbours=strcat(Neigh_cell{:});
+        <span class="keyword">else</span>
+            Neighbours={<span class="string">'Nan'</span>};
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> numel(H_atom)==0
+            H_atom=atom(1);
+        <span class="keyword">else</span>
+            H_atom(size(H_atom,2)+1)=H_atom(end);
+        <span class="keyword">end</span>
+        [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+        H_atom(end).index=size(H_atom,2);
+        r_vec=atom(i).neigh.r_vec;
+        H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+        [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+dist_matrix=dist_matrix_atom(H_atom,Box_dim);
+
+i=1;rmind_tot=[];
+<span class="keyword">while</span> i &lt; size(H_atom,2)
+    rmind=find(dist_matrix(:,i)&lt;0.85);
+    <span class="keyword">if</span> numel(rmind)&gt;1
+        x1=[H_atom(i).x];
+        y1=[H_atom(i).y];
+        z1=[H_atom(i).z];
+
+        H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
+
+        [H_atom(i).x]=mean([H_atom(rmind).x]);
+        [H_atom(i).y]=mean([H_atom(rmind).y]);
+        [H_atom(i).z]=mean([H_atom(rmind).z]);
+
+        H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+        rmind_tot=[rmind_tot rmind(rmind&gt;i)];
+    <span class="keyword">end</span>
+    i=i+1;
+<span class="keyword">end</span>
+H_atom(rmind_tot)=[];
+
+<span class="keyword">if</span> isstruct(H_atom)
+    H_atom=rmfield(H_atom,<span class="string">'element'</span>);
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% protonate_atom.m
+% * This function protonates the sites in the atom struct given by the 
+% index vector ind by adding a H's to a new H atom struct. It does so by 
+% placing the H opposite to the mean position of all neughbours within 2.5
+% Ångström of the site to be protonated
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # Hatom = protonate_atom(atom,Box_dim)
+% # Hatom = protonate_atom(atom,Box_dim,ind)
+% # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.5 Ångström
+% # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
+% # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction
+%
+function H_atom = protonate_atom(atom,Box_dim,varargin)
+
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+    xy=0;xz=0;yz=0;
+elseif numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+else
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+end
+
+if nargin==2
+    disp('Assuming all oxygen atoms should have 2 neighbours...');
+    disp('else also supply an ind vector for sites to protonate!');
+end
+
+atom = element_atom(atom);
+
+if nargin > 2
+    ind=varargin{1};
+else
+    ind=[];
+end
+
+if nargin > 3
+    rmaxlong=varargin{2};
+else
+    rmaxlong=2.25;
+end
+
+if nargin < 4
+    heal_type={'H'};
+else
+    heal_type=varargin{3};
+    if ~iscell(heal_type)
+        heal_type={heal_type};
+    end
+end
+
+atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
+    
+if numel(ind)==0
+    i=1; H_atom=[];
+    while i<=size(atom,2)
+        Neigh_cell = sort([atom(i).neigh.type]);
+        if isempty(Neigh_cell) > 0 && iscell(Neigh_cell)
+            Neighbours=strcat(Neigh_cell{:});
+        else
+            Neighbours={'Nan'};
+        end
+        numel(atom(i).neigh.index)
+        if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
+            disp('Adding H to O')
+            if numel(H_atom)==0
+                H_atom=atom(1);
+            else
+                H_atom(size(H_atom,2)+1)=H_atom(end);
+            end
+            [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+            H_atom(end).index=size(H_atom,2);
+            r_vec=atom(i).neigh.r_vec;
+            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+            [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
+        end
+        i=i+1;
+    end
+elseif nargin > 2
+    ind=varargin{1};
+    H_atom=[];
+    for i=ind
+        Neigh_cell = sort([atom(i).neigh.type]);
+        if isempty(Neigh_cell) > 0 && iscell(Neigh_cell)
+            Neighbours=strcat(Neigh_cell{:});
+        else
+            Neighbours={'Nan'};
+        end
+        if numel(H_atom)==0
+            H_atom=atom(1);
+        else
+            H_atom(size(H_atom,2)+1)=H_atom(end);
+        end
+        [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+        H_atom(end).index=size(H_atom,2);
+        r_vec=atom(i).neigh.r_vec;
+        H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+        [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
+    end
+end
+
+dist_matrix=dist_matrix_atom(H_atom,Box_dim);
+
+i=1;rmind_tot=[];
+while i < size(H_atom,2)
+    rmind=find(dist_matrix(:,i)<0.85);
+    if numel(rmind)>1
+        x1=[H_atom(i).x];
+        y1=[H_atom(i).y];
+        z1=[H_atom(i).z];
+
+        H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
+        
+        [H_atom(i).x]=mean([H_atom(rmind).x]);
+        [H_atom(i).y]=mean([H_atom(rmind).y]);
+        [H_atom(i).z]=mean([H_atom(rmind).z]);
+        
+        H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+        rmind_tot=[rmind_tot rmind(rmind>i)];
+    end
+    i=i+1;
+end
+H_atom(rmind_tot)=[];
+
+if isstruct(H_atom)
+    H_atom=rmfield(H_atom,'element');
+end
+
+##### SOURCE END #####
+--></body></html>

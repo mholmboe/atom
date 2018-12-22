@@ -1,0 +1,289 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_xvg.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_xvg.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_xvg.m</h1><!--introduction--><div><ul><li>This function imports the type of .xvg files that Gromacs uses for some of its text outputs</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Data = import_xvg('energy.xvg')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Data = import_xvg(filename)
+
+inputfile = fopen(filename, <span class="string">'r'</span>);
+C = textscan(inputfile, <span class="string">'%s'</span>, <span class="string">'Delimiter'</span>, <span class="string">'\n'</span>);
+
+nRows = size(C{1,1},1);
+nColumns=size(strsplit(char(C{1,1}(end-1,:))),2);
+
+<span class="comment">%// Search a specific string and find all rows containing matches</span>
+xaxis = strfind(C{1}, <span class="string">'@    xaxis  label '</span>);
+xaxis_label_row = find(~cellfun(<span class="string">'isempty'</span>, xaxis));
+xaxis_label=C{1,1}(xaxis_label_row);
+xaxis_label = regexprep(xaxis_label,<span class="string">'@    xaxis  label "'</span>,<span class="string">''</span>);
+xaxis_label = regexprep(xaxis_label,<span class="string">'"'</span>,<span class="string">''</span>);
+
+yaxis = strfind(C{1}, <span class="string">'@    yaxis  label '</span>);
+yaxis_label_row = find(~cellfun(<span class="string">'isempty'</span>, yaxis));
+yaxis_label=C{1,1}(yaxis_label_row);
+yaxis_label = regexprep(yaxis_label,<span class="string">'@    yaxis  label "'</span>,<span class="string">''</span>);
+yaxis_label = regexprep(yaxis_label,<span class="string">'"'</span>,<span class="string">''</span>);
+
+yaxis_all_legends=[];
+<span class="keyword">for</span> i=1:nColumns-1
+    yaxis = strfind(C{1},strcat(<span class="string">'@ s'</span>,num2str(i-1),<span class="string">' legend '</span>));
+    yaxis_legend_row = find(~cellfun(<span class="string">'isempty'</span>, yaxis));
+    yaxis_legend=C{1,1}(yaxis_legend_row);
+    yaxis_legend=strrep(yaxis_legend,<span class="string">'-'</span>,<span class="string">'_'</span>);
+    yaxis_legend = regexprep(yaxis_legend,strcat(<span class="string">'@ s'</span>,num2str(i-1),<span class="string">' legend '</span>),<span class="string">''</span>);
+    yaxis_all_legends = [yaxis_all_legends strtrim(regexprep(yaxis_legend,<span class="string">'"'</span>,<span class="string">''</span>))];
+<span class="keyword">end</span>
+
+<span class="comment">% Option 1 (the faster way of doing it...)</span>
+D=C;
+nondatarows1 = strfind(C{1}, <span class="string">'#'</span>);
+nondatarows1 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows1));
+nondatarows2 = strfind(C{1}, <span class="string">'@'</span>);
+nondatarows2 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows2));
+nondatarows3 = strfind(C{1}, <span class="string">'&amp;'</span>);
+nondatarows3 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows3));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+D = regexp(D{1,1}, <span class="string">'\s+'</span>, <span class="string">'split'</span>);
+D = vertcat(D{:});
+Data = cellfun(@str2double,D);
+
+<span class="comment">% End option 1</span>
+
+<span class="comment">% %% Option 1</span>
+<span class="comment">% tic</span>
+<span class="comment">% frewind(inputfile);</span>
+<span class="comment">% i=1; j=0; allRows=nRows;</span>
+<span class="comment">% Data=cell(nRows,1);NewData=cell(nRows,nColumns);</span>
+<span class="comment">% while i&lt;allRows+1;</span>
+<span class="comment">%     tline = fgetl(inputfile);</span>
+<span class="comment">%     if length(findstr('#',tline)) &gt; 0 || length(findstr('@',tline)) &gt; 0;</span>
+<span class="comment">%         allRows=allRows-1;</span>
+<span class="comment">%         i=i-1;</span>
+<span class="comment">%         j=j+1;</span>
+<span class="comment">%     else</span>
+<span class="comment">%         Data{i,1}=strtrim(tline);</span>
+<span class="comment">%         NewData(i,:)=strsplit(Data{i,1});</span>
+<span class="comment">%     end</span>
+<span class="comment">%     i=i+1;</span>
+<span class="comment">% end</span>
+<span class="comment">% Data = cellfun(@str2double,NewData);</span>
+<span class="comment">% Data=Data(1:allRows,:);</span>
+<span class="comment">% toc</span>
+<span class="comment">% %% End option 1</span>
+<span class="keyword">try</span>
+
+<span class="keyword">for</span> i=1:nColumns
+    <span class="keyword">if</span> i==1
+        assignin(<span class="string">'caller'</span>,<span class="string">'x'</span>,Data(:,i));
+    <span class="keyword">else</span>
+        assignin(<span class="string">'caller'</span>,strcat(<span class="string">'y'</span>,num2str(i-1)),Data(:,i));
+        yaxis_all_legends(i-1)=strtrim(yaxis_all_legends(i-1));
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">' '</span>,<span class="string">'_'</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'.'</span>,<span class="string">''</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'{}'</span>,<span class="string">''</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'\'</span>,<span class="string">''</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'/'</span>,<span class="string">''</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'='</span>,<span class="string">'_'</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">','</span>,<span class="string">'_'</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'('</span>,<span class="string">'_'</span>);
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">')'</span>,<span class="string">'_'</span>);
+
+        assignin(<span class="string">'caller'</span>,char(yaxis_all_legends(i-1)),Data(:,i));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">catch</span>
+    disp(<span class="string">'Could not read the column labels, but you'</span>)
+    disp(<span class="string">'still have your data in the variable Data!'</span>)
+<span class="keyword">end</span>
+
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Data'</span>,Data);
+assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_legends'</span>,yaxis_all_legends);
+
+fclose(inputfile);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_xvg.m
+% * This function imports the type of .xvg files that Gromacs uses for some
+% of its text outputs
+% 
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% #  Data = import_xvg('energy.xvg')
+%
+function Data = import_xvg(filename)
+
+inputfile = fopen(filename, 'r');
+C = textscan(inputfile, '%s', 'Delimiter', '\n');
+
+nRows = size(C{1,1},1);
+nColumns=size(strsplit(char(C{1,1}(end-1,:))),2);
+
+%// Search a specific string and find all rows containing matches
+xaxis = strfind(C{1}, '@    xaxis  label ');
+xaxis_label_row = find(~cellfun('isempty', xaxis));
+xaxis_label=C{1,1}(xaxis_label_row);
+xaxis_label = regexprep(xaxis_label,'@    xaxis  label "','');
+xaxis_label = regexprep(xaxis_label,'"','');
+
+yaxis = strfind(C{1}, '@    yaxis  label ');
+yaxis_label_row = find(~cellfun('isempty', yaxis));
+yaxis_label=C{1,1}(yaxis_label_row);
+yaxis_label = regexprep(yaxis_label,'@    yaxis  label "','');
+yaxis_label = regexprep(yaxis_label,'"','');
+
+yaxis_all_legends=[];
+for i=1:nColumns-1
+    yaxis = strfind(C{1},strcat('@ s',num2str(i-1),' legend '));
+    yaxis_legend_row = find(~cellfun('isempty', yaxis));
+    yaxis_legend=C{1,1}(yaxis_legend_row);
+    yaxis_legend=strrep(yaxis_legend,'-','_');
+    yaxis_legend = regexprep(yaxis_legend,strcat('@ s',num2str(i-1),' legend '),'');
+    yaxis_all_legends = [yaxis_all_legends strtrim(regexprep(yaxis_legend,'"',''))];
+end
+
+% Option 1 (the faster way of doing it...)
+D=C;
+nondatarows1 = strfind(C{1}, '#');
+nondatarows1 = find(~cellfun('isempty',nondatarows1));
+nondatarows2 = strfind(C{1}, '@');
+nondatarows2 = find(~cellfun('isempty',nondatarows2));
+nondatarows3 = strfind(C{1}, '&');
+nondatarows3 = find(~cellfun('isempty',nondatarows3));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+D = regexp(D{1,1}, '\s+', 'split');
+D = vertcat(D{:});
+Data = cellfun(@str2double,D);
+
+% End option 1
+
+% %% Option 1
+% tic
+% frewind(inputfile);
+% i=1; j=0; allRows=nRows;
+% Data=cell(nRows,1);NewData=cell(nRows,nColumns);
+% while i<allRows+1;
+%     tline = fgetl(inputfile);
+%     if length(findstr('#',tline)) > 0 || length(findstr('@',tline)) > 0;
+%         allRows=allRows-1;
+%         i=i-1;
+%         j=j+1;
+%     else
+%         Data{i,1}=strtrim(tline);
+%         NewData(i,:)=strsplit(Data{i,1});
+%     end
+%     i=i+1;
+% end
+% Data = cellfun(@str2double,NewData);
+% Data=Data(1:allRows,:);
+% toc
+% %% End option 1
+try
+    
+for i=1:nColumns
+    if i==1
+        assignin('caller','x',Data(:,i));
+    else
+        assignin('caller',strcat('y',num2str(i-1)),Data(:,i));
+        yaxis_all_legends(i-1)=strtrim(yaxis_all_legends(i-1));
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),' ','_');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'.','');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'{}','');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'\','');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'/','');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'=','_');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),',','_');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'(','_');
+        yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),')','_');
+
+        assignin('caller',char(yaxis_all_legends(i-1)),Data(:,i));
+    end
+end
+
+catch
+    disp('Could not read the column labels, but you')
+    disp('still have your data in the variable Data!')
+end
+
+
+assignin('caller','Data',Data);
+assignin('caller','yaxis_all_legends',yaxis_all_legends);
+
+fclose(inputfile);
+
+
+
+
+##### SOURCE END #####
+--></body></html>

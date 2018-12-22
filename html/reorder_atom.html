@@ -1,0 +1,222 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>reorder_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="reorder_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>reorder_atom.m</h1><!--introduction--><div><ul><li>This function reorders the atoms in an atom struct. Useful for instance</li><li>for creating united-atom structures from all-atom structures, by simply</li><li>ignoring the non-polar H's from the original list of atoms, or</li><li>reordering the atom struct with respect to residue name or atom type *</li><li>In case of reordering the the atom order, neworder is a [1xn] array of</li><li>n index numbers with a new order. Else if varargin is 'resname' or</li><li>'atomtype', neworder is a cell list of 'stringnames'</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = reorder_atom(atom,[1 3 4 5 6 7 8 10])</li><li>atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname')</li><li>atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = reorder_atom(atom,neworder,varargin)
+
+<span class="keyword">if</span> nargin&gt;2
+    type=varargin{1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> iscell(neworder)==0
+
+    nResidues=max([atom.molid]); <span class="comment">% How many residues do we have?</span>
+    nResidueatoms_prev=sum([atom.molid]==1); <span class="comment">% How many atoms per residue did we have initially?</span>
+    nResidueatoms_current=length(neworder); <span class="comment">% How many atoms per residue did will we output?</span>
+    nAtoms=length(neworder)*nResidues; <span class="comment">% How many atoms in total will we output? Can be lower than the initial number</span>
+
+    newatom=atom(1:nAtoms); <span class="comment">% Create an atom struct to overwrite</span>
+    <span class="keyword">for</span> i=1:nResidues
+        newatom(1+(i-1)*nResidueatoms_current:i*nResidueatoms_current)=atom(neworder+(i-1)*nResidueatoms_prev);
+    <span class="keyword">end</span>
+
+    atom=newatom;
+
+    <span class="comment">% Write the new structure to a .gro file</span>
+    write_atom_gro(newatom,Box_dim,<span class="string">'reordered.gro'</span>)
+
+<span class="keyword">elseif</span> iscell(neworder)==1 &amp;&amp; strncmpi(type,<span class="string">'resname'</span>,3)
+
+    resnames=[];ordered_atom=[];
+    <span class="keyword">if</span> numel(neworder)~=numel(unique([atom.resname]))
+        disp(<span class="string">'You have not issued a complete list of resnames!'</span>);
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.resname])))))~=0
+            disp(<span class="string">'Make sure you have the resnames spelled right..'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> i=1:numel(neworder)
+        resnames(i).ind = find(ismember([atom.resname],neworder(i)));
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> i=1:numel(neworder)
+        ordered_atom=[ordered_atom atom(resnames(i).ind)];
+    <span class="keyword">end</span>
+    atom=update_atom(ordered_atom);
+
+<span class="keyword">elseif</span> iscell(neworder)==1 &amp;&amp; strncmpi(type,<span class="string">'atomtype'</span>,4) || strncmpi(type,<span class="string">'type'</span>,4)
+
+    atomtype=[];ordered_atom=[];
+    <span class="keyword">if</span> numel(neworder)~=numel(unique([atom.type]))
+        disp(<span class="string">'You have not issued a complete list of atomtypes!'</span>);
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.type])))))~=0
+            disp(<span class="string">'Make sure you have the atomtypes spelled right..'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> i=1:numel(neworder)
+        atomtype(i).ind = find(ismember([atom.type],neworder(i)));
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> i=1:numel(neworder)
+        ordered_atom=[ordered_atom atom(atomtype(i).ind)];
+    <span class="keyword">end</span>
+    atom=update_atom(ordered_atom);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% reorder_atom.m
+% * This function reorders the atoms in an atom struct. Useful for instance 
+% * for creating united-atom structures from all-atom structures, by simply
+% * ignoring the non-polar H's from the original list of atoms, or 
+% * reordering the atom struct with respect to residue name or atom type
+% *
+% * In case of reordering the the atom order, neworder is a [1xn] array of 
+% * n index numbers with a new order. Else if varargin is 'resname' or 
+% * 'atomtype', neworder is a cell list of 'stringnames'
+% 
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = reorder_atom(atom,[1 3 4 5 6 7 8 10])
+% # atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname')
+% # atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype')
+%
+function atom = reorder_atom(atom,neworder,varargin)
+
+if nargin>2
+    type=varargin{1};
+end
+
+if iscell(neworder)==0
+    
+    nResidues=max([atom.molid]); % How many residues do we have?
+    nResidueatoms_prev=sum([atom.molid]==1); % How many atoms per residue did we have initially?
+    nResidueatoms_current=length(neworder); % How many atoms per residue did will we output?
+    nAtoms=length(neworder)*nResidues; % How many atoms in total will we output? Can be lower than the initial number
+    
+    newatom=atom(1:nAtoms); % Create an atom struct to overwrite
+    for i=1:nResidues
+        newatom(1+(i-1)*nResidueatoms_current:i*nResidueatoms_current)=atom(neworder+(i-1)*nResidueatoms_prev);
+    end
+    
+    atom=newatom;
+    
+    % Write the new structure to a .gro file
+    write_atom_gro(newatom,Box_dim,'reordered.gro')
+    
+elseif iscell(neworder)==1 && strncmpi(type,'resname',3)
+    
+    resnames=[];ordered_atom=[];
+    if numel(neworder)~=numel(unique([atom.resname]))
+        disp('You have not issued a complete list of resnames!');
+    else
+        if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.resname])))))~=0
+            disp('Make sure you have the resnames spelled right..');
+        end
+    end
+    
+    for i=1:numel(neworder)
+        resnames(i).ind = find(ismember([atom.resname],neworder(i)));
+    end
+    for i=1:numel(neworder)
+        ordered_atom=[ordered_atom atom(resnames(i).ind)];
+    end
+    atom=update_atom(ordered_atom);
+    
+elseif iscell(neworder)==1 && strncmpi(type,'atomtype',4) || strncmpi(type,'type',4)
+    
+    atomtype=[];ordered_atom=[];
+    if numel(neworder)~=numel(unique([atom.type]))
+        disp('You have not issued a complete list of atomtypes!');
+    else
+        if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.type])))))~=0
+            disp('Make sure you have the atomtypes spelled right..');
+        end
+    end
+    
+    for i=1:numel(neworder)
+        atomtype(i).ind = find(ismember([atom.type],neworder(i)));
+    end
+    for i=1:numel(neworder)
+        ordered_atom=[ordered_atom atom(atomtype(i).ind)];
+    end
+    atom=update_atom(ordered_atom);
+    
+end
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

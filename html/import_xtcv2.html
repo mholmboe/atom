@@ -1,0 +1,188 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_xtcv2.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_xtcv2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_xtcv2.m</h1><!--introduction--><div><ul><li>This function imports an xtc trajectory file.</li><li>Does it work?</li><li>This function imports a structure file and a xtc file</li><li>This function relies on Gro2Mat, see</li><li>Gro2mat: a package to efficiently read gromacs output in MATLAB.</li><li>Dien H1, Deane CM, Knapp B.</li><li>Journal of Computational Chemistry</li><li>Volume 35, Issue 20, Version of Record online: 12 JUN 2014</li><li>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Examples</a></li><li><a href="#3">This did not work...</a></li></ul></div><h2 id="1">Examples</h2><div><ul><li>[atom,traj] = import_xtcv2('conf.gro',traj.xtc)</li><li>[atom,traj] = import_xtcv2('conf.pdb',traj.xtc)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = import_xtcv2(filenameconf,filenamextc)
+</pre><pre class="codeinput"><span class="keyword">if</span> regexp(filenameconf,<span class="string">'.gro'</span>) &gt; 1
+    disp(<span class="string">'Found .gro file, generating a .pdb file'</span>);
+    atom=import_atom_gro(filenameconf);
+    filenamepdb=<span class="string">'temp.pdb'</span>;
+    write_atom_pdb(atom,Box_dim,filenamepdb);
+<span class="keyword">elseif</span> regexp(filenameconf,<span class="string">'.pdb'</span>) &gt; 1
+    disp(<span class="string">'Found .pdb file'</span>);
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+<span class="keyword">end</span>
+
+disp(<span class="string">'Found .xtc file, will use the excellent Gro2Mat scripts'</span>);
+disp(<span class="string">'See Journal of Computational Chemistry,Volume 35, Issue 20'</span>)
+disp(<span class="string">' '</span>)
+disp(<span class="string">' '</span>)
+disp(<span class="string">'Note that in maxTol, startFrame, endFrame values can be set,'</span>)
+disp(<span class="string">'look into Gro2Mat parseTrj function for help'</span>)
+disp(<span class="string">'Note that lines 55-56 in parseTrj can give unneccesary problems'</span>)
+
+tic
+trj=parseTrj(filenamepdb,filenamextc,0.001);
+toc
+nAtoms=size(trj.coords,1);
+nFrames=size(trj.coords,3);
+</pre><h2 id="3">This did not work...</h2><pre class="codeinput">xcoords=(reshape(trj.coords(:,1,:)*10,nAtoms,nFrames)).';
+ycoords=(reshape(trj.coords(:,2,:)*10,nAtoms,nFrames)).';
+zcoords=(reshape(trj.coords(:,3,:)*10,nAtoms,nFrames)).';
+traj=zeros(size(xcoords,1),size(xcoords,2)*3);
+traj(:,1:3:end)=xcoords;
+traj(:,2:3:end)=ycoords;
+traj(:,3:3:end)=zcoords;
+
+trj.trajectoryData.box=trj.trajectoryData.box*10;
+trajdata=trj.trajectoryData;
+Box_dim=double(trajdata.box);
+time=trajdata.time;
+Step=trajdata.step;
+
+delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+<span class="comment">% clear xcoords ycoords zcoords</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'trj'</span>,trj)
+assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,trajdata)
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom)
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_xtcv2.m
+% * This function imports an xtc trajectory file.
+% * Does it work?
+% * This function imports a structure file and a xtc file
+% * This function relies on Gro2Mat, see
+% * Gro2mat: a package to efficiently read gromacs output in MATLAB.
+% * Dien H1, Deane CM, Knapp B.
+% * Journal of Computational Chemistry
+% * Volume 35, Issue 20, Version of Record online: 12 JUN 2014
+% * Please report bugs to michael.holmboe@umu.se
+
+%% Examples
+% * [atom,traj] = import_xtcv2('conf.gro',traj.xtc)
+% * [atom,traj] = import_xtcv2('conf.pdb',traj.xtc)
+
+function atom = import_xtcv2(filenameconf,filenamextc)
+%%
+
+if regexp(filenameconf,'.gro') > 1
+    disp('Found .gro file, generating a .pdb file');
+    atom=import_atom_gro(filenameconf);
+    filenamepdb='temp.pdb';
+    write_atom_pdb(atom,Box_dim,filenamepdb);
+elseif regexp(filenameconf,'.pdb') > 1
+    disp('Found .pdb file');
+    filenamepdb=filenameconf;
+    atom=import_atom_pdb(filenamepdb);
+end
+
+disp('Found .xtc file, will use the excellent Gro2Mat scripts');
+disp('See Journal of Computational Chemistry,Volume 35, Issue 20')
+disp(' ')
+disp(' ')
+disp('Note that in maxTol, startFrame, endFrame values can be set,')
+disp('look into Gro2Mat parseTrj function for help')
+disp('Note that lines 55-56 in parseTrj can give unneccesary problems')
+
+tic
+trj=parseTrj(filenamepdb,filenamextc,0.001);
+toc
+nAtoms=size(trj.coords,1);
+nFrames=size(trj.coords,3);
+
+%% This did not work...
+xcoords=(reshape(trj.coords(:,1,:)*10,nAtoms,nFrames)).';
+ycoords=(reshape(trj.coords(:,2,:)*10,nAtoms,nFrames)).';
+zcoords=(reshape(trj.coords(:,3,:)*10,nAtoms,nFrames)).';
+traj=zeros(size(xcoords,1),size(xcoords,2)*3);
+traj(:,1:3:end)=xcoords;
+traj(:,2:3:end)=ycoords;
+traj(:,3:3:end)=zcoords;
+
+trj.trajectoryData.box=trj.trajectoryData.box*10;
+trajdata=trj.trajectoryData;
+Box_dim=double(trajdata.box);
+time=trajdata.time;
+Step=trajdata.step;
+
+delete('./#*'); delete('./temp*');
+% clear xcoords ycoords zcoords
+assignin('caller','trj',trj)
+assignin('caller','traj',trajdata)
+assignin('caller','atom',atom)
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','traj',traj)
+assignin('caller','XYZ_labels',XYZ_labels)
+assignin('caller','XYZ_data',XYZ_data)
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,455 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_trr.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_trrv2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_trr.m</h1><!--introduction--><div><ul><li>This function imports an trr file using Evan's scripts, see below</li><li>This function uses trr2matlab + readGmx2Matlab to read gromacs .trr trajectory files</li><li>into the variable 'traj'. Note that trr2matlab can output both coordinates, velocities and forces</li><li>if they exist in the .trr file</li><li>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></li><li>Can varargin be used for stride?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Examples</a></li></ul></div><h2 id="1">Examples</h2><div><ul><li>traj = import_trr(traj.trr)</li><li>traj = import_trr(traj.trr,varargin)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> traj = import_trrv2(filenametrr,varargin)
+</pre><pre class="codeinput">disp(<span class="string">'Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions'</span>);
+disp(<span class="string">'See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix'</span>)
+disp(<span class="string">' '</span>)
+disp(<span class="string">' '</span>)
+disp(<span class="string">'Note that in princple both coords, velocities, forces could be imported, and that stride can be used'</span>)
+disp(<span class="string">'Look into Evans readGmx2Matlab and trr2matlab functions for options'</span>)
+
+
+writeX=0;writeV=0;writeF=0;
+<span class="comment">% First Evan's script does this... see his comments below for options</span>
+<span class="keyword">if</span> nargin==1
+    trr2matlab(filenametrr,<span class="string">'x'</span>);
+<span class="keyword">else</span>
+    evalstr=eval(<span class="string">"strcat('trr2matlab(filenametrr')"</span>);
+    <span class="keyword">if</span> sum(strcmp(varargin, <span class="string">'x'</span>)) &gt; 0
+        x=<span class="string">'''x'''</span>;
+        evalstr=eval(<span class="string">"strcat(evalstr,'comma',x)"</span>);
+        writeX = true;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sum(strcmp(varargin, <span class="string">'v'</span>)) &gt; 0
+        v=<span class="string">'''v'''</span>;
+        evalstr=eval(<span class="string">"strcat(evalstr,'comma',v)"</span>);
+        writeV = true;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sum(strcmp(varargin, <span class="string">'f'</span>)) &gt; 0
+        f=<span class="string">'''f'''</span>;
+        evalstr=eval(<span class="string">"strcat(evalstr,'comma',f)"</span>);
+        writeF = true;
+    <span class="keyword">end</span>
+    evalstr=strcat(evalstr,<span class="string">')'</span>);
+    evalstr=strrep(evalstr,<span class="string">'comma'</span>,<span class="string">','</span>);
+    eval(evalstr);
+<span class="keyword">end</span>
+
+<span class="comment">% For trr2matlab.m, published on Matlab fileexchange</span>
+<span class="comment">% by Evan Arthur, University of Michigan, October 2011</span>
+<span class="comment">%</span>
+<span class="comment">% trr2matlab.m</span>
+<span class="comment">% Inputs:</span>
+<span class="comment">%     - path to trr file (required, must be first input)</span>
+<span class="comment">%     - path to output file (optional)</span>
+<span class="comment">%         if none given, a default name is chosen (such as 'xdata.binary')</span>
+<span class="comment">%     - 'x' (optional)</span>
+<span class="comment">%         outputs xyz atomic coordinates</span>
+<span class="comment">%     - 'v' (optional)</span>
+<span class="comment">%         outputs xyz of instantaneous velocities</span>
+<span class="comment">%     - 'f' (optional)</span>
+<span class="comment">%         outputs xyz of atomic forces</span>
+<span class="comment">%     - 'single' or 'double' (optional)</span>
+<span class="comment">%         selects whether to read file as single or double precision</span>
+<span class="comment">%         This program automatically detects this. Use this option as</span>
+<span class="comment">%         an override.</span>
+<span class="comment">%     - [integer] (optional)</span>
+<span class="comment">%         output frequency on display window of the frame currently being</span>
+<span class="comment">%         read. 1 = every frame's statistics are output. 1000 = every 1000</span>
+<span class="comment">%         frames statistics are output</span>
+
+<span class="comment">% Outputs:</span>
+<span class="comment">%     - xyz data</span>
+<span class="comment">%         output either by default or if 'x' option is given</span>
+<span class="comment">%         default name is 'xdata.binary'</span>
+<span class="comment">%     - velocity data</span>
+<span class="comment">%         output either by default or if 'v' option is given</span>
+<span class="comment">%         default name is 'vdata.binary'</span>
+<span class="comment">%     - force data</span>
+<span class="comment">%         output either by default or if 'f' option is given</span>
+<span class="comment">%         default name is 'fdata.binary'</span>
+
+<span class="comment">% Example inputs and outputs:</span>
+<span class="comment">%     trr2matlab ('traj.trr')</span>
+<span class="comment">%           outputs all atomic coordinates, velocities, and forces as files</span>
+<span class="comment">%           'xdata.binary', 'vdata.binary', and 'fdata.binary'</span>
+<span class="comment">%     trr2matlab ('traj.trr', 'x', 'f')</span>
+<span class="comment">%           outputs all atomic coordinates and forces as files</span>
+<span class="comment">%           'xdata.binary' and 'fdata.binary' (velocity data is not output)</span>
+<span class="comment">%     trr2matlab ('traj.trr', 'x')</span>
+<span class="comment">%           outputs only atomic coordinates as file 'xdata.binary'</span>
+<span class="comment">%           (velocity and force data are not output)</span>
+<span class="comment">%     trr2matlab ('traj.trr', 'f', 'proteinA')</span>
+<span class="comment">%           outputs only atomic forces as file 'proteinA_xdata.binary'</span>
+<span class="comment">%           (velocity and coordinates data are not output)</span>
+<span class="comment">%     trr2matlab ('traj.trr', 'x', 'single')</span>
+<span class="comment">%           outputs only atomic forces as file 'xdata.binary'</span>
+<span class="comment">%           (velocity and force data are not output)</span>
+<span class="comment">%           forces single precision mode</span>
+<span class="comment">%     trr2matlab ('traj.trr', 'x', 10)</span>
+<span class="comment">%           outputs only atomic forces as file 'xdata.binary'</span>
+<span class="comment">%           (velocity and force data are not output)</span>
+<span class="comment">%           outputs statistics of information in window every 10 frames</span>
+
+<span class="comment">% notes on Single/Double Precision:</span>
+<span class="comment">%     This program detects the precision of the trr file automatically. If</span>
+<span class="comment">%     the detection fails, write in the input 'single' or 'double'. The</span>
+<span class="comment">%     program outputs garbage or fails spectacularly when this is not done</span>
+<span class="comment">%     properly.</span>
+<span class="comment">%</span>
+<span class="comment">%     Since single precision exceeds the margin of error for most analyses,</span>
+<span class="comment">%     this program only outputs data as single-precision numbers. If I get</span>
+<span class="comment">%     requests for the excrutiatingly accurate double-precision output, I</span>
+<span class="comment">%     will put in an option for it.</span>
+
+<span class="keyword">if</span> (writeX+writeV+writeF)==0
+    [trj] = readGmx2Matlab(<span class="string">'xdata.binary'</span>);
+
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+
+    xdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    ydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    zdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    traj=zeros(size(xdata,1),size(xdata,2)*3);
+    traj(:,1:3:end)=xdata;
+    traj(:,2:3:end)=ydata;
+    traj(:,3:3:end)=zdata;
+    delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+    assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj)
+
+    delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> writeF&gt;0
+    [trj] = readGmx2Matlab(<span class="string">'fdata.binary'</span>);
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+    fxdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    fydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    fzdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    ftraj=zeros(size(fxdata,1),size(fxdata,2)*3);
+    ftraj(:,1:3:end)=fxdata;
+    ftraj(:,2:3:end)=fydata;
+    ftraj(:,3:3:end)=fzdata;
+    delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+    assignin(<span class="string">'caller'</span>,<span class="string">'ftraj'</span>,ftraj);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> writeV&gt;0
+    [trj] = readGmx2Matlab(<span class="string">'vdata.binary'</span>);
+
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+
+    vxdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    vydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    vzdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    vtraj=zeros(size(vxdata,1),size(vxdata,2)*3);
+    vtraj(:,1:3:end)=vxdata;
+    vtraj(:,2:3:end)=vydata;
+    vtraj(:,3:3:end)=vzdata;
+    delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+    assignin(<span class="string">'caller'</span>,<span class="string">'vtraj'</span>,vtraj);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> writeX&gt;0
+    [trj] = readGmx2Matlab(<span class="string">'xdata.binary'</span>);
+
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+
+    xdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    ydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    zdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    traj=zeros(size(xdata,1),size(xdata,2)*3);
+    traj(:,1:3:end)=xdata;
+    traj(:,2:3:end)=ydata;
+    traj(:,3:3:end)=zdata;
+
+    delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*'</span>);
+    assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj);
+<span class="keyword">end</span>
+
+clear <span class="string">trj</span>
+trj.nAtoms=nAtoms;
+trj.nFrames=nFrames;
+trj.timestep=timestep;
+assignin(<span class="string">'caller'</span>,<span class="string">'trj'</span>,trj);
+
+<span class="comment">% Assign the Box_dim matrix to the calling workspace</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_trr.m
+% * This function imports an trr file using Evan's scripts, see below
+% * This function uses trr2matlab + readGmx2Matlab to read gromacs .trr trajectory files
+% * into the variable 'traj'. Note that trr2matlab can output both coordinates, velocities and forces
+% * if they exist in the .trr file
+% * Please report bugs to michael.holmboe@umu.se
+% * Can varargin be used for stride?
+
+%% Examples
+% * traj = import_trr(traj.trr)
+% * traj = import_trr(traj.trr,varargin)
+
+
+function traj = import_trrv2(filenametrr,varargin)
+%%
+
+disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');
+disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
+disp(' ')
+disp(' ')
+disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')
+disp('Look into Evans readGmx2Matlab and trr2matlab functions for options')
+
+
+writeX=0;writeV=0;writeF=0;
+% First Evan's script does this... see his comments below for options
+if nargin==1
+    trr2matlab(filenametrr,'x');
+else
+    evalstr=eval("strcat('trr2matlab(filenametrr')");
+    if sum(strcmp(varargin, 'x')) > 0
+        x='''x''';
+        evalstr=eval("strcat(evalstr,'comma',x)");
+        writeX = true;
+    end
+    if sum(strcmp(varargin, 'v')) > 0
+        v='''v''';
+        evalstr=eval("strcat(evalstr,'comma',v)");
+        writeV = true;
+    end
+    if sum(strcmp(varargin, 'f')) > 0
+        f='''f''';
+        evalstr=eval("strcat(evalstr,'comma',f)");
+        writeF = true;
+    end
+    evalstr=strcat(evalstr,')');
+    evalstr=strrep(evalstr,'comma',',');
+    eval(evalstr);
+end
+
+% For trr2matlab.m, published on Matlab fileexchange
+% by Evan Arthur, University of Michigan, October 2011
+%
+% trr2matlab.m
+% Inputs:
+%     - path to trr file (required, must be first input)
+%     - path to output file (optional)
+%         if none given, a default name is chosen (such as 'xdata.binary')
+%     - 'x' (optional)
+%         outputs xyz atomic coordinates
+%     - 'v' (optional)
+%         outputs xyz of instantaneous velocities
+%     - 'f' (optional)
+%         outputs xyz of atomic forces
+%     - 'single' or 'double' (optional)
+%         selects whether to read file as single or double precision
+%         This program automatically detects this. Use this option as
+%         an override.
+%     - [integer] (optional)
+%         output frequency on display window of the frame currently being
+%         read. 1 = every frame's statistics are output. 1000 = every 1000
+%         frames statistics are output
+
+% Outputs:
+%     - xyz data
+%         output either by default or if 'x' option is given
+%         default name is 'xdata.binary'
+%     - velocity data
+%         output either by default or if 'v' option is given
+%         default name is 'vdata.binary'
+%     - force data
+%         output either by default or if 'f' option is given
+%         default name is 'fdata.binary'
+
+% Example inputs and outputs:
+%     trr2matlab ('traj.trr')
+%           outputs all atomic coordinates, velocities, and forces as files
+%           'xdata.binary', 'vdata.binary', and 'fdata.binary'
+%     trr2matlab ('traj.trr', 'x', 'f')
+%           outputs all atomic coordinates and forces as files
+%           'xdata.binary' and 'fdata.binary' (velocity data is not output)
+%     trr2matlab ('traj.trr', 'x')
+%           outputs only atomic coordinates as file 'xdata.binary'
+%           (velocity and force data are not output)
+%     trr2matlab ('traj.trr', 'f', 'proteinA')
+%           outputs only atomic forces as file 'proteinA_xdata.binary'
+%           (velocity and coordinates data are not output)
+%     trr2matlab ('traj.trr', 'x', 'single')
+%           outputs only atomic forces as file 'xdata.binary'
+%           (velocity and force data are not output)
+%           forces single precision mode
+%     trr2matlab ('traj.trr', 'x', 10)
+%           outputs only atomic forces as file 'xdata.binary'
+%           (velocity and force data are not output)
+%           outputs statistics of information in window every 10 frames
+
+% notes on Single/Double Precision:
+%     This program detects the precision of the trr file automatically. If
+%     the detection fails, write in the input 'single' or 'double'. The
+%     program outputs garbage or fails spectacularly when this is not done
+%     properly.
+%
+%     Since single precision exceeds the margin of error for most analyses,
+%     this program only outputs data as single-precision numbers. If I get
+%     requests for the excrutiatingly accurate double-precision output, I
+%     will put in an option for it.
+
+if (writeX+writeV+writeF)==0
+    [trj] = readGmx2Matlab('xdata.binary');
+    
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+    
+    xdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    ydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    zdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    traj=zeros(size(xdata,1),size(xdata,2)*3);
+    traj(:,1:3:end)=xdata;
+    traj(:,2:3:end)=ydata;
+    traj(:,3:3:end)=zdata;
+    delete('./#*'); delete('./temp*');
+    assignin('caller','traj',traj)
+    
+    delete('./#*'); delete('./temp*');
+end
+
+if writeF>0
+    [trj] = readGmx2Matlab('fdata.binary');
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+    fxdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    fydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    fzdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    ftraj=zeros(size(fxdata,1),size(fxdata,2)*3);
+    ftraj(:,1:3:end)=fxdata;
+    ftraj(:,2:3:end)=fydata;
+    ftraj(:,3:3:end)=fzdata;
+    delete('./#*'); delete('./temp*');
+    assignin('caller','ftraj',ftraj);
+end
+
+if writeV>0
+    [trj] = readGmx2Matlab('vdata.binary');
+    
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+    
+    vxdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    vydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    vzdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    vtraj=zeros(size(vxdata,1),size(vxdata,2)*3);
+    vtraj(:,1:3:end)=vxdata;
+    vtraj(:,2:3:end)=vydata;
+    vtraj(:,3:3:end)=vzdata;
+    delete('./#*'); delete('./temp*');
+    assignin('caller','vtraj',vtraj);
+end
+
+if writeX>0
+    [trj] = readGmx2Matlab('xdata.binary');
+    
+    nAtoms=trj.num_atoms;
+    nFrames=trj.num_frames;
+    timestep=trj.time_step;
+    
+    xdata=(reshape(trj.trajectory(:,1,:)*10,nAtoms,nFrames)).';
+    ydata=(reshape(trj.trajectory(:,2,:)*10,nAtoms,nFrames)).';
+    zdata=(reshape(trj.trajectory(:,3,:)*10,nAtoms,nFrames)).';
+    traj=zeros(size(xdata,1),size(xdata,2)*3);
+    traj(:,1:3:end)=xdata;
+    traj(:,2:3:end)=ydata;
+    traj(:,3:3:end)=zdata;
+    
+    delete('./#*'); delete('./temp*');
+    assignin('caller','traj',traj);
+end
+
+clear trj
+trj.nAtoms=nAtoms;
+trj.nFrames=nFrames;
+trj.timestep=timestep;
+assignin('caller','trj',trj);
+
+% Assign the Box_dim matrix to the calling workspace
+assignin('caller','Box_dim',Box_dim);
+
+
+##### SOURCE END #####
+--></body></html>

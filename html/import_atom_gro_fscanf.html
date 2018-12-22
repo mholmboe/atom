@@ -1,0 +1,279 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_atom_gro.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_atom_gro_fscanf.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_atom_gro.m</h1><!--introduction--><div><ul><li>This function import .gro files into an atom struct variable</li><li>varargin can be used to translate, alt. center+translate the molecule</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = import_atom('molecule.gro')</li><li>atom = import_atom('molecule.gro',[10 5 2])</li><li>atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_gro_fscanf(filename,varargin)
+tic
+
+<span class="comment">% Get the number of atoms and Box_dim</span>
+fileID = fopen(filename,<span class="string">'r'</span>);
+Line1 = {fgets(fileID)};
+Line2 = {fgets(fileID)};
+Title=strsplit(char(Line2));
+nAtoms=str2double(Line2);
+Box_string = textscan(fileID, <span class="string">'%s'</span>,1,<span class="string">'delimiter'</span>, <span class="string">'\n'</span>,<span class="string">'HeaderLines'</span>, nAtoms);
+Box_dim=str2double(strsplit(char(Box_string{1,1})))*10;
+fclose(fileID);
+
+<span class="comment">% Read columns of data as strings:</span>
+formatSpec = <span class="string">'%5s%5s%5s%5.0f%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f%[^\r\n]'</span>;
+
+<span class="comment">% Open the text file.</span>
+fileID = fopen(filename,<span class="string">'r'</span>);
+dataArray = textscan(fileID, formatSpec, nAtoms, <span class="string">'Delimiter'</span>, <span class="string">''</span>, <span class="string">'WhiteSpace'</span>, <span class="string">''</span>, <span class="string">'EmptyValue'</span> ,NaN,<span class="string">'HeaderLines'</span>, 2, <span class="string">'ReturnOnError'</span>, false);
+fclose(fileID);
+
+<span class="comment">% AtomID ResName</span>
+nAtoms=size(dataArray{:,5}(:),1);
+MolID = str2double((dataArray{:,1})); <span class="comment">% Converts to double</span>
+Resname = strtrim(dataArray{:,2});
+Atomtype = strtrim(dataArray{:,3});
+ind=find(dataArray{:,4}(:)&gt;99999);
+dataArray{1,4}(ind)=dataArray{1,4}(ind)-100000;
+AtomID = dataArray{:,4}; <span class="comment">% Converts to double</span>
+X_coord = dataArray{:,5}*10;
+Y_coord = dataArray{:,6}*10;
+Z_coord = dataArray{:,7}*10;
+X_velo = dataArray{:,8}*10;
+Y_velo = dataArray{:,9}*10;
+Z_velo = dataArray{:,10}*10;
+
+atom=[];
+nmol=1;first_in=[1];last_in=[];
+<span class="keyword">for</span> i=1:nAtoms;
+    <span class="keyword">if</span> i &gt; 1 &amp;&amp; MolID(i) ~= MolID(i-1)
+        nmol=nmol+1;
+        atom(i).molid=nmol;
+        first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;
+    <span class="keyword">elseif</span> i &gt; 1
+        atom(i).molid=atom(i-1).molid;
+    <span class="keyword">elseif</span> i == 1
+        atom(i).molid=1;
+    <span class="keyword">end</span>
+    atom(i).resname=Resname(i);
+    atom(i).type=Atomtype(i);
+    atom(i).fftype=Atomtype(i);
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x=X_coord(i);
+    atom(i).y=Y_coord(i);
+    atom(i).z=Z_coord(i);
+<span class="comment">%     atom(i).fx=X_coord(i)/Box_dim(1);</span>
+<span class="comment">%     atom(i).fy=Y_coord(i)/Box_dim(2);</span>
+<span class="comment">%     atom(i).fz=Z_coord(i)/Box_dim(3);</span>
+    atom(i).vx=X_velo(i);
+    atom(i).vy=Y_velo(i);
+    atom(i).vz=Z_velo(i);
+<span class="keyword">end</span>
+<span class="comment">% last_in(atom(end).molid,1)=nAtoms;</span>
+
+<span class="keyword">if</span> nargin==2;
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin==3;
+    atom = center_atom(atom,cell2mat(varargin(2)),<span class="string">'all'</span>,<span class="string">'xyz'</span>);
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];</span>
+<span class="comment">% XYZ_labels=[atom.type]';</span>
+<span class="comment">%</span>
+<span class="comment">% % atom = resname_atom(atom);</span>
+<span class="comment">%</span>
+<span class="comment">% assignin('caller','XYZ_labels',XYZ_labels)</span>
+<span class="comment">% assignin('caller','XYZ_data',XYZ_data)</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom)
+assignin(<span class="string">'caller'</span>,<span class="string">'dataArray'</span>,dataArray)
+assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,nAtoms)
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'MolID'</span>,MolID)
+
+disp(<span class="string">'.gro file imported'</span>)
+toc
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_atom_gro.m
+% * This function import .gro files into an atom struct variable
+% * varargin can be used to translate, alt. center+translate the molecule
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% * atom = import_atom('molecule.gro')
+% * atom = import_atom('molecule.gro',[10 5 2])
+% * atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])
+
+function atom = import_atom_gro_fscanf(filename,varargin)
+tic
+
+% Get the number of atoms and Box_dim
+fileID = fopen(filename,'r');
+Line1 = {fgets(fileID)};
+Line2 = {fgets(fileID)};
+Title=strsplit(char(Line2));
+nAtoms=str2double(Line2);
+Box_string = textscan(fileID, '%s',1,'delimiter', '\n','HeaderLines', nAtoms);
+Box_dim=str2double(strsplit(char(Box_string{1,1})))*10;
+fclose(fileID);
+
+% Read columns of data as strings:
+formatSpec = '%5s%5s%5s%5.0f%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f%[^\r\n]';
+
+% Open the text file.
+fileID = fopen(filename,'r');
+dataArray = textscan(fileID, formatSpec, nAtoms, 'Delimiter', '', 'WhiteSpace', '', 'EmptyValue' ,NaN,'HeaderLines', 2, 'ReturnOnError', false);
+fclose(fileID);
+
+% AtomID ResName
+nAtoms=size(dataArray{:,5}(:),1);
+MolID = str2double((dataArray{:,1})); % Converts to double
+Resname = strtrim(dataArray{:,2});
+Atomtype = strtrim(dataArray{:,3});
+ind=find(dataArray{:,4}(:)>99999);
+dataArray{1,4}(ind)=dataArray{1,4}(ind)-100000;
+AtomID = dataArray{:,4}; % Converts to double
+X_coord = dataArray{:,5}*10;
+Y_coord = dataArray{:,6}*10;
+Z_coord = dataArray{:,7}*10;
+X_velo = dataArray{:,8}*10;
+Y_velo = dataArray{:,9}*10;
+Z_velo = dataArray{:,10}*10;
+
+atom=[];
+nmol=1;first_in=[1];last_in=[];
+for i=1:nAtoms;
+    if i > 1 && MolID(i) ~= MolID(i-1)
+        nmol=nmol+1;
+        atom(i).molid=nmol;
+        first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;
+    elseif i > 1
+        atom(i).molid=atom(i-1).molid;
+    elseif i == 1
+        atom(i).molid=1;
+    end
+    atom(i).resname=Resname(i);
+    atom(i).type=Atomtype(i);
+    atom(i).fftype=Atomtype(i);
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x=X_coord(i);
+    atom(i).y=Y_coord(i);
+    atom(i).z=Z_coord(i);
+%     atom(i).fx=X_coord(i)/Box_dim(1);
+%     atom(i).fy=Y_coord(i)/Box_dim(2);
+%     atom(i).fz=Z_coord(i)/Box_dim(3);
+    atom(i).vx=X_velo(i);
+    atom(i).vy=Y_velo(i);
+    atom(i).vz=Z_velo(i);
+end
+% last_in(atom(end).molid,1)=nAtoms;
+
+if nargin==2;
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+end
+
+if nargin==3;
+    atom = center_atom(atom,cell2mat(varargin(2)),'all','xyz');
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+end
+
+% XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+% XYZ_labels=[atom.type]';
+% 
+% % atom = resname_atom(atom);
+% 
+% assignin('caller','XYZ_labels',XYZ_labels)
+% assignin('caller','XYZ_data',XYZ_data)
+assignin('caller','atom',atom)
+assignin('caller','dataArray',dataArray)
+assignin('caller','nAtoms',nAtoms)
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','MolID',MolID)
+
+disp('.gro file imported')
+toc
+
+
+##### SOURCE END #####
+--></body></html>
