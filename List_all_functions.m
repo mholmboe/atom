@@ -132,8 +132,7 @@
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % This function fetches the sigma radius parameter, originally taken from the link below from 'A cartography of the van der Waals territories' Santiago Alvarez doi:10.1039/c3dt50599e
 % # <slice_atom.html slice_atom(atom,limits,invert)> % This function checks if the coordinates for each time record in XYZ_data is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
 % # <slice_molid.html slice_molid(atom,limits,invert)> % This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
-% # <slice_triclinic_atom.html slice_triclinic_atom(atom,limits,invert)>
-% % This function slices the atoms into the triclinic box.
+% # <slice_triclinic_atom.html slice_triclinic_atom(atom,limits,invert)> % This function slices the atoms into the triclinic box.
 % # <solvate_atom.html solvate_atom(limits,density,r,maxsol,solute_atom,varargin)> % This function generates a certain region defined by <limits> with a solvent structure of density <density>
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
