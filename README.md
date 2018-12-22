@@ -82,7 +82,8 @@ dist_matrix = dist_matrix_atom(atom,Box_dim)
 dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % The same but for the distance matrix between particles in atom1 and atom2
 
 In case you want to use the Clayff forcefield for instance, you could assign the clayff atom types with clayff_atom and write topology files with:
-write_atom_psf(atom,Box_dim,filename,1.2,1.2,'clayff') % note only bonds and angles write_atom_itp(atom,Box_dim,filename,1.2,1.2,'clayff','spce') % Gromacs topology file, note only bonds and angles
+write_atom_psf(atom,Box_dim,filename,1.2,1.2,'clayff') % note only bonds and angles
+write_atom_itp(atom,Box_dim,filename,1.2,1.2,'clayff','spce') % Gromacs topology file, note only bonds and angles
 
 Other example functions (see complete list in function_descriptions.m)
 
