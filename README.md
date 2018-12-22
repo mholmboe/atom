@@ -90,7 +90,9 @@ write_atom_itp(atom,Box_dim,filename,1.2,1.2,'clayff','spce') % Gromacs topology
 
 Other example functions (see complete list in function_descriptions.m)
 atom = translate_atom(atom,trans_vec,Resname)
+
 atom = wrap_atom(atom,Box_dim)
+
 atom = triclinic_atom(atom,Box_dim,angleparam,angletype)
 .
 .
