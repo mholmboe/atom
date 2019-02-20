@@ -27,8 +27,8 @@ end
 % call function with find(ismember({forcefield.clayff.type},'Hw')) to fin Hw's index
 
 %                      1     2    3    4   5     6       7      8       9     10      11      12     13    14   15   16    17    18    19    20    21    22    23   24  25   26   27   28   29   30   31   32  33  34   35 36
-% Outdated var Atom_label_CLAYFF   = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
-% From Cygan, 2004  = {'h*','ho','o*','oh','ob','obos','obts', 'obss', 'ohs','EdgeOSi/H',''EdgeOH2',       'st','ao','Alt','mgo','mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+% From Cygan, 2004  = {'h*','ho','o*','oh','ob','obos','obts','obss', 'ohs', 'oas', 'oahhe','oahe', 'oshe','st','ao','Alt','mgo','mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+% MHolmboe_CLAYFF   = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
 
 % Hw
 forcefield.clayff(1).type =    {'Hw'}; % h* water hydrogen

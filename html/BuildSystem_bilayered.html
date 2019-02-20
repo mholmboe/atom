@@ -1,0 +1,162 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>This script creates a structure file for clay+ions+alcohol. Normally one uses one or two structure files</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-01-15"><meta name="DC.source" content="BuildSystem_bilayered.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>This script creates a structure file for clay+ions+alcohol. Normally one uses one or two structure files</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">with some clay layers, then one can add layers of ions and then 1-2 segments</a></li><li><a href="#2">of water, either on a grid or using a preequilibrated water body.</a></li><li><a href="#3">Add mineral lattices</a></li><li><a href="#4">atom = import_atom(filename,translation_vector,Full_Box_dim)</a></li><li><a href="#5">Add ions randomly wherever there is space (this function is similar to solvate_atom())</a></li><li><a href="#6">atom = create_atom(type,resname,limits,scale,maxion,in_atom)</a></li><li><a href="#7">Solvate the system1</a></li><li><a href="#8">atom = solvate_atom(solute_atom,[1x3 or 1x6 Box vector],waterdensity,rmin,number of water or just 'max');</a></li><li><a href="#9">Put all atom structs together</a></li><li><a href="#10">Write the system to a .gro structure file</a></li><li><a href="#11">Plot the final structure in vmd</a></li></ul></div><h2 id="1">with some clay layers, then one can add layers of ions and then 1-2 segments</h2><h2 id="2">of water, either on a grid or using a preequilibrated water body.</h2><pre class="codeinput">clear <span class="string">all</span>;
+format <span class="string">long</span>;
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+clayfiles={<span class="string">'MMT_clayff_1.gro'</span> <span class="string">'MMT_clayff_2.gro'</span>}; <span class="comment">% the .gro file creating after AssignClayff</span>
+filename_out=<span class="string">'preem.gro'</span>; <span class="comment">% Total system</span>
+d001=45;    <span class="comment">% 12.4 15.6 18.9 21.8 24.8 for 1W   2W   3W   4W   5W</span>
+rmin=2;
+water_density=1.1;
+nlayers=2;
+nSOL=1440;<span class="comment">%UCinX*UCinY*5*3; % 5 water molecules per unit cell and monolayer per MMT layer is reasonable</span>
+Cation=<span class="string">'Na'</span>;nCation=16; <span class="comment">% Per interlayer</span>
+spacer=10;
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2 id="3">Add mineral lattices</h2><h2 id="4">atom = import_atom(filename,translation_vector,Full_Box_dim)</h2><pre class="codeinput">MMT1 = import_atom(clayfiles{1},[0 0 0]);
+Full_Box_dim=Box_dim(1:3);Full_Box_dim(3)=nlayers*d001;
+MMT2 = import_atom(clayfiles{2},[4*5.2/3 4*9/3 d001],Full_Box_dim);
+System = update_atom({MMT1 MMT2});
+<span class="comment">% vmd(System,Full_Box_dim)</span>
+</pre><h2 id="5">Add ions randomly wherever there is space (this function is similar to solvate_atom())</h2><h2 id="6">atom = create_atom(type,resname,limits,scale,maxion,in_atom)</h2><pre class="codeinput">Ion1 = create_atom(Cation,Cation,[0 0 spacer Full_Box_dim(1) Full_Box_dim(2) spacer],nCation/2,1,System);
+Ion2 = create_atom(Cation,Cation,[0 0 d001-spacer Full_Box_dim(1) Full_Box_dim(2) d001-spacer],nCation/2,1,System);
+Ion3 = create_atom(Cation,Cation,[0 0 d001+spacer Full_Box_dim(1) Full_Box_dim(2) d001+spacer],nCation/2,1,System);
+Ion4 = create_atom(Cation,Cation,[0 0 2*d001-spacer Full_Box_dim(1) Full_Box_dim(2) 2*d001-spacer],nCation/2,1,System);
+System = update_atom({System Ion1 Ion2 Ion3 Ion4});
+System = wrap_atom(System,Full_Box_dim); <span class="comment">% Do we want to wrap atoms into cell</span>
+<span class="comment">%vmd(System,Full_Box_dim);</span>
+</pre><h2 id="7">Solvate the system1</h2><h2 id="8">atom = solvate_atom(solute_atom,[1x3 or 1x6 Box vector],waterdensity,rmin,number of water or just 'max');</h2><pre class="codeinput">SOL1 = solvate_atom([0 0 0 Full_Box_dim(1) Full_Box_dim(2) d001],water_density,rmin,nSOL,System);
+SOL2 = solvate_atom([0 0 0+d001 Full_Box_dim(1) Full_Box_dim(2) 2*d001],water_density,rmin,nSOL,System);
+System = update_atom({System SOL1 SOL2});
+vmd(System,Full_Box_dim);
+</pre><h2 id="9">Put all atom structs together</h2><p>System = translate_atom(System,[0 0 -spacer/2],'all'); % Do we want to translate the system System = center_atom(System,Full_Box_dim,{'PYR'},'z'); % Do we want to center the system</p><pre class="codeinput">System = wrap_atom(System,Full_Box_dim); <span class="comment">% Do we want to wrap atoms into cell</span>
+</pre><h2 id="10">Write the system to a .gro structure file</h2><pre class="codeinput">write_atom_gro(System,Full_Box_dim,filename_out);
+</pre><h2 id="11">Plot the final structure in vmd</h2><pre class="codeinput">vmd(System,Full_Box_dim) <span class="comment">% Use VMD to plot the simulation box</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% This script creates a structure file for clay+ions+alcohol. Normally one uses one or two structure files
+%% with some clay layers, then one can add layers of ions and then 1-2 segments
+%% of water, either on a grid or using a preequilibrated water body.
+clear all;
+format long;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clayfiles={'MMT_clayff_1.gro' 'MMT_clayff_2.gro'}; % the .gro file creating after AssignClayff
+filename_out='preem.gro'; % Total system
+d001=45;    % 12.4 15.6 18.9 21.8 24.8 for 1W   2W   3W   4W   5W
+rmin=2;
+water_density=1.1;
+nlayers=2;
+nSOL=1440;%UCinX*UCinY*5*3; % 5 water molecules per unit cell and monolayer per MMT layer is reasonable 
+Cation='Na';nCation=16; % Per interlayer
+spacer=10;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Add mineral lattices
+%% atom = import_atom(filename,translation_vector,Full_Box_dim)
+MMT1 = import_atom(clayfiles{1},[0 0 0]);
+Full_Box_dim=Box_dim(1:3);Full_Box_dim(3)=nlayers*d001;
+MMT2 = import_atom(clayfiles{2},[4*5.2/3 4*9/3 d001],Full_Box_dim);
+System = update_atom({MMT1 MMT2});
+% vmd(System,Full_Box_dim)
+
+%% Add ions randomly wherever there is space (this function is similar to solvate_atom())
+%% atom = create_atom(type,resname,limits,scale,maxion,in_atom)  
+Ion1 = create_atom(Cation,Cation,[0 0 spacer Full_Box_dim(1) Full_Box_dim(2) spacer],nCation/2,1,System);
+Ion2 = create_atom(Cation,Cation,[0 0 d001-spacer Full_Box_dim(1) Full_Box_dim(2) d001-spacer],nCation/2,1,System);
+Ion3 = create_atom(Cation,Cation,[0 0 d001+spacer Full_Box_dim(1) Full_Box_dim(2) d001+spacer],nCation/2,1,System);
+Ion4 = create_atom(Cation,Cation,[0 0 2*d001-spacer Full_Box_dim(1) Full_Box_dim(2) 2*d001-spacer],nCation/2,1,System);
+System = update_atom({System Ion1 Ion2 Ion3 Ion4});
+System = wrap_atom(System,Full_Box_dim); % Do we want to wrap atoms into cell
+%vmd(System,Full_Box_dim);
+
+%% Solvate the system1
+%% atom = solvate_atom(solute_atom,[1x3 or 1x6 Box vector],waterdensity,rmin,number of water or just 'max');
+SOL1 = solvate_atom([0 0 0 Full_Box_dim(1) Full_Box_dim(2) d001],water_density,rmin,nSOL,System);
+SOL2 = solvate_atom([0 0 0+d001 Full_Box_dim(1) Full_Box_dim(2) 2*d001],water_density,rmin,nSOL,System);
+System = update_atom({System SOL1 SOL2});
+vmd(System,Full_Box_dim);
+
+%% Put all atom structs together
+% System = translate_atom(System,[0 0 -spacer/2],'all'); % Do we want to translate the system
+% System = center_atom(System,Full_Box_dim,{'PYR'},'z'); % Do we want to center the system
+System = wrap_atom(System,Full_Box_dim); % Do we want to wrap atoms into cell
+
+%% Write the system to a .gro structure file
+write_atom_gro(System,Full_Box_dim,filename_out);
+
+%% Plot the final structure in vmd
+vmd(System,Full_Box_dim) % Use VMD to plot the simulation box
+
+
+
+
+##### SOURCE END #####
+--></body></html>

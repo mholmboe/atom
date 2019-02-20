@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_atom_car.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_atom_car.m"><style type="text/css">
+      --><title>import_atom_car.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="import_atom_car.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_atom_car.m</h1><!--introduction--><div><ul><li>This function imports .car files from Hendrik Heinz INTERFACE ff distribution, and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file</li><li>varargin could be ...,remove_atomtype,[center to this Box_dim],[translate_vector])</li><li>The remove_atomtype char/cell could be used to remove counterions like NA+ from the initial structures...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_car('molecule.car')</li><li>atom = import_atom_car('molecule.car','no_counterions')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_car(filename,varargin)
+  </style></head><body><div class="content"><h1>import_atom_car.m</h1><!--introduction--><div><ul><li>This function imports .car files from Hendrik Heinz INTERFACE ff distribution, and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file.</li><li>varargin could be ...,remove_atomtype,[center to this Box_dim], [translate_vector])</li><li>The remove_atomtype char/cell could be used to remove counterions like NA+ from the initial structures...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_car('molecule.car')</li><li>atom = import_atom_car('molecule.car','no_counterions')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_car(filename,varargin)
 
 
 fid = fopen(filename,<span class="string">'r'</span>);
@@ -201,9 +201,11 @@ write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),<span class="string">'_gmx.
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% import_atom_car.m
-% * This function imports .car files from Hendrik Heinz INTERFACE ff distribution,
-% and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file
-% * varargin could be ...,remove_atomtype,[center to this Box_dim],[translate_vector])
+% * This function imports .car files from Hendrik Heinz INTERFACE ff 
+% distribution, and then tries to write out a Gromacs molecular topology 
+% file (.itp) and a new .pdb file.
+% * varargin could be ...,remove_atomtype,[center to this Box_dim],
+% [translate_vector])
 % * The remove_atomtype char/cell could be used to remove counterions like
 % NA+ from the initial structures...
 %
@@ -345,7 +347,7 @@ assignin('caller','MolID',[atom.molid])
 disp('.car file imported')
 disp('and the charge was found to be...')
 sum([atom.charge])
-
+ 
 write_atom_psf(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25)
 write_atom_itp(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
 write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),'_gmx.pdb'));

@@ -4,12 +4,12 @@
 % * rotate can be a string like 'random', {'random'}, or be used to set
 % some angles like [60 90 60]. varargin can be used to assure that one
 % atom type is at least some distance above (in z) some other atom type.
-% 
+%
 %% Similar
 % fuse_atom
 % protonate_atom
 % create_atom.m
-% 
+%
 %% Version
 % 2.0
 %
@@ -19,7 +19,8 @@
 %% Examples
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol)
 % * atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)
-% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1'},{'C2'},0.3)
+% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
+% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,[1 4],0.3)
 
 function atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
 
@@ -84,13 +85,23 @@ while (size(all_atom,2) < nmax*nAtoms_in) | n < 1000
     if nargin>6
         difference=0;
         Atom_labels=varargin(2);
-        type1=Atom_labels{1}(1);
-        type2=Atom_labels{1}(2);
+        type1=Atom_labels{1}(1)
+        type2=Atom_labels{1}(2)
         if nargin>7
             difference=cell2mat(varargin(3));
         end
-        if median([temp_atom(strncmpi(type1,[temp_atom.type],1)).z]) < (difference + median([temp_atom(strncmpi(type2,[temp_atom.type],1)).z]))
-            temp_atom=[];
+        if find(strcmp(type1,[temp_atom.type]))>0
+            if median([temp_atom(strncmpi(type1,[temp_atom.type])).z],1) < (difference + median([temp_atom(strncmp1(type2,[temp_atom.type],1)).z]))
+                temp_atom=[];
+            else
+                disp('Adding a molecule!!!')
+            end
+        else
+            if [temp_atom(type1).z] < (difference + [temp_atom(type2).z])
+                temp_atom=[];
+            else
+                disp('Adding a molecule!!!')
+            end
         end
     end
     if size(temp_atom,2)>0

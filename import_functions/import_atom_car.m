@@ -1,7 +1,9 @@
 %% import_atom_car.m
-% * This function imports .car files from Hendrik Heinz INTERFACE ff distribution,
-% and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file
-% * varargin could be ...,remove_atomtype,[center to this Box_dim],[translate_vector])
+% * This function imports .car files from Hendrik Heinz INTERFACE ff 
+% distribution, and then tries to write out a Gromacs molecular topology 
+% file (.itp) and a new .pdb file.
+% * varargin could be ...,remove_atomtype,[center to this Box_dim],
+% [translate_vector])
 % * The remove_atomtype char/cell could be used to remove counterions like
 % NA+ from the initial structures...
 %
@@ -143,7 +145,7 @@ assignin('caller','MolID',[atom.molid])
 disp('.car file imported')
 disp('and the charge was found to be...')
 sum([atom.charge])
-
+ 
 write_atom_psf(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25)
 write_atom_itp(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
 write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),'_gmx.pdb'));

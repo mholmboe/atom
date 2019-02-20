@@ -11,8 +11,8 @@
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # Hatom = protonate_atom(atom,Box_dim)
-% # Hatom = protonate_atom(atom,Box_dim,ind)
+% # Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded
+% # Hatom = protonate_atom(atom,Box_dim,ind) % Protonates all sites with index ind
 % # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.5 Ångström
 % # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
 % # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction
@@ -69,7 +69,7 @@ if numel(ind)==0
         else
             Neighbours={'Nan'};
         end
-        numel(atom(i).neigh.index)
+        % numel(atom(i).neigh.index)
         if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
             disp('Adding H to O')
             if numel(H_atom)==0

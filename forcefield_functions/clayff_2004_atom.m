@@ -33,6 +33,7 @@ else
     heal=1; % No healing, will run much faster
 end
 
+% Initialize some variables
 Heal_Al=0;
 Heal_Mgo=0;
 Heal_Si=0;

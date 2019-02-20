@@ -50,12 +50,14 @@ end
 for i=1:size(atom,2)
     for j=1:size(atom(i).neigh.type,1)
         if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
-                (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
+            (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
             [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
-            atom(i).bv(j)=mean_bv;
+            atom(i).bv(j)=bv;
+            atom(i).mean_bv(j)=mean_bv;
         elseif atom(i).neigh.dist(j)> 1.25 && ~strncmpi([atom(i).neigh.type(j)],'H',1)
             [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
-            atom(i).bv(j)=mean_bv;
+            atom(i).bv(j)=bv;
+            atom(i).mean_bv(j)=mean_bv;
         end
     end
     if size(atom(i).neigh.type,1)==0

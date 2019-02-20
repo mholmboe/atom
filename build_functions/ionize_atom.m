@@ -11,7 +11,7 @@
 % * {resname} is resname
 % * [limits] is a 1x3 or 1x6 volume variable
 % * The number nmax is the max number of particles
-% * Optional scale number (varargin{1}) is a how-many-diameters-between-the-particles-thingy
+% * Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy
 %
 %% Dependencies
 % * radius_ion
@@ -26,7 +26,7 @@
 %% Similar
 % fuse_atom
 % protonate_atom
-% create_atom.m
+% create_atom
 % insert_atom
 %
 %% Version
@@ -43,6 +43,8 @@
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range
 %
 function atom = ionize_atom(type,resname,limits,nmax,varargin)
+
+sorted_distratio=[];
 
 if iscell(type)==0;type={type}; end
 if iscell(resname)==0;resname={resname};end
@@ -98,10 +100,11 @@ molid=num2cell(1:size(atom,2));
 
 % Move the particles around a little bit
 for i=1:size(atom,2)
-    if nx>0;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;end
-    if ny>0;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;end
-    if nz>0;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;end
 end
+
 
 if (limits(1)+limits(2)+limits(3)) ~= 0
     disp('Translating the water box');
@@ -207,13 +210,13 @@ else
     distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
     while size(atom,2)>nmax+1
         [row,col]=find(distmatrix==min(min(distmatrix)));
-        ind_rm=max([row col]);
+        ind_rm=max([row(1) col(1)]);
         %         if ind_rm>i
         %             i=i+1;
         %         end
-        atom(row)=[];
-        distmatrix(row,:)=[];
-        distmatrix(:,col)=[];
+        atom(row(1))=[];
+        distmatrix(row(1),:)=[];
+        distmatrix(:,col(1))=[];
     end
 end
 

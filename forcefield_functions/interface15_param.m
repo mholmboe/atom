@@ -28,7 +28,8 @@ end
 % !
 % Heinz, H.; Koerner, H.; Anderson, K. L.; Vaia, R. A. and Farmer, B. L., Force Field for Mica-Type
 % Silicates and Dynamics of Octadecylammonium Chains Grafted to Montmorillonite, Chemistry of Materials,
-% 2005, 17, 5658-5669; and extensions to kaolinite.															; Clayff?
+% 2005, 17, 5658-5669; and extensions to kaolinite.
+%                                                                                                           ; Mofied Clayff (MHolmboe)
 % K+     Potassium ion in mica, mmt, and other clays 		(+1.0)											; K 			1
 % NA+    Sodium ion in silica, clay, and organic salts	    (+1.0)											; Na 			1
 % SY1    Silicon atom in tetrahedral silicate sheet 		(+1.1)											; Si 			2.1

@@ -5,15 +5,6 @@
 % # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water
 % # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <tip3p2tip4p.html tip3p2tip4p(filename)> % This function converts a .gro file with spc water to some tip4p water
-% 864_spc.gro|.pdb % equilibrated SPC water box
-% 864_spce.gro|.pdb % equilibrated SPC/E water box
-% 864_tip3p.gro|.pdb % equilibrated TIP3P water box
-% 864_tip4p.gro|.pdb % equilibrated TIP4P water box
-% 864_tip5p.gro|.pdb % equilibrated TIP5P water box
-% 96spc_hex_ice_h.gro|.pdb % equilibrated SPC hex-ice water box
-% 96tip4p_hex_ice_h.gro|.pdb % equilibrated TIP4P hex-ice water box
-% 864_swm4_ndp.gro|.pdb * Polarizable water v1
-% 864_swm4_ndp_vds.gro|.pdb * Polarizable water v2
 
 %% Various distance and bond functions
 % # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist,varargin)> % This function tries to find all bonds and angles of the atom struct 'more' is an optional varargin argument

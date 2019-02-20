@@ -10,9 +10,9 @@
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom=clayff_atom(atom,Box_dim)
-% * atom=clayff_atom(atom,Box_dim,'clayff','spc')
-% * atom=clayff_atom(atom,Box_dim,'clayff','spc','edge')
+% * atom = interface_atom(atom,Box_dim)
+% * atom = interface_atom(atom,Box_dim,'interface','spc')
+% * atom = interface_atom(atom,Box_dim,'interface','spc','edge')
 
 
 function atom=interface_atom(atom,Box_dim,varargin)
@@ -84,58 +84,103 @@ for assignment_run=1:heal
         end
     end
     
-    
     [atom.type]=atom.element;
     [atom.fftype]=atom.element;
     
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-    sort(unique([atom.type]))
     
-    interface_param(sort(unique([atom.type])),'tip3p');
+    Radiiproperties=load('Revised_Shannon_radii.mat');
+    atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
+    %     clayff_param(sort(unique([atom.type])),'SPC/E');
     
-    dist_matrix = dist_matrix_atom(atom,Box_dim);
-    
-    XYZ_num=zeros(length(XYZ_labels),1);
-    Atom_label=sort(unique([atom.type]));
-    for i=1:length(Atom_label)
-        XYZ_num(ismember([atom.type],Atom_label(i)))=i;
+    if size(atom,2)>5000
+        dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25);
+    else
+        dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
     end
     
-    XYZ_sigma=Sigma(XYZ_num(:))';
-    XYZ_epsilon=Epsilon(XYZ_num(:))';
-    XYZ_mass=Masses(XYZ_num(:))';
-    XYZ_charge=Charge(XYZ_num(:))';
+    XYZ_radii=zeros(length(XYZ_labels),1);
+    XYZ_formalcharge=zeros(length(XYZ_labels),1);
+    Atom_label=sort(unique([atom.type]));
+    for i=1:length(Atom_label)
+        try
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
+        catch
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
+        end
+        XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
+        XYZ_formalcharge(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
+    end
     
-    distance=0.4;
-    XYZ_sigma(XYZ_sigma==0)=distance;
-    radius_matrix=repmat(XYZ_sigma,1,length(XYZ_sigma));
+    assignin('caller','XYZ_radii',XYZ_radii);
+    assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
+    
+    distance=1.15;
+    XYZ_radii(XYZ_radii==0)=distance;
+    radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
     radius_limit=(radius_matrix+radius_matrix')*distance;
+    dist_matrix(dist_matrix==0)=1000;
+    bond_matrix=dist_matrix-radius_limit;
+    dist_matrix(dist_matrix==1000)=0;
+    bond_matrix(bond_matrix>0)=0;
+    bond_matrix(bond_matrix<0)=1;
+    disp('Radii+Radii limits')
+    unique(radius_limit)
+    assignin('caller','radius_limit',radius_limit);
+    assignin('caller','bond_matrix',bond_matrix);
+    assignin('caller','dist_matrix',dist_matrix);
     
-    Al=double(repmat(strncmp(XYZ_labels,'Al',1),1,length(XYZ_labels)));
-    Mgo=double(repmat(strncmp(XYZ_labels,'Mgo',1),1,length(XYZ_labels)));
-    Si=double(repmat(strncmp(XYZ_labels,'Si',1),1,length(XYZ_labels)));
-    O=double(repmat(strncmp(XYZ_labels,'O',1),1,length(XYZ_labels)));
-    H=double(repmat(strncmp(XYZ_labels,'H',1),1,length(XYZ_labels)));
+    %     [atom.type]=atom.element;
+    %     [atom.fftype]=atom.element;
+    %
+    %     XYZ_labels=[atom.type]';
+    %     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+    %     sort(unique([atom.type]))
+    %
+    %     interface_param(sort(unique([atom.type])),'tip3p');
+    %
+    %     dist_matrix = dist_matrix_atom(atom,Box_dim);
+    %
+    %     XYZ_num=zeros(length(XYZ_labels),1);
+    %     Atom_label=sort(unique([atom.type]));
+    %     for i=1:length(Atom_label)
+    %         XYZ_num(ismember([atom.type],Atom_label(i)))=i;
+    %     end
+    %
+    %     XYZ_sigma=Sigma(XYZ_num(:))';
+    %     XYZ_epsilon=Epsilon(XYZ_num(:))';
+    %     XYZ_mass=Masses(XYZ_num(:))';
+    %     XYZ_charge=Charge(XYZ_num(:))';
+    %
+    %     distance=0.4;
+    %     XYZ_sigma(XYZ_sigma==0)=distance;
+    %     radius_matrix=repmat(XYZ_sigma,1,length(XYZ_sigma));
+    %     radius_limit=(radius_matrix+radius_matrix')*distance;
+    %
+    %     Al=double(repmat(strncmp(XYZ_labels,'Al',1),1,length(XYZ_labels)));
+    %     Mgo=double(repmat(strncmp(XYZ_labels,'Mgo',1),1,length(XYZ_labels)));
+    %     Si=double(repmat(strncmp(XYZ_labels,'Si',1),1,length(XYZ_labels)));
+    %     O=double(repmat(strncmp(XYZ_labels,'O',1),1,length(XYZ_labels)));
+    %     H=double(repmat(strncmp(XYZ_labels,'H',1),1,length(XYZ_labels)));
+    %
+    %     AlO=(Al+O'>1)+(Al'+O>1);     radius_limit(AlO>0)=2.5; % 2.8
+    %     MgoO=(Mgo+O'>1)+(Mgo'+O>1);  radius_limit(MgoO>0)=2.5; % 2.8
+    %     SiO=(Si+O'>1)+(Si'+O>1);     radius_limit(SiO>0)=2.1;
+    %     HO=(H+O'>1)+(H'+O>1);        radius_limit(HO>0)=1.25;
+    %
+    %     % To changes the radius manually, do it like this!!
+    %     % radius_limit(261,256)=2.3;
+    %     % radius_limit(251,256)=2.3;
+    %     % radius_limit(272,278)=3;
+    %
+    %     bond_matrix=(dist_matrix-radius_limit)<0;
+    %     bond_matrix(logical(eye(size(bond_matrix)))) = 0;
+    %
+    %     [bond_r,bond_ind]=sort(dist_matrix(:,:));
+    %     bond_labels=XYZ_labels(bond_ind);
     
-    AlO=(Al+O'>1)+(Al'+O>1);     radius_limit(AlO>0)=2.5; % 2.8
-    MgoO=(Mgo+O'>1)+(Mgo'+O>1);  radius_limit(MgoO>0)=2.5; % 2.8
-    SiO=(Si+O'>1)+(Si'+O>1);     radius_limit(SiO>0)=2.1;
-    HO=(H+O'>1)+(H'+O>1);        radius_limit(HO>0)=1.25;
-    
-    % To changes the radius manually, do it like this!!
-    % radius_limit(261,256)=2.3;
-    % radius_limit(251,256)=2.3;
-    % radius_limit(272,278)=3;
-    
-    bond_matrix=(dist_matrix-radius_limit)<0;
-    bond_matrix(logical(eye(size(bond_matrix)))) = 0;
-    
-    [bond_r,bond_ind]=sort(dist_matrix(:,:));
-    bond_labels=XYZ_labels(bond_ind);
     atom = rmfield(atom,'neigh');
-    
-    
     for i=1:length(XYZ_labels)
         
         if strncmp(XYZ_labels(i),'Al',1)
@@ -154,17 +199,37 @@ for assignment_run=1:heal
             neigh=0;
         end
         
-        k=1;j=2;
-        while j < 12 && k <= neigh %atom(i).neigh=[];
-            if bond_matrix(bond_ind(j,i),i)==1
-                if XYZ_charge(i)*XYZ_charge(bond_ind(j,i))<0
-                    [atom(i).neigh.dist(k)]=bond_r(j,i);
-                    [atom(i).neigh.index(k)]=bond_ind(j,i);
-                    [atom(i).neigh.type(k)]=bond_labels(j,i);
-                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j,i),1) XYZ_data(bond_ind(j,i),2) XYZ_data(bond_ind(j,i),3)];
-                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(1,i),bond_ind(j,i)) Y_dist(bond_ind(1,i),bond_ind(j,i)) Z_dist(bond_ind(1,i),bond_ind(j,i))];
-                    %[atom(i).neigh.r_vec(k,:)]=[XYZ_data(bond_ind(1,i),1) XYZ_data(bond_ind(1,i),2) XYZ_data(bond_ind(1,i),3)]...
-                    %    - [XYZ_data(bond_ind(j,i),1) XYZ_data(bond_ind(j,i),2) XYZ_data(bond_ind(j,i),3)];
+        %         k=1;j=2;
+        %         while j < 12 && k <= neigh %atom(i).neigh=[];
+        %             if bond_matrix(bond_ind(j,i),i)==1
+        %                 if XYZ_charge(i)*XYZ_charge(bond_ind(j,i))<0
+        %                     [atom(i).neigh.dist(k)]=bond_r(j,i);
+        %                     [atom(i).neigh.index(k)]=bond_ind(j,i);
+        %                     [atom(i).neigh.type(k)]=bond_labels(j,i);
+        %                     [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j,i),1) XYZ_data(bond_ind(j,i),2) XYZ_data(bond_ind(j,i),3)];
+        %                     [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(1,i),bond_ind(j,i)) Y_dist(bond_ind(1,i),bond_ind(j,i)) Z_dist(bond_ind(1,i),bond_ind(j,i))];
+        %                     %[atom(i).neigh.r_vec(k,:)]=[XYZ_data(bond_ind(1,i),1) XYZ_data(bond_ind(1,i),2) XYZ_data(bond_ind(1,i),3)]...
+        %                     %    - [XYZ_data(bond_ind(j,i),1) XYZ_data(bond_ind(j,i),2) XYZ_data(bond_ind(j,i),3)];
+        %                     k=k+1;
+        %                 end
+        %             end
+        %             j=j+1;
+        %         end
+        %     end
+        %
+        %
+        %     b=1;a=1;i=1;nH_extra=0;
+        
+        k=1;j=1;
+        bond_ind=find(bond_matrix(:,i));
+        while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
+            if bond_matrix(bond_ind(j),i)==1
+                if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0
+                    [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
+                    [atom(i).neigh.index(k)]=bond_ind(j);
+                    [atom(i).neigh.type(k)]=XYZ_labels(bond_ind(j));
+                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
+                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
                     k=k+1;
                 end
             end
@@ -172,23 +237,25 @@ for assignment_run=1:heal
         end
     end
     
+    assignin('caller','Bond_index',Bond_index);
+    %     assignin('caller','newatom',atom);
     
     b=1;a=1;i=1;nH_extra=0;
-    while i <= size(atom,2);
+    while i <= size(atom,2)
         if mod(i,100)==1
             i-1
         end
         
-        if strncmpi([atom(i).resname],'SOL',3)==0 && strncmpi([atom(i).resname],'ION',3)==0;
+        if strncmpi([atom(i).resname],'SOL',3)==0 && strncmpi([atom(i).resname],'ION',3)==0
             
             Neigh_ind=zeros(12,1);
             Neigh_vec=zeros(12,3);
             n=1;neigh=1;
             
-            if numel([atom(i).neigh])>0;
+            if numel([atom(i).neigh])>0
                 index=[atom(i).neigh.index];
-                if sum(index)>0;
-                    for k=1:length(index);
+                if sum(index)>0
+                    for k=1:length(index)
                         j=atom(i).neigh.index(k);
                         r=atom(i).neigh.dist(k);
                         
@@ -198,7 +265,7 @@ for assignment_run=1:heal
                             disp('Manually setting max_distance to...')
                             max_distance=1.8
                         end
-                        if r > 0 && r < max_distance/3;
+                        if r > 0 && r < max_distance/3
                             r
                             disp('Atoms too close')
                             format compact;
@@ -211,11 +278,11 @@ for assignment_run=1:heal
                             [atom(j).x atom(j).y atom(j).z]
                         end
                         
-                        if r > max_distance/3 && r < max_distance;
+                        if r > max_distance/3 && r < max_distance
                             
                             neigh=neigh+1;
                             
-                            if i < j;
+                            if i < j
                                 Bond_index(b,1)= i;
                                 Bond_index(b,2)= j;
                             else
@@ -240,11 +307,11 @@ for assignment_run=1:heal
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
                 
                 size(Neigh_ind,1);
-                for v=1:size(Neigh_ind,1);
-                    for w=1:size(Neigh_ind,1);
+                for v=1:size(Neigh_ind,1)
+                    for w=1:size(Neigh_ind,1)
                         angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                        if angle > 0 && angle < 160;
-                            if v < w;
+                        if angle > 0 && angle < 160
+                            if v < w
                                 Angle_index(a,1)= Neigh_ind(v,1);
                                 Angle_index(a,2)= i;
                                 Angle_index(a,3)= Neigh_ind(w,1);
@@ -268,23 +335,23 @@ for assignment_run=1:heal
                 
                 
                 % If the element is Si
-                if strncmpi(atom(i).type,{'Si'},2); % Si
+                if strncmpi(atom(i).type,{'Si'},2) % Si
                     
                     Neigh_cell = sort([atom(i).neigh.type]);
                     Neighbours=strcat(Neigh_cell{:});
-                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4; % Si O O O O
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Si O O O O
                         atom(i).fftype={'Si'};
-                    elseif length(Neigh_ind) > 4;
+                    elseif length(Neigh_ind) > 4
                         disp('Si atom over coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Si^';
-                    elseif length(Neigh_ind) == 3;
+                    elseif length(Neigh_ind) == 3
                         disp('Si atom under coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Si_';
-                        if Heal_Si == 1;
+                        if Heal_Si == 1
                             atom(size(atom,2)+1)=atom(find(strcmp([atom.type],'O'),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
@@ -306,25 +373,25 @@ for assignment_run=1:heal
                 end
                 
                 % If the element is Al
-                if strncmpi(atom(i).type,{'Al'},2); % Al
+                if strncmpi(atom(i).type,{'Al'},2) % Al
                     
-                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6; % Al O O O O O O
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
                         atom(i).fftype={'Al'};
-                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5; % Al O O O O
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
                         atom(i).fftype={'Ale'};
-                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4; % Al O O O O
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Al O O O O
                         atom(i).fftype={'Alt'};
-                    elseif length(Neigh_ind) > 6;
+                    elseif length(Neigh_ind) > 6
                         disp('Al atom over coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Al';
-                    elseif length(Neigh_ind) > 4 && length(Neigh_ind) < 6;
+                    elseif length(Neigh_ind) > 4 && length(Neigh_ind) < 6
                         disp('Al atom under coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Al_';
-                        if Heal_Al == 1;
+                        if Heal_Al == 1
                             atom(size(atom,2)+1)=atom(find(strcmp([atom.type],'O'),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
@@ -349,25 +416,25 @@ for assignment_run=1:heal
                 end
                 
                 % If the element is Mg
-                if strncmpi(atom(i).type,{'Mg'},2); % Mgo
+                if strncmpi(atom(i).type,{'Mg'},2) % Mgo
                     
-                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6; % Mgo O O O O O O
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
                         if sum(strncmpi([atom.type],'Al',2))<sum(strncmpi([atom.type],'Mg',2))
                             atom(i).fftype={'Mgh'};
                         else
                             atom(i).fftype={'Mgo'};
                         end
-                    elseif length(Neigh_ind) > 6;
+                    elseif length(Neigh_ind) > 6
                         disp('Mgo atom over coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Mgo^';
-                    elseif length(Neigh_ind) > 4 && length(Neigh_ind) < 6;
+                    elseif length(Neigh_ind) > 4 && length(Neigh_ind) < 6
                         disp('Mgo atom under coordinated')
                         i
                         Neighbours
                         atom(i).fftype='Mgo_';
-                        if Heal_Mgo == 1;
+                        if Heal_Mgo == 1
                             atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
@@ -385,28 +452,28 @@ for assignment_run=1:heal
                 end
                 
                 % If the element is H
-                if strncmp(atom(i).type,{'H'},1); % H
+                if strncmp(atom(i).type,{'H'},1) % H
                     
-                    if size(Neigh_cell,1) == 1;
+                    if size(Neigh_cell,1) == 1
                         atom(i).fftype={'H'};
-                    elseif length(Neigh_ind) > 1;
+                    elseif length(Neigh_ind) > 1
                         disp('H atom over coordinated')
                         i
                         Neighbours
                         atom(i).fftype='H^';
                         atom(i).fftype='H';
-                    elseif length(Neigh_ind) < 1;
+                    elseif length(Neigh_ind) < 1
                         disp('H atom under coordinated')
                         i
                         Neighbours
                         atom(i).fftype='H_';
-                        if Heal_H == 1;
+                        if Heal_H == 1
                             atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
                             NewNeighCoords=num2cell([atom(i).x atom(i).y atom(i).z]+mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
-                        elseif length(Neigh_ind) < 1;
+                        elseif length(Neigh_ind) < 1
                             Neighbours
                             %                     atom(i)=[];
                             %                     disp('removed atom...')
@@ -419,43 +486,43 @@ for assignment_run=1:heal
                 end
                 
                 % If the element is O
-                if strncmp(atom(i).type,{'O'},1);
+                if strncmp(atom(i).type,{'O'},1)
                     
                     All_Neighbours=[All_Neighbours;Neighbours];
-                    if strcmp(Neighbours,'AlAlH');
+                    if strcmp(Neighbours,'AlAlH')
                         atom(i).fftype={'Oh'};
-                    elseif strcmp(Neighbours,'AlAlSi');
+                    elseif strcmp(Neighbours,'AlAlSi')
                         atom(i).fftype={'Op'};
-                    elseif strncmp(Neighbours,'HHMgo',4);
+                    elseif strncmp(Neighbours,'HHMgo',4)
                         atom(i).fftype={'Oalhh'};
-                    elseif strncmp(Neighbours,'HHMg',4);
+                    elseif strncmp(Neighbours,'HHMg',4)
                         atom(i).fftype={'Oalhh'};
-                    elseif strcmp(Neighbours,'AlHH');
+                    elseif strcmp(Neighbours,'AlHH')
                         atom(i).fftype={'Oalhh'};
-                    elseif strcmp(Neighbours,'AlHSi');
+                    elseif strcmp(Neighbours,'AlHSi')
                         atom(i).fftype={'Oahs'}; % Al-OH-Si for acidic edge
                         %                     elseif strcmp(Neighbours,'AlAlAlH');
                         %                         atom(i).fftype={'Oahs'}; % Al-OH-Si for acidic edge
-                    elseif strcmp(Neighbours,'AlH');
+                    elseif strcmp(Neighbours,'AlH')
                         atom(i).fftype={'Oalh'}; % Al-O-H or Al-O-Si
-                    elseif  strcmp(Neighbours,'AlHMgo');
+                    elseif  strcmp(Neighbours,'AlHMgo')
                         atom(i).fftype={'Ohmg'};
-                    elseif  strncmp(Neighbours,'AlHMg',5);
+                    elseif  strncmp(Neighbours,'AlHMg',5)
                         atom(i).fftype={'Ohmg'};
-                    elseif strcmp(Neighbours,'AlMgoSi');
+                    elseif strcmp(Neighbours,'AlMgoSi')
                         atom(i).fftype={'Omg'};
-                    elseif strcmp(Neighbours,'AlMgSi');
+                    elseif strcmp(Neighbours,'AlMgSi')
                         atom(i).fftype={'Omg'};
-                    elseif strcmp(Neighbours,'HSi');
+                    elseif strcmp(Neighbours,'HSi')
                         atom(i).fftype={'Osih'};
-                    elseif strcmp(Neighbours,'AlOmg');
+                    elseif strcmp(Neighbours,'AlOmg')
                         atom(i).fftype={'Odsub'};
                     elseif strcmp(Neighbours,'AlAltH')
                         atom(i).fftype={'Oalt'};
-                    elseif strcmp(Neighbours,'AlAlAl');
+                    elseif strcmp(Neighbours,'AlAlAl')
                         atom(i).fftype={'Op'};
                         %                         atom(i).fftype={'Oalt'};
-                    elseif strcmp(Neighbours,'AlAlAlt');
+                    elseif strcmp(Neighbours,'AlAlAlt')
                         atom(i).fftype={'Op'};
                         %                         atom(i).fftype={'Oalt'};
                     elseif strcmp(Neighbours,'AltSi')
@@ -470,16 +537,16 @@ for assignment_run=1:heal
                         end
                         %                     elseif strcmp(Neighbours,'AlAl')
                         %                         atom(i).fftype={'Op'}; % Im guessing...
-                    elseif strcmp(Neighbours,'MgoMgoSi');
+                    elseif strcmp(Neighbours,'MgoMgoSi')
                         atom(i).fftype={'Odsub'};
-                    elseif strcmp(Neighbours,'MgMgSi');
+                    elseif strcmp(Neighbours,'MgMgSi')
                         atom(i).fftype={'Odsub'};
-                    elseif strcmp(Neighbours,'SiSi');
+                    elseif strcmp(Neighbours,'SiSi')
                         atom(i).fftype={'Ob'};
-                    elseif strcmp(Neighbours,'HH');
+                    elseif strcmp(Neighbours,'HH')
                         atom(i).fftype={'Ow'};
                         disp('Water?')
-                    elseif length(Neigh_ind) > 2;
+                    elseif length(Neigh_ind) > 2
                         disp('O atom over coordinated')
                         i
                         Neighbours
@@ -502,7 +569,7 @@ for assignment_run=1:heal
                             NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -2*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -2*Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                         end
-                    elseif length(Neigh_ind) == 0;
+                    elseif length(Neigh_ind) == 0
                         Neighbours
                         %                 atom(i)=[];
                         %                 disp('removed atom...')
@@ -517,7 +584,7 @@ for assignment_run=1:heal
                     end
                     
                     
-                    if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 ; %&& nH_extra > nH_added;
+                    if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 %&& nH_extra > nH_added;
                         disp('Adding acidic H to Oalh-->Oalhh')
                         atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'H',1),1));
                         atom(end).index=size(atom,2);

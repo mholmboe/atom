@@ -43,13 +43,29 @@ else
     valence_ion2=-100; % Dummy value
 end
 
-ind1=find(ismember(Ion_1,ion1));
-ind2=find(ismember(Ion_2,ion2));
+if strncmpi(ion1,'Hw',2)
+    ion1='H';
+end
+
+if strncmpi(ion1,'Ow',2)
+    ion1='O';
+end
+
+if strncmpi(ion2,'Hw',2)
+    ion2='H';
+end
+
+if strncmpi(ion2,'Ow',2)
+    ion2='O';
+end
+
+ind1=find(strcmpi(Ion_1,ion1));
+ind2=find(strcmpi(Ion_2,ion2));
 
 if valence_ion1>-100
     valence1_ind=find(Valence_1==valence_ion1);
     ind1=intersect(ind1,valence1_ind);
-%     ind2=intersect(ind1,valence1_ind);
+    %     ind2=intersect(ind1,valence1_ind);
 end
 
 % if valence_ion2>-100
@@ -64,7 +80,7 @@ ind=ind1(ind);
 % ind
 % Ion_1(ind)
 % Valence_1(ind)
-% 
+%
 % Ion_2(ind)
 % Valence_2(ind)
 
@@ -88,12 +104,12 @@ elseif (R > 1.25) && (strncmpi(ion1,'H',1) || strncmpi(ion2,'H',1))
     bvalue=0.37;
     bv_temp=0;
 else
-    bvalue=b(1);
+    bvalue=b(ind(1));
     bv=exp((R0(ind(1))-R)/bvalue);
     for i=1:numel(ind)
-        bvalue=b(i);
+        bvalue=b(ind(i));
         bv_temp(i)=exp((R0(ind(i))-R)/bvalue);
     end
 end
 mean_bv=mean(bv_temp);
-std_bv=std(bv);
+std_bv=std(bv_temp);

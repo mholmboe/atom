@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>create_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="create_atom.m"><style type="text/css">
+      --><title>create_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="create_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -77,7 +77,7 @@ radii = abs(radius_ion(type));
 <span class="keyword">else</span>
     scale=2;
 <span class="keyword">end</span>
-Box_dim_temp=scale*[2*radii 2*radii 2*radii];
+Box_dim_temp=scale*[2*radii 2*radii 2*radii]
 atom = add2atom(type,[0 0 0],resname,[]);
 
 <span class="keyword">if</span> numel(limits)==1
@@ -117,9 +117,9 @@ molid=num2cell([1:size(atom,2)]);
 
 <span class="comment">% Move things around a little bit</span>
 <span class="keyword">for</span> i=1:size(atom,2)
-    <span class="keyword">if</span> nx&gt;0;atom(i).x=atom(i).x-scale*rand(1)*radii;<span class="keyword">end</span>
-    <span class="keyword">if</span> ny&gt;0;atom(i).y=atom(i).y-scale*rand(1)*radii;<span class="keyword">end</span>
-    <span class="keyword">if</span> nz&gt;0;atom(i).z=atom(i).z-scale*rand(1)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> nx&gt;0 &amp;&amp; (limits(4)-limits(1))&gt;5;atom(i).x=atom(i).x-scale*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> ny&gt;0 &amp;&amp; (limits(5)-limits(2))&gt;5;atom(i).y=atom(i).y-scale*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> nz&gt;0 &amp;&amp; (limits(6)-limits(3))&gt;5;atom(i).z=atom(i).z-scale*(rand(1)-0.5)*radii;<span class="keyword">end</span>
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> (limits(1)+limits(2)+limits(3)) ~= 0
@@ -160,7 +160,6 @@ ind_sel=ismember(ind_rand,1:nAtoms);
 atom_ind=ind_rand(ind_sel);
 atom(atom_ind)=atom;
 
-
 <span class="keyword">if</span> iscellstr({nmax}) == 1
     nmax=size(atom,2);
 <span class="keyword">end</span>
@@ -171,16 +170,16 @@ i=1;
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; <span class="comment">% Dummy distance in the distance matrix</span>
 <span class="keyword">while</span> size(atom,2)&gt;nmax+1
-    [row,col]=find(distmatrix==min(min(distmatrix)));
-    ind_rm=max([row col]);
+    [row,col]=find(distmatrix==min(min(distmatrix)))
+    ind_rm=max([row(1) col(1)]);
     <span class="keyword">if</span> ind_rm&gt;i
         i=i+1;
     <span class="keyword">end</span>
-    atom(row)=[];
-    distmatrix(row,:)=[];
-    distmatrix(:,col)=[];
+    atom(row(1))=[];
+    distmatrix(row(1),:)=[];
+    distmatrix(:,col(1))=[];
 <span class="keyword">end</span>
-
+size(atom,2)
 <span class="comment">% Delete particles if not using the &lt;maxion&gt; option</span>
 <span class="keyword">if</span> iscellstr({nmax}) == 0
     <span class="keyword">if</span> nmax &gt; size(atom,2)
@@ -204,7 +203,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 %% create_atom.m
 % * This function creates particles within a certain region defined by <limits>
 % * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
-% 
+%
 %% Similar
 % * insert_atom
 % * ionize_atom
@@ -249,7 +248,7 @@ if nargin > 4
 else
     scale=2;
 end
-Box_dim_temp=scale*[2*radii 2*radii 2*radii];
+Box_dim_temp=scale*[2*radii 2*radii 2*radii]
 atom = add2atom(type,[0 0 0],resname,[]);
 
 if numel(limits)==1
@@ -289,9 +288,9 @@ molid=num2cell([1:size(atom,2)]);
 
 % Move things around a little bit
 for i=1:size(atom,2)
-    if nx>0;atom(i).x=atom(i).x-scale*rand(1)*radii;end
-    if ny>0;atom(i).y=atom(i).y-scale*rand(1)*radii;end
-    if nz>0;atom(i).z=atom(i).z-scale*rand(1)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-scale*(rand(1)-0.5)*radii;end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-scale*(rand(1)-0.5)*radii;end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-scale*(rand(1)-0.5)*radii;end
 end
 
 if (limits(1)+limits(2)+limits(3)) ~= 0
@@ -332,9 +331,8 @@ ind_sel=ismember(ind_rand,1:nAtoms);
 atom_ind=ind_rand(ind_sel);
 atom(atom_ind)=atom;
 
-
 if iscellstr({nmax}) == 1
-    nmax=size(atom,2); 
+    nmax=size(atom,2);
 end
 
 % If not filled up yet, remove the particles that are nearest some other particles
@@ -343,16 +341,16 @@ i=1;
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
 while size(atom,2)>nmax+1
-    [row,col]=find(distmatrix==min(min(distmatrix)));
-    ind_rm=max([row col]);
+    [row,col]=find(distmatrix==min(min(distmatrix)))
+    ind_rm=max([row(1) col(1)]);
     if ind_rm>i
         i=i+1;
     end
-    atom(row)=[];
-    distmatrix(row,:)=[];
-    distmatrix(:,col)=[];
+    atom(row(1))=[];
+    distmatrix(row(1),:)=[];
+    distmatrix(:,col(1))=[];
 end
-
+size(atom,2)
 % Delete particles if not using the <maxion> option
 if iscellstr({nmax}) == 0
     if nmax > size(atom,2)

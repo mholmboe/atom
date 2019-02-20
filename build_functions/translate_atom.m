@@ -10,6 +10,7 @@
 %% Examples
 % # atom = translate_molid(atom,[x y z])
 % # atom = translate_molid(atom,[x y z],'all')
+% # atom = translate_molid(atom,[x y z],'SOL')
 
 function atom = translate_atom(atom,trans_vec,varargin)
 
@@ -28,7 +29,7 @@ elseif strcmp(Resname,'All')
 elseif strcmp(Resname,'ALL')
     ind_resname=1:nAtoms;
 else
-    ind_resname=find(strcmp([atom.resname],Resname));
+    ind_resname=find(strcmpi([atom.resname],Resname));
 end
 
 if size(trans_vec,1)==1

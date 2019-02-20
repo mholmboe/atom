@@ -1,0 +1,177 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Examples demonstrating how to add new atoms or ions to an atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Insert_molecules.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Examples demonstrating how to add new atoms or ions to an atom struct</h1><!--introduction--><p>(For a full list of functions that can add atoms/ions/molecules, go to <a href="List_build_functions.html">List_build_functions</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Create new atoms with <a href="create_atom.html">create_atom</a></a></li><li><a href="#4">Insert new atoms or molecules with <a href="insert_atom.html">insert_atom</a></a></li><li><a href="#6">Add ions with <a href="ionize_atom.html">ionize_atom</a></a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre><h2 id="2">Create new atoms with <a href="create_atom.html">create_atom</a></h2><p>This function creates new atoms/particles within a certain region defined by <a href="limits_variable.html">limits</a>. It can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small. We call the function by issuing something like:</p><p>atom = create_atom(type,resname,limits,nmax,varargin)</p><p><b>Input arguments</b></p><div><ul><li>{type} is particle/atomtype, like {'Si'}</li><li>{resname} is resname, like {'MIN'}</li><li>[limits] is a 1x3 or 1x6 array representing a volume, see also <a href="limits_variable.html">limits</a></li><li>The number nmax is the max number of particles</li><li>Optional scale arguemnt (varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><p><b>Examples</b></p><pre class="codeinput">atom = create_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10) <span class="comment">% Adding 10 Na in a 10x20x30 &Aring; box</span>
+atom = create_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[0 0 0 10 20 30],10) <span class="comment">% same as above</span>
+atom = create_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[0 0 30 10 20 30],10) <span class="comment">% Adding 10 Na on a plane at z=30&Aring; in a 10x20x30 &Aring; box</span>
+atom = create_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,2) <span class="comment">% Double the minimum spacing between the Na atoms</span>
+atom = create_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,1.5,in_atom) <span class="comment">% Making sure there is no atomic overlap with another in_atom struct</span>
+</pre><h2 id="4">Insert new atoms or molecules with <a href="insert_atom.html">insert_atom</a></h2><div><ul><li>This function inserts a whole molecule from a structure file or atom_in into a region defined by <a href="limits">limits</a> with an atom or molecule. varargin can be used to assure that one atom type is at least some distance above (in z) some other atom type</li></ul></div><p>atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)</p><p><b>Input arguments</b></p><div><ul><li>atom_in is the atom struct to be inserted</li><li>[limits] is a 1x3 or 1x6 array representing a volume, see also <a href="limits_variable.html">limits</a></li><li>rotate argument can be a string like 'random', {'random'}, or be used to set some angles like [60 90 60].</li><li>The number maxsol is the max number of atoms/molecules to insert</li><li>Optional varargin{1} is any already existing atom struct with which we want to avoid any atomic overlap with</li></ul></div><p><b>Examples</b></p><pre class="codeinput">atom_in = import_atom(<span class="string">'Ethanol.pdb'</span>); <span class="comment">% Import the example Ethanol molecule</span>
+limits=[30 30 30]; <span class="comment">% Set some volime defined by &lt;limits_variable limits&gt;</span>
+r=2; <span class="comment">% rmin cutoff</span>
+maxsol=10; <span class="comment">% max number of atoms/molecules to insert</span>
+atom1 = insert_atom(atom_in,limits,<span class="string">'rotate'</span>,r,maxsol)
+atom2 = insert_atom(atom_in,limits,[10 20 30],r,maxsol,[])
+atom3 = insert_atom(atom_in,limits,<span class="string">'rotate'</span>,r,2,atom_in,[1 2],0.3) <span class="comment">% Here we make sure the first atomtype in a molecule has a z-coordinates 0.3 &Aring; &gt; than the second atomtype within the same molecule</span>
+</pre><h2 id="6">Add ions with <a href="ionize_atom.html">ionize_atom</a></h2><div><ul><li>This function adds ions within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><p><b>Input arguments</b></p><div><ul><li>{type} is particle/atomtype, like {'Na'}</li><li>{resname} is resname, like {'Na'}</li><li>[limits] is a 1x3 or 1x6 array representing a volume, see also <a href="limits_variable.html">limits</a></li><li>The number nmax is the max number of particles</li><li>Optional scale argument (varargin{1}) is a how-many-diameters-between-the-particles-thingy</li><li>in_atom is any already existing atom struct (like a surface) with which we want to avoid any atomic overlap with</li></ul></div><pre class="codeinput"><span class="comment">%</span>
+</pre><p><b>Examples</b></p><pre class="codeinput">atom = ionize_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10)
+atom = ionize_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,2) <span class="comment">% Nearest distance will be 2 * ionic radii</span>
+atom = ionize_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,2,in_atom) <span class="comment">% Random placement without atomic overlap with in_atom</span>
+atom = ionize_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,2,in_atom,<span class="string">'surface'</span>) <span class="comment">% Preferred placement at the 'surface' or 'bulk'</span>
+atom = ionize_atom(<span class="string">'Na'</span>,<span class="string">'Na'</span>,[10 20 30],10,2,in_atom,<span class="string">'surface'</span>|<span class="string">'bulk'</span>,<span class="string">'x'</span>|<span class="string">'y'</span>|<span class="string">'z'</span>|20) <span class="comment">% Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Examples demonstrating how to add new atoms or ions to an atom struct
+% (For a full list of functions that can add atoms/ions/molecules, go to 
+% <List_build_functions.html List_build_functions>
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Create new atoms with <create_atom.html create_atom>
+% This function creates new atoms/particles within a certain region defined
+% by <limits_variable.html limits>. It can also add particles on a plane by setting Lx|Ly|Lz to 
+% 0 or something small. We call the function by issuing something like:
+%
+% atom = create_atom(type,resname,limits,nmax,varargin) 
+%
+% *Input arguments*
+%
+% * {type} is particle/atomtype, like {'Si'}
+% * {resname} is resname, like {'MIN'}
+% * [limits] is a 1x3 or 1x6 array representing a volume, see also <limits_variable.html limits>
+% * The number nmax is the max number of particles
+% * Optional scale arguemnt (varargin{1}) is a how-many-diameters-between-the-particles-thingy
+
+%%
+% *Examples*
+atom = create_atom('Na','Na',[10 20 30],10) % Adding 10 Na in a 10x20x30 Å box
+atom = create_atom('Na','Na',[0 0 0 10 20 30],10) % same as above
+atom = create_atom('Na','Na',[0 0 30 10 20 30],10) % Adding 10 Na on a plane at z=30Å in a 10x20x30 Å box
+atom = create_atom('Na','Na',[10 20 30],10,2) % Double the minimum spacing between the Na atoms
+atom = create_atom('Na','Na',[10 20 30],10,1.5,in_atom) % Making sure there is no atomic overlap with another in_atom struct
+
+%% Insert new atoms or molecules with <insert_atom.html insert_atom>
+% * This function inserts a whole molecule from a structure file or atom_in
+% into a region defined by <limits> with an atom or molecule. varargin 
+% can be used to assure that one atom type is at least some distance above 
+% (in z) some other atom type
+% 
+% atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
+%
+% *Input arguments*
+%
+% * atom_in is the atom struct to be inserted
+% * [limits] is a 1x3 or 1x6 array representing a volume, see also 
+% <limits_variable.html limits>
+% * rotate argument can be a string like 'random', {'random'}, or be used
+% to set some angles like [60 90 60].
+% * The number maxsol is the max number of atoms/molecules to insert
+% * Optional varargin{1} is any already existing atom struct with which we 
+% want to avoid any atomic overlap with
+
+%%
+% *Examples*
+atom_in = import_atom('Ethanol.pdb'); % Import the example Ethanol molecule
+limits=[30 30 30]; % Set some volime defined by <limits_variable limits>
+r=2; % rmin cutoff
+maxsol=10; % max number of atoms/molecules to insert
+atom1 = insert_atom(atom_in,limits,'rotate',r,maxsol)
+atom2 = insert_atom(atom_in,limits,[10 20 30],r,maxsol,[])
+atom3 = insert_atom(atom_in,limits,'rotate',r,2,atom_in,[1 2],0.3) % Here we make sure the first atomtype in a molecule has a z-coordinates 0.3 Å > than the second atomtype within the same molecule
+
+%% Add ions with <ionize_atom.html ionize_atom>
+% * This function adds ions within a certain region defined by <limits>
+% * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
+% * Compared to create_atom, this function can also add particles near a
+% 'surface' or in the 'bulk', when an in_atom struct (representing a solid
+% phase) is passed argument.
+% * If slow, check out insert_atom or solvate_atom or grid_atom...
+%
+% *Input arguments*
+%
+% * {type} is particle/atomtype, like {'Na'}
+% * {resname} is resname, like {'Na'}
+% * [limits] is a 1x3 or 1x6 array representing a volume, see also <limits_variable.html limits>
+% * The number nmax is the max number of particles
+% * Optional scale argument (varargin{1}) is a how-many-diameters-between-the-particles-thingy
+% * in_atom is any already existing atom struct (like a surface) with which 
+% we want to avoid any atomic overlap with
+
+% 
+%%
+% *Examples*
+atom = ionize_atom('Na','Na',[10 20 30],10)
+atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
+atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement without atomic overlap with in_atom
+atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
+atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range
+
+##### SOURCE END #####
+--></body></html>

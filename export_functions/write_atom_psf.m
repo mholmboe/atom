@@ -14,7 +14,7 @@ function write_atom_psf(atom,Box_dim,filename,varargin)
 
 nAtoms=size(atom,2);
 
-if regexp(filename,'.psf') ~= false;
+if regexp(filename,'.psf') ~= false
     filename = filename;
 else
     filename = strcat(filename,'.psf');
@@ -29,32 +29,51 @@ else
     long_r=2.25;
 end
 
-if nargin>5;
+if nargin>5
     ffname=varargin(3);
-    if nargin>6;
+    if nargin>6
         watermodel=varargin(4);
     else
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E';
     end
-    if strncmpi(ffname,'clayff',5);
+    if strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
+        end
         Total_charge = check_clayff_charge(atom)
-    elseif strcmpi(ffname,'interface');
-        clayff_param(sort(unique([atom.type])),watermodel);
+    elseif strncmpi(ffname,'clayff_2004',5)
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+    elseif strcmpi(ffname,'interface')
+        interface_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'interface','tip3p');
+        end
         Total_charge = check_interface_charge(atom)
+    elseif strcmpi(ffname,'interface15')
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'interface15','tip3p');
+        end
+        atom = check_interface15_charge(atom,'CLAY_MINERALS');
+        atom = mass_atom(atom);
     end
 else
     disp('Unknown forcefield, will not try clayff or interface')
     atom = mass_atom(atom);
     element=element_atom(atom);
     [atom.element]=element.type;
+    pause(2)
     %         clayff_param(sort(unique([atom.type])),watermodel);
     %         Total_charge = check_clayff_charge(atom)
 end
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
-if length(Box_dim)>3;
+if length(Box_dim)>3
     xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
 else
     xy=0;xz=0;yz=0;
@@ -66,7 +85,7 @@ fprintf(fid, '%-s\r\n','PSF');
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','       2 !NTITLE');
 fprintf(fid, '%s\r\n',' REMARKS MATLAB-generated PSF structure file');
-fprintf(fid, '%s\r\n',' REMARKS coded by MHolmboe (michael.holmboe@umu.se), 03/12/2017');
+fprintf(fid, '%s\r\n',' REMARKS coded by MHolmboe (michael.holmboe@umu.se)');
 fprintf(fid, '\r\n');
 fprintf(fid, '%8i %s\r\n',nAtoms,'!NATOM');
 
@@ -88,16 +107,16 @@ end
 ResNum=[atom.molid];
 SegName=['SURF'];
 ResName=[atom.resname];
-for i = 1:size([atom.type],2);
+for i = 1:size([atom.type],2)
     
-    if exist('Masses','var');
+    if exist('Masses','var')
         Atom_label_ID(i,1);Charge(Atom_label_ID(i,1));
         %                 atomID,     segname, residueID,  resname,       atomname,                      atomtype,                      charge,                     mass,        and an unused 0
         Atoms_data(i,:) = [atomID(1,i),SegName,[atom(i).molid],[atom(i).resname],char([atom(i).type]),char([atom(i).type]),[atom(i).charge],Masses(Atom_label_ID(i,1)),0];
     else
-        i
-        [atom(i).mass]
-        [atom(i).charge]
+        i;
+        [atom(i).mass];
+        [atom(i).charge];
         Atoms_data(i,:) = [atomID(1,i),SegName,[atom(i).molid],[atom(i).resname],char([atom(i).element]),char([atom(i).type]),[atom(i).charge],[atom(i).mass],0];
     end
     
@@ -108,7 +127,7 @@ fprintf(fid, '\r\n');
 fprintf(fid, '%8i %s\r\n',nBonds,'!NBOND: bonds');
 
 bond_matrix=Bond_index(:,1:2);
-while mod(2*size(bond_matrix,1),8) ~= 0;
+while mod(2*size(bond_matrix,1),8) ~= 0
     bond_matrix=[bond_matrix;0 0];
 end
 bond_temp=zeros(2*size(bond_matrix,1),1);
@@ -118,7 +137,7 @@ bond_list=[reshape(bond_temp',8,[])]';
 
 count_b = 1;
 bondtype=1;
-while count_b <= length(bond_list);
+while count_b <= length(bond_list)
     if bond_list(count_b,1)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,1:2));end
     if bond_list(count_b,3)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,3:4));end
     if bond_list(count_b,5)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,5:6));end
@@ -131,7 +150,7 @@ fprintf(fid, '\r\n');
 
 fprintf(fid, '%8i %s\r\n',nAngles,'!NTHETA: angles');
 angle_matrix=Angle_index(:,1:3);
-while mod(3*size(angle_matrix,1),9) ~= 0;
+while mod(3*size(angle_matrix,1),9) ~= 0
     angle_matrix=[angle_matrix;0 0 0];
 end
 angle_temp=zeros(3*size(angle_matrix,1),1);
@@ -142,7 +161,7 @@ angle_list=[reshape(angle_temp',9,[])]';
 
 count_a = 1;
 angletype=1;
-while count_a <= size(angle_list,1);
+while count_a <= size(angle_list,1)
     if angle_list(count_a,1)~=0;fprintf(fid, '%8i%8i%8i',angle_list(count_a,1:3));end
     if angle_list(count_a,4)~=0;fprintf(fid, '%8i%8i%8i',angle_list(count_a,4:6));end
     if angle_list(count_a,7)~=0;fprintf(fid, '%8i%8i%8i',angle_list(count_a,7:9));end
@@ -151,23 +170,23 @@ while count_a <= size(angle_list,1);
 end
 
 
-% 
-% 
+%
+%
 %        0 !NPHI: dihedrals
-% 
-% 
+%
+%
 %        0 !NIMPHI: impropers
-% 
-% 
+%
+%
 %        0 !NDON: donors
-% 
-% 
+%
+%
 %        0 !NACC: acceptors
-% 
-% 
+%
+%
 %        0 !NNB
-%        
-%        
+%
+%
 %        1       0 !NGRP
 %        0       0       0
 

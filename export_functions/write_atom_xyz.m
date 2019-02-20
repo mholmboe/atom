@@ -10,30 +10,42 @@
 %% Examples
 % # write_atom_xyz(atom,Box_dim,filename_out)
 %
-function write_atom_xyz(atom,Box_dim,filename_out)
+function write_atom_xyz(atom,varargin)
 
-if regexp(filename_out,'.xyz') ~= false;
+if nargin==2
+    filename_out=varargin{1};
+else
+    Box_dim=varargin{1};
+    filename_out=varargin{2};
+end
+
+
+if regexp(filename_out,'.xyz') ~= false
     filename_out = filename_out;
 else
     filename_out = strcat(filename_out,'.xyz');
-end
-
-if numel(Box_dim)==1
-    Box_dim(1)=Box_dim(1);
-    Box_dim(2)=Box_dim(1);
-    Box_dim(3)=Box_dim(1);
 end
 
 nAtoms=size([atom.x],2)
 fid = fopen(filename_out, 'wt');
 fprintf(fid, '%-5i\r\n',nAtoms);
 
-if length(Box_dim)==3
-    fprintf(fid, '# %10.5f%10.5f%10.5f\r\n',Box_dim);
-elseif length(Box_dim)==6
-    fprintf(fid, '# %10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\r\n',Box_dim);
-elseif length(Box_dim)==9
-    fprintf(fid, '# %10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\r\n',Box_dim);
+if exist('Box_dim','var')
+    if numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    end
+    
+    if length(Box_dim)==3
+        fprintf(fid, '# %10.5f%10.5f%10.5f\r\n',Box_dim);
+    elseif length(Box_dim)==6
+        fprintf(fid, '# %10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\r\n',Box_dim);
+    elseif length(Box_dim)==9
+        fprintf(fid, '# %10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\r\n',Box_dim);
+    end
+else
+    fprintf(fid, '# No Box_dim\r\n');
 end
 
 for i = 1:nAtoms

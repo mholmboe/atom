@@ -35,11 +35,11 @@ water_model
 % Hw
 forcefield.interface(1).type =    {'HW'}; % h* water hydrogen
 forcefield.interface(1).mass =    1.00794;
-if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0;
+if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0
     forcefield.interface(1).charge =  0.42380;
-elseif strcmp('SPC', water_model) > 0;
+elseif strcmp('SPC', water_model) > 0
     forcefield.interface(1).charge =  0.41000;
-elseif strncmpi('TIP3P', water_model,5) > 0;
+elseif strncmpi('TIP3P', water_model,5) > 0
     forcefield.interface(1).charge =  0.41700;
 end
 forcefield.interface(1).radius =  0.00000; % R0 Å
@@ -55,11 +55,11 @@ forcefield.interface(2).e_kJmol = 0.06276;
 % Ow
 forcefield.interface(3).type =    {'OW'}; % o* water oxygen
 forcefield.interface(3).mass =    15.99410;
-if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0;
+if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0
     forcefield.interface(3).charge =  -0.84760;
-elseif strcmp('SPC', water_model) > 0;
+elseif strcmp('SPC', water_model) > 0
     forcefield.interface(3).charge = -0.82000;
-elseif strncmpi('TIP3P', water_model,5) > 0;
+elseif strncmpi('TIP3P', water_model,5) > 0
     forcefield.interface(3).charge =  -0.83400;
 end
 forcefield.interface(3).radius =  3.553200;

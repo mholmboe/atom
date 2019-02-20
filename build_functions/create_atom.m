@@ -1,7 +1,7 @@
 %% create_atom.m
 % * This function creates particles within a certain region defined by <limits>
 % * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
-% 
+%
 %% Similar
 % * insert_atom
 % * ionize_atom
@@ -46,7 +46,7 @@ if nargin > 4
 else
     scale=2;
 end
-Box_dim_temp=scale*[2*radii 2*radii 2*radii];
+Box_dim_temp=scale*[2*radii 2*radii 2*radii]
 atom = add2atom(type,[0 0 0],resname,[]);
 
 if numel(limits)==1
@@ -86,9 +86,9 @@ molid=num2cell([1:size(atom,2)]);
 
 % Move things around a little bit
 for i=1:size(atom,2)
-    if nx>0;atom(i).x=atom(i).x-scale*rand(1)*radii;end
-    if ny>0;atom(i).y=atom(i).y-scale*rand(1)*radii;end
-    if nz>0;atom(i).z=atom(i).z-scale*rand(1)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-scale*(rand(1)-0.5)*radii;end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-scale*(rand(1)-0.5)*radii;end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-scale*(rand(1)-0.5)*radii;end
 end
 
 if (limits(1)+limits(2)+limits(3)) ~= 0
@@ -129,9 +129,8 @@ ind_sel=ismember(ind_rand,1:nAtoms);
 atom_ind=ind_rand(ind_sel);
 atom(atom_ind)=atom;
 
-
 if iscellstr({nmax}) == 1
-    nmax=size(atom,2); 
+    nmax=size(atom,2);
 end
 
 % If not filled up yet, remove the particles that are nearest some other particles
@@ -140,16 +139,16 @@ i=1;
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
 while size(atom,2)>nmax+1
-    [row,col]=find(distmatrix==min(min(distmatrix)));
-    ind_rm=max([row col]);
+    [row,col]=find(distmatrix==min(min(distmatrix)))
+    ind_rm=max([row(1) col(1)]);
     if ind_rm>i
         i=i+1;
     end
-    atom(row)=[];
-    distmatrix(row,:)=[];
-    distmatrix(:,col)=[];
+    atom(row(1))=[];
+    distmatrix(row(1),:)=[];
+    distmatrix(:,col(1))=[];
 end
-
+size(atom,2)
 % Delete particles if not using the <maxion> option
 if iscellstr({nmax}) == 0
     if nmax > size(atom,2)

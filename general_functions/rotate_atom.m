@@ -62,7 +62,7 @@ atom = rmfield(atom,'COM_x');
 atom = rmfield(atom,'COM_y');
 atom = rmfield(atom,'COM_z');
 
-assignin('caller','rot_atom',rot_atom);
+% assignin('caller','rot_atom',rot_atom);
 
 % write_atom_gro(atom,Box_dim,'out.gro');
 %

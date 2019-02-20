@@ -1,0 +1,185 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Examples demonstrating how to import (i.e. read) and export (i.e. write) structure files, like .pdb|.gro|.xyz files</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Import_and_Export_structures.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Examples demonstrating how to import (i.e. read) and export (i.e. write) structure files, like .pdb|.gro|.xyz files</h1><!--introduction--><p>(For a full list of importing and exporting functions, go to <a href="List_import_functions.html">List_import_functions</a> or the <a href="List_export_functions.html">List_export_functions</a>)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Pick filenames to import and export</a></li><li><a href="#3">How to read/import a structure file into Matlab</a></li><li><a href="#8">How to write/export a structure file</a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre><h2 id="2">Pick filenames to import and export</h2><p>Set some filenames</p><pre class="codeinput">filename_in=<span class="string">'Pyrophyllite.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+filename_out=<span class="string">'outPyrophyllite'</span>; <span class="comment">% default is 'outPyrophyllite'</span>
+</pre><h2 id="3">How to read/import a structure file into Matlab</h2><p>Use the <a href="import_atom.html">import_atom</a> function as demonstrated below. This function automatically detects the file format, which should be either .pdb|.gro|.xyz</p><p><b>Example</b> with <a href="import_atom.html">import_atom</a></p><pre class="codeinput">atom = import_atom(filename_in);
+<span class="comment">% plot_atom(atom,Box_dim) % Run command to see what changed</span>
+</pre><p><b>Note</b> that you get information about the composition and Box dimensions if such exist.</p><pre class="codeinput"><span class="comment">%   Found .pdb file</span>
+<span class="comment">%   filename =</span>
+<span class="comment">%       'Pyrophyllite.pdb'</span>
+<span class="comment">%   .pdb file imported</span>
+<span class="comment">%   composition =</span>
+<span class="comment">%       struct with fields:</span>
+<span class="comment">%</span>
+<span class="comment">%      resnames: {'PYR'}</span>
+<span class="comment">%     nresidues: 1</span>
+<span class="comment">%        natoms: 40</span>
+<span class="comment">% Atom_types =</span>
+<span class="comment">%   1&times;4 cell array</span>
+<span class="comment">%     {'Al'}    {'H'}    {'O'}    {'Si'}</span>
+<span class="comment">% Atom_numbers =</span>
+<span class="comment">%      4     4    24     8</span>
+<span class="comment">% Box_dim =</span>
+<span class="comment">%     5.1600    8.9658    9.1897         0         0         0         0   -1.6966         0</span>
+</pre><p><b>Example</b> with <a href="import_atom_pdb.html">import_atom_pdb</a> (or <a href="import_atom_gro.html">import_atom_gro</a> or <a href="import_atom_xyz.html">import_atom_xyz</a>)</p><pre class="codeinput">atom = import_atom_pdb(filename_in);
+</pre><p><b>Note</b> that with <a href="import_atom_pdb.html">import_atom_pdb</a> or the <a href="import_atom_gro.html">import_atom_gro</a> or the <a href="import_atom_xyz.html">import_atom_xyz</a>) functions you get less information than with the more general <a href="import_atom.html">import_atom</a> function.</p><p><b>Note</b> that when you import a structure file, you can pass one or two additional arguments after the filename to (1) translate, or (2) center and translate the structure to a new box. Look for instance at <a href="import_atom_pdb.html">import_atom_pdb</a> and examples 2 and 3.</p><h2 id="8">How to write/export a structure file</h2><p>In order to export or write out a structure file, we need to specify the format we want (like .pdb|.gro|.xyz) by calling the corresponding function  <a href="write_atom_pdb.html">write_atom_pdb</a> or the <a href="write_atom_gro.html">write_atom_gro</a> or the <a href="write_atom_xyz.html">write_atom_xyz</a>. Apart from passing the <a href="atom_variable.html">atom</a> struct, we must also pass the <a href="Box_dim_variable.html">Box_dim</a> variable and an output filename.</p><p><b>Note</b> that when you export a .pdb file, the first cutoff is <a href="rmaxshort_variable.html">rmaxshort</a> for bonded H's and the second cutoff is (<a href="rmaxlong_variable.html">rmaxlong</a>) for all other bonds</p><pre class="codeinput">write_atom_gro(atom,Box_dim,filename_out)
+write_atom_pdb(atom,Box_dim,filename_out)
+write_atom_pdb(atom,Box_dim,filename_out,1.25,2.25) <span class="comment">% Will try to write the CONECT bond records</span>
+write_atom_xyz(atom,Box_dim,filename_out) <span class="comment">% With the Box_dim, not standard  for .xyz files</span>
+write_atom_xyz(atom,filename_out) <span class="comment">% Without the Box_dim, standard for .xyz  files</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Examples demonstrating how to import (i.e. read) and export (i.e. write) structure files, like .pdb|.gro|.xyz files
+% (For a full list of importing and exporting functions, go to 
+% <List_import_functions.html List_import_functions> or the 
+% <List_export_functions.html List_export_functions>)
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Pick filenames to import and export
+% Set some filenames
+filename_in='Pyrophyllite.pdb'; % default is 'Pyrophyllite.pdb'
+filename_out='outPyrophyllite'; % default is 'outPyrophyllite'
+
+%% How to read/import a structure file into Matlab
+% Use the <import_atom.html import_atom> function as demonstrated below.
+% This function automatically detects the file format, which should be
+% either .pdb|.gro|.xyz
+
+%%
+% *Example* with <import_atom.html import_atom>
+atom = import_atom(filename_in);
+% plot_atom(atom,Box_dim) % Run command to see what changed
+
+%%
+% *Note* that you get information about the 
+% composition and Box dimensions if such exist.
+
+%   Found .pdb file
+%   filename =
+%       'Pyrophyllite.pdb'
+%   .pdb file imported
+%   composition = 
+%       struct with fields:
+% 
+%      resnames: {'PYR'}
+%     nresidues: 1
+%        natoms: 40
+% Atom_types =
+%   1×4 cell array
+%     {'Al'}    {'H'}    {'O'}    {'Si'}
+% Atom_numbers =
+%      4     4    24     8
+% Box_dim =
+%     5.1600    8.9658    9.1897         0         0         0         0   -1.6966         0
+
+%%
+% *Example* with <import_atom_pdb.html import_atom_pdb> (or <import_atom_gro.html import_atom_gro> or <import_atom_xyz.html import_atom_xyz>)
+atom = import_atom_pdb(filename_in);
+
+%%
+% *Note* that with 
+% <import_atom_pdb.html import_atom_pdb> or the
+% <import_atom_gro.html import_atom_gro> or the 
+% <import_atom_xyz.html import_atom_xyz>) functions you get less 
+% information than with the more general <import_atom.html import_atom> 
+% function.
+%
+% *Note* that when you import a structure file, you can pass one or two
+% additional arguments after the filename to (1) translate, or (2)
+% center and translate the structure to a new box. Look for instance at
+% <import_atom_pdb.html import_atom_pdb> and examples 2 and 3.
+
+%% How to write/export a structure file
+% In order to export or write out a structure file, we need to specify the 
+% format we want (like .pdb|.gro|.xyz) by calling the corresponding
+% function  <write_atom_pdb.html write_atom_pdb> or the
+% <write_atom_gro.html write_atom_gro> or the 
+% <write_atom_xyz.html write_atom_xyz>. Apart from passing the
+% <atom_variable.html atom> struct, we must also pass the
+% <Box_dim_variable.html Box_dim> variable and an output filename.
+%
+% *Note* that when you export a .pdb file, the first cutoff is
+% <rmaxshort_variable.html rmaxshort> for bonded H's and the 
+% second cutoff is (<rmaxlong_variable.html rmaxlong>) for all other 
+% bonds
+
+write_atom_gro(atom,Box_dim,filename_out)
+write_atom_pdb(atom,Box_dim,filename_out)
+write_atom_pdb(atom,Box_dim,filename_out,1.25,2.25) % Will try to write the CONECT bond records
+write_atom_xyz(atom,Box_dim,filename_out) % With the Box_dim, not standard  for .xyz files
+write_atom_xyz(atom,filename_out) % Without the Box_dim, standard for .xyz  files
+
+
+    
+    
+##### SOURCE END #####
+--></body></html>

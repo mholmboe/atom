@@ -1,0 +1,151 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Examples demonstrating how to center, translate, rotate, place a molecule</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Move_molecules.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Examples demonstrating how to center, translate, rotate, place a molecule</h1><!--introduction--><p>(For a full list of functions that can move around molecules, go to <a href="List_build_functions.html">List_build_functions</a> or the <a href="List_general_functions.html">List_general_functions</a>)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Pick filenames to import and export</a></li><li><a href="#3">First import some molecule</a></li><li><a href="#5">Center a molecule</a></li><li><a href="#6">Translate a molecule</a></li><li><a href="#7">Place a molecule</a></li><li><a href="#8">Rotate a molecule</a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre><h2 id="2">Pick filenames to import and export</h2><p>Set some filenames</p><pre class="codeinput">filename_in=<span class="string">'Ethanol.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+filename_out=<span class="string">'outEthanol'</span>; <span class="comment">% default is 'test'</span>
+</pre><h2 id="3">First import some molecule</h2><pre class="codeinput">atom=import_atom(filename_in);
+</pre><p><b>Note</b> that you can issue plot_atom(atom,Box_dim) or vmd(atom,Box_dim) (if VMD is installed and Matlab knows the path to it) to see the molecule</p><h2 id="5">Center a molecule</h2><p>Use <a href="center_atom.html">center_atom</a> to center the molecule in the middle of the box. <b>Note</b> that you could pass two additional arguments that can be used to center only a specific resname (molecule name) and/or along specific x|y|z dimensions. Look for instance into <a href="center_atom.html">center_atom</a> and examples 2 and 3.</p><pre class="codeinput">centered_atom=center_atom(atom,Box_dim);
+<span class="comment">% plot_atom(centered_atom,Box_dim) % Run command to see what changed</span>
+</pre><h2 id="6">Translate a molecule</h2><p>Use <a href="translate_atom.html">translate_atom</a> to translate the molecule somewhere. <b>Note</b> that you could pass one additional argument that can be used to translate only a specific resname (molecule name). Look for instance into <a href="translate_atom.html">translate_atom</a>  and examples 2 and 3.</p><pre class="codeinput">translated_atom=translate_atom(atom,[0 5 10]);
+<span class="comment">% plot_atom(translated_atom,Box_dim) % Run command to see what changed</span>
+</pre><h2 id="7">Place a molecule</h2><p>Use <a href="place_atom.html">place_atom</a> to place a molecule somewhere <b>Note</b> that the <a href="place_atom.html">place_atom</a> function is dependent on the <a href="COM_atom.html">COM_atom</a> function and is therefore a bit slow for large molecules</p><pre class="codeinput">placed_atom=place_atom(atom,[0 5 10]);
+<span class="comment">% plot_atom(placed_atom,Box_dim) % Run command to see what changed</span>
+</pre><h2 id="8">Rotate a molecule</h2><p>Use <a href="rotate_atom.html">rotate_atom</a> to rotate the molecule. The second argument can either be the string 'random' or a 1x3 array holding the new rotation angles around the x,y,z axes. <b>Note</b> that the <a href="rotate_atom.html">rotate_atom</a> function is dependent on the <a href="COM_atom.html">COM_atom</a> function and is therefore a bit slow for large molecules</p><pre class="codeinput">rotated_atom=rotate_atom(atom,<span class="string">'random'</span>);
+<span class="comment">% or to rotate with specified angles around the x,y,z axes.</span>
+rotated_atom=rotate_atom(atom,[0 90 180]);
+<span class="comment">% plot_atom(rotated_atom,Box_dim) % Run command to see what changed</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Examples demonstrating how to center, translate, rotate, place a molecule
+% (For a full list of functions that can move around molecules, go to 
+% <List_build_functions.html List_build_functions> or the 
+% <List_general_functions.html List_general_functions>)
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Pick filenames to import and export
+% Set some filenames
+filename_in='Ethanol.pdb'; % default is 'Pyrophyllite.pdb'
+filename_out='outEthanol'; % default is 'test'
+
+%% First import some molecule
+atom=import_atom(filename_in);
+
+%%
+% *Note* that you can issue plot_atom(atom,Box_dim) or vmd(atom,Box_dim)
+% (if VMD is installed and Matlab knows the path to it) to see the molecule
+
+%% Center a molecule
+% Use <center_atom.html center_atom> to center the molecule in the middle
+% of the box.
+% *Note* that you could pass two additional arguments that can be used to 
+% center only a specific resname (molecule name) and/or along specific 
+% x|y|z dimensions. Look for instance into <center_atom.html center_atom> 
+% and examples 2 and 3.
+
+centered_atom=center_atom(atom,Box_dim);
+% plot_atom(centered_atom,Box_dim) % Run command to see what changed
+
+%% Translate a molecule
+% Use <translate_atom.html translate_atom> to translate the molecule 
+% somewhere.
+% *Note* that you could pass one additional argument that can be used to 
+% translate only a specific resname (molecule name). Look for instance into 
+% <translate_atom.html translate_atom>  and examples 2 and 3.
+
+translated_atom=translate_atom(atom,[0 5 10]);
+% plot_atom(translated_atom,Box_dim) % Run command to see what changed
+
+%% Place a molecule
+% Use <place_atom.html place_atom> to place a molecule 
+% somewhere
+% *Note* that the <place_atom.html place_atom> function is dependent on
+% the <COM_atom.html COM_atom> function and is therefore a bit slow for
+% large molecules
+
+placed_atom=place_atom(atom,[0 5 10]);
+% plot_atom(placed_atom,Box_dim) % Run command to see what changed
+
+%% Rotate a molecule
+% Use <rotate_atom.html rotate_atom> to rotate the molecule. The second 
+% argument can either be the string 'random' or a 1x3 array holding the 
+% new rotation angles around the x,y,z axes.
+% *Note* that the <rotate_atom.html rotate_atom> function is dependent on
+% the <COM_atom.html COM_atom> function and is therefore a bit slow for
+% large molecules
+
+rotated_atom=rotate_atom(atom,'random');
+% or to rotate with specified angles around the x,y,z axes.
+rotated_atom=rotate_atom(atom,[0 90 180]); 
+% plot_atom(rotated_atom,Box_dim) % Run command to see what changed
+
+
+##### SOURCE END #####
+--></body></html>

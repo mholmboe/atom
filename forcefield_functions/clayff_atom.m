@@ -1,6 +1,9 @@
 %% clayff_atom.m
-% * This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...
-% * This clayff_atom function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016.
+% * This function tries to assign all atoms according to the clayff atom 
+% types (with modified atom names by MHolmboe), with some modifications for 
+% edges...
+% * This clayff_atom function was modified accoring to Clays and Clay 
+% Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
 % 2.0
@@ -31,6 +34,7 @@ else
     heal=1; % No healing, will run much faster
 end
 
+% Initialize some variables
 Heal_Al=0;
 Heal_Mgo=0;
 Heal_Feo=0;

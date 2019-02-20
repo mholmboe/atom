@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_itp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="write_atom_itp.m"><style type="text/css">
+      --><title>write_atom_itp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="write_atom_itp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -97,8 +97,17 @@ nAtoms=size(atom,2);
     <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
         clayff_param(sort(unique([atom.type])),watermodel);
         <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
-            pause
             atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'adjust'</span>);
+        <span class="keyword">end</span>
+        Total_charge=sum([atom.charge])
+<span class="comment">%         pause</span>
+        nrexcl=1; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 0;
+        explicit_angles = 1;
+    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff_2004'</span>,5)
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+            atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
         <span class="keyword">end</span>
         Total_charge=sum([atom.charge])
 <span class="comment">%         pause</span>
@@ -521,8 +530,17 @@ if nargin>5
     if strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
-            pause
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+%         pause
+        nrexcl=1; % See the gromacs manual
+        explicit_bonds = 0;
+        explicit_angles = 1;
+    elseif strncmpi(ffname,'clayff_2004',5)
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
         end
         Total_charge=sum([atom.charge])
 %         pause

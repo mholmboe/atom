@@ -1,0 +1,156 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Examples demonstrating how to protonate, heal, fuse or merge molecules</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Protonate_or_heal_molecules.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Examples demonstrating how to protonate, heal, fuse or merge molecules</h1><!--introduction--><p>(For a full list of functions that can add atoms/ions/molecules, go to <a href="List_build_functions.html">List_build_functions</a> or look into <a href="List_general_functions.html">List_general_functions</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Protonate a molecule with <a href="protonate_atom.html">protonate_atom</a></a></li><li><a href="#4">Heal a molecule with <a href="heal_atom.html">heal_atom</a></a></li><li><a href="#6">Fuse two molecules with <a href="fuse_atom.html">fuse_atom</a></a></li><li><a href="#7">Merge two molecules with <a href="merge_atom.html">merge_atom</a></a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre><h2 id="2">Protonate a molecule with <a href="protonate_atom.html">protonate_atom</a></h2><div><ul><li>This function protonates the sites in the atom struct given by the index vector ind by adding H's to a new H atom struct. It does so by placing a H opposite to the mean position of all neighbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated.</li></ul></div><pre class="codeinput">atom=import_atom(<span class="string">'Pyrophyllite.pdb'</span>);
+atom(strcmp([atom.type],<span class="string">'H'</span>))=[]; <span class="comment">% We need to remove the original H's so</span>
+<span class="comment">% we have some sites to protonate</span>
+</pre><p><b>Examples</b></p><pre class="codeinput">Hatom = protonate_atom(atom,Box_dim) <span class="comment">% Will only protonate single bonded O atoms</span>
+Hatom = protonate_atom(atom,Box_dim,ind) <span class="comment">% Will protonate all atoms with indexes in ind</span>
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) <span class="comment">% rcut can be used to change the default cutoff 2.5 &Aring;ngstr&ouml;m</span>
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{<span class="string">'He'</span>}) <span class="comment">% {'He'} can be used to change the default atomtype H to He</span>
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{<span class="string">'He'</span>},<span class="string">'minus'</span>) <span class="comment">% 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</span>
+</pre><h2 id="4">Heal a molecule with <a href="heal_atom.html">heal_atom</a></h2><div><ul><li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li><li>Note that you first need to find which sites that should be healed, using for instance the bond_valence_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li></ul></div><p><b>Examples</b></p><pre class="codeinput">healed_atom = heal_atom(atom,Box_dim,[6 16 26 36]) <span class="comment">% Will protonate all sites given by the ind array</span>
+healed_atom = heal_atom(atom,Box_dim,[6:10:960],3) <span class="comment">% Will protonate all sites given by the ind array. 3 is the rcut</span>
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,<span class="string">'He'</span>) <span class="comment">% Will add 'He' atoms to all sites given by the ind array. 3 is the rcut</span>
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,<span class="string">'N'</span>,1.87) <span class="comment">% Will add 'N' atoms 1.87 &Aring; away from all sites given by the ind array</span>
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,<span class="string">'N'</span>,<span class="string">'Shannon'</span>) <span class="comment">% Same as above but will use bond distance from the revised Shannon radii set</span>
+</pre><h2 id="6">Fuse two molecules with <a href="fuse_atom.html">fuse_atom</a></h2><div><ul><li>Sometimes added atoms/sites overlap. This function tries to fuse all sites within a certain rmax.</li></ul></div><p><b>Examples</b></p><pre class="codeinput">atom = fuse_atom(atom,Box_dim)
+atom = fuse_atom(atom,Box_dim,0.85)
+</pre><h2 id="7">Merge two molecules with <a href="merge_atom.html">merge_atom</a></h2><div><ul><li>This function returns the struct atom2 containing atoms with a distance r (1x1 or 1x2 array) away from the atoms in the atom1 struct. There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting r(2) to a smaller value than r(1).</li><li>You must decide if atom1w should be wrapped or not before running this function</li><li>Do not wrap atomw1 here, do it before calling this function since Box1 does not always equal the full Box_dim, but rather a region in the full Box_dim</li></ul></div><p><b>Examples</b></p><pre class="codeinput">atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,<span class="string">'index'</span>,<span class="string">'C'</span>,1.4)
+atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,<span class="string">'molid'</span>,<span class="string">'Hw'</span>,[1.6 1.0])
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Examples demonstrating how to protonate, heal, fuse or merge molecules
+% (For a full list of functions that can add atoms/ions/molecules, go to 
+% <List_build_functions.html List_build_functions> or look into 
+% <List_general_functions.html List_general_functions>
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Protonate a molecule with <protonate_atom.html protonate_atom>
+% * This function protonates the sites in the atom struct given by the 
+% index vector ind by adding H's to a new H atom struct. It does so by 
+% placing a H opposite to the mean position of all neighbours within 2.5
+% Ångström of the site to be protonated.
+%
+atom=import_atom('Pyrophyllite.pdb');
+atom(strcmp([atom.type],'H'))=[]; % We need to remove the original H's so 
+% we have some sites to protonate
+%%
+% *Examples*
+Hatom = protonate_atom(atom,Box_dim) % Will only protonate single bonded O atoms
+Hatom = protonate_atom(atom,Box_dim,ind) % Will protonate all atoms with indexes in ind
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.5 Ångström
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
+Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction
+
+%% Heal a molecule with <heal_atom.html heal_atom>
+% * This function heals sites in the atom struct given by the index
+% vector ind, by adding a certain atomtype to a new atom struct called
+% healed_atom. It does so by placing the new atom type opposite to the
+% mean position of all neighbours within rcut [Å] of the healed site.
+% * Note that you first need to find which sites that should be healed,
+% using for instance the bond_valence_atom function, and then decide with
+% what atomtypes the unsaturated sites should be healed with.
+%
+%%
+% *Examples*
+healed_atom = heal_atom(atom,Box_dim,[6 16 26 36]) % Will protonate all sites given by the ind array
+healed_atom = heal_atom(atom,Box_dim,[6:10:960],3) % Will protonate all sites given by the ind array. 3 is the rcut
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He') % Will add 'He' atoms to all sites given by the ind array. 3 is the rcut
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'N',1.87) % Will add 'N' atoms 1.87 Å away from all sites given by the ind array
+healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'N','Shannon') % Same as above but will use bond distance from the revised Shannon radii set
+
+%% Fuse two molecules with <fuse_atom.html fuse_atom>
+% * Sometimes added atoms/sites overlap. This function tries to fuse all 
+% sites within a certain rmax. 
+%
+% *Examples*
+atom = fuse_atom(atom,Box_dim)
+atom = fuse_atom(atom,Box_dim,0.85)
+
+%% Merge two molecules with <merge_atom.html merge_atom>
+% * This function returns the struct atom2 containing atoms
+% with a distance r (1x1 or 1x2 array) away from the atoms in the atom1 
+% struct. There is also a possibility to use a twin-range cutoff approach 
+% (suitable for OH2), by setting r(2) to a smaller value than r(1).
+% * You must decide if atom1w should be wrapped or not before running this
+% function
+% * Do not wrap atomw1 here, do it before calling this function since 
+% Box1 does not always equal the full Box_dim, but rather a region in the 
+% full Box_dim
+%
+%%
+% *Examples*
+atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)
+atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])
+
+##### SOURCE END #####
+--></body></html>

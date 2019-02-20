@@ -1,0 +1,516 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ionize_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-28"><meta name="DC.source" content="ionize_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>ionize_atom.m</h1><!--introduction--><div><ul><li>This function adds ions within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Similar</a></li><li><a href="#4">Version</a></li><li><a href="#5">Contact</a></li><li><a href="#6">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="3">Similar</h2><p>fuse_atom protonate_atom create_atom insert_atom</p><h2 id="4">Version</h2><p>2.0</p><h2 id="5">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="6">Examples</h2><div><ol><li>atom = ionize_atom('Na','Na',[10 20 30],10)</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = ionize_atom(type,resname,limits,nmax,varargin)
+
+<span class="keyword">if</span> iscell(type)==0;type={type}; <span class="keyword">end</span>
+<span class="keyword">if</span> iscell(resname)==0;resname={resname};<span class="keyword">end</span>
+
+radii = radius_ion(type);
+<span class="keyword">if</span> nargin &gt; 4
+    distance_factor=varargin{1};
+<span class="keyword">else</span>
+    distance_factor=2.15;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> distance_factor&lt;2
+   disp(<span class="string">'distance_factor should be &gt;=2 !!!'</span>)
+   pause(2)
+<span class="keyword">end</span>
+Box_dim_temp=distance_factor*[2*radii 2*radii 2*radii];
+atom = add2atom(type,[0 0 0],resname,[]);
+
+<span class="keyword">if</span> numel(limits)==1
+    Lx=limits(1);
+    Ly=limits(1);
+    Lz=limits(1);
+    limits(4)=limits(1);
+    limits(5)=limits(1);
+    limits(6)=limits(1);
+    limits(1:3)=0;
+<span class="keyword">elseif</span> numel(limits)==3
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
+<span class="keyword">elseif</span> numel(limits)==6
+    Lx=limits(4)-limits(1);
+    Ly=limits(5)-limits(2);
+    Lz=limits(6)-limits(3);
+<span class="keyword">end</span>
+
+nx=ceil(Lx/Box_dim_temp(1));
+ny=ceil(Ly/Box_dim_temp(2));
+nz=ceil(Lz/Box_dim_temp(3));
+
+<span class="keyword">if</span> nx==0;nx=1;<span class="keyword">end</span>
+<span class="keyword">if</span> ny==0;ny=1;<span class="keyword">end</span>
+<span class="keyword">if</span> nz==0;nz=1;<span class="keyword">end</span>
+
+atom=replicate_atom(atom,Box_dim_temp,[nx ny nz]); <span class="comment">% nx/ny/nz==0 is set to 1 in replicate_atom</span>
+
+molid=num2cell(1:size(atom,2));
+[atom.molid]=deal(molid{:});
+
+<span class="comment">% Move the particles around a little bit</span>
+<span class="keyword">for</span> i=1:size(atom,2)
+    <span class="keyword">if</span> nx&gt;0;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> ny&gt;0;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> nz&gt;0;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> (limits(1)+limits(2)+limits(3)) ~= 0
+    disp(<span class="string">'Translating the water box'</span>);
+    atom=translate_atom(atom,[limits(1) limits(2) limits(3)],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+
+disp(<span class="string">'nAtom before merge'</span>)
+size(atom,2)
+
+<span class="keyword">if</span> nargin&gt;5 &amp;&amp; size(varargin{2},2) &gt; 0
+    in_atom=varargin{2};
+    <span class="keyword">if</span> size(atom,2) &gt; 10000 || size(in_atom,2) &gt; 20000
+        natom_block=size(atom,2)/(nx*ny*nz);
+        atom_count=1;atom_merged=[];count=1;
+        <span class="keyword">while</span> atom_count&lt; size(atom,2)
+            atom_block= atom(atom_count:atom_count+natom_block-1);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,<span class="string">'type'</span>,type,1.2*distance_factor*radii);
+            atom_merged = [atom_merged atom_block];
+            atom_count=atom_count+natom_block;
+            disp(<span class="string">'box number...'</span>)
+            count=count+1
+        <span class="keyword">end</span>
+        atom=atom_merged;
+    <span class="keyword">else</span>
+        atom = merge_atom(in_atom,limits(4:6),atom,<span class="string">'type'</span>,type,1.2*distance_factor*radii);
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    atom = slice_atom(atom,limits,0);
+<span class="keyword">end</span>
+
+<span class="comment">% assignin('base','atom3',atom);</span>
+atom=update_atom(atom);
+
+<span class="comment">% Set nmax</span>
+<span class="keyword">if</span> iscellstr({nmax}) == 1
+    nmax=size(atom,2);
+<span class="keyword">end</span>
+
+<span class="comment">% Randomize order of the particles</span>
+nAtoms=size(atom,2);
+ind_rand=randperm(nAtoms);
+ind_sel=ismember(ind_rand,1:nAtoms);
+atom_ind=ind_rand(ind_sel);
+atom(atom_ind)=atom;
+
+<span class="comment">% Check that no added particles are too close</span>
+distmatrix=dist_matrix_atom(atom,Box_dim);
+i=1;distmatrix(distmatrix==0)=1000000; <span class="comment">% Dummy distance in the distance matrix</span>
+<span class="keyword">while</span> i&lt;size(atom,2)+1
+    [minvalue,ind]=min(distmatrix(i,:));
+    <span class="keyword">if</span> minvalue&lt;distance_factor*radii
+        atom(ind)=[];
+        distmatrix(ind,:)=[];
+        distmatrix(:,ind)=[];
+    <span class="keyword">else</span>
+        i=i+1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;6
+    <span class="keyword">if</span> nargin&gt;7
+        <span class="keyword">if</span> strncmpi(varargin{4},<span class="string">'x'</span>,1)
+            D=limits(4)-limits(1);
+        <span class="keyword">elseif</span> strncmpi(varargin{4},<span class="string">'y'</span>,1)
+            D=limits(5)-limits(2);
+        <span class="keyword">elseif</span> strncmpi(varargin{4},<span class="string">'z'</span>,1)
+            D=limits(6)-limits(3);
+        <span class="keyword">else</span>
+            D=varargin{4}; <span class="comment">% Set to a number in &Aring;ngstr&ouml;m</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        D=limits(6)-limits(3); <span class="comment">% i.e. along Z</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% We do this to limit the number of atoms in in_atom--&gt;surface_atom before calculating the distance_matrix</span>
+    indxlo=find([in_atom.x]&lt;limits(1));
+    indxhi=find([in_atom.x]&gt;limits(4));
+    indylo=find([in_atom.y]&lt;limits(2));
+    indyhi=find([in_atom.y]&gt;limits(5));
+    indzlo=find([in_atom.z]&lt;limits(3));
+    indzhi=find([in_atom.z]&gt;limits(6));
+    ind = unique([indxlo indxhi indylo indyhi indzlo indzhi]);
+    surface_atom=in_atom;
+    surface_atom(ind)=[];
+
+    distmatrix=dist_matrix_atom(atom,surface_atom,limits);
+    i=1;distratio=zeros(1,size(atom,2));distmatrix(distmatrix==0)=1000000; <span class="comment">% Dummy distance in the distance matrix</span>
+    <span class="keyword">while</span> i&lt;size(atom,2)+1 <span class="comment">%&gt;nmax+1</span>
+        <span class="keyword">if</span> strncmpi(varargin{3},<span class="string">'surface'</span>,1)
+            dist=min(distmatrix(i,:));
+            distratio(i)=exp(2*dist/D)/rand(1);
+        <span class="keyword">else</span> <span class="comment">% if strncmpi(varargin{3},'bulk')</span>
+            dist=min(distmatrix(i,:));
+            distratio(i)=exp(-dist/(D*2))/rand(1);
+        <span class="keyword">end</span>
+        i=i+1;
+    <span class="keyword">end</span>
+    [sorted_distratio,distratio_order]=sort(distratio);
+    atom=atom(distratio_order(1:nmax));
+<span class="keyword">else</span>
+    <span class="comment">%     i=1;</span>
+    distmatrix=dist_matrix_atom(atom,Box_dim);
+    distmatrix(distmatrix==0)=1000000; <span class="comment">% Dummy distance in the distance matrix</span>
+    <span class="keyword">while</span> size(atom,2)&gt;nmax+1
+        [row,col]=find(distmatrix==min(min(distmatrix)));
+        ind_rm=max([row col]);
+        <span class="comment">%         if ind_rm&gt;i</span>
+        <span class="comment">%             i=i+1;</span>
+        <span class="comment">%         end</span>
+        atom(row)=[];
+        distmatrix(row,:)=[];
+        distmatrix(:,col)=[];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Do we need this? Delete particles if not using the &lt;maxion&gt; option</span>
+<span class="keyword">if</span> iscellstr({nmax}) == 0
+    <span class="keyword">if</span> nmax &gt; size(atom,2)
+        disp(<span class="string">'Ooops, you asked for too many particles...'</span>)
+        disp(<span class="string">'Max number of particles allowed without changing scale is:'</span>)
+        size(atom,2)
+        atom=atom(1:nmax);
+    <span class="keyword">else</span>
+        <span class="keyword">try</span>
+        atom=atom(1:nmax);
+        <span class="keyword">catch</span>
+           disp(<span class="string">'ionize_atom didd not manage to add enough particles!!'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+disp(<span class="string">'nIon after merge'</span>)
+size(atom,2)
+
+atom=update_atom(atom);
+
+assignin(<span class="string">'caller'</span>,<span class="string">'limits'</span>,limits);
+assignin(<span class="string">'caller'</span>,<span class="string">'distratio'</span>,sorted_distratio);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% ionize_atom.m
+% * This function adds ions within a certain region defined by <limits>
+% * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
+% * Compared to create_atom, this function can also add particles near a
+% 'surface' or in the 'bulk', when an in_atom struct (representing a solid
+% phase) is passed argument.
+% * If slow, check out insert_atom or solvate_atom or grid_atom...
+%
+%% Function arguments
+% * {type} is particle/atomtype
+% * {resname} is resname
+% * [limits] is a 1x3 or 1x6 volume variable
+% * The number nmax is the max number of particles
+% * Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy
+%
+%% Dependencies
+% * radius_ion
+% * add2atom
+% * replicate_atom
+% * translate_atom
+% * merge_atom
+% * slice_atom
+% * update_atom
+% * distance_matrix_atom
+% 
+%% Similar
+% fuse_atom
+% protonate_atom
+% create_atom
+% insert_atom
+%
+%% Version
+% 2.0
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = ionize_atom('Na','Na',[10 20 30],10)
+% # atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
+% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement
+% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
+% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range
+%
+function atom = ionize_atom(type,resname,limits,nmax,varargin)
+
+if iscell(type)==0;type={type}; end
+if iscell(resname)==0;resname={resname};end
+
+radii = radius_ion(type);
+if nargin > 4
+    distance_factor=varargin{1};
+else
+    distance_factor=2.15;
+end
+
+if distance_factor<2
+   disp('distance_factor should be >=2 !!!')
+   pause(2)
+end
+Box_dim_temp=distance_factor*[2*radii 2*radii 2*radii];
+atom = add2atom(type,[0 0 0],resname,[]);
+
+if numel(limits)==1
+    Lx=limits(1);
+    Ly=limits(1);
+    Lz=limits(1);
+    limits(4)=limits(1);
+    limits(5)=limits(1);
+    limits(6)=limits(1);
+    limits(1:3)=0;
+elseif numel(limits)==3
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
+elseif numel(limits)==6
+    Lx=limits(4)-limits(1);
+    Ly=limits(5)-limits(2);
+    Lz=limits(6)-limits(3);
+end
+
+nx=ceil(Lx/Box_dim_temp(1));
+ny=ceil(Ly/Box_dim_temp(2));
+nz=ceil(Lz/Box_dim_temp(3));
+
+if nx==0;nx=1;end
+if ny==0;ny=1;end
+if nz==0;nz=1;end
+
+atom=replicate_atom(atom,Box_dim_temp,[nx ny nz]); % nx/ny/nz==0 is set to 1 in replicate_atom
+
+molid=num2cell(1:size(atom,2));
+[atom.molid]=deal(molid{:});
+
+% Move the particles around a little bit
+for i=1:size(atom,2)
+    if nx>0;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;end
+    if ny>0;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;end
+    if nz>0;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;end
+end
+
+if (limits(1)+limits(2)+limits(3)) ~= 0
+    disp('Translating the water box');
+    atom=translate_atom(atom,[limits(1) limits(2) limits(3)],'all');
+end
+
+disp('nAtom before merge')
+size(atom,2)
+
+if nargin>5 && size(varargin{2},2) > 0
+    in_atom=varargin{2};
+    if size(atom,2) > 10000 || size(in_atom,2) > 20000
+        natom_block=size(atom,2)/(nx*ny*nz);
+        atom_count=1;atom_merged=[];count=1;
+        while atom_count< size(atom,2)
+            atom_block= atom(atom_count:atom_count+natom_block-1);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,1.2*distance_factor*radii);
+            atom_merged = [atom_merged atom_block];
+            atom_count=atom_count+natom_block;
+            disp('box number...')
+            count=count+1
+        end
+        atom=atom_merged;
+    else
+        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,1.2*distance_factor*radii);
+    end
+else
+    atom = slice_atom(atom,limits,0);
+end
+
+% assignin('base','atom3',atom);
+atom=update_atom(atom);
+
+% Set nmax
+if iscellstr({nmax}) == 1
+    nmax=size(atom,2);
+end
+
+% Randomize order of the particles
+nAtoms=size(atom,2);
+ind_rand=randperm(nAtoms);
+ind_sel=ismember(ind_rand,1:nAtoms);
+atom_ind=ind_rand(ind_sel);
+atom(atom_ind)=atom;
+
+% Check that no added particles are too close
+distmatrix=dist_matrix_atom(atom,Box_dim);
+i=1;distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+while i<size(atom,2)+1
+    [minvalue,ind]=min(distmatrix(i,:));
+    if minvalue<distance_factor*radii
+        atom(ind)=[];
+        distmatrix(ind,:)=[];
+        distmatrix(:,ind)=[];
+    else
+        i=i+1;
+    end
+end
+
+if nargin>6
+    if nargin>7
+        if strncmpi(varargin{4},'x',1)
+            D=limits(4)-limits(1);
+        elseif strncmpi(varargin{4},'y',1)
+            D=limits(5)-limits(2);
+        elseif strncmpi(varargin{4},'z',1)
+            D=limits(6)-limits(3);
+        else
+            D=varargin{4}; % Set to a number in Ångström
+        end
+    else
+        D=limits(6)-limits(3); % i.e. along Z
+    end
+    
+    % We do this to limit the number of atoms in in_atomREPLACE_WITH_DASH_DASH>surface_atom before calculating the distance_matrix
+    indxlo=find([in_atom.x]<limits(1));
+    indxhi=find([in_atom.x]>limits(4));
+    indylo=find([in_atom.y]<limits(2));
+    indyhi=find([in_atom.y]>limits(5));
+    indzlo=find([in_atom.z]<limits(3));
+    indzhi=find([in_atom.z]>limits(6));
+    ind = unique([indxlo indxhi indylo indyhi indzlo indzhi]);
+    surface_atom=in_atom;
+    surface_atom(ind)=[];
+    
+    distmatrix=dist_matrix_atom(atom,surface_atom,limits);
+    i=1;distratio=zeros(1,size(atom,2));distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+    while i<size(atom,2)+1 %>nmax+1
+        if strncmpi(varargin{3},'surface',1)
+            dist=min(distmatrix(i,:));
+            distratio(i)=exp(2*dist/D)/rand(1);
+        else % if strncmpi(varargin{3},'bulk')
+            dist=min(distmatrix(i,:));
+            distratio(i)=exp(-dist/(D*2))/rand(1);
+        end
+        i=i+1;
+    end
+    [sorted_distratio,distratio_order]=sort(distratio);
+    atom=atom(distratio_order(1:nmax));
+else
+    %     i=1;
+    distmatrix=dist_matrix_atom(atom,Box_dim);
+    distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+    while size(atom,2)>nmax+1
+        [row,col]=find(distmatrix==min(min(distmatrix)));
+        ind_rm=max([row col]);
+        %         if ind_rm>i
+        %             i=i+1;
+        %         end
+        atom(row)=[];
+        distmatrix(row,:)=[];
+        distmatrix(:,col)=[];
+    end
+end
+
+% Do we need this? Delete particles if not using the <maxion> option
+if iscellstr({nmax}) == 0
+    if nmax > size(atom,2)
+        disp('Ooops, you asked for too many particles...')
+        disp('Max number of particles allowed without changing scale is:')
+        size(atom,2)
+        atom=atom(1:nmax);
+    else
+        try
+        atom=atom(1:nmax);
+        catch
+           disp('ionize_atom didd not manage to add enough particles!!');
+        end
+    end
+end
+
+disp('nIon after merge')
+size(atom,2)
+
+atom=update_atom(atom);
+
+assignin('caller','limits',limits);
+assignin('caller','distratio',sorted_distratio);
+
+
+
+
+##### SOURCE END #####
+--></body></html>

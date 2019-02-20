@@ -43,8 +43,17 @@ if nargin>5
     if strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
-            pause
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+%         pause
+        nrexcl=1; % See the gromacs manual
+        explicit_bonds = 0;
+        explicit_angles = 1;
+    elseif strncmpi(ffname,'clayff_2004',5)
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
         end
         Total_charge=sum([atom.charge])
 %         pause

@@ -1,0 +1,191 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example on how to assign CLAYFF atomtypes to a mineral atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Assign_CLAYFF_atomtypes.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Example on how to assign CLAYFF atomtypes to a mineral atom struct</h1><!--introduction--><p>See also the <a href="Advanced_examples.html">advanced examples</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Set input and output filenames</a></li><li><a href="#3">Import a unit cell structure and replicate it into a mineral layer</a></li><li><a href="#4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a></a></li><li><a href="#5">Assign the CLAYFF (Cygan, 2004) atomtypes to the montmorillonite atom struct</a></li><li><a href="#6">Write a CLAYFF (Cygan, 2004) .pdb file</a></li><li><a href="#7">Assign modified CLAYFF atomtypes to the montmorillonite atom struct</a></li><li><a href="#9">Assign the modified CLAYFF atomtypes to the montmorillonite atom struct</a></li><li><a href="#10">Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct</a></li><li><a href="#11">Write the new modified CLAYFF .pdb file</a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre><h2 id="2">Set input and output filenames</h2><pre class="codeinput">filename_in=<span class="string">'Pyrophyllite.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+filename_out=<span class="string">'6x4x1_MMT_clayff_2004.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+</pre><h2 id="3">Import a unit cell structure and replicate it into a mineral layer</h2><p>Normally, when constructing a mineral particle and assigning the CLAYFF atomtypes, one usually start of by building the mineral particle from an X-ray determined unit cell structure. In this example we will demonstrate how to generate a montmorillonite layer particle from a pyrophyllite unit cell. Both minerals are so-called 2:1 T-O-T sheet silicate minerals, with the difference between the two isostructural minerals being (as you may know) the fact that montmorillonite carries charge defects due to isomorphic substitution. For montmorillonite this means substitution of Si4+ with Al3+ in the two tetrahedral sheets, or octahedral Al3+ with Mg2+ or Fe2+ in the octahedral sheet of the montmorillonite layer.</p><pre class="codeinput">atom = import_atom(filename_in); <span class="comment">% Imports a pyrophyllite unit cell</span>
+atom = replicate_atom(atom,Box_dim,[6 4 1]); <span class="comment">% Replicate the structure by 6x4x1 into a Pyrophyllite clay layer</span>
+</pre><h2 id="4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a></h2><p><a href="substitute_atom.html">substitute_atom</a> was written with centrosymmetric minerals in mind, therfore it works bes</p><pre class="codeinput">t <span class="string">if</span> <span class="string">the</span> <span class="string">layer</span> <span class="string">is</span> <span class="string">centered</span> <span class="string">at</span> <span class="string">z=0</span>
+<span class="comment">% in the xy-plane. It can handle both substitutions in the octahedral as</span>
+<span class="comment">% well as in the tetrahedral sheets. It distributes the substituted sites</span>
+<span class="comment">% randomly, except for the fact that one can choose a nearest distance</span>
+<span class="comment">% between the substituted sites, which in this example is 5.5 &Aring;ngstr&ouml;m. We</span>
+<span class="comment">% do this to avoid oxygen atoms facing two substituted sites at the same</span>
+<span class="comment">% time (Google L&ouml;wenstein's rule).</span>
+
+atom = substitute_atom(atom,Box_dim,6*4*2/3,<span class="string">'Al'</span>,<span class="string">'Mgo'</span>,5.5) <span class="comment">% Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites</span>
+<span class="comment">% atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions</span>
+</pre><h2 id="5">Assign the CLAYFF (Cygan, 2004) atomtypes to the montmorillonite atom struct</h2><pre class="codeinput">atom = clayff_2004_atom(atom,Box_dim,<span class="string">'clayff'</span>) <span class="comment">% Assign the clayff atom types to the atomstruct</span>
+</pre><h2 id="6">Write a CLAYFF (Cygan, 2004) .pdb file</h2><pre class="codeinput">write_atom_pdb(atom,Box_dim,filename_out); <span class="comment">% Print the clay sheet to a .pdb file</span>
+</pre><h2 id="7">Assign modified CLAYFF atomtypes to the montmorillonite atom struct</h2><p>The original CLAYFF does not contain all different atomtypes needed to model all sorts of clays/minerals, like for instance clay layers with edges. Hence modifications to CLAYFF exist... In this example we are going to use another function, simply called <a href="clayff_atom.html">clayff_atom</a> thats different from the original <a href="clayff_2004_atom.html">clayff_2004_atom</a> function in two ways. Primarily it uses different atom names (see conversion list below). Secondly, it contains new oxygen atomtypes that do not exist in the original CLAYFF publication from Cygan et al in 2004, which can be used to model lets say clay edges. The partial charges of any new oxygen atomtypes can be derived using the following equation below, and is derived and related to the bond valence of the oxygen atoms, see related references: <a href="https://doi.org/10.1346/CCMN.2016.0640403">Tournassat et al, 2016</a> and <a href="https://doi.org/10.1016/j.jcis.2016.11.084">Lammers et al, 2017</a>.</p><p><img src="Assign_CLAYFF_atomtypes_eq03974564573521255382.png" alt="$$Z_{O} = 2 - \sum_i \frac{( Z^F_i - Z^p_I )}{CN_i}$$" style="width:116px;height:31px;"></p><p><img src="Assign_CLAYFF_atomtypes_eq07961983954421820283.png" alt="$Z_{O}$" style="width:13px;height:10px;"> is the partial charge of the oxygen atom, and the summation is taken over all neighbouring cations, where <img src="Assign_CLAYFF_atomtypes_eq13628687382609986408.png" alt="$Z^F_i$" style="width:14px;height:13px;"> is the formal charge, <img src="Assign_CLAYFF_atomtypes_eq13668889881752597562.png" alt="$Z^p_I$" style="width:12px;height:12px;"> is the partial charge and <img src="Assign_CLAYFF_atomtypes_eq10860183220954257465.png" alt="$CN_I$" style="width:21px;height:10px;"> is the coordination number of the cation. Although not explicitly stated/used in the original CLAYFF publication by Cygan et al 2004, this formula can also be used to calculate the partial charge of the oxygen atomtypes in the original CLAYFF. Hence one can assume that the partial charge of any new oxygen atomtype calculated in this way is (more or less...) consisted with all the other atoms/charges in CLAYFF.</p><p>Below is the list of atomtype names from the Cygan, 2004 paper and the ones modified here, having atomtype names that simply make more sense to me. Note that I have also added a few to the Cygan, (Cygan et al 2004) atomtypes, like oahe/oahhe/oshe etc.</p><pre class="codeinput"><span class="comment">% CLAYFF from Cygan, 2004    = {'h*','ho','o*','oh','ob','obos','obts','obss', 'ohs', 'oas', 'oahhe','oahe', 'oshe','st','ao','at','mgo', 'mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';</span>
+<span class="comment">% modified CLAYFF (MHolmboe) = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';</span>
+</pre><h2 id="9">Assign the modified CLAYFF atomtypes to the montmorillonite atom struct</h2><pre class="codeinput">atom = clayff_atom(atom,Box_dim) <span class="comment">% Assign the clayff atom types to the atomstruct</span>
+</pre><h2 id="10">Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct</h2><p>In cases were atoms need healing, or in order to protonate edge groups, one can use a slighlt longer command like below. For more info look into the <a href="clayff_atom.html">clayff_atom</a> function and line 38-46.</p><pre class="codeinput">atom = clayff_atom(atom,Box_dim,<span class="string">'clayff'</span>,<span class="string">'spc'</span>,<span class="string">'edge'</span>) <span class="comment">% Assign the clayff atom types to the atomstruct</span>
+</pre><h2 id="11">Write the new modified CLAYFF .pdb file</h2><pre class="codeinput">write_atom_pdb(atom,Box_dim,strcat(<span class="string">'mod_'</span>,filename_out)); <span class="comment">% Print the clay layer to a .pdb file</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example on how to assign CLAYFF atomtypes to a mineral atom struct
+% See also the <Advanced_examples.html advanced examples>
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Set input and output filenames
+filename_in='Pyrophyllite.pdb'; % default is 'Pyrophyllite.pdb'
+filename_out='6x4x1_MMT_clayff_2004.pdb'; % default is 'Pyrophyllite.pdb'
+
+%% Import a unit cell structure and replicate it into a mineral layer
+% Normally, when constructing a mineral particle and assigning the 
+% CLAYFF atomtypes, one usually start of by building the mineral particle
+% from an X-ray determined unit cell structure. In this example we will
+% demonstrate how to generate a montmorillonite layer particle from a
+% pyrophyllite unit cell. Both minerals are so-called 2:1 T-O-T sheet 
+% silicate minerals, with the difference between the two isostructural 
+% minerals being (as you may know) the fact that montmorillonite carries 
+% charge defects due to isomorphic substitution. For montmorillonite this 
+% means substitution of Si4+ with Al3+ in the two tetrahedral sheets, or 
+% octahedral Al3+ with Mg2+ or Fe2+ in the octahedral sheet of the 
+% montmorillonite layer.
+
+atom = import_atom(filename_in); % Imports a pyrophyllite unit cell
+atom = replicate_atom(atom,Box_dim,[6 4 1]); % Replicate the structure by 6x4x1 into a Pyrophyllite clay layer
+
+%% Perform isomorphic substitution using <substitute_atom.html substitute_atom>
+% <substitute_atom.html substitute_atom> was written with centrosymmetric
+% minerals in mind, therfore it works bes
+t if the layer is centered at z=0 
+% in the xy-plane. It can handle both substitutions in the octahedral as
+% well as in the tetrahedral sheets. It distributes the substituted sites
+% randomly, except for the fact that one can choose a nearest distance
+% between the substituted sites, which in this example is 5.5 Ångström. We
+% do this to avoid oxygen atoms facing two substituted sites at the same
+% time (Google Löwenstein's rule).
+
+atom = substitute_atom(atom,Box_dim,6*4*2/3,'Al','Mgo',5.5) % Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites
+% atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions
+
+%% Assign the CLAYFF (Cygan, 2004) atomtypes to the montmorillonite atom struct
+atom = clayff_2004_atom(atom,Box_dim,'clayff') % Assign the clayff atom types to the atomstruct
+
+%% Write a CLAYFF (Cygan, 2004) .pdb file
+write_atom_pdb(atom,Box_dim,filename_out); % Print the clay sheet to a .pdb file
+
+%% Assign modified CLAYFF atomtypes to the montmorillonite atom struct
+% The original CLAYFF does not contain all different atomtypes needed to
+% model all sorts of clays/minerals, like for instance clay layers with 
+% edges. Hence modifications to CLAYFF exist...
+% In this example we are going to use another function, simply called
+% <clayff_atom.html clayff_atom> thats different from the original 
+% <clayff_2004_atom.html clayff_2004_atom> function in two ways. Primarily 
+% it uses different atom names (see conversion list below). Secondly, it
+% contains new oxygen atomtypes that do not exist in the original CLAYFF
+% publication from Cygan et al in 2004, which can be used to model lets say
+% clay edges. The partial charges of any new oxygen atomtypes can be
+% derived using the following equation below, and is derived and related to
+% the bond valence of the oxygen atoms, see related references:
+% <https://doi.org/10.1346/CCMN.2016.0640403 Tournassat et al, 2016> 
+% and <https://doi.org/10.1016/j.jcis.2016.11.084 Lammers et al, 2017>.
+
+%%
+% 
+% $$Z_{O} = 2 - \sum_i \frac{( Z^F_i - Z^p_I )}{CN_i}$$
+% 
+% $Z_{O}$ is the partial charge of the oxygen atom, and the summation is
+% taken over all neighbouring cations, where $Z^F_i$ is the formal charge, 
+% $Z^p_I$ is the partial charge and $CN_I$ is the coordination number of 
+% the cation. Although not explicitly stated/used in the original CLAYFF 
+% publication by Cygan et al 2004, this formula can also be used to calculate 
+% the partial charge of the oxygen atomtypes in the original CLAYFF. Hence 
+% one can assume that the partial charge of any new oxygen atomtype 
+% calculated in this way is (more or less...) consisted with all the other 
+% atoms/charges in CLAYFF. 
+% 
+% Below is the list of atomtype names from the
+% Cygan, 2004 paper and the ones modified here, having atomtype names that 
+% simply make more sense to me. Note that I have also added a few to the 
+% Cygan, (Cygan et al 2004) atomtypes, like oahe/oahhe/oshe etc.
+
+% CLAYFF from Cygan, 2004    = {'h*','ho','o*','oh','ob','obos','obts','obss', 'ohs', 'oas', 'oahhe','oahe', 'oshe','st','ao','at','mgo', 'mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+% modified CLAYFF (MHolmboe) = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+
+%% Assign the modified CLAYFF atomtypes to the montmorillonite atom struct
+atom = clayff_atom(atom,Box_dim) % Assign the clayff atom types to the atomstruct
+
+%% Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct
+% In cases were atoms need healing, or in order to protonate edge groups,
+% one can use a slighlt longer command like below. For more info look into
+% the <clayff_atom.html clayff_atom> function and line 38-46.
+atom = clayff_atom(atom,Box_dim,'clayff','spc','edge') % Assign the clayff atom types to the atomstruct
+
+%% Write the new modified CLAYFF .pdb file
+write_atom_pdb(atom,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
+
+
+##### SOURCE END #####
+--></body></html>

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="interface_param.m"><style type="text/css">
+      --><title>interface_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="interface_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -90,11 +90,11 @@ water_model
 <span class="comment">% Hw</span>
 forcefield.interface(1).type =    {<span class="string">'HW'</span>}; <span class="comment">% h* water hydrogen</span>
 forcefield.interface(1).mass =    1.00794;
-<span class="keyword">if</span> strcmpi(<span class="string">'SPC/E'</span>, water_model) &gt; 0 || strcmpi(<span class="string">'SPCE'</span>, water_model) &gt; 0;
+<span class="keyword">if</span> strcmpi(<span class="string">'SPC/E'</span>, water_model) &gt; 0 || strcmpi(<span class="string">'SPCE'</span>, water_model) &gt; 0
     forcefield.interface(1).charge =  0.42380;
-<span class="keyword">elseif</span> strcmp(<span class="string">'SPC'</span>, water_model) &gt; 0;
+<span class="keyword">elseif</span> strcmp(<span class="string">'SPC'</span>, water_model) &gt; 0
     forcefield.interface(1).charge =  0.41000;
-<span class="keyword">elseif</span> strncmpi(<span class="string">'TIP3P'</span>, water_model,5) &gt; 0;
+<span class="keyword">elseif</span> strncmpi(<span class="string">'TIP3P'</span>, water_model,5) &gt; 0
     forcefield.interface(1).charge =  0.41700;
 <span class="keyword">end</span>
 forcefield.interface(1).radius =  0.00000; <span class="comment">% R0 &Aring;</span>
@@ -110,11 +110,11 @@ forcefield.interface(2).e_kJmol = 0.06276;
 <span class="comment">% Ow</span>
 forcefield.interface(3).type =    {<span class="string">'OW'</span>}; <span class="comment">% o* water oxygen</span>
 forcefield.interface(3).mass =    15.99410;
-<span class="keyword">if</span> strcmpi(<span class="string">'SPC/E'</span>, water_model) &gt; 0 || strcmpi(<span class="string">'SPCE'</span>, water_model) &gt; 0;
+<span class="keyword">if</span> strcmpi(<span class="string">'SPC/E'</span>, water_model) &gt; 0 || strcmpi(<span class="string">'SPCE'</span>, water_model) &gt; 0
     forcefield.interface(3).charge =  -0.84760;
-<span class="keyword">elseif</span> strcmp(<span class="string">'SPC'</span>, water_model) &gt; 0;
+<span class="keyword">elseif</span> strcmp(<span class="string">'SPC'</span>, water_model) &gt; 0
     forcefield.interface(3).charge = -0.82000;
-<span class="keyword">elseif</span> strncmpi(<span class="string">'TIP3P'</span>, water_model,5) &gt; 0;
+<span class="keyword">elseif</span> strncmpi(<span class="string">'TIP3P'</span>, water_model,5) &gt; 0
     forcefield.interface(3).charge =  -0.83400;
 <span class="keyword">end</span>
 forcefield.interface(3).radius =  3.553200;
@@ -519,11 +519,11 @@ water_model
 % Hw
 forcefield.interface(1).type =    {'HW'}; % h* water hydrogen
 forcefield.interface(1).mass =    1.00794;
-if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0;
+if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0
     forcefield.interface(1).charge =  0.42380;
-elseif strcmp('SPC', water_model) > 0;
+elseif strcmp('SPC', water_model) > 0
     forcefield.interface(1).charge =  0.41000;
-elseif strncmpi('TIP3P', water_model,5) > 0;
+elseif strncmpi('TIP3P', water_model,5) > 0
     forcefield.interface(1).charge =  0.41700;
 end
 forcefield.interface(1).radius =  0.00000; % R0 Å
@@ -539,11 +539,11 @@ forcefield.interface(2).e_kJmol = 0.06276;
 % Ow
 forcefield.interface(3).type =    {'OW'}; % o* water oxygen
 forcefield.interface(3).mass =    15.99410;
-if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0;
+if strcmpi('SPC/E', water_model) > 0 || strcmpi('SPCE', water_model) > 0
     forcefield.interface(3).charge =  -0.84760;
-elseif strcmp('SPC', water_model) > 0;
+elseif strcmp('SPC', water_model) > 0
     forcefield.interface(3).charge = -0.82000;
-elseif strncmpi('TIP3P', water_model,5) > 0;
+elseif strncmpi('TIP3P', water_model,5) > 0
     forcefield.interface(3).charge =  -0.83400;
 end
 forcefield.interface(3).radius =  3.553200;

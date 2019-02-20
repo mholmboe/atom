@@ -25,8 +25,10 @@ plot_atom(atom,Box_dim,scalefactor);
 if nargin>3
     scalehist=varargin{2};
 else
-    scalehist=10;
+    scalehist=1;
 end
+
+scalehist=1/(0.01*scalehist);
 
 if nargin>4
     ind=varargin{3};
@@ -48,7 +50,7 @@ else
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'g','LineWidth',2);
     plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,'b','LineWidth',2);
 end
-axis([-5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(x/scalehist+Box_dim(1,3)+1)/10)*10]);
+axis([-5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(x/scalehist+Box_dim(1,3)+1)/10)*10],'equal');
 
 fig = gcf;fig.Color = [0.85 0.85 0.85];
 set(gca,'Color',[0.85 0.85 0.85]);

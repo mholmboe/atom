@@ -11,8 +11,8 @@
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = substitute_atom(atom,Box_dim,5,'Ca','Mgo',5.5)
-% # atom = substitute_atom(atom,Box_dim,5,'Ca','Mgo',5.5,2,'Si','Al',5.5)
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)
 %
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

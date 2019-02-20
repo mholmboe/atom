@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_valence_data.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="bond_valence_data.m"><style type="text/css">
+      --><title>bond_valence_data.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="bond_valence_data.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -92,13 +92,29 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     valence_ion2=-100; <span class="comment">% Dummy value</span>
 <span class="keyword">end</span>
 
-ind1=find(ismember(Ion_1,ion1));
-ind2=find(ismember(Ion_2,ion2));
+<span class="keyword">if</span> strncmpi(ion1,<span class="string">'Hw'</span>,2)
+    ion1=<span class="string">'H'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> strncmpi(ion1,<span class="string">'Ow'</span>,2)
+    ion1=<span class="string">'O'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> strncmpi(ion2,<span class="string">'Hw'</span>,2)
+    ion2=<span class="string">'H'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> strncmpi(ion2,<span class="string">'Ow'</span>,2)
+    ion2=<span class="string">'O'</span>;
+<span class="keyword">end</span>
+
+ind1=find(strcmpi(Ion_1,ion1));
+ind2=find(strcmpi(Ion_2,ion2));
 
 <span class="keyword">if</span> valence_ion1&gt;-100
     valence1_ind=find(Valence_1==valence_ion1);
     ind1=intersect(ind1,valence1_ind);
-<span class="comment">%     ind2=intersect(ind1,valence1_ind);</span>
+    <span class="comment">%     ind2=intersect(ind1,valence1_ind);</span>
 <span class="keyword">end</span>
 
 <span class="comment">% if valence_ion2&gt;-100</span>
@@ -137,15 +153,15 @@ ind=ind1(ind);
     bvalue=0.37;
     bv_temp=0;
 <span class="keyword">else</span>
-    bvalue=b(1);
+    bvalue=b(ind(1));
     bv=exp((R0(ind(1))-R)/bvalue);
     <span class="keyword">for</span> i=1:numel(ind)
-        bvalue=b(i);
+        bvalue=b(ind(i));
         bv_temp(i)=exp((R0(ind(i))-R)/bvalue);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 mean_bv=mean(bv_temp);
-std_bv=std(bv);
+std_bv=std(bv_temp);
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_valence_data.m
@@ -193,13 +209,29 @@ else
     valence_ion2=-100; % Dummy value
 end
 
-ind1=find(ismember(Ion_1,ion1));
-ind2=find(ismember(Ion_2,ion2));
+if strncmpi(ion1,'Hw',2)
+    ion1='H';
+end
+
+if strncmpi(ion1,'Ow',2)
+    ion1='O';
+end
+
+if strncmpi(ion2,'Hw',2)
+    ion2='H';
+end
+
+if strncmpi(ion2,'Ow',2)
+    ion2='O';
+end
+
+ind1=find(strcmpi(Ion_1,ion1));
+ind2=find(strcmpi(Ion_2,ion2));
 
 if valence_ion1>-100
     valence1_ind=find(Valence_1==valence_ion1);
     ind1=intersect(ind1,valence1_ind);
-%     ind2=intersect(ind1,valence1_ind);
+    %     ind2=intersect(ind1,valence1_ind);
 end
 
 % if valence_ion2>-100
@@ -214,7 +246,7 @@ ind=ind1(ind);
 % ind
 % Ion_1(ind)
 % Valence_1(ind)
-% 
+%
 % Ion_2(ind)
 % Valence_2(ind)
 
@@ -238,15 +270,15 @@ elseif (R > 1.25) && (strncmpi(ion1,'H',1) || strncmpi(ion2,'H',1))
     bvalue=0.37;
     bv_temp=0;
 else
-    bvalue=b(1);
+    bvalue=b(ind(1));
     bv=exp((R0(ind(1))-R)/bvalue);
     for i=1:numel(ind)
-        bvalue=b(i);
+        bvalue=b(ind(i));
         bv_temp(i)=exp((R0(ind(i))-R)/bvalue);
     end
 end
 mean_bv=mean(bv_temp);
-std_bv=std(bv);
+std_bv=std(bv_temp);
 
 ##### SOURCE END #####
 --></body></html>

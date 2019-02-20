@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>insert_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="insert_atom.m"><style type="text/css">
+      --><title>insert_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="insert_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>insert_atom.m</h1><!--introduction--><div><ul><li>This function inserts a whole molecule from a structure file or atom_in into a region defined by <a href="limits">limits</a> with a atom (molecule) structure</li><li>rotate can be a string like 'random', {'random'}, or be used to set some angles like [60 90 60]. varargin can be used to assure that one atom type is at least some distance above (in z) some other atom type.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom create_atom.m</p><h2 id="2">Version</h2><p>2.0</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ul><li>atom = insert_atom(atom,limits,'rotate',r,maxsol)</li><li>atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)</li><li>atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1'},{'C2'},0.3)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
+  </style></head><body><div class="content"><h1>insert_atom.m</h1><!--introduction--><div><ul><li>This function inserts a whole molecule from a structure file or atom_in into a region defined by <a href="limits">limits</a> with a atom (molecule) structure</li><li>rotate can be a string like 'random', {'random'}, or be used to set some angles like [60 90 60]. varargin can be used to assure that one atom type is at least some distance above (in z) some other atom type.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom create_atom.m</p><h2 id="2">Version</h2><p>2.0</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ul><li>atom = insert_atom(atom,limits,'rotate',r,maxsol)</li><li>atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)</li><li>atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)</li><li>atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,[1 4],0.3)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
 
 <span class="keyword">if</span> numel(limits)==1
     Lx=limits(1);
@@ -129,13 +129,23 @@ n=0;
     <span class="keyword">if</span> nargin&gt;6
         difference=0;
         Atom_labels=varargin(2);
-        type1=Atom_labels{1}(1);
-        type2=Atom_labels{1}(2);
+        type1=Atom_labels{1}(1)
+        type2=Atom_labels{1}(2)
         <span class="keyword">if</span> nargin&gt;7
             difference=cell2mat(varargin(3));
         <span class="keyword">end</span>
-        <span class="keyword">if</span> median([temp_atom(strncmpi(type1,[temp_atom.type],1)).z]) &lt; (difference + median([temp_atom(strncmpi(type2,[temp_atom.type],1)).z]))
-            temp_atom=[];
+        <span class="keyword">if</span> find(strcmp(type1,[temp_atom.type]))&gt;0
+            <span class="keyword">if</span> median([temp_atom(strncmpi(type1,[temp_atom.type])).z],1) &lt; (difference + median([temp_atom(strncmp1(type2,[temp_atom.type],1)).z]))
+                temp_atom=[];
+            <span class="keyword">else</span>
+                disp(<span class="string">'Adding a molecule!!!'</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            <span class="keyword">if</span> [temp_atom(type1).z] &lt; (difference + [temp_atom(type2).z])
+                temp_atom=[];
+            <span class="keyword">else</span>
+                disp(<span class="string">'Adding a molecule!!!'</span>)
+            <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
     <span class="keyword">if</span> size(temp_atom,2)&gt;0
@@ -187,12 +197,12 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 % * rotate can be a string like 'random', {'random'}, or be used to set
 % some angles like [60 90 60]. varargin can be used to assure that one
 % atom type is at least some distance above (in z) some other atom type.
-% 
+%
 %% Similar
 % fuse_atom
 % protonate_atom
 % create_atom.m
-% 
+%
 %% Version
 % 2.0
 %
@@ -202,7 +212,8 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 %% Examples
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol)
 % * atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)
-% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1'},{'C2'},0.3)
+% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
+% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,[1 4],0.3)
 
 function atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
 
@@ -267,13 +278,23 @@ while (size(all_atom,2) < nmax*nAtoms_in) | n < 1000
     if nargin>6
         difference=0;
         Atom_labels=varargin(2);
-        type1=Atom_labels{1}(1);
-        type2=Atom_labels{1}(2);
+        type1=Atom_labels{1}(1)
+        type2=Atom_labels{1}(2)
         if nargin>7
             difference=cell2mat(varargin(3));
         end
-        if median([temp_atom(strncmpi(type1,[temp_atom.type],1)).z]) < (difference + median([temp_atom(strncmpi(type2,[temp_atom.type],1)).z]))
-            temp_atom=[];
+        if find(strcmp(type1,[temp_atom.type]))>0
+            if median([temp_atom(strncmpi(type1,[temp_atom.type])).z],1) < (difference + median([temp_atom(strncmp1(type2,[temp_atom.type],1)).z]))
+                temp_atom=[];
+            else
+                disp('Adding a molecule!!!')
+            end
+        else
+            if [temp_atom(type1).z] < (difference + [temp_atom(type2).z])
+                temp_atom=[];
+            else
+                disp('Adding a molecule!!!')
+            end
         end
     end
     if size(temp_atom,2)>0

@@ -20,16 +20,13 @@ else
     water_model=varargin{1};
 end
 
-%clear all;
-%format short;
-
 % Atom_label   = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Cs','Mg','Ca','Sr','Ba','Cl','Br'}';
 
 % call function with find(ismember({forcefield.clayff.type},'Hw')) to fin Hw's index
 
 %                      1     2    3    4   5     6       7      8       9     10      11      12     13    14   15   16    17    18    19    20    21    22    23   24  25   26   27   28   29   30   31   32  33  34   35 36
-% Outdated var Atom_label_CLAYFF   = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
-% From Cygan, 2004  = {'h*','ho','o*','oh','ob','obos','obts', 'obss', 'ohs','EdgeOSi/H',''EdgeOH2',       'st','ao','Alt','mgo','mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+% From Cygan, 2004  = {'h*','ho','o*','oh','ob','obos','obts','obss', 'ohs', 'oas', 'oahhe','oahe', 'oshe','st','ao','Alt','mgo','mgh','cao','cah','feo','lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+% MHolmboe_CLAYFF   = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
 
 % Hw
 forcefield.clayff(1).type =    {'Hw'}; % h* water hydrogen
@@ -101,7 +98,7 @@ forcefield.clayff(8).radius =  3.553200;
 forcefield.clayff(8).e_kcalmol = 0.155400;
 %
 % Ohmg
-forcefield.clayff(9).type =    {'ohs'}; % ohs bridging oxygen w. double substitution
+forcefield.clayff(9).type =    {'ohs'}; % ohs bridging oxygen w. substitution
 forcefield.clayff(9).mass =    15.99410;
 forcefield.clayff(9).charge =  -1.08090;
 forcefield.clayff(9).radius =  3.553200;
@@ -122,14 +119,14 @@ forcefield.clayff(11).radius =  3.553200;
 forcefield.clayff(11).e_kcalmol = 0.155400;
 %
 % Oalsi
-forcefield.clayff(12).type =    {'oas'}; % obss bridging oxygen w. double substitution
+forcefield.clayff(12).type =    {'oas'}; % 
 forcefield.clayff(12).mass =    15.99410;
 forcefield.clayff(12).charge =  -1.2375;
 forcefield.clayff(12).radius =  3.553200;
 forcefield.clayff(12).e_kcalmol = 0.155400;
 %
 % Osih
-forcefield.clayff(13).type =    {'oshe'}; % obss bridging oxygen w. double substitution
+forcefield.clayff(13).type =    {'oshe'}; % 
 forcefield.clayff(13).mass =    15.99410;
 forcefield.clayff(13).charge =  -0.95;
 forcefield.clayff(13).radius =  3.553200;
@@ -322,14 +319,14 @@ forcefield.clayff(40).radius =  3.775333752;
 forcefield.clayff(40).e_kcalmol = 0.276720296;
 
 % Co
-forcefield.clayff(41).type =    {'Co'}; % ho hydroxyl hydrogen
+forcefield.clayff(41).type =    {'Co'}; %
 forcefield.clayff(41).mass =    12.01073;
 forcefield.clayff(41).charge =  0.6512;
 forcefield.clayff(41).radius =  3.094627867;
 forcefield.clayff(41).e_kcalmol = 0.05580526;
 
 % Oc
-forcefield.clayff(42).type =    {'Oc'}; % ho hydroxyl hydrogen
+forcefield.clayff(42).type =    {'Oc'}; %
 forcefield.clayff(42).mass =    15.99941;
 forcefield.clayff(42).charge =  -0.3256	;
 forcefield.clayff(42).radius =  3.404427393;

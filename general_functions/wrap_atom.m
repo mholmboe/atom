@@ -1,5 +1,6 @@
 %% wrap_atom.m
-% * This function wraps the atoms into the box
+% * This function wraps the atoms into the box. It can also wrap only along
+% the x and y dimensions, ie neglecting wrapping along the z-direction
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version

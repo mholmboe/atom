@@ -1,6 +1,6 @@
 %% draw_box_atom.m
-% * This function draws the simulation box, have not used it in a while, 
-% does it work with triclinic sim box? 
+% * This function draws the simulation box, have not used it in a while,
+% does it work with triclinic sim box?
 %
 %% Version
 % 2.0
@@ -11,7 +11,19 @@
 %% Examples
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2)
 %
-function Simbox = draw_box_atom(Box_dim,LineColor,LineThickness)
+function Simbox = draw_box_atom(Box_dim,varargin)
+
+if nargin>1
+    LineColor=varargin{1};
+else
+    LineColor=[0 0 1];
+end
+
+if nargin>2
+    LineThickness=varargin{2};
+else
+    LineThickness=1;
+end
 
 Lx = Box_dim(1);
 Ly = Box_dim(2);
