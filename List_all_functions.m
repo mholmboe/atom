@@ -169,4 +169,5 @@
 % # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % This function writes a .xyz trajectory 
 % # <xrd_atom.html xrd_atom(varargin)> % This function calculates theoretical XRD patterns from a .pdb|.gro file or from an atom struct and Box_dim.
 % # <xrd_sc_atom.html xrd_atom(varargin)> % This function calculates theoretical XRD patterns from a .pdb|.gro file or from an atom struct and Box_dim, trying ti use the supercell approach by Ufer implemented in the BGMN XRD code.
-% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format
+% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> %
+% This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format.
