@@ -2,7 +2,7 @@
 % * This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -17,7 +17,7 @@ if size(limits,2)==3
     limits(4)=limits(1);
     limits(5)=limits(2);
     limits(6)=limits(3);
-    limits(1)=0;
+    limits(1)=0;solc
     limits(2)=0;
     limits(3)=0;
 end

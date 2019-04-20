@@ -12,7 +12,7 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -22,6 +22,9 @@
 % # properties = properties_atom(atom,Box_dim,2.5)
 
 function properties = properties_atom(atom,Box_dim,varargin)
+
+disp('Depreceated function... use analyze_atom(atom,Box_dim,varargin) instead')
+pause(5)
 
 % FIX multiple OxStates and other from the Shannon file
 
@@ -108,8 +111,10 @@ end
 diff_valence=(abs([properties.oxstate])-[properties.valence])';
 ind=find(abs(diff_valence)>0.2);
 if numel(ind)>0
-    disp('Possible problems with index due to multiple oxidation states?:')
+    disp('Possible problems with index due to multiple oxidation states,')
+    disp('or atoms that are undersaturated!')
     ind
+    assignin('caller','heal_ind',ind');
 end
 
 disp('Global instability index is:')

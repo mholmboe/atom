@@ -2,7 +2,7 @@
 % * This function removes  molid MolID = [1 2 3 .....]
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

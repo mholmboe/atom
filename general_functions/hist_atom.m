@@ -2,7 +2,7 @@
 % * This function is used to calculate density profiles along X|Y|Z
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -32,9 +32,9 @@ if nargin>3
     Coords(Coords(:,3)<0,3)=Coords(Coords(:,3)<0,3)+Box_dim(1,3);
 end
 
-Countsx=histcounts(Coords(:,1),numel(Binsx))';
-Countsy=histcounts(Coords(:,2),numel(Binsy))';
-Countsz=histcounts(Coords(:,3),numel(Binsz))';
+Countsx=histcounts(Coords(:,1),Binsx');
+Countsy=histcounts(Coords(:,2),Binsy');
+Countsz=histcounts(Coords(:,3),Binsz');
 Countsx=Countsx/(s*Box_dim(1,2)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
 Countsy=Countsy/(s*Box_dim(1,1)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
 Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); % mol/L
@@ -48,7 +48,9 @@ if nargin>4
 end
 
 if nargin>5
+    
     sigma = varargin{3};
+    if sigma>0
     window = 100;
     x = linspace(-window / 2, window / 2, window);
     gaussFilter = exp(-x .^ 2 / (2 * sigma ^ 2));
@@ -56,8 +58,12 @@ if nargin>5
     Countsx(:)=conv(Countsx(:)', gaussFilter, 'same');
     Countsy(:)=conv(Countsy(:)', gaussFilter, 'same');
     Countsz(:)=conv(Countsz(:)', gaussFilter, 'same');
+    end
 end
 
+Binsx=Binsx(1:end-1)';
+Binsy=Binsy(1:end-1)';
+Binsz=Binsz(1:end-1)';
 assignin('caller','DensityX',[Binsx,Countsx]);
 assignin('caller','DensityY',[Binsy,Countsy]);
 assignin('caller','DensityZ',[Binsz,Countsz]);

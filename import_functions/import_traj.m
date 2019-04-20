@@ -4,7 +4,7 @@
 % * stride and other thingies.
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,10 +13,19 @@
 % # atom = import_traj('conf.gro',traj.xtc)
 % # atom = import_traj('conf.gro',traj.trr)
 % # atom = import_traj('conf.gro',traj.dcd)
+% # atom = import_traj('traj.pdb')
 % # atom = import_traj('traj.xyz')
 % # atom = import_traj('traj.gro')
 %
-function atom = import_traj(filenameconf,filenametraj,varargin)
+function [atom,traj] = import_traj(filename,varargin)
+
+if nargin==1
+    filenameconf=filename;
+    filenametraj=filename;
+elseif nargin==2
+    filenameconf=filename;
+    filenametraj=varargin{1};
+end
 
 if regexp(filenametraj,'.xtc') > 1
     disp('This function imports a structure file and a xtc file')
@@ -24,10 +33,10 @@ if regexp(filenametraj,'.xtc') > 1
     disp('http://kaplajon.github.io/mxdrfile/')
     atom = import_xtc(filenameconf,filenametraj);
     
-    disp('Alternatively, use the Gro2Mat package with the function:')
-    disp('import_xtcv2(filenameconf,filenametraj)')
-    disp('Look into import_traj.m and in the Journal of Computational Chemistry,')
-    disp('Volume 35, Issue 20')
+    %     disp('Alternatively, use the Gro2Mat package with the function:')
+    %     disp('import_xtcv2(filenameconf,filenametraj)')
+    %     disp('Look into import_traj.m and in the Journal of Computational Chemistry,')
+    %     disp('Volume 35, Issue 20')
     %     disp('Found .xtc file, will use the excellent Gro2Mat scripts');
     %     disp('Note that in maxTol, startFrame, endFrame values can be set,')
     %     disp('look into Gro2Mat parseTrj function for help')

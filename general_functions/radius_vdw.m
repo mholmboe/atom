@@ -5,7 +5,7 @@
 % * rvdw 1,61 and 84-88 are made up....
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

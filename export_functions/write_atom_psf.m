@@ -2,12 +2,13 @@
 % * This function writes an .psf file from the atom struct
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # write_atom_psf(atom,Box_dim,filename_out) % Not recommended, Please specify which cutoff's and forcefield to use
 % # write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')
 %
 function write_atom_psf(atom,Box_dim,filename,varargin)
@@ -61,13 +62,25 @@ if nargin>5
         end
         atom = check_interface15_charge(atom,'CLAY_MINERALS');
         atom = mass_atom(atom);
+    elseif strcmpi(ffname,'interface_car')
+        % Experimental!!!
+        atom = mass_atom(atom);
+        nrexcl=2; % See the gromacs manual
+        explicit_bonds = 0;
+        explicit_angles = 0;
     end
 else
-    disp('Unknown forcefield, will not try clayff or interface')
+    disp('Forcefield not stated, will make some assumptions then...')
+    pause(2)
+    ffname='clayff_2004'
+    watermodel='SPC/E'
+    pause(2)
     atom = mass_atom(atom);
     element=element_atom(atom);
     [atom.element]=element.type;
-    pause(2)
+    if ~isfield(atom,'charge')
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    end
     %         clayff_param(sort(unique([atom.type])),watermodel);
     %         Total_charge = check_clayff_charge(atom)
 end
@@ -96,9 +109,9 @@ atomID = 1:size([atom.type],2);
 molID=zeros(1,size([atom.type],2));
 Atom_label_ID=zeros(size([atom.type],2),1);
 
-if exist('ffname','var')
-    atom = charge_atom(atom,Box_dim,ffname,watermodel);
-end
+% if exist('ffname','var')
+%     atom = charge_atom(atom,Box_dim,ffname,watermodel);
+% end
 
 for i = 1:length(Atom_label)
     Atom_label_ID(ismember([atom.type],Atom_label(i)))=i;

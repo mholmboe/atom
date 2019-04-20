@@ -2,7 +2,7 @@
 % * This function calculates the median position of the atom struct. Should you wrap the atom struct?
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

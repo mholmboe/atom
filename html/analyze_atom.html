@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
+      --><title>analyze_atom(atom)</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,63 +66,321 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function analyzes various things of the atom struct</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>This function might be outdated...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = analyze_atom(atom,Box_dim,1.25,2.25)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = analyze_atom(atom,Box_dim,rmaxshort,rmaxlong)
-nAtoms=size(atom,2);
+  </style></head><body><div class="content"><h1>analyze_atom(atom)</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
 
-atom=wrap_atom(atom,Box_dim);
+<span class="comment">% FIX multiple OxStates and other from the Shannon file</span>
 
-<span class="comment">%%%%%%%%%% To analyze composition</span>
-composition_atom(atom);
-Box_dim(1:end)
-composition
-bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,<span class="string">'more'</span>);
-Atom_labels=unique([atom.type]);
+load(<span class="string">'Revised_Shannon_radii.mat'</span>);
 
-assignin(<span class="string">'caller'</span>,<span class="string">'composition'</span>,composition);
-assignin(<span class="string">'caller'</span>,<span class="string">'Dist_matrix'</span>,Dist_matrix)
-assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
-assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
-assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
-assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</span>,nAngles);
+<span class="keyword">if</span> nargin &gt; 2
+    rmax=varargin{1};
+<span class="keyword">else</span>
+    rmax=2.25;
+<span class="keyword">end</span>
 
-<span class="comment">%delete('./#*'); delete('./temp*');</span>
+element=element_atom(atom); <span class="comment">% Optionally, set the names ow water O and water H</span>
+<span class="comment">%element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');</span>
+element=bond_atom(element,Box_dim,rmax);
+element=bond_valence_atom(element,Box_dim,1.25,rmax);
+element=mass_atom(element);
+assignin(<span class="string">'caller'</span>,<span class="string">'element'</span>,element);
+<span class="keyword">for</span> i=1:size(element,2)
+    Ion_ind=find(strcmp([element(i).type],Ion));
+    <span class="keyword">if</span> numel(Ion_ind)==0
+        Ion_ind=find(strncmpi([element(i).type],Ion,1));
+    <span class="keyword">end</span>
+    CN_ind=find(numel(element(i).neigh.index)==CN);
+    ind=intersect(Ion_ind,CN_ind);
+    <span class="keyword">if</span> numel(ind)==0
+        ind=Ion_ind(1);
+    <span class="keyword">end</span>
+    properties(i).index=element(i).index;
+    properties(i).type=Ion(ind);
+    properties(i).neigh=element(i).neigh;
+    properties(i).bond=element(i).bond;
+    <span class="comment">%     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()</span>
+    properties(i).bv=element(i).bv;
+    properties(i).valence=element(i).valence;
+    properties(i).ave_dist=mean(properties(i).bond.dist);
+    properties(i).std_dist=std(properties(i).bond.dist);
+    properties(i).rdiffvalence=element(i).Rdiff;
+    properties(i).atnum=element(i).atnum;
+    properties(i).mass=element(i).mass;
+    properties(i).oxstate=OxState(ind);
+    properties(i).ip=ZoverIR(ind);
+    properties(i).cn=CN(ind);
+    properties(i).crysradii=CrysRadii(ind);
+    properties(i).ionicradii=IonicRadii(ind);
+    properties(i).vdwradii=radius_vdw([element(i).type]);
+    properties(i).elecconf=strtrim(ElecConf(ind));
+    properties(i).spinstate=strtrim(SpinState(ind));
+    <span class="keyword">if</span> mod(i,100)==1
+        i-1
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:size(element,2)
+    <span class="keyword">if</span> numel(properties(i).type)&gt;1
+        Ion_ind=find(strcmp([element(i).type],Ion));
+        <span class="keyword">if</span> numel(Ion_ind)==0
+            Ion_ind=find(strncmpi([element(i).type],Ion,1));
+        <span class="keyword">end</span>
+        CN_ind=find(numel(element(i).neigh.index)==CN);
+        ind=intersect(Ion_ind,CN_ind);
+        <span class="keyword">if</span> numel(ind)==0
+            ind=Ion_ind(1);
+        <span class="keyword">end</span>
+
+        current_radii=[properties(i).ionicradii];
+        neigh_radii=[properties([properties(i).neigh.index]).ionicradii];
+        sum_radii=repmat(current_radii',numel(neigh_radii),1)+repmat(neigh_radii,numel(current_radii),1)';
+        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(1).rdiffvalence))));
+
+        properties(i).type=Ion(ind(preox_ind));
+        properties(i).oxstate=OxState(ind(preox_ind));
+        properties(i).ip=ZoverIR(ind(preox_ind));
+        properties(i).cn=CN(ind(preox_ind));
+        properties(i).crysradii=CrysRadii(ind(preox_ind));
+        properties(i).ionicradii=IonicRadii(ind(preox_ind));
+        properties(i).bv=element(i).bv;
+        properties(i).valence=element(i).valence;
+        properties(i).elecconf=strtrim(ElecConf(ind(preox_ind)));
+        properties(i).spinstate=strtrim(SpinState(ind(preox_ind)));
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> mod(i,100)==1
+        i-1
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+diff_valence=(abs([properties.oxstate])-[properties.valence])';
+ind=find(abs(diff_valence)&gt;0.5);
+<span class="keyword">if</span> numel(ind)&gt;0
+    disp(<span class="string">'Possible problems with index due to multiple oxidation states,'</span>)
+    disp(<span class="string">'or atoms that are undersaturated!'</span>)
+    ind
+    assignin(<span class="string">'caller'</span>,<span class="string">'heal_ind'</span>,ind');
+<span class="keyword">end</span>
+
+disp(<span class="string">'Global instability index is:'</span>)
+GII=(sum((abs([properties.oxstate])-[properties.valence]).^2)/size(properties,2))^0.5
+<span class="keyword">if</span> GII&gt;0.2
+    disp(<span class="string">'GII &gt; 0.2 --&gt; Structure likely not super stable...'</span>);
+<span class="keyword">end</span>
+
+Atom_labels=unique([atom.fftype]);
+<span class="keyword">for</span> i=1:length(Atom_labels)
+    ind=find(strcmp([atom.fftype],Atom_labels(i)));
+    BondSummary(i).type=Atom_labels(i);
+    BondSummary(i).GII=(sum((abs([properties(ind).oxstate])-[properties(ind).valence]).^2)/numel(ind))^0.5;
+    BondSummary(i).d_strain=sum([properties(ind).valence]-abs([properties(ind).oxstate]))/numel(ind);
+    BondSummary(i).ValenceAve=mean([properties(ind).valence]);
+    BondSummary(i).ValenceStd=std([properties(ind).valence]);
+    BondSummary(i).dist=mean([properties(ind).ave_dist]);
+<span class="keyword">end</span>
+
+load(<span class="string">'bond_valence_values.mat'</span>);
+<span class="keyword">for</span> i=1:size(Bond_index,1)
+    Bond_index(i,4)=properties(Bond_index(i,1)).ionicradii+properties(Bond_index(i,2)).ionicradii;
+    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2);
+    Bond_index(i,5)=bv;
+<span class="keyword">end</span>
+
+format <span class="string">short</span>
+diff_bond=Bond_index(:,4)-Bond_index(:,3);
+ind=find(abs(diff_bond)&gt;0.5);
+<span class="keyword">if</span> numel(ind)&gt;0
+    disp(<span class="string">'Possible problems with bond between:'</span>)
+    <span class="keyword">for</span> i=1:numel(ind)
+        [Bond_index(ind(i),1) Bond_index(ind(i),2)]
+        properties(Bond_index(ind(i),1)).type
+        properties(Bond_index(ind(i),2)).type
+        Bond_index(ind(i),3:end)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'GII'</span>,GII);
+assignin(<span class="string">'caller'</span>,<span class="string">'BondSummary'</span>,BondSummary);
+assignin(<span class="string">'caller'</span>,<span class="string">'diff_bond'</span>,diff_bond);
+assignin(<span class="string">'caller'</span>,<span class="string">'diff_valence'</span>,diff_valence);
+assignin(<span class="string">'caller'</span>,<span class="string">'prop_atom'</span>,element);
+<span class="keyword">try</span>
+    assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
+    assignin(<span class="string">'caller'</span>,<span class="string">'diff_bond_bv'</span>,[properties.rdiffvalence]');
+<span class="keyword">catch</span>
+    disp(<span class="string">'Could not assignin Bond_index, Angle_index, distmatrix'</span>)
+<span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% analyze_atom.m
-% * This function analyzes various things of the atom struct
-% * atom is the atom struct
-% * Box_dim is the box dimension vector
-% * This function might be outdated...
+%% analyze_atom(atom)
+% * This function fetches the ionic radius, originally taken from below
+% * Ref. 1	Revised effective ionic radii and systematic studies of
+% interatomic distances in halides and chalcogenides. R. D. Shannon Acta
+% Cryst. (1976) A32, 751-767.
+% * Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn,
+% 2001, downloaded MO/DA/YEAR.
+% *
+% * This function also calculates the bond valence values according to
+% http://www.iucr.org/resources/data/datasets/bond-valence-parameters
+% compiled by I. David Brown, McMaster University, Ontario, Canada
+% * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = analyze_atom(atom,Box_dim,1.25,2.25)
-%
-function atom = analyze_atom(atom,Box_dim,rmaxshort,rmaxlong)
-nAtoms=size(atom,2);
+% # analyze = analyze_atom(atom,Box_dim)
+% # analyze = analyze_atom(atom,Box_dim,2.5)
 
-atom=wrap_atom(atom,Box_dim);
+function properties = analyze_atom(atom,Box_dim,varargin)
 
-%%%%%%%%%% To analyze composition
-composition_atom(atom);
-Box_dim(1:end)
-composition
-bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
-Atom_labels=unique([atom.type]);
+% FIX multiple OxStates and other from the Shannon file
 
-assignin('caller','composition',composition);
-assignin('caller','Dist_matrix',Dist_matrix)
-assignin('caller','Bond_index',Bond_index);
-assignin('caller','Angle_index',Angle_index);
-assignin('caller','nBonds',nBonds);
-assignin('caller','nAngles',nAngles);
+load('Revised_Shannon_radii.mat');
 
-%delete('./#*'); delete('./temp*');
+if nargin > 2
+    rmax=varargin{1};
+else
+    rmax=2.25;
+end
+
+element=element_atom(atom); % Optionally, set the names ow water O and water H
+%element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');
+element=bond_atom(element,Box_dim,rmax);
+element=bond_valence_atom(element,Box_dim,1.25,rmax);
+element=mass_atom(element);
+assignin('caller','element',element);
+for i=1:size(element,2)
+    Ion_ind=find(strcmp([element(i).type],Ion));
+    if numel(Ion_ind)==0
+        Ion_ind=find(strncmpi([element(i).type],Ion,1));
+    end
+    CN_ind=find(numel(element(i).neigh.index)==CN);
+    ind=intersect(Ion_ind,CN_ind);
+    if numel(ind)==0
+        ind=Ion_ind(1);
+    end
+    properties(i).index=element(i).index;
+    properties(i).type=Ion(ind);
+    properties(i).neigh=element(i).neigh;
+    properties(i).bond=element(i).bond;
+    %     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()
+    properties(i).bv=element(i).bv;
+    properties(i).valence=element(i).valence;
+    properties(i).ave_dist=mean(properties(i).bond.dist);
+    properties(i).std_dist=std(properties(i).bond.dist);
+    properties(i).rdiffvalence=element(i).Rdiff;
+    properties(i).atnum=element(i).atnum;
+    properties(i).mass=element(i).mass;
+    properties(i).oxstate=OxState(ind);
+    properties(i).ip=ZoverIR(ind);
+    properties(i).cn=CN(ind);
+    properties(i).crysradii=CrysRadii(ind);
+    properties(i).ionicradii=IonicRadii(ind);
+    properties(i).vdwradii=radius_vdw([element(i).type]);
+    properties(i).elecconf=strtrim(ElecConf(ind));
+    properties(i).spinstate=strtrim(SpinState(ind));
+    if mod(i,100)==1
+        i-1
+    end
+end
+
+for i=1:size(element,2)
+    if numel(properties(i).type)>1
+        Ion_ind=find(strcmp([element(i).type],Ion));
+        if numel(Ion_ind)==0
+            Ion_ind=find(strncmpi([element(i).type],Ion,1));
+        end
+        CN_ind=find(numel(element(i).neigh.index)==CN);
+        ind=intersect(Ion_ind,CN_ind);
+        if numel(ind)==0
+            ind=Ion_ind(1);
+        end
+        
+        current_radii=[properties(i).ionicradii];
+        neigh_radii=[properties([properties(i).neigh.index]).ionicradii];
+        sum_radii=repmat(current_radii',numel(neigh_radii),1)+repmat(neigh_radii,numel(current_radii),1)';
+        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(1).rdiffvalence))));
+        
+        properties(i).type=Ion(ind(preox_ind));
+        properties(i).oxstate=OxState(ind(preox_ind));
+        properties(i).ip=ZoverIR(ind(preox_ind));
+        properties(i).cn=CN(ind(preox_ind));
+        properties(i).crysradii=CrysRadii(ind(preox_ind));
+        properties(i).ionicradii=IonicRadii(ind(preox_ind));
+        properties(i).bv=element(i).bv;
+        properties(i).valence=element(i).valence;
+        properties(i).elecconf=strtrim(ElecConf(ind(preox_ind)));
+        properties(i).spinstate=strtrim(SpinState(ind(preox_ind)));
+    end
+    if mod(i,100)==1
+        i-1
+    end
+end
+
+diff_valence=(abs([properties.oxstate])-[properties.valence])';
+ind=find(abs(diff_valence)>0.5);
+if numel(ind)>0
+    disp('Possible problems with index due to multiple oxidation states,')
+    disp('or atoms that are undersaturated!')
+    ind
+    assignin('caller','heal_ind',ind');
+end
+
+disp('Global instability index is:')
+GII=(sum((abs([properties.oxstate])-[properties.valence]).^2)/size(properties,2))^0.5
+if GII>0.2
+    disp('GII > 0.2 REPLACE_WITH_DASH_DASH> Structure likely not super stable...');
+end
+
+Atom_labels=unique([atom.fftype]);
+for i=1:length(Atom_labels)
+    ind=find(strcmp([atom.fftype],Atom_labels(i)));
+    BondSummary(i).type=Atom_labels(i);
+    BondSummary(i).GII=(sum((abs([properties(ind).oxstate])-[properties(ind).valence]).^2)/numel(ind))^0.5;
+    BondSummary(i).d_strain=sum([properties(ind).valence]-abs([properties(ind).oxstate]))/numel(ind);
+    BondSummary(i).ValenceAve=mean([properties(ind).valence]);
+    BondSummary(i).ValenceStd=std([properties(ind).valence]);
+    BondSummary(i).dist=mean([properties(ind).ave_dist]);
+end
+
+load('bond_valence_values.mat');
+for i=1:size(Bond_index,1)
+    Bond_index(i,4)=properties(Bond_index(i,1)).ionicradii+properties(Bond_index(i,2)).ionicradii;
+    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2);
+    Bond_index(i,5)=bv;
+end
+
+format short
+diff_bond=Bond_index(:,4)-Bond_index(:,3);
+ind=find(abs(diff_bond)>0.5);
+if numel(ind)>0
+    disp('Possible problems with bond between:')
+    for i=1:numel(ind)
+        [Bond_index(ind(i),1) Bond_index(ind(i),2)]
+        properties(Bond_index(ind(i),1)).type
+        properties(Bond_index(ind(i),2)).type
+        Bond_index(ind(i),3:end)
+    end
+end
+
+assignin('caller','GII',GII);
+assignin('caller','BondSummary',BondSummary);
+assignin('caller','diff_bond',diff_bond);
+assignin('caller','diff_valence',diff_valence);
+assignin('caller','prop_atom',element);
+try
+    assignin('caller','Angle_index',Angle_index);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','dist_matrix',dist_matrix);
+    assignin('caller','diff_bond_bv',[properties.rdiffvalence]');
+catch
+    disp('Could not assignin Bond_index, Angle_index, distmatrix')
+end
 
 ##### SOURCE END #####
 --></body></html>

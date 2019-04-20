@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Examples demonstrating how to plot the atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Plot_molecules.m"><style type="text/css">
+      --><title>Examples demonstrating how to plot the atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="Plot_molecules.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -79,7 +79,7 @@ plot_atom(atom,Box_dim,1,Bond_index) <span class="comment">% Bond_index from bon
 plot_atom(atom,Box_dim,1,[],<span class="string">'axis'</span>) <span class="comment">% Will show an axis in the lower left corner</span>
 </pre><h2 id="8">Plot using <a href="plot_density_atom.html">plot_density_atom</a></h2><p>The <a href="plot_density_atom.html">plot_density_atom</a> function is a really simplistic viewer function that can show the <a href="atom_variable.html">atom</a> struct in a coordinate system, along with density profiles that has been smoothed through a Gaussian convolution. Note that the system is wrapped before calculating the density profiles.</p><p><b>Examples</b></p><pre class="codeinput">plot_density_atom(atom,Box_dim)
 plot_density_atom(atom,Box_dim,2) <span class="comment">% 2 is a scale factor for the plotted atoms</span>
-plot_density_atom(atom,Box_dim,2,3) <span class="comment">% Here the second argument 3 scales the plotted density profiles</span>
+plot_density_atom(atom,Box_dim,1,3) <span class="comment">% Here the second argument 3 scales the plotted density profiles</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Examples demonstrating how to plot the atom struct
@@ -143,7 +143,7 @@ plot_atom(atom,Box_dim,1,[],'axis') % Will show an axis in the lower left corner
 %
 plot_density_atom(atom,Box_dim)
 plot_density_atom(atom,Box_dim,2) % 2 is a scale factor for the plotted atoms
-plot_density_atom(atom,Box_dim,2,3) % Here the second argument 3 scales the plotted density profiles
+plot_density_atom(atom,Box_dim,1,3) % Here the second argument 3 scales the plotted density profiles
 
 
 

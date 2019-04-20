@@ -3,7 +3,7 @@
 % Joung and Cheatham, 2008 + some others...
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -364,6 +364,13 @@ forcefield.clayff(45).e_kcalmol = 0.155400;
 forcefield.clayff(46).type =    {'ohst'}; % obss bridging oxygen w. double substitution
 forcefield.clayff(46).mass =    15.999410;
 forcefield.clayff(46).charge =  -0.95;
+forcefield.clayff(46).radius =  3.553200;
+forcefield.clayff(46).e_kcalmol = 0.155400;
+
+% Op
+forcefield.clayff(46).type =    {'op'}; % op apical O, same params as ob
+forcefield.clayff(46).mass =    15.99410;
+forcefield.clayff(46).charge =  -1.05000;
 forcefield.clayff(46).radius =  3.553200;
 forcefield.clayff(46).e_kcalmol = 0.155400;
 

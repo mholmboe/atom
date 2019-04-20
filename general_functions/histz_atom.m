@@ -2,7 +2,7 @@
 % * This function is used to calculate density profiles in the Z-direction
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -5,7 +5,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -49,7 +49,6 @@ Z_coord = dataArray{:,7}*10;
 X_velo = dataArray{:,8}*10;
 Y_velo = dataArray{:,9}*10;
 Z_velo = dataArray{:,10}*10;
-
 
 nmol=1;first_in=[1];last_in=[];
 for i=1:nAtoms

@@ -3,7 +3,7 @@
 % adds a new radius field to the atoms struct
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

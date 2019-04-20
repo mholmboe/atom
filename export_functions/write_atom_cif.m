@@ -3,7 +3,7 @@
 % from the atom struct
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -174,17 +174,17 @@ fprintf(fid, '%s\r\n','_atom_site_type_symbol');
 fprintf(fid, '%s\r\n','_atom_site_fract_x');
 fprintf(fid, '%s\r\n','_atom_site_fract_y');
 fprintf(fid, '%s\r\n','_atom_site_fract_z');
-fprintf(fid, '%s\r\n','_atom_site_charge');
 
 if isfield(atom,'charge')
+    fprintf(fid, '%s\r\n','_atom_site_charge');
     for i = 1:nAtoms
         Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, atom(i).charge];
         fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
     end
 else
     for i = 1:nAtoms
-        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, 0.0];
-        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
+        Atom_section(1:5) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac];
+        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f\r\n',Atom_section{1:5});
     end
 end
 fprintf(fid, '\r\n');

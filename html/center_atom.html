@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>center_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="center_atom.m"><style type="text/css">
+      --><title>center_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="center_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>center_atom.m</h1><!--introduction--><div><ul><li>This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>resname is the Resnames ofthe atoms ou want to move, can be 'all'</li><li>dim is a string containing for example x, xy, xyz</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><div><ul><li>atom = center_atom(atom,Box_dim,'all','xy')</li><li>atom = center_atom(atom,Box_dim,'SOL','Z')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>center_atom.m</h1><!--introduction--><div><ul><li>This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>resname is the Resnames ofthe atoms ou want to move, can be 'all'</li><li>dim is a string containing for example x, xy, xyz</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><div><ul><li>atom = center_atom(atom,Box_dim,'all','xy')</li><li>atom = center_atom(atom,Box_dim,'SOL','Z')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
 disp(<span class="string">'Center to box'</span>)
 
 nAtoms=size(atom,2);
@@ -146,7 +146,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'<
 % * dim is a string containing for example x, xy, xyz
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

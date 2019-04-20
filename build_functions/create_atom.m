@@ -8,7 +8,7 @@
 % * solvate_atom
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -139,7 +139,7 @@ i=1;
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
 while size(atom,2)>nmax+1
-    [row,col]=find(distmatrix==min(min(distmatrix)))
+    [row,col]=find(distmatrix==min(min(distmatrix)));
     ind_rm=max([row(1) col(1)]);
     if ind_rm>i
         i=i+1;

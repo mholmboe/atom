@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_cif.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="write_atom_cif.m"><style type="text/css">
+      --><title>write_atom_cif.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="write_atom_cif.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_cif.m</h1><!--introduction--><div><ul><li>This function writes a basic 'P 1' cif file with fractional coordinates from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_cif(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_cif(atom,Box_dim,filename_out)
+  </style></head><body><div class="content"><h1>write_atom_cif.m</h1><!--introduction--><div><ul><li>This function writes a basic 'P 1' cif file with fractional coordinates from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_cif(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_cif(atom,Box_dim,filename_out)
 
 <span class="comment">% atom=wrap_atom(atom,Box_dim); % Do we need this</span>
 
@@ -229,17 +229,17 @@ fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_si
 fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_x'</span>);
 fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_y'</span>);
 fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_fract_z'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_charge'</span>);
 
 <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'_atom_site_charge'</span>);
     <span class="keyword">for</span> i = 1:nAtoms
         Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, atom(i).charge];
         fprintf(fid,<span class="string">'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n'</span>,Atom_section{1:6});
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     <span class="keyword">for</span> i = 1:nAtoms
-        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, 0.0];
-        fprintf(fid,<span class="string">'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n'</span>,Atom_section{1:6});
+        Atom_section(1:5) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac];
+        fprintf(fid,<span class="string">'%-11s%-6s%14.7f%14.7f%14.7f\r\n'</span>,Atom_section{1:5});
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 fprintf(fid, <span class="string">'\r\n'</span>);
@@ -261,7 +261,7 @@ fclose(fid);
 % from the atom struct
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -432,17 +432,17 @@ fprintf(fid, '%s\r\n','_atom_site_type_symbol');
 fprintf(fid, '%s\r\n','_atom_site_fract_x');
 fprintf(fid, '%s\r\n','_atom_site_fract_y');
 fprintf(fid, '%s\r\n','_atom_site_fract_z');
-fprintf(fid, '%s\r\n','_atom_site_charge');
 
 if isfield(atom,'charge')
+    fprintf(fid, '%s\r\n','_atom_site_charge');
     for i = 1:nAtoms
         Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, atom(i).charge];
         fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
     end
 else
     for i = 1:nAtoms
-        Atom_section(1:6) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac, 0.0];
-        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f%12.5f\r\n',Atom_section{1:6});
+        Atom_section(1:5) = [atom(i).type, atom(i).element, atom(i).xfrac, atom(i).yfrac, atom(i).zfrac];
+        fprintf(fid,'%-11s%-6s%14.7f%14.7f%14.7f\r\n',Atom_section{1:5});
     end
 end
 fprintf(fid, '\r\n');

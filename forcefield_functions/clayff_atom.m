@@ -1,12 +1,12 @@
 %% clayff_atom.m
-% * This function tries to assign all atoms according to the clayff atom 
-% types (with modified atom names by MHolmboe), with some modifications for 
+% * This function tries to assign all atoms according to the clayff atom
+% types (with modified atom names by MHolmboe), with some modifications for
 % edges...
-% * This clayff_atom function was modified accoring to Clays and Clay 
+% * This clayff_atom function was modified accoring to Clays and Clay
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -97,6 +97,7 @@ for assignment_run=1:heal
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
     
     Radiiproperties=load('Revised_Shannon_radii.mat');
+    atom = rmfield(atom,'neigh');
     atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
     %     clayff_param(sort(unique([atom.type])),'SPC/E');
     
@@ -357,7 +358,7 @@ for assignment_run=1:heal
             end
             
             % If the element is Mn
-            if strcmpi(atom(i).type,{'Mn'}) % Fe
+            if strncmpi(atom(i).type,{'Mn'},2) % Fe
                 
                 if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mn O O O O O O
                     atom(i).fftype={'Mn4'};
@@ -388,8 +389,6 @@ for assignment_run=1:heal
                     Neighbours
                     atom(i).fftype
                     atom(i).type
-                    %                 atom(i)=[];
-                    %                 disp('removed atom...')
                     i
                 end
                 %             else
@@ -446,7 +445,7 @@ for assignment_run=1:heal
             if strncmp(atom(i).type,{'H'},1) % H
                 
                 if size(Neigh_cell,1) == 1
-                    atom(i).fftype={'H'};
+                        atom(i).fftype={'H'};
                 elseif length(Neigh_ind) > 1
                     disp('H atom over coordinated')
                     i
@@ -466,8 +465,8 @@ for assignment_run=1:heal
                         [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                     elseif length(Neigh_ind) < 1
                         Neighbours
-                        %                     atom(i)=[];
-                        %                     disp('removed atom...')
+                        atom(i)=[];
+                        disp('removed atom...')
                         i
                         %pause
                     end
@@ -478,7 +477,7 @@ for assignment_run=1:heal
             
             % If the element is O
             if strncmp(atom(i).type,{'O'},1)
-
+                
                 All_Neighbours=[All_Neighbours;Neighbours];
                 if strcmp(Neighbours,'AlAlH')
                     atom(i).fftype={'Oh'};

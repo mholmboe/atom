@@ -2,7 +2,7 @@
 % * This function movies a molid (COM) to a certain position
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

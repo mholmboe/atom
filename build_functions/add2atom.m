@@ -9,7 +9,7 @@
 % the XYZ data should be appended to
 % 
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

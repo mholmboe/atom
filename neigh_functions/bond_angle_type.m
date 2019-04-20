@@ -4,7 +4,7 @@
 % angle_limit from max to min angle
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -39,7 +39,7 @@ end
 for i=1:size(atom1,2)
     XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
     
-    if sum(strncmpi([atom1.type],'OW',2))>0 && sum(strncmpi([atom2.type],'HW',2))>0 && skip_internal == 1;
+    if sum(strncmpi([atom1.type],'OW',2))>0 && sum(strncmpi([atom2.type],'HW',2))>0 && skip_internal == 1
         ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
         XYZ_data=XYZ_data(ind_sel,:);
     end

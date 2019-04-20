@@ -2,7 +2,7 @@
 % * This function slices the atoms into the triclinic box
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -2,7 +2,7 @@
 % * This function can replace the atomtypes names with the element names
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -34,13 +34,13 @@ for i=1:size(atom,2)
     if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
-    elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};
     elseif strncmpi(atom(i).type,{'st'},2);atom(i).element={'Si'};
-    elseif strncmpi(atom(i).type,{'s'},1);atom(i).element={'Si'};
+    elseif strncmp(atom(i).type,{'s'},1);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
-    elseif strncmpi(atom(i).type,{'a'},1);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};
+    elseif strncmpi(atom(i).type,{'a'},1);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};
     elseif strncmpi(atom(i).type,{'B'},1);atom(i).element={'B'};
     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};
@@ -62,7 +62,6 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'No'},2);atom(i).element={'No'};
     elseif strncmpi(atom(i).type,{'N'},1);atom(i).element={'N'};
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};
-    elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
     elseif strncmpi(atom(i).type,{'o'},1);atom(i).element={'O'};
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};

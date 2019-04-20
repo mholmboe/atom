@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>clayff_2004_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="clayff_2004_atom.m"><style type="text/css">
+      --><title>clayff_2004_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="clayff_2004_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>clayff_2004_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li>This clayffmod function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016. STRUCTURE</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=clayff_atom(atom,Box_dim)</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc')</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc','edge')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=clayff_2004_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>clayff_2004_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li>This clayffmod function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016. STRUCTURE</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=clayff_atom(atom,Box_dim)</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc')</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc','edge')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=clayff_2004_atom(atom,Box_dim,varargin)
 
 format <span class="string">compact</span>;
 
@@ -494,7 +494,7 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                     <span class="keyword">if</span> strncmp(Neighbours,<span class="string">'aoaoho'</span>,5)
                         atom(i).fftype={<span class="string">'oh'</span>};
                     <span class="keyword">elseif</span> strncmp(Neighbours,<span class="string">'aoaost'</span>,5)
-                        atom(i).fftype={<span class="string">'ob'</span>};
+                        atom(i).fftype={<span class="string">'op'</span>};
                     <span class="keyword">elseif</span> strncmp(Neighbours,<span class="string">'hohomgo'</span>,6)
                         atom(i).fftype={<span class="string">'oahh'</span>};
                     <span class="keyword">elseif</span> strncmp(Neighbours,<span class="string">'hohomg'</span>,6)
@@ -653,7 +653,7 @@ atom = charge_atom(atom,Box_dim,ffname,watermodel);
 % * This clayffmod function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016. STRUCTURE
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -1092,7 +1092,7 @@ for assignment_run=1:heal
                     if strncmp(Neighbours,'aoaoho',5)
                         atom(i).fftype={'oh'};
                     elseif strncmp(Neighbours,'aoaost',5)
-                        atom(i).fftype={'ob'};
+                        atom(i).fftype={'op'};
                     elseif strncmp(Neighbours,'hohomgo',6)
                         atom(i).fftype={'oahh'};
                     elseif strncmp(Neighbours,'hohomg',6)

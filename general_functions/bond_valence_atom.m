@@ -9,7 +9,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -41,8 +41,12 @@ end
 load('bond_valence_values.mat');
 atom=element_atom(atom);
 [atom.type]=atom.element;
+[atom.fftype]=atom.element;
 
-if numel(atom(1).neigh.type)==0
+if ~isfield(atom,'neigh')
+    %   atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
+    atom=neigh_atom(atom,Box_dim,rmaxshort,rmaxlong);
+elseif numel(atom(1).neigh.type)==0
     %   atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
     atom=neigh_atom(atom,Box_dim,rmaxshort,rmaxlong);
 end
@@ -50,7 +54,7 @@ end
 for i=1:size(atom,2)
     for j=1:size(atom(i).neigh.type,1)
         if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
-            (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
+                (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
             [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
             atom(i).bv(j)=bv;
             atom(i).mean_bv(j)=mean_bv;

@@ -2,7 +2,7 @@
 % * This function calculates the COM for a certain molid
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

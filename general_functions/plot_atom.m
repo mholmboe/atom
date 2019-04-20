@@ -6,7 +6,7 @@
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -21,6 +21,7 @@
 function plot_atom(atom,varargin)
 
 Atom_label=unique([atom.type]);
+plotted_Atom_label=[];
 
 if nargin>1
     
@@ -32,13 +33,13 @@ if nargin>1
         Box_dim(3)=Box_dim(1);
     end
     % Sets plot limits for the data
-    xlo = floor(min([-2 -2+min([atom.x])])); xhi = 2 + ceil(max([max([atom.x]) Box_dim(1)])/10)*10;
-    ylo = floor(min([-2 -2+min([atom.y])])); yhi = 2 + ceil(max([max([atom.y]) Box_dim(2)])/10)*10;
-    zlo = floor(min([-2 -2+min([atom.z])])); zhi = 2 + ceil(max([max([atom.z]) Box_dim(3)])/10)*10;
+    xlo = floor(min([-5 -5+min([atom.x])])); xhi = 2 + ceil(max([max([atom.x]) Box_dim(1)])/10)*10;
+    ylo = floor(min([-5 -5+min([atom.y])])); yhi = 2 + ceil(max([max([atom.y]) Box_dim(2)])/10)*10;
+    zlo = floor(min([0 0+min([atom.z])])); zhi = 2 + ceil(max([max([atom.z]) Box_dim(3)])/10)*10;
 else
-    xlo = floor(min([-2 -2+min([atom.x])])); xhi = 2 + ceil(max(max([atom.x]))/10)*10;
-    ylo = floor(min([-2 -2+min([atom.y])])); yhi = 2 + ceil(max(max([atom.y]))/10)*10;
-    zlo = floor(min([-2 -2+min([atom.z])])); zhi = 2 + ceil(max(max([atom.z]))/10)*10;
+    xlo = floor(min([-5 -5+min([atom.x])])); xhi = 2 + ceil(max(max([atom.x]))/10)*10;
+    ylo = floor(min([-5 -5+min([atom.y])])); yhi = 2 + ceil(max(max([atom.y]))/10)*10;
+    zlo = floor(min([0 0+min([atom.z])])); zhi = 2 + ceil(max(max([atom.z]))/10)*10;
 end
 
 
@@ -58,9 +59,8 @@ end
 hold on
 rotate3d on;
 camlight(220,210,'infinite');
-set(gca,'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',21);
+set(gca,'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24);
 set(gcf,'Color',[1,1,1]);
-
 
 if nargin > 2
     scalefactor=200*varargin{2};
@@ -68,42 +68,88 @@ else
     scalefactor=200;
 end
 
-% Also draw the actual simulation box...
-if nargin>1
-    Simbox = draw_box_atom(Box_dim,[0 0 0],2);
-end
-
 maxY=max([atom.y])+1;
+
 for i = 1:length(Atom_label)
     %     disp('%%%%')
     %     Atom_label(i)
+    ind=[];
     radii = scalefactor*2*abs(radius_vdw(Atom_label(i)));
     if strncmpi(Atom_label(i),'H',1)
-        radii=radii/2;
+        radii=radii/4;
     end
     color =  element_color(Atom_label(i));
     %     disp('%%%%')
-    ind=strncmpi([atom.type],Atom_label(i),1);
+    ind=strncmpi([atom.type],Atom_label(i),3);
+    if numel(ind)==0
+        ind=strncmpi([atom.type],Atom_label(i),2);
+    end
+    if numel(ind)==0
+        ind=strncmpi([atom.type],Atom_label(i),1);
+    end
     
-    %     plot3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
-    %         'o',...
-    %         'LineWidth',0.5,...
-    %         'MarkerEdgeColor',[0 0 0],...
-    %         'MarkerFaceColor',color,...
-    %         'MarkerSize',6*radii);
-    %             'MarkerFaceColor',[1 0 0],...
-    scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
-        radii,...
-        'MarkerEdgeColor',[.1 .1 .1],...
-        'MarkerFaceColor',color,...
-        'MarkerFaceAlpha',0.75...
-        );
+    if strncmpi([atom(ind).type],'Ow',2) | strncmpi([atom(ind).type],'Hw',2)
+        scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+            radii,...
+            'MarkerEdgeColor','none',...
+            'MarkerFaceColor',color,...
+            'MarkerFaceAlpha',0.75...
+            );
+        alpha(.2)
+        plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
+    end
+end
+
+for i = 1:length(Atom_label)
+    %     disp('%%%%')
+    %     Atom_label(i)
+    ind=[];
+    radii = scalefactor*2*abs(radius_vdw(Atom_label(i)));
+    if strncmpi(Atom_label(i),'H',1)
+        radii=radii/4;
+    end
+    color =  element_color(Atom_label(i));
+    %     disp('%%%%')
+    ind=strncmpi([atom.type],Atom_label(i),3);
+    if numel(ind)==0
+        ind=strncmpi([atom.type],Atom_label(i),2);
+    end
+    if numel(ind)==0
+        ind=strncmpi([atom.type],Atom_label(i),1);
+    end
+    
+    %         plot3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+    %             'o',...
+    %             'LineWidth',0.5,...
+    %             'MarkerEdgeColor',[0 0 0],...
+    %             'MarkerFaceColor',color,...
+    %             'MarkerSize',.1*radii);
+    % %                 'MarkerFaceColor',[1 0 0];
+    
+    if strncmpi([atom(ind).type],'Ow',2) | strncmpi([atom(ind).type],'Hw',2)
+        %         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
+        %         scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+        %             radii,...
+        %             'MarkerEdgeColor','none',...
+        %             'MarkerFaceColor',color,...
+        %             'MarkerFaceAlpha',0.75...
+        %             );
+        %         alpha(.1)
+    else
+        scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+            radii,...
+            'MarkerEdgeColor',[.1 .1 .1],...
+            'MarkerFaceColor',color,...
+            'MarkerFaceAlpha',0.75...
+            );
+        plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
+    end
 end
 
 % Draw bonds
 if nargin > 3
-    if numel(varargin{2})>0
-        Bond_index=varargin{2};
+    if numel(varargin{3})>0
+        Bond_index=varargin{3};
         for i=1:size(Bond_index,1)
             Bond_index(i,1);
             Bond_index(i,2);
@@ -129,10 +175,22 @@ if nargin > 4
         'LineWidth',2);
 end
 
-fig = gcf;fig.Color = [0.85 0.85 0.85];
-set(gca,'Color',[0.85 0.85 0.85]);
-xlabel('X'); ylabel('Y'); zlabel('Z');
+% Also draw the actual simulation box...
+if nargin>1
+    Simbox = draw_box_atom(Box_dim,[0 0 0],1);
+end
+
+fig = gcf;fig.Color = [1 1 1];
+set(gca,'Color',[1 1 1]);
+xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 axis([xlo xhi ylo yhi zlo zhi],'equal');
+legend(plotted_Atom_label);
+%     if numel(Atom_label{i})>2
+%         legend(Atom_label{i}(1:2))
+%     else
+%         legend(Atom_label{i}(1))
+%     end
+
 view([0,0]);
 
 end

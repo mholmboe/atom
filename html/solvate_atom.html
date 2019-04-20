@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>solvate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="solvate_atom.m"><style type="text/css">
+      --><title>solvate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="solvate_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>solvate_atom.m</h1><!--introduction--><div><ul><li>This function generates a certain region defined by <a href="limits">limits</a> with a</li><li>solvent structure of density <a href="density">density</a>, or a solvent shell with</li><li>thickness shell10|15|20|25|30 &Aring;ngstr&ouml;m around the any given solute</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Version</a></li><li><a href="#4">Contact</a></li><li><a href="#5">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>[limits] is a 1x3 or 1x6 volume variable</li><li>density (number) is the density</li><li>r is a number and the minimum distance between solvent-solute particles.</li><li>maxsol (number) maxsol is the max number of solvent molecules, or a</li><li>string 'maxsol' (allowing maximal solvation), or a string like shell10|15|20|25|30</li><li>indicating a solvatin shell around the solute.</li><li>solute_atom is the existing atom struct which needs solvation</li><li>Optional string can be the desired water model, like 'SPC' or 'TIP4P', or with 'custom' be used to solvate with a custom structure, like a ethanol slab</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>import_atom_gro</li><li>scale_atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix</li><li>cell_list_distance_matrix</li></ul></div><h2 id="3">Version</h2><p>2.0</p><h2 id="4">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="5">Examples</h2><div><ul><li>SOL = solvate_atom(limits,density,r,maxsol)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'maxsol',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'shell15',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct</li></ul></div><pre class="codeinput"><span class="keyword">function</span> SOL = solvate_atom(limits,density,r,maxsol,varargin)
+  </style></head><body><div class="content"><h1>solvate_atom.m</h1><!--introduction--><div><ul><li>This function generates a certain region defined by <a href="limits">limits</a> with a</li><li>solvent structure of density <a href="density">density</a>, or a solvent shell with</li><li>thickness shell10|15|20|25|30 &Aring;ngstr&ouml;m around the any given solute</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Version</a></li><li><a href="#4">Contact</a></li><li><a href="#5">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>[limits] is a 1x3 or 1x6 volume variable</li><li>density (number) is the density</li><li>r is a number and the minimum distance between solvent-solute particles.</li><li>maxsol (number) maxsol is the max number of solvent molecules, or a</li><li>string 'maxsol' (allowing maximal solvation), or a string like shell10|15|20|25|30</li><li>indicating a solvatin shell around the solute.</li><li>solute_atom is the existing atom struct which needs solvation</li><li>Optional string can be the desired water model, like 'SPC' or 'TIP4P', or with 'custom' be used to solvate with a custom structure, like a ethanol slab</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>import_atom_gro</li><li>scale_atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix</li><li>cell_list_distance_matrix</li></ul></div><h2 id="3">Version</h2><p>2.03</p><h2 id="4">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="5">Examples</h2><div><ul><li>SOL = solvate_atom(limits,density,r,maxsol)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'maxsol',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,'shell15',solute_atom)</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice')</li><li>SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct</li></ul></div><pre class="codeinput"><span class="keyword">function</span> SOL = solvate_atom(limits,density,r,maxsol,varargin)
 
 <span class="comment">% Solvent shell thickness</span>
 <span class="keyword">if</span> strcmpi(maxsol,<span class="string">'shell10'</span>)
@@ -97,10 +97,18 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     limits(5)=limits(2);
     limits(6)=limits(3);
     limits(1:3)=0;
-<span class="keyword">elseif</span> numel(limits)&gt;3
+<span class="keyword">elseif</span> numel(limits)==6
     Lx=limits(4)-limits(1);
     Ly=limits(5)-limits(2);
     Lz=limits(6)-limits(3);
+<span class="keyword">elseif</span> numel(limits)==9
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
 <span class="keyword">end</span>
 
 <span class="comment">% Old way of doing it...</span>
@@ -243,6 +251,7 @@ rand_molid=randperm(nSOL/atomsperSOL);
     maxsol
     size(rand_molid,2)
 <span class="keyword">end</span>
+maxsol
 rand_molid=rand_molid(1:maxsol);
 
 rand_index=ismember([SOL.molid],rand_molid);
@@ -273,7 +282,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% solvate_atom.m
-% * This function generates a certain region defined by <limits> with a 
+% * This function generates a certain region defined by <limits> with a
 % * solvent structure of density <density>, or a solvent shell with
 % * thickness shell10|15|20|25|30 Ångström around the any given solute
 %
@@ -301,7 +310,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -346,10 +355,18 @@ elseif numel(limits)==3
     limits(5)=limits(2);
     limits(6)=limits(3);
     limits(1:3)=0;
-elseif numel(limits)>3
+elseif numel(limits)==6
     Lx=limits(4)-limits(1);
     Ly=limits(5)-limits(2);
     Lz=limits(6)-limits(3);
+elseif numel(limits)==9
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
 end
 
 % Old way of doing it...
@@ -492,6 +509,7 @@ if maxsol>size(rand_molid,2)
     maxsol
     size(rand_molid,2)
 end
+maxsol
 rand_molid=rand_molid(1:maxsol);
 
 rand_index=ismember([SOL.molid],rand_molid);

@@ -59,6 +59,6 @@ plot_atom(atom,Box_dim,1,[],'axis') % Will show an axis in the lower left corner
 %
 plot_density_atom(atom,Box_dim)
 plot_density_atom(atom,Box_dim,2) % 2 is a scale factor for the plotted atoms
-plot_density_atom(atom,Box_dim,2,3) % Here the second argument 3 scales the plotted density profiles
+plot_density_atom(atom,Box_dim,1,3) % Here the second argument 3 scales the plotted density profiles
 
 

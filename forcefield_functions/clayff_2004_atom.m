@@ -3,7 +3,7 @@
 % * This clayffmod function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016. STRUCTURE
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -442,7 +442,7 @@ for assignment_run=1:heal
                     if strncmp(Neighbours,'aoaoho',5)
                         atom(i).fftype={'oh'};
                     elseif strncmp(Neighbours,'aoaost',5)
-                        atom(i).fftype={'ob'};
+                        atom(i).fftype={'op'};
                     elseif strncmp(Neighbours,'hohomgo',6)
                         atom(i).fftype={'oahh'};
                     elseif strncmp(Neighbours,'hohomg',6)

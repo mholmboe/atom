@@ -3,7 +3,7 @@
 % * Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -16,7 +16,7 @@
 function atom = update_atom(atom)
 
 if iscell(atom)
-
+    
     % In case first struct is empty
     if size(atom,2)>1 && size(atom{1},2)==0 % Was 1?
         for i=2:size(atom,2)
@@ -88,6 +88,15 @@ for i=1:nAtoms
     atom(i).index=mod(i,100000);
 end
 
+if numel(fieldnames(atom))~=10
+    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum'};
+    atomAttributes=fieldnames(atom)';
+    indDefault=find(ismember(defaultAttributes,atomAttributes));
+    defaultAttributes=defaultAttributes(indDefault);
+    ind_atom=find(ismember(atomAttributes,defaultAttributes));
+    atomAttributes=atomAttributes(ind_atom);
+    atom=orderfields(atom,unique({defaultAttributes{:} atomAttributes{:}},'stable'));
+end
 % assignin('base','atom1',atom);
 
 % atom = resname_atom(atom);

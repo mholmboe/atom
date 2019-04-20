@@ -3,7 +3,7 @@
 % * atom types with atom names made up by me
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

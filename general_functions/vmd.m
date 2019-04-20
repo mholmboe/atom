@@ -5,7 +5,7 @@
 % * Make sure to edit your own PATH2VMD function!!!
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -15,6 +15,7 @@
 % # vmd(atom,Box_dim)
 % # vmd('filename.gro')
 % # vmd('filename.pdb')
+% # vmd('filename.pdb','filename.xtc')
 
 function vmd(varargin)
 
@@ -32,6 +33,7 @@ if nargin==1
     end
 else
     atom=varargin{1};
+    if size(varargin{2},1)==1
     Box_dim=varargin{2};
     if numel(Box_dim)==1
         Box_dim(1)=Box_dim(1);
@@ -40,5 +42,10 @@ else
     end
     write_atom_gro(atom,Box_dim,'temp_out.gro');
     system(strcat(char({PATH2VMD()}),char(strcat({' '},{'temp_out.gro'}))));
+    else
+        % Assuming second argument is a traj file
+        filenametraj=varargin{2};
+        system(strcat(char({PATH2VMD()}),char(strcat({' '},{filename},{' '},{filenametraj}))));
+    end
 end
 

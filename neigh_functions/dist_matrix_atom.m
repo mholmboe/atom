@@ -5,7 +5,7 @@
 % might be faster for large systems...
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

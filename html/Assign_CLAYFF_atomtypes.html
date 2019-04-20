@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example on how to assign CLAYFF atomtypes to a mineral atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="Assign_CLAYFF_atomtypes.m"><style type="text/css">
+      --><title>Example on how to assign CLAYFF atomtypes to a mineral atom struct</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="Assign_CLAYFF_atomtypes.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -71,15 +71,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 filename_out=<span class="string">'6x4x1_MMT_clayff_2004.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
 </pre><h2 id="3">Import a unit cell structure and replicate it into a mineral layer</h2><p>Normally, when constructing a mineral particle and assigning the CLAYFF atomtypes, one usually start of by building the mineral particle from an X-ray determined unit cell structure. In this example we will demonstrate how to generate a montmorillonite layer particle from a pyrophyllite unit cell. Both minerals are so-called 2:1 T-O-T sheet silicate minerals, with the difference between the two isostructural minerals being (as you may know) the fact that montmorillonite carries charge defects due to isomorphic substitution. For montmorillonite this means substitution of Si4+ with Al3+ in the two tetrahedral sheets, or octahedral Al3+ with Mg2+ or Fe2+ in the octahedral sheet of the montmorillonite layer.</p><pre class="codeinput">atom = import_atom(filename_in); <span class="comment">% Imports a pyrophyllite unit cell</span>
 atom = replicate_atom(atom,Box_dim,[6 4 1]); <span class="comment">% Replicate the structure by 6x4x1 into a Pyrophyllite clay layer</span>
-</pre><h2 id="4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a></h2><p><a href="substitute_atom.html">substitute_atom</a> was written with centrosymmetric minerals in mind, therfore it works bes</p><pre class="codeinput">t <span class="string">if</span> <span class="string">the</span> <span class="string">layer</span> <span class="string">is</span> <span class="string">centered</span> <span class="string">at</span> <span class="string">z=0</span>
-<span class="comment">% in the xy-plane. It can handle both substitutions in the octahedral as</span>
-<span class="comment">% well as in the tetrahedral sheets. It distributes the substituted sites</span>
-<span class="comment">% randomly, except for the fact that one can choose a nearest distance</span>
-<span class="comment">% between the substituted sites, which in this example is 5.5 &Aring;ngstr&ouml;m. We</span>
-<span class="comment">% do this to avoid oxygen atoms facing two substituted sites at the same</span>
-<span class="comment">% time (Google L&ouml;wenstein's rule).</span>
-
-atom = substitute_atom(atom,Box_dim,6*4*2/3,<span class="string">'Al'</span>,<span class="string">'Mgo'</span>,5.5) <span class="comment">% Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites</span>
+</pre><h2 id="4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a></h2><p><a href="substitute_atom.html">substitute_atom</a> was written with centrosymmetric minerals in mind, therfore it works best if the layer is centered at z=0 in the xy-plane. It can handle both substitutions in the octahedral as well as in the tetrahedral sheets. It distributes the substituted sites randomly, except for the fact that one can choose a nearest distance between the substituted sites, which in this example is 5.5 &Aring;ngstr&ouml;m. We do this to avoid oxygen atoms facing two substituted sites at the same time (Google L&ouml;wenstein's rule).</p><pre class="codeinput">atom = substitute_atom(atom,Box_dim,6*4*2/3,<span class="string">'Al'</span>,<span class="string">'Mgo'</span>,5.5) <span class="comment">% Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites</span>
 <span class="comment">% atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions</span>
 </pre><h2 id="5">Assign the CLAYFF (Cygan, 2004) atomtypes to the montmorillonite atom struct</h2><pre class="codeinput">atom = clayff_2004_atom(atom,Box_dim,<span class="string">'clayff'</span>) <span class="comment">% Assign the clayff atom types to the atomstruct</span>
 </pre><h2 id="6">Write a CLAYFF (Cygan, 2004) .pdb file</h2><pre class="codeinput">write_atom_pdb(atom,Box_dim,filename_out); <span class="comment">% Print the clay sheet to a .pdb file</span>
@@ -118,8 +110,7 @@ atom = replicate_atom(atom,Box_dim,[6 4 1]); % Replicate the structure by 6x4x1 
 
 %% Perform isomorphic substitution using <substitute_atom.html substitute_atom>
 % <substitute_atom.html substitute_atom> was written with centrosymmetric
-% minerals in mind, therfore it works bes
-t if the layer is centered at z=0 
+% minerals in mind, therfore it works best if the layer is centered at z=0 
 % in the xy-plane. It can handle both substitutions in the octahedral as
 % well as in the tetrahedral sheets. It distributes the substituted sites
 % randomly, except for the fact that one can choose a nearest distance

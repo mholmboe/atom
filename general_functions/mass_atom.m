@@ -2,7 +2,7 @@
 % * This function fetches the mass for each atomtype and put it into atom.mass
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

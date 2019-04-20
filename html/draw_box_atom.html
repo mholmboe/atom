@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>draw_box_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="draw_box_atom.m"><style type="text/css">
+      --><title>draw_box_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="draw_box_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>draw_box_atom.m</h1><!--introduction--><div><ul><li>This function draws the simulation box, have not used it in a while, does it work with triclinic sim box?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Simbox = draw_box_atom(Box_dim,varargin)
+  </style></head><body><div class="content"><h1>draw_box_atom.m</h1><!--introduction--><div><ul><li>This function draws the simulation box, have not used it in a while, does it work with triclinic sim box?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Simbox = draw_box_atom(Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;1
     LineColor=varargin{1};
@@ -80,38 +80,69 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     LineThickness=1;
 <span class="keyword">end</span>
 
-Lx = Box_dim(1);
-Ly = Box_dim(2);
-Lz = Box_dim(3);
-<span class="keyword">if</span> numel(Box_dim)==3
+<span class="keyword">if</span> size(Box_dim,2)==3 || size(Box_dim,2)==9
+
+    Lx = Box_dim(1);
+    Ly = Box_dim(2);
+    Lz = Box_dim(3);
+    <span class="keyword">if</span> numel(Box_dim)==3
+        xy = 0;
+        xz = 0;
+        yz = 0;
+    <span class="keyword">else</span>
+        xy = Box_dim(6);
+        xz = Box_dim(8);
+        yz = Box_dim(9);
+    <span class="keyword">end</span>
+
+    a = Lx;
+    b = (Ly^2 + xy^2)^0.5;
+    c = (Lz^2 + xz^2 + yz^2)^0.5;
+    alfa = acosd((xy*xz+Ly*yz)/(b*c));
+    beta = acosd(xz/c);
+    gamma = acosd(xy/b);
+    Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
+
+    Simbox = [a b c alfa beta gamma Volume];
+    assignin(<span class="string">'base'</span>,<span class="string">'Simbox'</span>,Simbox);
+    <span class="comment">%copy(Simbox);</span>
+
+    x = [0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
+    y = [0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
+    z = [0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
+    hold <span class="string">on</span>;
+    plot3(x,y,z,<span class="string">'color'</span>,LineColor,<span class="string">'linewidth'</span>, LineThickness);
+    <span class="comment">% xlabel('X'); ylabel('Y'); zlabel('Z')</span>
+
+<span class="keyword">elseif</span> size(Box_dim,2)==6
+
+    Lx = Box_dim(4)-Box_dim(1);
+    Ly = Box_dim(5)-Box_dim(2);
+    Lz = Box_dim(6)-Box_dim(3);
+
     xy = 0;
     xz = 0;
     yz = 0;
-<span class="keyword">else</span>
-    xy = Box_dim(6);
-    xz = Box_dim(8);
-    yz = Box_dim(9);
+
+    a = Lx;
+    b = (Ly^2 + xy^2)^0.5;
+    c = (Lz^2 + xz^2 + yz^2)^0.5;
+    alfa = acosd((xy*xz+Ly*yz)/(b*c));
+    beta = acosd(xz/c);
+    gamma = acosd(xy/b);
+    Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
+
+    Simbox = [a b c alfa beta gamma Volume];
+    assignin(<span class="string">'base'</span>,<span class="string">'Simbox'</span>,Simbox);
+    <span class="comment">%copy(Simbox);</span>
+
+    x = Box_dim(1)+[0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
+    y = Box_dim(2)+[0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
+    z = Box_dim(3)+[0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
+    hold <span class="string">on</span>;
+    plot3(x,y,z,<span class="string">'color'</span>,LineColor,<span class="string">'linewidth'</span>, LineThickness);
+    <span class="comment">% xlabel('X'); ylabel('Y'); zlabel('Z')</span>
 <span class="keyword">end</span>
-
-a = Lx;
-b = (Ly^2 + xy^2)^0.5;
-c = (Lz^2 + xz^2 + yz^2)^0.5;
-alfa = acosd((xy*xz+Ly*yz)/(b*c));
-beta = acosd(xz/c);
-gamma = acosd(xy/b);
-Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
-
-Simbox = [a b c alfa beta gamma Volume];
-assignin(<span class="string">'base'</span>,<span class="string">'Simbox'</span>,Simbox);
-<span class="comment">%copy(Simbox);</span>
-
-
-x = [0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
-y = [0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
-z = [0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
-hold <span class="string">on</span>;
-plot3(x,y,z,<span class="string">'color'</span>,LineColor,<span class="string">'linewidth'</span>, LineThickness);
-<span class="comment">% xlabel('X'); ylabel('Y'); zlabel('Z')</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% draw_box_atom.m
@@ -119,7 +150,7 @@ plot3(x,y,z,<span class="string">'color'</span>,LineColor,<span class="string">'
 % does it work with triclinic sim box?
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -141,38 +172,69 @@ else
     LineThickness=1;
 end
 
-Lx = Box_dim(1);
-Ly = Box_dim(2);
-Lz = Box_dim(3);
-if numel(Box_dim)==3
+if size(Box_dim,2)==3 || size(Box_dim,2)==9
+    
+    Lx = Box_dim(1);
+    Ly = Box_dim(2);
+    Lz = Box_dim(3);
+    if numel(Box_dim)==3
+        xy = 0;
+        xz = 0;
+        yz = 0;
+    else
+        xy = Box_dim(6);
+        xz = Box_dim(8);
+        yz = Box_dim(9);
+    end
+    
+    a = Lx;
+    b = (Ly^2 + xy^2)^0.5;
+    c = (Lz^2 + xz^2 + yz^2)^0.5;
+    alfa = acosd((xy*xz+Ly*yz)/(b*c));
+    beta = acosd(xz/c);
+    gamma = acosd(xy/b);
+    Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
+    
+    Simbox = [a b c alfa beta gamma Volume];
+    assignin('base','Simbox',Simbox);
+    %copy(Simbox);
+    
+    x = [0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
+    y = [0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
+    z = [0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
+    hold on;
+    plot3(x,y,z,'color',LineColor,'linewidth', LineThickness);
+    % xlabel('X'); ylabel('Y'); zlabel('Z')
+    
+elseif size(Box_dim,2)==6
+    
+    Lx = Box_dim(4)-Box_dim(1);
+    Ly = Box_dim(5)-Box_dim(2);
+    Lz = Box_dim(6)-Box_dim(3);
+    
     xy = 0;
     xz = 0;
     yz = 0;
-else
-    xy = Box_dim(6);
-    xz = Box_dim(8);
-    yz = Box_dim(9);
+    
+    a = Lx;
+    b = (Ly^2 + xy^2)^0.5;
+    c = (Lz^2 + xz^2 + yz^2)^0.5;
+    alfa = acosd((xy*xz+Ly*yz)/(b*c));
+    beta = acosd(xz/c);
+    gamma = acosd(xy/b);
+    Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
+    
+    Simbox = [a b c alfa beta gamma Volume];
+    assignin('base','Simbox',Simbox);
+    %copy(Simbox);
+    
+    x = Box_dim(1)+[0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
+    y = Box_dim(2)+[0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
+    z = Box_dim(3)+[0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
+    hold on;
+    plot3(x,y,z,'color',LineColor,'linewidth', LineThickness);
+    % xlabel('X'); ylabel('Y'); zlabel('Z')
 end
-
-a = Lx;
-b = (Ly^2 + xy^2)^0.5;
-c = (Lz^2 + xz^2 + yz^2)^0.5;
-alfa = acosd((xy*xz+Ly*yz)/(b*c));
-beta = acosd(xz/c);
-gamma = acosd(xy/b);
-Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
-
-Simbox = [a b c alfa beta gamma Volume];
-assignin('base','Simbox',Simbox);
-%copy(Simbox);
-
-
-x = [0 a a+xy xy 0 nan xz a+xz a+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz];
-y = [0 0 b    b  0 nan yz yz   b+yz    b+yz yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ];
-z = [0 0 0    0  0 nan c  c    c       c    c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ];
-hold on;
-plot3(x,y,z,'color',LineColor,'linewidth', LineThickness);
-% xlabel('X'); ylabel('Y'); zlabel('Z')
 
 
 

@@ -30,7 +30,7 @@
 % insert_atom
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -40,7 +40,7 @@
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
-% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or'bulk' within the x|y|z or [value] range
+% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range
 %
 function atom = ionize_atom(type,resname,limits,nmax,varargin)
 
@@ -83,6 +83,14 @@ elseif numel(limits)==6
     Lx=limits(4)-limits(1);
     Ly=limits(5)-limits(2);
     Lz=limits(6)-limits(3);
+elseif numel(limits)==9
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
 end
 
 nx=ceil(Lx/Box_dim_temp(1));

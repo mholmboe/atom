@@ -3,7 +3,7 @@
 % file) to the atom struct format.
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -41,6 +41,15 @@ elseif isfield(in_atom,'molid') == true && sum(size(unique(XYZ_labels),1)) > 3
 end
 
 natom=molid(1);
+
+
+% This seems also to work for the coordinates but is 10% slower...
+% X=num2cell(new_XYZ_data(:,1));
+% Y=num2cell(new_XYZ_data(:,2));
+% Z=num2cell(new_XYZ_data(:,3));
+% [new_atom.x]=X{:};
+% [new_atom.y]=Y{:};
+% [new_atom.z]=Z{:};
 
 first_in=[1];last_in=[];
 for i=1:nAtoms

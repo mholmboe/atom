@@ -5,7 +5,7 @@
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -80,7 +80,7 @@ if numel(ind)==0
             [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
             H_atom(end).index=size(H_atom,2);
             r_vec=atom(i).neigh.r_vec;
-            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
             [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
         end
         i=i+1;
@@ -103,7 +103,7 @@ elseif nargin > 2
         [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
         H_atom(end).index=size(H_atom,2);
         r_vec=atom(i).neigh.r_vec;
-        H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
+        H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
         [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
     end
 end

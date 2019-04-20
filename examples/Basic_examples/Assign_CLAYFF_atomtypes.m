@@ -26,8 +26,7 @@ atom = replicate_atom(atom,Box_dim,[6 4 1]); % Replicate the structure by 6x4x1 
 
 %% Perform isomorphic substitution using <substitute_atom.html substitute_atom>
 % <substitute_atom.html substitute_atom> was written with centrosymmetric
-% minerals in mind, therfore it works bes
-t if the layer is centered at z=0 
+% minerals in mind, therfore it works best if the layer is centered at z=0 
 % in the xy-plane. It can handle both substitutions in the octahedral as
 % well as in the tetrahedral sheets. It distributes the substituted sites
 % randomly, except for the fact that one can choose a nearest distance

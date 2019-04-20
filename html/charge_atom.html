@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>charge_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="charge_atom.m"><style type="text/css">
+      --><title>charge_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="charge_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>charge_atom.m</h1><!--introduction--><div><ul><li>This function tries to charge the atom according to clayff or interface ff</li><li>If more than 4 arguments, it tries to smear out the excess charge</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>ffname is 'clayff' or 'interface'</li><li>watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = charge_atom(atom,Box_dim,'clayff','spc')</li><li>atom = charge_atom(atom,Box_dim,'interface','tip3p','more')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = charge_atom(atom,Box_dim,ffname,watermodel,varargin)
+  </style></head><body><div class="content"><h1>charge_atom.m</h1><!--introduction--><div><ul><li>This function tries to charge the atom according to clayff or interface ff</li><li>If more than 4 arguments, it tries to smear out the excess charge</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>ffname is 'clayff' or 'interface'</li><li>watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = charge_atom(atom,Box_dim,'clayff','spc')</li><li>atom = charge_atom(atom,Box_dim,'interface','tip3p','more')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = charge_atom(atom,Box_dim,ffname,watermodel,varargin)
 
 <span class="keyword">if</span> strcmpi(ffname,<span class="string">'clayff'</span>)
     clayff_param(sort(unique([atom.type])),watermodel);
@@ -94,7 +94,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         <span class="keyword">try</span>
             atom=charge_clayff_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         <span class="keyword">catch</span>
@@ -136,7 +136,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         <span class="keyword">try</span>
             atom=charge_clayff_2004_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         <span class="keyword">catch</span>
@@ -182,7 +182,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,<span class="string">'Oalt'</span>,4))];
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         Atom_label
-        Charge
+        round(Charge,5)
         atom = charge_interface_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
     <span class="keyword">else</span>
         atom=check_interface_charge(atom);
@@ -227,7 +227,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">end</span>
 
 disp(<span class="string">'Total charge'</span>)
-Total_charge=sum([atom.charge])
+round(sum([atom.charge]),5)
 <span class="comment">% atom=tweak_charge_atom(atom);</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'Total_charge'</span>,Total_charge);
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
@@ -241,7 +241,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Total_charge
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -278,7 +278,7 @@ if strcmpi(ffname,'clayff')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         try
             atom=charge_clayff_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -320,7 +320,7 @@ elseif strcmpi(ffname,'clayff_2004')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         try
             atom=charge_clayff_2004_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -366,7 +366,7 @@ elseif strcmpi(ffname,'interface')
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalt',4))];
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         Atom_label
-        Charge
+        round(Charge,5)
         atom = charge_interface_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
     else
         atom=check_interface_charge(atom);
@@ -411,7 +411,7 @@ elseif strcmpi(ffname,'interface15')
 end
 
 disp('Total charge')
-Total_charge=sum([atom.charge])
+round(sum([atom.charge]),5)
 % atom=tweak_charge_atom(atom);
 assignin('caller','Total_charge',Total_charge);
 

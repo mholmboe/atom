@@ -1,0 +1,234 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>plot_xvg.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="plot_xvg.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>plot_xvg.m</h1><!--introduction--><div><ul><li>This function imports and plots the type of .xvg files that the MD package Gromacs uses for some of its text-based data output. Note that the function can output the Data and optionally plot only certain data the data columns given as a second argument. Note also that the x and y ranges can also be set, see examples below.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Data = plot_xvg('energy.xvg')</li><li>Data = plot_xvg('energy.xvg',[1 5 3]) % Will plot the 5th and 3rd column vs. the 1st one.</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200]) % Will also set the X-axis to be  between 0 and 200</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Data = plot_xvg(filename,varargin)
+
+<span class="comment">% Check if the filename contains .xvg</span>
+<span class="keyword">if</span> regexp(filename,<span class="string">'.xvg'</span>) ~= false
+    filename = filename;
+<span class="keyword">else</span>
+    filename = strcat(filename,<span class="string">'.xvg'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Import the .xvg file, assigning the variables:</span>
+<span class="comment">% Data, xaxislabel, yaxislabel and yaxis_all_legends</span>
+Data=import_xvg(filename);
+
+<span class="comment">% In case you specified which columns to plot</span>
+<span class="keyword">if</span> nargin&gt;1
+    columns=varargin{1};
+    <span class="keyword">if</span> max(columns)&gt;size(Data,2)
+        disp(<span class="string">'You wanted to plot this many columns...'</span>)
+        size(columns,2)-1
+        disp(<span class="string">'...but only this many was found, except the first x-column...'</span>)
+        size(Data,2)
+        disp(<span class="string">'Plotting all data columns...'</span>)
+    <span class="keyword">elseif</span> numel(columns)&lt;1
+        disp(<span class="string">'Plotting all data columns...'</span>)
+    <span class="keyword">else</span>
+        Data=Data(:,columns);
+        <span class="keyword">try</span>
+        yaxis_all_legends=yaxis_all_legends(columns(2:end)-1);
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Did not get the yaxis_all_legends'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="comment">% In case you did set the X-range to be plotted</span>
+<span class="keyword">if</span> nargin&gt;2
+    xlimits=varargin{2};
+    indlo=find(Data(:,1)&lt;xlimits(1));
+    indhi=find(Data(:,1)&gt;xlimits(2));
+    Data([indlo; indhi],:)=[];
+<span class="keyword">end</span>
+
+<span class="comment">% Create figure</span>
+figure1 = figure(<span class="string">'Color'</span>,[1 1 1]);
+plot1=plot(Data(:,1),Data(:,2:end),<span class="string">'LineWidth'</span>,1.5);
+set(gcf,<span class="string">'color'</span>,<span class="string">'w'</span>);<span class="comment">%,'units','normalized','position',[0,0,.4,.6]);</span>
+<span class="comment">%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)</span>
+set(gca,<span class="string">'LineWidth'</span>,2,<span class="string">'FontName'</span>, <span class="string">'Arial'</span>,<span class="string">'FontSize'</span>,22,<span class="string">'TickDir'</span>,<span class="string">'out'</span>);<span class="comment">%,'Xtick',...</span>
+<span class="comment">%floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)</span>
+
+xlabel(xaxislabel,<span class="string">'FontSize'</span>,24);
+ylabel(yaxislabel,<span class="string">'FontSize'</span>,24);
+
+<span class="comment">% In case you did set the X-range to be plotted</span>
+xlim(<span class="string">'auto'</span>)
+<span class="keyword">if</span> nargin&gt;3
+    ylim(varargin{3});
+<span class="keyword">else</span>
+    ylim(<span class="string">'auto'</span>)
+<span class="keyword">end</span>
+
+<span class="comment">% Add a plot legend</span>
+legend(yaxis_all_legends,<span class="string">'Location'</span>,<span class="string">'best'</span>)
+
+assignin(<span class="string">'caller'</span>,<span class="string">'plot1'</span>,plot1);
+assignin(<span class="string">'caller'</span>,<span class="string">'figure1'</span>,figure1);
+assignin(<span class="string">'caller'</span>,<span class="string">'Data'</span>,Data);
+assignin(<span class="string">'caller'</span>,<span class="string">'xaxislabel'</span>,xaxislabel);
+assignin(<span class="string">'caller'</span>,<span class="string">'yaxislabel'</span>,yaxislabel);
+assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_legends'</span>,yaxis_all_legends);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% plot_xvg.m
+% * This function imports and plots the type of .xvg files that the MD 
+% package Gromacs uses for some of its text-based data output. Note that 
+% the function can output the Data and optionally plot only certain data 
+% the data columns given as a second argument.
+% Note also that the x and y ranges can also be set, see examples below.
+%
+%% Version
+% 2.03
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% #  Data = plot_xvg('energy.xvg')
+% #  Data = plot_xvg('energy.xvg',[1 5 3]) % Will plot the 5th and 3rd column vs. the 1st one.
+% #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200]) % Will also set the X-axis to be  between 0 and 200
+% #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5
+%
+function Data = plot_xvg(filename,varargin)
+
+% Check if the filename contains .xvg
+if regexp(filename,'.xvg') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.xvg');
+end
+
+% Import the .xvg file, assigning the variables:
+% Data, xaxislabel, yaxislabel and yaxis_all_legends
+Data=import_xvg(filename);
+
+% In case you specified which columns to plot
+if nargin>1
+    columns=varargin{1};
+    if max(columns)>size(Data,2)
+        disp('You wanted to plot this many columns...')
+        size(columns,2)-1
+        disp('...but only this many was found, except the first x-column...')
+        size(Data,2)
+        disp('Plotting all data columns...')
+    elseif numel(columns)<1
+        disp('Plotting all data columns...')
+    else
+        Data=Data(:,columns);
+        try
+        yaxis_all_legends=yaxis_all_legends(columns(2:end)-1);
+        catch
+            disp('Did not get the yaxis_all_legends')
+        end
+    end
+    
+end
+
+% In case you did set the X-range to be plotted
+if nargin>2
+    xlimits=varargin{2};
+    indlo=find(Data(:,1)<xlimits(1));
+    indhi=find(Data(:,1)>xlimits(2));
+    Data([indlo; indhi],:)=[];
+end
+
+% Create figure
+figure1 = figure('Color',[1 1 1]);
+plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
+set(gcf,'color','w');%,'units','normalized','position',[0,0,.4,.6]);
+%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
+set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out');%,'Xtick',...
+%floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)
+
+xlabel(xaxislabel,'FontSize',24);
+ylabel(yaxislabel,'FontSize',24);
+
+% In case you did set the X-range to be plotted
+xlim('auto')
+if nargin>3
+    ylim(varargin{3});
+else
+    ylim('auto')
+end
+
+% Add a plot legend
+legend(yaxis_all_legends,'Location','best')
+
+assignin('caller','plot1',plot1);
+assignin('caller','figure1',figure1);
+assignin('caller','Data',Data);
+assignin('caller','xaxislabel',xaxislabel);
+assignin('caller','yaxislabel',yaxislabel);
+assignin('caller','yaxis_all_legends',yaxis_all_legends);
+
+##### SOURCE END #####
+--></body></html>

@@ -74,8 +74,8 @@ for i = 1:length(cardata)
 %         compatiblity
 %         atom(j).fftype = {strtrim(line(13:16))}; % Changed to 17 for better
 %         compatiblity
-        atom(j).type = {upper(strtrim(line(64:67)))};
-        atom(j).fftype = {strtrim(line(1:4))};
+        atom(j).type = {strtrim(line(1:4))};
+        atom(j).fftype = {upper(strtrim(line(64:67)))};
         atom(j).index = j;
         atom(j).neigh.type = {};
         atom(j).neigh.index = zeros(6,1);
@@ -110,8 +110,10 @@ atom = resname_atom(atom);
 
 if nargin>1
     remove_type=varargin(1)
-    remove_type={'NA+','K+' 'CA2+' 'LI+'};
+    remove_type={'NA+' 'K+' 'CA2+' 'LI+'};
     ind_rm=ismember([atom.type],remove_type);
+    ind_rm2=ismember([atom.fftype],remove_type);
+    ind_rm=unique([find(ind_rm) find(ind_rm2)]);
     ion=atom(ind_rm);
     atom(ind_rm)=[];
 %     atomwion=update_atom({atom ion});
@@ -146,7 +148,7 @@ disp('.car file imported')
 disp('and the charge was found to be...')
 sum([atom.charge])
  
-write_atom_psf(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25)
+write_atom_psf(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
 write_atom_itp(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
 write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),'_gmx.pdb'));
 

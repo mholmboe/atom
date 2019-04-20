@@ -11,7 +11,7 @@
 % create_atom.m
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -19,8 +19,8 @@
 %% Examples
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol)
 % * atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)
-% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
-% * atom = insert_atom(atom,limits,'rorate',r,maxsol,solute_atom,[1 4],0.3)
+% * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
+% * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,[1 4],0.3)
 
 function atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
 

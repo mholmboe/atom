@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>hist_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="hist_atom.m"><style type="text/css">
+      --><title>hist_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="hist_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>hist_atom.m</h1><!--introduction--><div><ul><li>This function is used to calculate density profiles along X|Y|Z</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hist = hist_atom(atom,Box_dim,0.02)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Binsx,Countsx,Binsy,Countsy,Binsz,Countsz] = hist_atom(atom,Box_dim,s,varargin)
+  </style></head><body><div class="content"><h1>hist_atom.m</h1><!--introduction--><div><ul><li>This function is used to calculate density profiles along X|Y|Z</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hist = hist_atom(atom,Box_dim,0.02)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Binsx,Countsx,Binsy,Countsy,Binsz,Countsz] = hist_atom(atom,Box_dim,s,varargin)
 
 Binsx = (0:s:Box_dim(1,1)+s)';
 Binsy = (0:s:Box_dim(1,2)+s)';
@@ -88,9 +88,9 @@ Coords=[atom.x; atom.y; atom.z;]';
     Coords(Coords(:,3)&lt;0,3)=Coords(Coords(:,3)&lt;0,3)+Box_dim(1,3);
 <span class="keyword">end</span>
 
-Countsx=histcounts(Coords(:,1),numel(Binsx))';
-Countsy=histcounts(Coords(:,2),numel(Binsy))';
-Countsz=histcounts(Coords(:,3),numel(Binsz))';
+Countsx=histcounts(Coords(:,1),Binsx');
+Countsy=histcounts(Coords(:,2),Binsy');
+Countsz=histcounts(Coords(:,3),Binsz');
 Countsx=Countsx/(s*Box_dim(1,2)*Box_dim(1,3)*1E-30*6.022e23*1000); <span class="comment">% mol/L</span>
 Countsy=Countsy/(s*Box_dim(1,1)*Box_dim(1,3)*1E-30*6.022e23*1000); <span class="comment">% mol/L</span>
 Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); <span class="comment">% mol/L</span>
@@ -104,7 +104,9 @@ Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); <span class="
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin&gt;5
+
     sigma = varargin{3};
+    <span class="keyword">if</span> sigma&gt;0
     window = 100;
     x = linspace(-window / 2, window / 2, window);
     gaussFilter = exp(-x .^ 2 / (2 * sigma ^ 2));
@@ -112,8 +114,12 @@ Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); <span class="
     Countsx(:)=conv(Countsx(:)', gaussFilter, <span class="string">'same'</span>);
     Countsy(:)=conv(Countsy(:)', gaussFilter, <span class="string">'same'</span>);
     Countsz(:)=conv(Countsz(:)', gaussFilter, <span class="string">'same'</span>);
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+Binsx=Binsx(1:end-1)';
+Binsy=Binsy(1:end-1)';
+Binsz=Binsz(1:end-1)';
 assignin(<span class="string">'caller'</span>,<span class="string">'DensityX'</span>,[Binsx,Countsx]);
 assignin(<span class="string">'caller'</span>,<span class="string">'DensityY'</span>,[Binsy,Countsy]);
 assignin(<span class="string">'caller'</span>,<span class="string">'DensityZ'</span>,[Binsz,Countsz]);
@@ -123,7 +129,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'DensityZ'</s
 % * This function is used to calculate density profiles along X|Y|Z
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -153,9 +159,9 @@ if nargin>3
     Coords(Coords(:,3)<0,3)=Coords(Coords(:,3)<0,3)+Box_dim(1,3);
 end
 
-Countsx=histcounts(Coords(:,1),numel(Binsx))';
-Countsy=histcounts(Coords(:,2),numel(Binsy))';
-Countsz=histcounts(Coords(:,3),numel(Binsz))';
+Countsx=histcounts(Coords(:,1),Binsx');
+Countsy=histcounts(Coords(:,2),Binsy');
+Countsz=histcounts(Coords(:,3),Binsz');
 Countsx=Countsx/(s*Box_dim(1,2)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
 Countsy=Countsy/(s*Box_dim(1,1)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
 Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); % mol/L
@@ -169,7 +175,9 @@ if nargin>4
 end
 
 if nargin>5
+    
     sigma = varargin{3};
+    if sigma>0
     window = 100;
     x = linspace(-window / 2, window / 2, window);
     gaussFilter = exp(-x .^ 2 / (2 * sigma ^ 2));
@@ -177,8 +185,12 @@ if nargin>5
     Countsx(:)=conv(Countsx(:)', gaussFilter, 'same');
     Countsy(:)=conv(Countsy(:)', gaussFilter, 'same');
     Countsz(:)=conv(Countsz(:)', gaussFilter, 'same');
+    end
 end
 
+Binsx=Binsx(1:end-1)';
+Binsy=Binsy(1:end-1)';
+Binsz=Binsz(1:end-1)';
 assignin('caller','DensityX',[Binsx,Countsx]);
 assignin('caller','DensityY',[Binsy,Countsy]);
 assignin('caller','DensityZ',[Binsz,Countsz]);

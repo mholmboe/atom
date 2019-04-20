@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_xtc.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="import_xtc.m"><style type="text/css">
+      --><title>import_xtc.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="import_xtc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_xtc.m</h1><!--introduction--><div><ul><li>This function imports a structure file and a xtc file and relies on the 'mxdrfile' by Jon Kapla, see below</li><li><a href="http://kaplajon.github.io/mxdrfile/">http://kaplajon.github.io/mxdrfile/</a></li><li>Hence you need to download his mxdrfile package and add it to your Matlab path, see the installation inctructions on Jon's website.</li><li>This particular function basically just stores the trajectory with coordinates as columns and timesteps as rows, and writes the box dimensions to Box_dim</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_xtc('conf.gro',traj.xtc)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10,10000)</li></ol></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+  </style></head><body><div class="content"><h1>import_xtc.m</h1><!--introduction--><div><ul><li>This function imports a structure file and a xtc file and relies on the 'mxdrfile' by Jon Kapla, see below</li><li><a href="http://kaplajon.github.io/mxdrfile/">http://kaplajon.github.io/mxdrfile/</a></li><li>Hence you need to download his mxdrfile package and add it to your Matlab path, see the installation inctructions on Jon's website.</li><li>This particular function basically just stores the trajectory with coordinates as columns and timesteps as rows, and writes the box dimensions to Box_dim</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_xtc('conf.gro',traj.xtc)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10)</li><li>atom = import_xtc('conf.pdb',traj.xtc,10,10000)</li></ol></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">% This script imports an xtc trajectory file</span>
 <span class="comment">% xtc files with libxdrfile from gmx</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
@@ -104,9 +104,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 <span class="keyword">function</span> atom = import_xtc(filenameconf,filenamextc,varargin)
 
-PATH=getenv(<span class="string">'PATH'</span>);
-
-setenv(<span class="string">'PATH'</span>, [getenv(<span class="string">'PATH'</span>),<span class="string">':'</span>,<span class="string">'/usr/local/gromacs-2016.2/bin'</span>]);
+<span class="comment">% If you need to set your local Gromacs PATH (but you could also call PATH2GMX)</span>
+<span class="comment">% PATH=getenv('PATH');</span>
+<span class="comment">% setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);</span>
 
 <span class="keyword">if</span> regexp(filenameconf,<span class="string">'.gro'</span>) &gt; 1
     disp(<span class="string">'Found .gro file'</span>);
@@ -135,7 +135,7 @@ setenv(<span class="string">'PATH'</span>, [getenv(<span class="string">'PATH'</
 <span class="keyword">if</span> nargin&gt;3
     MaxFrames=varargin{2};
 <span class="keyword">else</span>
-    MaxFrames=20000; <span class="comment">% Decrease this one if slow...</span>
+    MaxFrames=10000; <span class="comment">% Decrease this one if slow...</span>
 <span class="keyword">end</span>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
@@ -219,7 +219,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % dimensions to Box_dim
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -267,9 +267,9 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 
 function atom = import_xtc(filenameconf,filenamextc,varargin)
 
-PATH=getenv('PATH');
-
-setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);
+% If you need to set your local Gromacs PATH (but you could also call PATH2GMX)
+% PATH=getenv('PATH');
+% setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);
 
 if regexp(filenameconf,'.gro') > 1
     disp('Found .gro file');
@@ -298,7 +298,7 @@ end
 if nargin>3
     MaxFrames=varargin{2};
 else
-    MaxFrames=20000; % Decrease this one if slow...
+    MaxFrames=10000; % Decrease this one if slow...
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
+      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.0</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
 </pre><pre class="codeinput">format <span class="string">long</span>;
 prev_atom_index=0;
 prev_atom_types=0;
@@ -106,10 +106,21 @@ nAtoms=size(atom,2);
         Total_charge
     <span class="keyword">end</span>
 <span class="keyword">else</span>
-    disp(<span class="string">'Unknown forcefield, will try clayff'</span>)
-    clayff_param(sort(unique([atom.type])),<span class="string">'spc/e'</span>);
-    atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,<span class="string">'spc/e'</span>);
-    Total_charge
+    <span class="comment">%     disp('Unknown forcefield, will try clayff')</span>
+    <span class="comment">%     clayff_param(sort(unique([atom.type])),'spc/e');</span>
+    <span class="comment">%     atom = charge_atom(atom,Box_dim,'clayff','spc/e');</span>
+    <span class="comment">%     Total_charge</span>
+    disp(<span class="string">'Forcefield not stated, will make some assumptions then...'</span>)
+    pause(2)
+    ffname=<span class="string">'clayff_2004'</span>
+    watermodel=<span class="string">'SPC/E'</span>
+    clayff_2004_param(sort(unique([atom.type])),watermodel);
+    atom = mass_atom(atom);
+    element=element_atom(atom);
+    [atom.element]=element.type;
+    <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
@@ -135,8 +146,13 @@ ind_HW=strncmpi([atom.type],<span class="string">'Ow'</span>,2);[atom(ind_HW).ty
 ind_HW=strncmpi([atom.type],<span class="string">'Hw'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Hw'</span>})
 Atom_label=sort(unique([atom.type]));
 Natom_types = length(Atom_label);
+
 <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
-    clayff_param(Atom_label,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
+    <span class="keyword">if</span> exist(<span class="string">'ffname'</span>,<span class="string">'var'</span>)
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    <span class="keyword">else</span>
+        clayff_param(Atom_label,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
+    <span class="keyword">end</span>
 <span class="keyword">else</span>
     disp(<span class="string">'Only clayff implemented sofar'</span>)
 <span class="keyword">end</span>
@@ -151,7 +167,8 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 
 <span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
 atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom);
+assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
 <span class="comment">% Start printing the lammps .lj file</span>
 fid = fopen(filename, <span class="string">'wt'</span>);
 
@@ -185,10 +202,21 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'Masses \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 
-<span class="keyword">for</span> i =1:length(Atom_label)
-    masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_label{i}};
-    fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
+<span class="keyword">if</span> isfield(atom,<span class="string">'mass'</span>)
+    <span class="keyword">for</span> i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), <span class="string">'#'</span>, Atom_label{i}};
+        fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
+    <span class="keyword">end</span>
+<span class="keyword">else</span> exist(<span class="string">'Masses'</span>,<span class="string">'var'</span>);
+    <span class="keyword">for</span> i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_label{i}};
+        fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
+<span class="comment">% for i =1:length(Atom_label)</span>
+<span class="comment">%     masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};</span>
+<span class="comment">%     fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});</span>
+<span class="comment">% end</span>
 fprintf(fid, <span class="string">'\r\n'</span>);
 </pre><pre class="codeinput">fprintf(fid, <span class="string">'Pair Coeffs \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
@@ -206,8 +234,7 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 
 <span class="comment">% atom = bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist);</span>
 <span class="comment">% atom = charge_clayff_atom(atom,Box_dim); %{'Al' 'Mgo' 'Si' 'H'},(1.575 1.36 2.1 0.425));</span>
-
-atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel);
+<span class="comment">% atom = charge_atom(atom,Box_dim,'clayff',watermodel);</span>
 
 <span class="keyword">for</span> i = 1:size(atom,2)
     <span class="comment">%     Atoms_data(i,:) = {i, molID(i), Atom_label_ID(i), Charge(Atom_label_ID(i,1)), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};</span>
@@ -259,7 +286,6 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 <span class="comment">% Prints angle data</span>
 fprintf(fid, <span class="string">'Angles \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
-
 <span class="keyword">if</span> length(angle_atoms)&gt;0
     count_a = 1;
     <span class="keyword">while</span> count_a &lt;= nAngles
@@ -287,7 +313,7 @@ fclose(fid);
 % Clayff systems
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -335,10 +361,21 @@ if nargin>5
         Total_charge
     end
 else
-    disp('Unknown forcefield, will try clayff')
-    clayff_param(sort(unique([atom.type])),'spc/e');
-    atom = charge_atom(atom,Box_dim,'clayff','spc/e');
-    Total_charge
+    %     disp('Unknown forcefield, will try clayff')
+    %     clayff_param(sort(unique([atom.type])),'spc/e');
+    %     atom = charge_atom(atom,Box_dim,'clayff','spc/e');
+    %     Total_charge
+    disp('Forcefield not stated, will make some assumptions then...')
+    pause(2)
+    ffname='clayff_2004'
+    watermodel='SPC/E'
+    clayff_2004_param(sort(unique([atom.type])),watermodel);
+    atom = mass_atom(atom);
+    element=element_atom(atom);
+    [atom.element]=element.type;
+    if ~isfield(atom,'charge')
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -364,8 +401,13 @@ ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'})
 ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'})
 Atom_label=sort(unique([atom.type]));
 Natom_types = length(Atom_label);
+
 if strncmpi(ffname,'clayff',5)
-    clayff_param(Atom_label,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
+    if exist('ffname','var')
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    else
+        clayff_param(Atom_label,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
+    end
 else
     disp('Only clayff implemented sofar')
 end
@@ -380,7 +422,8 @@ end
 
 % Scan the xyz data and look for O-H bonds and angles
 atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-
+assignin('caller','atom',atom);
+assignin('caller','Angle_index',Angle_index);
 % Start printing the lammps .lj file
 fid = fopen(filename, 'wt');
 
@@ -417,10 +460,21 @@ fprintf(fid, '\r\n');
 fprintf(fid, 'Masses \r\n');
 fprintf(fid, '\r\n');
 
-for i =1:length(Atom_label)
-    masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
-    fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+if isfield(atom,'mass')
+    for i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_label{i}};
+        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+    end
+else exist('Masses','var');
+    for i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
+        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+    end
 end
+% for i =1:length(Atom_label)
+%     masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
+%     fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+% end
 fprintf(fid, '\r\n');
 %%
 %%
@@ -440,8 +494,7 @@ fprintf(fid, '\r\n');
 
 % atom = bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist);
 % atom = charge_clayff_atom(atom,Box_dim); %{'Al' 'Mgo' 'Si' 'H'},(1.575 1.36 2.1 0.425));
-
-atom = charge_atom(atom,Box_dim,'clayff',watermodel);
+% atom = charge_atom(atom,Box_dim,'clayff',watermodel);
 
 for i = 1:size(atom,2)
     %     Atoms_data(i,:) = {i, molID(i), Atom_label_ID(i), Charge(Atom_label_ID(i,1)), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};
@@ -495,7 +548,6 @@ fprintf(fid, '\r\n');
 % Prints angle data
 fprintf(fid, 'Angles \r\n');
 fprintf(fid, '\r\n');
-
 if length(angle_atoms)>0
     count_a = 1;
     while count_a <= nAngles

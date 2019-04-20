@@ -7,7 +7,7 @@
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -44,7 +44,7 @@ if strcmpi(ffname,'clayff')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         try
             atom=charge_clayff_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -86,7 +86,7 @@ elseif strcmpi(ffname,'clayff_2004')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        Charge
+        round(Charge,5)
         try
             atom=charge_clayff_2004_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -132,7 +132,7 @@ elseif strcmpi(ffname,'interface')
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalt',4))];
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         Atom_label
-        Charge
+        round(Charge,5)
         atom = charge_interface_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
     else
         atom=check_interface_charge(atom);
@@ -177,6 +177,6 @@ elseif strcmpi(ffname,'interface15')
 end
 
 disp('Total charge')
-Total_charge=sum([atom.charge])
+round(sum([atom.charge]),5)
 % atom=tweak_charge_atom(atom);
 assignin('caller','Total_charge',Total_charge);

@@ -9,7 +9,7 @@
 % dimensions to Box_dim
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -57,9 +57,9 @@
 
 function atom = import_xtc(filenameconf,filenamextc,varargin)
 
-PATH=getenv('PATH');
-
-setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);
+% If you need to set your local Gromacs PATH (but you could also call PATH2GMX)
+% PATH=getenv('PATH');
+% setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin']);
 
 if regexp(filenameconf,'.gro') > 1
     disp('Found .gro file');
@@ -88,7 +88,7 @@ end
 if nargin>3
     MaxFrames=varargin{2};
 else
-    MaxFrames=20000; % Decrease this one if slow...
+    MaxFrames=10000; % Decrease this one if slow...
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

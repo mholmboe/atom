@@ -1,5 +1,5 @@
 %% solvate_atom.m
-% * This function generates a certain region defined by <limits> with a 
+% * This function generates a certain region defined by <limits> with a
 % * solvent structure of density <density>, or a solvent shell with
 % * thickness shell10|15|20|25|30 Ångström around the any given solute
 %
@@ -27,7 +27,7 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -72,10 +72,18 @@ elseif numel(limits)==3
     limits(5)=limits(2);
     limits(6)=limits(3);
     limits(1:3)=0;
-elseif numel(limits)>3
+elseif numel(limits)==6
     Lx=limits(4)-limits(1);
     Ly=limits(5)-limits(2);
     Lz=limits(6)-limits(3);
+elseif numel(limits)==9
+    Lx=limits(1);
+    Ly=limits(2);
+    Lz=limits(3);
+    limits(4)=limits(1);
+    limits(5)=limits(2);
+    limits(6)=limits(3);
+    limits(1:3)=0;
 end
 
 % Old way of doing it...
@@ -218,6 +226,7 @@ if maxsol>size(rand_molid,2)
     maxsol
     size(rand_molid,2)
 end
+maxsol
 rand_molid=rand_molid(1:maxsol);
 
 rand_index=ismember([SOL.molid],rand_molid);

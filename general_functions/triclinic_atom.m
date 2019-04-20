@@ -1,9 +1,9 @@
 %% triclinic_atom.m
-% * This function transforms an orthogonal atom struct to a triclinic with 
+% * This function transforms an orthogonal atom struct to a triclinic with
 % * the angles alfa, beta, gamma or tilt factors xy, xz, yz
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -17,28 +17,34 @@ function atom = triclinic_atom(atom,Box_dim,angleparam,angletype)
 
 if strncmpi(angletype,'angle',5)
     disp('Using angles')
-    a=Box_dim(1);
-    b=Box_dim(2);
-    c=Box_dim(3);
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
     alfa=angleparam(1);
     beta=angleparam(2);
     gamma=angleparam(3);
-    lx = a;
+    a = lx;
+    b = ly/((1-cos(pi()/180*gamma)^2)^0.5);
     xy = b * cos(deg2rad(gamma));
-    ly = (b^2-xy^2)^.5;
-    xz = c*cos(deg2rad(beta));
-    yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
-    lz = (c^2 - xz^2 - yz^2)^0.5;
+    %%
+    c=lz; % approx.
+    c_temp=c+10;i=0;
+    while i<100 % There should be a better way of doing this...
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        c = (lz^2 + xz^2 + yz^2)^.5;
+        i=i+1;c_temp=c;
+    end
 else
     disp('Using tilt values')
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
-%     if size(Box_dim,2)==9
-%         xy=Box_dim(6);
-%         xz=Box_dim(8);
-%         yz=Box_dim(9);
-%     end
+    %     if size(Box_dim,2)==9
+    %         xy=Box_dim(6);
+    %         xz=Box_dim(8);
+    %         yz=Box_dim(9);
+    %     end
     xy=angleparam(1);
     xz=angleparam(2);
     yz=angleparam(3);

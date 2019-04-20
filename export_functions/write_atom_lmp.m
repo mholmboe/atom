@@ -3,7 +3,7 @@
 % Clayff systems
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -51,10 +51,21 @@ if nargin>5
         Total_charge
     end
 else
-    disp('Unknown forcefield, will try clayff')
-    clayff_param(sort(unique([atom.type])),'spc/e');
-    atom = charge_atom(atom,Box_dim,'clayff','spc/e');
-    Total_charge
+    %     disp('Unknown forcefield, will try clayff')
+    %     clayff_param(sort(unique([atom.type])),'spc/e');
+    %     atom = charge_atom(atom,Box_dim,'clayff','spc/e');
+    %     Total_charge
+    disp('Forcefield not stated, will make some assumptions then...')
+    pause(2)
+    ffname='clayff_2004'
+    watermodel='SPC/E'
+    clayff_2004_param(sort(unique([atom.type])),watermodel);
+    atom = mass_atom(atom);
+    element=element_atom(atom);
+    [atom.element]=element.type;
+    if ~isfield(atom,'charge')
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -80,8 +91,13 @@ ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'})
 ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'})
 Atom_label=sort(unique([atom.type]));
 Natom_types = length(Atom_label);
+
 if strncmpi(ffname,'clayff',5)
-    clayff_param(Atom_label,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
+    if exist('ffname','var')
+        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    else
+        clayff_param(Atom_label,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
+    end
 else
     disp('Only clayff implemented sofar')
 end
@@ -96,7 +112,8 @@ end
 
 % Scan the xyz data and look for O-H bonds and angles
 atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-
+assignin('caller','atom',atom);
+assignin('caller','Angle_index',Angle_index);
 % Start printing the lammps .lj file
 fid = fopen(filename, 'wt');
 
@@ -133,10 +150,21 @@ fprintf(fid, '\r\n');
 fprintf(fid, 'Masses \r\n');
 fprintf(fid, '\r\n');
 
-for i =1:length(Atom_label)
-    masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
-    fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+if isfield(atom,'mass')
+    for i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_label{i}};
+        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+    end
+else exist('Masses','var');
+    for i =1:length(Atom_label)
+        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
+        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+    end
 end
+% for i =1:length(Atom_label)
+%     masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
+%     fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+% end
 fprintf(fid, '\r\n');
 %%
 %%
@@ -156,8 +184,7 @@ fprintf(fid, '\r\n');
 
 % atom = bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist);
 % atom = charge_clayff_atom(atom,Box_dim); %{'Al' 'Mgo' 'Si' 'H'},(1.575 1.36 2.1 0.425));
-
-atom = charge_atom(atom,Box_dim,'clayff',watermodel);
+% atom = charge_atom(atom,Box_dim,'clayff',watermodel);
 
 for i = 1:size(atom,2)
     %     Atoms_data(i,:) = {i, molID(i), Atom_label_ID(i), Charge(Atom_label_ID(i,1)), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};
@@ -211,7 +238,6 @@ fprintf(fid, '\r\n');
 % Prints angle data
 fprintf(fid, 'Angles \r\n');
 fprintf(fid, '\r\n');
-
 if length(angle_atoms)>0
     count_a = 1;
     while count_a <= nAngles

@@ -9,7 +9,7 @@
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

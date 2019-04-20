@@ -5,7 +5,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -8,7 +8,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.0
+% 2.03
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -62,13 +62,13 @@ end
 ind1=find(strcmpi(Ion_1,ion1));
 ind2=find(strcmpi(Ion_2,ion2));
 
-if valence_ion1>-100
+if valence_ion1>-50
     valence1_ind=find(Valence_1==valence_ion1);
     ind1=intersect(ind1,valence1_ind);
     %     ind2=intersect(ind1,valence1_ind);
 end
 
-% if valence_ion2>-100
+% if valence_ion2>-50
 %     valence2_ind=find(Valence_2==valence_ion2);
 % %     ind1=intersect(ind1,valence2_ind);
 %     ind2=intersect(ind2,valence2_ind);
@@ -91,6 +91,9 @@ if numel(ind)==0
     ind=ind1(ind);
 end
 
+% % Blacklist these H-O entries
+ind(ind==640)=[];ind(ind==639)=[];ind(ind==638)=[];ind(ind==637)=[];ind(ind==636)=[];
+
 if numel(ind)==0
     disp('Could not find any matching pair...')
     ion1
@@ -107,8 +110,8 @@ else
     bvalue=b(ind(1));
     bv=exp((R0(ind(1))-R)/bvalue);
     for i=1:numel(ind)
-        bvalue=b(ind(i));
-        bv_temp(i)=exp((R0(ind(i))-R)/bvalue);
+        bvalue_temp=b(ind(i));
+        bv_temp(i)=exp((R0(ind(i))-R)/bvalue_temp);
     end
 end
 mean_bv=mean(bv_temp);
