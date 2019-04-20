@@ -1,6 +1,6 @@
 %% List of the main variables
 %
-% # <Atom_label_variable.m Atom_label> % A 1xn cell array 
+% # <Atom_label_variable.m Atom_label> % 1xn cell array 
 % # <atom_variable.m atom> % The main matlab struct variable
 % # <Box_dim_variable.m Box_dim> % A 1x3 or 1x9 array variable holding the Box 
 % size parameters

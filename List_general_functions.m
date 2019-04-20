@@ -23,7 +23,7 @@
 
 %% Other general functions
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct
-% # <analyze_atom.html analyze_atom(atom,Box_dim,max_H_dist,max_dist)> % This function analyzes variofus things of the MMT atom struct
+% # <analyze_atom.html analyze_atom(atom,Box_dim)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % This function retrieves the atomic scattering factor vs 2theta using the 11 coeff parameters from Waasmaier Kirfel, 1995
 % # <ave_atom.html ave_atom(atom)> % This function calculates the mean of the atom coordinates
 % # <cat_atom.html cat_atom.m> % This is a special script (and not a function) that imports and appends atom structs into a .gro trajectory file, useful to make a trajectory with varying number of particles
@@ -48,7 +48,6 @@
 % # <place_atom.html place_atom(atom,position)> % This function places the atom struct according to the position vector called position, trying to use the COM of the molecule
 % # <plot_density_atom.html plot_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
 % # <plot_atom.html plot_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D. Its very simplistic with no cool features
-% # <properties_atom.html properties_atom(atom,Box_dim,varargin)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
 % # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % This function calculates the reduced mass.
 % # <triclinic_atom.html triclinic_atom(atom,Box_dim,angleparam,angletype)> %  triclinic_atom.m - This transforms an orthogonal atom struct to a triclinic with the angles alfa, beta, gamma or tilt factors xy, xz, yz
 % # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
