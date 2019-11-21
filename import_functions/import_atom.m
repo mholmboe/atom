@@ -1,10 +1,10 @@
 %% import_atom.m
-% * This function imports a .xyz|.gro|.pdb file and puts the data in the 
-% structure variable called atom
+% * This function imports a .xyz|.gro|.pdb and basic .mol2 files and puts 
+% the data in the structure variable called atom
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -15,7 +15,7 @@
 % # atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
 function atom = import_atom(filename,varargin)
-%% 
+%%
 
 if iscell(filename)
     filename=char(filename);
@@ -37,7 +37,7 @@ if regexp(filename,'.gro') > 1
     end
     
 elseif regexp(filename,'.pdb') > 1
-    disp('Found .pdb file');   
+    disp('Found .pdb file');
     if nargin==2
         trans_vec=cell2mat(varargin(1));
         atom = import_atom_pdb(filename,trans_vec);
@@ -47,6 +47,19 @@ elseif regexp(filename,'.pdb') > 1
         atom = import_atom_pdb(filename,trans_vec,NewBox_dim);
     else
         atom = import_atom_pdb(filename);
+    end
+    
+elseif regexp(filename,'.mol2') > 1
+    disp('Found .mol2 file');
+    if nargin==2
+        trans_vec=cell2mat(varargin(1));
+        atom = import_atom_mol2(filename,trans_vec);
+    elseif nargin==3
+        trans_vec=cell2mat(varargin(1));
+        NewBox_dim=cell2mat(varargin(2));
+        atom = import_atom_mol2(filename,trans_vec,NewBox_dim);
+    else
+        atom = import_atom_mol2(filename);
     end
     
 elseif regexp(filename,'.xyz') > 1
@@ -68,8 +81,20 @@ elseif regexp(filename,'.xyz') > 1
     end
 end
 
+%%%%%%%%%% To analyze/find bonds
+if size(atom,2)<2000
+    try
+    disp('Looking up bonds')
+    atom=bond_atom(atom,Box_dim,2.4);
+    atom=update_atom(atom);
+    catch
+       disp('Could not find bonds') 
+    end
+end
 %%%%%%%%%% To analyze composition
+disp('Composition info:')
 composition_atom(atom);
+disp('The box dimensions are:')
 Box_dim
 
 %atom = resname_atom(atom);

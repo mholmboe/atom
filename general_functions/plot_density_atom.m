@@ -2,7 +2,7 @@
 % * This function is used to plot density profiles in the X|Y|Z-direction
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -50,7 +50,7 @@ else
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'b','LineWidth',2);
     plot3(flipud(z)/scalehist+Box_dim(1,1)+1,Box_dim(1,2)+ones(numel(z),1),dz,'k','LineWidth',1);
 end
-axis([-5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(x/scalehist+Box_dim(1,3)+1)/10)*10],'equal');
+axis([-5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(z/scalehist+Box_dim(1,2)+1)/10)*10 -5 ceil(max(x/scalehist+Box_dim(1,3)+1)/10)*10],'equal');
 
 fig = gcf;fig.Color = [1 1 1];
 set(gca,'Color',[1 1 1]);

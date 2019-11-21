@@ -2,7 +2,7 @@
 % * This function scales the coordinates in the atom struct
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -11,8 +11,13 @@
 % # atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')
 % # atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')
 %
-function atom = scale_atom(atom,Box_dim,scale_vec,Resname)
- 
+function atom = scale_atom(atom,Box_dim,scale_vec,varargin)
+
+if nargin>3
+    Resname=varargin{1};
+else
+    Resname='ALL';
+end
 
 disp('Scaling the coordinates')
 
@@ -33,6 +38,11 @@ y_shift=num2cell([atom(ind_resname).y]*scale_vec(2)); [atom(ind_resname).y]=deal
 z_shift=num2cell([atom(ind_resname).z]*scale_vec(3)); [atom(ind_resname).z]=deal(z_shift{:});
 
 Box_dim(1:3)=Box_dim(1:3).*scale_vec;
+if numel(Box_dim(1,1:end))==9
+    Box_dim(6)=Box_dim(6)*scale_vec(1); % Tested by scaling - replicating triclinic box
+    Box_dim(8)=Box_dim(8)*scale_vec(3); %
+    Box_dim(9)=Box_dim(9)*scale_vec(2); %
+end
 
 atom=update_atom(atom);
 

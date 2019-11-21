@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>dist_matrix.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="dist_matrix_atom.m"><style type="text/css">
+      --><title>dist_matrix.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="dist_matrix_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>dist_matrix.m</h1><!--introduction--><div><ul><li>This function calculates the distance matrix from the atom struct, or the distances between atom1 and atom2</li><li>Note that there is also and cell_list_dist_matrix_atom function that might be faster for large systems...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>dist_matrix = dist_matrix_atom(atom1,Box_dim)</li><li>dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> dist_matrix = dist_matrix_atom(atom1,varargin) <span class="comment">% ,atom2,Box_dim); % or % ,Box_dim);</span>
+  </style></head><body><div class="content"><h1>dist_matrix.m</h1><!--introduction--><div><ul><li>This function calculates the distance matrix from the atom struct, or the distances between atom1 and atom2</li><li>Note that there is also and cell_list_dist_matrix_atom function that might be faster for large systems...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>dist_matrix = dist_matrix_atom(atom1,Box_dim)</li><li>dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> dist_matrix = dist_matrix_atom(atom1,varargin) <span class="comment">% ,atom2,Box_dim); % or % ,Box_dim);</span>
 
 format <span class="string">compact</span>;
 
@@ -167,6 +167,7 @@ Z_dist = dist_matrix;
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+i
 
 <span class="comment">% New transposed output</span>
 dist_matrix=dist_matrix';
@@ -190,7 +191,7 @@ dist_matrix=dist_matrix';
 % might be faster for large systems...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -300,6 +301,7 @@ else % if cell is triclinic, and this part is not actually tested yet...
     end
 end
 
+i
 
 % New transposed output
 dist_matrix=dist_matrix';

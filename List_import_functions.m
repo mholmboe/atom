@@ -1,5 +1,11 @@
 %% List of import functions
-
+%
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
 %% Import of data files
 % # <import_xvg.html import_xvg(filename)> % This function imports a Gromacs .xvg file
 

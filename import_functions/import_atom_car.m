@@ -148,7 +148,7 @@ disp('.car file imported')
 disp('and the charge was found to be...')
 sum([atom.charge])
  
-write_atom_psf(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
-write_atom_itp(atom,Box_dim,strcat(filename(1:end-4),'_gmx'),1.25,2.25,'interface_car','tip3p')
-write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),'_gmx.pdb'));
+write_atom_psf(atom,Box_dim,strcat(filename(1:end-4)),1.25,2.25,'interface_car','tip3p')
+write_atom_itp(atom,Box_dim,strcat(filename(1:end-4)),1.25,2.25,'interface_car','tip3p')
+write_atom_pdb(atom,Box_dim,strcat(filename(1:end-4),'.pdb'));
 

@@ -1,0 +1,17 @@
+#include "interface15.ff/forcefield.itp"
+#include "mont0_333_K_15_single_layer.itp"
+#include "interface15.ff/ions.itp"
+#include "interface15.ff/tip3p.itp" ; or spc.itp
+
+
+[ system ]
+; Name
+2 Na-montmorillonite layers with three water-layers
+
+[ molecules ]
+; Compound        #mols
+MMT 2
+Na 20
+SOL 450
+
+

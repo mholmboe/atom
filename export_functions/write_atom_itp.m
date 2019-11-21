@@ -1,16 +1,27 @@
 %% write_atom_itp.m
 % * This script creates and prints a gromacs .itp file
 % * Works best for clayff or interface ff with spc, spce or tip3p
+% * The variables explicit_bonds|explicit_angles (1/0) on that are set
+% * between lines ~50-120 for each specific forcefield, determines if the
+% * bond and angle terms are added to the .itp file.
+% *
+% * In the examples below, the first cutoff (1.25) represents max bond
+% * distance to any H. The second cutoff (2.25) represents the max bond
+% * distance between any non-H atomtypes, like Si-O.
+% * Additional commands governing the selection of bonds/angles can be
+% * found on lines ~140-170, and 175-190 for angles
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # write_atom_itp(atom,Box_dim,filename)
+% # write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
+% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
 
 function write_atom_itp(atom,Box_dim,filename,varargin)
 
@@ -45,7 +56,7 @@ if nargin>5
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
         end
-        Total_charge=sum([atom.charge]);
+        Total_charge=sum([atom.charge])
         round(Total_charge,5)
         %         pause
         nrexcl=1; % See the gromacs manual
@@ -56,7 +67,7 @@ if nargin>5
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
         end
-        Total_charge=sum([atom.charge]);
+        Total_charge=sum([atom.charge])
         round(Total_charge,5)
         %         pause
         nrexcl=1; % See the gromacs manual
@@ -64,8 +75,10 @@ if nargin>5
         explicit_angles = 0;
     elseif strcmpi(ffname,'interface')
         interface_param(sort(unique([atom.type])),watermodel);
-        atom = charge_atom(atom,Box_dim,'interface',watermodel,'adjust');
-        Total_charge
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'interface',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
         nrexcl=2; % See the gromacs manual
         explicit_bonds = 1;
         explicit_angles = 1;
@@ -114,63 +127,76 @@ else
     end
     nrexcl=1; % See the gromacs manual
     explicit_bonds = 0;
-    explicit_angles = 1;
+    explicit_angles = 0;
 end
 
-%
-ind_allh = find(~cellfun(@isempty,regexpi([atom.type],'h')));
-ind_H=find(strncmp([atom.type],{'H'},1));
-ind_O=find(strncmp([atom.type],{'O'},1));
-ind_Oh=intersect(ind_O,ind_allh);
-ind_Al=find(strncmp([atom.type],'Al',2));
-ind_Mgo=find(strncmp([atom.type],{'Mgo'},3));
-ind_Si=find(strncmp([atom.type],{'Si'},2));
-ind_Oct=sort([ind_Al ind_Mgo]);
+%% Find atomtype specific indexes
+
+ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],'h')));
+ind_H=find(strncmpi([atom.type],{'H'},1));
+ind_O=find(strncmpi([atom.type],{'O'},1));
+ind_Osih=find(strncmpi([atom.type],{'Osih'},4));
+ind_Oh=intersect(ind_O,ind_Hneighbours);
+ind_Al=find(strncmpi([atom.type],'Al',2));
+ind_Mgo=find(strncmpi([atom.type],{'Mgo'},3));
+ind_Si=find(strncmpi([atom.type],{'Si'},2));
+ind_Oct=sort([ind_Mgo]);
 
 atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
-if strncmpi(ffname,'clayff',5)
-    disp('What to do with edge bonds?')
-    [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_allh)));
-    Bond_index=Bond_index(h_row,:);
+% if strncmpi(ffname,'clayff',5)
+%     %     %% To only keep bonds to atoms also bonded to H's, uncomment the next four lines
+%     %     disp('Keeping only bonds with H')
+%     %     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Hneighbours)));
+%     %     Bond_index=Bond_index(h_row,:);
+%     %     nBonds=size(Bond_index,1);
+%     
+    %% To only keep bonds to H's, uncomment the next four lines
+    [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
+    Bond_index=Bond_index(H_row,:);
     nBonds=size(Bond_index,1);
-    %             disp('Keeping only bonds with H')
-    %             [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
-    %             Bond_index=Bond_index(H_row,:);
-    %             nBonds=size(Bond_index,1);
-    %         %
-    %         [Al_row,Al_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Al)));
-    %         Bond_index(Al_row,:)=[];
-    %         % To remove bonds with 'Si'
-    %         [Si_row,Si_col]=ind2sub(size(Bond_index),find(ismember(Bond_index(:,2),ind_Si)));
-    %         Bond_index(Si_row,:)=[];
-    %% Extra stuff
-    %% Bond_index
-    rm_ind=find(Bond_index(:,3)>1.25);
-    Bond_index(rm_ind,:)=[];
-    [Y,I]=sort(Bond_index(:,1));
-    Bond_index=Bond_index(I,:);
-    Bond_index = unique(Bond_index,'rows','stable');
-    
-end
-
-if strncmpi(ffname,'clayff',5)
-    disp('What to do with edge angles with Al')
-    %     disp('Removing angles with Al')
-    %     [Al_row,Al_col]=ind2sub(size(Angle_index),find(ismember(Angle_index,ind_Al)));
-    %     Angle_index(Al_row,:)=[];
-    %     % To remove angles with 'Si'
-    %     Si_ind=find(strcmp(XYZ_labels(:,1),'Si'));
-    %     [Si_row,Si_col]=ind2sub(size(Angle_index),find(ismember(Angle_index(:,2),Si_ind)));
-    %     Angle_index(Si_row,:)=[];
-    %% Extra stuff
-    % Angle_index
-    rm_ind=find(Angle_index(:,4)>150|Angle_index(:,4)<60);
-    Angle_index(rm_ind,:)=[];
-    
-    [Y,I]=sort(Angle_index(:,2));
-    Angle_index=Angle_index(I,:);
-    Angle_index = unique(Angle_index,'rows','stable');
-end
+%     
+%     %     %% To only keep bonds between Osih - H, uncomment the next four lines
+%     %     disp('Keeping only bonds with H')
+%     %     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Osih)));
+%     %     Bond_index=Bond_index(h_row,:);
+%     %     nBonds=size(Bond_index,1);
+%     
+%     %     %% To remove bonds with 'Al'
+%     %     [Al_row,Al_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Al)));
+%     %     Bond_index(Al_row,:)=[];
+%     %     nBonds=size(Bond_index,1);
+%     
+%     %     %% To remove bonds with 'Si'
+%     %     [Si_row,Si_col]=ind2sub(size(Bond_index),find(ismember(Bond_index(:,2),ind_Si)));
+%     %     Bond_index(Si_row,:)=[];
+%     %     nBonds=size(Bond_index,1);
+%     
+%     %    %% To remove bonds larger than certain rmin, uncomment next two lines
+%     %     rm_ind=find(Bond_index(:,3)>1.25);
+%     %     Bond_index(rm_ind,:)=[];
+%     %     nBonds=size(Bond_index,1);
+%     
+% end
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+% if strncmpi(ffname,'clayff',5)
+%     disp('What to do with edge angles with Al')
+%     disp('Removing angles with Al')
+%     [Al_row,Al_col]=ind2sub(size(Angle_index),find(ismember(Angle_index,ind_Al)));
+%     Angle_index(Al_row,:)=[];
+%     % To remove angles with 'Si'
+%     Si_ind=find(strcmp(XYZ_labels(:,1),'Si'));
+%     [Si_row,Si_col]=ind2sub(size(Angle_index),find(ismember(Angle_index(:,2),Si_ind)));
+%     Angle_index(Si_row,:)=[];
+% %% Extra stuff
+%     Angle_index
+%     rm_ind=find(Angle_index(:,4)>150|Angle_index(:,4)<60);
+%     Angle_index(rm_ind,:)=[];
+%     [Y,I]=sort(Angle_index(:,2));
+%     Angle_index=Angle_index(I,:);
+%     Angle_index = unique(Angle_index,'rows','stable');
+% end
 
 
 
@@ -186,7 +212,7 @@ fprintf(fid, '%s % s\r\n',';','File written by MHolmboe (michael.holmboe@umu.se)
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ moleculetype ]');
 fprintf(fid, '%s % s\r\n',';','molname   nrexcl');
-fprintf(fid, '%s       %d\r\n',strrep(molecule_name,'.itp',''),nrexcl);
+fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ atoms ]');
 fprintf(fid, '%s\r\n','; id   attype  resnr resname  atname   cgnr charge      mass');
@@ -197,11 +223,11 @@ for i = 1:nAtoms
         Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);
     end
     if isfield(atom,'mass')
-        Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],5),[atom(i).mass]};
+        Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6),[atom(i).mass]};
     else exist('Masses','var');
-        Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],5), Masses(Atom_label_ID(i,1))};
+        Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     end
-    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.5f\t%8.6f\r\n', Atoms_data{i,:});
+    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.6f\t%8.6f\r\n', Atoms_data{i,:});
 end
 
 fprintf(fid, '\r\n');
@@ -383,7 +409,7 @@ fprintf(fid, '[ position_restraints ] \r\n');
 fprintf(fid, '%s\r\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+        pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\r\n', pos_res{i,:});
         fprintf(fid, '\r\n');
     end
@@ -393,13 +419,13 @@ fprintf(fid, '#endif \r\n');
 fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 
-fprintf(fid, '#ifdef POSRES_XY_MMT_1 \r\n');
+fprintf(fid, '#ifdef POSRES_XY \r\n');
 fprintf(fid, '[ position_restraints ] \r\n');
 fprintf(fid, '%s\r\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Oct)
         if strcmp([atom(i).type],'Al') > 0 || strcmp([atom(i).type],'Mgo') > 0
-            pos_res(i,:) = {num2str(i), '1', '1000', '1000','0'};
+            pos_res(i,:) = {num2str(i), '1', '500', '500','500'};
             fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\r\n', pos_res{i,:});
             fprintf(fid, '\r\n');
         end

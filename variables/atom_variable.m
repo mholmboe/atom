@@ -1,7 +1,7 @@
 %% atom
 %
 %% Introduction to the atom struct
-% The <atom.html atom> struct variable (as in Atomistic Topology Operations 
+% The <atom_variable.html atom> struct variable (as in Atomistic Topology Operations 
 % in Matlab) is an indexed Matlab struct variable that stores molecule 
 % attributes like atomtype names, moleculeID's, atomID's, coordinates
 % and more as indexed fields in the atom struct. A brief list of the atom 
@@ -34,8 +34,8 @@
 % selection of specific or a range of attributes, like atomtype names, 
 % coordinates and so on. A few examples are shown below... see the 
 % <List_all_functions.html List_all_functions> for all functions that
-% operate on the <atom.html atom> struct. Note that many of these functions
-% also need the often accompaning <Box_dim.html Box_dim> variable.
+% operate on the <atom_variable.html atom> struct. Note that many of these functions
+% also need the often accompaning <Box_dim_variable.html Box_dim> variable.
 %
 % *Default fields*
 %

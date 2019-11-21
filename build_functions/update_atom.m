@@ -3,7 +3,7 @@
 % * Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -89,7 +89,7 @@ for i=1:nAtoms
 end
 
 if numel(fieldnames(atom))~=10
-    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum'};
+    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B'};
     atomAttributes=fieldnames(atom)';
     indDefault=find(ismember(defaultAttributes,atomAttributes));
     defaultAttributes=defaultAttributes(indDefault);

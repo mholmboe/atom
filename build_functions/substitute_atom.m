@@ -5,7 +5,7 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,6 +13,7 @@
 %% Examples
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
 %
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,11 +67,17 @@ else
     minT2T2_dist=5.5;      % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
 end
 
-% Limits for the isosubstitution sites, can be useful to exclude regions for substitutions
-lolimit=-10000; % Arbitrary low number
-hilimit=10000;  % Arbitrary high number
-dimension=2;    % meaning == 1=x, 2=y, 3=z
-
+if nargin > 10
+    % Limits for the isosubstitution sites, can be useful to exclude regions for substitutions
+    lolimit=varargin{5};% 35; % Arbitrary low number
+    hilimit=varargin{6};% 85;  % Arbitrary high number
+    dimension=varargin{7};    % meaning == 1=x, 2=y, 3=z
+else
+    % Limits for the isosubstitution sites, can be useful to exclude regions for substitutions
+    lolimit=-1000000000;% 35; % Arbitrary low number
+    hilimit=100000000;% 85;  % Arbitrary high number
+    dimension=3;    % meaning == 1=x, 2=y, 3=z
+end
 % Total n of substitutions
 NumTotalSubst=NumOctSubst+NumTetSubst;
 
@@ -115,11 +122,11 @@ if NumOctSubst>0
         end
         if i == length(O1_data)
             disp('Stopped the loop')
-%             sort(rand_O1_Index(1:i))
+            %             sort(rand_O1_Index(1:i))
             nOctlo
             nOcthi
             nOctmid
-            pause
+            pause(3)
             break
         end
         i=i+1;
@@ -177,8 +184,8 @@ if NumTetSubst>0
         end
         if i == length(T1_data)
             disp('Stopped the loop')
-            pause
-                        break
+            pause(3)
+            break
         end
         i=i+1;
     end
@@ -187,10 +194,10 @@ if NumTetSubst>0
     [atom(ind_T1(Tet_subst_index)).type]=deal(T2);
     
     if nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst
-        disp('Tetrahedral substitution success!!!')
+        disp('Second substitution success!!!')
     else
-        disp('Tetrahedral substitution not successful!!!')
-        pause
+        disp('Second substitution not optimal!!!')
+        pause(3)
     end
     
 end
@@ -218,15 +225,15 @@ end
 
 if NumOctSubst>0
     if (nOctlo==nOcthi && (nOctlo+nOcthi) == NumOctSubst) || nOctmid == NumOctSubst
-        disp('Octahedral substitution success!!!')
+        disp('First substitution success!!!')
     else
-        disp('Octahedral substitution not successful!!!')
+        disp('First substitution not optimal!!!')
         try
             nOctlo
             nOcthi
             nOctmid
         catch
-            disp('No octahedral subst...')
+            disp('No first subst...')
         end
         
     end
@@ -234,14 +241,14 @@ end
 
 if NumTetSubst>0
     if (nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst)
-        disp('Tetrahedral substitution success!!!')
+        disp('Second substitution success!!!')
     else
-        disp('Tetrahedral substitution not successful!!!')
+        disp('Second substitution not optimal!!!')
         try
             nTetlo
             nTethi
         catch
-            disp('No tetrahedral subst...')
+            disp('No second subst...')
         end
         
     end

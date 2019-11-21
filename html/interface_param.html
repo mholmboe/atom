@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="interface_param.m"><style type="text/css">
+      --><title>interface_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="interface_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>interface_param.m</h1><!--introduction--><div><ul><li>This function holds the extended interface ff parameters</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>interface_param(Atom_label)</li><li>interface_param(Atom_label,'tip3p')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> interface_param(Atom_label,varargin)
+  </style></head><body><div class="content"><h1>interface_param.m</h1><!--introduction--><div><ul><li>This function holds the extended interface ff parameters</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>interface_param(Atom_label)</li><li>interface_param(Atom_label,'tip3p')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> interface_param(Atom_label,varargin)
 
 <span class="keyword">if</span> nargin &lt; 2
     water_model=<span class="string">'tip3p'</span>;
@@ -329,30 +329,36 @@ forcefield.interface(34).mass =    15.99410;
 forcefield.interface(34).charge =  -0.9755;
 forcefield.interface(34).radius =  3.553200;
 forcefield.interface(34).e_kcalmol = 0.155400;
+<span class="comment">% Osi</span>
+forcefield.interface(35).type =    {<span class="string">'Osi'</span>}; <span class="comment">%</span>
+forcefield.interface(35).mass =    15.99410;
+forcefield.interface(35).charge =  -1.2;
+forcefield.interface(35).radius =  3.553200;
+forcefield.interface(35).e_kcalmol = 0.155400;
 <span class="comment">% Al -edge</span>
-forcefield.interface(35).type =    {<span class="string">'Ale'</span>}; <span class="comment">% ao octahedral aluminium</span>
-forcefield.interface(35).mass =    26.98154;
-forcefield.interface(35).charge =  1.8125; <span class="comment">%1.5750+0.2375;</span>
-forcefield.interface(35).radius =  4.79430;
-forcefield.interface(35).e_kcalmol = 1.3298E-06;
+forcefield.interface(36).type =    {<span class="string">'Ale'</span>}; <span class="comment">% ao octahedral aluminium</span>
+forcefield.interface(36).mass =    26.98154;
+forcefield.interface(36).charge =  1.8125; <span class="comment">%1.5750+0.2375;</span>
+forcefield.interface(36).radius =  4.79430;
+forcefield.interface(36).e_kcalmol = 1.3298E-06;
 <span class="comment">% Ar</span>
-forcefield.interface(36).type =    {<span class="string">'Ar'</span>}; <span class="comment">% Ar with SPC.. from Greeshma</span>
-forcefield.interface(36).mass =    39.94800;
-forcefield.interface(36).charge =  0.00000;
-forcefield.interface(36).radius =  3.775333752;
-forcefield.interface(36).e_kcalmol = 0.276720296;
+forcefield.interface(37).type =    {<span class="string">'Ar'</span>}; <span class="comment">% Ar with SPC.. from Greeshma</span>
+forcefield.interface(37).mass =    39.94800;
+forcefield.interface(37).charge =  0.00000;
+forcefield.interface(37).radius =  3.775333752;
+forcefield.interface(37).e_kcalmol = 0.276720296;
 <span class="comment">% Co</span>
-forcefield.interface(37).type =    {<span class="string">'Co'</span>}; <span class="comment">% C as in CO2 from Greeshma</span>
-forcefield.interface(37).mass =    12.01073;
-forcefield.interface(37).charge =  0.6512;
-forcefield.interface(37).radius =  3.094627867;
-forcefield.interface(37).e_kcalmol = 0.05580526;
+forcefield.interface(38).type =    {<span class="string">'Co'</span>}; <span class="comment">% C as in CO2 from Greeshma</span>
+forcefield.interface(38).mass =    12.01073;
+forcefield.interface(38).charge =  0.6512;
+forcefield.interface(38).radius =  3.094627867;
+forcefield.interface(38).e_kcalmol = 0.05580526;
 <span class="comment">% Oc</span>
-forcefield.interface(38).type =    {<span class="string">'Oc'</span>}; <span class="comment">% O as in CO2 from Greeshma</span>
-forcefield.interface(38).mass =    15.99941;
-forcefield.interface(38).charge =  -0.3256	;
-forcefield.interface(38).radius =  3.404427393;
-forcefield.interface(38).e_kcalmol = 0.160036571;
+forcefield.interface(39).type =    {<span class="string">'Oc'</span>}; <span class="comment">% O as in CO2 from Greeshma</span>
+forcefield.interface(39).mass =    15.99941;
+forcefield.interface(39).charge =  -0.3256	;
+forcefield.interface(39).radius =  3.404427393;
+forcefield.interface(39).e_kcalmol = 0.160036571;
 
 <span class="comment">% Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';</span>
 <span class="comment">% forcefield.interface=forcefield.interface(Forcefield_index);</span>
@@ -486,7 +492,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'forcefield'<
 % * This function holds the extended interface ff parameters
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -758,30 +764,36 @@ forcefield.interface(34).mass =    15.99410;
 forcefield.interface(34).charge =  -0.9755;
 forcefield.interface(34).radius =  3.553200;
 forcefield.interface(34).e_kcalmol = 0.155400;
+% Osi
+forcefield.interface(35).type =    {'Osi'}; %
+forcefield.interface(35).mass =    15.99410;
+forcefield.interface(35).charge =  -1.2;
+forcefield.interface(35).radius =  3.553200;
+forcefield.interface(35).e_kcalmol = 0.155400;
 % Al -edge
-forcefield.interface(35).type =    {'Ale'}; % ao octahedral aluminium
-forcefield.interface(35).mass =    26.98154;
-forcefield.interface(35).charge =  1.8125; %1.5750+0.2375;
-forcefield.interface(35).radius =  4.79430;
-forcefield.interface(35).e_kcalmol = 1.3298E-06;
+forcefield.interface(36).type =    {'Ale'}; % ao octahedral aluminium
+forcefield.interface(36).mass =    26.98154;
+forcefield.interface(36).charge =  1.8125; %1.5750+0.2375;
+forcefield.interface(36).radius =  4.79430;
+forcefield.interface(36).e_kcalmol = 1.3298E-06;
 % Ar
-forcefield.interface(36).type =    {'Ar'}; % Ar with SPC.. from Greeshma
-forcefield.interface(36).mass =    39.94800;
-forcefield.interface(36).charge =  0.00000;
-forcefield.interface(36).radius =  3.775333752;
-forcefield.interface(36).e_kcalmol = 0.276720296;
+forcefield.interface(37).type =    {'Ar'}; % Ar with SPC.. from Greeshma
+forcefield.interface(37).mass =    39.94800;
+forcefield.interface(37).charge =  0.00000;
+forcefield.interface(37).radius =  3.775333752;
+forcefield.interface(37).e_kcalmol = 0.276720296;
 % Co
-forcefield.interface(37).type =    {'Co'}; % C as in CO2 from Greeshma
-forcefield.interface(37).mass =    12.01073;
-forcefield.interface(37).charge =  0.6512;
-forcefield.interface(37).radius =  3.094627867;
-forcefield.interface(37).e_kcalmol = 0.05580526;
+forcefield.interface(38).type =    {'Co'}; % C as in CO2 from Greeshma
+forcefield.interface(38).mass =    12.01073;
+forcefield.interface(38).charge =  0.6512;
+forcefield.interface(38).radius =  3.094627867;
+forcefield.interface(38).e_kcalmol = 0.05580526;
 % Oc
-forcefield.interface(38).type =    {'Oc'}; % O as in CO2 from Greeshma
-forcefield.interface(38).mass =    15.99941;
-forcefield.interface(38).charge =  -0.3256	;
-forcefield.interface(38).radius =  3.404427393;
-forcefield.interface(38).e_kcalmol = 0.160036571;
+forcefield.interface(39).type =    {'Oc'}; % O as in CO2 from Greeshma
+forcefield.interface(39).mass =    15.99941;
+forcefield.interface(39).charge =  -0.3256	;
+forcefield.interface(39).radius =  3.404427393;
+forcefield.interface(39).e_kcalmol = 0.160036571;
 
 % Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';
 % forcefield.interface=forcefield.interface(Forcefield_index);

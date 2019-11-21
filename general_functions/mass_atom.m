@@ -2,15 +2,16 @@
 % * This function fetches the mass for each atomtype and put it into atom.mass
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = mass_atom(atom)
+% # atom = mass_atom(atom,Box_dim) % To calculate the density
 %
-function atom = mass_atom(atom)
+function atom = mass_atom(atom,varargin)
 
 element=element_atom(atom);
 
@@ -157,3 +158,40 @@ for i=1:length([atom.type])
     [atom(i).atnum]=atnum(i);
 end
 
+disp('Molecular weight in g/mol, Mw:')
+Mw=sum([atom.mass])
+
+if nargin>1
+    Box_dim=varargin{1};
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+        if size(Box_dim,2)==9
+            xy=Box_dim(6);
+            xz=Box_dim(8);
+            yz=Box_dim(9);
+        else
+            xy=0;
+            xz=0;
+            yz=0;
+        end
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    
+    Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+    Box_density=Mw/6.022E23/(Box_volume*1E-24);
+    disp('Volume in Å^3:')
+    Box_volume
+    disp('Density in g/cm^3')
+    Box_density
+    assignin('caller','Box_volume',Box_volume);
+    assignin('caller','Box_density',Box_density);
+end
+
+
+assignin('caller','Mw',Mw);

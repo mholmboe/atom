@@ -7,4 +7,5 @@
 
 
 %% Example
-% # XYZ_labels = {'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2'};
+% # XYZ_data = [1 2 3; 4 5 6 ; 7 8 9]; % X data is then 1 4 7... and
+% likewise for Y and Z

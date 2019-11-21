@@ -11,7 +11,7 @@
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -21,9 +21,12 @@
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 Å
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles
+% # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25,1) % Output mor info per atomtype
+
 %
 function dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
-
+1
+tic
 nAtoms=size(atom,2);
 dist_matrix=zeros(nAtoms);
 X_dist=dist_matrix;
@@ -42,6 +45,10 @@ if nargin >3
 else
     calc_bond_list=0;
     rmax=15;
+end
+
+if rHmax == 0
+    calc_bond_list=0;
 end
 
 if nargin > 4
@@ -83,7 +90,7 @@ end
 if any(Box_dim(1:3) < (2*rmax))
     disp('Decrease rmax!!! The Box_dim are too small...')
     disp('Assuming you have a small system, reverting to ')
-    disp('the basic bond_angle_atom() function... ')
+    disp('the dist_matrix_atom() function... ')
     pause(1)
     dist_matrix = dist_matrix_atom(atom,Box_dim);
     if nargin>5
@@ -142,6 +149,10 @@ mask = (max(dnx, 1) - 1).^2 * rcell(1).^2 + (max(dny, 1) - 1).^2 * rcell(2).^2 +
 %mask = true(1, M - 1); % bug check of mask
 mask_index = find(mask);
 
+toc
+2
+tic
+
 % calculate the distances of the atoms in masked cells
 pair = zeros(nAtoms*1000, 2);
 dist = zeros(nAtoms*1000, 1);
@@ -182,6 +193,9 @@ for m1 = 1:M
     end
 end
 
+toc
+3
+tic
 pair(icount:end,:) = [];
 dist(icount:end) = [];
 
@@ -196,9 +210,11 @@ for i = 1:size(pair,1)
     dist_matrix(pair(i,2),pair(i,1))=dist(i); % Do we need this?
 end
 
+toc
 %         assignin('caller','pair',pair)
 %         assignin('caller','dist',dist)
-
+4
+tic
 if calc_bond_list==1
     Bond_index = [pair dist];
     % Special treatment for the short H-distances
@@ -352,9 +368,11 @@ if nAtoms < 20000
     assignin('caller','X_dist',(X_dist)');
     assignin('caller','Y_dist',(Y_dist)');
     assignin('caller','Z_dist',(Z_dist)');
+else
+    disp('Skipped output of X|Y|Z_dist since the system is so big')
 end
 
-
+toc
 %%%%%%%%%%%%% End of main function %%%%%%%%%%%%%%
 
     function mi_n = minimum_image(n, N)

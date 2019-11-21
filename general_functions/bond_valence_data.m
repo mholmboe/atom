@@ -8,14 +8,14 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
-% # [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
+% # [mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R)
+% # [mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R,varargin)
 
 function [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
 
@@ -65,14 +65,12 @@ ind2=find(strcmpi(Ion_2,ion2));
 if valence_ion1>-50
     valence1_ind=find(Valence_1==valence_ion1);
     ind1=intersect(ind1,valence1_ind);
-    %     ind2=intersect(ind1,valence1_ind);
 end
 
-% if valence_ion2>-50
-%     valence2_ind=find(Valence_2==valence_ion2);
-% %     ind1=intersect(ind1,valence2_ind);
-%     ind2=intersect(ind2,valence2_ind);
-% end
+if valence_ion2>-50
+    valence2_ind=find(Valence_2==valence_ion2);
+    ind2=intersect(ind2,valence2_ind);
+end
 
 ind=find(ismember(ind1,ind2));
 ind=ind1(ind);
@@ -114,5 +112,8 @@ else
         bv_temp(i)=exp((R0(ind(i))-R)/bvalue_temp);
     end
 end
+
 mean_bv=mean(bv_temp);
 std_bv=std(bv_temp);
+
+

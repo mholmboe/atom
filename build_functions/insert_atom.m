@@ -11,7 +11,7 @@
 % create_atom.m
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -66,6 +66,10 @@ else
 end
 
 while (size(all_atom,2) < nmax*nAtoms_in) | n < 1000
+    
+    %     size(all_atom,2)
+    %     nmax*nAtoms_in
+    %     pause
     %     size(System)
     %     size(rotate_atom(atom_in,Box_dim,90*rand(1),90*rand(1),90*rand(1)))
     %     pause
@@ -143,6 +147,16 @@ size(all_atom,2)/nAtoms_in
 atom=all_atom;
 if size(all_atom,2)>0
     atom=update_atom(all_atom);
+else
+    atom=atom_in;
+    atom(1:end)=[];
+end
+
+if nmax==0
+    try
+        atom(1:end)=[];
+    catch
+    end
 end
 assignin('caller','limits',limits);
 

@@ -30,7 +30,7 @@
 % insert_atom
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -49,18 +49,25 @@ sorted_distratio=[];
 if iscell(type)==0;type={type}; end
 if iscell(resname)==0;resname={resname};end
 
-radii = radius_ion(type);
+radii = abs(radius_ion(type));
 if nargin > 4
     distance_factor=varargin{1};
+    if numel(distance_factor)>1
+       rmin=distance_factor(2); 
+       distance_factor=distance_factor(1);
+    else
+        rmin=radii*distance_factor;
+    end
 else
-    distance_factor=2.15;
+    distance_factor=2;
+    rmin=radii*distance_factor;
 end
 
 if distance_factor<2
    disp('distance_factor should be >=2 !!!')
    pause(2)
 end
-Box_dim_temp=distance_factor*[2*radii 2*radii 2*radii];
+Box_dim_temp=distance_factor*2*[radii radii radii];
 atom = add2atom(type,[0 0 0],resname,[]);
 
 if numel(limits)==1
@@ -129,7 +136,7 @@ if nargin>5 && size(varargin{2},2) > 0
         atom_count=1;atom_merged=[];count=1;
         while atom_count< size(atom,2)
             atom_block= atom(atom_count:atom_count+natom_block-1);
-            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,1.2*distance_factor*radii);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,rmin);
             atom_merged = [atom_merged atom_block];
             atom_count=atom_count+natom_block;
             disp('box number...')
@@ -137,7 +144,7 @@ if nargin>5 && size(varargin{2},2) > 0
         end
         atom=atom_merged;
     else
-        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,1.2*distance_factor*radii);
+        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,rmin);
     end
 else
     atom = slice_atom(atom,limits,0);

@@ -3,7 +3,7 @@
 % from the atom struct
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -78,6 +78,7 @@ for i=1:size(atom,2)
     end
     
     if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'Sr'},2);atom(i).element={'Sr'};
     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'S'},1);atom(i).element={'S'};

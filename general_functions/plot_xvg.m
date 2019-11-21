@@ -6,7 +6,7 @@
 % Note also that the x and y ranges can also be set, see examples below.
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

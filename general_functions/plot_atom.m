@@ -6,7 +6,7 @@
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -59,7 +59,7 @@ end
 hold on
 rotate3d on;
 camlight(220,210,'infinite');
-set(gca,'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24);
+set(gca,'Color',[1 1 1],'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24);
 set(gcf,'Color',[1,1,1]);
 
 if nargin > 2
@@ -93,7 +93,7 @@ for i = 1:length(Atom_label)
             radii,...
             'MarkerEdgeColor','none',...
             'MarkerFaceColor',color,...
-            'MarkerFaceAlpha',0.75...
+            'MarkerFaceAlpha',0.25...
             );
         alpha(.2)
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
@@ -138,9 +138,9 @@ for i = 1:length(Atom_label)
     else
         scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
             radii,...
-            'MarkerEdgeColor',[.1 .1 .1],...
+            'MarkerEdgeColor','none',...
             'MarkerFaceColor',color,...
-            'MarkerFaceAlpha',0.75...
+            'MarkerFaceAlpha',0.25...
             );
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
     end
@@ -180,8 +180,8 @@ if nargin>1
     Simbox = draw_box_atom(Box_dim,[0 0 0],1);
 end
 
-fig = gcf;fig.Color = [1 1 1];
-set(gca,'Color',[1 1 1]);
+fig = gcf;
+% set(gca,'Color',[1 1 1]);
 xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 axis([xlo xhi ylo yhi zlo zhi],'equal');
 legend(plotted_Atom_label);

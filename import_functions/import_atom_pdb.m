@@ -3,7 +3,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.0
+% 2.05
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -106,6 +106,9 @@ for i = 1:length(data)
         
         occupancy(j,1)=str2double(line(55:60));
         tempfactor(j,1)=str2double(line(61:66));
+        
+        atom(j).occupancy=occupancy(j,1);
+        atom(j).B=tempfactor(j,1);
     end
 end
 

@@ -27,7 +27,7 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -154,10 +154,11 @@ if (limits(1)+limits(2)+limits(3)) ~= 0
     disp('Translating the solvent box');
     SOL=translate_atom(SOL,[limits(1) limits(2) limits(3)],'all');
 end
+% SOL=slice_atom(SOL,limits,0);
 % assignin('caller','SOL',SOL);
 % pause
 disp('nSOL before merge');
-size(SOL,2)/atomsperSOL;
+size(SOL,2)/atomsperSOL
 
 % limits
 % min([SOL.x])
@@ -173,7 +174,7 @@ if size(solute_atom,2) > 0
     if size(SOL,2) > 10000 || size(solute_atom,2) > 10000
         nSOL_block=size(SOL,2)/(nx*ny*nz);
         SOL_count=1;SOL_merged=[];count=1;
-        while SOL_count< size(SOL,2)
+        while SOL_count<size(SOL,2)
             SOL_block= SOL(SOL_count:SOL_count+nSOL_block-1);
             SOL_block = merge_atom(solute_atom,limits(4:6)-.4,SOL_block,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
             SOL_merged = [SOL_merged SOL_block];
@@ -220,15 +221,14 @@ if iscellstr({maxsol}) == 1
         SOL=update_atom(SOL);
     end
 end
-rand_molid=randperm(nSOL/atomsperSOL);
 
+rand_molid=randperm(nSOL/atomsperSOL);
 if maxsol>size(rand_molid,2)
     maxsol
     size(rand_molid,2)
 end
 maxsol
 rand_molid=rand_molid(1:maxsol);
-
 rand_index=ismember([SOL.molid],rand_molid);
 SOL=SOL(rand_index);
 

@@ -4,7 +4,7 @@
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -15,9 +15,11 @@
 %
 function atom = wrap_atom(atom,Box_dim,varargin)
 
+attribut_in=fieldnames(atom);
+
 if nargin==2
     if size(Box_dim(1,:),2)==3
-        disp('assuming othogonal box when wrapping!!!')
+        % disp('assuming othogonal box when wrapping!!!')
         ind_hiz=find([atom.z]>=Box_dim(3));
         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -90,13 +92,16 @@ elseif nargin == 3
     end
 end
 
+
+
+
+
 try
-    if isfield(atom,'xfrac')
-        atom=rmfield(atom,'xfrac');
-        atom=rmfield(atom,'yfrac');
-        atom=rmfield(atom,'zfrac');
-    end
+    attribut_out=fieldnames(atom);
+    different_ind=find(~ismember(attribut_out,attribut_in));
+    atom=rmfield(atom,attribut_out(different_ind));
 catch
+    
 end
 
 %assignin('caller','atom',atom);

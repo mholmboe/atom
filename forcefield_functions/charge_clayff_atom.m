@@ -4,7 +4,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -12,7 +12,7 @@
 %% Examples with some fixed charges, the rest is smeared over the O's
 % * Total_charge = charge_clayffmod_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])
 
-function atom = charge_clayffmod_atom(atom,Box_dim,varargin)
+function atom = charge_clayff_atom(atom,Box_dim,varargin)
 nAtoms=size(atom,2);
 [atom.charge]=deal(0);
 
@@ -36,7 +36,8 @@ if nargin>2
     Met_ind=find(Met_ind);
     Ox_ind=setdiff(1:nAtoms,Met_ind);
     
-    atom=bond_angle_atom(atom,Box_dim,1.25,2.1,'more');
+%    atom=bond_angle_atom(atom,Box_dim,1.25,2.4,'more');
+    atom = bond_atom(atom,Box_dim);
     
     for i=1:length(Ox_ind)
         bond_ind=setdiff(reshape(atom(Ox_ind(i)).bond.index,[],1),Ox_ind(i));
@@ -89,6 +90,10 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge])
+if round(Total_charge)~=sum(Total_charge) 
+   disp('Run tweak_charge_atom() to get an integer charge of the struct')
+end
+
 
 assignin('caller','Total_charge',Total_charge);
 

@@ -11,7 +11,7 @@
 % * <Make_selections.html Make_selections>
 % * <Plot_molecules.html Plot_molecules>
 % * <Solvate_molecules.html Solvate_molecules>
-% * <Manipulate_molecules.html Manipulate_molecules> % Todo
+% * <Manipulate_molecules.html Manipulate_molecules>
 % * <Assign_CLAYFF_atomtypes.html Assingn_CLAYFF_atomtypes>
 % * <Assign_INTERFACE_atomtypes.html Assingn_INTERFACE_atomtypes>
 % * <Write_topology_files.html Write_topology_files>

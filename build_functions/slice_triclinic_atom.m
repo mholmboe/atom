@@ -2,7 +2,7 @@
 % * This function slices the atoms into the triclinic box
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -16,7 +16,12 @@ function atom = slice_triclinic_atom(atom,Box_dim,varargin)
 
 if nargin==2
     disp('will try to slice the triclinic Box_dim!!!')
-    xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+    
+    if size(Box_dim(1,:),2)>3
+        xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+    else
+        xy=0;xz=0;yz=0;
+    end
     orto=orto_atom(atom,Box_dim);
     
     indxlo=find([orto.xfrac]<0);
@@ -32,7 +37,9 @@ if nargin==2
     orto(ind)=[];
     orto=update_atom(orto);
     atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
+    
 elseif nargin == 3
+    
     disp('will try to slice the triclinic Box_dim along xy!!!')
     xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
     orto=orto_atom(atom,Box_dim);
@@ -50,6 +57,7 @@ elseif nargin == 3
     orto(ind)=[];
     orto=update_atom(orto);
     atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
+    
 end
 
 try

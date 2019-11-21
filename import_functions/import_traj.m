@@ -4,15 +4,15 @@
 % * stride and other thingies.
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_traj('conf.gro',traj.xtc)
-% # atom = import_traj('conf.gro',traj.trr)
-% # atom = import_traj('conf.gro',traj.dcd)
+% # atom = import_traj('conf.gro','traj.xtc')
+% # atom = import_traj('conf.gro','traj.trr')
+% # atom = import_traj('conf.gro','traj.dcd')
 % # atom = import_traj('traj.pdb')
 % # atom = import_traj('traj.xyz')
 % # atom = import_traj('traj.gro')
@@ -22,16 +22,21 @@ function [atom,traj] = import_traj(filename,varargin)
 if nargin==1
     filenameconf=filename;
     filenametraj=filename;
-elseif nargin==2
+elseif nargin>1
     filenameconf=filename;
     filenametraj=varargin{1};
+end
+
+stride=1;
+if nargin>2
+    stride=varargin{2};
 end
 
 if regexp(filenametraj,'.xtc') > 1
     disp('This function imports a structure file and a xtc file')
     disp('and relies on the mxdrfile by Jon Kapla')
     disp('http://kaplajon.github.io/mxdrfile/')
-    atom = import_xtc(filenameconf,filenametraj);
+    atom = import_xtc(filenameconf,filenametraj,stride);
     
     %     disp('Alternatively, use the Gro2Mat package with the function:')
     %     disp('import_xtcv2(filenameconf,filenametraj)')
@@ -49,11 +54,11 @@ elseif regexp(filenametraj,'.trr') > 1
     disp('This function imports a structure file and a trr file')
     disp('and relies on the mxdrfile by Jon Kapla')
     disp('http://kaplajon.github.io/mxdrfile/')
-    atom = import_trr(filenameconf,filenametraj);
+    atom = import_trr(filenameconf,filenametraj,stride);
     
-    disp('Alternatively, use Evans readGmx2Matlab and trr2matlab functions')
-    disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
-    disp('and in the the given import_trrv2.m function')
+    % disp('Alternatively, use Evans readGmx2Matlab and trr2matlab functions')
+    % disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
+    % disp('and in the the given import_trrv2.m function')
     % disp('Found .trr file, will use the Evans excellent readGmx2Matlab and trr2matlab functions');
     % disp('Note that in princple both coords, velocities, forces could be imported, and that stride can be used')
     % import_trrv2(filenametraj);

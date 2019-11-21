@@ -6,7 +6,7 @@
 % * Mgo/Al - Oh - H. Note that you can use strncmpi to get a wider search.
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -2,7 +2,7 @@
 % * This function holds the extended interface ff parameters
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -274,30 +274,36 @@ forcefield.interface(34).mass =    15.99410;
 forcefield.interface(34).charge =  -0.9755;
 forcefield.interface(34).radius =  3.553200;
 forcefield.interface(34).e_kcalmol = 0.155400;
+% Osi
+forcefield.interface(35).type =    {'Osi'}; %
+forcefield.interface(35).mass =    15.99410;
+forcefield.interface(35).charge =  -1.2;
+forcefield.interface(35).radius =  3.553200;
+forcefield.interface(35).e_kcalmol = 0.155400;
 % Al -edge
-forcefield.interface(35).type =    {'Ale'}; % ao octahedral aluminium
-forcefield.interface(35).mass =    26.98154;
-forcefield.interface(35).charge =  1.8125; %1.5750+0.2375;
-forcefield.interface(35).radius =  4.79430;
-forcefield.interface(35).e_kcalmol = 1.3298E-06;
+forcefield.interface(36).type =    {'Ale'}; % ao octahedral aluminium
+forcefield.interface(36).mass =    26.98154;
+forcefield.interface(36).charge =  1.8125; %1.5750+0.2375;
+forcefield.interface(36).radius =  4.79430;
+forcefield.interface(36).e_kcalmol = 1.3298E-06;
 % Ar
-forcefield.interface(36).type =    {'Ar'}; % Ar with SPC.. from Greeshma
-forcefield.interface(36).mass =    39.94800;
-forcefield.interface(36).charge =  0.00000;
-forcefield.interface(36).radius =  3.775333752;
-forcefield.interface(36).e_kcalmol = 0.276720296;
+forcefield.interface(37).type =    {'Ar'}; % Ar with SPC.. from Greeshma
+forcefield.interface(37).mass =    39.94800;
+forcefield.interface(37).charge =  0.00000;
+forcefield.interface(37).radius =  3.775333752;
+forcefield.interface(37).e_kcalmol = 0.276720296;
 % Co
-forcefield.interface(37).type =    {'Co'}; % C as in CO2 from Greeshma
-forcefield.interface(37).mass =    12.01073;
-forcefield.interface(37).charge =  0.6512;
-forcefield.interface(37).radius =  3.094627867;
-forcefield.interface(37).e_kcalmol = 0.05580526;
+forcefield.interface(38).type =    {'Co'}; % C as in CO2 from Greeshma
+forcefield.interface(38).mass =    12.01073;
+forcefield.interface(38).charge =  0.6512;
+forcefield.interface(38).radius =  3.094627867;
+forcefield.interface(38).e_kcalmol = 0.05580526;
 % Oc
-forcefield.interface(38).type =    {'Oc'}; % O as in CO2 from Greeshma
-forcefield.interface(38).mass =    15.99941;
-forcefield.interface(38).charge =  -0.3256	;
-forcefield.interface(38).radius =  3.404427393;
-forcefield.interface(38).e_kcalmol = 0.160036571;
+forcefield.interface(39).type =    {'Oc'}; % O as in CO2 from Greeshma
+forcefield.interface(39).mass =    15.99941;
+forcefield.interface(39).charge =  -0.3256	;
+forcefield.interface(39).radius =  3.404427393;
+forcefield.interface(39).e_kcalmol = 0.160036571;
 
 % Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';
 % forcefield.interface=forcefield.interface(Forcefield_index);

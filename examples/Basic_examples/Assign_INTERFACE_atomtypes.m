@@ -105,8 +105,8 @@ atom = interface_atom(atom,Box_dim) % Assign the Interface FF (Heinz et al., 200
 %% Heal and assign the modified Interface FF atomtypes to the montmorillonite atom struct
 % In cases were atoms need healing, or in order to protonate edge groups,
 % one can use a slighlt longer command like below. For more info look into
-% the <interface_atom.html interface_atom> function and line 38-46.
-atom = interface_atom(atom,Box_dim,'interface','tip3p','edge') % Assign the Interface FF atom types to the atomstruct
+% the <interface_atom.html interface_atom> function and lines 46-77.
+atom = interface_atom(atom,Box_dim,'interface','tip3p',[1:5]) % Assign the Interface FF atom types to the atomstruct
 
 %% Write the new modified Interface FF .pdb file
 write_atom_pdb(atom,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file

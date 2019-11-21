@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>replicate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="replicate_atom.m"><style type="text/css">
+      --><title>replicate_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="replicate_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>replicate_atom.m</h1><!--introduction--><div><ul><li>This function replicates the atom struct and the orthogonal box dimensions</li><li>Triclinic version untestd but might work.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = replicate_atom(atom,Box_dim,[6 4 1])</li><li>atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = replicate_atom(atom,Box_dim,replicate,varargin)
+  </style></head><body><div class="content"><h1>replicate_atom.m</h1><!--introduction--><div><ul><li>This function replicates the atom struct and the orthogonal box dimensions</li><li>Triclinic version untestd but might work.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = replicate_atom(atom,Box_dim,[6 4 1])</li><li>atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz') * atom = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = replicate_atom(atom,Box_dim,replicate,varargin)
 
 <span class="keyword">if</span> numel(replicate)==1
     replicate(1)=replicate(1);
@@ -87,12 +87,19 @@ replicate(replicate==0)=1;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin&gt;3
-    dim_order=char(varargin);
+    dim_order=char(varargin{1});
 <span class="keyword">else</span>
     dim_order=<span class="string">'xyz'</span>;
 <span class="keyword">end</span>
 
+<span class="keyword">if</span> nargin&gt;4
+    addmolid=1;
+<span class="keyword">else</span>
+    addmolid=0;
+<span class="keyword">end</span>
+
 combinedatom_dim=atom;
+molid=[atom(1).molid];
 <span class="keyword">for</span> j=1:3
     <span class="keyword">if</span> j == strfind(dim_order,<span class="string">'x'</span>)
         <span class="keyword">if</span> j == 1
@@ -100,6 +107,10 @@ combinedatom_dim=atom;
             <span class="keyword">for</span> i=1:replicate(1)
                 <span class="keyword">if</span> i &gt; 1
                     newatom=atom;
+                    <span class="keyword">if</span> addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    <span class="keyword">end</span>
                     x_shift=num2cell([atom.x]+(i-1)*Box_dim(1)); [newatom.x]=deal(x_shift{:});
                     combinedatomx=[combinedatomx newatom];
                 <span class="keyword">end</span>
@@ -124,6 +135,10 @@ combinedatom_dim=atom;
             <span class="keyword">for</span> i=1:replicate(2)
                 <span class="keyword">if</span> i &gt; 1
                     newatom=atom;
+                    <span class="keyword">if</span> addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    <span class="keyword">end</span>
                     y_shift=num2cell([atom.y]+(i-1)*Box_dim(2)); [newatom.y]=deal(y_shift{:});
                     combinedatomy=[combinedatomy newatom];
                 <span class="keyword">end</span>
@@ -148,6 +163,10 @@ combinedatom_dim=atom;
             <span class="keyword">for</span> i=1:replicate(3)
                 <span class="keyword">if</span> i &gt; 1
                     newatom=atom;
+                    <span class="keyword">if</span> addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    <span class="keyword">end</span>
                     z_shift=num2cell([atom.z]+(i-1)*Box_dim(3)); [newatom.z]=deal(z_shift{:});
                     combinedatomz=[combinedatomz newatom];
                 <span class="keyword">end</span>
@@ -173,7 +192,7 @@ atom=combinedatom_dim;
 Box_dim=[Box_dim(1)*replicate(1) Box_dim(2)*replicate(2) Box_dim(3)*replicate(3)];
 
 <span class="keyword">if</span> exist(<span class="string">'Box_dim_tric'</span>,<span class="string">'var'</span>)
-    atom = triclinic_atom(atom,Box_dim,[Box_dim_tric(6) Box_dim_tric(8) Box_dim_tric(9)],<span class="string">'tiltfactors'</span>);
+    atom = triclinic_atom(atom,Box_dim,[replicate(1)*Box_dim_tric(6) replicate(3)*Box_dim_tric(8) replicate(2)*Box_dim_tric(9)],<span class="string">'tiltfactors'</span>);
     Box_dim=triclinic_Box_dim;
 <span class="keyword">end</span>
 
@@ -225,7 +244,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % * Triclinic version untestd but might work.
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -233,6 +252,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 %% Examples
 % # atom = replicate_atom(atom,Box_dim,[6 4 1])
 % # atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz')
+% * atom = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid')
 %
 function atom = replicate_atom(atom,Box_dim,replicate,varargin)
 
@@ -255,12 +275,19 @@ if length(Box_dim)==9
 end
 
 if nargin>3
-    dim_order=char(varargin);
+    dim_order=char(varargin{1});
 else
     dim_order='xyz';
 end
 
+if nargin>4
+    addmolid=1;
+else
+    addmolid=0;
+end
+
 combinedatom_dim=atom;
+molid=[atom(1).molid];
 for j=1:3
     if j == strfind(dim_order,'x')
         if j == 1
@@ -268,6 +295,10 @@ for j=1:3
             for i=1:replicate(1)
                 if i > 1
                     newatom=atom;
+                    if addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    end
                     x_shift=num2cell([atom.x]+(i-1)*Box_dim(1)); [newatom.x]=deal(x_shift{:});
                     combinedatomx=[combinedatomx newatom];
                 end
@@ -292,6 +323,10 @@ for j=1:3
             for i=1:replicate(2)
                 if i > 1
                     newatom=atom;
+                    if addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    end
                     y_shift=num2cell([atom.y]+(i-1)*Box_dim(2)); [newatom.y]=deal(y_shift{:});
                     combinedatomy=[combinedatomy newatom];
                 end
@@ -316,6 +351,10 @@ for j=1:3
             for i=1:replicate(3)
                 if i > 1
                     newatom=atom;
+                    if addmolid==1
+                        molid=molid+1;
+                        [newatom.molid]=deal(molid);
+                    end
                     z_shift=num2cell([atom.z]+(i-1)*Box_dim(3)); [newatom.z]=deal(z_shift{:});
                     combinedatomz=[combinedatomz newatom];
                 end
@@ -341,7 +380,7 @@ atom=combinedatom_dim;
 Box_dim=[Box_dim(1)*replicate(1) Box_dim(2)*replicate(2) Box_dim(3)*replicate(3)];
 
 if exist('Box_dim_tric','var')
-    atom = triclinic_atom(atom,Box_dim,[Box_dim_tric(6) Box_dim_tric(8) Box_dim_tric(9)],'tiltfactors');
+    atom = triclinic_atom(atom,Box_dim,[replicate(1)*Box_dim_tric(6) replicate(3)*Box_dim_tric(8) replicate(2)*Box_dim_tric(9)],'tiltfactors');
     Box_dim=triclinic_Box_dim;
 end
 

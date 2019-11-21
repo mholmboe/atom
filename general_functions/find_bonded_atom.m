@@ -3,14 +3,14 @@
 % * atomtype2.
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # fb_atom = find_bonded_atom(atom,Box_dim,{'Oalhh'})
-% # fb_atom = find_bonded_atom(atom,Box_dim,)[1:4:100])
+% # fb_atom = find_bonded_atom(atom,Box_dim,[1:4:100])
 % # fb_atom = find_bonded_atom(atom,Box_dim,atomtype1,atomtype2)
 % # fb_atom = find_bonded_atom(atom,Box_dim,atomtype1,atomtype2,1.25,2.25)
 
@@ -116,6 +116,7 @@ if size(indtype2,2)>size(indtype2,1)
     indtype2=indtype2';
 end
 
+atom(sort([indtype1; indtype2]))=neigh_atom(atom(sort([indtype1; indtype2])),Box_dim,rmaxlong);
 fb_atom=atom(sort([indtype1; indtype2]));
 
 assignin('caller','dist_matrix',dist_matrix);

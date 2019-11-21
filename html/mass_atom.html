@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>mass_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="mass_atom.m"><style type="text/css">
+      --><title>mass_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="mass_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>mass_atom.m</h1><!--introduction--><div><ul><li>This function fetches the mass for each atomtype and put it into atom.mass</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = mass_atom(atom)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = mass_atom(atom)
+  </style></head><body><div class="content"><h1>mass_atom.m</h1><!--introduction--><div><ul><li>This function fetches the mass for each atomtype and put it into atom.mass</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = mass_atom(atom)</li><li>atom = mass_atom(atom,Box_dim) % To calculate the density</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = mass_atom(atom,varargin)
 
 element=element_atom(atom);
 
@@ -212,21 +212,60 @@ mass = cell2mat(mass(ind,1));
     [atom(i).mass]=mass(i);
     [atom(i).atnum]=atnum(i);
 <span class="keyword">end</span>
+
+disp(<span class="string">'Molecular weight in g/mol, Mw:'</span>)
+Mw=sum([atom.mass])
+
+<span class="keyword">if</span> nargin&gt;1
+    Box_dim=varargin{1};
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+        <span class="keyword">if</span> size(Box_dim,2)==9
+            xy=Box_dim(6);
+            xz=Box_dim(8);
+            yz=Box_dim(9);
+        <span class="keyword">else</span>
+            xy=0;
+            xz=0;
+            yz=0;
+        <span class="keyword">end</span>
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+
+    Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+    Box_density=Mw/6.022E23/(Box_volume*1E-24);
+    disp(<span class="string">'Volume in &Aring;^3:'</span>)
+    Box_volume
+    disp(<span class="string">'Density in g/cm^3'</span>)
+    Box_density
+    assignin(<span class="string">'caller'</span>,<span class="string">'Box_volume'</span>,Box_volume);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'</span>,Box_density);
+<span class="keyword">end</span>
+
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Mw'</span>,Mw);
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% mass_atom.m
 % * This function fetches the mass for each atomtype and put it into atom.mass
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = mass_atom(atom)
+% # atom = mass_atom(atom,Box_dim) % To calculate the density
 %
-function atom = mass_atom(atom)
+function atom = mass_atom(atom,varargin)
 
 element=element_atom(atom);
 
@@ -373,6 +412,43 @@ for i=1:length([atom.type])
     [atom(i).atnum]=atnum(i);
 end
 
+disp('Molecular weight in g/mol, Mw:')
+Mw=sum([atom.mass])
+
+if nargin>1
+    Box_dim=varargin{1};
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+        if size(Box_dim,2)==9
+            xy=Box_dim(6);
+            xz=Box_dim(8);
+            yz=Box_dim(9);
+        else
+            xy=0;
+            xz=0;
+            yz=0;
+        end
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    
+    Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+    Box_density=Mw/6.022E23/(Box_volume*1E-24);
+    disp('Volume in Å^3:')
+    Box_volume
+    disp('Density in g/cm^3')
+    Box_density
+    assignin('caller','Box_volume',Box_volume);
+    assignin('caller','Box_density',Box_density);
+end
+
+
+assignin('caller','Mw',Mw);
 
 ##### SOURCE END #####
 --></body></html>

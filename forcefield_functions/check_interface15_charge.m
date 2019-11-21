@@ -3,7 +3,7 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -14,9 +14,9 @@
 function atom = check_interface15_charge(atom,varargin)
 
 if nargin > 1
-    model_database=varargin{1}
+    model_database=varargin{1};
 else
-    model_database='CLAY_MINERALS'
+    model_database='CLAY_MINERALS';
 end
 
 % atom=System;
@@ -36,5 +36,8 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge])
+if round(Total_charge)~=sum(Total_charge) 
+   disp('Run tweak_charge_atom() to get an integer charge of the struct')
+end
 
 assignin('caller','Total_charge',Total_charge);

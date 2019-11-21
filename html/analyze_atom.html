@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>analyze_atom(atom)</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
+      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>analyze_atom(atom)</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
 
 <span class="comment">% FIX multiple OxStates and other from the Shannon file</span>
 
@@ -80,8 +80,27 @@ load(<span class="string">'Revised_Shannon_radii.mat'</span>);
 
 element=element_atom(atom); <span class="comment">% Optionally, set the names ow water O and water H</span>
 <span class="comment">%element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');</span>
+disp(<span class="string">'Trying to find bonded atoms'</span>)
 element=bond_atom(element,Box_dim,rmax);
+disp(<span class="string">'Running Bond Valence analysis...'</span>)
 element=bond_valence_atom(element,Box_dim,1.25,rmax);
+
+<span class="comment">% other_ind=[];</span>
+<span class="comment">% for i=1:size(element,2)</span>
+<span class="comment">%     try</span>
+<span class="comment">%         ValenceGuess=round([element(i).valence]);</span>
+<span class="comment">%         element(i)=bond_valence_atom(element(i),Box_dim,1.25,rmax,ValenceGuess);</span>
+<span class="comment">%     catch</span>
+<span class="comment">%         other_ind=[other_ind i];</span>
+<span class="comment">%     end</span>
+<span class="comment">%     if mod(i,100)==1</span>
+<span class="comment">%         i-1</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% if numel(other_ind)&gt;0</span>
+<span class="comment">%     element(other_ind)=bond_valence_atom(element(other_ind),Box_dim,1.25,rmax);</span>
+<span class="comment">% end</span>
+
 element=mass_atom(element);
 assignin(<span class="string">'caller'</span>,<span class="string">'element'</span>,element);
 <span class="keyword">for</span> i=1:size(element,2)
@@ -90,12 +109,18 @@ assignin(<span class="string">'caller'</span>,<span class="string">'element'</sp
         Ion_ind=find(strncmpi([element(i).type],Ion,1));
     <span class="keyword">end</span>
     CN_ind=find(numel(element(i).neigh.index)==CN);
-    ind=intersect(Ion_ind,CN_ind);
+    Ox_ind=find(round(element(i).valence)==OxState);
+    CN_ind=intersect(Ion_ind,CN_ind);
+    Ox_ind=intersect(Ion_ind,Ox_ind);
+    ind=intersect(Ox_ind,CN_ind);
     <span class="keyword">if</span> numel(ind)==0
         ind=Ion_ind(1);
+    <span class="keyword">elseif</span> numel(ind)&gt;1
+        ind=ind(1);
     <span class="keyword">end</span>
     properties(i).index=element(i).index;
     properties(i).type=Ion(ind);
+    properties(i).fftype=atom(i).type;
     properties(i).neigh=element(i).neigh;
     properties(i).bond=element(i).bond;
     <span class="comment">%     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()</span>
@@ -104,46 +129,42 @@ assignin(<span class="string">'caller'</span>,<span class="string">'element'</sp
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
     properties(i).rdiffvalence=element(i).Rdiff;
+    properties(i).cn_bv=size(properties(i).bv,2);
+    properties(i).ShannonParam={<span class="string">'--&gt;'</span>};
     properties(i).atnum=element(i).atnum;
     properties(i).mass=element(i).mass;
     properties(i).oxstate=OxState(ind);
-    properties(i).ip=ZoverIR(ind);
-    properties(i).cn=CN(ind);
-    properties(i).crysradii=CrysRadii(ind);
+    properties(i).cn_guess=CN(ind);
     properties(i).ionicradii=IonicRadii(ind);
-    properties(i).vdwradii=radius_vdw([element(i).type]);
-    properties(i).elecconf=strtrim(ElecConf(ind));
-    properties(i).spinstate=strtrim(SpinState(ind));
     <span class="keyword">if</span> mod(i,100)==1
         i-1
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">for</span> i=1:size(element,2)
-    <span class="keyword">if</span> numel(properties(i).type)&gt;1
-        Ion_ind=find(strcmp([element(i).type],Ion));
-        <span class="keyword">if</span> numel(Ion_ind)==0
-            Ion_ind=find(strncmpi([element(i).type],Ion,1));
-        <span class="keyword">end</span>
-        CN_ind=find(numel(element(i).neigh.index)==CN);
-        ind=intersect(Ion_ind,CN_ind);
-        <span class="keyword">if</span> numel(ind)==0
-            ind=Ion_ind(1);
-        <span class="keyword">end</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'pre_properties'</span>,properties);
 
+<span class="keyword">for</span> i=1:size(properties,2)
+    Ion_ind=find(strcmp([element(i).type],Ion));
+    <span class="keyword">if</span> numel(Ion_ind)==0
+        Ion_ind=find(strncmpi([element(i).type],Ion,1));
+    <span class="keyword">end</span>
+    CN_ind=find(numel(element(i).neigh.index)==CN);
+    ind=intersect(Ion_ind,CN_ind);
+
+    <span class="keyword">if</span> numel(ind)&gt;0
         current_radii=[properties(i).ionicradii];
         neigh_radii=[properties([properties(i).neigh.index]).ionicradii];
         sum_radii=repmat(current_radii',numel(neigh_radii),1)+repmat(neigh_radii,numel(current_radii),1)';
-        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(1).rdiffvalence))));
-
+        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(i).rdiffvalence))));
+        preox_ind;
         properties(i).type=Ion(ind(preox_ind));
-        properties(i).oxstate=OxState(ind(preox_ind));
+<span class="comment">%         properties(i).oxstate=OxState(ind(preox_ind));</span>
         properties(i).ip=ZoverIR(ind(preox_ind));
-        properties(i).cn=CN(ind(preox_ind));
+        properties(i).cn_guess=CN(ind(preox_ind));
         properties(i).crysradii=CrysRadii(ind(preox_ind));
         properties(i).ionicradii=IonicRadii(ind(preox_ind));
-        properties(i).bv=element(i).bv;
-        properties(i).valence=element(i).valence;
+        properties(i).vdwradii=radius_vdw([element(i).type]);
+        properties(i).ip=ZoverIR(preox_ind);
         properties(i).elecconf=strtrim(ElecConf(ind(preox_ind)));
         properties(i).spinstate=strtrim(SpinState(ind(preox_ind)));
     <span class="keyword">end</span>
@@ -157,6 +178,7 @@ ind=find(abs(diff_valence)&gt;0.5);
 <span class="keyword">if</span> numel(ind)&gt;0
     disp(<span class="string">'Possible problems with index due to multiple oxidation states,'</span>)
     disp(<span class="string">'or atoms that are undersaturated!'</span>)
+    unique([atom(ind).type])
     ind
     assignin(<span class="string">'caller'</span>,<span class="string">'heal_ind'</span>,ind');
 <span class="keyword">end</span>
@@ -213,7 +235,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'prop_atom'</
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% analyze_atom(atom)
+%% analyze_atom.m
 % * This function fetches the ionic radius, originally taken from below
 % * Ref. 1	Revised effective ionic radii and systematic studies of
 % interatomic distances in halides and chalcogenides. R. D. Shannon Acta
@@ -227,7 +249,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'prop_atom'</
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -250,8 +272,27 @@ end
 
 element=element_atom(atom); % Optionally, set the names ow water O and water H
 %element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');
+disp('Trying to find bonded atoms')
 element=bond_atom(element,Box_dim,rmax);
+disp('Running Bond Valence analysis...')
 element=bond_valence_atom(element,Box_dim,1.25,rmax);
+
+% other_ind=[];
+% for i=1:size(element,2)
+%     try
+%         ValenceGuess=round([element(i).valence]);
+%         element(i)=bond_valence_atom(element(i),Box_dim,1.25,rmax,ValenceGuess);
+%     catch
+%         other_ind=[other_ind i];
+%     end
+%     if mod(i,100)==1
+%         i-1
+%     end
+% end
+% if numel(other_ind)>0
+%     element(other_ind)=bond_valence_atom(element(other_ind),Box_dim,1.25,rmax);
+% end
+
 element=mass_atom(element);
 assignin('caller','element',element);
 for i=1:size(element,2)
@@ -260,12 +301,18 @@ for i=1:size(element,2)
         Ion_ind=find(strncmpi([element(i).type],Ion,1));
     end
     CN_ind=find(numel(element(i).neigh.index)==CN);
-    ind=intersect(Ion_ind,CN_ind);
+    Ox_ind=find(round(element(i).valence)==OxState);
+    CN_ind=intersect(Ion_ind,CN_ind);
+    Ox_ind=intersect(Ion_ind,Ox_ind);
+    ind=intersect(Ox_ind,CN_ind);
     if numel(ind)==0
         ind=Ion_ind(1);
+    elseif numel(ind)>1
+        ind=ind(1);
     end
     properties(i).index=element(i).index;
     properties(i).type=Ion(ind);
+    properties(i).fftype=atom(i).type;
     properties(i).neigh=element(i).neigh;
     properties(i).bond=element(i).bond;
     %     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()
@@ -274,46 +321,42 @@ for i=1:size(element,2)
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
     properties(i).rdiffvalence=element(i).Rdiff;
+    properties(i).cn_bv=size(properties(i).bv,2);
+    properties(i).ShannonParam={'REPLACE_WITH_DASH_DASH>'};
     properties(i).atnum=element(i).atnum;
     properties(i).mass=element(i).mass;
     properties(i).oxstate=OxState(ind);
-    properties(i).ip=ZoverIR(ind);
-    properties(i).cn=CN(ind);
-    properties(i).crysradii=CrysRadii(ind);
+    properties(i).cn_guess=CN(ind);
     properties(i).ionicradii=IonicRadii(ind);
-    properties(i).vdwradii=radius_vdw([element(i).type]);
-    properties(i).elecconf=strtrim(ElecConf(ind));
-    properties(i).spinstate=strtrim(SpinState(ind));
     if mod(i,100)==1
         i-1
     end
 end
 
-for i=1:size(element,2)
-    if numel(properties(i).type)>1
-        Ion_ind=find(strcmp([element(i).type],Ion));
-        if numel(Ion_ind)==0
-            Ion_ind=find(strncmpi([element(i).type],Ion,1));
-        end
-        CN_ind=find(numel(element(i).neigh.index)==CN);
-        ind=intersect(Ion_ind,CN_ind);
-        if numel(ind)==0
-            ind=Ion_ind(1);
-        end
-        
+assignin('caller','pre_properties',properties);
+
+for i=1:size(properties,2)
+    Ion_ind=find(strcmp([element(i).type],Ion));
+    if numel(Ion_ind)==0
+        Ion_ind=find(strncmpi([element(i).type],Ion,1));
+    end
+    CN_ind=find(numel(element(i).neigh.index)==CN);
+    ind=intersect(Ion_ind,CN_ind);
+    
+    if numel(ind)>0
         current_radii=[properties(i).ionicradii];
         neigh_radii=[properties([properties(i).neigh.index]).ionicradii];
         sum_radii=repmat(current_radii',numel(neigh_radii),1)+repmat(neigh_radii,numel(current_radii),1)';
-        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(1).rdiffvalence))));
-        
+        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(i).rdiffvalence))));
+        preox_ind;
         properties(i).type=Ion(ind(preox_ind));
-        properties(i).oxstate=OxState(ind(preox_ind));
+%         properties(i).oxstate=OxState(ind(preox_ind));
         properties(i).ip=ZoverIR(ind(preox_ind));
-        properties(i).cn=CN(ind(preox_ind));
+        properties(i).cn_guess=CN(ind(preox_ind));
         properties(i).crysradii=CrysRadii(ind(preox_ind));
         properties(i).ionicradii=IonicRadii(ind(preox_ind));
-        properties(i).bv=element(i).bv;
-        properties(i).valence=element(i).valence;
+        properties(i).vdwradii=radius_vdw([element(i).type]);
+        properties(i).ip=ZoverIR(preox_ind);
         properties(i).elecconf=strtrim(ElecConf(ind(preox_ind)));
         properties(i).spinstate=strtrim(SpinState(ind(preox_ind)));
     end
@@ -327,6 +370,7 @@ ind=find(abs(diff_valence)>0.5);
 if numel(ind)>0
     disp('Possible problems with index due to multiple oxidation states,')
     disp('or atoms that are undersaturated!')
+    unique([atom(ind).type])
     ind
     assignin('caller','heal_ind',ind');
 end

@@ -1,18 +1,4 @@
 [ moleculetype ]
-; molname       nrexcl ; This is a dummy particle
-Du               1
-
-[ atoms ]
-; id    at type res nr  residu name     at name  cg nr   charge
-1       Du       1       Du               Du        1       0
-
-#ifdef POSRES_Du
-[ position_restraints ]
-; ai  funct  fcx    fcy    fcz
-   1    1       1000       1000       1000
-#endif
-
-[ moleculetype ]
 ; molname       nrexcl
 Li               1
 
@@ -54,21 +40,6 @@ K               1
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
 #endif
-
-[ moleculetype ]
-; molname       nrexcl
-Rb               1
-
-[ atoms ]
-; id    at type res nr  residu name     at name  cg nr   charge
-1       Rb       1       Rb               Rb        1       1
-
-#ifdef POSRES_Rb
-[ position_restraints ]
-; ai  funct  fcx    fcy    fcz
-   1    1       1000       1000       1000
-#endif
-
 
 [ moleculetype ]
 ; molname       nrexcl
@@ -154,18 +125,26 @@ Cl          1
    1    1    1000       1000       1000
 #endif
 
+; ############################################################
+
 [ moleculetype ]
 ; molname   nrexcl
 Cls          1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
-1       Cls      1       Cls          Cls       1      -1
+1 Cl 1 Cls Cls 1 -1.0
 
 #ifdef POSRES_Cls
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1    1000       1000       1000
+#endif
+
+#ifdef POSRES_Cls_YZ_10
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    0      5      10
 #endif
 
 #ifdef POSRES_Cls_XY_1
@@ -185,6 +164,88 @@ Cls          1
 ; ai  funct  fcx    fcy    fcz
    1    1    100     100    0
 #endif
+
+; ############################################################
+
+[ moleculetype ]
+; molname   nrexcl
+Clr          1
+
+[ atoms ]
+; id    at type res nr  residu name at name  cg nr  charge
+1 Cl 1 Clr Clr 1 -1.0
+
+#ifdef POSRES_Cls
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    1000       1000       1000
+#endif
+
+#ifdef POSRES_Cls_YZ_10
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    0      5      10
+#endif
+
+#ifdef POSRES_Cls_XY_1
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    1      1      100
+#endif
+
+#ifdef POSRES_Cls_XY_10
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    10     10     10
+#endif
+
+#ifdef POSRES_Cls_XY_100
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    100     100   50
+#endif
+
+; ############################################################
+
+[ moleculetype ]
+; molname   nrexcl
+Cll          1
+
+[ atoms ]
+; id    at type res nr  residu name at name  cg nr  charge
+1 Cl 1 Cll Cll 1 -1.0
+
+#ifdef POSRES_Cls
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    1000       1000       1000
+#endif
+
+#ifdef POSRES_Cls_YZ_10
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    0      5      10
+#endif
+
+#ifdef POSRES_Cls_XY_1
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    1     1    100
+#endif
+
+#ifdef POSRES_Cls_XY_10
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    10     10    0
+#endif
+
+#ifdef POSRES_Cls_XY_100
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1    100     100    0
+#endif
+
+; ############################################################
 
 [ moleculetype ]
 ; molname   nrexcl
@@ -214,44 +275,3 @@ I          1
    1    1       1000       1000       1000
 #endif
 
-[ moleculetype ]
-; molname   nrexcl
-Cu          1
-
-[ atoms ]
-; id    at type res nr  residu name at name  cg nr  charge
-1       Cu      1       Cu          Cu       1      2
-
-#ifdef POSRES_Cu
-[ position_restraints ]
-; ai  funct  fcx    fcy    fcz
-   1    1       1000       1000       1000
-#endif
-
-[ moleculetype ]
-; molname   nrexcl
-Ni          1
-
-[ atoms ]
-; id    at type res nr  residu name at name  cg nr  charge
-1       Ni      1       Ni          Ni       1      2
-
-#ifdef POSRES_Ni
-[ position_restraints ]
-; ai  funct  fcx    fcy    fcz
-   1    1       1000       1000       1000
-#endif
-
-[ moleculetype ]
-; molname   nrexcl
-Zn          1
-
-[ atoms ]
-; id    at type res nr  residu name at name  cg nr  charge
-1       Zn      1       Zn          Zn       1      2
-
-#ifdef POSRES_Zn
-[ position_restraints ]
-; ai  funct  fcx    fcy    fcz
-   1    1       1000       1000       1000
-#endif

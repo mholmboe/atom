@@ -1,23 +1,34 @@
 %% G2_atom.m
 % * This function calculates the continuous G2 factor fromthe cos and sin
 % * terms and also saves a struct variable for G2_calc_func()
-% * You might wnat to edit the atomtype names below to fit your needs...
+% * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)
+% * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)
 %
-function [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)
+function [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+format compact;
+
+if nargin==2
+    filename='outfile';
+elseif nargin>2
+    filename=varargin{1};
+end
 Inorganic_atoms = {'Si','Al','Alt','Feo','Mgo','Ob','Op','O','Oh','Omg','Ohmg','Oalt','Odsub','H','Ow','Hw','OW','HW','HW1','HW2','Li','Na','K','Cs','Mg','Ca','Sr','Ba','Cl','Br','Cc','Hc','Oc','Nc'}; % Octahedral and tetrahedral substitusions
 Atoms_noWater  = {'Si','Al','Alt','Feo','Mgo','Mg','Ob','Op','O','Oh','Omg','Ohmg','Oalt','Odsub','H','Na','Cc','Hc','Oc','Nc'};%,'Li','Na','K','Cs','Mg','Ca','Sr','Ba','Cl'};
 Atoms_clay     = {'Si','Al','Alt','Feo','Mgo','Mg','Ob','Op','O','Oh','Omg','Ohmg','Oalt','Odsub','H'};%,'Li','Na','K','Cs','Mg','Ca','Sr','Ba','Cl'};
 System         = {'all'};%
+
+atom=translate_atom(atom,-[atom.x atom.y atom.z]);
+atom=wrap_atom(atom,Box_dim);
 
 Elements(1,1:3:3*length([atom.x]))=[atom.x];
 Elements(1,2:3:3*length([atom.x]))=[atom.y];
@@ -27,20 +38,20 @@ Elements(:,1:3:end)=Elements(:,1:3:end) - min(min(Elements(:,1:3:end)));
 Elements(:,2:3:end)=Elements(:,2:3:end) - min(min(Elements(:,2:3:end)));
 Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 
-Element = Wrap_Coord_func(Elements, Box_dim);
+% Element = Wrap_Coord_func(Elements, Box_dim);
 
-ind_Feo=find(ismember([atom.type],'Al'));
-ind_Feo=ind_Feo(1:9:end);
-[atom(ind_Feo).type]=deal({'Feo'});
+% ind_Feo=find(ismember([atom.type],'Al'));
+% ind_Feo=ind_Feo(1:9:end);
+% [atom(ind_Feo).type]=deal({'Feo'});
 
 for push=1:1
     
     scale_water=1;
-    nUC=1*1;
+    nUC=6*4*3;
     dim='z';
     stride=1;
     pushSOL=0;%(-5+push)/10; %Å
-    nLayers=1;
+    nLayers=3;
     lambda=1.54187;
     step=0.01; % Do not change
     twotheta=[2:step:60]';
@@ -154,12 +165,13 @@ for push=1:1
         Element = Wrap_Coord_func(Element, L);
         Element_density = histcounts(Element,Distance)'/norm;
         Element_density = Element_density-floor(Element_density./d001)*d001;
-        %         Element_density = Element_density(1:ceil(d001/step),1);
-        %         Element_density = smooth((Element_density+flipud(Element_density))/2,11);
+        
+        Element_density = Element_density(1:ceil(d001/step),1);
+        Element_density = smooth((Element_density+flipud(Element_density))/2,11);
         
         DW=0;
         %% Set the Debye-Waller factor
-        if ismember(Atom_label(h),{'Si','Al','Alt','Mgo','Mg','H','Fe','Feo'})
+        if ismember(Atom_label(h),{'Si','Al','Alt','Mgo','Mg','H','Hc','Fe','Feo'})
             DW=1.5
         elseif ismember(Atom_label(h),{'Li','Na','K','Cs','Mg','Ca','Sr','Ba'})
             DW=2
@@ -170,6 +182,7 @@ for push=1:1
             DW=2
         else
             disp('Do not recognise the atomtype!!!')
+            DW=2
         end
         
         if ismember(Atom_label(h),{'Ow','Hw','OW','HW','HW1','HW2'})
@@ -213,8 +226,8 @@ for push=1:1
         %                     Element_sin(i,1)=sum(sin_term(i,:),2);
         %                 end
         Element_G2 = Element_cos.^2+Element_sin.^2;
-        %         Total_density=Total_density+Element_density;
-        %             Total_density_disc=Total_density_disc+Element_density_disc;
+        Total_density=Total_density+Element_density;
+        %         Total_density_disc=Total_density_disc+Element_density_disc;
         Total_Electron_density = Total_Electron_density+Element_Electron_density;
         G_cos=G_cos+Element_cos;
         G_sin=G_sin+Element_sin;
@@ -257,7 +270,7 @@ for push=1:1
     newstructure=structure;
     while i < size(structure,2)+1
         for j=1:numel([structure(i).P])
-            if numel([structure(i).P]) > 5
+            if numel([structure(i).P]) > 1
                 newstructure(k)=structure(i);
                 newstructure(k).Z=structure(i).Z(j);
                 newstructure(k).P=structure(i).P(j);%/numel([structure(i).Z]);
@@ -284,34 +297,11 @@ for push=1:1
     plot(Gtwotheta,G2,'-','color',Linecolor,'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
     plot(Gtwotheta,G_cos,'-','color',Linecolor,'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
     plot(Gtwotheta,G_sin,'-','color',Linecolor,'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
-    %     %
-    %      load('G2_Swy2.mat')
-    % %     %     plot(2:.05:50,G2,'-','color',[0 1 0],'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
-    %     plot(2:.05:50,G_cos,'-','color',[0 1 0],'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
-    %     %     plot(2:.05:50,G_sin,'-','color',[0 1 0],'LineWidth',Linewidth);set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',Fontsize)
-    %     %     %
-    %         figure
-    %         %                 hold on
-    %         plot(Distance(1:length(Total_density)),50*circshift(Total_density,[0 0]))
-    %
-    %         %     plot(Distance(1:length(Total_density)),50*circshift(Ca_density,[ceil(d001/2/step) 0]),'b')
-    % %         plot(Distance(1:length(Total_density)),50*circshift(Ow_density,[ceil(d001/2/step) 0]),'r')
-    % %         plot(Distance(1:length(Total_density)),50*circshift(Hw_density,[ceil(d001/2/step) 0]),'k')
-    %         stem(Distance(1:length(Total_density_disc)),circshift(Total_density_disc,[ceil(d001/2/step) 0]),'Marker','none')
-    %     ylim([0 10])
-    %         figure
-    %         hold on
-    %         plot(Distance(1:length(Total_density)),50*circshift(Total_density,[0 0]))
-    %         plot(Distance(1:length(Total_density)),50*circshift(Ca_density,[0 0]),'b')
-    %         plot(Distance(1:length(Total_density)),50*circshift(O_density,[0 0]),'r')
-    %         plot(Distance(1:length(Total_density)),50*circshift(H_density,[0 0]),'k')
-    %         stem(Distance(1:length(Total_density_disc)),circshift(Total_density_disc,[0 0]),'Marker','none')
-    %         ylim([0 10])
-    % %     figure
-    % %     hold on
-    %     plot(Distance(1:length(Total_density)),circshift(Total_density,[ceil(3.27/step) 0]))
-    %     plot(Distance_symm(1:length(Total_density)),circshift(Total_Electron_density,[0 0]))
+    
+    figure
+    hold on
+    plot(Distance(1:length(Total_density)),circshift(Total_density,[0 0]))
+%     plot(Distance_symm(1:length(Total_density)),circshift(Total_Electron_density,[0 0]))
     %     xlabel('2Theta','FontSize',Fontsize); ylabel('a.u.','FontSize',Fontsize);
-    %     pause(0.1)
 end
 

@@ -3,7 +3,7 @@
 % does it work with triclinic sim box?
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

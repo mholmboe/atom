@@ -2,7 +2,7 @@
 % * This function removes all but the passed resnames
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

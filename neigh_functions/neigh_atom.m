@@ -3,7 +3,7 @@
 % * Todo... check if support for triclinic Box_dim works, because its untested...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -15,6 +15,8 @@
 function atom = neigh_atom(atom,Box_dim,varargin)
 
 nAtoms_ind=1:size(atom,2);
+
+orig_index=[atom.index];
 
 % skip_ind=[];
 if nargin==2
@@ -88,8 +90,9 @@ for i=nAtoms_ind
     % in = in(find(in~=i));
 %     in = in(in~=i&~ismember(in,skip_ind));
     % neigh(i).in = [in(find(in~=i))];
-    atom(i).neigh.index = in;
-    atom(i).neigh.type = deal([atom([atom(i).neigh.index]).type])';
+%     atom(i).neigh.index = in;
+    atom(i).neigh.index = orig_index(in)'; % New in version 2.04
+    atom(i).neigh.type = deal([atom(in).type])';
     atom(i).neigh.dist = [dist(in,1)];
     atom(i).neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
     atom(i).neigh.r_vec = [rx(in) ry(in) rz(in)];

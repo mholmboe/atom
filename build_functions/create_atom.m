@@ -8,7 +8,7 @@
 % * solvate_atom
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -32,8 +32,9 @@
 %
 %% Examples
 % # atom = create_atom('Na','Na',[10 20 30],10)
-% # atom = create_atom('Na','Na',[10 20 30],10,1.5)
-% # atom = create_atom('Na','Na',[10 20 30],10,1.5,in_atom)
+% # atom = create_atom('Na','Na',[10 20 30],10,2) % here 2 scale factor thats multiplied to each particles radii
+% # atom = create_atom('Na','Na',[10 20 30],10,[2 2.25]) % here 2.25 (Å) is the min dist to any other particle
+% # atom = create_atom('Na','Na',[10 20 30],10,2,in_atom)
 
 function atom = create_atom(type,resname,limits,nmax,varargin)
 
@@ -42,11 +43,17 @@ if iscell(resname)==0;resname={resname};end
 
 radii = abs(radius_ion(type));
 if nargin > 4
-    scale=varargin{1};
+    distance_factor=varargin{1};
+    rmin=distance_factor; 
+    if numel(distance_factor)>1
+       rmin=distance_factor(2); 
+       distance_factor=distance_factor(1); 
+    end
 else
-    scale=2;
+    distance_factor=2;
+    rmin=radii*distance_factor;
 end
-Box_dim_temp=scale*[2*radii 2*radii 2*radii]
+Box_dim_temp=distance_factor*2*[radii radii radii]
 atom = add2atom(type,[0 0 0],resname,[]);
 
 if numel(limits)==1
@@ -86,9 +93,9 @@ molid=num2cell([1:size(atom,2)]);
 
 % Move things around a little bit
 for i=1:size(atom,2)
-    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-scale*(rand(1)-0.5)*radii;end
-    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-scale*(rand(1)-0.5)*radii;end
-    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-scale*(rand(1)-0.5)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-distance_factor*(rand(1)-0.5)*radii;end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-distance_factor*(rand(1)-0.5)*radii;end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-distance_factor*(rand(1)-0.5)*radii;end
 end
 
 if (limits(1)+limits(2)+limits(3)) ~= 0
@@ -106,7 +113,7 @@ if nargin==6 && size(varargin{2},2) > 0
         atom_count=1;atom_merged=[];count=1;
         while atom_count< size(atom,2)
             atom_block= atom(atom_count:atom_count+natom_block-1);
-            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,scale*radii);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,rmin);
             atom_merged = [atom_merged atom_block];
             atom_count=atom_count+natom_block;
             disp('box number...')
@@ -114,7 +121,7 @@ if nargin==6 && size(varargin{2},2) > 0
         end
         atom=atom_merged;
     else
-        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,scale*radii);
+        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,rmin);
     end
 else
     atom = slice_atom(atom,limits,0);

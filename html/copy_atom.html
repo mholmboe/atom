@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>copy_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="copy_atom.m"><style type="text/css">
+      --><title>copy_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="copy_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,10 +66,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>copy_atom.m</h1><!--introduction--><div><ul><li>This function copies and translates atoms in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10])</li><li>new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)
+  </style></head><body><div class="content"><h1>copy_atom.m</h1><!--introduction--><div><ul><li>This function copies and translates atoms in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>new_atom=copy_atom(atom,'Al','Mgo','ION')</li><li>new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10])</li><li>new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,varargin)
 
 <span class="comment">% Find all original atomtypes to replace</span>
 ind_atomtype=find(strcmp([atom.type],atomtype));
+
+<span class="keyword">if</span> nargin&gt;4
+    trans_vec=varargin{1};
+<span class="keyword">else</span>
+    trans_vec=[0 0 0];
+<span class="keyword">end</span>
 
 <span class="keyword">if</span> length(ind_atomtype) &gt; 2
     ind_atomtype=ind_atomtype(randperm(length(ind_atomtype)));
@@ -78,7 +84,7 @@ ind_atomtype=find(strcmp([atom.type],atomtype));
 <span class="comment">% Duplicate the atomtype entries into a new In_atom struct</span>
 <span class="keyword">if</span> nargin == 6
     <span class="comment">% Uses the num last entries...</span>
-    num=cell2mat(varargin(1));
+    num=cell2mat(varargin(2));
     new_atom=atom(ind_atomtype(end-num+1:end));
 <span class="keyword">else</span>
     <span class="comment">% Uses all entries...</span>
@@ -94,7 +100,9 @@ molid=num2cell(([1:size(new_atom,2)]+[atom(end).molid]));
 [new_atom.type]=deal({new_atomtype});
 [new_atom.fftype]=deal({new_atomtype});
 
-new_atom = translate_atom(new_atom,trans_vec,<span class="string">'all'</span>)
+<span class="keyword">if</span> max(abs(trans_vec))&gt;0
+    new_atom = translate_atom(new_atom,trans_vec,<span class="string">'all'</span>)
+<span class="keyword">end</span>
 
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
@@ -103,19 +111,26 @@ new_atom = translate_atom(new_atom,trans_vec,<span class="string">'all'</span>)
 % * This function copies and translates atoms in the atom struct
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # new_atom=copy_atom(atom,'Al','Mgo','ION')
 % # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10])
 % # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10)
 %
-function new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)
+function new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,varargin)
 
 % Find all original atomtypes to replace
-ind_atomtype=find(strcmp([atom.type],atomtype)); 
+ind_atomtype=find(strcmp([atom.type],atomtype));
+
+if nargin>4
+    trans_vec=varargin{1};
+else
+    trans_vec=[0 0 0];
+end
 
 if length(ind_atomtype) > 2
     ind_atomtype=ind_atomtype(randperm(length(ind_atomtype)));
@@ -124,11 +139,11 @@ end
 % Duplicate the atomtype entries into a new In_atom struct
 if nargin == 6
     % Uses the num last entries...
-    num=cell2mat(varargin(1));
-    new_atom=atom(ind_atomtype(end-num+1:end)); 
+    num=cell2mat(varargin(2));
+    new_atom=atom(ind_atomtype(end-num+1:end));
 else
     % Uses all entries...
-    new_atom=atom(ind_atomtype); 
+    new_atom=atom(ind_atomtype);
 end
 
 % Rename all
@@ -140,7 +155,9 @@ molid=num2cell(([1:size(new_atom,2)]+[atom(end).molid]));
 [new_atom.type]=deal({new_atomtype});
 [new_atom.fftype]=deal({new_atomtype});
 
-new_atom = translate_atom(new_atom,trans_vec,'all')
+if max(abs(trans_vec))>0
+    new_atom = translate_atom(new_atom,trans_vec,'all')
+end
 
 end
 ##### SOURCE END #####

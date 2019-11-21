@@ -1,6 +1,6 @@
-%% This script creates a structure file for clay+ions+alcohol. Normally one uses one or two structure files
-%% with some clay layers, then one can add layers of ions and then 1-2 segments
-%% of water, either on a grid or using a preequilibrated water body.
+%% This script creates a structure file for clay+ions. Normally one uses one or two structure files
+% with some clay layers, then one can add layers of ions and then 1-2 segments
+% of water, either on a grid or using a preequilibrated water body.
 clear all;
 format long;
 

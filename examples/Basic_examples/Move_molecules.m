@@ -57,8 +57,8 @@ placed_atom=place_atom(atom,[0 5 10]);
 % the <COM_atom.html COM_atom> function and is therefore a bit slow for
 % large molecules
 
-rotated_atom=rotate_atom(atom,'random');
+rotated_atom=rotate_atom(atom,Box_dim,'random');
 % or to rotate with specified angles around the x,y,z axes.
-rotated_atom=rotate_atom(atom,[0 90 180]); 
+rotated_atom=rotate_atom(atom,Box_dim,[0 90 180]); 
 % plot_atom(rotated_atom,Box_dim) % Run command to see what changed
 

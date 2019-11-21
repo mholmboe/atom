@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>plot_atom</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="plot_atom.m"><style type="text/css">
+      --><title>plot_atom</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="plot_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>plot_atom</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. Its very basic.</li><li>It can display bonds over the pbc if supplied with a Bond_index from bond_angle_atom(). It can also indicate the axis directions.</li><li>For fancier plots, use the vmd(atom,Box_dim) function if you have VMD installed and the PATH2VMD() function set up accordingly</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>plot_atom(atom,Box_dim)</li><li>plot_atom(atom,Box_dim,2) % 2 is a scale factor</li><li>plot_atom(atom,Box_dim,1,Bond_index) % Bond_index from bond_angle_atom()</li><li>plot_atom(atom,Box_dim,1,[],'axis') % Will indicate the axis ind=find(ismember(Bond_index(:,1),6)|ismember(Bond_index(:,2),6)),:)</li><li>plot_atom(atom,Box_dim,Bond_index(ind)) To see all bonds to index=6</li></ol></div><pre class="codeinput"><span class="keyword">function</span> plot_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>plot_atom</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. Its very basic.</li><li>It can display bonds over the pbc if supplied with a Bond_index from bond_angle_atom(). It can also indicate the axis directions.</li><li>For fancier plots, use the vmd(atom,Box_dim) function if you have VMD installed and the PATH2VMD() function set up accordingly</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>plot_atom(atom,Box_dim)</li><li>plot_atom(atom,Box_dim,2) % 2 is a scale factor</li><li>plot_atom(atom,Box_dim,1,Bond_index) % Bond_index from bond_angle_atom()</li><li>plot_atom(atom,Box_dim,1,[],'axis') % Will indicate the axis ind=find(ismember(Bond_index(:,1),6)|ismember(Bond_index(:,2),6)),:)</li><li>plot_atom(atom,Box_dim,Bond_index(ind)) To see all bonds to index=6</li></ol></div><pre class="codeinput"><span class="keyword">function</span> plot_atom(atom,varargin)
 
 Atom_label=unique([atom.type]);
 plotted_Atom_label=[];
@@ -107,7 +107,7 @@ plotted_Atom_label=[];
 hold <span class="string">on</span>
 rotate3d <span class="string">on</span>;
 camlight(220,210,<span class="string">'infinite'</span>);
-set(gca,<span class="string">'PlotBoxAspectRatio'</span>,[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],<span class="string">'FontSize'</span>,24);
+set(gca,<span class="string">'Color'</span>,[1 1 1],<span class="string">'PlotBoxAspectRatio'</span>,[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],<span class="string">'FontSize'</span>,24);
 set(gcf,<span class="string">'Color'</span>,[1,1,1]);
 
 <span class="keyword">if</span> nargin &gt; 2
@@ -141,7 +141,7 @@ maxY=max([atom.y])+1;
             radii,<span class="keyword">...</span>
             <span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
             <span class="string">'MarkerFaceColor'</span>,color,<span class="keyword">...</span>
-            <span class="string">'MarkerFaceAlpha'</span>,0.75<span class="keyword">...</span>
+            <span class="string">'MarkerFaceAlpha'</span>,0.25<span class="keyword">...</span>
             );
         alpha(.2)
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
@@ -186,9 +186,9 @@ maxY=max([atom.y])+1;
     <span class="keyword">else</span>
         scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],<span class="keyword">...</span>
             radii,<span class="keyword">...</span>
-            <span class="string">'MarkerEdgeColor'</span>,[.1 .1 .1],<span class="keyword">...</span>
+            <span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
             <span class="string">'MarkerFaceColor'</span>,color,<span class="keyword">...</span>
-            <span class="string">'MarkerFaceAlpha'</span>,0.75<span class="keyword">...</span>
+            <span class="string">'MarkerFaceAlpha'</span>,0.25<span class="keyword">...</span>
             );
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
     <span class="keyword">end</span>
@@ -228,8 +228,8 @@ maxY=max([atom.y])+1;
     Simbox = draw_box_atom(Box_dim,[0 0 0],1);
 <span class="keyword">end</span>
 
-fig = gcf;fig.Color = [1 1 1];
-set(gca,<span class="string">'Color'</span>,[1 1 1]);
+fig = gcf;
+<span class="comment">% set(gca,'Color',[1 1 1]);</span>
 xlabel(<span class="string">'X [&Aring;]'</span>); ylabel(<span class="string">'Y [&Aring;]'</span>); zlabel(<span class="string">'Z [&Aring;]'</span>);
 axis([xlo xhi ylo yhi zlo zhi],<span class="string">'equal'</span>);
 legend(plotted_Atom_label);
@@ -252,7 +252,7 @@ view([0,0]);
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -305,7 +305,7 @@ end
 hold on
 rotate3d on;
 camlight(220,210,'infinite');
-set(gca,'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24);
+set(gca,'Color',[1 1 1],'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24);
 set(gcf,'Color',[1,1,1]);
 
 if nargin > 2
@@ -339,7 +339,7 @@ for i = 1:length(Atom_label)
             radii,...
             'MarkerEdgeColor','none',...
             'MarkerFaceColor',color,...
-            'MarkerFaceAlpha',0.75...
+            'MarkerFaceAlpha',0.25...
             );
         alpha(.2)
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
@@ -384,9 +384,9 @@ for i = 1:length(Atom_label)
     else
         scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
             radii,...
-            'MarkerEdgeColor',[.1 .1 .1],...
+            'MarkerEdgeColor','none',...
             'MarkerFaceColor',color,...
-            'MarkerFaceAlpha',0.75...
+            'MarkerFaceAlpha',0.25...
             );
         plotted_Atom_label=[plotted_Atom_label Atom_label(i)];
     end
@@ -426,8 +426,8 @@ if nargin>1
     Simbox = draw_box_atom(Box_dim,[0 0 0],1);
 end
 
-fig = gcf;fig.Color = [1 1 1];
-set(gca,'Color',[1 1 1]);
+fig = gcf;
+% set(gca,'Color',[1 1 1]);
 xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 axis([xlo xhi ylo yhi zlo zhi],'equal');
 legend(plotted_Atom_label);

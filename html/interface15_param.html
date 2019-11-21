@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface15_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="interface15_param.m"><style type="text/css">
+      --><title>interface15_param.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="interface15_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -302,43 +302,43 @@ forcefield.interface15(17).e_kJmol = 0.20920;
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-<span class="keyword">if</span> strcmpi(model_database,<span class="string">'SILICA'</span>)
-    disp(<span class="string">'Model database is SILICA'</span>)
-    <span class="comment">% Si in SILICA</span>
-    forcefield.interface15(18).type =    {<span class="string">'SC4'</span>}; <span class="comment">% st tetrahedral silicon</span>
-    forcefield.interface15(18).mass =    28.08538;
-    forcefield.interface15(18).charge =  1.1000; <span class="comment">% 0.725 when dehydrated</span>
-    forcefield.interface15(18).radius =  4.20000;
-    forcefield.interface15(18).e_kJmol = 0.20920;
+<span class="comment">% if strcmpi(model_database,'SILICA')</span>
+<span class="comment">%     disp('Model database is SILICA')</span>
+<span class="comment">% Si in SILICA</span>
+forcefield.interface15(18).type =    {<span class="string">'SC4'</span>}; <span class="comment">% st tetrahedral silicon</span>
+forcefield.interface15(18).mass =    28.08538;
+forcefield.interface15(18).charge =  1.1000; <span class="comment">% 0.725 when dehydrated</span>
+forcefield.interface15(18).radius =  4.20000;
+forcefield.interface15(18).e_kJmol = 0.20920;
 
-    <span class="comment">% Si in SILICA</span>
-    forcefield.interface15(19).type =    {<span class="string">'SC5'</span>}; <span class="comment">% st tetrahedral silicon</span>
-    forcefield.interface15(19).mass =    28.08538;
-    forcefield.interface15(19).charge =  0.725; <span class="comment">% when dehydrated and bonded to OC25</span>
-    forcefield.interface15(19).radius =  4.20000;
-    forcefield.interface15(19).e_kJmol = 0.20920;
+<span class="comment">% Si in SILICA</span>
+forcefield.interface15(19).type =    {<span class="string">'SC5'</span>}; <span class="comment">% st tetrahedral silicon</span>
+forcefield.interface15(19).mass =    28.08538;
+forcefield.interface15(19).charge =  0.725; <span class="comment">% when dehydrated and bonded to OC25</span>
+forcefield.interface15(19).radius =  4.20000;
+forcefield.interface15(19).e_kJmol = 0.20920;
 
-    <span class="comment">% Osi in SILICA</span>
-    forcefield.interface15(20).type =    {<span class="string">'OC23'</span>}; <span class="comment">%</span>
-    forcefield.interface15(20).mass =    15.99410;
-    forcefield.interface15(20).charge =  -0.5500;
-    forcefield.interface15(20).radius =  3.67500;
-    forcefield.interface15(20).e_kJmol = 0.104600;
+<span class="comment">% Osi in SILICA</span>
+forcefield.interface15(20).type =    {<span class="string">'OC23'</span>}; <span class="comment">%</span>
+forcefield.interface15(20).mass =    15.99410;
+forcefield.interface15(20).charge =  -0.5500;
+forcefield.interface15(20).radius =  3.67500;
+forcefield.interface15(20).e_kJmol = 0.104600;
 
-    <span class="comment">% Osih in SILICA</span>
-    forcefield.interface15(21).type =    {<span class="string">'OC24'</span>}; <span class="comment">%</span>
-    forcefield.interface15(21).mass =    15.99410;
-    forcefield.interface15(21).charge =  -0.67500; <span class="comment">% -0.9 when dehydrated</span>
-    forcefield.interface15(21).radius =  3.67500;
-    forcefield.interface15(21).e_kJmol = 0.104600;
+<span class="comment">% Osih in SILICA</span>
+forcefield.interface15(21).type =    {<span class="string">'OC24'</span>}; <span class="comment">%</span>
+forcefield.interface15(21).mass =    15.99410;
+forcefield.interface15(21).charge =  -0.67500; <span class="comment">% -0.9 when dehydrated</span>
+forcefield.interface15(21).radius =  3.67500;
+forcefield.interface15(21).e_kJmol = 0.104600;
 
-    <span class="comment">% Osi- in SILICA</span>
-    forcefield.interface15(22).type =    {<span class="string">'OC25'</span>}; <span class="comment">%</span>
-    forcefield.interface15(22).mass =    15.99410;
-    forcefield.interface15(22).charge =  -0.9000; <span class="comment">% -0.9 dehydrated as SiO-</span>
-    forcefield.interface15(22).radius =  3.67500;
-    forcefield.interface15(22).e_kJmol = 0.104600;
-<span class="keyword">end</span>
+<span class="comment">% Osi- in SILICA</span>
+forcefield.interface15(22).type =    {<span class="string">'OC25'</span>}; <span class="comment">%</span>
+forcefield.interface15(22).mass =    15.99410;
+forcefield.interface15(22).charge =  -0.9000; <span class="comment">% -0.9 dehydrated as SiO-</span>
+forcefield.interface15(22).radius =  3.67500;
+forcefield.interface15(22).e_kJmol = 0.104600;
+<span class="comment">% end</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
@@ -862,43 +862,43 @@ forcefield.interface15(17).e_kJmol = 0.20920;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if strcmpi(model_database,'SILICA')
-    disp('Model database is SILICA')
-    % Si in SILICA
-    forcefield.interface15(18).type =    {'SC4'}; % st tetrahedral silicon
-    forcefield.interface15(18).mass =    28.08538;
-    forcefield.interface15(18).charge =  1.1000; % 0.725 when dehydrated
-    forcefield.interface15(18).radius =  4.20000;
-    forcefield.interface15(18).e_kJmol = 0.20920;
-    
-    % Si in SILICA
-    forcefield.interface15(19).type =    {'SC5'}; % st tetrahedral silicon
-    forcefield.interface15(19).mass =    28.08538;
-    forcefield.interface15(19).charge =  0.725; % when dehydrated and bonded to OC25
-    forcefield.interface15(19).radius =  4.20000;
-    forcefield.interface15(19).e_kJmol = 0.20920;
-    
-    % Osi in SILICA
-    forcefield.interface15(20).type =    {'OC23'}; %
-    forcefield.interface15(20).mass =    15.99410;
-    forcefield.interface15(20).charge =  -0.5500;
-    forcefield.interface15(20).radius =  3.67500;
-    forcefield.interface15(20).e_kJmol = 0.104600;
-    
-    % Osih in SILICA
-    forcefield.interface15(21).type =    {'OC24'}; %
-    forcefield.interface15(21).mass =    15.99410;
-    forcefield.interface15(21).charge =  -0.67500; % -0.9 when dehydrated
-    forcefield.interface15(21).radius =  3.67500;
-    forcefield.interface15(21).e_kJmol = 0.104600;
-    
-    % Osi- in SILICA
-    forcefield.interface15(22).type =    {'OC25'}; %
-    forcefield.interface15(22).mass =    15.99410;
-    forcefield.interface15(22).charge =  -0.9000; % -0.9 dehydrated as SiO- 
-    forcefield.interface15(22).radius =  3.67500;
-    forcefield.interface15(22).e_kJmol = 0.104600;
-end
+% if strcmpi(model_database,'SILICA')
+%     disp('Model database is SILICA')
+% Si in SILICA
+forcefield.interface15(18).type =    {'SC4'}; % st tetrahedral silicon
+forcefield.interface15(18).mass =    28.08538;
+forcefield.interface15(18).charge =  1.1000; % 0.725 when dehydrated
+forcefield.interface15(18).radius =  4.20000;
+forcefield.interface15(18).e_kJmol = 0.20920;
+
+% Si in SILICA
+forcefield.interface15(19).type =    {'SC5'}; % st tetrahedral silicon
+forcefield.interface15(19).mass =    28.08538;
+forcefield.interface15(19).charge =  0.725; % when dehydrated and bonded to OC25
+forcefield.interface15(19).radius =  4.20000;
+forcefield.interface15(19).e_kJmol = 0.20920;
+
+% Osi in SILICA
+forcefield.interface15(20).type =    {'OC23'}; %
+forcefield.interface15(20).mass =    15.99410;
+forcefield.interface15(20).charge =  -0.5500;
+forcefield.interface15(20).radius =  3.67500;
+forcefield.interface15(20).e_kJmol = 0.104600;
+
+% Osih in SILICA
+forcefield.interface15(21).type =    {'OC24'}; %
+forcefield.interface15(21).mass =    15.99410;
+forcefield.interface15(21).charge =  -0.67500; % -0.9 when dehydrated
+forcefield.interface15(21).radius =  3.67500;
+forcefield.interface15(21).e_kJmol = 0.104600;
+
+% Osi- in SILICA
+forcefield.interface15(22).type =    {'OC25'}; %
+forcefield.interface15(22).mass =    15.99410;
+forcefield.interface15(22).charge =  -0.9000; % -0.9 dehydrated as SiO-
+forcefield.interface15(22).radius =  3.67500;
+forcefield.interface15(22).e_kJmol = 0.104600;
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

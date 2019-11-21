@@ -1,11 +1,11 @@
 %% protonate_atom.m
-% * This function protonates the sites in the atom struct given by the 
-% index vector ind by adding a H's to a new H atom struct. It does so by 
+% * This function protonates the sites in the atom struct given by the
+% index vector ind by adding a H's to a new H atom struct. It does so by
 % placing the H opposite to the mean position of all neughbours within 2.5
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -59,7 +59,7 @@ else
 end
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
-    
+
 if numel(ind)==0
     i=1; H_atom=[];
     while i<=size(atom,2)
@@ -117,7 +117,7 @@ while i < size(H_atom,2)
         x1=[H_atom(i).x];
         y1=[H_atom(i).y];
         z1=[H_atom(i).z];
-
+        
         H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
         H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
         
@@ -126,7 +126,12 @@ while i < size(H_atom,2)
         [H_atom(i).z]=mean([H_atom(rmind).z]);
         
         H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-        rmind_tot=[rmind_tot rmind(rmind>i)];
+        
+        try
+            rmind_tot=[rmind_tot; rmind(rmind>i)];
+        catch
+            rmind_tot=[rmind_tot; rmind(rmind>i)];
+        end
     end
     i=i+1;
 end

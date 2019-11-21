@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>radius_vdw.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="radius_vdw.m"><style type="text/css">
+      --><title>radius_vdw.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="radius_vdw.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,14 +66,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>radius_vdw.m</h1><!--introduction--><div><ul><li>This function fetches the rdw radius, originally taken from below</li><li>from 'A cartography of the van der Waals territories'</li><li>Santiago Alvarez doi:10.1039/c3dt50599e</li><li>rvdw 1,61 and 84-88 are made up....</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>rvdw = radius_vdw({'O'})</li><li>rvdw = radius_vdw('O')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> rvdw = radius_vdw(Atom_label)
+  </style></head><body><div class="content"><h1>radius_vdw.m</h1><!--introduction--><div><ul><li>This function fetches the rdw radius, originally taken from below</li><li>from 'A cartography of the van der Waals territories'</li><li>Santiago Alvarez doi:10.1039/c3dt50599e</li><li>rvdw 1,61 and 84-88 are made up....</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>rvdw = radius_vdw({'O'})</li><li>rvdw = radius_vdw('O')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> rvdw = radius_vdw(Atom_label)
 
 <span class="keyword">if</span> ~iscell(Atom_label)
     Atom_label={Atom_label};
 <span class="keyword">end</span>
 
 rvdw={<span class="keyword">...</span>
-    <span class="string">'H'</span>  1.2 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
+    <span class="string">'H'</span>  1.0 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
     <span class="string">'He'</span> 1.43 2 <span class="string">'Helium'</span>; <span class="keyword">...</span>
     <span class="string">'Li'</span> 2.12 3 <span class="string">'Lithium'</span>; <span class="keyword">...</span>
     <span class="string">'Be'</span> 1.98 4 <span class="string">'Beryllium'</span>; <span class="keyword">...</span>
@@ -139,7 +139,6 @@ rvdw={<span class="keyword">...</span>
     <span class="string">'Gd'</span> 2.83 64 <span class="string">'Gadolinium'</span>; <span class="keyword">...</span>
     <span class="string">'Tb'</span> 2.79 65 <span class="string">'Terbium'</span>; <span class="keyword">...</span>
     <span class="string">'Dy'</span> 2.87 66 <span class="string">'Dysprosium'</span>; <span class="keyword">...</span>
-    <span class="string">'Ho'</span> 2.81 67 <span class="string">'Holmium'</span>; <span class="keyword">...</span>
     <span class="string">'Er'</span> 2.83 68 <span class="string">'Erbium'</span>; <span class="keyword">...</span>
     <span class="string">'Tm'</span> 2.79 69 <span class="string">'Thulium'</span>; <span class="keyword">...</span>
     <span class="string">'Yb'</span> 2.80 70 <span class="string">'Ytterbium'</span>; <span class="keyword">...</span>
@@ -148,7 +147,6 @@ rvdw={<span class="keyword">...</span>
     <span class="string">'Ta'</span> 2.53 73 <span class="string">'Tantalum'</span>; <span class="keyword">...</span>
     <span class="string">'W'</span>  2.57 74 <span class="string">'Tungsten'</span>; <span class="keyword">...</span>
     <span class="string">'Re'</span> 2.49 75 <span class="string">'Rhenium'</span>; <span class="keyword">...</span>
-    <span class="string">'Os'</span> 2.48 76 <span class="string">'Osmium'</span>; <span class="keyword">...</span>
     <span class="string">'Ir'</span> 2.41 77 <span class="string">'Iridium'</span>; <span class="keyword">...</span>
     <span class="string">'Pt'</span> 2.29 78 <span class="string">'Platinum'</span>; <span class="keyword">...</span>
     <span class="string">'Au'</span> 2.32 79 <span class="string">'Gold'</span>; <span class="keyword">...</span>
@@ -172,10 +170,14 @@ rvdw={<span class="keyword">...</span>
     <span class="string">'Bk'</span> 3.40 97 <span class="string">'Berkelium'</span>; <span class="keyword">...</span>
     <span class="string">'Cf'</span> 3.05 98 <span class="string">'Californium'</span>; <span class="keyword">...</span>
     <span class="string">'Es'</span> 2.70 99 <span class="string">'Einsteinium'</span>;<span class="keyword">...</span>
-    <span class="string">'Hw'</span> 1.2 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
-    <span class="string">'HW1'</span> 1.2 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
-    <span class="string">'HW2'</span> 1.2 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
+    <span class="string">'Hw'</span> 1.0 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
+    <span class="string">'HW1'</span> 1.0 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
+    <span class="string">'HW2'</span> 1.0 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
     <span class="string">'OW'</span>  1.50 8 <span class="string">'Oxygen'</span>};
+
+<span class="comment">% 'Ho' 2.81 67 'Holmium'; ...</span>
+<span class="comment">% 'Os' 2.48 76 'Osmium'; ...</span>
+
 
 ind=[];ind_array=[];
 <span class="keyword">if</span> iscell(Atom_label) &amp;&amp; length(Atom_label) &gt; 1
@@ -186,7 +188,7 @@ ind=[];ind_array=[];
             <span class="keyword">if</span> numel(ind) == 0
                 disp(<span class="string">'Could not find radii for'</span>)
                 disp(Atom_label(i))
-                disp(<span class="string">'setting it to 1.4&Aring;'</span>)
+                disp(<span class="string">'setting it to 1.5&Aring;'</span>)
                 ind = 8;
             <span class="keyword">end</span>
         <span class="keyword">end</span>
@@ -210,7 +212,7 @@ rvdw = cell2mat(rvdw(ind,2));
 % * rvdw 1,61 and 84-88 are made up....
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -226,7 +228,7 @@ if ~iscell(Atom_label)
 end
 
 rvdw={...
-    'H'  1.2 1 'Hydrogen'; ...
+    'H'  1.0 1 'Hydrogen'; ...
     'He' 1.43 2 'Helium'; ...
     'Li' 2.12 3 'Lithium'; ...
     'Be' 1.98 4 'Beryllium'; ...
@@ -292,7 +294,6 @@ rvdw={...
     'Gd' 2.83 64 'Gadolinium'; ...
     'Tb' 2.79 65 'Terbium'; ...
     'Dy' 2.87 66 'Dysprosium'; ...
-    'Ho' 2.81 67 'Holmium'; ...
     'Er' 2.83 68 'Erbium'; ...
     'Tm' 2.79 69 'Thulium'; ...
     'Yb' 2.80 70 'Ytterbium'; ...
@@ -301,7 +302,6 @@ rvdw={...
     'Ta' 2.53 73 'Tantalum'; ...
     'W'  2.57 74 'Tungsten'; ...
     'Re' 2.49 75 'Rhenium'; ...
-    'Os' 2.48 76 'Osmium'; ...
     'Ir' 2.41 77 'Iridium'; ...
     'Pt' 2.29 78 'Platinum'; ...
     'Au' 2.32 79 'Gold'; ...
@@ -325,10 +325,14 @@ rvdw={...
     'Bk' 3.40 97 'Berkelium'; ...
     'Cf' 3.05 98 'Californium'; ...
     'Es' 2.70 99 'Einsteinium';...
-    'Hw' 1.2 1 'Hydrogen'; ...
-    'HW1' 1.2 1 'Hydrogen'; ...
-    'HW2' 1.2 1 'Hydrogen'; ...
+    'Hw' 1.0 1 'Hydrogen'; ...
+    'HW1' 1.0 1 'Hydrogen'; ...
+    'HW2' 1.0 1 'Hydrogen'; ...
     'OW'  1.50 8 'Oxygen'};
+
+% 'Ho' 2.81 67 'Holmium'; ...
+% 'Os' 2.48 76 'Osmium'; ...
+
 
 ind=[];ind_array=[];
 if iscell(Atom_label) && length(Atom_label) > 1
@@ -339,7 +343,7 @@ if iscell(Atom_label) && length(Atom_label) > 1
             if numel(ind) == 0
                 disp('Could not find radii for')
                 disp(Atom_label(i))
-                disp('setting it to 1.4Å')
+                disp('setting it to 1.5Å')
                 ind = 8;
             end
         end

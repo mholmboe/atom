@@ -2,24 +2,30 @@
 % * This function is used to calculate density profiles along X|Y|Z
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # Hist = hist_atom(atom,Box_dim,0.02)
+% # Hist = hist_atom(atom,Box_dim,varargin)
 %
-function [Binsx,Countsx,Binsy,Countsy,Binsz,Countsz] = hist_atom(atom,Box_dim,s,varargin)
+function [Binsx,Countsx,Binsy,Countsy,Binsz,Countsz] = hist_atom(atom,Box_dim,varargin)
 
-Binsx = (0:s:Box_dim(1,1)+s)';
-Binsy = (0:s:Box_dim(1,2)+s)';
-Binsz = (0:s:Box_dim(1,3)+s)';
+if nargin<3
+    ds=0.02;
+else
+    ds=varargin{1};
+end
+
+Binsx = (0:ds:Box_dim(1,1)+ds)';
+Binsy = (0:ds:Box_dim(1,2)+ds)';
+Binsz = (0:ds:Box_dim(1,3)+ds)';
 
 Coords=[atom.x; atom.y; atom.z;]';
 
 if nargin>3
-    center_vec=varargin{1};
+    center_vec=varargin{2};
     if numel(center_vec)==1
         Coords=Coords-center_vec;
     else
@@ -35,12 +41,12 @@ end
 Countsx=histcounts(Coords(:,1),Binsx');
 Countsy=histcounts(Coords(:,2),Binsy');
 Countsz=histcounts(Coords(:,3),Binsz');
-Countsx=Countsx/(s*Box_dim(1,2)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
-Countsy=Countsy/(s*Box_dim(1,1)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
-Countsz=Countsz/(s*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); % mol/L
+Countsx=Countsx/(ds*Box_dim(1,2)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
+Countsy=Countsy/(ds*Box_dim(1,1)*Box_dim(1,3)*1E-30*6.022e23*1000); % mol/L
+Countsz=Countsz/(ds*Box_dim(1,1)*Box_dim(1,2)*1E-30*6.022e23*1000); % mol/L
 
 if nargin>4 
-    if varargin{2}>0
+    if varargin{3}>0
     Countsx=(Countsx+flipud(Countsx))/2;
     Countsy=(Countsy+flipud(Countsy))/2;
     Countsz=(Countsz+flipud(Countsz))/2;
@@ -49,7 +55,7 @@ end
 
 if nargin>5
     
-    sigma = varargin{3};
+    sigma = varargin{4};
     if sigma>0
     window = 100;
     x = linspace(-window / 2, window / 2, window);

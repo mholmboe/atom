@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_atom_xyz.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="import_atom_xyz.m"><style type="text/css">
+      --><title>import_atom_xyz.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="import_atom_xyz.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_atom_xyz.m</h1><!--introduction--><div><ul><li>This function imports an .xyz file into the atom struct</li><li>It tries to guess the Box_dim, so watch out!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Close the text file.</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_xyz('molecule.xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_xyz(filename)
+  </style></head><body><div class="content"><h1>import_atom_xyz.m</h1><!--introduction--><div><ul><li>This function imports an .xyz file into the atom struct</li><li>It tries to guess the Box_dim, so watch out!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Close the text file.</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_xyz('molecule.xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_xyz(filename)
 </pre><pre class="codeinput">fileID = fopen(filename,<span class="string">'r'</span>);
 line1 = {fgets(fileID)};
 line2 = {fgets(fileID)};
@@ -145,18 +145,44 @@ Box_dim=[];
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> length(Box_dim)==3
-    Box_dim=Box_dim;
-<span class="keyword">elseif</span> length(Box_dim)==6
-    Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
-<span class="keyword">elseif</span> length(Box_dim)==9
-    Box_dim=Box_dim;
+<span class="keyword">if</span> length(Box_dim)==6
+    Box_dim=Box_dim(1:6);
+    <span class="keyword">if</span> sum(Box_dim(4:6)) &gt; 100 <span class="comment">% If anglees... and not tilt-factors</span>
+        a=Box_dim(1);
+        b=Box_dim(2);
+        c=Box_dim(3);
+        alfa=Box_dim(4);
+        beta=Box_dim(5);
+        gamma=Box_dim(6);
+        lx = a;
+        xy = b * cos(deg2rad(gamma));
+        ly = (b^2-xy^2)^.5;
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        lz = (c^2 - xz^2 - yz^2)^0.5;
+        Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+        Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+    <span class="keyword">elseif</span> sum(Box_dim(4:6)) &lt; 100
+        Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
+        Box_dim=Box_dim(1:3);
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
+
+<span class="comment">% if length(Box_dim)==3</span>
+<span class="comment">%     Box_dim=Box_dim;</span>
+<span class="comment">% elseif length(Box_dim)==6</span>
+<span class="comment">%     Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];</span>
+<span class="comment">% elseif length(Box_dim)==9</span>
+<span class="comment">%     Box_dim=Box_dim(1:9);</span>
+<span class="comment">% end</span>
 
 <span class="keyword">if</span> numel(Box_dim)==0
     disp(<span class="string">'Guessing the box dimensions to be .1% larger than max coordinates'</span>)
     Box_dim = [(max([atom.x])-min([atom.x]))*1.001    (max([atom.y])-min([atom.y]))*1.001  (max([atom.z])-min([atom.z]))*1.001 0 0 0 0 0 0];
-pause
+    pause
 <span class="keyword">end</span>
 
 <span class="comment">% atom = resname_atom(atom);</span>
@@ -171,7 +197,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % * It tries to guess the Box_dim, so watch out!
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -191,7 +217,7 @@ Box_string=strsplit(char(line2));
 % formatSpec = '%s%f%f%f%[^\n\r]';
 % delimiter = {'\t',' '};
 % dataArray = textscan(fileID, formatSpec, endRow-startRow+1, 'Delimiter', delimiter, 'MultipleDelimsAsOne', true, 'HeaderLines', 0,'ReturnOnError', false);
-% 
+%
 % for block=2:length(startRow)
 %     frewind(fileID);
 %     textscan(fileID, '%[^\n\r]', startRow(block)-1, 'ReturnOnError', false);
@@ -214,7 +240,7 @@ for i=1:nAtoms
     X(i) = XYZ_string(2);
     Y(i) = XYZ_string(3);
     Z(i) = XYZ_string(4);
-
+    
 end
 fclose(filetempID);
 
@@ -261,18 +287,44 @@ if numel(idx) >0
     end
 end
 
-if length(Box_dim)==3
-    Box_dim=Box_dim;
-elseif length(Box_dim)==6
-    Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
-elseif length(Box_dim)==9
-    Box_dim=Box_dim;
+if length(Box_dim)==6
+    Box_dim=Box_dim(1:6);
+    if sum(Box_dim(4:6)) > 100 % If anglees... and not tilt-factors
+        a=Box_dim(1);
+        b=Box_dim(2);
+        c=Box_dim(3);
+        alfa=Box_dim(4);
+        beta=Box_dim(5);
+        gamma=Box_dim(6);
+        lx = a;
+        xy = b * cos(deg2rad(gamma));
+        ly = (b^2-xy^2)^.5;
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        lz = (c^2 - xz^2 - yz^2)^0.5;
+        Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+        Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    elseif sum(Box_dim(4:6)) < 100
+        Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
+    end
+    
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
 end
+
+% if length(Box_dim)==3
+%     Box_dim=Box_dim;
+% elseif length(Box_dim)==6
+%     Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
+% elseif length(Box_dim)==9
+%     Box_dim=Box_dim(1:9);
+% end
 
 if numel(Box_dim)==0
     disp('Guessing the box dimensions to be .1% larger than max coordinates')
     Box_dim = [(max([atom.x])-min([atom.x]))*1.001    (max([atom.y])-min([atom.y]))*1.001  (max([atom.z])-min([atom.z]))*1.001 0 0 0 0 0 0];
-pause
+    pause
 end
 
 % atom = resname_atom(atom);

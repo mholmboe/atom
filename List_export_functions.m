@@ -1,5 +1,8 @@
 %% List of export functions
-
+%
+%% Version
+% 2.06
+%
 %% Export of structure/toplogy files
 % # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...
 % # <write_atom_cif.html write_atom_cif(atom,Box_dim,filename_out)> % This function writes a basic .cif file from the atom struct

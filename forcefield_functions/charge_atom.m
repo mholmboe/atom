@@ -7,7 +7,7 @@
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -119,19 +119,22 @@ elseif strcmpi(ffname,'interface')
         Atom_label=sort(unique([atom.type]));
         interface_param(sort(Atom_label),watermodel);
         no_adjust_labels=[Atom_label(~strncmp(Atom_label,'O',1))];
-        no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Ow',2))];
+%        no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Ow',2))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Ob',2))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Op',2))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oh',2))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Omg',3))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Ohmg',4))];
-        no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Osih',4))];
+%         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Osi',3))];
+%         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Osih',4))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalsi',5))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalhh',5))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalh',4))];
-        no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalt',4))];
+%        no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Oalt',4))];
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         Atom_label
+        no_adjust_ind
+        no_adjust_labels
         round(Charge,5)
         atom = charge_interface_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
     else
@@ -177,6 +180,11 @@ elseif strcmpi(ffname,'interface15')
 end
 
 disp('Total charge')
-round(sum([atom.charge]),5)
+Total_charge=sum([atom.charge]);
+round(sum(Total_charge),5)
+if round(Total_charge)~=sum(Total_charge) 
+   disp('Run tweak_charge_atom() to get an integer charge of the struct')
+end
+
 % atom=tweak_charge_atom(atom);
 assignin('caller','Total_charge',Total_charge);

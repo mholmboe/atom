@@ -2,7 +2,7 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -140,6 +140,7 @@ forcefield.clayff(14).mass =    28.08538;
 forcefield.clayff(14).charge =  2.1000;
 forcefield.clayff(14).radius =  3.70640;
 forcefield.clayff(14).e_kcalmol = 1.8405E-06;
+
 % Al
 forcefield.clayff(15).type =    {'Al'}; % ao octahedral aluminium
 forcefield.clayff(15).mass =    26.98154;
@@ -398,6 +399,20 @@ forcefield.clayff(51).mass =    15.999410;
 forcefield.clayff(51).charge =  -1.05000;
 forcefield.clayff(51).radius =  3.553200;
 forcefield.clayff(51).e_kcalmol = 0.155400;
+
+% Omn (dummy for Mno)
+forcefield.clayff(52).type =    {'Ohmn'}; % fe
+forcefield.clayff(52).mass =    15.999410;
+forcefield.clayff(52).charge =  -0.95000;
+forcefield.clayff(52).radius =  3.553200;
+forcefield.clayff(52).e_kcalmol = 0.155400;
+
+% Oal Deprotonated edge O 
+forcefield.clayff(53).type =    {'Oal'}; % fe
+forcefield.clayff(53).mass =    15.999410;
+forcefield.clayff(53).charge =  -1.7650;
+forcefield.clayff(53).radius =  3.553200;
+forcefield.clayff(53).e_kcalmol = 0.155400;
 
 for i=1:size(forcefield.clayff,2)
     forcefield.clayff(i).sigma=forcefield.clayff(i).radius/2^(1/6);

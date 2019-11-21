@@ -1,5 +1,11 @@
 %% Complete list of all ATOM functions
 %
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
 % # <atom2make_ndx_bonded.html atom2make_ndx_bonded(filename,groupname,atomtypes)> % This function can help you print one custom gromacs .ndx group,based on the atomtypes names.
@@ -45,6 +51,7 @@
 % # <copy_type.html copy_type(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)> % This function copies and translates types in the atom struct
 % # <create_atom.html create_atom(type,resname,limits,nmax,varargin)> % Creates new atoms, good for adding ions to a system. Creates atoms within a certain region defined by <limits>
 % # <create_grid_atom.html create_grid_atom(atom_label,nM,limits,dim,varargin)> % This old function puts ions on a grid plane and adds it to an atom struct
+% # <density_atom.html density_atom(atom,Box_dim)> % This function calculates concentration and electron density profiles. If the atom struct contains the field charge. the charge density, electric field and electrostatic potential is also calculated. 
 % # <dipoles_atom.html dipoles_atom(Elements,Box_dim)> % This function calculates the dipole vector of water. Similar to the COM_func
 % # <dist_matrix_atom.html dist_matrix_atom(atom,Box_dim)> % This calculates the distance matrix from the atom struct
 % # <draw_box_atom.html draw_box_atom(Box_dim,LineColor,LineThickness)> % Draws a box
@@ -113,6 +120,7 @@
 % # <radius_atom.html radius_atom(atom,ffname,watermodel)> % This function fetches the ion radius from clayff or interface or interface2015 ff's and
 % # <radius_ion.html radius_ion(Atom_label)> % This function fetches the ionic radius, originally taken from the link below
 % # <radius_vdw.html radius_vdw(Atom_label)> % This function fetches the rdw radius, originally taken from below from 'A cartography of the van der Waals territories' Santiago Alvarez doi:10.1039/c3dt50599e
+% # <rdf_atom.html rdf_atom(atom,Box_dim,varargin)> % This function calculates the radial distributtion function and the coordination number. Can also do Gaussion smoothing.
 % # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % This function calculates the reduced mass.
 % # <remove_molid.html remove_molid(atom,MolID)> %  remove_molid.m - This removes residue with molid MolID = [1 2 3 .....]
 % # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % This function removes all succeding particles in the atom struct that has identical coordinates to a preceding particle
@@ -136,6 +144,8 @@
 % # <solvate_atom.html solvate_atom(limits,density,r,maxsol,solute_atom,varargin)> % This function generates a certain region defined by <limits> with a solvent structure of density <density>
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
+% # <show_density_atom.html show_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
+% # <show_atom.html show_atom(atom,varargin)> % This function draws the atom struct in 3D. Its a bit fancier that plot_atom()
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water
 % # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
@@ -168,5 +178,4 @@
 % # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % This function writes a .pdb trajectory 
 % # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % This function writes a .xyz trajectory 
 % # <xrd_atom.html xrd_atom(varargin)> % This function calculates theoretical XRD patterns from a .pdb|.gro file or from an atom struct and Box_dim.
-% # <xrd_sc_atom.html xrd_atom(varargin)> % This function calculates theoretical XRD patterns from a .pdb|.gro file or from an atom struct and Box_dim, trying ti use the supercell approach by Ufer implemented in the BGMN XRD code.
-% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format.
+% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format

@@ -2,7 +2,7 @@
 % * This function tries to assign all bonds to a bond_matrix
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

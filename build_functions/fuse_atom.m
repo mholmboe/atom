@@ -2,7 +2,7 @@
 % * This function tries to fuse all sites within a certain rmax
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -42,6 +42,13 @@ while i < size(fused_atom,2)
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
     i=i+1;
+    
+    if mod(i,100)==1
+            if i > 1
+                i-1
+            end
+    end
+        
 end
 fused_atom(rmind_tot)=[];
 

@@ -32,7 +32,7 @@ atom2 = atom(ind2)
 % Similar for one atomtype using Matlabs strncmpi() function, which is case
 % insensitive and in this example only tries to match the 2 first
 % characters
-ind3 = find(strncmpi([atom.type],'al',2) % Will find the indexes of 'Al' 'Alt'
+ind3 = find(strncmpi([atom.type],'al',2)) % Will find the indexes of 'Al' 'Alt'
 atom3 = atom(ind3)
 
 % Compare ind1, ind2 and ind3. Are they similar or different? What is the

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_angle_type.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="bond_angle_type.m"><style type="text/css">
+      --><title>bond_angle_type.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="bond_angle_type.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_angle_type.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles between the  atom1 and atom2 structures. One optional argument like 'reverse' reverses the angle_limit from max to min angle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
+  </style></head><body><div class="content"><h1>bond_angle_type.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles between the  atom1 and atom2 structures. One optional argument like 'reverse' reverses the angle_limit from max to min angle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
 </pre><pre class="codeinput"><span class="comment">% rmin=0;</span>
 <span class="comment">% rmax=3.5;</span>
 <span class="comment">% min_angle=120;</span>
@@ -226,7 +226,7 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 % angle_limit from max to min angle
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

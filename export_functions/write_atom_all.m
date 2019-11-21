@@ -3,14 +3,14 @@
 % * systems designed for Clayff...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_all(atom,Box_dim,filename
-% # write_atom_all(atom,Box_dim,1.25,2.25,'clayff','spc/e')
+% # write_atom_all(atom,Box_dim,filename)
+% # write_atom_all(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
 
 function write_atom_all(atom,Box_dim,filename,varargin)
 

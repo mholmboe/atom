@@ -1,0 +1,539 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>density_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="density_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>density_atom.m</h1><!--introduction--><div><ul><li>This function is used to calculate density profiles along X|Y|Z. It will also try to calc. the electron density profile from the an halfly-oxidized/ionic lattice using the X-ray scattering factors from atomic_scattering_factors(). This means its not exacly the same thing as the electron density, rather the electron density 'seen' by X-rays from an 'ionic lattice'. If the atom struct has a field/attribute atom.charge, this function also calculates the charge density, the electric field (symmetrized) and the electrostatic potential.</li></ul></div><p>Be(a)ware of the units...</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[Bins,Element_density] = density_atom(atom,Box_dim)</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05)</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z')</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',2.3) % sigma [&gt;0] value for Gaussian smoothing</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
+
+Fontsize=18;
+q=1.602176634E-19; <span class="comment">% 1 charge eq is q Coloumb (C)</span>
+epsilon_null = 8.854187817E-12; <span class="comment">% A2&middot;s4&middot;kg-1&middot;m-3</span>
+epsilon=1; <span class="comment">% Dielectric constant</span>
+Na=6.02214086E23; <span class="comment">% Avogadros constant</span>
+
+Atom_label = unique([atom.type]); <span class="comment">% Cell containing strings with the atomtypes you want to include in the analysis</span>
+<span class="comment">% If you want to exclude some atomtypes...</span>
+<span class="comment">% Atoms_include     = unique([atom.type]);</span>
+<span class="comment">% Atoms_exclude     = unique([atom(strcmp([atom.resname],'LAC')).type]);</span>
+<span class="comment">% Atom_label        = setdiff(Atoms_include,Atoms_exclude);</span>
+
+<span class="keyword">if</span> size(Box_dim,2)&gt;6
+    <span class="keyword">if</span> find(Box_dim(1,6:end))&gt;0
+        atom = orto_atom(atom,Box_dim);
+        Box_dim=orto_Box_dim;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+Limits=Box_dim(1:3);
+<span class="keyword">if</span> size(Limits,2)==3
+    Limits(4)=Limits(1);
+    Limits(5)=Limits(2);
+    Limits(6)=Limits(3);
+    Limits(1)=0;
+    Limits(2)=0;
+    Limits(3)=0;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&lt;3
+    ds=0.02;
+<span class="keyword">else</span>
+    ds=varargin{1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&lt;4
+    dimension=<span class="string">'z'</span>;
+<span class="keyword">else</span>
+    dimension=varargin{2};
+<span class="keyword">end</span>
+
+Distance=0:ds:Box_dim(3);
+
+<span class="keyword">if</span> strcmpi(dimension,<span class="string">'x'</span>)
+    Distance=0:ds:Box_dim(1);
+    Area=(Limits(5)-Limits(2))*(Limits(6)-Limits(3));
+<span class="keyword">elseif</span> strcmpi(dimension,<span class="string">'y'</span>)
+    Distance=0:ds:Box_dim(2);
+    Area=(Limits(4)-Limits(1))*(Limits(6)-Limits(3));
+<span class="keyword">elseif</span> strcmpi(dimension,<span class="string">'z'</span>)
+    Distance=0:ds:Box_dim(3);
+    Area=(Limits(4)-Limits(1))*(Limits(5)-Limits(2));
+<span class="keyword">end</span>
+
+Bins = (0:ds:Distance(end)+ds)';
+assignin(<span class="string">'base'</span>,<span class="string">'Distance'</span>,Bins);
+
+Total_Density=zeros(ceil(Distance(end)/ds),1);
+Total_Density_SI=Total_Density;
+Total_Electron_density=Total_Density;
+Total_Electron_density_SI=Total_Density;
+Total_Charge_density=Total_Density;
+Total_Charge_density_SI=Total_Density;
+Total_EField=Total_Density;
+Total_EField_SI=Total_Density;
+Total_EPot=Total_Density;
+Total_EPot_SI=Total_Density;
+Element_count=0;
+<span class="keyword">for</span> h=1:length(Atom_label)
+    Element_count = Element_count+1;
+    <span class="comment">% Extract the trajectory data along the selected dimension dim</span>
+    ind_atom = find(strncmpi([atom.type],Atom_label(h),3))';
+    <span class="keyword">if</span> size(ind_atom,1)&lt;1
+        ind_atom = find(strncmpi([atom.type],Atom_label(h),2))';
+        <span class="keyword">if</span> size(ind_atom,1)&lt;1
+            ind_atom = find(strcmpi([atom.type],Atom_label(h)))';
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> strcmpi(dimension,<span class="string">'x'</span>)
+        Coords=[atom(ind_atom).x]';
+    <span class="keyword">elseif</span> strcmpi(dimension,<span class="string">'y'</span>)
+        Coords=[atom(ind_atom).y]';
+    <span class="keyword">elseif</span> strcmpi(dimension,<span class="string">'z'</span>)
+        Coords=[atom(ind_atom).z]';
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> nargin&gt;6
+        center_vec=varargin{5};
+        Coords=Coords-center_vec;
+    <span class="keyword">end</span>
+
+    Coords(Coords&lt;0) = Coords(Coords&lt;0) + Distance(end);
+    Coords(Coords&gt;Distance(end)) = Coords(Coords&gt;Distance(end)) - Distance(end);
+
+    Element_density=histcounts(Coords(:,1),Bins(1:end-1))';
+
+    <span class="keyword">if</span> numel(Element_density)~=numel(Total_Density)
+        Element_density=interp1(1:numel(Element_density),Element_density,1:numel(Total_Density),<span class="string">'spline'</span>)';
+    <span class="keyword">end</span>
+
+    Element_density=Element_density/(ds*Area*1E-30*6.022e23*1000); <span class="comment">% mol/L</span>
+    Element_density_SI=Element_density*1000*Na; <span class="comment">% npart/m^3.</span>
+
+    <span class="keyword">if</span> nargin&gt;4
+        sigma = varargin{3};
+        <span class="keyword">if</span> sigma&gt;0
+            window = 100;
+            x = linspace(-window / 2, window / 2, window);
+            gaussFilter = exp(-x .^ 2 / (2 * sigma ^ 2));
+            gaussFilter = gaussFilter / sum(gaussFilter); <span class="comment">% normalize</span>
+            Element_density(:)=conv(Element_density(:)', gaussFilter, <span class="string">'same'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> nargin&gt;5
+        <span class="keyword">if</span> varargin{4}&gt;0
+            Element_density=(Element_density+flipud(Element_density))/2;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    nElectrons = atomic_scattering_factors(Atom_label(h),1.542,0,0); <span class="comment">% From X-ray scattering tables, hence not identical to electron density</span>
+    Element_electron_density=nElectrons*Element_density; <span class="comment">% mol eq/L</span>
+    Element_electron_density_SI=q*nElectrons*Element_density_SI; <span class="comment">% C/m^3</span>
+
+    <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+        <span class="keyword">if</span> sum(unique([atom(ind_atom).charge]))&gt;1
+            disp(<span class="string">'Averaging the atom type charge for'</span>)
+            Atom_label(h)
+            unique([atom(ind_atom).charge])
+        <span class="keyword">end</span>
+        Element_Charge_density = Na*1E-24*Element_density*mean([atom(ind_atom).charge]); <span class="comment">% q_ev/nm^3</span>
+        Element_EField = cumsum((Element_Charge_density + flipud(Element_Charge_density))/2)*ds*1E-10*1E27*q/(1E9*epsilon_null*epsilon);
+        Element_EPot = -cumsum(Element_EField)*ds*1e-10*1E9; <span class="comment">%</span>
+
+        Element_Charge_density_SI = q*Element_density_SI*mean([atom(ind_atom).charge]); <span class="comment">% npart*A*s / m3  == npart*C / m3</span>
+        Element_EField_SI = cumsum((Element_Charge_density_SI + flipud(Element_Charge_density_SI))/2)*ds*1e-10/(epsilon_null*epsilon); <span class="comment">% 1e-10m/(epsilon_null*epsilon)</span>
+        Element_EPot_SI = -cumsum(Element_EField_SI)*ds*1e-10; <span class="comment">% *1e-10m; % V=kg*m2/(A*s2)</span>
+    <span class="keyword">end</span>
+
+    disp(<span class="string">'Atom_label'</span>)
+    Atom_label(h)
+    size(ind_atom)
+    sum(Element_density)
+    disp(<span class="string">'-----------'</span>)
+
+    <span class="comment">% Here we keep track of the atoms we analyze</span>
+    UC(Element_count).type=char(Atom_label(h));
+    UC(Element_count).N=sum(Element_density);
+
+    <span class="comment">% Collect all the data</span>
+    Total_Density=Total_Density+Element_density;
+    Total_Electron_density=Total_Electron_density+Element_electron_density;
+    Total_Density_SI=Total_Density_SI+Element_density_SI;
+    <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+        Total_Charge_density=Total_Charge_density+Element_Charge_density;
+        Total_EField=Total_EField+Element_EField;
+        Total_EPot=Total_EPot+Element_EPot;
+
+        Total_Charge_density_SI=Total_Charge_density_SI+Element_Charge_density_SI;
+        Total_EField_SI=Total_EField_SI+Element_EField_SI;
+        Total_EPot_SI=Total_EPot_SI+Element_EPot_SI;
+    <span class="keyword">end</span>
+
+    <span class="comment">% Assign the data to atomtype specific variables</span>
+    <span class="keyword">if</span> sum(Element_density) &gt; 0
+        assignin(<span class="string">'base'</span>,strcat(char(Atom_label(h)),<span class="string">'_density'</span>),[Element_density Element_density_SI]);
+        assignin(<span class="string">'base'</span>,strcat(char(Atom_label(h)),<span class="string">'_density'</span>),[Element_electron_density Element_electron_density_SI]);
+        <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_label(h)),<span class="string">'_charge_density'</span>),[Element_Charge_density Element_Charge_density_SI]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_label(h)),<span class="string">'_efield'</span>),[Element_EField Element_EField_SI]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_label(h)),<span class="string">'_epot'</span>),[Element_EPot Element_EPot_SI]);
+        <span class="keyword">end</span>
+        hold <span class="string">on</span>
+        plot(Distance(1:length(Element_density)),Element_density)
+        xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'mol/L'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+atom = mass_atom(atom,Box_dim);
+assignin(<span class="string">'caller'</span>,<span class="string">'Mw'</span>,Mw);
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_volume'</span>,Box_volume);
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'</span>,Box_density);
+
+hold <span class="string">on</span>;
+plot(Distance(1:length(Total_Density)),circshift(Total_Density,[0 0]),<span class="string">'k'</span>)
+xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Concentration profile [mol/L]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+legend([Atom_label {<span class="string">'Total'</span>}]);
+figure
+plot(Distance(1:length(Total_Density)),circshift(Total_Electron_density,[0 0]))
+xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Concentration profile [mol eqv/L]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+<span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_Charge_density,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Charge density [q/nm^3]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EField,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Electric field [V/nm]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EPot,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Electrostatic potential [V]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_Charge_density_SI,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Charge density [C/m^3]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EField_SI,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Electric field [V/m]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EPot_SI,[0 0]))
+    xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Electrostatic potential [V]'</span>,<span class="string">'FontSize'</span>,Fontsize);
+<span class="keyword">end</span>
+<span class="comment">% if strcmpi(Unit,'conc')</span>
+<span class="comment">% else</span>
+<span class="comment">%     xlabel('Distance [&Aring;]','FontSize',Fontsize); ylabel('Num','FontSize',Fontsize);</span>
+<span class="comment">% end</span>
+
+<span class="comment">% save(strcat('density_profs_',filename))</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% density_atom.m
+% * This function is used to calculate density profiles along X|Y|Z. It
+% will also try to calc. the electron density profile from the an
+% halfly-oxidized/ionic lattice using the X-ray scattering factors from
+% atomic_scattering_factors(). This means its not exacly the same thing as
+% the electron density, rather the electron density 'seen' by X-rays from
+% an 'ionic lattice'.
+% If the atom struct has a field/attribute atom.charge, this function also
+% calculates the charge density, the electric field (symmetrized) and the
+% electrostatic potential.
+%
+% Be(a)ware of the units...
+%
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [Bins,Element_density] = density_atom(atom,Box_dim)
+% # [Bins,Element_density] = density_atom(atom,Box_dim,0.05)
+% # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z')
+% # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',2.3) % sigma [>0] value for Gaussian smoothing
+% # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]
+% # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc
+
+function [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
+
+Fontsize=18;
+q=1.602176634E-19; % 1 charge eq is q Coloumb (C)
+epsilon_null = 8.854187817E-12; % A2·s4·kg-1·m-3
+epsilon=1; % Dielectric constant
+Na=6.02214086E23; % Avogadros constant
+
+Atom_label = unique([atom.type]); % Cell containing strings with the atomtypes you want to include in the analysis
+% If you want to exclude some atomtypes...
+% Atoms_include     = unique([atom.type]);
+% Atoms_exclude     = unique([atom(strcmp([atom.resname],'LAC')).type]);
+% Atom_label        = setdiff(Atoms_include,Atoms_exclude);
+
+if size(Box_dim,2)>6
+    if find(Box_dim(1,6:end))>0
+        atom = orto_atom(atom,Box_dim);
+        Box_dim=orto_Box_dim;
+    end
+end
+
+Limits=Box_dim(1:3);
+if size(Limits,2)==3
+    Limits(4)=Limits(1);
+    Limits(5)=Limits(2);
+    Limits(6)=Limits(3);
+    Limits(1)=0;
+    Limits(2)=0;
+    Limits(3)=0;
+end
+
+if nargin<3
+    ds=0.02;
+else
+    ds=varargin{1};
+end
+
+if nargin<4
+    dimension='z';
+else
+    dimension=varargin{2};
+end
+
+Distance=0:ds:Box_dim(3);
+
+if strcmpi(dimension,'x')
+    Distance=0:ds:Box_dim(1);
+    Area=(Limits(5)-Limits(2))*(Limits(6)-Limits(3));
+elseif strcmpi(dimension,'y')
+    Distance=0:ds:Box_dim(2);
+    Area=(Limits(4)-Limits(1))*(Limits(6)-Limits(3));
+elseif strcmpi(dimension,'z')
+    Distance=0:ds:Box_dim(3);
+    Area=(Limits(4)-Limits(1))*(Limits(5)-Limits(2));
+end
+
+Bins = (0:ds:Distance(end)+ds)';
+assignin('base','Distance',Bins);
+
+Total_Density=zeros(ceil(Distance(end)/ds),1);
+Total_Density_SI=Total_Density;
+Total_Electron_density=Total_Density;
+Total_Electron_density_SI=Total_Density;
+Total_Charge_density=Total_Density;
+Total_Charge_density_SI=Total_Density;
+Total_EField=Total_Density;
+Total_EField_SI=Total_Density;
+Total_EPot=Total_Density;
+Total_EPot_SI=Total_Density;
+Element_count=0;
+for h=1:length(Atom_label)
+    Element_count = Element_count+1;
+    % Extract the trajectory data along the selected dimension dim
+    ind_atom = find(strncmpi([atom.type],Atom_label(h),3))';
+    if size(ind_atom,1)<1
+        ind_atom = find(strncmpi([atom.type],Atom_label(h),2))';
+        if size(ind_atom,1)<1
+            ind_atom = find(strcmpi([atom.type],Atom_label(h)))';
+        end
+    end
+    
+    if strcmpi(dimension,'x')
+        Coords=[atom(ind_atom).x]';
+    elseif strcmpi(dimension,'y')
+        Coords=[atom(ind_atom).y]';
+    elseif strcmpi(dimension,'z')
+        Coords=[atom(ind_atom).z]';
+    end
+    
+    if nargin>6
+        center_vec=varargin{5};
+        Coords=Coords-center_vec;
+    end
+    
+    Coords(Coords<0) = Coords(Coords<0) + Distance(end);
+    Coords(Coords>Distance(end)) = Coords(Coords>Distance(end)) - Distance(end);
+    
+    Element_density=histcounts(Coords(:,1),Bins(1:end-1))';
+    
+    if numel(Element_density)~=numel(Total_Density)
+        Element_density=interp1(1:numel(Element_density),Element_density,1:numel(Total_Density),'spline')';
+    end
+    
+    Element_density=Element_density/(ds*Area*1E-30*6.022e23*1000); % mol/L
+    Element_density_SI=Element_density*1000*Na; % npart/m^3.
+    
+    if nargin>4
+        sigma = varargin{3};
+        if sigma>0
+            window = 100;
+            x = linspace(-window / 2, window / 2, window);
+            gaussFilter = exp(-x .^ 2 / (2 * sigma ^ 2));
+            gaussFilter = gaussFilter / sum(gaussFilter); % normalize
+            Element_density(:)=conv(Element_density(:)', gaussFilter, 'same');
+        end
+    end
+    
+    if nargin>5
+        if varargin{4}>0
+            Element_density=(Element_density+flipud(Element_density))/2;
+        end
+    end
+    
+    nElectrons = atomic_scattering_factors(Atom_label(h),1.542,0,0); % From X-ray scattering tables, hence not identical to electron density
+    Element_electron_density=nElectrons*Element_density; % mol eq/L
+    Element_electron_density_SI=q*nElectrons*Element_density_SI; % C/m^3
+    
+    if isfield(atom,'charge')
+        if sum(unique([atom(ind_atom).charge]))>1
+            disp('Averaging the atom type charge for')
+            Atom_label(h)
+            unique([atom(ind_atom).charge])
+        end
+        Element_Charge_density = Na*1E-24*Element_density*mean([atom(ind_atom).charge]); % q_ev/nm^3
+        Element_EField = cumsum((Element_Charge_density + flipud(Element_Charge_density))/2)*ds*1E-10*1E27*q/(1E9*epsilon_null*epsilon);
+        Element_EPot = -cumsum(Element_EField)*ds*1e-10*1E9; %
+        
+        Element_Charge_density_SI = q*Element_density_SI*mean([atom(ind_atom).charge]); % npart*A*s / m3  == npart*C / m3
+        Element_EField_SI = cumsum((Element_Charge_density_SI + flipud(Element_Charge_density_SI))/2)*ds*1e-10/(epsilon_null*epsilon); % 1e-10m/(epsilon_null*epsilon)
+        Element_EPot_SI = -cumsum(Element_EField_SI)*ds*1e-10; % *1e-10m; % V=kg*m2/(A*s2)
+    end
+    
+    disp('Atom_label')
+    Atom_label(h)
+    size(ind_atom)
+    sum(Element_density)
+    disp('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-')
+    
+    % Here we keep track of the atoms we analyze
+    UC(Element_count).type=char(Atom_label(h));
+    UC(Element_count).N=sum(Element_density);
+    
+    % Collect all the data
+    Total_Density=Total_Density+Element_density;
+    Total_Electron_density=Total_Electron_density+Element_electron_density;
+    Total_Density_SI=Total_Density_SI+Element_density_SI;
+    if isfield(atom,'charge')
+        Total_Charge_density=Total_Charge_density+Element_Charge_density;
+        Total_EField=Total_EField+Element_EField;
+        Total_EPot=Total_EPot+Element_EPot;
+        
+        Total_Charge_density_SI=Total_Charge_density_SI+Element_Charge_density_SI;
+        Total_EField_SI=Total_EField_SI+Element_EField_SI;
+        Total_EPot_SI=Total_EPot_SI+Element_EPot_SI;
+    end
+    
+    % Assign the data to atomtype specific variables
+    if sum(Element_density) > 0
+        assignin('base',strcat(char(Atom_label(h)),'_density'),[Element_density Element_density_SI]);
+        assignin('base',strcat(char(Atom_label(h)),'_density'),[Element_electron_density Element_electron_density_SI]);
+        if isfield(atom,'charge')
+            assignin('base',strcat(char(Atom_label(h)),'_charge_density'),[Element_Charge_density Element_Charge_density_SI]);
+            assignin('base',strcat(char(Atom_label(h)),'_efield'),[Element_EField Element_EField_SI]);
+            assignin('base',strcat(char(Atom_label(h)),'_epot'),[Element_EPot Element_EPot_SI]);
+        end
+        hold on
+        plot(Distance(1:length(Element_density)),Element_density)
+        xlabel('Distance [Å]','FontSize',Fontsize); ylabel('mol/L','FontSize',Fontsize);
+    end
+end
+
+atom = mass_atom(atom,Box_dim);
+assignin('caller','Mw',Mw);
+assignin('caller','Box_volume',Box_volume);
+assignin('caller','Box_density',Box_density);
+
+hold on;
+plot(Distance(1:length(Total_Density)),circshift(Total_Density,[0 0]),'k')
+xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Concentration profile [mol/L]','FontSize',Fontsize);
+legend([Atom_label {'Total'}]);
+figure
+plot(Distance(1:length(Total_Density)),circshift(Total_Electron_density,[0 0]))
+xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Concentration profile [mol eqv/L]','FontSize',Fontsize);
+if isfield(atom,'charge')
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_Charge_density,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Charge density [q/nm^3]','FontSize',Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EField,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Electric field [V/nm]','FontSize',Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EPot,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Electrostatic potential [V]','FontSize',Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_Charge_density_SI,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Charge density [C/m^3]','FontSize',Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EField_SI,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Electric field [V/m]','FontSize',Fontsize);
+    figure
+    plot(Distance(1:length(Total_Density)),circshift(Total_EPot_SI,[0 0]))
+    xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Electrostatic potential [V]','FontSize',Fontsize);
+end
+% if strcmpi(Unit,'conc')
+% else
+%     xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Num','FontSize',Fontsize);
+% end
+
+% save(strcat('density_profs_',filename))
+
+
+##### SOURCE END #####
+--></body></html>

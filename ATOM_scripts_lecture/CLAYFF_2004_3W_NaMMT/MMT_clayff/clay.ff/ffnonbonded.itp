@@ -1,0 +1,159 @@
+; if charges are zero, they are set later in the .itp files -
+[ atomtypes ]										
+;name	at.num	mass	charge	ptype	sigma	epsilon												
+ho		1	1.007940	0.42500	A	0.000000	0.000000	;	Hydroxyl	hydrogen			
+oh		8	15.99940	-0.9500	A	0.316556	0.650170	;	Hydroxyl	oxygen			
+o 		8	15.99940	-1.0500	A	0.316556	0.650170	;	Bridging	oxygen	
+ob		8	15.99940	-1.0500	A	0.316556	0.650170	;	Bridging	oxygen	
+op		8	15.99940	-1.0500	A	0.316556	0.650170	;	Bridging	oxygen			
+obos	8	15.99940	-1.1808	A	0.316556	0.650170	;	Bridging	oxygen	with	octahedral	subst.
+obts	8	15.99940	-1.1688	A	0.316556	0.650170	;	Bridging	oxygen	with	tetrahedral	subst.
+obss	8	15.99940	-1.2996	A	0.316556	0.650170	;	Bridging	oxygen	with	double	subst.
+ohs  	8	15.99940	-1.0809	A	0.316556	0.650170	;	Hydroxyl	oxygen	with	subst.	
+oahe	8	15.99940	-1.2375	A	0.316556	0.650170	;	Alumino hydroxyl	oxygen	with	subst.	
+oahhe	8	15.99940	-0.6625	A	0.316556	0.650170	;	alumino dihydro oxygen	oxygen	with	subst.	
+oas 	8	15.99940	-1.2375	A	0.316556	0.650170	;	Alumino-Silica oxygen	oxygen	with	subst.	
+oshe	8	15.99940	-0.9500	A	0.316556	0.650170	;	Silanol hydroxyl	oxygen	with	subst.	
+st		14	28.08550	2.10000	A	0.330200	7.70065E-06	;	Tetrahedral	silicon			
+ao		13	26.98154	1.57500	A	0.427100	5.56388E-06	;	Octahedral	aluminum
+ae		13	26.98154	1.81250	A	0.427100	5.56388E-06	;	Octahedral	aluminum			
+at		13	26.98154	1.57500	A	0.330200	7.70065E-06	;	Tetrahedral	aluminum			
+mgo		12	24.30500	1.36000	A	0.526400	3.77807E-06	;	Octahedral	magnesium			
+mgh		12	24.30500	1.05000	A	0.526400	3.77807E-06	;	Hydroxide	magnesium			
+cao		20	40.07800	1.36000	A	0.556700	2.10447E-05	;	Octahedral	calcium			
+cah		20	40.07800	1.05000	A	0.556700	2.10447E-05	;	Hydroxide	calcium			
+feo		26	55.84500	1.57500	A	0.407222	3.77671E-05	;	Octahedral	iron, Fe-O, recalculated from Sebastian Kerisit 2011 supporting info, check if correct!!!			
+lio		3	6.941000	0.52500	A	0.421000	3.77807E-05	;	Octahedral	lithium
+
+Du		10	0.000000	0.00000	A	0.000000	0.000000	;	dummy atom
+
+; Current FEP ion. Remember to also set the charge right in ions.itp
+Io		35	79.90400	-1.0000	A	0.490170	0.11279		;	Aqueous	bromide	ion, solute ion to pull..	
+
+#ifndef AQVIST
+; From Babu & Lim 2006, divalent ions, parameterized with the new set of param based on Cd2+
+; with tip3p but should work with SPC and SPC/E according to the authors										
+Ba	    56	137.33000	2.00000	A	0.400031342	0.8338712	;	Aqueous	barium	ion
+Ca	    20	40.07800	2.00000	A	0.345027256	0.1330512	;	Aqueous	calcium	ion
+Cu	    29	63.550	    2.00000	A	0.184059675	0.1786568	;	Aqueous	copper	ion
+Mg	    12	24.30500	2.00000	A	0.242965898	0.1112944	;	Aqueous	magnesium	ion
+Ni	    28	58.69	    2.00000	A	0.194946458	0.1531344	;	Aqueous	nickel	ion
+Sr	    38	87.62000	2.00000	A	0.372805478	0.2778176	;	Aqueous	strontium	ion
+Zn	    30	65.41	    2.00000	A	0.204710707	0.13598	    ;	Aqueous	zink	ion								
+#else
+; For spc and spce, Åqvist only Mg, Ca, Ba, Sr... the rest from Babu & Lim
+Mg		12	24.30500	2.00000	A	0.139770	3.65874		;	Aqueous	magnesium	ion		
+Ca		20	40.07800	2.00000	A	0.236090	1.88011		;	Aqueous	calcium	ion		
+Sr		38	87.62000	2.00000	A	0.310240	0.49433		;	Aqueous	strontium	ion		
+Ba		56	137.3300	2.00000	A	0.378620	0.19692		;	Aqueous	barium	ion	
+Cu	    29	63.550	    2.00000	A	0.184059675	0.1786568	;	Aqueous	copper	ion
+Ni	    28	58.69	    2.00000	A	0.194946458	0.1531344	;	Aqueous	nickel	ion
+Zn	    30	65.41	    2.00000	A	0.204710707	0.13598  	;	Aqueous	zink	ion
+#endif
+
+#ifdef SPC		
+; Joung Cheatham 2008
+Li		3	6.941000	1.00000	A	0.140940	1.40890		;	Aqueous	lithium	ion		
+Na		11	22.98977	1.00000	A	0.215954	1.47545		;	Aqueous	sodium	ion		
+K		19	39.09830	1.00000	A	0.283840	1.79789		;	Aqueous	potassium	ion
+Rb	    37	85.46783	1.00000	A	0.309498	1.8623  	;	Aqueous	rubinium	ion				
+Cs		55	132.9055	1.00000	A	0.360100	0.37596		;	Aqueous	cesium	ion		
+F	    9	18.99840	-1.0000	A	0.402152	0.030964	;	Aqueous	fluoride	ion
+Cl		17	35.45300	-1.0000	A	0.483050	0.05349		;	Aqueous	chloride	ion	
+Br		35	79.90400	-1.0000	A	0.490170	0.11279		;	Aqueous	bromide	ion		
+I		53	126.9045	-1.0000	A	0.520107	0.17901		;	Aqueous	iodide	ion
+
+Fs	    9	18.99840	-1.0000	A	0.402152	0.030964	;	Aqueous	fluoride	ion, solute ion to pull..	
+Cls		17	35.45300	-1.0000	A	0.483050	0.05349		;	Aqueous	chloride	ion, solute ion to pull..	
+Brs		35	79.90400	-1.0000	A	0.490170	0.11279		;	Aqueous	bromide	ion, solute ion to pull..	
+Is		53	126.9045	-1.0000	A	0.520107	0.17901		;	Aqueous	iodide	ion, solute ion to pull..	
+
+#endif
+
+#ifdef SPCE		
+; Same as for SPC
+Li		3	6.941000	1.00000	A	0.140940	1.40890		;	Aqueous	lithium	ion		
+Na		11	22.98977	1.00000	A	0.215954	1.47545		;	Aqueous	sodium	ion		
+K		19	39.09830	1.00000	A	0.283840	1.79789		;	Aqueous	potassium	ion	
+Rb	    37	85.46783	1.00000	A	0.309498	1.8623  	;	Aqueous	rubinium	ion			
+Cs		55	132.9055	1.00000	A	0.360100	0.37596		;	Aqueous	cesium	ion		
+F	    9	18.99840	-1.0000	A	0.402152	0.030964	;	Aqueous	fluoride	ion
+Cl		17	35.45300	-1.0000	A	0.483050	0.05349		;	Aqueous	chloride	ion	
+Br		35	79.90400	-1.0000	A	0.490170	0.11279		;	Aqueous	bromide	ion		
+I		53	126.9045	-1.0000	A	0.520107	0.17901		;	Aqueous	iodide	ion
+
+Fs	    9	18.99840	-1.0000	A	0.402152	0.030964	;	Aqueous	fluoride	ion, solute ion to pull..	
+Cls		17	35.45300	-1.0000	A	0.483050	0.05349		;	Aqueous	chloride	ion, solute ion to pull..	
+Brs		35	79.90400	-1.0000	A	0.490170	0.11279		;	Aqueous	bromide	ion, solute ion to pull..	
+Is		53	126.9045	-1.0000	A	0.520107	0.17901		;	Aqueous	iodide	ion, solute ion to pull..	
+
+#endif
+
+#ifdef TIP3P		
+;TIP3P / ; Joung Cheatham 2008											
+Li	3	6.94100	    1.00000	    A 	0.182634	0.11711	;	Aqueous	lithium	ion
+Na	11	22.98977	1.00000	    A	0.243928	0.36585	;	Aqueous	sodium	ion
+K	19	39.09830	1.00000	    A	0.303796	0.81037	;	Aqueous	potassium	ion
+Rb	37	85.4678	    1.00000	    A	0.323040	1.37161	;	Aqueous	rubinium	ion
+Cs	55	132.90545	1.00000	    A	0.352083	1.70096	;	Aqueous	cesium	ion
+F	9	18.99840	-1.00000	A	0.410348	0.01407	;	Aqueous	fluoride	ion
+Cl	17	35.45300	-1.00000	A	0.447766	0.14891	;	Aqueous	chloride	ion
+Br	35	79.90400	-1.00000	A	0.464693	0.24541	;	Aqueous	bromide	ion
+I	53	126.90447	-1.00000	A	0.509594	0.22460	;	Aqueous	iodide	ion
+#endif		
+
+#ifdef TIP4P										
+;TIP4PEW / ; Joung Cheatham 2008											
+Li	3	6.94100	    1.00000	    A	0.143969	0.43509	;	Aqueous	lithium	ion
+Na	11	22.98977	1.00000	    A	0.218448	0.70474	;	Aqueous	sodium	ion
+K	19	39.09830	1.00000	    A	0.283306	1.16928	;	Aqueous	potassium	ion
+Rb	37	85.4678	    1.00000	    A	0.304509	1.81230	;	Aqueous	rubinium	ion
+Cs	55	132.90545	1.00000	    A	0.336403	1.65030	;	Aqueous	cesium	ion
+F	9	18.99840	-1.00000	A	0.452220	0.00659	;	Aqueous	fluoride	ion
+Cl	17	35.45300	-1.00000	A	0.491776	0.04879	;	Aqueous	chloride	ion
+Cls	17	35.45300	-1.00000	A	0.491776	0.04879	;	Aqueous	chloride	ion
+Br	35	79.90400	-1.00000	A	0.493202	0.12710	;	Aqueous	bromide	ion
+I	53	126.90447	-1.00000	A	0.525987	0.17451	;	Aqueous	iodide	ion
+#endif
+
+#ifdef TIP5P
+;Same as TIP4PEW for now... / ; Joung Cheatham 2008											
+Li	3	6.94100	    1.00000	    A	0.143969	0.43509	;	Aqueous	lithium	ion
+Na	11	22.98977	1.00000	    A	0.218448	0.70474	;	Aqueous	sodium	ion
+K	19	39.09830	1.00000	    A	0.283306	1.16928	;	Aqueous	potassium	ion
+Rb	37	85.4678	    1.00000	    A	0.304509	1.81230	;	Aqueous	rubinium	ion
+Cs	55	132.90545	1.00000	    A	0.336403	1.65030	;	Aqueous	cesium	ion
+F	9	18.99840	-1.00000	A	0.452220	0.00659	;	Aqueous	fluoride	ion
+Cl	17	35.45300	-1.00000	A	0.491776	0.04879	;	Aqueous	chloride	ion
+Br	35	79.90400	-1.00000	A	0.493202	0.12710	;	Aqueous	bromide	ion
+I	53	126.90447	-1.00000	A	0.525987	0.17451	;	Aqueous	iodide	ion
+#endif	
+
+; Define the atomtypes for the different water models
+; spc water
+OW_spc       8      15.9994  -0.8200  A   3.16557e-01  6.50170e-01
+HW_spc       1       1.00794  0.4100  A   0.00000e+00  0.00000e+00
+; spce water              
+OW_spce      8      15.9994  -0.8476  A	  3.16557e-01  6.50170e-01
+HW_spce      1       1.00794  0.4238  A	  0.000000	   0.000000
+; tip3p
+HW_tip3p     1       1.00794   0.417  A	  0.00000e+00  0.00000e+00
+OW_tip3p     8      15.9994   -0.834  A	  3.15058e-01  6.36386e-01
+;tip4p-EW
+HW_tip4pew   1       1.00794  0.0000  A   0.00000e+00  0.00000e+00
+OW_tip4pew   8      15.9994   0.0000  A   3.16435e-01  6.80946e-01
+; tip4p
+HW_tip4p     1       1.00794  0.0000  A   0.00000e+00  0.00000e+00
+OW_tip4p     8      15.9994   0.0000  A   3.15365e-01  6.48520e-01
+;tip5p
+HW_tip5p     1       1.00794  0.0000  A   0.00000e+00  0.00000e+00
+OW_tip5p     8      15.9994   0.0000  A   3.12000e-01  6.69440e-01
+; OPC
+HW_opc       1       1.00794   0.447585  A	  0.00000e+00  0.0000e+00
+OW_opc       8      15.9994   -0.89517   A	  3.16656e-01  8.9031e-01
+; OPC3
+HW_opc3      1       1.00794   0.447585  A	  0.00000e+00  0.0000e+00
+OW_opc3      8      15.9994   -0.89517   A	  3.17427e-01  6.8369e-01
+; dummy defs
+; MW=Dummy mass for tip4p/EW/5p water extra point charge
+MW           0       0.0000  0.0000  A   0.00000e+00   0.00000e+00	

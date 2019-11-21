@@ -1,0 +1,378 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_atom_mol2.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="import_atom_mol2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_atom_mol2.m</h1><!--introduction--><div><ul><li>This function imports basic .mol2 files and the @&lt;TRIPOS&gt;MOLECULE, @&lt;TRIPOS&gt;CRYSIN, @&lt;TRIPOS&gt;ATOM, @&lt;TRIPOS&gt;BOND sections into the atom struct.</li><li>varargin can be used to translate, alt. center+translate the molecule if the Box_dim information exists (which is usually not the case with with .mol2 files).</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom('molecule.mol2')</li><li>atom = import_atom('molecule.mol2',[10 5 2])</li><li>atom = import_atom('molecule.mol2',[10 5 0],[35.24 24.23 52.23])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_mol2(filename,varargin)
+
+fid = fopen(filename,<span class="string">'r'</span>);
+data = textscan(fid, <span class="string">'%s'</span>, <span class="string">'delimiter'</span>, <span class="string">'\n'</span>, <span class="string">'whitespace'</span>, <span class="string">''</span>); <span class="comment">% New addition</span>
+data=data{1}; <span class="comment">% New addition</span>
+fclose(fid);
+
+IndexMOLECULE = strfind(data,<span class="string">'@&lt;TRIPOS&gt;MOLECULE'</span>);
+IndexMOLECULE = find(not(cellfun(<span class="string">'isempty'</span>,IndexMOLECULE)));
+
+IndexCRYSIN = strfind(data,<span class="string">'@&lt;TRIPOS&gt;CRYSIN'</span>);
+IndexCRYSIN = find(not(cellfun(<span class="string">'isempty'</span>,IndexCRYSIN)));
+
+IndexATOM = strfind(data,<span class="string">'@&lt;TRIPOS&gt;ATOM'</span>);
+IndexATOM = find(not(cellfun(<span class="string">'isempty'</span>,IndexATOM)));
+
+IndexBOND = strfind(data,<span class="string">'@&lt;TRIPOS&gt;BOND'</span>);
+IndexBOND = find(not(cellfun(<span class="string">'isempty'</span>,IndexBOND)));
+
+IndexSUBSTRUCTURE = strfind(data,<span class="string">'@&lt;TRIPOS&gt;SUBSTRUCTURE'</span>);
+IndexSUBSTRUCTURE = find(not(cellfun(<span class="string">'isempty'</span>,IndexSUBSTRUCTURE)));
+
+IndexHEADTAIL = strfind(data,<span class="string">'@&lt;TRIPOS&gt;HEADTAIL'</span>);
+IndexHEADTAIL = find(not(cellfun(<span class="string">'isempty'</span>,IndexHEADTAIL)));
+
+IndexRESIDUECONNECT = strfind(data,<span class="string">'@&lt;TRIPOS&gt;RESIDUECONNECT'</span>);
+IndexRESIDUECONNECT = find(not(cellfun(<span class="string">'isempty'</span>,IndexRESIDUECONNECT)));
+
+MOLECULE=data{IndexMOLECULE+1};
+MOLECULEPROPERTIES=data{IndexMOLECULE+2};
+MOLECULEPROPERTIES=strsplit(data{IndexMOLECULE+2});
+<span class="keyword">if</span> numel(MOLECULEPROPERTIES{1})==0
+    MOLECULEPROPERTIES(1)=[];
+<span class="keyword">end</span>
+MOLECULEPROPERTIES=str2double(MOLECULEPROPERTIES)
+nAtoms=MOLECULEPROPERTIES(1);
+nBonds=MOLECULEPROPERTIES(2);
+
+<span class="keyword">if</span> numel(IndexCRYSIN)&lt;0
+    Box_cell=strsplit(char(data(Index)));Box_dim=[];
+    <span class="keyword">for</span> i=1:length(Box_cell)
+        [num, status] = str2num(char(Box_cell(i)));
+        j=1;
+        <span class="keyword">if</span> status==1
+            Box_dim=[Box_dim num];
+            j=j+1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> length(Box_dim)&gt;3
+        <span class="keyword">if</span> length(Box_dim)&gt;6
+            Spacegroup=Box_dim(7);
+            <span class="keyword">if</span> length(Box_dim)&gt;7
+                Setting=Box_dim(8);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        Box_dim=Box_dim(1:6);
+        a=Box_dim(1);
+        b=Box_dim(2);
+        c=Box_dim(3);
+        alfa=Box_dim(4);
+        beta=Box_dim(5);
+        gamma=Box_dim(6);
+        lx = a;
+        xy = b * cos(deg2rad(gamma));
+        ly = (b^2-xy^2)^.5;
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        lz = (c^2 - xz^2 - yz^2)^0.5;
+        Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+        Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+        <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
+            Box_dim=Box_dim(1:3);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    disp(<span class="string">'No Box information found in the .mol2 file'</span>)
+    Box_dim=[0 0 0];
+<span class="keyword">end</span>
+
+j = 0;atom=[];
+<span class="keyword">for</span> i = IndexATOM+1:IndexATOM+nAtoms
+        line = data{i};
+    <span class="keyword">if</span> length(line)&gt;=60
+        j = j + 1;
+        atom(j).molid = str2double(line(47:49));
+        atom(j).resname = {strtrim(line(53:55))};
+        atom(j).type = {strtrim(line(5:7))};
+        atom(j).fftype = {strtrim(line(44:46))};
+        atom(j).index = str2double(line(1:4));
+        atom(j).neigh.type = {};
+        atom(j).neigh.index = [0;0;0;0;0;0];
+        atom(j).neigh.dist = [0;0;0;0;0;0];
+        atom(j).bond.type = [0;0;0;0;0;0];
+        atom(j).bond.index = [0;0;0;0;0;0];
+        atom(j).angle.type = [0;0;0;0;0;0];
+        atom(j).angle.index = [0;0;0;0;0;0];
+        atom(j).x = str2double(line(10:20));
+        atom(j).y = str2double(line(21:31));
+        atom(j).z = str2double(line(32:42));
+        atom(j).vx = NaN;
+        atom(j).vy = NaN;
+        atom(j).vz = NaN;
+        atom(j).charge=str2double(line(57:63));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_labels=[atom.type]';
+
+<span class="keyword">if</span> nBonds&gt;0
+    disp(<span class="string">'No checks for PBC was made when reading the bonds from the mol2 file'</span>)
+j = 0;Bond_index=[];
+<span class="keyword">for</span> i = IndexBOND+1:IndexBOND+nBonds
+    line = data{i};
+    j = j + 1;
+    Bond_index(j,1) = str2double(line(6:11));
+    Bond_index(j,2) = str2double(line(12:17));
+    rx=XYZ_data(Bond_index(j,2),1)-XYZ_data(Bond_index(j,1),1);
+    ry=XYZ_data(Bond_index(j,2),2)-XYZ_data(Bond_index(j,1),2);
+    rz=XYZ_data(Bond_index(j,2),3)-XYZ_data(Bond_index(j,1),3);
+    Bond_index(j,3)=sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 );
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin==2
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin==3
+    atom = center_atom(atom,cell2mat(varargin(2)),<span class="string">'all'</span>,<span class="string">'xyz'</span>);
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],<span class="string">'all'</span>);
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom)
+assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,nAtoms)
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'MolID'</span>,[atom.molid])
+
+disp(<span class="string">'.mol2 file imported'</span>)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_atom_mol2.m
+% * This function imports basic .mol2 files and the @<TRIPOS>MOLECULE, 
+% @<TRIPOS>CRYSIN, @<TRIPOS>ATOM, @<TRIPOS>BOND sections into the atom 
+% struct. 
+% * varargin can be used to translate, alt. center+translate the molecule
+% if the Box_dim information exists (which is usually not the case with 
+% with .mol2 files).
+%
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_atom('molecule.mol2')
+% # atom = import_atom('molecule.mol2',[10 5 2])
+% # atom = import_atom('molecule.mol2',[10 5 0],[35.24 24.23 52.23])
+%
+function atom = import_atom_mol2(filename,varargin)
+
+fid = fopen(filename,'r');
+data = textscan(fid, '%s', 'delimiter', '\n', 'whitespace', ''); % New addition
+data=data{1}; % New addition
+fclose(fid);
+
+IndexMOLECULE = strfind(data,'@<TRIPOS>MOLECULE');
+IndexMOLECULE = find(not(cellfun('isempty',IndexMOLECULE)));
+
+IndexCRYSIN = strfind(data,'@<TRIPOS>CRYSIN');
+IndexCRYSIN = find(not(cellfun('isempty',IndexCRYSIN)));
+
+IndexATOM = strfind(data,'@<TRIPOS>ATOM');
+IndexATOM = find(not(cellfun('isempty',IndexATOM)));
+
+IndexBOND = strfind(data,'@<TRIPOS>BOND');
+IndexBOND = find(not(cellfun('isempty',IndexBOND)));
+
+IndexSUBSTRUCTURE = strfind(data,'@<TRIPOS>SUBSTRUCTURE');
+IndexSUBSTRUCTURE = find(not(cellfun('isempty',IndexSUBSTRUCTURE)));
+
+IndexHEADTAIL = strfind(data,'@<TRIPOS>HEADTAIL');
+IndexHEADTAIL = find(not(cellfun('isempty',IndexHEADTAIL)));
+
+IndexRESIDUECONNECT = strfind(data,'@<TRIPOS>RESIDUECONNECT');
+IndexRESIDUECONNECT = find(not(cellfun('isempty',IndexRESIDUECONNECT)));
+
+MOLECULE=data{IndexMOLECULE+1};
+MOLECULEPROPERTIES=data{IndexMOLECULE+2};
+MOLECULEPROPERTIES=strsplit(data{IndexMOLECULE+2});
+if numel(MOLECULEPROPERTIES{1})==0
+    MOLECULEPROPERTIES(1)=[];
+end
+MOLECULEPROPERTIES=str2double(MOLECULEPROPERTIES)
+nAtoms=MOLECULEPROPERTIES(1);
+nBonds=MOLECULEPROPERTIES(2);
+
+if numel(IndexCRYSIN)<0
+    Box_cell=strsplit(char(data(Index)));Box_dim=[];
+    for i=1:length(Box_cell)
+        [num, status] = str2num(char(Box_cell(i)));
+        j=1;
+        if status==1
+            Box_dim=[Box_dim num];
+            j=j+1;
+        end
+    end
+    
+    if length(Box_dim)>3
+        if length(Box_dim)>6
+            Spacegroup=Box_dim(7);
+            if length(Box_dim)>7
+                Setting=Box_dim(8);
+            end
+        end
+        Box_dim=Box_dim(1:6);
+        a=Box_dim(1);
+        b=Box_dim(2);
+        c=Box_dim(3);
+        alfa=Box_dim(4);
+        beta=Box_dim(5);
+        gamma=Box_dim(6);
+        lx = a;
+        xy = b * cos(deg2rad(gamma));
+        ly = (b^2-xy^2)^.5;
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        lz = (c^2 - xz^2 - yz^2)^0.5;
+        Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+        Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+        if sum(find(Box_dim(4:end)))<0.0001
+            Box_dim=Box_dim(1:3);
+        end
+    end
+else
+    disp('No Box information found in the .mol2 file')
+    Box_dim=[0 0 0];
+end
+
+j = 0;atom=[];
+for i = IndexATOM+1:IndexATOM+nAtoms
+        line = data{i};
+    if length(line)>=60
+        j = j + 1;
+        atom(j).molid = str2double(line(47:49));
+        atom(j).resname = {strtrim(line(53:55))};
+        atom(j).type = {strtrim(line(5:7))};
+        atom(j).fftype = {strtrim(line(44:46))};
+        atom(j).index = str2double(line(1:4));
+        atom(j).neigh.type = {};
+        atom(j).neigh.index = [0;0;0;0;0;0];
+        atom(j).neigh.dist = [0;0;0;0;0;0];
+        atom(j).bond.type = [0;0;0;0;0;0];
+        atom(j).bond.index = [0;0;0;0;0;0];
+        atom(j).angle.type = [0;0;0;0;0;0];
+        atom(j).angle.index = [0;0;0;0;0;0];
+        atom(j).x = str2double(line(10:20));
+        atom(j).y = str2double(line(21:31));
+        atom(j).z = str2double(line(32:42));
+        atom(j).vx = NaN;
+        atom(j).vy = NaN;
+        atom(j).vz = NaN;
+        atom(j).charge=str2double(line(57:63));
+    end
+end
+
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_labels=[atom.type]';
+
+if nBonds>0
+    disp('No checks for PBC was made when reading the bonds from the mol2 file')
+j = 0;Bond_index=[];
+for i = IndexBOND+1:IndexBOND+nBonds
+    line = data{i};
+    j = j + 1;
+    Bond_index(j,1) = str2double(line(6:11));
+    Bond_index(j,2) = str2double(line(12:17));
+    rx=XYZ_data(Bond_index(j,2),1)-XYZ_data(Bond_index(j,1),1);
+    ry=XYZ_data(Bond_index(j,2),2)-XYZ_data(Bond_index(j,1),2);
+    rz=XYZ_data(Bond_index(j,2),3)-XYZ_data(Bond_index(j,1),3);
+    Bond_index(j,3)=sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 );
+end
+end
+
+if nargin==2
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+end
+
+if nargin==3
+    atom = center_atom(atom,cell2mat(varargin(2)),'all','xyz');
+    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+end
+
+assignin('caller','Bond_index',Bond_index)
+assignin('caller','XYZ_labels',XYZ_labels)
+assignin('caller','XYZ_data',XYZ_data)
+assignin('caller','atom',atom)
+assignin('caller','nAtoms',nAtoms)
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','MolID',[atom.molid])
+
+disp('.mol2 file imported')
+
+##### SOURCE END #####
+--></body></html>

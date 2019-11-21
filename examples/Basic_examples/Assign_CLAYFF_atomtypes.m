@@ -87,8 +87,8 @@ atom = clayff_atom(atom,Box_dim) % Assign the clayff atom types to the atomstruc
 %% Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct
 % In cases were atoms need healing, or in order to protonate edge groups,
 % one can use a slighlt longer command like below. For more info look into
-% the <clayff_atom.html clayff_atom> function and line 38-46.
-atom = clayff_atom(atom,Box_dim,'clayff','spc','edge') % Assign the clayff atom types to the atomstruct
+% the <clayff_atom.html clayff_atom> function and lines 49-80.
+atom = clayff_atom(atom,Box_dim,'clayff','spc',[1:7]) % Assign the clayff atom types to the atomstruct
 
 %% Write the new modified CLAYFF .pdb file
 write_atom_pdb(atom,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file

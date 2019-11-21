@@ -3,7 +3,7 @@
 % Bond_index variable
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -20,20 +20,28 @@ else
     rmaxlong=2.25;
 end
 
+if nargin>3
+    distance_factor=varargin{2};
+else
+    distance_factor=0.6; % 1.3
+end
+
+XYZ_labels=[atom.type]';
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+[atom.fftype]=atom.type;
+
 if ~isfield(atom,'element')
     atom = element_atom(atom);
 end
 
 [atom.type]=atom.element;
-[atom.fftype]=atom.element;
-
-XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 
 Radiiproperties=load('Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
 % clayff_param(sort(unique([atom.type])),'SPC/E');
 
+disp('Calculating the distance matrix')
 if size(atom,2)>5000
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25);
 else
@@ -49,17 +57,17 @@ for i=1:length(Atom_label)
     catch
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
     end
-    XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
+    %     XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
+    XYZ_radii(ismember([atom.type],Atom_label(i)))=radius_vdw(Atom_label(i));
     XYZ_formalcharge(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
 end
 
 assignin('caller','XYZ_radii',XYZ_radii);
 assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
 
-distance=1.15;
-XYZ_radii(XYZ_radii==0)=distance;
+XYZ_radii(XYZ_radii==0)=distance_factor;
 radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
-radius_limit=(radius_matrix+radius_matrix')*distance;
+radius_limit=(radius_matrix+radius_matrix')*distance_factor;
 dist_matrix(dist_matrix==0)=100;
 bond_matrix=dist_matrix-radius_limit;
 dist_matrix(dist_matrix==100)=0;
@@ -68,44 +76,103 @@ bond_matrix(bond_matrix<0)=1;
 % disp('Radii+Radii limits')
 % unique(radius_limit)
 
-atom=rmfield(atom,'neigh');
-atom=rmfield(atom,'bond');
+if isfield(atom,'neigh')
+    atom=rmfield(atom,'neigh');
+end
+if isfield(atom,'bond')
+    atom=rmfield(atom,'bond');
+end
+
+
+disp('Looking for neighbours/bonds')
+Bond_index=[];b=1;
 for i=1:length(XYZ_labels)
     k=0;j=1;
     bond_ind=find(bond_matrix(:,i));
+    
+    [atom(i).neigh.dist]=[];
+    [atom(i).neigh.index]=[];
+    [atom(i).neigh.type]={};
+    [atom(i).neigh.coords]=[];
+    [atom(i).neigh.r_vec]=[];
+    [atom(i).bond.dist]=[];
+    [atom(i).bond.index]=[];
+    [atom(i).bond.type]={};
+    
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if bond_matrix(bond_ind(j),i)==1
-            if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0
+            if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 || numel(unique([atom.molid]))==1
                 k=k+1;
-                [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
-                [atom(i).neigh.index(k)]=bond_ind(j);
+                [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
+                [atom(i).neigh.index(k,1)]=bond_ind(j);
                 [atom(i).neigh.type(k,1)]=XYZ_labels(bond_ind(j));
                 [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
                 [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
+                if [atom(i).molid]==[atom(bond_ind(j)).molid] && dist_matrix(bond_ind(j),i)<rmaxlong
+                    [atom(i).bond.dist(k,1)]=dist_matrix(bond_ind(j),i);
+                    [atom(i).bond.index(k,:)]=[i bond_ind(j)];
+                    [atom(i).bond.type]=1;
+                    Bond_index(b,1)=min([i bond_ind(j)]);
+                    Bond_index(b,2)=max([i bond_ind(j)]);
+                    Bond_index(b,3)=[atom(i).bond.dist(k,1)];
+                    b=b+1;
+                end
                 
-                [atom(i).bond.dist(k)]=dist_matrix(bond_ind(j),i);
-                [atom(i).bond.index(k,:)]=[i bond_ind(j)];
-                [atom(i).bond.type]=1;
             end
         end
         j=j+1;
     end
+    if mod(i,1000)==1
+        if i > 1
+            i-1
+        end
+    end
+end
+
+
+if length(Bond_index)>0
+    [Y,i] = sort(Bond_index(:,1));
+    Bond_index = Bond_index(i,:);
+    Bond_index = unique(Bond_index,'rows','stable');
+    try
+        CoordNumber=arrayfun(@(x) numel(x.neigh.index),atom);
+    catch
+        CoordNumber=zeros(1,size(atom,2));
+        for i=1:size(atom,2)
+            i
+            [atom(i).neigh.index]
+            CoordNumber(i)=numel([atom(i).neigh.index]);
+        end
+    end
+    Remove_ind=find(CoordNumber==0);
+    assignin('caller','CoordNumber',CoordNumber);
+    assignin('caller','Remove_ind',Remove_ind);
 end
 
 ind=find(tril(bond_matrix));
 r=dist_matrix(ind);
 [i,j] = ind2sub(size(bond_matrix),ind);
 
-Bond_index = [j i r];
-[Y,i] = sort(Bond_index(:,1));
-Bond_index = Bond_index(i,:);
-Bond_index = unique(Bond_index,'rows','stable');
+Neigh_index = [j i r];
+[Y,i] = sort(Neigh_index(:,1));
+Neigh_index = Neigh_index(i,:);
+Neigh_index = unique(Neigh_index,'rows','stable');
+rm_ind=find(Neigh_index(:,3)>rmaxlong);
 
-rm_ind=find(Bond_index(:,3)>rmaxlong);
-Bond_index(rm_ind,:)=[];
+rm_ind=[rm_ind];
+for i=1:size(Neigh_index,1)
+    if [atom(Neigh_index(i,1)).molid]~=[atom(Neigh_index(i,2)).molid]
+        rm_ind=[rm_ind; i];
+    end
+end
+Neigh_index(rm_ind,:)=[];
+
+[atom.type]=atom.fftype;
+
 
 assignin('caller','Radius_limit',radius_limit);
-assignin('caller','Bond_matrix',bond_matrix);
 assignin('caller','Bond_index',Bond_index);
-assignin('caller','Dist_matrix',dist_matrix);
+assignin('caller','Neigh_index',Neigh_index);
+assignin('caller','bond_matrix',bond_matrix);
+assignin('caller','dist_matrix',dist_matrix);
 

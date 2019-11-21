@@ -3,7 +3,7 @@
 % Clayff systems
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -68,16 +68,28 @@ else
     end
 end
 
+% Scan the xyz data and look for O-H bonds and angles
+atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+assignin('caller','atom',atom);
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','Angle_index',Angle_index);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Title=filename;
 file_title = strcat('LAMMPS input data file #',datestr(now)); % Header in output file
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some settings needed in order to print a proper lammps in file %%
-bond_atoms={};angle_atoms={};
-if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end
-if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end
-if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end
-if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end
+
+bond_atoms_index=unique([Bond_index(:,1);Bond_index(:,2)]);
+angle_atoms_index=unique([Angle_index(:,1);Angle_index(:,2); Angle_index(:,3)]);
+bond_atoms=unique([atom(bond_atoms_index).type]);
+angle_atoms=unique([atom(angle_atoms_index).type]);
+% Old code
+% bond_atoms={};angle_atoms={};
+% if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end
+% if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end
+% if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end
+% if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end
 % End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if ~exist('Box_dim','var');disp('We need to set Box_dim?');
@@ -110,10 +122,6 @@ else
     xy=0;xz=0;yz=0;
 end
 
-% Scan the xyz data and look for O-H bonds and angles
-atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-assignin('caller','atom',atom);
-assignin('caller','Angle_index',Angle_index);
 % Start printing the lammps .lj file
 fid = fopen(filename, 'wt');
 

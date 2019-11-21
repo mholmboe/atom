@@ -3,7 +3,7 @@
 % Joung and Cheatham, 2008 + some others...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -373,6 +373,13 @@ forcefield.clayff(46).mass =    15.99410;
 forcefield.clayff(46).charge =  -1.05000;
 forcefield.clayff(46).radius =  3.553200;
 forcefield.clayff(46).e_kcalmol = 0.155400;
+
+% Oal Deprotonated edge O 
+forcefield.clayff(47).type =    {'oao'}; % o
+forcefield.clayff(47).mass =    15.999410;
+forcefield.clayff(47).charge =  -1.7650;
+forcefield.clayff(47).radius =  3.553200;
+forcefield.clayff(47).e_kcalmol = 0.155400;
 
 for i=1:size(forcefield.clayff,2)
     forcefield.clayff(i).sigma=forcefield.clayff(i).radius/2^(1/6);

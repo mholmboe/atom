@@ -1,7 +1,13 @@
 %% List of available solvents
 % .pdb or .gro files to be used with the function solvate_atom. Note that you could also use
 % custom solvent boxes to solvate a simulation cell.
-
+%
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
 %% Water structures
 % 864_spc.gro|.pdb % equilibrated SPC water box
 % 864_spce.gro|.pdb % equilibrated SPC/E water box

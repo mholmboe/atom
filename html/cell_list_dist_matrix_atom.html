@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>cell_list_dist_matrix_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="cell_list_dist_matrix_atom.m"><style type="text/css">
+      --><title>cell_list_dist_matrix_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="cell_list_dist_matrix_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,8 +66,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>cell_list_dist_matrix_atom.m</h1><!--introduction--><div><ul><li>This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga, link to github</li><li><a href="http://github.com/ymatsunaga/mdtoolbox/">http://github.com/ymatsunaga/mdtoolbox/</a></li></ul></div><p>Original reference to the cell list algorithm: Heinz, T.N. &amp; Hunenberger, P.H. "A fast pairlist-construction algorithm for molecular simulations under periodic boundary conditions." J Comput Chem 25,  Sep;25(12):1474-1486 (2004).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim)</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 &Aring;</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles</li></ol></div><pre class="codeinput"><span class="keyword">function</span> dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,varargin) <span class="comment">% ,atom2,Box_dim); % or % ,Box_dim);</span>
-
+  </style></head><body><div class="content"><h1>cell_list_dist_matrix_atom.m</h1><!--introduction--><div><ul><li>This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga, link to github</li><li><a href="http://github.com/ymatsunaga/mdtoolbox/">http://github.com/ymatsunaga/mdtoolbox/</a></li></ul></div><p>Original reference to the cell list algorithm: Heinz, T.N. &amp; Hunenberger, P.H. "A fast pairlist-construction algorithm for molecular simulations under periodic boundary conditions." J Comput Chem 25,  Sep;25(12):1474-1486 (2004).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim)</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 &Aring;</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles</li><li>dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25,1) % Output mor info per atomtype</li></ol></div><pre class="codeinput"><span class="comment">%</span>
+<span class="keyword">function</span> dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,varargin) <span class="comment">% ,atom2,Box_dim); % or % ,Box_dim);</span>
+1
+tic
 nAtoms=size(atom,2);
 dist_matrix=zeros(nAtoms);
 X_dist=dist_matrix;
@@ -86,6 +88,10 @@ Z_dist=dist_matrix;
 <span class="keyword">else</span>
     calc_bond_list=0;
     rmax=15;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> rHmax == 0
+    calc_bond_list=0;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin &gt; 4
@@ -127,7 +133,7 @@ XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 <span class="keyword">if</span> any(Box_dim(1:3) &lt; (2*rmax))
     disp(<span class="string">'Decrease rmax!!! The Box_dim are too small...'</span>)
     disp(<span class="string">'Assuming you have a small system, reverting to '</span>)
-    disp(<span class="string">'the basic bond_angle_atom() function... '</span>)
+    disp(<span class="string">'the dist_matrix_atom() function... '</span>)
     pause(1)
     dist_matrix = dist_matrix_atom(atom,Box_dim);
     <span class="keyword">if</span> nargin&gt;5
@@ -186,6 +192,10 @@ mask = (max(dnx, 1) - 1).^2 * rcell(1).^2 + (max(dny, 1) - 1).^2 * rcell(2).^2 +
 <span class="comment">%mask = true(1, M - 1); % bug check of mask</span>
 mask_index = find(mask);
 
+toc
+2
+tic
+
 <span class="comment">% calculate the distances of the atoms in masked cells</span>
 pair = zeros(nAtoms*1000, 2);
 dist = zeros(nAtoms*1000, 1);
@@ -226,6 +236,9 @@ icount = 1;
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+toc
+3
+tic
 pair(icount:end,:) = [];
 dist(icount:end) = [];
 
@@ -240,9 +253,11 @@ dist(icount:end) = [];
     dist_matrix(pair(i,2),pair(i,1))=dist(i); <span class="comment">% Do we need this?</span>
 <span class="keyword">end</span>
 
+toc
 <span class="comment">%         assignin('caller','pair',pair)</span>
 <span class="comment">%         assignin('caller','dist',dist)</span>
-
+4
+tic
 <span class="keyword">if</span> calc_bond_list==1
     Bond_index = [pair dist];
     <span class="comment">% Special treatment for the short H-distances</span>
@@ -396,9 +411,11 @@ dist(icount:end) = [];
     assignin(<span class="string">'caller'</span>,<span class="string">'X_dist'</span>,(X_dist)');
     assignin(<span class="string">'caller'</span>,<span class="string">'Y_dist'</span>,(Y_dist)');
     assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</span>,(Z_dist)');
+<span class="keyword">else</span>
+    disp(<span class="string">'Skipped output of X|Y|Z_dist since the system is so big'</span>)
 <span class="keyword">end</span>
 
-
+toc
 <span class="comment">%%%%%%%%%%%%% End of main function %%%%%%%%%%%%%%</span>
 
     <span class="keyword">function</span> mi_n = minimum_image(n, N)
@@ -502,7 +519,7 @@ dist(icount:end) = [];
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -512,9 +529,12 @@ dist(icount:end) = [];
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 Å
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles
+% # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25,1) % Output mor info per atomtype
+
 %
 function dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
-
+1
+tic
 nAtoms=size(atom,2);
 dist_matrix=zeros(nAtoms);
 X_dist=dist_matrix;
@@ -533,6 +553,10 @@ if nargin >3
 else
     calc_bond_list=0;
     rmax=15;
+end
+
+if rHmax == 0
+    calc_bond_list=0;
 end
 
 if nargin > 4
@@ -574,7 +598,7 @@ end
 if any(Box_dim(1:3) < (2*rmax))
     disp('Decrease rmax!!! The Box_dim are too small...')
     disp('Assuming you have a small system, reverting to ')
-    disp('the basic bond_angle_atom() function... ')
+    disp('the dist_matrix_atom() function... ')
     pause(1)
     dist_matrix = dist_matrix_atom(atom,Box_dim);
     if nargin>5
@@ -633,6 +657,10 @@ mask = (max(dnx, 1) - 1).^2 * rcell(1).^2 + (max(dny, 1) - 1).^2 * rcell(2).^2 +
 %mask = true(1, M - 1); % bug check of mask
 mask_index = find(mask);
 
+toc
+2
+tic
+
 % calculate the distances of the atoms in masked cells
 pair = zeros(nAtoms*1000, 2);
 dist = zeros(nAtoms*1000, 1);
@@ -673,6 +701,9 @@ for m1 = 1:M
     end
 end
 
+toc
+3
+tic
 pair(icount:end,:) = [];
 dist(icount:end) = [];
 
@@ -687,9 +718,11 @@ for i = 1:size(pair,1)
     dist_matrix(pair(i,2),pair(i,1))=dist(i); % Do we need this?
 end
 
+toc
 %         assignin('caller','pair',pair)
 %         assignin('caller','dist',dist)
-
+4
+tic
 if calc_bond_list==1
     Bond_index = [pair dist];
     % Special treatment for the short H-distances
@@ -843,9 +876,11 @@ if nAtoms < 20000
     assignin('caller','X_dist',(X_dist)');
     assignin('caller','Y_dist',(Y_dist)');
     assignin('caller','Z_dist',(Z_dist)');
+else
+    disp('Skipped output of X|Y|Z_dist since the system is so big')
 end
 
-
+toc
 %%%%%%%%%%%%% End of main function %%%%%%%%%%%%%%
 
     function mi_n = minimum_image(n, N)

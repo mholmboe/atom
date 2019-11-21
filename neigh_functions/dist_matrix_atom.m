@@ -5,7 +5,7 @@
 % might be faster for large systems...
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -115,6 +115,7 @@ else % if cell is triclinic, and this part is not actually tested yet...
     end
 end
 
+i
 
 % New transposed output
 dist_matrix=dist_matrix';

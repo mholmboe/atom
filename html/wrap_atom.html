@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>wrap_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="wrap_atom.m"><style type="text/css">
+      --><title>wrap_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="wrap_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,11 +66,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>wrap_atom.m</h1><!--introduction--><div><ul><li>This function wraps the atoms into the box. It can also wrap only along the x and y dimensions, ie neglecting wrapping along the z-direction</li><li>Which one is fastest? Ortogonal or triclinic version?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = wrap_atom(atom,Box_dim)</li><li>atom = wrap_atom(atom,Box_dim,'xy')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = wrap_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>wrap_atom.m</h1><!--introduction--><div><ul><li>This function wraps the atoms into the box. It can also wrap only along the x and y dimensions, ie neglecting wrapping along the z-direction</li><li>Which one is fastest? Ortogonal or triclinic version?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = wrap_atom(atom,Box_dim)</li><li>atom = wrap_atom(atom,Box_dim,'xy')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = wrap_atom(atom,Box_dim,varargin)
+
+attribut_in=fieldnames(atom);
 
 <span class="keyword">if</span> nargin==2
     <span class="keyword">if</span> size(Box_dim(1,:),2)==3
-        disp(<span class="string">'assuming othogonal box when wrapping!!!'</span>)
+        <span class="comment">% disp('assuming othogonal box when wrapping!!!')</span>
         ind_hiz=find([atom.z]&gt;=Box_dim(3));
         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -143,13 +145,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+
+
+
+
 <span class="keyword">try</span>
-    <span class="keyword">if</span> isfield(atom,<span class="string">'xfrac'</span>)
-        atom=rmfield(atom,<span class="string">'xfrac'</span>);
-        atom=rmfield(atom,<span class="string">'yfrac'</span>);
-        atom=rmfield(atom,<span class="string">'zfrac'</span>);
-    <span class="keyword">end</span>
+    attribut_out=fieldnames(atom);
+    different_ind=find(~ismember(attribut_out,attribut_in));
+    atom=rmfield(atom,attribut_out(different_ind));
 <span class="keyword">catch</span>
+
 <span class="keyword">end</span>
 
 <span class="comment">%assignin('caller','atom',atom);</span>
@@ -161,7 +166,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -172,9 +177,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %
 function atom = wrap_atom(atom,Box_dim,varargin)
 
+attribut_in=fieldnames(atom);
+
 if nargin==2
     if size(Box_dim(1,:),2)==3
-        disp('assuming othogonal box when wrapping!!!')
+        % disp('assuming othogonal box when wrapping!!!')
         ind_hiz=find([atom.z]>=Box_dim(3));
         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -247,13 +254,16 @@ elseif nargin == 3
     end
 end
 
+
+
+
+
 try
-    if isfield(atom,'xfrac')
-        atom=rmfield(atom,'xfrac');
-        atom=rmfield(atom,'yfrac');
-        atom=rmfield(atom,'zfrac');
-    end
+    attribut_out=fieldnames(atom);
+    different_ind=find(~ismember(attribut_out,attribut_in));
+    atom=rmfield(atom,attribut_out(different_ind));
 catch
+    
 end
 
 %assignin('caller','atom',atom);

@@ -3,7 +3,7 @@
 % rotate vector
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -31,6 +31,7 @@ elseif iscell(rotate)
 else 
     if size(rotate,2)==3
         disp('Set the angles to..')
+        rotate
         angles(1)=rotate(1);
         angles(2)=rotate(2);
         angles(3)=rotate(3);

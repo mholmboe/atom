@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
+      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
 </pre><pre class="codeinput">format <span class="string">long</span>;
 prev_atom_index=0;
 prev_atom_types=0;
@@ -123,16 +123,28 @@ nAtoms=size(atom,2);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+<span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
+atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom);
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 Title=filename;
 file_title = strcat(<span class="string">'LAMMPS input data file #'</span>,datestr(now)); <span class="comment">% Header in output file</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">% Some settings needed in order to print a proper lammps in file %%</span>
-bond_atoms={};angle_atoms={};
-<span class="keyword">if</span> sum(strcmpi([atom.type],<span class="string">'Oh'</span>)); bond_atoms={<span class="string">'Oh'</span>}; <span class="keyword">end</span>
-<span class="keyword">if</span> sum(strcmpi([atom.type],<span class="string">'Ohmg'</span>)); bond_atoms={bond_atoms{:} <span class="string">'Ohmg'</span>}; <span class="keyword">end</span>
-<span class="keyword">if</span> sum(strcmpi([atom.type],<span class="string">'OW'</span>)); bond_atoms={bond_atoms{:} <span class="string">'OW'</span>}; <span class="keyword">end</span>
-<span class="keyword">if</span> sum(strcmpi([atom.type],<span class="string">'OW'</span>)); angle_atoms={<span class="string">'OW'</span>};<span class="keyword">end</span>
+
+bond_atoms_index=unique([Bond_index(:,1);Bond_index(:,2)]);
+angle_atoms_index=unique([Angle_index(:,1);Angle_index(:,2); Angle_index(:,3)]);
+bond_atoms=unique([atom(bond_atoms_index).type]);
+angle_atoms=unique([atom(angle_atoms_index).type]);
+<span class="comment">% Old code</span>
+<span class="comment">% bond_atoms={};angle_atoms={};</span>
+<span class="comment">% if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end</span>
+<span class="comment">% if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end</span>
+<span class="comment">% if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end</span>
+<span class="comment">% if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end</span>
 <span class="comment">% End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
 <span class="keyword">if</span> ~exist(<span class="string">'Box_dim'</span>,<span class="string">'var'</span>);disp(<span class="string">'We need to set Box_dim?'</span>);
@@ -165,10 +177,6 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
     xy=0;xz=0;yz=0;
 <span class="keyword">end</span>
 
-<span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
-atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom);
-assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
 <span class="comment">% Start printing the lammps .lj file</span>
 fid = fopen(filename, <span class="string">'wt'</span>);
 
@@ -313,7 +321,7 @@ fclose(fid);
 % Clayff systems
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -378,16 +386,28 @@ else
     end
 end
 
+% Scan the xyz data and look for O-H bonds and angles
+atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+assignin('caller','atom',atom);
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','Angle_index',Angle_index);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Title=filename;
 file_title = strcat('LAMMPS input data file #',datestr(now)); % Header in output file
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some settings needed in order to print a proper lammps in file %%
-bond_atoms={};angle_atoms={};
-if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end
-if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end
-if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end
-if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end
+
+bond_atoms_index=unique([Bond_index(:,1);Bond_index(:,2)]);
+angle_atoms_index=unique([Angle_index(:,1);Angle_index(:,2); Angle_index(:,3)]);
+bond_atoms=unique([atom(bond_atoms_index).type]);
+angle_atoms=unique([atom(angle_atoms_index).type]);
+% Old code
+% bond_atoms={};angle_atoms={};
+% if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end
+% if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end
+% if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end
+% if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end
 % End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if ~exist('Box_dim','var');disp('We need to set Box_dim?');
@@ -420,10 +440,6 @@ else
     xy=0;xz=0;yz=0;
 end
 
-% Scan the xyz data and look for O-H bonds and angles
-atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-assignin('caller','atom',atom);
-assignin('caller','Angle_index',Angle_index);
 % Start printing the lammps .lj file
 fid = fopen(filename, 'wt');
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>List of the main variables</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-20"><meta name="DC.source" content="List_variables.m"><style type="text/css">
+      --><title>List of the main variables</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="List_variables.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,18 +66,38 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>List of the main variables</h1><div><ol><li><a href="Atom_label_variable.m">Atom_label</a> % 1xn cell array</li><li><a href="atom_variable.m">atom</a> % The main matlab struct variable</li><li><a href="Box_dim_variable.m">Box_dim</a> % A 1x3 or 1x9 array variable holding the Box size parameters</li><li><a href="limits_variable.m">limits</a> % A 1x6 array defining a volumetric region</li><li><a href="rmaxshort_variable.m">rmaxshort</a> % Maximum H-related bond radius</li><li><a href="rmaxslong_variable.m">rmaxlong</a> % Maximum non-H-related bond/neighbor radius</li><li><a href="XYZ_data_variable.m">XYZ_data</a> % A nx3 matrix holdnig the XYZ-coordinates</li><li><a href="XYZ_labels_variable.m">XYZ_labels</a> % A cell list om atom types</li></ol></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>List of the main variables</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><pre class="codeinput"><span class="comment">% # &lt;Atom_label_variable.html Atom_label&gt; % 1xn cell array</span>
+<span class="comment">% # &lt;atom_variable.html atom&gt; % The main matlab struct variable</span>
+<span class="comment">% # &lt;Box_dim_variable.html Box_dim&gt; % A 1x3 or 1x9 array variable holding the Box</span>
+<span class="comment">% size parameters</span>
+<span class="comment">% # &lt;distance_factor_variable.html distance_factor&gt; % variable related to finding</span>
+<span class="comment">% the nearest neighbours or bonds based on different atomtypes vdw radii.</span>
+<span class="comment">% # &lt;limits_variable.html limits&gt; % A 1x6 array defining a volumetric region</span>
+<span class="comment">% # &lt;rmaxshort_variable.html rmaxshort&gt; % Maximum H-related bond radius</span>
+<span class="comment">% # &lt;rmaxslong_variable.html rmaxlong&gt; % Maximum non-H-related bond/neighbor radius</span>
+<span class="comment">% # &lt;XYZ_data_variable.html XYZ_data&gt; % A nx3 matrix holdnig the XYZ-coordinates</span>
+<span class="comment">% # &lt;XYZ_labels_variable.html XYZ_labels&gt; % A cell list om atom types</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% List of the main variables
 %
-% # <Atom_label_variable.m Atom_label> % 1xn cell array 
-% # <atom_variable.m atom> % The main matlab struct variable
-% # <Box_dim_variable.m Box_dim> % A 1x3 or 1x9 array variable holding the Box 
+%% Version
+% 2.06
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+
+% # <Atom_label_variable.html Atom_label> % 1xn cell array 
+% # <atom_variable.html atom> % The main matlab struct variable
+% # <Box_dim_variable.html Box_dim> % A 1x3 or 1x9 array variable holding the Box 
 % size parameters
-% # <limits_variable.m limits> % A 1x6 array defining a volumetric region
-% # <rmaxshort_variable.m rmaxshort> % Maximum H-related bond radius
-% # <rmaxslong_variable.m rmaxlong> % Maximum non-H-related bond/neighbor radius
-% # <XYZ_data_variable.m XYZ_data> % A nx3 matrix holdnig the XYZ-coordinates
-% # <XYZ_labels_variable.m  XYZ_labels> % A cell list om atom types
+% # <distance_factor_variable.html distance_factor> % variable related to finding
+% the nearest neighbours or bonds based on different atomtypes vdw radii.
+% # <limits_variable.html limits> % A 1x6 array defining a volumetric region
+% # <rmaxshort_variable.html rmaxshort> % Maximum H-related bond radius
+% # <rmaxslong_variable.html rmaxlong> % Maximum non-H-related bond/neighbor radius
+% # <XYZ_data_variable.html XYZ_data> % A nx3 matrix holdnig the XYZ-coordinates
+% # <XYZ_labels_variable.html XYZ_labels> % A cell list om atom types
 ##### SOURCE END #####
 --></body></html>

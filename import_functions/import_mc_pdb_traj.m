@@ -5,7 +5,7 @@
 % nevery frame to import, i.e. a stride value
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -20,9 +20,9 @@ function [atom,traj] = import_mc_pdb_traj(filename,varargin)
 % maxframes=100;
 % stride=1;
 % filenames={...
-%     'Movie_MMTx2_1.1.1_298.150000_101325.000000_frameworks.pdb';...
-%     'Movie_MMTx2_1.1.1_298.150000_101325.000000_component_Ca_0.pdb';...
-%     'Movie_MMTx2_1.1.1_298.150000_101325.000000_component_spce_1.pdb';...
+%     'Movie_MMTx1_1.1.1_298.150000_2535.200000_frameworks.pdb';...
+%     'Movie_MMTx1_1.1.1_298.150000_2535.200000_component_Na_0.pdb';...
+%     'Movie_MMTx1_1.1.1_298.150000_2535.200000_component_spce_1.pdb';...
 %     };
 
 for i=1:size(filename,1)
@@ -31,6 +31,7 @@ for i=1:size(filename,1)
         maxframes=varargin{1};
         if nargin>2
             stride=varargin{2};
+            char(filename(i))
             try
                 temp_atom = import_pdb_traj(char(filename(i)),maxframes,stride);
             catch

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="import_atom.m"><style type="text/css">
+      --><title>import_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="import_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_atom.m</h1><!--introduction--><div><ul><li>This function imports a .xyz|.gro|.pdb file and puts the data in the structure variable called atom</li><li>varargin can be used to translate, alt. center+translate the molecule</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.03</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom('molecule.gro')</li><li>atom = import_atom('molecule.pdb',[10 5 2])</li><li>atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom(filename,varargin)
+  </style></head><body><div class="content"><h1>import_atom.m</h1><!--introduction--><div><ul><li>This function imports a .xyz|.gro|.pdb and basic .mol2 files and puts the data in the structure variable called atom</li><li>varargin can be used to translate, alt. center+translate the molecule</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom('molecule.gro')</li><li>atom = import_atom('molecule.pdb',[10 5 2])</li><li>atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom(filename,varargin)
 </pre><pre class="codeinput"><span class="keyword">if</span> iscell(filename)
     filename=char(filename);
 <span class="keyword">end</span>
@@ -99,6 +99,19 @@ Box_dim = [0 0 0];
         atom = import_atom_pdb(filename);
     <span class="keyword">end</span>
 
+<span class="keyword">elseif</span> regexp(filename,<span class="string">'.mol2'</span>) &gt; 1
+    disp(<span class="string">'Found .mol2 file'</span>);
+    <span class="keyword">if</span> nargin==2
+        trans_vec=cell2mat(varargin(1));
+        atom = import_atom_mol2(filename,trans_vec);
+    <span class="keyword">elseif</span> nargin==3
+        trans_vec=cell2mat(varargin(1));
+        NewBox_dim=cell2mat(varargin(2));
+        atom = import_atom_mol2(filename,trans_vec,NewBox_dim);
+    <span class="keyword">else</span>
+        atom = import_atom_mol2(filename);
+    <span class="keyword">end</span>
+
 <span class="keyword">elseif</span> regexp(filename,<span class="string">'.xyz'</span>) &gt; 1
     disp(<span class="string">'Found .xyz file'</span>);
     atom=import_atom_xyz(filename);
@@ -118,8 +131,20 @@ Box_dim = [0 0 0];
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+<span class="comment">%%%%%%%%%% To analyze/find bonds</span>
+<span class="keyword">if</span> size(atom,2)&lt;2000
+    <span class="keyword">try</span>
+    disp(<span class="string">'Looking up bonds'</span>)
+    atom=bond_atom(atom,Box_dim,2.4);
+    atom=update_atom(atom);
+    <span class="keyword">catch</span>
+       disp(<span class="string">'Could not find bonds'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
 <span class="comment">%%%%%%%%%% To analyze composition</span>
+disp(<span class="string">'Composition info:'</span>)
 composition_atom(atom);
+disp(<span class="string">'The box dimensions are:'</span>)
 Box_dim
 
 <span class="comment">%atom = resname_atom(atom);</span>
@@ -137,12 +162,12 @@ delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% import_atom.m
-% * This function imports a .xyz|.gro|.pdb file and puts the data in the 
-% structure variable called atom
+% * This function imports a .xyz|.gro|.pdb and basic .mol2 files and puts 
+% the data in the structure variable called atom
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -153,7 +178,7 @@ delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*
 % # atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
 function atom = import_atom(filename,varargin)
-%% 
+%%
 
 if iscell(filename)
     filename=char(filename);
@@ -175,7 +200,7 @@ if regexp(filename,'.gro') > 1
     end
     
 elseif regexp(filename,'.pdb') > 1
-    disp('Found .pdb file');   
+    disp('Found .pdb file');
     if nargin==2
         trans_vec=cell2mat(varargin(1));
         atom = import_atom_pdb(filename,trans_vec);
@@ -185,6 +210,19 @@ elseif regexp(filename,'.pdb') > 1
         atom = import_atom_pdb(filename,trans_vec,NewBox_dim);
     else
         atom = import_atom_pdb(filename);
+    end
+    
+elseif regexp(filename,'.mol2') > 1
+    disp('Found .mol2 file');
+    if nargin==2
+        trans_vec=cell2mat(varargin(1));
+        atom = import_atom_mol2(filename,trans_vec);
+    elseif nargin==3
+        trans_vec=cell2mat(varargin(1));
+        NewBox_dim=cell2mat(varargin(2));
+        atom = import_atom_mol2(filename,trans_vec,NewBox_dim);
+    else
+        atom = import_atom_mol2(filename);
     end
     
 elseif regexp(filename,'.xyz') > 1
@@ -206,8 +244,20 @@ elseif regexp(filename,'.xyz') > 1
     end
 end
 
+%%%%%%%%%% To analyze/find bonds
+if size(atom,2)<2000
+    try
+    disp('Looking up bonds')
+    atom=bond_atom(atom,Box_dim,2.4);
+    atom=update_atom(atom);
+    catch
+       disp('Could not find bonds') 
+    end
+end
 %%%%%%%%%% To analyze composition
+disp('Composition info:')
 composition_atom(atom);
+disp('The box dimensions are:')
 Box_dim
 
 %atom = resname_atom(atom);

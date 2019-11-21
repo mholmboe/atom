@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ionize_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-21"><meta name="DC.source" content="ionize_atom.m"><style type="text/css">
+      --><title>ionize_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="ionize_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,25 +66,32 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ionize_atom.m</h1><!--introduction--><div><ul><li>This function adds ions within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Similar</a></li><li><a href="#4">Version</a></li><li><a href="#5">Contact</a></li><li><a href="#6">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="3">Similar</h2><p>fuse_atom protonate_atom create_atom insert_atom</p><h2 id="4">Version</h2><p>2.03</p><h2 id="5">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="6">Examples</h2><div><ol><li>atom = ionize_atom('Na','Na',[10 20 30],10)</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = ionize_atom(type,resname,limits,nmax,varargin)
+  </style></head><body><div class="content"><h1>ionize_atom.m</h1><!--introduction--><div><ul><li>This function adds ions within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Similar</a></li><li><a href="#4">Version</a></li><li><a href="#5">Contact</a></li><li><a href="#6">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="3">Similar</h2><p>fuse_atom protonate_atom create_atom insert_atom</p><h2 id="4">Version</h2><p>2.06</p><h2 id="5">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="6">Examples</h2><div><ol><li>atom = ionize_atom('Na','Na',[10 20 30],10)</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = ionize_atom(type,resname,limits,nmax,varargin)
 
 sorted_distratio=[];
 
 <span class="keyword">if</span> iscell(type)==0;type={type}; <span class="keyword">end</span>
 <span class="keyword">if</span> iscell(resname)==0;resname={resname};<span class="keyword">end</span>
 
-radii = radius_ion(type);
+radii = abs(radius_ion(type));
 <span class="keyword">if</span> nargin &gt; 4
     distance_factor=varargin{1};
+    <span class="keyword">if</span> numel(distance_factor)&gt;1
+       rmin=distance_factor(2);
+       distance_factor=distance_factor(1);
+    <span class="keyword">else</span>
+        rmin=radii*distance_factor;
+    <span class="keyword">end</span>
 <span class="keyword">else</span>
-    distance_factor=2.15;
+    distance_factor=2;
+    rmin=radii*distance_factor;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> distance_factor&lt;2
    disp(<span class="string">'distance_factor should be &gt;=2 !!!'</span>)
    pause(2)
 <span class="keyword">end</span>
-Box_dim_temp=distance_factor*[2*radii 2*radii 2*radii];
+Box_dim_temp=distance_factor*2*[radii radii radii];
 atom = add2atom(type,[0 0 0],resname,[]);
 
 <span class="keyword">if</span> numel(limits)==1
@@ -153,7 +160,7 @@ size(atom,2)
         atom_count=1;atom_merged=[];count=1;
         <span class="keyword">while</span> atom_count&lt; size(atom,2)
             atom_block= atom(atom_count:atom_count+natom_block-1);
-            atom_block = merge_atom(in_atom,limits(4:6),atom_block,<span class="string">'type'</span>,type,1.2*distance_factor*radii);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,<span class="string">'type'</span>,type,rmin);
             atom_merged = [atom_merged atom_block];
             atom_count=atom_count+natom_block;
             disp(<span class="string">'box number...'</span>)
@@ -161,7 +168,7 @@ size(atom,2)
         <span class="keyword">end</span>
         atom=atom_merged;
     <span class="keyword">else</span>
-        atom = merge_atom(in_atom,limits(4:6),atom,<span class="string">'type'</span>,type,1.2*distance_factor*radii);
+        atom = merge_atom(in_atom,limits(4:6),atom,<span class="string">'type'</span>,type,rmin);
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     atom = slice_atom(atom,limits,0);
@@ -309,7 +316,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'distratio'</
 % insert_atom
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -328,18 +335,25 @@ sorted_distratio=[];
 if iscell(type)==0;type={type}; end
 if iscell(resname)==0;resname={resname};end
 
-radii = radius_ion(type);
+radii = abs(radius_ion(type));
 if nargin > 4
     distance_factor=varargin{1};
+    if numel(distance_factor)>1
+       rmin=distance_factor(2); 
+       distance_factor=distance_factor(1);
+    else
+        rmin=radii*distance_factor;
+    end
 else
-    distance_factor=2.15;
+    distance_factor=2;
+    rmin=radii*distance_factor;
 end
 
 if distance_factor<2
    disp('distance_factor should be >=2 !!!')
    pause(2)
 end
-Box_dim_temp=distance_factor*[2*radii 2*radii 2*radii];
+Box_dim_temp=distance_factor*2*[radii radii radii];
 atom = add2atom(type,[0 0 0],resname,[]);
 
 if numel(limits)==1
@@ -408,7 +422,7 @@ if nargin>5 && size(varargin{2},2) > 0
         atom_count=1;atom_merged=[];count=1;
         while atom_count< size(atom,2)
             atom_block= atom(atom_count:atom_count+natom_block-1);
-            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,1.2*distance_factor*radii);
+            atom_block = merge_atom(in_atom,limits(4:6),atom_block,'type',type,rmin);
             atom_merged = [atom_merged atom_block];
             atom_count=atom_count+natom_block;
             disp('box number...')
@@ -416,7 +430,7 @@ if nargin>5 && size(varargin{2},2) > 0
         end
         atom=atom_merged;
     else
-        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,1.2*distance_factor*radii);
+        atom = merge_atom(in_atom,limits(4:6),atom,'type',type,rmin);
     end
 else
     atom = slice_atom(atom,limits,0);

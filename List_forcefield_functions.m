@@ -1,5 +1,8 @@
 %% List of topology functions
-
+%
+%% Version
+% 2.06
+%
 %% Custom toplogy tools
 %% Clayff, with atomtypes by MHolmboe
 % # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % This function tries to charge the atom accorind to clayff or interface ff

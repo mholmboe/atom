@@ -3,7 +3,7 @@
 % * It tries to guess the Box_dim, so watch out!
 %
 %% Version
-% 2.03
+% 2.06
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -23,7 +23,7 @@ Box_string=strsplit(char(line2));
 % formatSpec = '%s%f%f%f%[^\n\r]';
 % delimiter = {'\t',' '};
 % dataArray = textscan(fileID, formatSpec, endRow-startRow+1, 'Delimiter', delimiter, 'MultipleDelimsAsOne', true, 'HeaderLines', 0,'ReturnOnError', false);
-% 
+%
 % for block=2:length(startRow)
 %     frewind(fileID);
 %     textscan(fileID, '%[^\n\r]', startRow(block)-1, 'ReturnOnError', false);
@@ -46,7 +46,7 @@ for i=1:nAtoms
     X(i) = XYZ_string(2);
     Y(i) = XYZ_string(3);
     Z(i) = XYZ_string(4);
-
+    
 end
 fclose(filetempID);
 
@@ -93,18 +93,44 @@ if numel(idx) >0
     end
 end
 
-if length(Box_dim)==3
-    Box_dim=Box_dim;
-elseif length(Box_dim)==6
-    Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
-elseif length(Box_dim)==9
-    Box_dim=Box_dim;
+if length(Box_dim)==6
+    Box_dim=Box_dim(1:6);
+    if sum(Box_dim(4:6)) > 100 % If anglees... and not tilt-factors
+        a=Box_dim(1);
+        b=Box_dim(2);
+        c=Box_dim(3);
+        alfa=Box_dim(4);
+        beta=Box_dim(5);
+        gamma=Box_dim(6);
+        lx = a;
+        xy = b * cos(deg2rad(gamma));
+        ly = (b^2-xy^2)^.5;
+        xz = c*cos(deg2rad(beta));
+        yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+        lz = (c^2 - xz^2 - yz^2)^0.5;
+        Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+        Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    elseif sum(Box_dim(4:6)) < 100
+        Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
+    end
+    
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
 end
+
+% if length(Box_dim)==3
+%     Box_dim=Box_dim;
+% elseif length(Box_dim)==6
+%     Box_dim=[Box_dim(1:3) 0 0 Box_dim(4) 0 Box_dim(5) Box_dim(6)];
+% elseif length(Box_dim)==9
+%     Box_dim=Box_dim(1:9);
+% end
 
 if numel(Box_dim)==0
     disp('Guessing the box dimensions to be .1% larger than max coordinates')
     Box_dim = [(max([atom.x])-min([atom.x]))*1.001    (max([atom.y])-min([atom.y]))*1.001  (max([atom.z])-min([atom.z]))*1.001 0 0 0 0 0 0];
-pause
+    pause
 end
 
 % atom = resname_atom(atom);
