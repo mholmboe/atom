@@ -9,7 +9,6 @@
 
 function atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
  
-
 % if length(limits) == 3;
 
 if strcmp(dim,'xy')
