@@ -5,7 +5,7 @@
 %% How-to cite the atom library?
 % * The atom library has been described in the following paper:
 % atom: A MATLAB PACKAGE FOR MANIPULATION OF MOLECULAR SYSTEMS, Clays and
-% Clay Minerals. January, 2020. DOI:10.1007/s42860-019-00043-y
+% Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y
 
 %% How-to use these documentation pages
 % You can read and browse through these html pages in any browser you want,

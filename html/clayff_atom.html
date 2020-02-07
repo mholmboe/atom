@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>clayff_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="clayff_atom.m"><style type="text/css">
+      --><title>clayff_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="clayff_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>clayff_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><div><ul><li>This clayff_atom function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#8">If the usual atom types</a></li><li><a href="#9">If new atom types</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=clayff_atom(atom,Box_dim)</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc')</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc',heal_iterations)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=clayff_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>clayff_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><div><ul><li>This clayff_atom function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=clayff_atom(atom,Box_dim)</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc')</li><li>atom=clayff_atom(atom,Box_dim,'clayff','spc',heal_iterations)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=clayff_atom(atom,Box_dim,varargin)
 </pre><pre class="codeinput">format <span class="string">compact</span>;
 
 <span class="keyword">if</span> nargin &gt;3
@@ -86,7 +86,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 atom=element_atom(atom);
 
 distance_factor=1.2;
-rmaxlong=2.4;
+rmaxlong=2.1;
 
 <span class="comment">% Initialize some variables</span>
 rm_ind=[];
@@ -602,10 +602,10 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                     i
                     Neighbours
                     atom(i).fftype={<span class="string">'O^'</span>};
-                <span class="keyword">elseif</span> length(Neigh_ind) == 1 || strcmp(Neighbours,<span class="string">'AlAl'</span>) || strcmp(Neighbours,<span class="string">'AlMg'</span>)
+                <span class="keyword">elseif</span> length(Neigh_ind) == 1 || strcmp(Neighbours,<span class="string">'AlAl'</span>) || strcmp(Neighbours,<span class="string">'AlMg'</span>) || strcmp(Neighbours,<span class="string">'Si'</span>)
                     <span class="keyword">if</span> strcmp(Neighbours,<span class="string">'Si'</span>)
                         atom(i).fftype={<span class="string">'Osi'</span>};
-                    <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'Al'</span>)
+                    <span class="keyword">elseif</span> strncmp(Neighbours,<span class="string">'AlAl'</span>,2)
                         atom(i).fftype={<span class="string">'Oal'</span>};
                     <span class="keyword">else</span>
                         disp(<span class="string">'O atom under coordinated'</span>)
@@ -695,9 +695,11 @@ Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 
 <span class="keyword">try</span>
-</pre><h2 id="8">If the usual atom types</h2><pre class="codeinput">    atom = charge_atom(atom,Box_dim,ffname,watermodel);
-</pre><h2 id="9">If new atom types</h2><pre class="codeinput">    atom = charge_atom(atom,Box_dim,ffname,watermodel,<span class="string">'more'</span>);
-</pre><pre class="codeinput"><span class="keyword">catch</span>
+    <span class="comment">% If the usual atom types</span>
+    atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    <span class="comment">% If new atom types</span>
+    atom = charge_atom(atom,Box_dim,ffname,watermodel,<span class="string">'more'</span>);
+<span class="keyword">catch</span>
     disp(<span class="string">'Could not set the charge...'</span>)
 <span class="keyword">end</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'newatom'</span>,atom);
@@ -739,7 +741,7 @@ watermodel
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -770,7 +772,7 @@ end
 atom=element_atom(atom);
 
 distance_factor=1.2;
-rmaxlong=2.4;
+rmaxlong=2.1;
 
 % Initialize some variables
 rm_ind=[];
@@ -1286,10 +1288,10 @@ for assignment_run=heal_iterations
                     i
                     Neighbours
                     atom(i).fftype={'O^'};
-                elseif length(Neigh_ind) == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg')
+                elseif length(Neigh_ind) == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg') || strcmp(Neighbours,'Si')
                     if strcmp(Neighbours,'Si')
                         atom(i).fftype={'Osi'};
-                    elseif strcmp(Neighbours,'Al')
+                    elseif strncmp(Neighbours,'AlAl',2)
                         atom(i).fftype={'Oal'};
                     else
                         disp('O atom under coordinated')
@@ -1380,9 +1382,9 @@ Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 
 try
-    %% If the usual atom types
+    % If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
-    %% If new atom types
+    % If new atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel,'more');
 catch
     disp('Could not set the charge...')

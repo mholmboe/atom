@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_matrix_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="bond_atom.m"><style type="text/css">
+      --><title>bond_matrix_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="bond_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_matrix_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all bonds to a Bond_matrix and a Bond_index variable</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_atom(atom,Box_dim)</li><li>atom=bond_atom(atom,Box_dim,2.5) % Last argument is the max bond distance</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>bond_matrix_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all bonds to a Bond_matrix and a Bond_index variable</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_atom(atom,Box_dim)</li><li>atom=bond_atom(atom,Box_dim,2.25) % Last argument is the max bond distance</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;2
     rmaxlong=varargin{1}; <span class="comment">% Dummy value</span>
@@ -137,7 +137,6 @@ bond_matrix(bond_matrix&lt;0)=1;
     atom=rmfield(atom,<span class="string">'bond'</span>);
 <span class="keyword">end</span>
 
-
 disp(<span class="string">'Looking for neighbours/bonds'</span>)
 Bond_index=[];b=1;
 <span class="keyword">for</span> i=1:length(XYZ_labels)
@@ -155,7 +154,8 @@ Bond_index=[];b=1;
 
     <span class="keyword">while</span> j &lt;= numel(bond_ind) &amp;&amp; k &lt;= numel(bond_ind) <span class="comment">%&lt;= neigh %atom(i).neigh=[];</span>
         <span class="keyword">if</span> bond_matrix(bond_ind(j),i)==1
-            <span class="keyword">if</span> XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;=0 || numel(unique([atom.molid]))==1
+<span class="comment">%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;=0 &amp;&amp; atom(i).molid==atom(bond_ind(j)).molid</span>
+            <span class="keyword">if</span> atom(i).molid==atom(bond_ind(j)).molid
                 k=k+1;
                 [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
                 [atom(i).neigh.index(k,1)]=bond_ind(j);
@@ -223,7 +223,6 @@ Neigh_index(rm_ind,:)=[];
 
 [atom.type]=atom.fftype;
 
-
 assignin(<span class="string">'caller'</span>,<span class="string">'Radius_limit'</span>,radius_limit);
 assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
 assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_index'</span>,Neigh_index);
@@ -236,14 +235,14 @@ assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'
 % Bond_index variable
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom=bond_atom(atom,Box_dim)
-% # atom=bond_atom(atom,Box_dim,2.5) % Last argument is the max bond distance
+% # atom=bond_atom(atom,Box_dim,2.25) % Last argument is the max bond distance
 
 function atom = bond_atom(atom,Box_dim,varargin)
 
@@ -316,7 +315,6 @@ if isfield(atom,'bond')
     atom=rmfield(atom,'bond');
 end
 
-
 disp('Looking for neighbours/bonds')
 Bond_index=[];b=1;
 for i=1:length(XYZ_labels)
@@ -334,7 +332,8 @@ for i=1:length(XYZ_labels)
     
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if bond_matrix(bond_ind(j),i)==1
-            if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 || numel(unique([atom.molid]))==1
+%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
+            if atom(i).molid==atom(bond_ind(j)).molid
                 k=k+1;
                 [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
                 [atom(i).neigh.index(k,1)]=bond_ind(j);
@@ -401,7 +400,6 @@ end
 Neigh_index(rm_ind,:)=[];
 
 [atom.type]=atom.fftype;
-
 
 assignin('caller','Radius_limit',radius_limit);
 assignin('caller','Bond_index',Bond_index);

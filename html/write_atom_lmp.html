@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
+      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,17 +66,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
-</pre><pre class="codeinput">format <span class="string">long</span>;
+  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
+</pre><pre class="codeinput">format <span class="string">compact</span>;
+
+<span class="comment">% Change these values in case you want to merge a lammps topology file with</span>
+<span class="comment">% another one already haveing bonds, angles, dihedrals...</span>
 prev_atom_index=0;
 prev_atom_types=0;
 prev_bond_num=0;
 prev_bond_types=0;
 prev_angle_num=0;
 prev_angle_types=0;
+prev_dihedral_num=0;
+prev_dihedral_types=0;
 prev_mol_index=0;
 
-nAtoms=size(atom,2);
+precision = 7; <span class="comment">% num2str(X,precision)</span>
+ind_HW=strncmpi([atom.type],<span class="string">'Ow'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Ow'</span>});
+ind_HW=strncmpi([atom.type],<span class="string">'Hw'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Hw'</span>});
+Atom_labels=sort(unique([atom.type]));
+natom_labels=size(Atom_labels,2);
 
 <span class="keyword">if</span> regexp(filename,<span class="string">'.lj'</span>) ~= false
     filename = filename;
@@ -124,27 +133,61 @@ nAtoms=size(atom,2);
 <span class="keyword">end</span>
 
 <span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
-atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+atom=bond_angle_dihedral_atom(atom,Box_dim,short_r,long_r);
 assignin(<span class="string">'caller'</span>,<span class="string">'atom'</span>,atom);
 assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
 assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+assignin(<span class="string">'caller'</span>,<span class="string">'Dihedral_index'</span>,Dihedral_index);
+nAtoms=size(atom,2)
+nBonds
+nAngles
+nDihedrals
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-Title=filename;
-file_title = strcat(<span class="string">'LAMMPS input data file #'</span>,datestr(now)); <span class="comment">% Header in output file</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-<span class="comment">% Some settings needed in order to print a proper lammps in file %%</span>
+<span class="keyword">if</span> nBonds&gt;0
+<span class="comment">% Calculate the bond_types</span>
+bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+b1=join([bond_pairs(:,1) bond_pairs(:,2)]);b1=unique(b1,<span class="string">'stable'</span>);
+b2=join([bond_pairs(:,2) bond_pairs(:,1)]);b2=unique(b2,<span class="string">'stable'</span>);
+nbond_types=size(b1,1);
+bond_pairs=join(bond_pairs);
+<span class="keyword">for</span> i=1:size(bond_pairs,1)
+    [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
+<span class="keyword">end</span>
+bond_types(bond_types&gt;nbond_types)=bond_types(bond_types&gt;nbond_types)-nbond_types;
+<span class="keyword">else</span>
+    nbond_types=0;
+<span class="keyword">end</span>
 
-bond_atoms_index=unique([Bond_index(:,1);Bond_index(:,2)]);
-angle_atoms_index=unique([Angle_index(:,1);Angle_index(:,2); Angle_index(:,3)]);
-bond_atoms=unique([atom(bond_atoms_index).type]);
-angle_atoms=unique([atom(angle_atoms_index).type]);
-<span class="comment">% Old code</span>
-<span class="comment">% bond_atoms={};angle_atoms={};</span>
-<span class="comment">% if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end</span>
-<span class="comment">% if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end</span>
-<span class="comment">% if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end</span>
-<span class="comment">% if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end</span>
+<span class="keyword">if</span> nAngles&gt;0
+<span class="comment">% Calculate the angle_types</span>
+angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,<span class="string">'stable'</span>);
+a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,<span class="string">'stable'</span>);
+nangle_types=size(a1,1);
+angle_triplets=join(angle_triplets);
+<span class="keyword">for</span> i=1:size(angle_triplets,1)
+    [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
+<span class="keyword">end</span>
+angle_types(angle_types&gt;nangle_types)=angle_types(angle_types&gt;nangle_types)-nangle_types;
+<span class="keyword">else</span>
+    nangle_types=0;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nDihedrals&gt;0
+<span class="comment">% Calculate the dihedral_types</span>
+dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
+d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,<span class="string">'stable'</span>);
+d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,<span class="string">'stable'</span>);
+ndihedral_types=size(d1,1);
+dihedral_quads=join(dihedral_quads);
+<span class="keyword">for</span> i=1:size(dihedral_quads,1)
+    [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
+<span class="keyword">end</span>
+dihedral_types(dihedral_types&gt;ndihedral_types)=dihedral_types(dihedral_types&gt;ndihedral_types)-ndihedral_types;
+<span class="keyword">else</span>
+    ndihedral_types=0;
+<span class="keyword">end</span>
+
 <span class="comment">% End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
 <span class="keyword">if</span> ~exist(<span class="string">'Box_dim'</span>,<span class="string">'var'</span>);disp(<span class="string">'We need to set Box_dim?'</span>);
@@ -152,18 +195,11 @@ angle_atoms=unique([atom(angle_atoms_index).type]);
     pause
 <span class="keyword">end</span>
 
-Natoms = size(atom,2);
-precision = 7; <span class="comment">% num2str(X,precision)</span>
-ind_HW=strncmpi([atom.type],<span class="string">'Ow'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Ow'</span>})
-ind_HW=strncmpi([atom.type],<span class="string">'Hw'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Hw'</span>})
-Atom_label=sort(unique([atom.type]));
-Natom_types = length(Atom_label);
-
 <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
     <span class="keyword">if</span> exist(<span class="string">'ffname'</span>,<span class="string">'var'</span>)
         atom = charge_atom(atom,Box_dim,ffname,watermodel);
     <span class="keyword">else</span>
-        clayff_param(Atom_label,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
+        clayff_param(Atom_labels,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     disp(<span class="string">'Only clayff implemented sofar'</span>)
@@ -177,18 +213,25 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
     xy=0;xz=0;yz=0;
 <span class="keyword">end</span>
 
+
+<span class="comment">% Some settings needed in order to print a proper lammps in file %%</span>
+
 <span class="comment">% Start printing the lammps .lj file</span>
 fid = fopen(filename, <span class="string">'wt'</span>);
 
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+file_title = strcat(<span class="string">'LAMMPS input data file #'</span>,datestr(now)); <span class="comment">% Header in output file</span>
 fprintf(fid, <span class="string">'%s\r\n'</span>, file_title);
 fprintf(fid, <span class="string">'\r\n'</span>);
 </pre><pre class="codeinput">AtomBondAnglestring = {num2str(size(atom,2)), <span class="string">'atoms'</span>;<span class="keyword">...</span>
-    num2str(size(Bond_index,1)), <span class="string">'bonds'</span>;<span class="keyword">...</span><span class="comment"> %num2str(Nbonds), 'bonds';...</span>
-    num2str(size(Angle_index,1)), <span class="string">'angles'</span>;<span class="keyword">...</span><span class="comment">%num2str(Nangles), 'angles';...</span>
+    num2str(nBonds), <span class="string">'bonds'</span>;<span class="keyword">...</span>
+    num2str(nAngles), <span class="string">'angles'</span>;<span class="keyword">...</span>
+    num2str(nDihedrals), <span class="string">'dihedrals'</span>;<span class="keyword">...</span>
     <span class="string">' '</span>,<span class="string">' '</span>;<span class="keyword">...</span>
-    num2str(length(Atom_label)), <span class="string">'atom types'</span>;<span class="keyword">...</span>
-    num2str(length(bond_atoms)), <span class="string">'bond types'</span>;<span class="keyword">...</span>
-    num2str(length(angle_atoms)), <span class="string">'angle types'</span>};
+    num2str(natom_labels), <span class="string">'atom types'</span>;<span class="keyword">...</span>
+    num2str(nbond_types), <span class="string">'bond types'</span>;<span class="keyword">...</span>
+    num2str(nangle_types), <span class="string">'angle types'</span>;<span class="keyword">...</span>
+    num2str(ndihedral_types), <span class="string">'dihedral types'</span>};
 
 Boxsizestring = {  num2str(0,precision), num2str(lx,precision), <span class="string">'xlo'</span>, <span class="string">'xhi'</span>;<span class="keyword">...</span>
     num2str(0,precision), num2str(ly,precision), <span class="string">'ylo'</span>, <span class="string">'yhi'</span>;<span class="keyword">...</span>
@@ -206,18 +249,17 @@ fprintf(fid, <span class="string">'\r\n'</span>);
     <span class="keyword">end</span>
     fprintf(fid, <span class="string">'%-s %-s %-s %-s\r\n'</span>, Boxsizestring{i,:});
 <span class="keyword">end</span>
-</pre><pre class="codeinput">fprintf(fid, <span class="string">'\r\n'</span>);
-fprintf(fid, <span class="string">'Masses \r\n'</span>);
+</pre><p>fprintf(fid, '\r\n');</p><pre class="codeinput">fprintf(fid, <span class="string">'Masses \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 
 <span class="keyword">if</span> isfield(atom,<span class="string">'mass'</span>)
-    <span class="keyword">for</span> i =1:length(Atom_label)
-        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), <span class="string">'#'</span>, Atom_label{i}};
+    <span class="keyword">for</span> i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), <span class="string">'#'</span>, Atom_labels{i}};
         fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
     <span class="keyword">end</span>
 <span class="keyword">else</span> exist(<span class="string">'Masses'</span>,<span class="string">'var'</span>);
-    <span class="keyword">for</span> i =1:length(Atom_label)
-        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_label{i}};
+    <span class="keyword">for</span> i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_labels{i}};
         fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -229,85 +271,62 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 </pre><pre class="codeinput">fprintf(fid, <span class="string">'Pair Coeffs \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 
-<span class="keyword">for</span> i =1:length(Atom_label)
-    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), <span class="string">'#'</span>, Atom_label{i}};
+<span class="keyword">for</span> i =1:natom_labels
+    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), <span class="string">'#'</span>, Atom_labels{i}};
     fprintf(fid, <span class="string">'%i %E %f %s %s\r\n'</span>, paircoeffs{i,:});
 <span class="keyword">end</span>
 fprintf(fid, <span class="string">'\r\n'</span>);
 <span class="comment">%</span>
 fprintf(fid, <span class="string">'Atoms \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
-<span class="comment">% Construct and print the atoms properties section</span>
-<span class="comment">% lmp_atom_style_full_func(fid,Atom_labels,Charge,[atom.type]',[[atom.x]' [atom.y]' [atom.z]']);</span>
 
-<span class="comment">% atom = bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist);</span>
-<span class="comment">% atom = charge_clayff_atom(atom,Box_dim); %{'Al' 'Mgo' 'Si' 'H'},(1.575 1.36 2.1 0.425));</span>
-<span class="comment">% atom = charge_atom(atom,Box_dim,'clayff',watermodel);</span>
-
-<span class="keyword">for</span> i = 1:size(atom,2)
-    <span class="comment">%     Atoms_data(i,:) = {i, molID(i), Atom_label_ID(i), Charge(Atom_label_ID(i,1)), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};</span>
-    <span class="keyword">if</span> sum(ismember(Atom_label,[atom(i).type])) &gt; 0
-        Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);
+<span class="keyword">for</span> i = 1:nAtoms
+    <span class="keyword">if</span> sum(ismember(Atom_labels,[atom(i).type])) &gt; 0
+        Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     <span class="keyword">end</span>
     Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
     fprintf(fid, <span class="string">'\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\r\n'</span>, Atoms_data{i,:});
 <span class="keyword">end</span>
-
-<span class="comment">% Atom_prop = {atomID(1:end-1), molID(1:end-1), Atom_label_ID(:,1), Charge(1,:), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};</span>
-<span class="comment">% Atom_label_ID=ones(size(atom,2),1);</span>
-<span class="comment">% for i = 1:nAtoms;</span>
-<span class="comment">%     if sum(ismember(Atom_label,[atom(i).type])) &gt; 0;</span>
-<span class="comment">%         Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);</span>
-<span class="comment">%     end</span>
-<span class="comment">%     Atoms_data(i,:) = {i, char([atom(i).type]),1,molecule_name(1:3),char([atom(i).type]),i, [atom(i).charge], Masses(Atom_label_ID(i,1))};</span>
-<span class="comment">%     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.5f\t%8.6f\r\n', Atoms_data{i,:});</span>
-<span class="comment">% end</span>
 </pre><pre class="codeinput">fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 
+<span class="keyword">if</span> nBonds&gt;0
 <span class="comment">% Prints bond data</span>
 fprintf(fid, <span class="string">'Bonds \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
-
 count_b = 1;
 <span class="keyword">while</span> count_b &lt;= nBonds
-    <span class="comment">%     if Bond_index(count_b,1) &lt;= solute_atoms*layers;</span>
-    <span class="comment">%         bondtype=1;</span>
-    <span class="comment">%     else</span>
-    <span class="comment">%         bondtype=2;</span>
-    <span class="comment">%     end</span>
-    <span class="keyword">for</span> i=1:length(bond_atoms)
-        <span class="keyword">if</span> strcmpi([atom(Bond_index(count_b,1)).type],bond_atoms(i))
-            bondtype=i+prev_bond_types;
-        <span class="keyword">else</span>
-            bondtype=1+prev_bond_types;
-        <span class="keyword">end</span>
-    <span class="keyword">end</span>
-    Bond_order(count_b,:)= {count_b+prev_bond_num, bondtype+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
+    Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
     fprintf(fid, <span class="string">'\t%-i %-i %-i %-i\r\n'</span>, Bond_order{count_b,:});
     count_b = count_b + 1;
 <span class="keyword">end</span>
-
 fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
+<span class="keyword">end</span>
 
+<span class="keyword">if</span> nAngles&gt;0
 <span class="comment">% Prints angle data</span>
 fprintf(fid, <span class="string">'Angles \r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
-<span class="keyword">if</span> length(angle_atoms)&gt;0
     count_a = 1;
     <span class="keyword">while</span> count_a &lt;= nAngles
-        <span class="comment">%     angletype = 1;</span>
-        <span class="keyword">for</span> i=1:length(angle_atoms)
-            <span class="keyword">if</span> strcmpi([atom(Angle_index(count_a,1)).type],angle_atoms(i))
-                angletype=i;
-            <span class="keyword">else</span>
-                angletype=1;
-            <span class="keyword">end</span>
-        <span class="keyword">end</span>
-        Angle_order(count_a,:)= {count_a+prev_angle_num, angletype+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
+        Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
         fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i\r\n'</span>, Angle_order{count_a,:});
         count_a = count_a + 1;
+    <span class="keyword">end</span>
+    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'\r\n'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nDihedrals&gt;0
+<span class="comment">% Prints dihedral data</span>
+fprintf(fid, <span class="string">'Dihedrals \r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+    count_d = 1;
+    <span class="keyword">while</span> count_d &lt;= nDihedrals
+        Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};
+        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i %-i\r\n'</span>, Dihedral_order{count_d,:});
+        count_d = count_d + 1;
     <span class="keyword">end</span>
     fprintf(fid, <span class="string">'\r\n'</span>);
     fprintf(fid, <span class="string">'\r\n'</span>);
@@ -318,10 +337,12 @@ fclose(fid);
 ##### SOURCE BEGIN #####
 %% write_atom_lmp.m
 % * This script creates and prints a lammps data file (.lj). Works best for
-% Clayff systems
+% Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. 
+% Nevertheless, this new version should be able to handle bonds|angles|dihedrals
+%
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -330,16 +351,25 @@ fclose(fid);
 % # write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')
 %
 function write_atom_lmp(atom,Box_dim,filename,varargin)
-format long;
+format compact;
+
+% Change these values in case you want to merge a lammps topology file with
+% another one already haveing bonds, angles, dihedrals...
 prev_atom_index=0;
 prev_atom_types=0;
 prev_bond_num=0;
 prev_bond_types=0;
 prev_angle_num=0;
 prev_angle_types=0;
+prev_dihedral_num=0;
+prev_dihedral_types=0;
 prev_mol_index=0;
 
-nAtoms=size(atom,2);
+precision = 7; % num2str(X,precision)
+ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'});
+ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'});
+Atom_labels=sort(unique([atom.type]));
+natom_labels=size(Atom_labels,2);
 
 if regexp(filename,'.lj') ~= false
     filename = filename;
@@ -387,27 +417,61 @@ else
 end
 
 % Scan the xyz data and look for O-H bonds and angles
-atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+atom=bond_angle_dihedral_atom(atom,Box_dim,short_r,long_r);
 assignin('caller','atom',atom);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
+assignin('caller','Dihedral_index',Dihedral_index);
+nAtoms=size(atom,2)
+nBonds
+nAngles
+nDihedrals
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Title=filename;
-file_title = strcat('LAMMPS input data file #',datestr(now)); % Header in output file
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Some settings needed in order to print a proper lammps in file %%
+if nBonds>0
+% Calculate the bond_types
+bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+b1=join([bond_pairs(:,1) bond_pairs(:,2)]);b1=unique(b1,'stable');
+b2=join([bond_pairs(:,2) bond_pairs(:,1)]);b2=unique(b2,'stable');
+nbond_types=size(b1,1);
+bond_pairs=join(bond_pairs);
+for i=1:size(bond_pairs,1)
+    [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
+end
+bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
+else
+    nbond_types=0;
+end
 
-bond_atoms_index=unique([Bond_index(:,1);Bond_index(:,2)]);
-angle_atoms_index=unique([Angle_index(:,1);Angle_index(:,2); Angle_index(:,3)]);
-bond_atoms=unique([atom(bond_atoms_index).type]);
-angle_atoms=unique([atom(angle_atoms_index).type]);
-% Old code
-% bond_atoms={};angle_atoms={};
-% if sum(strcmpi([atom.type],'Oh')); bond_atoms={'Oh'}; end
-% if sum(strcmpi([atom.type],'Ohmg')); bond_atoms={bond_atoms{:} 'Ohmg'}; end
-% if sum(strcmpi([atom.type],'OW')); bond_atoms={bond_atoms{:} 'OW'}; end
-% if sum(strcmpi([atom.type],'OW')); angle_atoms={'OW'};end
+if nAngles>0
+% Calculate the angle_types
+angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,'stable');
+a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,'stable');
+nangle_types=size(a1,1);
+angle_triplets=join(angle_triplets);
+for i=1:size(angle_triplets,1)
+    [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
+end
+angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
+else
+    nangle_types=0;
+end
+
+if nDihedrals>0
+% Calculate the dihedral_types
+dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
+d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,'stable');
+d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,'stable');
+ndihedral_types=size(d1,1);
+dihedral_quads=join(dihedral_quads);
+for i=1:size(dihedral_quads,1)
+    [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
+end
+dihedral_types(dihedral_types>ndihedral_types)=dihedral_types(dihedral_types>ndihedral_types)-ndihedral_types;
+else
+    ndihedral_types=0;
+end
+
 % End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if ~exist('Box_dim','var');disp('We need to set Box_dim?');
@@ -415,18 +479,11 @@ if ~exist('Box_dim','var');disp('We need to set Box_dim?');
     pause
 end
 
-Natoms = size(atom,2);
-precision = 7; % num2str(X,precision)
-ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'})
-ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'})
-Atom_label=sort(unique([atom.type]));
-Natom_types = length(Atom_label);
-
 if strncmpi(ffname,'clayff',5)
     if exist('ffname','var')
         atom = charge_atom(atom,Box_dim,ffname,watermodel);
     else
-        clayff_param(Atom_label,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
+        clayff_param(Atom_labels,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
     end
 else
     disp('Only clayff implemented sofar')
@@ -440,20 +497,27 @@ else
     xy=0;xz=0;yz=0;
 end
 
+
+% Some settings needed in order to print a proper lammps in file %%
+
 % Start printing the lammps .lj file
 fid = fopen(filename, 'wt');
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+file_title = strcat('LAMMPS input data file #',datestr(now)); % Header in output file
 fprintf(fid, '%s\r\n', file_title);
 fprintf(fid, '\r\n');
 
 %%
 AtomBondAnglestring = {num2str(size(atom,2)), 'atoms';...
-    num2str(size(Bond_index,1)), 'bonds';... %num2str(Nbonds), 'bonds';...
-    num2str(size(Angle_index,1)), 'angles';...%num2str(Nangles), 'angles';...
+    num2str(nBonds), 'bonds';... 
+    num2str(nAngles), 'angles';...
+    num2str(nDihedrals), 'dihedrals';...
     ' ',' ';...
-    num2str(length(Atom_label)), 'atom types';...
-    num2str(length(bond_atoms)), 'bond types';...
-    num2str(length(angle_atoms)), 'angle types'};
+    num2str(natom_labels), 'atom types';...
+    num2str(nbond_types), 'bond types';...
+    num2str(nangle_types), 'angle types';...
+    num2str(ndihedral_types), 'dihedral types'};
 
 Boxsizestring = {  num2str(0,precision), num2str(lx,precision), 'xlo', 'xhi';...
     num2str(0,precision), num2str(ly,precision), 'ylo', 'yhi';...
@@ -472,18 +536,18 @@ for i = 1:size(Boxsizestring,1) % Im not sure what this code is doing
     fprintf(fid, '%-s %-s %-s %-s\r\n', Boxsizestring{i,:});
 end
 %%
-fprintf(fid, '\r\n');
+% fprintf(fid, '\r\n');
 fprintf(fid, 'Masses \r\n');
 fprintf(fid, '\r\n');
 
 if isfield(atom,'mass')
-    for i =1:length(Atom_label)
-        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_label{i}};
+    for i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};
         fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
     end
 else exist('Masses','var');
-    for i =1:length(Atom_label)
-        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
+    for i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_labels{i}};
         fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
     end
 end
@@ -497,87 +561,64 @@ fprintf(fid, '\r\n');
 fprintf(fid, 'Pair Coeffs \r\n');
 fprintf(fid, '\r\n');
 
-for i =1:length(Atom_label)
-    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_label{i}};
+for i =1:natom_labels
+    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_labels{i}};
     fprintf(fid, '%i %E %f %s %s\r\n', paircoeffs{i,:});
 end
 fprintf(fid, '\r\n');
 %
 fprintf(fid, 'Atoms \r\n');
 fprintf(fid, '\r\n');
-% Construct and print the atoms properties section
-% lmp_atom_style_full_func(fid,Atom_labels,Charge,[atom.type]',[[atom.x]' [atom.y]' [atom.z]']);
 
-% atom = bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist);
-% atom = charge_clayff_atom(atom,Box_dim); %{'Al' 'Mgo' 'Si' 'H'},(1.575 1.36 2.1 0.425));
-% atom = charge_atom(atom,Box_dim,'clayff',watermodel);
-
-for i = 1:size(atom,2)
-    %     Atoms_data(i,:) = {i, molID(i), Atom_label_ID(i), Charge(Atom_label_ID(i,1)), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};
-    if sum(ismember(Atom_label,[atom(i).type])) > 0
-        Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);
+for i = 1:nAtoms
+    if sum(ismember(Atom_labels,[atom(i).type])) > 0
+        Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     end
     Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
     fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\r\n', Atoms_data{i,:});
 end
 
-% Atom_prop = {atomID(1:end-1), molID(1:end-1), Atom_label_ID(:,1), Charge(1,:), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};
-% Atom_label_ID=ones(size(atom,2),1);
-% for i = 1:nAtoms;
-%     if sum(ismember(Atom_label,[atom(i).type])) > 0;
-%         Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);
-%     end
-%     Atoms_data(i,:) = {i, char([atom(i).type]),1,molecule_name(1:3),char([atom(i).type]),i, [atom(i).charge], Masses(Atom_label_ID(i,1))};
-%     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.5f\t%8.6f\r\n', Atoms_data{i,:});
-% end
-
 %%
 fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 
+if nBonds>0
 % Prints bond data
 fprintf(fid, 'Bonds \r\n');
 fprintf(fid, '\r\n');
-
 count_b = 1;
 while count_b <= nBonds
-    %     if Bond_index(count_b,1) <= solute_atoms*layers;
-    %         bondtype=1;
-    %     else
-    %         bondtype=2;
-    %     end
-    for i=1:length(bond_atoms)
-        if strcmpi([atom(Bond_index(count_b,1)).type],bond_atoms(i))
-            bondtype=i+prev_bond_types;
-        else
-            bondtype=1+prev_bond_types;
-        end
-    end
-    Bond_order(count_b,:)= {count_b+prev_bond_num, bondtype+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
+    Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
     fprintf(fid, '\t%-i %-i %-i %-i\r\n', Bond_order{count_b,:});
     count_b = count_b + 1;
 end
-
 fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
+end
 
+if nAngles>0
 % Prints angle data
 fprintf(fid, 'Angles \r\n');
 fprintf(fid, '\r\n');
-if length(angle_atoms)>0
     count_a = 1;
     while count_a <= nAngles
-        %     angletype = 1;
-        for i=1:length(angle_atoms)
-            if strcmpi([atom(Angle_index(count_a,1)).type],angle_atoms(i))
-                angletype=i;
-            else
-                angletype=1;
-            end
-        end
-        Angle_order(count_a,:)= {count_a+prev_angle_num, angletype+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
+        Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
         fprintf(fid, '\t%-i %-i %-i %-i %-i\r\n', Angle_order{count_a,:});
         count_a = count_a + 1;
+    end
+    fprintf(fid, '\r\n');
+    fprintf(fid, '\r\n');
+end
+
+if nDihedrals>0
+% Prints dihedral data
+fprintf(fid, 'Dihedrals \r\n');
+fprintf(fid, '\r\n');
+    count_d = 1;
+    while count_d <= nDihedrals
+        Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};
+        fprintf(fid, '\t%-i %-i %-i %-i %-i %-i\r\n', Dihedral_order{count_d,:});
+        count_d = count_d + 1;
     end
     fprintf(fid, '\r\n');
     fprintf(fid, '\r\n');

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_mol2.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="write_atom_mol2.m"><style type="text/css">
+      --><title>write_atom_mol2.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_mol2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_mol2.m</h1><!--introduction--><div><ul><li>This function writes a basic file in the mol2 format from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_mol2(atom,Box_dim,filename_out,varargin)
+  </style></head><body><div class="content"><h1>write_atom_mol2.m</h1><!--introduction--><div><ul><li>This function writes a basic file in the mol2 format from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_mol2(atom,Box_dim,filename_out,varargin)
 
 filename_out=strcat(filename_out,<span class="string">'.mol2'</span>);
 
@@ -171,7 +171,7 @@ disp(<span class="string">'.mol2 structure file written'</span>)
 % * This function writes a basic file in the mol2 format from the atom struct
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

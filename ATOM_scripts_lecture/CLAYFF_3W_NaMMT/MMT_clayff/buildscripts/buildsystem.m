@@ -35,8 +35,8 @@ Ion2 = create_atom(Cation,Cation,[0 0 Full_Box_dim(3)/2 Full_Box_dim(1) Full_Box
 %% Solvate the system
 System = wrap_atom(System,Full_Box_dim); % Wrap all solute atoms into the box before adding water
 %% atom = solvate_atom([1x3 or 1x6 Box vector],waterdensity,rmin,number of water or just 'max',solute_atom);
-SOL1 = solvate_atom([0 0 0 Full_Box_dim(1) Full_Box_dim(2) d001],1.1,2,nSOL,System); System = update_atom({System SOL1});
-SOL2 = solvate_atom([0 0 d001 Full_Box_dim(1) Full_Box_dim(2) Full_Box_dim(3)],1.1,2,nSOL,System); System = update_atom({System SOL2});
+SOL1 = solvate_atom([0 0 0 Full_Box_dim(1) Full_Box_dim(2) d001],1.0,1.9,nSOL,System); System = update_atom({System SOL1});
+SOL2 = solvate_atom([0 0 d001 Full_Box_dim(1) Full_Box_dim(2) Full_Box_dim(3)],1.0,1.9,nSOL,System); System = update_atom({System SOL2});
 % vmd(System,Full_Box_dim);
 
 %% Put all atom structs together
@@ -47,6 +47,8 @@ System = charge_atom(System,Box_dim,'clayff','spc/e');
 
 %% Write the system to a .gro structure file
 write_atom_gro(System,Full_Box_dim,filename_out);
+
+write_atom_lmp(System,Full_Box_dim,filename,1.25,1.25,'clayff','spce')
 
 %% Plot the final structure with plot_atom() or show_atom() or vmd()
 plot_atom(System,Full_Box_dim,.1)

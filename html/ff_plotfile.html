@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>The ATOM script library</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-01-15"><meta name="DC.source" content="index.m"><style type="text/css">
+      --><title>ff_plotfile</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="ff_plotfile.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,26 +66,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>The ATOM script library</h1><!--introduction--><p>Below is links to all functions, sorted alphabetially or after topic/purpose</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Examples</a></li><li><a href="#2">Available functions</a></li><li><a href="#3">Available pre-equilibrated solvents</a></li></ul></div><h2 id="1">Examples</h2><div><ul><li><a href="Basic_examples.html">Basic_examples</a> % Some more todo...</li><li><a href="Advanced_examples.html">Advanced_examples</a> % More todo...</li></ul></div><h2 id="2">Available functions</h2><div><ul><li><a href="List_import_functions.html">Import related functions</a></li><li><a href="List_export_functions.html">Export related functions</a></li><li><a href="List_general_functions.html">General functions</a></li><li><a href="List_build_functions.html">Functions for building molecular boxes</a></li><li><a href="List_forcefield_functions.html">Topology and forcefield specific functions</a></li><li><a href="List_all_functions.html">All functions sorted alphabetically</a></li></ul></div><h2 id="3">Available pre-equilibrated solvents</h2><div><ul><li><a href="List_of_structures.html">List of available solvent structures and more</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+  </style></head><body><div class="content"><pre class="codeinput">close <span class="string">all</span>;
+
+atomtypes1={<span class="string">'Li'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Ca'</span>};
+ffstrings={<span class="string">'spc'</span> <span class="string">'spce'</span> <span class="string">'tip3p'</span> <span class="string">'opc3'</span>};
+
+
+<span class="keyword">for</span> i=1:numel(atomtypes1)
+<span class="comment">%     figure</span>
+    hold <span class="string">on</span>;
+    <span class="keyword">for</span> j=1:numel(ffstrings)
+    atomtype1=atomtypes1{i};
+    atomtype2=<span class="string">'OW'</span>;
+
+    ffstring=ffstrings{j};
+    atomtype2=strcat(atomtype2,<span class="string">'_'</span>,ffstring);
+    ff1=load(strcat(<span class="string">'ions_'</span>,ffstring,<span class="string">'.mat'</span>));
+    ff2=load(strcat(<span class="string">'water_models.mat'</span>));
+
+    [r,lj,coul,Utot] = ljcoul_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% The ATOM script library
-% Below is links to all functions, sorted alphabetially or after
-% topic/purpose
+close all;
 
-%% Examples
-% * <Basic_examples.html Basic_examples> % Some more todo...
-% * <Advanced_examples.html Advanced_examples> % More todo...
+atomtypes1={'Li' 'Na' 'K' 'Cs' 'Ca'};
+ffstrings={'spc' 'spce' 'tip3p' 'opc3'};
 
-%% Available functions
-% * <List_import_functions.html Import related functions> 
-% * <List_export_functions.html Export related functions> 
-% * <List_general_functions.html General functions>
-% * <List_build_functions.html Functions for building molecular boxes> 
-% * <List_forcefield_functions.html Topology and forcefield specific functions> 
-% * <List_all_functions.html All functions sorted alphabetically>
 
-%% Available pre-equilibrated solvents
-% * <List_of_structures.html List of available solvent structures and more>
-
+for i=1:numel(atomtypes1)
+%     figure
+    hold on;
+    for j=1:numel(ffstrings)
+    atomtype1=atomtypes1{i};
+    atomtype2='OW';
+    
+    ffstring=ffstrings{j};
+    atomtype2=strcat(atomtype2,'_',ffstring);
+    ff1=load(strcat('ions_',ffstring,'.mat'));
+    ff2=load(strcat('water_models.mat'));
+    
+    [r,lj,coul,Utot] = ljcoul_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+    end
+end
 ##### SOURCE END #####
 --></body></html>

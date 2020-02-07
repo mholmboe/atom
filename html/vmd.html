@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>vmd.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="vmd.m"><style type="text/css">
+      --><title>vmd.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="vmd.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>vmd.m</h1><!--introduction--><div><ul><li>This function plots the atom struct in VMD. If passing a filename as a function argument you can likley use any type of fileformat VMD can handle.</li><li>Make sure to edit your own PATH2VMD function!!!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>vmd(atom)</li><li>vmd(atom,Box_dim)</li><li>vmd('filename.gro')</li><li>vmd('filename.pdb')</li><li>vmd('filename.pdb','filename.xtc')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> vmd(varargin)
+  </style></head><body><div class="content"><h1>vmd.m</h1><!--introduction--><div><ul><li>This function plots the atom struct in VMD. If passing a filename as a function argument you can likley use any type of fileformat VMD can handle.</li><li>Make sure to edit your own PATH2VMD function!!!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>vmd(atom)</li><li>vmd(atom,Box_dim)</li><li>vmd('filename.gro')</li><li>vmd('filename.pdb')</li><li>vmd('filename.pdb','filename.xtc')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> vmd(varargin)
 
 <span class="comment">% You need to set your own VMD path here!!!</span>
 PATH2VMD = <span class="string">'/Applications/VMD\ 1.9.2.app/Contents/MacOS/startup.command'</span>;
@@ -106,7 +106,7 @@ PATH2VMD = <span class="string">'/Applications/VMD\ 1.9.2.app/Contents/MacOS/sta
 % * Make sure to edit your own PATH2VMD function!!!
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_gmx_index.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-22"><meta name="DC.source" content="import_index_gmx_notfinished.m"><style type="text/css">
+      --><title>cn_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="cn_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,18 +66,86 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_gmx_index.m</h1><div><ul><li>This function import an gromacs index file and sends the groups indexes to the calling workspace</li><li>Apparently not finished!!!</li></ul></div><pre class="codeinput"><span class="keyword">function</span> import_gmx_index(filename)
+  </style></head><body><div class="content"><h1>cn_atom.m</h1><!--introduction--><div><ul><li>This function tries to extract the coordination number of all the atom struct indexes and store it in the field atom.cn. The function calls either the bond_atom() or the cell_list_dist_matrix_atom() function directly to do this.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=cn_atom(atom,Box_dim)</li><li>atom=cn_atom(atom,Box_dim,2.1) % Last argument is the max bond distance</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = cn_atom(atom,Box_dim,varargin)
 
-disp(<span class="string">'Apparently not finished!!!'</span>)
+<span class="keyword">if</span> nargin&gt;2
+    rmaxlong=varargin{1}; <span class="comment">% Dummy value</span>
+<span class="keyword">else</span>
+    rmaxlong=2.25;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(atom,2)&lt;15000
+     atom=bond_atom(atom,Box_dim,rmaxlong);
+<span class="keyword">else</span>
+     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,<span class="string">'more'</span>);
+<span class="keyword">end</span>
+
+CN=num2cell(CoordNumber);
+[atom.cn]=CN{:};
+
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+assignin(<span class="string">'caller'</span>,<span class="string">'CoordNumber'</span>,CoordNumber);
+assignin(<span class="string">'caller'</span>,<span class="string">'Remove_ind'</span>,Remove_ind);
+
+<span class="keyword">if</span> nargin&gt;3
+    minCN=min([atom.cn]);
+    maxCN=max([atom.cn]);
+    <span class="keyword">for</span> i=minCN+1:maxCN+1
+        assignin(<span class="string">'caller'</span>,strcat(<span class="string">'ind_CN'</span>,num2str(i-1)),find([atom.cn]==i-1));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% import_gmx_index.m
-% * This function import an gromacs index file and sends the groups indexes to the calling workspace
-% * Apparently not finished!!!
+%% cn_atom.m
+% * This function tries to extract the coordination number of all the atom
+% struct indexes and store it in the field atom.cn. The function calls
+% either the bond_atom() or the cell_list_dist_matrix_atom() function
+% directly to do this.
+%
+%
+%% Version
+% 2.07
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=cn_atom(atom,Box_dim)
+% # atom=cn_atom(atom,Box_dim,2.1) % Last argument is the max bond distance
 
-function import_gmx_index(filename)
+function atom = cn_atom(atom,Box_dim,varargin)
 
-disp('Apparently not finished!!!')
+if nargin>2
+    rmaxlong=varargin{1}; % Dummy value
+else
+    rmaxlong=2.25;
+end
+
+if size(atom,2)<15000
+     atom=bond_atom(atom,Box_dim,rmaxlong);
+else
+     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
+end
+
+CN=num2cell(CoordNumber);
+[atom.cn]=CN{:};
+
+
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','CoordNumber',CoordNumber);
+assignin('caller','Remove_ind',Remove_ind);
+
+if nargin>3
+    minCN=min([atom.cn]);
+    maxCN=max([atom.cn]);
+    for i=minCN+1:maxCN+1
+        assignin('caller',strcat('ind_CN',num2str(i-1)),find([atom.cn]==i-1));
+    end
+end
+
+
+
 
 ##### SOURCE END #####
 --></body></html>

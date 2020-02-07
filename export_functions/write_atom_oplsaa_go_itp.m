@@ -1,6 +1,7 @@
 %% write_atom_oplsaa_go_itp
 % * This custom made script creates and prints a gromacs .itp file for 
-% * graphene oxide using some specific OPLS/aa atom types
+% * graphene oxide using some OPLS/aa atom types
+
 
 function write_atom_oplsaa_go_itp(atom,Box_dim,filename,varargin)
 

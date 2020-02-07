@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>substitute_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="substitute_atom.m"><style type="text/css">
+      --><title>substitute_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="substitute_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>substitute_atom.m</h1><!--introduction--><div><ul><li>This scripts performs isomorphous substitution, by replacing for instance</li><li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li><li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li><li>atom is the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
+  </style></head><body><div class="content"><h1>substitute_atom.m</h1><!--introduction--><div><ul><li>This scripts performs isomorphous substitution, by replacing for instance</li><li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li><li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li><li>atom is the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">% If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges</span>
 <span class="comment">% clear all;</span>
@@ -177,7 +177,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
             nOctlo
             nOcthi
             nOctmid
-            pause(3)
+            <span class="comment">% pause(3)</span>
             <span class="keyword">break</span>
         <span class="keyword">end</span>
         i=i+1;
@@ -235,7 +235,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
         <span class="keyword">end</span>
         <span class="keyword">if</span> i == length(T1_data)
             disp(<span class="string">'Stopped the loop'</span>)
-            pause(3)
+            <span class="comment">% pause(3)</span>
             <span class="keyword">break</span>
         <span class="keyword">end</span>
         i=i+1;
@@ -248,7 +248,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
         disp(<span class="string">'Second substitution success!!!'</span>)
     <span class="keyword">else</span>
         disp(<span class="string">'Second substitution not optimal!!!'</span>)
-        pause(3)
+        <span class="comment">% pause(3)</span>
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
@@ -283,6 +283,9 @@ O2_atom=[]; <span class="comment">% New addition...</span>
             nOctlo
             nOcthi
             nOctmid
+            assignin(<span class="string">'caller'</span>,<span class="string">'nOctlo'</span>,nOctlo)
+            assignin(<span class="string">'caller'</span>,<span class="string">'nOcthi'</span>,nOcthi)
+            assignin(<span class="string">'caller'</span>,<span class="string">'nOctmid'</span>,nOctmid)
         <span class="keyword">catch</span>
             disp(<span class="string">'No first subst...'</span>)
         <span class="keyword">end</span>
@@ -298,6 +301,8 @@ O2_atom=[]; <span class="comment">% New addition...</span>
         <span class="keyword">try</span>
             nTetlo
             nTethi
+            assignin(<span class="string">'caller'</span>,<span class="string">'nTetlo'</span>,nTetlo)
+            assignin(<span class="string">'caller'</span>,<span class="string">'nTethi'</span>,nTethi)
         <span class="keyword">catch</span>
             disp(<span class="string">'No second subst...'</span>)
         <span class="keyword">end</span>
@@ -313,7 +318,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
 % * atom is the atom struct
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -434,7 +439,7 @@ if NumOctSubst>0
             nOctlo
             nOcthi
             nOctmid
-            pause(3)
+            % pause(3)
             break
         end
         i=i+1;
@@ -492,7 +497,7 @@ if NumTetSubst>0
         end
         if i == length(T1_data)
             disp('Stopped the loop')
-            pause(3)
+            % pause(3)
             break
         end
         i=i+1;
@@ -505,7 +510,7 @@ if NumTetSubst>0
         disp('Second substitution success!!!')
     else
         disp('Second substitution not optimal!!!')
-        pause(3)
+        % pause(3)
     end
     
 end
@@ -540,6 +545,9 @@ if NumOctSubst>0
             nOctlo
             nOcthi
             nOctmid
+            assignin('caller','nOctlo',nOctlo)
+            assignin('caller','nOcthi',nOcthi)
+            assignin('caller','nOctmid',nOctmid)
         catch
             disp('No first subst...')
         end
@@ -555,12 +563,16 @@ if NumTetSubst>0
         try
             nTetlo
             nTethi
+            assignin('caller','nTetlo',nTetlo)
+            assignin('caller','nTethi',nTethi)
         catch
             disp('No second subst...')
         end
         
     end
 end
+
+
 
 ##### SOURCE END #####
 --></body></html>

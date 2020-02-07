@@ -1,0 +1,295 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>write_atom_sdf.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_sdf.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>write_atom_sdf.m</h1><!--introduction--><div><ul><li>This function writes an sdf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#4">9  8  0     0  0  0  0  0  0999 V2000</a></li><li><a href="#5">123456789012345678901234567890123456789</a></li><li><a href="#6">The Counts line</a></li><li><a href="#7">The Atoms block</a></li><li><a href="#8">After the counts line comes the atoms block. For each atom mentioned in</a></li><li><a href="#9">the first field of counts, include a line like so:</a></li><li><a href="#10">0.5369    0.9749    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0</a></li><li><a href="#11">The first three fields, 10 characters long each, describe the atom's</a></li><li><a href="#12">position in the X, Y, and Z dimensions. After that there is a space, and</a></li><li><a href="#13">three characters for an atomic symbol (O for oxygen, in this instance).</a></li><li><a href="#14">The Bonds block</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_sdf(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_sdf(atom,Box_dim,filename_out,varargin)
+
+<span class="keyword">if</span> regexp(filename_out,<span class="string">'.sdf'</span>) ~= false
+    filename_out = filename_out;
+<span class="keyword">else</span>
+    filename_out = strcat(filename_out,<span class="string">'.sdf'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+<span class="keyword">end</span>
+
+<span class="comment">% for i=1:size(atom,2)</span>
+<span class="comment">%     if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};atom(i).formalcharge=4;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};atom(i).formalcharge=4;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};atom(i).formalcharge=3;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};atom(i).formalcharge=3;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;</span>
+<span class="comment">%     elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};atom(i).formalcharge=1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};atom(i).formalcharge=1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Cs'},2);atom(i).element={'Cs'};atom(i).formalcharge=1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Co'},2);atom(i).element={'Co'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Cr'},2);atom(i).element={'Cr'};atom(i).formalcharge=3;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Cu'},2);atom(i).element={'Cu'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};atom(i).formalcharge=-1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};atom(i).formalcharge=-1;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Sr'},2);atom(i).element={'Sr'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'Ba'},2);atom(i).element={'Ba'};atom(i).formalcharge=2;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'C'},1);atom(i).element={'C'};atom(i).formalcharge=0;</span>
+<span class="comment">%     elseif strncmpi(atom(i).type,{'P'},1);atom(i).element={'P'};atom(i).formalcharge=0;</span>
+<span class="comment">%     else</span>
+<span class="comment">%         [atom(i).element]=atom(i).type;atom(i).formalcharge=0;</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+
+
+<span class="keyword">if</span> nargin&gt;3
+    long_r=cell2mat(varargin(1));
+<span class="keyword">else</span>
+    long_r=2.25;
+<span class="keyword">end</span>
+atom=bond_atom(atom,Box_dim,long_r,0.6);
+nAtoms=size(atom,2);
+nBonds=size(Bond_index,1);
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+<span class="comment">% assignin('caller','atom_Bond_index',atom);</span>
+
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, <span class="string">'wt'</span>);
+
+fprintf(fid, <span class="string">'%s\r\n'</span>,filename_out);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'The atom MATLAB library, version 2.07'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'Simple .sdf coordinate file with bonds'</span>);
+</pre><h2 id="4">9  8  0     0  0  0  0  0  0999 V2000</h2><h2 id="5">123456789012345678901234567890123456789</h2><h2 id="6">The Counts line</h2><pre class="codeinput">Counts={nAtoms, nBonds, 0, 0, 0, 0, 0, 0, 0, 999, <span class="string">'V2000'</span>};
+fprintf(fid, <span class="string">'%3i%3i%3i   %3i%3i%3i%3i%3i%3i%3i%6s\r\n'</span>,Counts{1:11});
+</pre><h2 id="7">The Atoms block</h2><h2 id="8">After the counts line comes the atoms block. For each atom mentioned in</h2><h2 id="9">the first field of counts, include a line like so:</h2><h2 id="10">0.5369    0.9749    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0</h2><h2 id="11">The first three fields, 10 characters long each, describe the atom's</h2><h2 id="12">position in the X, Y, and Z dimensions. After that there is a space, and</h2><h2 id="13">three characters for an atomic symbol (O for oxygen, in this instance).</h2><pre class="codeinput"><span class="keyword">for</span> i = 1:nAtoms
+    <span class="keyword">if</span> size(atom(i).type{1},2) &gt; 3
+        disp(<span class="string">'Hey, this atom type name is actually too long for sdf'</span>)
+        disp(<span class="string">'chopping it down to 3 characters'</span>)
+        [atom(i).index atom(i).type]
+        atom(i).type=atom(i).type{1}(1:3);
+    <span class="keyword">end</span>
+    Atomsblock(1:16)={atom(i).x, atom(i).y, atom(i).z, char(atom(i).type), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    fprintf(fid, <span class="string">'%10.4f%10.4f%10.4f %-3s%2i%3i%3i%3i%3i%3i%3i%3i%3i%3i%3i%3i\r\n'</span>,Atomsblock{1:16});
+<span class="keyword">end</span>
+</pre><h2 id="14">The Bonds block</h2><pre class="codeinput"><span class="keyword">for</span> i = 1:nBonds
+    Bondsblock(1:7)={Bond_index(i,1), Bond_index(i,2), 1, 0, 0, 0, 0};
+    fprintf(fid, <span class="string">'%i  %i  %i  %i  %3i%3i%3i\r\n'</span>,Bondsblock{1:7});
+<span class="keyword">end</span>
+
+fprintf(fid,<span class="string">'M  END'</span>);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid,<span class="string">'$$$$'</span>);
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fclose(fid);
+
+disp(<span class="string">'.sdf structure file written'</span>)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% write_atom_sdf.m
+% * This function writes an sdf file from the atom struct
+%
+%% Version
+% 2.07
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # write_atom_sdf(atom,Box_dim,filename_out)
+%
+function write_atom_sdf(atom,Box_dim,filename_out,varargin)
+
+if regexp(filename_out,'.sdf') ~= false
+    filename_out = filename_out;
+else
+    filename_out = strcat(filename_out,'.sdf');
+end
+
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+end
+
+% for i=1:size(atom,2)
+%     if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+%     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+%     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+%     elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+%     elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+%     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
+%     elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
+%     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
+%     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
+%     elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;
+%     elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};atom(i).formalcharge=1;
+%     elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};atom(i).formalcharge=1;
+%     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
+%     elseif strncmpi(atom(i).type,{'Cs'},2);atom(i).element={'Cs'};atom(i).formalcharge=1;
+%     elseif strncmpi(atom(i).type,{'Co'},2);atom(i).element={'Co'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'Cr'},2);atom(i).element={'Cr'};atom(i).formalcharge=3;
+%     elseif strncmpi(atom(i).type,{'Cu'},2);atom(i).element={'Cu'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};atom(i).formalcharge=-1;
+%     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;
+%     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;
+%     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};atom(i).formalcharge=-1;
+%     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'Sr'},2);atom(i).element={'Sr'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'Ba'},2);atom(i).element={'Ba'};atom(i).formalcharge=2;
+%     elseif strncmpi(atom(i).type,{'C'},1);atom(i).element={'C'};atom(i).formalcharge=0;
+%     elseif strncmpi(atom(i).type,{'P'},1);atom(i).element={'P'};atom(i).formalcharge=0;
+%     else
+%         [atom(i).element]=atom(i).type;atom(i).formalcharge=0;
+%     end
+% end
+
+
+if nargin>3
+    long_r=cell2mat(varargin(1));
+else
+    long_r=2.25;
+end
+atom=bond_atom(atom,Box_dim,long_r,0.6);
+nAtoms=size(atom,2);
+nBonds=size(Bond_index,1);
+assignin('caller','Bond_index',Bond_index);
+% assignin('caller','atom_Bond_index',atom);
+
+Atom_section=cell(nAtoms,10);
+fid = fopen(filename_out, 'wt');
+
+fprintf(fid, '%s\r\n',filename_out);
+fprintf(fid, '%s\r\n','The atom MATLAB library, version 2.07');
+fprintf(fid, '%s\r\n','Simple .sdf coordinate file with bonds');
+
+%%%   9  8  0     0  0  0  0  0  0999 V2000
+%%% 123456789012345678901234567890123456789
+%%% The Counts line
+Counts={nAtoms, nBonds, 0, 0, 0, 0, 0, 0, 0, 999, 'V2000'};
+fprintf(fid, '%3i%3i%3i   %3i%3i%3i%3i%3i%3i%3i%6s\r\n',Counts{1:11});
+
+
+%%% The Atoms block
+%%% After the counts line comes the atoms block. For each atom mentioned in
+%%% the first field of counts, include a line like so:
+%%%    0.5369    0.9749    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+%%% The first three fields, 10 characters long each, describe the atom's
+%%% position in the X, Y, and Z dimensions. After that there is a space, and
+%%% three characters for an atomic symbol (O for oxygen, in this instance).
+for i = 1:nAtoms
+    if size(atom(i).type{1},2) > 3
+        disp('Hey, this atom type name is actually too long for sdf')
+        disp('chopping it down to 3 characters')
+        [atom(i).index atom(i).type]
+        atom(i).type=atom(i).type{1}(1:3);
+    end
+    Atomsblock(1:16)={atom(i).x, atom(i).y, atom(i).z, char(atom(i).type), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    fprintf(fid, '%10.4f%10.4f%10.4f %-3s%2i%3i%3i%3i%3i%3i%3i%3i%3i%3i%3i%3i\r\n',Atomsblock{1:16});
+end
+
+%%% The Bonds block
+for i = 1:nBonds
+    Bondsblock(1:7)={Bond_index(i,1), Bond_index(i,2), 1, 0, 0, 0, 0};
+    fprintf(fid, '%i  %i  %i  %i  %3i%3i%3i\r\n',Bondsblock{1:7});
+end
+
+fprintf(fid,'M  END');
+
+fprintf(fid, '\r\n');
+fprintf(fid, '\r\n');
+
+fprintf(fid,'$$$$');
+
+fprintf(fid, '\r\n');
+fprintf(fid, '\r\n');
+
+fclose(fid);
+
+disp('.sdf structure file written')
+
+
+##### SOURCE END #####
+--></body></html>

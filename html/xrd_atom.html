@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>xrd_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="xrd_atom.m"><style type="text/css">
+      --><title>xrd_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="xrd_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,17 +66,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>xrd_atom.m</h1><!--introduction--><div><ul><li>This function calculates theoretical XRD patterns from an atom struct or an .pdb|.gro coordinate file having a filled orthogonal or triclinic cell. Note that the atom struct may have a occupancy and a B-factor field. If the system consists replicated unit cells, [x y z] replication factors should be passed along as a 1x3 vector, see last Example below. The peak shape can be set to Lorentizan or Gaussian or any mixture thereof.  Note that the different hkl XRD reflection witdths can be set individually using the variables FWHM_00l, FWHM_hk0 and FWHM_hkl, resp, and are weighted by a function (1+2*sin(twotheta(n)*pi/180)). There is two ways of setting the prefered orientation, one that relates to the pref. orientation of the hkl planes, and one method dealing with the orientation of the 00l reflections as detailed in the book on Clay XRD analysis by Moore&amp;Reynolds, 1997, and used in 1D-mixed layer modelling.</li></ul></div><div><ul><li>The script was inpired by MOF-FIT:</li><li><a href="http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf">http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Various settings</a></li><li><a href="#6">Set FWHM</a></li><li><a href="#7">Various settings</a></li><li><a href="#8">Enter the degree (number greater than or equal to 0) and direction of preferential orientation</a></li><li><a href="#9">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</a></li><li><a href="#10">Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax &lt;= h &lt;= hmax; -kmax&lt;= k &lt;= kmax; -lmax &lt;= l &lt;= lmax</a></li><li><a href="#11">Specials section</a></li><li><a href="#12">Replicate the atom struct</a></li><li><a href="#13">Rotate some layers</a></li><li><a href="#14">Import the structure into an atom struct</a></li><li><a href="#15">/Specials section</a></li><li><a href="#17">Special section to set specific B-factors</a></li><li><a href="#18">Set the unit cell parameters</a></li><li><a href="#19">Converting to radians</a></li><li><a href="#20">Setting up the different h,k,l values</a></li><li><a href="#21">Specials section</a></li><li><a href="#22">To remove nonsense indexes, if using a replicated system</a></li><li><a href="#23">To select only the specific indexes</a></li><li><a href="#24">/Specials section</a></li><li><a href="#25">Now we have all the h,k,l values with 0,0,0 taken out</a></li><li><a href="#26">Determine the two theta values for each h,k,l</a></li><li><a href="#27">Order the hkl after decreasing d-spacings and increasing two_theta</a></li><li><a href="#28">Calculate the corresponding discrete twotheta in degrees</a></li><li><a href="#29">Calculate the structure factor for each reflection</a></li><li><a href="#30">Run in parallell?</a></li><li><a href="#31">Square each term in the structure factor vector by its complex conjugate</a></li><li><a href="#32">Correction for preferred orientation angle between h,k,l and preferrential orientation direction</a></li><li><a href="#33">Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction</a></li><li><a href="#34">Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function</a></li><li><a href="#35">Divergence slit</a></li><li><a href="#36">Surface roughness</a></li><li><a href="#37">Lorentz factor</a></li><li><a href="#38">Lorentz * Polarization factors</a></li><li><a href="#40">Plot the results</a></li><li><a href="#41">Miller indexes wrt the peak prominence</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[twotheta,intensity] = xrd_atom(filename)</li><li>[twotheta,intensity] = xrd_atom(atom,Box_dim)</li><li>[twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3]) % If your system has been replicated as 6x4x3</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [exp_twotheta,intensity] = xrd_atom(varargin)
-</pre><h2 id="5">Various settings</h2><pre class="codeinput">num_hkl=6; <span class="comment">% Maximum number of reflections, used for all h,k,l's, or edit manually later on..</span>
+  </style></head><body><div class="content"><h1>xrd_atom.m</h1><!--introduction--><div><ul><li>This function calculates theoretical XRD patterns from an atom struct or an .pdb|.gro coordinate file having a filled orthogonal or triclinic cell. Note that the atom struct may have a occupancy and a B-factor field. If the system consists replicated unit cells, [x y z] replication factors should be passed along as a 1x3 vector, see last Example below. The peak shape can be set to Lorentizan or Gaussian or any mixture thereof.  Note that the different hkl XRD reflection witdths can be set individually using the variables FWHM_00l, FWHM_hk0 and FWHM_hkl, resp, and are weighted by a function (1+2*sin(twotheta(n)*pi/180)). There is two ways of setting the prefered orientation, one that relates to the pref. orientation of the hkl planes, and one method dealing with the orientation of the 00l reflections as detailed in the book on Clay XRD analysis by Moore&amp;Reynolds, 1997, and used in 1D-mixed layer modelling.</li></ul></div><div><ul><li>The script was inpired by MOF-FIT:</li><li><a href="http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf">http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Various settings</a></li><li><a href="#6">Set FWHM</a></li><li><a href="#7">Various settings</a></li><li><a href="#8">Enter the degree (number greater than or equal to 0) and direction of preferential orientation</a></li><li><a href="#9">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</a></li><li><a href="#10">Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax &lt;= h &lt;= hmax; -kmax&lt;= k &lt;= kmax; -lmax &lt;= l &lt;= lmax</a></li><li><a href="#11">Specials section</a></li><li><a href="#12">Replicate the atom struct</a></li><li><a href="#13">Rotate some layers</a></li><li><a href="#14">Import the structure into an atom struct</a></li><li><a href="#15">/Specials section</a></li><li><a href="#17">Special section to set specific B-factors</a></li><li><a href="#18">Set the unit cell parameters</a></li><li><a href="#19">Converting to radians</a></li><li><a href="#20">Setting up the different h,k,l values</a></li><li><a href="#21">Specials section</a></li><li><a href="#22">To remove nonsense indexes, if using a replicated system</a></li><li><a href="#23">To select only the specific indexes</a></li><li><a href="#24">/Specials section</a></li><li><a href="#25">Now we have all the h,k,l values with 0,0,0 taken out</a></li><li><a href="#26">Determine the two theta values for each h,k,l</a></li><li><a href="#27">Order the hkl after decreasing d-spacings and increasing two_theta</a></li><li><a href="#28">Calculate the corresponding discrete twotheta in degrees</a></li><li><a href="#29">Calculate the structure factor for each reflection</a></li><li><a href="#30">Run in parallell?</a></li><li><a href="#31">Square each term in the structure factor vector by its complex conjugate</a></li><li><a href="#32">Correction for preferred orientation angle between h,k,l and preferrential orientation direction</a></li><li><a href="#33">Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction</a></li><li><a href="#34">Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function</a></li><li><a href="#35">Divergence slit</a></li><li><a href="#36">Surface roughness</a></li><li><a href="#37">Lorentz factor</a></li><li><a href="#38">Lorentz * Polarization factors</a></li><li><a href="#40">Plot the results</a></li><li><a href="#41">Miller indexes wrt the peak prominence</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[twotheta,intensity] = xrd_atom(filename)</li><li>[twotheta,intensity] = xrd_atom(atom,Box_dim)</li><li>[twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3]) % If your system has been replicated as 6x4x3</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [exp_twotheta,intensity] = xrd_atom(varargin)
+</pre><h2 id="5">Various settings</h2><pre class="codeinput">num_hkl=18; <span class="comment">% Maximum number of reflections, used for all h,k,l's, or edit manually later on..</span>
 lambda=1.54187; <span class="comment">% &Aring;ngstrom</span>
 anglestep=0.02; <span class="comment">% The incremental twotheta angle step</span>
-exp_twotheta=2:anglestep:60; <span class="comment">% The twotheta range of interest</span>
+exp_twotheta=2:anglestep:80; <span class="comment">% The twotheta range of interest</span>
 B_all=0; <span class="comment">% Debye-Waller factor &Aring;ngstrom, in case no such field exist within the atom struct</span>
 Lorentzian_factor=1; <span class="comment">% [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function</span>
-</pre><h2 id="6">Set FWHM</h2><pre class="codeinput">FWHM_00l=.7; <span class="comment">% Specify the full width at half maximum of your choice</span>
-FWHM_hk0=.7; <span class="comment">% Specify the full width at half maximum of your choice</span>
-FWHM_hkl=.7; <span class="comment">% Specify the full width at half maximum of your choice</span>
-</pre><h2 id="7">Various settings</h2><pre class="codeinput">mode=0; <span class="comment">% Activate sigma_star, DIV, surface roughness as in Moore&amp;Reynolds, 1997</span>
+</pre><h2 id="6">Set FWHM</h2><pre class="codeinput">FWHM_00l=1; <span class="comment">% Specify the full width at half maximum of your choice</span>
+FWHM_hk0=1; <span class="comment">% Specify the full width at half maximum of your choice</span>
+FWHM_hkl=1; <span class="comment">% Specify the full width at half maximum of your choice</span>
+</pre><h2 id="7">Various settings</h2><pre class="codeinput">mode=1; <span class="comment">% Activate sigma_star, DIV, surface roughness as in Moore&amp;Reynolds, 1997</span>
 Sample_length = 4; <span class="comment">% cm</span>
 Gonio_radius = 24; <span class="comment">% cm</span>
 Div_slit = .1; <span class="comment">% Divergence slit setting, 0 for automatic</span>
@@ -399,9 +399,9 @@ hkl_max_Fsq=hkl(ind_Fsq,:);
         hkl_ind=[hkl_ind i];
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-<span class="comment">% stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');</span>
-<span class="comment">% stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');</span>
-stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),<span class="string">'Color'</span>,<span class="string">'black'</span>,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>);
+stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),<span class="string">'Color'</span>,<span class="string">'black'</span>,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>);
+stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),<span class="string">'Color'</span>,<span class="string">'black'</span>,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'none'</span>);
+<span class="comment">% stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');</span>
 
 xlim([0 max(exp_twotheta)]);
 <span class="keyword">try</span>
@@ -466,7 +466,7 @@ xlim([0 max(exp_twotheta)]);
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -479,20 +479,20 @@ xlim([0 max(exp_twotheta)]);
 function [exp_twotheta,intensity] = xrd_atom(varargin)
 
 %% Various settings
-num_hkl=6; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
+num_hkl=18; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=2:anglestep:60; % The twotheta range of interest
+exp_twotheta=2:anglestep:80; % The twotheta range of interest
 B_all=0; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
 
 %% Set FWHM
-FWHM_00l=.7; % Specify the full width at half maximum of your choice
-FWHM_hk0=.7; % Specify the full width at half maximum of your choice
-FWHM_hkl=.7; % Specify the full width at half maximum of your choice
+FWHM_00l=1; % Specify the full width at half maximum of your choice
+FWHM_hk0=1; % Specify the full width at half maximum of your choice
+FWHM_hkl=1; % Specify the full width at half maximum of your choice
 
 %% Various settings
-mode=0; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
+mode=1; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
 Sample_length = 4; % cm
 Gonio_radius = 24; % cm
 Div_slit = .1; % Divergence slit setting, 0 for automatic
@@ -905,9 +905,9 @@ for i=1:numel(locs_twotheta)
         hkl_ind=[hkl_ind i];
     end
 end
-% stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
-% stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
-stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
+% stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
 
 xlim([0 max(exp_twotheta)]);
 try

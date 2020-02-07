@@ -1,0 +1,14 @@
+LAMMPS input data file #06-Feb-2020 17:08:52
+
+4112 atoms
+1632 bonds
+720 angles
+   
+12 atom types
+5 bond types
+2 angle types
+
+0 30.96 xlo xhi
+0 35.8633 ylo yhi
+0 41.58 zlo zhi
+       

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface15_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="interface15_atom.m"><style type="text/css">
+      --><title>interface15_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="interface15_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>interface15_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the interface15 ff</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>Since the Interface FF 1.5 treats some atomtypes differently depending on the material (like 'CLAY_MINERALS' or 'SILICA'), you may have to pass extra arguments, see the last examples below.</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.06</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations)</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'CLAY_MINERALS')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'SILICA')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=interface15_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>interface15_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the interface15 ff</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>Since the Interface FF 1.5 treats some atomtypes differently depending on the material (like 'CLAY_MINERALS' or 'SILICA'), you may have to pass extra arguments, see the last examples below.</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations)</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'CLAY_MINERALS')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'SILICA')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=interface15_atom(atom,Box_dim,varargin)
 
 format <span class="string">compact</span>;
 
@@ -720,7 +720,7 @@ atom = check_interface15_charge(atom,model_database);
 % neighbour/bond cutoff radius for each atomtype
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
