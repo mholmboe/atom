@@ -3,13 +3,16 @@
 % * It's fancier than plot_density_atom, but slower..
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_density_atom(atom,Box_dim)
+% # show_density_atom(atom,Box_dim,0.1)
+% # show_density_atom(atom,Box_dim,0.1,2)
+% # show_density_atom(atom,Box_dim,0.1,2,[1:10:100])
 
 function show_density_atom(atom,Box_dim,varargin)
 

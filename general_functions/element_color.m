@@ -2,7 +2,7 @@
 % * This function assigns a certain color to each element. Estethic improvements are welcome...
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

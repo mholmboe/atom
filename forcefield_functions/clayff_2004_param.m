@@ -3,7 +3,7 @@
 % Joung and Cheatham, 2008 + some others...
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -51,7 +51,7 @@ forcefield.clayff(2).e_kcalmol = 0.00000;
 %
 % Ow
 forcefield.clayff(3).type =    {'Ow'}; % o* water oxygen
-forcefield.clayff(3).mass =    15.99410;
+forcefield.clayff(3).mass =    15.99941;
 if sum(strcmpi('SPC/E', water_model)) > 0 || sum(strcmpi('SPCE', water_model)) > 0
     forcefield.clayff(3).charge =  -0.84760;
 elseif sum(strcmpi('SPC', water_model)) > 0
@@ -64,70 +64,70 @@ forcefield.clayff(3).e_kcalmol = 0.155400;
 %
 % Oh
 forcefield.clayff(4).type =    {'oh'}; % oh hydroxyl oxygen
-forcefield.clayff(4).mass =    15.99410;
+forcefield.clayff(4).mass =    15.99941;
 forcefield.clayff(4).charge =  -0.95;
 forcefield.clayff(4).radius =  3.553200;
 forcefield.clayff(4).e_kcalmol = 0.155400;
 %
 % O
 forcefield.clayff(5).type =    {'ob'}; % ob bridging oxygen
-forcefield.clayff(5).mass =    15.99410;
+forcefield.clayff(5).mass =    15.99941;
 forcefield.clayff(5).charge =  -1.05000;
 forcefield.clayff(5).radius =  3.553200;
 forcefield.clayff(5).e_kcalmol = 0.155400;
 %
 % Omg
 forcefield.clayff(6).type =    {'obos'}; % ob bridging oxygen w. octahedral substitution
-forcefield.clayff(6).mass =    15.99410;
+forcefield.clayff(6).mass =    15.99941;
 forcefield.clayff(6).charge =  -1.18080;
 forcefield.clayff(6).radius =  3.553200;
 forcefield.clayff(6).e_kcalmol = 0.155400;
 %
 % Oalt
 forcefield.clayff(7).type =    {'obts'}; % obts bridging oxygen w. tetrahedral substitution
-forcefield.clayff(7).mass =    15.99410;
+forcefield.clayff(7).mass =    15.99941;
 forcefield.clayff(7).charge =  -1.16880;%75;%-1.16880; Changed for ZSM-5
 forcefield.clayff(7).radius =  3.553200;
 forcefield.clayff(7).e_kcalmol = 0.155400;
 %
 % Odsub
 forcefield.clayff(8).type =    {'obss'}; % obss bridging oxygen w. double substitution
-forcefield.clayff(8).mass =    15.99410;
+forcefield.clayff(8).mass =    15.99941;
 forcefield.clayff(8).charge =  -1.29960;
 forcefield.clayff(8).radius =  3.553200;
 forcefield.clayff(8).e_kcalmol = 0.155400;
 %
 % Ohmg
 forcefield.clayff(9).type =    {'ohs'}; % ohs bridging oxygen w. substitution
-forcefield.clayff(9).mass =    15.99410;
+forcefield.clayff(9).mass =    15.99941;
 forcefield.clayff(9).charge =  -1.08090;
 forcefield.clayff(9).radius =  3.553200;
 forcefield.clayff(9).e_kcalmol = 0.155400;
 %
 % Oalh
 forcefield.clayff(10).type =    {'oahe'}; % edge oxygen
-forcefield.clayff(10).mass =    15.99410;
+forcefield.clayff(10).mass =    15.99941;
 forcefield.clayff(10).charge =  -1.2375;
 forcefield.clayff(10).radius =  3.553200;
 forcefield.clayff(10).e_kcalmol = 0.155400;
 %
 % Oalhh
 forcefield.clayff(11).type =    {'oahhe'}; % edge oxygen
-forcefield.clayff(11).mass =    15.99410;
+forcefield.clayff(11).mass =    15.99941;
 forcefield.clayff(11).charge =  -0.6625; %
 forcefield.clayff(11).radius =  3.553200;
 forcefield.clayff(11).e_kcalmol = 0.155400;
 %
 % Oalsi
 forcefield.clayff(12).type =    {'oas'}; % 
-forcefield.clayff(12).mass =    15.99410;
+forcefield.clayff(12).mass =    15.99941;
 forcefield.clayff(12).charge =  -1.2375;
 forcefield.clayff(12).radius =  3.553200;
 forcefield.clayff(12).e_kcalmol = 0.155400;
 %
 % Osih
 forcefield.clayff(13).type =    {'oshe'}; % 
-forcefield.clayff(13).mass =    15.99410;
+forcefield.clayff(13).mass =    15.99941;
 forcefield.clayff(13).charge =  -0.95;
 forcefield.clayff(13).radius =  3.553200;
 forcefield.clayff(13).e_kcalmol = 0.155400;
@@ -285,7 +285,7 @@ forcefield.clayff(35).e_kcalmol = 0.0427845;
 %
 % Oahs
 forcefield.clayff(36).type =    {'oahs'}; %
-forcefield.clayff(36).mass =    15.99410;
+forcefield.clayff(36).mass =    15.99941;
 forcefield.clayff(36).charge =  -0.6625;
 forcefield.clayff(36).radius =  3.553200;
 forcefield.clayff(36).e_kcalmol = 0.155400;
@@ -369,7 +369,7 @@ forcefield.clayff(46).e_kcalmol = 0.155400;
 
 % Op
 forcefield.clayff(46).type =    {'op'}; % op apical O, same params as ob
-forcefield.clayff(46).mass =    15.99410;
+forcefield.clayff(46).mass =    15.99941;
 forcefield.clayff(46).charge =  -1.05000;
 forcefield.clayff(46).radius =  3.553200;
 forcefield.clayff(46).e_kcalmol = 0.155400;
@@ -380,6 +380,13 @@ forcefield.clayff(47).mass =    15.999410;
 forcefield.clayff(47).charge =  -1.7650;
 forcefield.clayff(47).radius =  3.553200;
 forcefield.clayff(47).e_kcalmol = 0.155400;
+
+% Oat Deprotonated edge O 
+forcefield.clayff(48).type =    {'oat'}; % o
+forcefield.clayff(48).mass =    15.999410;
+forcefield.clayff(48).charge =  -1.16875;
+forcefield.clayff(48).radius =  3.553200;
+forcefield.clayff(48).e_kcalmol = 0.155400;
 
 for i=1:size(forcefield.clayff,2)
     forcefield.clayff(i).sigma=forcefield.clayff(i).radius/2^(1/6);

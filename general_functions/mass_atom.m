@@ -1,8 +1,10 @@
 %% mass_atom.m
-% * This function fetches the mass for each atomtype and put it into atom.mass
+% * This function fetches the mass for each atomtype and place it into the
+% the field [atom.mass]. It also tries to calculate the (Box) molecular 
+% weight, box volume and density.
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

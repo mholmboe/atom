@@ -12,7 +12,7 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -137,6 +137,7 @@ if numel(ind)>0
     ind
     assignin('caller','heal_ind',ind');
 end
+assignin('caller','heal_ind',ind');
 
 disp('Global instability index is:')
 GII=(sum((abs([properties.oxstate])-[properties.valence]).^2)/size(properties,2))^0.5

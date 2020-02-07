@@ -5,7 +5,7 @@
 % * rvdw 1,61 and 84-88 are made up....
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -151,4 +151,5 @@ else
 end
 
 rvdw = cell2mat(rvdw(ind,2));
+
 

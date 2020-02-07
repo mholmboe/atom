@@ -2,7 +2,7 @@
 % * This function is used to calculate density profiles along X|Y|Z
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

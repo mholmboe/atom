@@ -5,7 +5,7 @@
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,23 +13,17 @@
 %% Examples
 % # show_atom(atom)
 % # show_atom(atom,Box_dim)
-% # show_atom(atom,Box_dim,'vdw') % plotstyle, should be either 'ballstick' (default),'licorice','halfvdw','vdw'
+% # show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'lines', 'labels' or 'index'
 % # show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box
-% # show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% opacity
+% # show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency
 % # show_atom(atom,Box_dim,'ballstick',0,0,[0 0 -50]) % Will translate the XYZ coordinates
 % # show_atom(atom,Box_dim,'ballstick',0,0,[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
 %
 
 function show_atom(atom,varargin)
 
-bond_radii = 0.2; % bond radii
-resolution = 30;  % higher looks better, takes more time
-
-XYZ_labels=[atom.type]';
-nAtoms = size(XYZ_labels,1);
-
-radii = 1/4*abs(radius_vdw(XYZ_labels));
-color =  1*element_color(XYZ_labels);
+disp('Choose between these representations:')
+disp('ballstick licorice halfvdw vdw crystal lines labels index')
 
 if nargin>2
     style = char(varargin{2}); %'ballstick','licorice','halfvdw','vdw'
@@ -37,12 +31,25 @@ else
     style = 'ballstick';
 end
 
-if ~ismember(style,{'ballstick' 'licorice' 'halfvdw' 'vdw'})
+if ~ismember(style,{'ballstick' 'licorice' 'halfvdw' 'vdw' 'crystal' 'lines' 'labels' 'index'})
     style = 'ballstick';
 end
 
+bond_radii = 0.15; % bond radii
+resolution = 30;  % higher looks better, takes more time
+atom=element_atom(atom);
+XYZ_labels=[atom.type]';
+nAtoms = size(XYZ_labels,1);
+
+if strncmpi(style,'crystal',3)
+    radii = 1/4*abs(radius_crystal(XYZ_labels));
+else
+    radii = 1/4*abs(radius_vdw(XYZ_labels));
+end
+color =  1*element_color(XYZ_labels);
+
 if nargin>4
-    alpha=varargin{4};
+    alpha=1-varargin{4};
 else
     alpha=1; % Transperacy
 end
@@ -76,6 +83,12 @@ if nargin>1
     
     if numel(Box_dim)>0
         
+        if numel(Box_dim)==1
+            Box_dim(1)=Box_dim(1);
+            Box_dim(2)=Box_dim(1);
+            Box_dim(3)=Box_dim(1);
+        end
+        
         if size(atom,2)>39 && size(atom,2)< 5000 && strcmp(style,'ballstick')
             disp('Scanning intramolecular bonds, neglecting the PBC')
             atom = bond_atom(atom,10*Box_dim,2.1,0.6); % the factor 10 makes sure there are no bonds over the pbc!
@@ -83,11 +96,7 @@ if nargin>1
             atom = bond_atom(atom,Box_dim,2.1,.6);
         end
         
-        if numel(Box_dim)==1
-            Box_dim(1)=Box_dim(1);
-            Box_dim(2)=Box_dim(1);
-            Box_dim(3)=Box_dim(1);
-        end
+        
     end
     % Sets plot limits for the data
     xlo = floor(min([-5 min([atom.x])-max(radii)])); xhi = ceil(max([max([atom.x])+max(radii) Box_dim(1)])/5)*5;
@@ -114,6 +123,7 @@ end
 % xhi=35
 % yhi=40
 % zhi=45
+hold on;
 cameratoolbar
 rotate3d on;
 camlight(220,210,'infinite');
@@ -129,38 +139,66 @@ ax.ZLim = [zlo zhi];
 xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
 
-disp('Drawing the atoms')
-for i = 1:size(XYZ_data,1)
-    
-    color_temp = color(i,:);
-    switch style
-        case 'licorice'
-            r_temp = bond_radii;
-        case 'ballstick'
-            r_temp = radii(i);
-        case 'halfvdw'
-            r_temp = 2*radii(i);
-        case 'vdw'
-            r_temp = 4*radii(i);
+if strncmpi(style,'lines',4) || strncmpi(style,'labels',5) || strncmpi(style,'index',5)
+    for i = 1:length(XYZ_labels)
+        labelradii = 500;
+        ind=strncmpi([atom.type],XYZ_labels(i),3);
+        if numel(ind)==0
+            ind=strncmpi([atom.type],XYZ_labels(i),2);
+        end
+        if numel(ind)==0
+            ind=strncmpi([atom.type],XYZ_labels(i),1);
+        end
+        scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+            labelradii,...
+            'MarkerEdgeColor',[.5 .5 .5],...
+            'MarkerFaceColor',[1 1 1]);
     end
     
-    [rx,ry,rz] = sphere(resolution);
-    surface(XYZ_data(i,1) + r_temp*rx,XYZ_data(i,2) + r_temp*ry, ...
-        XYZ_data(i,3) + r_temp*rz,'FaceColor',color_temp, ...
-        'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha);
-    
-    if mod(i,1000)==1
-        if i > 1
-            i-1
-            drawnow limitrate
+    bond_radii=0.05;
+    if strncmpi(style,'labels',5)
+        text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,XYZ_labels);
+    elseif strncmpi(style,'index',5)
+        text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,strsplit(num2str([atom.index])));
+    end
+else
+    disp('Drawing the atoms')
+    for i = 1:size(XYZ_data,1)
+        
+        color_temp = color(i,:);
+        switch style
+            case 'licorice'
+                r_temp = bond_radii;
+            case 'ballstick'
+                r_temp = radii(i);
+            case 'halfvdw'
+                r_temp = 2*radii(i);
+            case 'vdw'
+                r_temp = 4*radii(i);
+            case 'crystal'
+                r_temp = 4*radii(i);
+        end
+        
+        [rx,ry,rz] = sphere(resolution);
+        surface(XYZ_data(i,1) + r_temp*rx,XYZ_data(i,2) + r_temp*ry, ...
+            XYZ_data(i,3) + r_temp*rz,'FaceColor',color_temp, ...
+            'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
+            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
+        
+        
+        if mod(i,1000)==1
+            if i > 1
+                i-1
+                drawnow limitrate
+            end
         end
     end
+    i
+    drawnow
 end
-i
-drawnow
 
 
-if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice'})
+if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'index'})
     rdist = Bond_index(:,3);
     % draw cylinders for each bond
     disp('Drawing the bonds')
@@ -177,6 +215,10 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice'})
         bd = rdist(i) - radii(Bond_index(i,1)) - radii(Bond_index(i,2));
         cyl2 = radii(Bond_index(i,1)) + bd/2; % length half bond cylinder
         cyl1 = rdist(i); % length full bond cylinder
+        
+        % get colors of both atoms
+        color_temp1 = color(Bond_index(i,2),:);
+        color_temp2 = color(Bond_index(i,1),:);
         
         % prototype cylinders for bond
         [z,y,x] = cylinder(bond_radii,resolution/2); % full bond cylinder
@@ -199,19 +241,19 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice'})
             z2(kk) = vr(3);
         end
         
-        % get colors of both atoms
-        color_temp1 = color(Bond_index(i,2),:);
-        color_temp2 = color(Bond_index(i,1),:);
-        
         % full bond color 1
         surface(r1(1) + x,r1(2) + y,r1(3) + z,...
-            'FaceColor',color_temp1,'EdgeColor','none',...
-            'FaceLighting','gouraud','FaceAlpha',alpha)
+            'FaceColor',color_temp1,...
+            'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
+            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
+        %'EdgeColor','none',...
+        %'FaceLighting','gouraud','FaceAlpha',alpha)
         
         % half bond color 2
         surface(r1(1) + x2,r1(2) + y2,r1(3) + z2,...
-            'FaceColor',color_temp2,'EdgeColor','none',...
-            'FaceLighting','gouraud','FaceAlpha',alpha)
+            'FaceColor',color_temp2,...
+            'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
+            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
         
         if mod(i,1000)==1
             if i > 1
@@ -223,10 +265,11 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice'})
     end
     
 end
-i
 
 if nargin>3
     if varargin{3}>0
         Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
     end
 end
+
+hold off;

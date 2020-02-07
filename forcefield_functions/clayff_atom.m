@@ -11,7 +11,7 @@
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -42,7 +42,7 @@ end
 atom=element_atom(atom);
 
 distance_factor=1.2;
-rmaxlong=2.4;
+rmaxlong=2.1;
 
 % Initialize some variables
 rm_ind=[];
@@ -558,10 +558,10 @@ for assignment_run=heal_iterations
                     i
                     Neighbours
                     atom(i).fftype={'O^'};
-                elseif length(Neigh_ind) == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg')
+                elseif length(Neigh_ind) == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg') || strcmp(Neighbours,'Si')
                     if strcmp(Neighbours,'Si')
                         atom(i).fftype={'Osi'};
-                    elseif strcmp(Neighbours,'Al')
+                    elseif strncmp(Neighbours,'AlAl',2)
                         atom(i).fftype={'Oal'};
                     else
                         disp('O atom under coordinated')
@@ -652,9 +652,9 @@ Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 
 try
-    %% If the usual atom types
+    % If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
-    %% If new atom types
+    % If new atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel,'more');
 catch
     disp('Could not set the charge...')

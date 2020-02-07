@@ -18,7 +18,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -31,20 +31,20 @@
 function [exp_twotheta,intensity] = xrd_atom(varargin)
 
 %% Various settings
-num_hkl=6; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
+num_hkl=18; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=2:anglestep:60; % The twotheta range of interest
+exp_twotheta=2:anglestep:80; % The twotheta range of interest
 B_all=0; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
 
 %% Set FWHM
-FWHM_00l=.7; % Specify the full width at half maximum of your choice
-FWHM_hk0=.7; % Specify the full width at half maximum of your choice
-FWHM_hkl=.7; % Specify the full width at half maximum of your choice
+FWHM_00l=1; % Specify the full width at half maximum of your choice
+FWHM_hk0=1; % Specify the full width at half maximum of your choice
+FWHM_hkl=1; % Specify the full width at half maximum of your choice
 
 %% Various settings
-mode=0; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
+mode=1; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
 Sample_length = 4; % cm
 Gonio_radius = 24; % cm
 Div_slit = .1; % Divergence slit setting, 0 for automatic
@@ -457,9 +457,9 @@ for i=1:numel(locs_twotheta)
         hkl_ind=[hkl_ind i];
     end
 end
-% stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
-% stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
-stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
+% stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
 
 xlim([0 max(exp_twotheta)]);
 try

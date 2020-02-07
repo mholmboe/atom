@@ -7,7 +7,7 @@
 % neighbour/bond cutoff radius for each atomtype
 
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -36,7 +36,7 @@ end
 atom=element_atom(atom);
 
 distance_factor=1.2;
-rmaxlong=2.4;
+rmaxlong=2.1;
 
 % Initialize some variables
 rm_ind=[];
@@ -77,6 +77,7 @@ for assignment_run=heal_iterations
     
     for i=1:size(atom,2)
         if strncmpi(atom(i).element,{'Si'},2);atom(i).type={'st'};
+        elseif strncmpi(atom(i).element,{'Alt'},3);atom(i).type={'at'};
         elseif strncmpi(atom(i).element,{'Al'},2);atom(i).type={'ao'};
         elseif strncmpi(atom(i).element,{'Mg'},2);atom(i).type={'mgo'};
         elseif strncmpi(atom(i).element,{'Fe'},2);atom(i).type={'feo'};
@@ -586,8 +587,8 @@ try
     %% If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
     %% If new atom types
-    atom_alternative = charge_atom(atom,Box_dim,ffname,watermodel,'more');
-    assignin('caller','atom_alternative',atom_alternative);
+%     atom_alternative = charge_atom(atom,Box_dim,ffname,watermodel,'more');
+%     assignin('caller','atom_alternative',atom_alternative);
 catch
     disp('Could not set the charge...')
 end
@@ -598,5 +599,4 @@ end
 % no_O_ind=ismember(Atom_label,no_O_label);
 % atom = charge_clayff_atom(atom,Box_dim,Atom_label(no_O_ind),Charge(no_O_ind));
 % atom = charge_clayff_atom(atom,Box_dim)
-% Total_charge
 
