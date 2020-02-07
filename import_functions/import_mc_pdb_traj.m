@@ -5,7 +5,7 @@
 % nevery frame to import, i.e. a stride value
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

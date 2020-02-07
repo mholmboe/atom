@@ -3,7 +3,7 @@
 % Gromacs uses for some of its text-based data output
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -123,9 +123,10 @@ if nargin>1
     plot(Data(:,1),Data(:,2:end),'LineWidth',2)
     set(gcf,'color','w');%,'units','normalized','position',[0,0,.4,.6]);
 %     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
-    set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out','Xtick',floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)
+    set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out')%,'Xtick',floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)
     xlabel(xaxislabel,'FontSize',24);
     ylabel(yaxislabel,'FontSize',24);
+    xlim('auto')
     legend(yaxis_all_legends)
 end
 
