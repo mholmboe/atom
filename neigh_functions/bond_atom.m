@@ -3,14 +3,14 @@
 % Bond_index variable
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom=bond_atom(atom,Box_dim)
-% # atom=bond_atom(atom,Box_dim,2.5) % Last argument is the max bond distance
+% # atom=bond_atom(atom,Box_dim,2.25) % Last argument is the max bond distance
 
 function atom = bond_atom(atom,Box_dim,varargin)
 
@@ -83,7 +83,6 @@ if isfield(atom,'bond')
     atom=rmfield(atom,'bond');
 end
 
-
 disp('Looking for neighbours/bonds')
 Bond_index=[];b=1;
 for i=1:length(XYZ_labels)
@@ -101,7 +100,8 @@ for i=1:length(XYZ_labels)
     
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if bond_matrix(bond_ind(j),i)==1
-            if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 || numel(unique([atom.molid]))==1
+%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
+            if atom(i).molid==atom(bond_ind(j)).molid
                 k=k+1;
                 [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
                 [atom(i).neigh.index(k,1)]=bond_ind(j);
@@ -168,7 +168,6 @@ end
 Neigh_index(rm_ind,:)=[];
 
 [atom.type]=atom.fftype;
-
 
 assignin('caller','Radius_limit',radius_limit);
 assignin('caller','Bond_index',Bond_index);

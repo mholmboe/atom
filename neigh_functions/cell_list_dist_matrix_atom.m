@@ -11,7 +11,7 @@
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -21,12 +21,11 @@
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 Å
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles
-% # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25,1) % Output mor info per atomtype
+% # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25,'more') % Output more info per atomtype
 
 %
 function dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
-1
-tic
+
 nAtoms=size(atom,2);
 dist_matrix=zeros(nAtoms);
 X_dist=dist_matrix;
@@ -149,10 +148,6 @@ mask = (max(dnx, 1) - 1).^2 * rcell(1).^2 + (max(dny, 1) - 1).^2 * rcell(2).^2 +
 %mask = true(1, M - 1); % bug check of mask
 mask_index = find(mask);
 
-toc
-2
-tic
-
 % calculate the distances of the atoms in masked cells
 pair = zeros(nAtoms*1000, 2);
 dist = zeros(nAtoms*1000, 1);
@@ -193,9 +188,6 @@ for m1 = 1:M
     end
 end
 
-toc
-3
-tic
 pair(icount:end,:) = [];
 dist(icount:end) = [];
 
@@ -210,12 +202,12 @@ for i = 1:size(pair,1)
     dist_matrix(pair(i,2),pair(i,1))=dist(i); % Do we need this?
 end
 
-toc
 %         assignin('caller','pair',pair)
 %         assignin('caller','dist',dist)
-4
-tic
+
 if calc_bond_list==1
+    disp('Please wait...')
+    disp('Analyzing bonds')
     Bond_index = [pair dist];
     % Special treatment for the short H-distances
     H_ind=find(strncmpi([atom.type],'H',1)); % Find all H indexes
@@ -243,10 +235,14 @@ if calc_bond_list==1
             Bond_index(i,:)=[];
         end
     end
+    nBonds=size(Bond_index,1);
+    assignin('caller','nBonds',nBonds);
     assignin('caller','Bond_index',Bond_index)
 end
 
 if calc_angle_list==1
+    disp('Please wait...')
+    disp('Analyzing angles')
     a=1;
     Angle_dist_index=Bond_index(Bond_index(:,3)<rmax_angle,:);
     Angle_dist_index=[Angle_dist_index;[Angle_dist_index(:,2) Angle_dist_index(:,1) Angle_dist_index(:,3)]];
@@ -281,11 +277,19 @@ if calc_angle_list==1
                 end
             end
         end
+        if mod(u,1000)==1
+            if u > 1
+                u-1
+            end
+        end
     end
     [Y,I]=sort(Angle_index(:,2));
     Angle_index=Angle_index(I,:);
     Angle_index = unique(Angle_index,'rows','stable');
     Angle_index(~any(Angle_index,2),:) = [];
+    
+    nAngles=size(Angle_index,1);
+    assignin('caller','nAngles',nAngles);
     assignin('caller','Angle_index',Angle_index)
 end
 
@@ -330,6 +334,25 @@ if nargin > 5
         end
     end
     
+    if length(Bond_index)>0
+        %     [Y,i] = sort(Bond_index(:,1));
+        %     Bond_index = Bond_index(i,:);
+        %     Bond_index = unique(Bond_index,'rows','stable');
+        try
+            CoordNumber=arrayfun(@(x) numel(x.neigh.index),atom);
+        catch
+            CoordNumber=zeros(1,size(atom,2));
+            for i=1:size(atom,2)
+                i
+                [atom(i).neigh.index]
+                CoordNumber(i)=numel([atom(i).neigh.index]);
+            end
+        end
+        Remove_ind=find(CoordNumber==0);
+        assignin('caller','CoordNumber',CoordNumber);
+        assignin('caller','Remove_ind',Remove_ind);
+    end
+    
     %%%%%%%%%%
     
     Atom_labels=unique([atom.type]);
@@ -364,7 +387,7 @@ if nargin > 5
 end
 
 if nAtoms < 20000
-%     assignin('caller','dist_matrix',dist_matrix);
+    %     assignin('caller','dist_matrix',dist_matrix);
     assignin('caller','X_dist',(X_dist)');
     assignin('caller','Y_dist',(Y_dist)');
     assignin('caller','Z_dist',(Z_dist)');
@@ -372,7 +395,6 @@ else
     disp('Skipped output of X|Y|Z_dist since the system is so big')
 end
 
-toc
 %%%%%%%%%%%%% End of main function %%%%%%%%%%%%%%
 
     function mi_n = minimum_image(n, N)

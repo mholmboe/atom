@@ -5,7 +5,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -15,9 +15,29 @@
 % # atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more')
 %
 
-function atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,varargin)
+function atom=bond_angle_atom(atom,varargin)
 %%
 % tic
+
+if nargin<=4
+    if nargin<4
+        if nargin==1
+            Box_dim=1e6*[1 1 1]; % Dummy Box_dim, when the PBC is not important
+        else
+            Box_dim=varargin{1};
+        end
+        rmaxshort=1.25;
+        rmaxlong=2.25;
+    else
+        Box_dim=varargin{1};
+        rmaxshort=varargin{2};
+        rmaxlong=varargin{3};
+    end
+elseif nargin>4
+    Box_dim=varargin{1};
+    rmaxshort=varargin{2};
+    rmaxlong=varargin{3};
+end
 
 nAtoms=size(atom,2);
 % max_short_dist=1.2;
@@ -226,8 +246,10 @@ for i = 1:size(XYZ_data,1)
             end
         end
     end
-    if mod(i,100)==1
-        i-1
+    if mod(i,1000)==1
+        if i-1>0
+            i-1
+        end
     end
 end
 
@@ -289,8 +311,10 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
                 atom(i).angle.vec2 = Angle_index(C,8:10);
             end
         end
-        if mod(i,100)==1
-            i-1
+        if mod(i,1000)==1
+            if i-1>0
+                i-1
+            end
         end
     end
     
