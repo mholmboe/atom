@@ -3,7 +3,7 @@
 % * limits lo and hi in the dim dimension
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

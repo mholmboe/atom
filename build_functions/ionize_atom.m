@@ -22,7 +22,7 @@
 % * slice_atom
 % * update_atom
 % * distance_matrix_atom
-% 
+%
 %% Similar
 % fuse_atom
 % protonate_atom
@@ -30,7 +30,7 @@
 % insert_atom
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -53,8 +53,8 @@ radii = abs(radius_ion(type));
 if nargin > 4
     distance_factor=varargin{1};
     if numel(distance_factor)>1
-       rmin=distance_factor(2); 
-       distance_factor=distance_factor(1);
+        rmin=distance_factor(2);
+        distance_factor=distance_factor(1);
     else
         rmin=radii*distance_factor;
     end
@@ -64,8 +64,8 @@ else
 end
 
 if distance_factor<2
-   disp('distance_factor should be >=2 !!!')
-   pause(2)
+    disp('distance_factor should be >=2 !!!')
+    pause(2)
 end
 Box_dim_temp=distance_factor*2*[radii radii radii];
 atom = add2atom(type,[0 0 0],resname,[]);
@@ -167,16 +167,27 @@ atom(atom_ind)=atom;
 
 % Check that no added particles are too close
 distmatrix=dist_matrix_atom(atom,Box_dim);
-i=1;distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+i=1;ind=[];
 while i<size(atom,2)+1
     [minvalue,ind]=min(distmatrix(i,:));
     if minvalue<distance_factor*radii
-        atom(ind)=[];
-        distmatrix(ind,:)=[];
-        distmatrix(:,ind)=[];
+        ind=[ind i];
+        %         atom(ind)=[];         v2.06
+        %         distmatrix(ind,:)=[]; v2.06
+        %         distmatrix(:,ind)=[]; v2.06
     else
         i=i+1;
     end
+    %     if mod(i,1000)==1
+    %         if i > 1
+    %             [i-1 size(atom,2)]
+    %         end
+    %     end
+    i=i+1;
+end
+if numel(ind)>0
+    atom(ind)=[];
 end
 
 if nargin>6
@@ -232,6 +243,14 @@ else
         atom(row(1))=[];
         distmatrix(row(1),:)=[];
         distmatrix(:,col(1))=[];
+        
+        if mod(size(atom,2),100)==1
+            if size(atom,2) > 1
+                [size(atom,2) nmax]
+            end
+        end
+        
+        
     end
 end
 
@@ -244,9 +263,9 @@ if iscellstr({nmax}) == 0
         atom=atom(1:nmax);
     else
         try
-        atom=atom(1:nmax);
+            atom=atom(1:nmax);
         catch
-           disp('ionize_atom didd not manage to add enough particles!!');
+            disp('ionize_atom didd not manage to add enough particles!!');
         end
     end
 end

@@ -8,7 +8,7 @@
 % * solvate_atom
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -140,22 +140,42 @@ if iscellstr({nmax}) == 1
     nmax=size(atom,2);
 end
 
-% If not filled up yet, remove the particles that are nearest some other particles
-% until we have achieved nmax
-i=1;
+%% Old v2.06
+% % If not filled up yet, remove the particles that are nearest some other particles
+% % until we have achieved nmax
+% i=1;
+% distmatrix=dist_matrix_atom(atom,Box_dim);
+% distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
+% while size(atom,2)>nmax+1
+%     [row,col]=find(distmatrix==min(min(distmatrix)));
+%     ind_rm=max([row(1) col(1)]);
+%     if ind_rm>i
+%         i=i+1;
+%     end
+%     atom(row(1))=[];
+%     distmatrix(row(1),:)=[];
+%     distmatrix(:,col(1))=[];
+% end
+% size(atom,2)
+
+%% New v2.07
+% Check that no added particles are too close
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
-while size(atom,2)>nmax+1
-    [row,col]=find(distmatrix==min(min(distmatrix)));
-    ind_rm=max([row(1) col(1)]);
-    if ind_rm>i
+i=1;ind=[];
+while i<size(atom,2)+1
+    [minvalue,ind]=min(distmatrix(i,:));
+    if minvalue<distance_factor*radii
+        ind=[ind i];
+    else
         i=i+1;
     end
-    atom(row(1))=[];
-    distmatrix(row(1),:)=[];
-    distmatrix(:,col(1))=[];
+    i=i+1;
 end
-size(atom,2)
+if numel(ind)>0
+    atom(ind)=[];
+end
+
 % Delete particles if not using the <maxion> option
 if iscellstr({nmax}) == 0
     if nmax > size(atom,2)

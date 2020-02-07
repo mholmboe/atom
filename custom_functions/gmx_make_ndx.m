@@ -2,7 +2,7 @@
 % * This function helps you print custom gromacs .ndx files
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -21,6 +21,11 @@ function gmx_make_ndx(groupname,ind)
 %ind2=6:10:960;
 %ind3=10:10:960;
 %ind=sort([ind1 ind2 ind3]);
+%
+% Or tho generate/multiply the indexes for multiple molecues, having 'ind'
+% being the repeated local index vector:
+% for i=1:5; IND=[IND; ind+(i-1)*98]; end
+%
 
 % Format the ind vector to have 15 entries per row
 ext_ind=zeros(1,15*ceil(length(ind)/15));

@@ -3,7 +3,7 @@
 % * molid) atom struct by placing the latters COM in the place of the former
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

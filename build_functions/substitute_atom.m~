@@ -126,7 +126,7 @@ if NumOctSubst>0
             nOctlo
             nOcthi
             nOctmid
-            % pause(3)
+            pause(3)
             break
         end
         i=i+1;
@@ -184,7 +184,7 @@ if NumTetSubst>0
         end
         if i == length(T1_data)
             disp('Stopped the loop')
-            % pause(3)
+            pause(3)
             break
         end
         i=i+1;
@@ -197,7 +197,7 @@ if NumTetSubst>0
         disp('Second substitution success!!!')
     else
         disp('Second substitution not optimal!!!')
-        % pause(3)
+        pause(3)
     end
     
 end
@@ -232,9 +232,6 @@ if NumOctSubst>0
             nOctlo
             nOcthi
             nOctmid
-            assignin('caller','nOctlo',nOctlo)
-            assignin('caller','nOcthi',nOcthi)
-            assignin('caller','nOctmid',nOctmid)
         catch
             disp('No first subst...')
         end
@@ -250,8 +247,6 @@ if NumTetSubst>0
         try
             nTetlo
             nTethi
-            assignin('caller','nTetlo',nTetlo)
-            assignin('caller','nTethi',nTethi)
         catch
             disp('No second subst...')
         end
@@ -259,4 +254,8 @@ if NumTetSubst>0
     end
 end
 
-
+assignin('caller','nOctlo',nOctlo)
+assignin('caller','nOcthi',nOcthi)
+assignin('caller','nOctmid',nOctmid)
+assignin('caller','nTetlo',nTetlo)
+assignin('caller','nTethi',nTethi)
