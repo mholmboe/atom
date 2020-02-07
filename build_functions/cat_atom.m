@@ -5,6 +5,7 @@
 % * other trajectory viewers cannot handle non-constant number of particles
 % * in a trajectory
 
+
 atom0=import_atom(strcat('evap_0.gro'));
 % traj=zeros(125,3*size(atom,2));
 % frame=zeros(1,3*size(atom,2));
