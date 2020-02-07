@@ -4,7 +4,7 @@
 % * Not finished for all writing functions yet... Tested 15/04/2017
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -16,6 +16,7 @@
 % # atom = write_atom(atom,Box_dim,'molecule.pqr')
 % # atom = write_atom(atom,Box_dim,'molecule.mol2')
 % # atom = write_atom(atom,Box_dim,'molecule.cif')
+% # atom = write_atom(atom,Box_dim,'molecule.sdf')
 % # atom = write_atom(atom,Box_dim,'molecule.itp')
 
 function atom = write_atom(atom,Box_dim,filename,varargin)
@@ -41,6 +42,9 @@ elseif regexp(filename,'.pqr') > 1
     atom=write_atom_pqr(atom,Box_dim,filename);
 elseif regexp(filename,'.cif') > 1
     disp('Will try to write a .cif file');
+    atom=write_atom_cif(atom,Box_dim,filename);
+elseif regexp(filename,'.sdf') > 1
+    disp('Will try to write a .sdf file');
     atom=write_atom_cif(atom,Box_dim,filename);
 elseif regexp(filename,'.itp') > 1
     disp('Will try to write a .itp file');

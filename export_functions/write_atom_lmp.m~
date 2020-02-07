@@ -1,8 +1,6 @@
 %% write_atom_lmp.m
 % * This script creates and prints a lammps data file (.lj). Works best for
-% Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. 
-% Nevertheless, this new version should be able to handle bonds|angles|dihedrals
-%
+% Clayff systems
 %
 %% Version
 % 2.07
@@ -15,22 +13,17 @@
 %
 function write_atom_lmp(atom,Box_dim,filename,varargin)
 format compact;
-
-% Change these values in case you want to merge a lammps topology file with
-% another one already haveing bonds, angles, dihedrals...
 prev_atom_index=0;
 prev_atom_types=0;
 prev_bond_num=0;
 prev_bond_types=0;
 prev_angle_num=0;
 prev_angle_types=0;
-prev_dihedral_num=0;
-prev_dihedral_types=0;
 prev_mol_index=0;
 
 precision = 7; % num2str(X,precision)
-ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'});
-ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'});
+ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'})
+ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'})
 Atom_labels=sort(unique([atom.type]));
 natom_labels=size(Atom_labels,2);
 
@@ -117,7 +110,7 @@ for i=1:size(angle_triplets,1)
 end
 angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
 else
-    nangle_types=0;
+    nbond_types=0;
 end
 
 if nDihedrals>0
@@ -179,7 +172,7 @@ AtomBondAnglestring = {num2str(size(atom,2)), 'atoms';...
     ' ',' ';...
     num2str(natom_labels), 'atom types';...
     num2str(nbond_types), 'bond types';...
-    num2str(nangle_types), 'angle types';...
+    num2str(nangle_types), 'bond types';...
     num2str(ndihedral_types), 'dihedral types'};
 
 Boxsizestring = {  num2str(0,precision), num2str(lx,precision), 'xlo', 'xhi';...
@@ -245,7 +238,7 @@ end
 fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 
-if nBonds>0
+if numel(nBonds)>0
 % Prints bond data
 fprintf(fid, 'Bonds \r\n');
 fprintf(fid, '\r\n');
@@ -259,7 +252,7 @@ fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 end
 
-if nAngles>0
+if numel(nAngles)>0
 % Prints angle data
 fprintf(fid, 'Angles \r\n');
 fprintf(fid, '\r\n');
@@ -273,9 +266,9 @@ fprintf(fid, '\r\n');
     fprintf(fid, '\r\n');
 end
 
-if nDihedrals>0
+if numel(nDihedrals)>0
 % Prints dihedral data
-fprintf(fid, 'Dihedrals \r\n');
+fprintf(fid, 'Dihedral \r\n');
 fprintf(fid, '\r\n');
     count_d = 1;
     while count_d <= nDihedrals

@@ -2,7 +2,7 @@
 % * This function writes a gro file. Does it also write velocities?
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

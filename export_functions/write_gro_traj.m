@@ -3,7 +3,7 @@
 % * I think this function works...currently no support for printing velocities, see line 31
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

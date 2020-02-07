@@ -2,7 +2,7 @@
 % * This function prints the CONECT records sometimes used in pdb files
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

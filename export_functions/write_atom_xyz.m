@@ -2,7 +2,7 @@
 % * This function writes an xyz file from the atom struct
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

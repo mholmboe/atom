@@ -3,7 +3,7 @@
 % * systems designed for Clayff...
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

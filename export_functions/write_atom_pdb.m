@@ -2,7 +2,7 @@
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.06
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -51,14 +51,14 @@ fprintf(fid, '%s\n','MODEL        1');
 % % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
 disp('Assuming P1 space group. Box can still be triclinic')
 if length(Box_dim)==3
-%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
+    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
     fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1'); % For mercury
 elseif length(Box_dim)==9
     
     Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
-%     if sum(find(Box_dim(4:end)))<0.0001;
-%         Box_dim=Box_dim(1:3);
-%     end
+    %     if sum(find(Box_dim(4:end)))<0.0001;
+    %         Box_dim=Box_dim(1:3);
+    %     end
     
     lx=Box_dim(1);
     ly=Box_dim(2);
@@ -86,8 +86,8 @@ elseif length(Box_dim)==9
     %     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
     %     beta=rad2deg(acos(xz/c));
     %     gamma=rad2deg(acos(xy/b));
-%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
-      fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
+    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
+    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
 else
     disp('No proper box_dim information')
 end
@@ -117,11 +117,11 @@ end
 if ~isfield(atom,'occupancy')
     [atom.occupancy]=deal(1);
 end
-    
+
 
 
 for i=1:size(atom,2)
-    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
+    if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
     elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};atom(i).formalcharge=2;
@@ -133,7 +133,13 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=0;
+    elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;
+    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Co'},2);atom(i).element={'Co'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'Cr'},2);atom(i).element={'Cr'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'Cs'},2);atom(i).element={'Cs'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Cu'},2);atom(i).element={'Cu'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;
@@ -184,10 +190,11 @@ if nargin>3
     short_r
     long_r
     
-    atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+    %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+    atom=bond__atom(atom,Box_dim,long_r);
     %     assignin('caller','Dist_matrix',Dist_matrix);
     assignin('caller','Bond_index',Bond_index);
-    assignin('caller','Angle_index',Angle_index);
+    %     assignin('caller','Angle_index',Angle_index);
     assignin('caller','nBonds',nBonds);
     assignin('caller','nAngles',nAngles);
     
