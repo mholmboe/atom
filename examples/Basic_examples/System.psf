@@ -8,8 +8,8 @@ PSF
        1 SURF 1    MMT  Al   ao     1.575000       26.9815           0
        2 SURF 1    MMT  Si   st     2.100000       28.0855           0
        3 SURF 1    MMT  Si   st     2.100000       28.0855           0
-       4 SURF 1    MMT  O    op    -1.050000       15.9994           0
-       5 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+       4 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+       5 SURF 1    MMT  O    op    -1.050000       15.9994           0
        6 SURF 1    MMT  O    oh    -0.950000       15.9994           0
        7 SURF 1    MMT  O    ob    -1.050000       15.9994           0
        8 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -18,18 +18,18 @@ PSF
       11 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       12 SURF 1    MMT  Si   st     2.100000       28.0855           0
       13 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      14 SURF 1    MMT  O    op    -1.050000       15.9994           0
-      15 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+      14 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+      15 SURF 1    MMT  O    op    -1.050000       15.9994           0
       16 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       17 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       18 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       19 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       20 SURF 1    MMT  H    ho     0.425000        1.0079           0
-      21 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+      21 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       22 SURF 1    MMT  Si   st     2.100000       28.0855           0
       23 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      24 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-      25 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+      24 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      25 SURF 1    MMT  O    op    -1.050000       15.9994           0
       26 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       27 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       28 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -38,8 +38,8 @@ PSF
       31 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       32 SURF 1    MMT  Si   st     2.100000       28.0855           0
       33 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      34 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-      35 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+      34 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      35 SURF 1    MMT  O    op    -1.050000       15.9994           0
       36 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       37 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       38 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -50,7 +50,7 @@ PSF
       43 SURF 1    MMT  Si   st     2.100000       28.0855           0
       44 SURF 1    MMT  O    op    -1.050000       15.9994           0
       45 SURF 1    MMT  O    op    -1.050000       15.9994           0
-      46 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+      46 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       47 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       48 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       49 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -60,7 +60,7 @@ PSF
       53 SURF 1    MMT  Si   st     2.100000       28.0855           0
       54 SURF 1    MMT  O    op    -1.050000       15.9994           0
       55 SURF 1    MMT  O    op    -1.050000       15.9994           0
-      56 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+      56 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
       57 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       58 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       59 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -68,19 +68,19 @@ PSF
       61 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       62 SURF 1    MMT  Si   st     2.100000       28.0855           0
       63 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      64 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+      64 SURF 1    MMT  O    op    -1.050000       15.9994           0
       65 SURF 1    MMT  O    op    -1.050000       15.9994           0
-      66 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+      66 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
       67 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       68 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       69 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       70 SURF 1    MMT  H    ho     0.425000        1.0079           0
-      71 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+      71 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       72 SURF 1    MMT  Si   st     2.100000       28.0855           0
       73 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      74 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      74 SURF 1    MMT  O    obos  -1.180800       15.9994           0
       75 SURF 1    MMT  O    op    -1.050000       15.9994           0
-      76 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+      76 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       77 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       78 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       79 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -88,8 +88,8 @@ PSF
       81 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       82 SURF 1    MMT  Si   st     2.100000       28.0855           0
       83 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      84 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-      85 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      84 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      85 SURF 1    MMT  O    obos  -1.180800       15.9994           0
       86 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       87 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       88 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -98,18 +98,18 @@ PSF
       91 SURF 1    MMT  Al   ao     1.575000       26.9815           0
       92 SURF 1    MMT  Si   st     2.100000       28.0855           0
       93 SURF 1    MMT  Si   st     2.100000       28.0855           0
-      94 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-      95 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      94 SURF 1    MMT  O    op    -1.050000       15.9994           0
+      95 SURF 1    MMT  O    obos  -1.180800       15.9994           0
       96 SURF 1    MMT  O    oh    -0.950000       15.9994           0
       97 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       98 SURF 1    MMT  O    ob    -1.050000       15.9994           0
       99 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      100 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     101 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     101 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      102 SURF 1    MMT  Si   st     2.100000       28.0855           0
      103 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     104 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     105 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     104 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     105 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      106 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      107 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      108 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -118,29 +118,29 @@ PSF
      111 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      112 SURF 1    MMT  Si   st     2.100000       28.0855           0
      113 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     114 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     115 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     114 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     115 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      116 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      117 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      118 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      119 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      120 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     121 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     121 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      122 SURF 1    MMT  Si   st     2.100000       28.0855           0
      123 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     124 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     125 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     124 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     125 SURF 1    MMT  O    op    -1.050000       15.9994           0
      126 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      127 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      128 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      129 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      130 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     131 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     131 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      132 SURF 1    MMT  Si   st     2.100000       28.0855           0
      133 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     134 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     135 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     136 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     134 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     135 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     136 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      137 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      138 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      139 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -148,29 +148,29 @@ PSF
      141 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      142 SURF 1    MMT  Si   st     2.100000       28.0855           0
      143 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     144 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     145 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     146 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     144 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     145 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     146 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      147 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      148 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      149 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      150 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     151 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     151 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      152 SURF 1    MMT  Si   st     2.100000       28.0855           0
      153 SURF 1    MMT  Si   st     2.100000       28.0855           0
      154 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     155 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     155 SURF 1    MMT  O    op    -1.050000       15.9994           0
      156 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      157 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      158 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      159 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      160 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     161 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     161 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      162 SURF 1    MMT  Si   st     2.100000       28.0855           0
      163 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     164 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     164 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      165 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     166 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     166 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      167 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      168 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      169 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -178,7 +178,7 @@ PSF
      171 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      172 SURF 1    MMT  Si   st     2.100000       28.0855           0
      173 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     174 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     174 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      175 SURF 1    MMT  O    op    -1.050000       15.9994           0
      176 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      177 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -198,9 +198,9 @@ PSF
      191 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      192 SURF 1    MMT  Si   st     2.100000       28.0855           0
      193 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     194 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     194 SURF 1    MMT  O    op    -1.050000       15.9994           0
      195 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     196 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     196 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      197 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      198 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      199 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -210,16 +210,16 @@ PSF
      203 SURF 1    MMT  Si   st     2.100000       28.0855           0
      204 SURF 1    MMT  O    op    -1.050000       15.9994           0
      205 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     206 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     206 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      207 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      208 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      209 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      210 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     211 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     211 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      212 SURF 1    MMT  Si   st     2.100000       28.0855           0
      213 SURF 1    MMT  Si   st     2.100000       28.0855           0
      214 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     215 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     215 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      216 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      217 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      218 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -228,19 +228,19 @@ PSF
      221 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      222 SURF 1    MMT  Si   st     2.100000       28.0855           0
      223 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     224 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     225 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     224 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     225 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      226 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      227 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      228 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      229 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      230 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     231 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     231 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      232 SURF 1    MMT  Si   st     2.100000       28.0855           0
      233 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     234 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     234 SURF 1    MMT  O    op    -1.050000       15.9994           0
      235 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     236 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     236 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      237 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      238 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      239 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -249,7 +249,7 @@ PSF
      242 SURF 1    MMT  Si   st     2.100000       28.0855           0
      243 SURF 1    MMT  Si   st     2.100000       28.0855           0
      244 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     245 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     245 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      246 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      247 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      248 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -278,18 +278,18 @@ PSF
      271 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      272 SURF 1    MMT  Si   st     2.100000       28.0855           0
      273 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     274 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     275 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     274 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     275 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      276 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      277 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      278 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      279 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      280 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     281 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     281 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      282 SURF 1    MMT  Si   st     2.100000       28.0855           0
      283 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     284 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     285 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     284 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     285 SURF 1    MMT  O    op    -1.050000       15.9994           0
      286 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      287 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      288 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -298,9 +298,9 @@ PSF
      291 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      292 SURF 1    MMT  Si   st     2.100000       28.0855           0
      293 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     294 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     294 SURF 1    MMT  O    op    -1.050000       15.9994           0
      295 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     296 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     296 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      297 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      298 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      299 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -308,18 +308,18 @@ PSF
      301 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      302 SURF 1    MMT  Si   st     2.100000       28.0855           0
      303 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     304 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     304 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      305 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     306 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     306 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      307 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      308 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      309 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      310 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     311 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     311 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      312 SURF 1    MMT  Si   st     2.100000       28.0855           0
      313 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     314 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     315 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     314 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     315 SURF 1    MMT  O    op    -1.050000       15.9994           0
      316 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      317 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      318 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -329,7 +329,7 @@ PSF
      322 SURF 1    MMT  Si   st     2.100000       28.0855           0
      323 SURF 1    MMT  Si   st     2.100000       28.0855           0
      324 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     325 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     325 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      326 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      327 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      328 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -339,18 +339,18 @@ PSF
      332 SURF 1    MMT  Si   st     2.100000       28.0855           0
      333 SURF 1    MMT  Si   st     2.100000       28.0855           0
      334 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     335 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     336 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     335 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     336 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      337 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      338 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      339 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      340 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     341 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     341 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      342 SURF 1    MMT  Si   st     2.100000       28.0855           0
      343 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     344 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     345 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     346 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     344 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     345 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     346 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      347 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      348 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      349 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -359,7 +359,7 @@ PSF
      352 SURF 1    MMT  Si   st     2.100000       28.0855           0
      353 SURF 1    MMT  Si   st     2.100000       28.0855           0
      354 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     355 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     355 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      356 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      357 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      358 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -368,9 +368,9 @@ PSF
      361 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      362 SURF 1    MMT  Si   st     2.100000       28.0855           0
      363 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     364 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     364 SURF 1    MMT  O    op    -1.050000       15.9994           0
      365 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     366 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     366 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      367 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      368 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      369 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -378,29 +378,29 @@ PSF
      371 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      372 SURF 1    MMT  Si   st     2.100000       28.0855           0
      373 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     374 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     375 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     374 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     375 SURF 1    MMT  O    op    -1.050000       15.9994           0
      376 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      377 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      378 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      379 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      380 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     381 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     381 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      382 SURF 1    MMT  Si   st     2.100000       28.0855           0
      383 SURF 1    MMT  Si   st     2.100000       28.0855           0
      384 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     385 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     385 SURF 1    MMT  O    op    -1.050000       15.9994           0
      386 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      387 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      388 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      389 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      390 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     391 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     391 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      392 SURF 1    MMT  Si   st     2.100000       28.0855           0
      393 SURF 1    MMT  Si   st     2.100000       28.0855           0
      394 SURF 1    MMT  O    op    -1.050000       15.9994           0
      395 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     396 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     396 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      397 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      398 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      399 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -448,19 +448,19 @@ PSF
      441 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      442 SURF 1    MMT  Si   st     2.100000       28.0855           0
      443 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     444 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     444 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      445 SURF 1    MMT  O    op    -1.050000       15.9994           0
      446 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      447 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      448 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      449 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      450 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     451 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     451 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      452 SURF 1    MMT  Si   st     2.100000       28.0855           0
      453 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     454 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     455 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     456 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     454 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     455 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     456 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      457 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      458 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      459 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -469,8 +469,8 @@ PSF
      462 SURF 1    MMT  Si   st     2.100000       28.0855           0
      463 SURF 1    MMT  Si   st     2.100000       28.0855           0
      464 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     465 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     466 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     465 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     466 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      467 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      468 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      469 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -489,7 +489,7 @@ PSF
      482 SURF 1    MMT  Si   st     2.100000       28.0855           0
      483 SURF 1    MMT  Si   st     2.100000       28.0855           0
      484 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     485 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     485 SURF 1    MMT  O    op    -1.050000       15.9994           0
      486 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      487 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      488 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -500,7 +500,7 @@ PSF
      493 SURF 1    MMT  Si   st     2.100000       28.0855           0
      494 SURF 1    MMT  O    op    -1.050000       15.9994           0
      495 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     496 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     496 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      497 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      498 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      499 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -510,7 +510,7 @@ PSF
      503 SURF 1    MMT  Si   st     2.100000       28.0855           0
      504 SURF 1    MMT  O    op    -1.050000       15.9994           0
      505 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     506 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     506 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      507 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      508 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      509 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -519,7 +519,7 @@ PSF
      512 SURF 1    MMT  Si   st     2.100000       28.0855           0
      513 SURF 1    MMT  Si   st     2.100000       28.0855           0
      514 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     515 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     515 SURF 1    MMT  O    op    -1.050000       15.9994           0
      516 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      517 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      518 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -529,8 +529,8 @@ PSF
      522 SURF 1    MMT  Si   st     2.100000       28.0855           0
      523 SURF 1    MMT  Si   st     2.100000       28.0855           0
      524 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     525 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     526 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     525 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     526 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      527 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      528 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      529 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -539,28 +539,28 @@ PSF
      532 SURF 1    MMT  Si   st     2.100000       28.0855           0
      533 SURF 1    MMT  Si   st     2.100000       28.0855           0
      534 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     535 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     535 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      536 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      537 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      538 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      539 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      540 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     541 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     541 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      542 SURF 1    MMT  Si   st     2.100000       28.0855           0
      543 SURF 1    MMT  Si   st     2.100000       28.0855           0
      544 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     545 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     545 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      546 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      547 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      548 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      549 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      550 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     551 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     551 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      552 SURF 1    MMT  Si   st     2.100000       28.0855           0
      553 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     554 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     555 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     556 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     554 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     555 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     556 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      557 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      558 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      559 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -570,17 +570,17 @@ PSF
      563 SURF 1    MMT  Si   st     2.100000       28.0855           0
      564 SURF 1    MMT  O    op    -1.050000       15.9994           0
      565 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     566 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     566 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      567 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      568 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      569 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      570 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     571 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     571 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      572 SURF 1    MMT  Si   st     2.100000       28.0855           0
      573 SURF 1    MMT  Si   st     2.100000       28.0855           0
      574 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     575 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     576 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     575 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     576 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      577 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      578 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      579 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -588,19 +588,19 @@ PSF
      581 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      582 SURF 1    MMT  Si   st     2.100000       28.0855           0
      583 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     584 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     585 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     586 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     584 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     585 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     586 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      587 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      588 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      589 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      590 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     591 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     591 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      592 SURF 1    MMT  Si   st     2.100000       28.0855           0
      593 SURF 1    MMT  Si   st     2.100000       28.0855           0
      594 SURF 1    MMT  O    op    -1.050000       15.9994           0
      595 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     596 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     596 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      597 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      598 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      599 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -685,12 +685,12 @@ PSF
      678 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      679 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      680 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     681 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     681 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      682 SURF 1    MMT  Si   st     2.100000       28.0855           0
      683 SURF 1    MMT  Si   st     2.100000       28.0855           0
      684 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     685 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     686 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     685 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     686 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      687 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      688 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      689 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -719,8 +719,8 @@ PSF
      712 SURF 1    MMT  Si   st     2.100000       28.0855           0
      713 SURF 1    MMT  Si   st     2.100000       28.0855           0
      714 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     715 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     716 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     715 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     716 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      717 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      718 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      719 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -735,22 +735,22 @@ PSF
      728 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      729 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      730 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     731 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     731 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      732 SURF 1    MMT  Si   st     2.100000       28.0855           0
      733 SURF 1    MMT  Si   st     2.100000       28.0855           0
      734 SURF 1    MMT  O    op    -1.050000       15.9994           0
      735 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     736 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     736 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      737 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      738 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      739 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      740 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     741 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     741 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      742 SURF 1    MMT  Si   st     2.100000       28.0855           0
      743 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     744 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     744 SURF 1    MMT  O    op    -1.050000       15.9994           0
      745 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     746 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     746 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      747 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      748 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      749 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -765,12 +765,12 @@ PSF
      758 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      759 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      760 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     761 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     761 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      762 SURF 1    MMT  Si   st     2.100000       28.0855           0
      763 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     764 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     765 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     766 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     764 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     765 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     766 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      767 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      768 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      769 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -778,7 +778,7 @@ PSF
      771 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      772 SURF 1    MMT  Si   st     2.100000       28.0855           0
      773 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     774 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     774 SURF 1    MMT  O    op    -1.050000       15.9994           0
      775 SURF 1    MMT  O    op    -1.050000       15.9994           0
      776 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      777 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -799,28 +799,28 @@ PSF
      792 SURF 1    MMT  Si   st     2.100000       28.0855           0
      793 SURF 1    MMT  Si   st     2.100000       28.0855           0
      794 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     795 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     796 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     795 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     796 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      797 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      798 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      799 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      800 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     801 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     801 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      802 SURF 1    MMT  Si   st     2.100000       28.0855           0
      803 SURF 1    MMT  Si   st     2.100000       28.0855           0
      804 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     805 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     806 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     805 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     806 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      807 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      808 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      809 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      810 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     811 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     811 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      812 SURF 1    MMT  Si   st     2.100000       28.0855           0
      813 SURF 1    MMT  Si   st     2.100000       28.0855           0
      814 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     815 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     816 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     815 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     816 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      817 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      818 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      819 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -829,8 +829,8 @@ PSF
      822 SURF 1    MMT  Si   st     2.100000       28.0855           0
      823 SURF 1    MMT  Si   st     2.100000       28.0855           0
      824 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     825 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     826 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     825 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     826 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      827 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      828 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      829 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -839,8 +839,8 @@ PSF
      832 SURF 1    MMT  Si   st     2.100000       28.0855           0
      833 SURF 1    MMT  Si   st     2.100000       28.0855           0
      834 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     835 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     836 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     835 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     836 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      837 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      838 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      839 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -849,7 +849,7 @@ PSF
      842 SURF 1    MMT  Si   st     2.100000       28.0855           0
      843 SURF 1    MMT  Si   st     2.100000       28.0855           0
      844 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     845 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     845 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      846 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      847 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      848 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -878,18 +878,18 @@ PSF
      871 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      872 SURF 1    MMT  Si   st     2.100000       28.0855           0
      873 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     874 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     875 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     874 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     875 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      876 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      877 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      878 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      879 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      880 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     881 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
+     881 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      882 SURF 1    MMT  Si   st     2.100000       28.0855           0
      883 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     884 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     885 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     884 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     885 SURF 1    MMT  O    op    -1.050000       15.9994           0
      886 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      887 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      888 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -898,7 +898,7 @@ PSF
      891 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      892 SURF 1    MMT  Si   st     2.100000       28.0855           0
      893 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     894 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     894 SURF 1    MMT  O    op    -1.050000       15.9994           0
      895 SURF 1    MMT  O    op    -1.050000       15.9994           0
      896 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      897 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -908,29 +908,29 @@ PSF
      901 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      902 SURF 1    MMT  Si   st     2.100000       28.0855           0
      903 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     904 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     904 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      905 SURF 1    MMT  O    op    -1.050000       15.9994           0
      906 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      907 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      908 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      909 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      910 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     911 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     911 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      912 SURF 1    MMT  Si   st     2.100000       28.0855           0
      913 SURF 1    MMT  Si   st     2.100000       28.0855           0
      914 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     915 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     915 SURF 1    MMT  O    op    -1.050000       15.9994           0
      916 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      917 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      918 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      919 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      920 SURF 1    MMT  H    ho     0.425000        1.0079           0
-     921 SURF 1    MMT  Al   ao     1.575000       26.9815           0
+     921 SURF 1    MMT  Mg   mgo    1.360000       24.3050           0
      922 SURF 1    MMT  Si   st     2.100000       28.0855           0
      923 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     924 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     925 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     926 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     924 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     925 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     926 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      927 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      928 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      929 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -938,9 +938,9 @@ PSF
      931 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      932 SURF 1    MMT  Si   st     2.100000       28.0855           0
      933 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     934 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     934 SURF 1    MMT  O    obos  -1.180800       15.9994           0
      935 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     936 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     936 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      937 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      938 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      939 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -950,7 +950,7 @@ PSF
      943 SURF 1    MMT  Si   st     2.100000       28.0855           0
      944 SURF 1    MMT  O    op    -1.050000       15.9994           0
      945 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     946 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
+     946 SURF 1    MMT  O    oh    -0.950000       15.9994           0
      947 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      948 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      949 SURF 1    MMT  O    ob    -1.050000       15.9994           0
@@ -958,9 +958,9 @@ PSF
      951 SURF 1    MMT  Al   ao     1.575000       26.9815           0
      952 SURF 1    MMT  Si   st     2.100000       28.0855           0
      953 SURF 1    MMT  Si   st     2.100000       28.0855           0
-     954 SURF 1    MMT  O    obos  -1.180800       15.9994           0
-     955 SURF 1    MMT  O    op    -1.050000       15.9994           0
-     956 SURF 1    MMT  O    oh    -0.950000       15.9994           0
+     954 SURF 1    MMT  O    op    -1.050000       15.9994           0
+     955 SURF 1    MMT  O    obos  -1.180800       15.9994           0
+     956 SURF 1    MMT  O    ohs   -1.080900       15.9994           0
      957 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      958 SURF 1    MMT  O    ob    -1.050000       15.9994           0
      959 SURF 1    MMT  O    ob    -1.050000       15.9994           0

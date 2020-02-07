@@ -29,5 +29,5 @@
 % # <wrap_atom.html wrap_atom(atom,Box_dim)> % This wraps the atoms into the orthogonal box
 % # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format
 % # <rename_type.html rename_type(atom,atomtype,new_atomtype,varargin)> % This function renames atoms in the atom
-% # <properties_atom.html properties_atom(atom,Box_dim,varargin)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
+% # <properties_atom.html properties_atom(atom,Box_dim,varargin)> % This function fetches various properties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
 % # <overwrite_atom.html overwrite_atom(In_atom,atomtype,resname)> % This function overwrites the atom struct information with new information 

@@ -31,6 +31,49 @@ vmd(filename_in)
 vmd(atom)
 vmd(atom,Box_dim)
 
+
+%% Plot using <show_atom.html show_atom>
+% The <show_atom.html show_atom> function is a really slow viewer
+% function that can show the <atom_variable.html atom> struct in a 
+% coordinate system using the different representations:
+% 
+% # 'ballstick' (default)
+% # 'licorice'
+% # 'halfvdw'
+% # 'vdw'
+% # 'crystal'
+% # 'lines'
+% # 'labels'
+% # 'index'
+%
+
+%%
+% *Examples*
+%
+%% Examples
+show_atom(atom)
+show_atom(atom,Box_dim)
+show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'lines', 'labels' or 'index'
+show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box
+show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency
+show_atom(atom,Box_dim,'ballstick',0,0,[0 0 -50]) % Will translate the XYZ coordinates
+show_atom(atom,Box_dim,'ballstick',0,0,[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
+
+%% Plot using <show_density_atom.html show_density_atom>
+% The <show_density_atom.html show_density_atom> function is a really 
+% simplistic viewer function that can show the <atom_variable.html atom> 
+% struct in a coordinate system, along with density profiles that has been 
+% smoothed through a Gaussian convolution. Note that the system is wrapped
+% before calculating the density profiles.
+
+%%
+% *Examples*
+%
+show_density_atom(atom,Box_dim)
+show_density_atom(atom,Box_dim,2) % 2 is a scale factor for the plotted atoms
+show_density_atom(atom,Box_dim,1,3) % Here the second argument 3 scales the plotted density profiles
+
+
 %% Plot using <plot_atom.html plot_atom>
 % The <plot_atom.html plot_atom> function is a really simplistic viewer
 % function that can show the <atom_variable.html atom> struct in a coordinate system.
