@@ -7,6 +7,7 @@
 % Please report bugs to michael.holmboe@umu.se
 %
 
+%% Main variables
 % # <Atom_label_variable.html Atom_label> % 1xn cell array 
 % # <atom_variable.html atom> % The main matlab struct variable
 % # <Box_dim_variable.html Box_dim> % A 1x3 or 1x9 array variable holding the Box 
