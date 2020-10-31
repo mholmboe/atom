@@ -1,7 +1,7 @@
 %% List of general functions
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -33,7 +33,9 @@
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % This function retrieves the atomic scattering factor vs 2theta using the 11 coeff parameters from Waasmaier Kirfel, 1995
 % # <ave_atom.html ave_atom(atom)> % This function calculates the mean of the atom coordinates
+% # <Box_dim2Cell.html Box_dim2Cell(Box_dim)> % * This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6 Cell variable
 % # <cat_atom.html cat_atom.m> % This is a special script (and not a function) that imports and appends atom structs into a .gro trajectory file, useful to make a trajectory with varying number of particles
+% # <Cell2Box_dim.html Cell2Box_dim(Cell)> % ** This function transforms the 1x6 Cell variable containing the a, b, c cell values and  the alfa, beta, gamma angle values as used in a typical .pdb file, into a 1x3 or the 1x9  Box_dim variable  
 % # <COM_atom.html COM_atom(atom,MolID)> % This function calculates the COM for certain elements
 % # <COM_func.html COM_func(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)> % This calculates the center of mass for water. Slow due to pbc...
 % # <COM_molid.html COM_molid(atom,MolID)> % This function calculates the COM for certain elements
@@ -50,6 +52,7 @@
 % # <hist_atom.html hist_atom(atom,s)> % This function is used to calculate density profiles in the X|Y|Z-direction
 % # <histz_atom.html histz_atom(atom,s)> % This function is used to calculate density profiles in the Z-direction
 % # <median_atom.html median_atom(atom)> % This function calculates the median position of the atom struct
+% # <neutralize_atom.html neutralize_atom(atom)> % This function appends a 0 to all atomtype names and will also set the  charge (if the field charge exist) to zero (0).
 % # <orto_atom.html orto_atom(atom,Box_dim)> % This transforms a triclinic atom struct to an orthogonal atom struct. Box_dim must look like [lx ly lz 0 0 xy 0 xz yz]
 % # <PATH2GMX.html PATH2<gmx()> % The Gromacs path on your computer
 % # <PATH2VMD.html PATH2VMD()> % The VMD path on your computer
@@ -59,11 +62,13 @@
 % # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % This function calculates the reduced mass.
 % # <show_density_atom.html show_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
 % # <show_atom.html show_atom(atom,varargin)> % This function draws the atom struct in 3D. Its a bit fancier that plot_atom()
+% # <show_arrow.html show_arrow(p1,p2,varargin)> % * plot a 3D arrow as patch object (cylinder+cone). This function was adapted from mArrow3.m
+% # <show_axis.html show_axis(varargin)> % * This function draws the axis in a plot
+% # <show_box.html show_box(Box_dim)> % * This function draws the simulation box
+% # <show_miller.html show_miller(Box_dim)> % * This function draws the hkl Miller planes of the Box_dim/Cell variables
 % # <triclinic_atom.html triclinic_atom(atom,Box_dim,angleparam,angletype)> %  triclinic_atom.m - This transforms an orthogonal atom struct to a triclinic with the angles alfa, beta, gamma or tilt factors xy, xz, yz
 % # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
 % # <vmd.html vmd(atom,Box_dim)> % This function plots the atom struct
-
-
 
 %% Keep/remove functions
 % # <keep_atom.html keep_atom(atom,resname)> % keep_atom.m - This removes all but resname

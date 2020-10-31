@@ -2,7 +2,7 @@
 % * This old function concatenats atom sections. Use update_atom({atom_1 atom_2}) instead...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

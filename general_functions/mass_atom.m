@@ -1,10 +1,10 @@
 %% mass_atom.m
 % * This function fetches the mass for each atomtype and place it into the
-% the field [atom.mass]. It also tries to calculate the (Box) molecular 
+% the field [atom.mass]. It also tries to calculate the (Box) molecular
 % weight, box volume and density.
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -160,24 +160,37 @@ for i=1:length([atom.type])
     [atom(i).atnum]=atnum(i);
 end
 
+%% Set the occupancy of all sites
+occ=1;
+if ~isfield(atom,'occupancy')
+    occ=1;
+    try
+        atom = occupancy_atom(atom,Box_dim);
+    catch
+        [atom.occupancy]=deal(1);
+    end
+end
+
 disp('Molecular weight in g/mol, Mw:')
 Mw=sum([atom.mass])
+disp('Molecular weight in g/mol, considering Mw_occupancy:')
+Mw_occupancy=sum([atom.mass].*[atom.occupancy])
 
 if nargin>1
     Box_dim=varargin{1};
-
+    
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
-        if size(Box_dim,2)==9
-            xy=Box_dim(6);
-            xz=Box_dim(8);
-            yz=Box_dim(9);
-        else
-            xy=0;
-            xz=0;
-            yz=0;
-        end
+    if size(Box_dim,2)==9
+        xy=Box_dim(6);
+        xz=Box_dim(8);
+        yz=Box_dim(9);
+    else
+        xy=0;
+        xz=0;
+        yz=0;
+    end
     a=lx;
     b=(ly^2+xy^2)^.5;
     c=(lz^2+xz^2+yz^2)^.5;
@@ -186,7 +199,7 @@ if nargin>1
     gamma=rad2deg(acos(xy/b));
     
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
-    Box_density=Mw/6.022E23/(Box_volume*1E-24);
+    Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
     disp('Volume in Å^3:')
     Box_volume
     disp('Density in g/cm^3')
@@ -195,5 +208,9 @@ if nargin>1
     assignin('caller','Box_density',Box_density);
 end
 
-
 assignin('caller','Mw',Mw);
+assignin('caller','Mw_occupancy',Mw_occupancy);
+
+if occ==0
+    atom = rmfield(atom,'occupancy');
+end

@@ -4,7 +4,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -17,7 +17,7 @@
 
 function atom = bond_angle_dihedral_atom(atom,varargin)
 
-if size(atom,2)>5000
+if size(atom,2)>10000
     disp('This is a large molecule or system, are you sure you want to calculate all dihedrals?')
     disp('If not, use the bond_atom() or the bond_angle_atom() functions!')
     pause(2)
@@ -50,8 +50,9 @@ end
 Dihedral_index=[];
 if size(Angle_index,1)>1
     
-disp('Calculating dihedrals')
-Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+    disp('Calculating dihedrals')
+%    Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+    Ax2=[Angle_index(:,[3 2 1 4 8 9 10 5 6 7]); Angle_index];
     d=1;
     for i=1:size(Ax2,1)
         for j=i:size(Ax2,1)
@@ -90,6 +91,7 @@ else
 end
 
 try
+    assignin('caller','Ax2',Ax2);
     assignin('caller','dist_matrix',dist_matrix);
     assignin('caller','overlap_index',overlap_index);
     assignin('caller','Bond_index',Bond_index);
@@ -99,11 +101,13 @@ try
     assignin('caller','nAngles',nAngles);
     assignin('caller','nDihedrals',nDihedrals);
 catch
-    assignin('base','Bond_index',Bond_index);
-    assignin('base','Angle_index',Angle_index);
-    assignin('base','Dihedral_index',Dihedral_index);
-    assignin('base','nBonds',nBonds);
-    assignin('base','nAngles',nAngles);
-    assignin('base','nDihedrals',nDihedrals);
+    assignin('caller','dist_matrix',dist_matrix);
+    assignin('caller','overlap_index',overlap_index);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Angle_index',Angle_index);
+    assignin('caller','Dihedral_index',Dihedral_index);
+    assignin('caller','nBonds',nBonds);
+    assignin('caller','nAngles',nAngles);
+    assignin('caller','nDihedrals',nDihedrals);
 end
 

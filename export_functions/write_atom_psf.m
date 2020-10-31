@@ -2,7 +2,7 @@
 % * This function writes an .psf file from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -38,13 +38,13 @@ if nargin>5
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E';
     end
-    if strncmpi(ffname,'clayff',5)
+    if strcmpi(ffname,'clayff')
         clayff_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
         end
         Total_charge = check_clayff_charge(atom)
-    elseif strncmpi(ffname,'clayff_2004',5)
+    elseif strncmpi(ffname,'clayff_2004',10)
         clayff_2004_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
@@ -118,7 +118,7 @@ for i = 1:length(Atom_label)
 end
 
 ResNum=[atom.molid];
-SegName=['SURF'];
+SegName=['MONT'];
 ResName=[atom.resname];
 for i = 1:size([atom.type],2)
     
@@ -150,7 +150,7 @@ bond_list=[reshape(bond_temp',8,[])]';
 
 count_b = 1;
 bondtype=1;
-while count_b <= length(bond_list)
+while count_b <= size(bond_list,1)%length(bond_list)
     if bond_list(count_b,1)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,1:2));end
     if bond_list(count_b,3)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,3:4));end
     if bond_list(count_b,5)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,5:6));end

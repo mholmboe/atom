@@ -4,7 +4,7 @@
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -41,7 +41,7 @@ if nargin==2
         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
         [atom((ind_lox)).x]=deal(x_shift{:});
     else
-        disp('will try to wrap triclinic Box_dim!!!')
+ %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
         orto=orto_atom(atom,Box_dim);
         X_data = num2cell([orto.xfrac]' - floor([orto.xfrac]'));
@@ -56,7 +56,7 @@ if nargin==2
     
 elseif nargin == 3
     if size(Box_dim(1,:),2)==3
-        disp('assuming othogonal box when wrapping!!!')
+ %       disp('assuming othogonal box when wrapping!!!')
         % ind_hiz=find([atom.z]>=Box_dim(3));
         % z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         % [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -78,7 +78,7 @@ elseif nargin == 3
         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
         [atom((ind_lox)).x]=deal(x_shift{:});
     else
-        disp('will try to wrap triclinic Box_dim!!!')
+ %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
         orto=orto_atom(atom,Box_dim);
         X_data = num2cell([orto.xfrac]' - floor([orto.xfrac]'));

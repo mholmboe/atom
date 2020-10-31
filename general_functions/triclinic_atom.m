@@ -3,7 +3,7 @@
 % * the angles alfa, beta, gamma or tilt factors xy, xz, yz
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -16,7 +16,7 @@
 function atom = triclinic_atom(atom,Box_dim,angleparam,angletype)
 
 if strncmpi(angletype,'angle',5)
-    disp('Using angles')
+%     disp('Using angles')
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
@@ -36,7 +36,7 @@ if strncmpi(angletype,'angle',5)
         i=i+1;c_temp=c;
     end
 else
-    disp('Using tilt values')
+%     disp('Using tilt values')
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
@@ -82,15 +82,19 @@ ToFrac=[1/a -cos(deg2rad(gamma))/(a*sin(deg2rad(gamma))) (cos(deg2rad(alfa))*cos
 
 % FromFrac*ToFrac
 
-XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-XYZ_data_frac=XYZ_data;XYZ_data_tric=XYZ_data;
-for i=1:size(atom,2)
-    XYZ_data_frac(i,:)=[XYZ_data(i,1)/lx XYZ_data(i,2)/ly XYZ_data(i,3)/lz]';
-    XYZ_data_tric(i,:)=FromFrac*[XYZ_data_frac(i,1) XYZ_data_frac(i,2) XYZ_data_frac(i,3)]';
-    atom(i).x=XYZ_data_tric(i,1);
-    atom(i).y=XYZ_data_tric(i,2);
-    atom(i).z=XYZ_data_tric(i,3);
+if size(atom,2)>0
+    
+    XYZ_labels=[atom.type]';
+    XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+    XYZ_data_frac=XYZ_data;XYZ_data_tric=XYZ_data;
+    for i=1:size(atom,2)
+        XYZ_data_frac(i,:)=[XYZ_data(i,1)/lx XYZ_data(i,2)/ly XYZ_data(i,3)/lz]';
+        XYZ_data_tric(i,:)=FromFrac*[XYZ_data_frac(i,1) XYZ_data_frac(i,2) XYZ_data_frac(i,3)]';
+        atom(i).x=XYZ_data_tric(i,1);
+        atom(i).y=XYZ_data_tric(i,2);
+        atom(i).z=XYZ_data_tric(i,3);
+    end
+    
 end
 
 Box_dim=[lx ly lz 0 0 xy 0 xz yz];

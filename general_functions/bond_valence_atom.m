@@ -9,7 +9,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -28,65 +28,113 @@ else
     rmaxlong=2.25;
 end
 
+valencestates=[];
 valence_ion1=-100; % Dummy value
+valence_ion2=-100; % Dummy value
 if nargin>4
     valence_ion1=varargin{3};
-end
-
-valence_ion2=-100; % Dummy value
-if nargin>5
-    valence_ion2=varargin{4};
+    valencestates=valence_ion1;
 end
 
 load('bond_valence_values.mat');
 atom=element_atom(atom);
 [atom.type]=atom.element;
 [atom.fftype]=atom.element;
-% atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
-% if ~isfield(atom,'neigh')
-% %    atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
-%     atom=neigh_atom(atom,Box_dim,rmaxshort,rmaxlong);
-% elseif numel(atom(1).neigh.type)==0
-%     %atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
-%     atom=neigh_atom(atom,Box_dim,rmaxshort,rmaxlong);
+
+% replicated=0;
+% if min(Box_dim)<2*rmaxlong
+%    orig_Box_dim=Box_dim;
+%    atom=replicate_atom(atom,Box_dim,[2 2 2]); % Will give new replicated Box_dim variable
+%    replicated=1;
 % end
 
-atom=bond_atom(atom,Box_dim,rmaxlong);
+if ~isfield(atom,'neigh')
+    atom=bond_atom(atom,Box_dim,rmaxlong);
+elseif numel(atom(1).neigh.type)==0
+    atom=bond_atom(atom,Box_dim,rmaxlong);
+end
 
-for i=1:size(atom,2)
-    if numel(atom(i).neigh.index)>0
-        for j=1:size(atom(i).neigh.index,1)
-            if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
-                    (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
-                [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
+if numel(valence_ion1)==size(atom,2)
+    for i=1:size(atom,2)
+        if numel(atom(i).neigh.index)>0
+            for j=1:size(atom(i).neigh.index,1)
+                %             if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
+                %                 (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
+                %
+                %                 [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
+                %                 atom(i).bv(j)=bv;
+                %                 atom(i).mean_bv(j)=mean_bv;
+                %             elseif atom(i).neigh.dist(j)> 1.25 && ~strncmpi([atom(i).neigh.type(j)],'H',1)
+                [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),...
+                                           Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valencestates(i),valencestates(atom(i).neigh.index(j)));
                 atom(i).bv(j)=bv;
                 atom(i).mean_bv(j)=mean_bv;
-            elseif atom(i).neigh.dist(j)> 1.25 && ~strncmpi([atom(i).neigh.type(j)],'H',1)
-                [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
-                atom(i).bv(j)=bv;
-                atom(i).mean_bv(j)=mean_bv;
+                %             end
             end
         end
+        if size(atom(i).neigh.type,1)==0
+            atom(i).bv=0;
+        end
+        try
+            atom(i).valence=sum(atom(i).bv(:));
+            size(atom(i).neigh.type,1);
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
+        catch
+            atom(i).valence=0;
+            atom(i).Rdiff=0;
+            atom(i).bv=0;
+            i
+            %         atom(i).valence=
+        end
+        
+        if mod(i,100)==0
+            i
+        end
     end
-    if size(atom(i).neigh.type,1)==0
-        atom(i).bv=0;
-    end
-    try
-        atom(i).valence=sum(atom(i).bv(:));
-        size(atom(i).neigh.type,1);
-        atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
-    catch
-        atom(i).valence=0;
-        atom(i).Rdiff=0;
-        atom(i).bv=0;
-        i
-        %         atom(i).valence=
-    end
-    
-    if mod(i,100)==0
-        i
+else
+    for i=1:size(atom,2)
+        if numel(atom(i).neigh.index)>0
+            for j=1:size(atom(i).neigh.index,1)
+                %             if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
+                %                 (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).neigh.type(j)],'H',1) )
+                %
+                %                 [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
+                %                 atom(i).bv(j)=bv;
+                %                 atom(i).mean_bv(j)=mean_bv;
+                %             elseif atom(i).neigh.dist(j)> 1.25 && ~strncmpi([atom(i).neigh.type(j)],'H',1)
+                [mean_bv,std_bv,bv,bvalue]=bond_valence_data(atom(i).type,atom(i).neigh.type(j),atom(i).neigh.dist(j),...
+                                           Ion_1,Ion_2,R0,b,Valence_1,Valence_2,valence_ion1,valence_ion2);
+                atom(i).bv(j)=bv;
+                atom(i).mean_bv(j)=mean_bv;
+                %             end
+            end
+        end
+        if size(atom(i).neigh.type,1)==0
+            atom(i).bv=0;
+        end
+        try
+            atom(i).valence=sum(atom(i).bv(:));
+            size(atom(i).neigh.type,1);
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
+        catch
+            atom(i).valence=0;
+            atom(i).Rdiff=0;
+            atom(i).bv=0;
+            i
+            %         atom(i).valence=
+        end
+        
+        if mod(i,100)==0
+            i
+        end
     end
 end
+
+% if replicated==1
+%     nAtoms=size(atom,2);
+%     Box_dim=orig_Box_dim;
+%     atom=atom(1:nAtoms/(2*2*2));
+% end
 
 
 Atom_labels=unique([atom.type]);

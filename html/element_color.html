@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>element_color.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="element_color.m"><style type="text/css">
+      --><title>element_color.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="element_color.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>element_color.m</h1><!--introduction--><div><ul><li>This function assigns a certain color to each element. Estethic improvements are welcome...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>color = element_atom('Li')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> color = element_color(Atom_label)
+  </style></head><body><div class="content"><h1>element_color.m</h1><!--introduction--><div><ul><li>This function assigns a certain color to each element. Estethic improvements are welcome...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>color = element_atom('Li')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> color = element_color(Atom_label)
 
 color_vec={<span class="keyword">...</span>
     <span class="string">'H'</span>  [0.8 0.8 0.8] 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
@@ -84,6 +85,7 @@ color_vec={<span class="keyword">...</span>
     <span class="string">'K'</span>  [0 1 0] 19 <span class="string">'Potassium'</span>; <span class="keyword">...</span>
     <span class="string">'Ca'</span> [0.8 0.1 0.1] 20 <span class="string">'Calcium'</span>; <span class="keyword">...</span>
     <span class="string">'Ti'</span> [0.1 0.1 0.1] 22 <span class="string">'Titanium'</span>; <span class="keyword">...</span>
+    <span class="string">'V'</span>  [0.7 0.4 0.4] 23 <span class="string">'Vanadium'</span>; <span class="keyword">...</span>
     <span class="string">'Fe'</span> [0 0 0.6] 26 <span class="string">'Iron'</span>; <span class="keyword">...</span>
     <span class="string">'Ni'</span> [1 0.2 0] 28 <span class="string">'Nickel'</span>; <span class="keyword">...</span>
     <span class="string">'Cu'</span> [0.7 0.4 0.2] 29 <span class="string">'Copper'</span>; <span class="keyword">...</span>
@@ -94,6 +96,7 @@ color_vec={<span class="keyword">...</span>
     <span class="string">'I'</span>  [1 0.6 0.2] 53 <span class="string">'Iodine'</span>; <span class="keyword">...</span>
     <span class="string">'Cs'</span> [0.8 0.9 0.9] 55 <span class="string">'Cesium'</span>; <span class="keyword">...</span>
     <span class="string">'Ba'</span> [1 0.2 0.2] 56 <span class="string">'Barium'</span>; <span class="keyword">...</span>
+    <span class="string">'W'</span>  [0.8 0.2 0.2] 56 <span class="string">'Tungsten'</span>; <span class="keyword">...</span>
     <span class="string">'Hw'</span>  [0.8 0.8 0.8] 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
     <span class="string">'HW'</span>  [0.8 0.8 0.8] 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
     <span class="string">'HW1'</span> [0.8 0.8 0.8] 1 <span class="string">'Hydrogen'</span>; <span class="keyword">...</span>
@@ -128,13 +131,13 @@ ind=ind_array;
 
 
 color = cell2mat(color_vec(ind,2));
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% element_color.m 
 % * This function assigns a certain color to each element. Estethic improvements are welcome...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -160,6 +163,7 @@ color_vec={...
     'K'  [0 1 0] 19 'Potassium'; ...
     'Ca' [0.8 0.1 0.1] 20 'Calcium'; ...
     'Ti' [0.1 0.1 0.1] 22 'Titanium'; ...
+    'V'  [0.7 0.4 0.4] 23 'Vanadium'; ...
     'Fe' [0 0 0.6] 26 'Iron'; ...
     'Ni' [1 0.2 0] 28 'Nickel'; ...
     'Cu' [0.7 0.4 0.2] 29 'Copper'; ...
@@ -170,6 +174,7 @@ color_vec={...
     'I'  [1 0.6 0.2] 53 'Iodine'; ...
     'Cs' [0.8 0.9 0.9] 55 'Cesium'; ...
     'Ba' [1 0.2 0.2] 56 'Barium'; ...
+    'W'  [0.8 0.2 0.2] 56 'Tungsten'; ...
     'Hw'  [0.8 0.8 0.8] 1 'Hydrogen'; ...
     'HW'  [0.8 0.8 0.8] 1 'Hydrogen'; ...
     'HW1' [0.8 0.8 0.8] 1 'Hydrogen'; ...

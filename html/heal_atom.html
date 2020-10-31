@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>heal_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="heal_atom.m"><style type="text/css">
+      --><title>heal_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="heal_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>heal_atom.m</h1><!--introduction--><div><ul><li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li><li>Note that you first need to find which sites that should be healed, using for instance the bond_valende_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom</p><h2 id="2">Version</h2><p>2.07</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])</li><li>healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He',1.87)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He','Shannon')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> healed_atom = heal_atom(atom,Box_dim,ind,varargin) <span class="comment">% optional varargs == rmaxlong,heal_type,r|'Shannon');</span>
+  </style></head><body><div class="content"><h1>heal_atom.m</h1><!--introduction--><div><ul><li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li><li>Note that you first need to find which sites that should be healed, using for instance the bond_valende_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom</p><h2 id="2">Version</h2><p>2.08</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])</li><li>healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> healed_atom = heal_atom(atom,Box_dim,ind,varargin) <span class="comment">% optional varargs == rmaxlong,heal_type,r|'Shannon');</span>
 
 <span class="keyword">if</span> nargin==2
     disp(<span class="string">'You must supply an index vector indicating which sites that should be healed'</span>);
@@ -77,7 +78,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">else</span>
     rmaxlong=varargin{1};
 <span class="keyword">end</span>
-<span class="keyword">if</span> nargin&lt;4
+<span class="keyword">if</span> nargin&lt;5
     heal_type={<span class="string">'H'</span>};
 <span class="keyword">else</span>
     heal_type=varargin{2};
@@ -160,7 +161,7 @@ dist_matrix=dist_matrix_atom(healed_atom,Box_dim);
 
 i=1;rmind_tot=[];
 <span class="keyword">while</span> i &lt; size(healed_atom,2)
-    rmind=find(dist_matrix(:,i)&lt;rmax);
+    rmind=find(dist_matrix(:,i)&lt;0.85);
     <span class="keyword">if</span> numel(rmind)&gt;1
         x1=[healed_atom(i).x];
         y1=[healed_atom(i).y];
@@ -197,7 +198,7 @@ healed_atom(rmind_tot)=[];
 <span class="comment">%     catch</span>
 <span class="comment">%     end</span>
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% heal_atom.m
 % * This function heals sites in the atom struct given by the index
@@ -213,7 +214,7 @@ healed_atom(rmind_tot)=[];
 % protonate_atom
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -222,9 +223,9 @@ healed_atom(rmind_tot)=[];
 % # healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])
 % # healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)
 % # healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He')
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He',1.87)
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He','Shannon')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')
 
 function healed_atom = heal_atom(atom,Box_dim,ind,varargin) % optional varargs == rmaxlong,heal_type,r|'Shannon');
 
@@ -237,7 +238,7 @@ if nargin==3
 else
     rmaxlong=varargin{1};
 end
-if nargin<4
+if nargin<5
     heal_type={'H'};
 else
     heal_type=varargin{2};
@@ -320,7 +321,7 @@ dist_matrix=dist_matrix_atom(healed_atom,Box_dim);
 
 i=1;rmind_tot=[];
 while i < size(healed_atom,2)
-    rmind=find(dist_matrix(:,i)<rmax);
+    rmind=find(dist_matrix(:,i)<0.85);
     if numel(rmind)>1
         x1=[healed_atom(i).x];
         y1=[healed_atom(i).y];

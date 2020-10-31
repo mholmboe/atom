@@ -11,7 +11,7 @@
 % create_atom.m
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -65,7 +65,7 @@ else
     all_atom=[];
 end
 
-while (size(all_atom,2) < nmax*nAtoms_in) | n < 1000
+while (size(all_atom,2) < nmax*nAtoms_in) || n < 1000
     
     %     size(all_atom,2)
     %     nmax*nAtoms_in

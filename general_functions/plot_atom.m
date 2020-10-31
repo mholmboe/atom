@@ -6,7 +6,7 @@
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -87,10 +87,9 @@ for i = 1:length(Atom_label)
     if numel(ind)==0
         ind=strncmpi([atom.type],Atom_label(i),1);
     end
-    
     if strncmpi([atom(ind).type],'Ow',2) | strncmpi([atom(ind).type],'Hw',2)
         scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
-            radii,...
+            radii(1),...
             'MarkerEdgeColor','none',...
             'MarkerFaceColor',color,...
             'MarkerFaceAlpha',0.25...

@@ -12,7 +12,7 @@
 % protonate_atom
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -21,9 +21,9 @@
 % # healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])
 % # healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)
 % # healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He')
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He',1.87)
-% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,'He','Shannon')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He')
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)
+% # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')
 
 function healed_atom = heal_atom(atom,Box_dim,ind,varargin) % optional varargs == rmaxlong,heal_type,r|'Shannon');
 
@@ -36,7 +36,7 @@ if nargin==3
 else
     rmaxlong=varargin{1};
 end
-if nargin<4
+if nargin<5
     heal_type={'H'};
 else
     heal_type=varargin{2};
@@ -119,7 +119,7 @@ dist_matrix=dist_matrix_atom(healed_atom,Box_dim);
 
 i=1;rmind_tot=[];
 while i < size(healed_atom,2)
-    rmind=find(dist_matrix(:,i)<rmax);
+    rmind=find(dist_matrix(:,i)<0.85);
     if numel(rmind)>1
         x1=[healed_atom(i).x];
         y1=[healed_atom(i).y];

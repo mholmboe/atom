@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_pdb.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_pdb.m"><style type="text/css">
+      --><title>write_atom_pdb.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="write_atom_pdb.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_pdb.m</h1><!--introduction--><div><ul><li>This function writes an pdb file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Remove this if you do not need it...</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pdb(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pdb(atom,Box_dim,filename_out,varargin)
+  </style></head><body><div class="content"><h1>write_atom_pdb.m</h1><!--introduction--><div><ul><li>This function writes an pdb file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Remove this if you do not need it...</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pdb(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pdb(atom,Box_dim,filename_out,varargin)
 </pre><pre class="codeinput"><span class="keyword">if</span> regexp(filename_out,<span class="string">'.pdb'</span>) ~= false
     filename_out = filename_out;
 <span class="keyword">else</span>
@@ -104,16 +105,31 @@ fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'MODEL     
 <span class="comment">% % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8</span>
 
 <span class="comment">% % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1</span>
+<span class="keyword">if</span> length(Box_dim)==9
+    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+    <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
+        Box_dim=Box_dim(1:3);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
 disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'</span>)
 <span class="keyword">if</span> length(Box_dim)==3
-    <span class="comment">%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);</span>
-    fprintf(fid, <span class="string">'%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n'</span>,<span class="string">'CRYST1'</span>, Box_dim(1:3), 90.00, 90.00, 90.00, <span class="string">'P1'</span>); <span class="comment">% For mercury</span>
-<span class="keyword">elseif</span> length(Box_dim)==9
 
-    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
-    <span class="comment">%     if sum(find(Box_dim(4:end)))&lt;0.0001;</span>
-    <span class="comment">%         Box_dim=Box_dim(1:3);</span>
-    <span class="comment">%     end</span>
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90.00;
+    beta=90.00;
+    gamma=90.00;
+
+<span class="keyword">elseif</span> length(Box_dim)==9
 
     lx=Box_dim(1);
     ly=Box_dim(2);
@@ -129,23 +145,13 @@ disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'<
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
 
-    <span class="comment">%     a=Box_dim(1);</span>
-    <span class="comment">%     b=Box_dim(2);</span>
-    <span class="comment">%     c=Box_dim(3);</span>
-    <span class="comment">%     xy=Box_dim(6);</span>
-    <span class="comment">%     xz=Box_dim(8);</span>
-    <span class="comment">%     yz=Box_dim(9);</span>
-    <span class="comment">%     lx = a;</span>
-    <span class="comment">%     ly = (b^2-xy^2)^.5;</span>
-    <span class="comment">%     lz = (c^2 - xz^2 - yz^2)^0.5;</span>
-    <span class="comment">%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))</span>
-    <span class="comment">%     beta=rad2deg(acos(xz/c));</span>
-    <span class="comment">%     gamma=rad2deg(acos(xy/b));</span>
-    <span class="comment">%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);</span>
-    fprintf(fid, <span class="string">'%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n'</span>,<span class="string">'CRYST1'</span>, a, b, c, alfa, beta, gamma, <span class="string">'P1'</span>); <span class="comment">% For mercury</span>
 <span class="keyword">else</span>
     disp(<span class="string">'No proper box_dim information'</span>)
 <span class="keyword">end</span>
+
+<span class="comment">%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);</span>
+fprintf(fid, <span class="string">'%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n'</span>,<span class="string">'CRYST1'</span>, a, b, c, alfa, beta, gamma, <span class="string">'P1'</span>); <span class="comment">% For mercury</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'Cell'</span>,[a b c alfa beta gamma]);
 
 <span class="comment">% See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html</span>
 <span class="comment">% COLUMNS        DATA  TYPE    FIELD        DEFINITION</span>
@@ -171,6 +177,10 @@ disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'<
 <span class="comment">% Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius</span>
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>)
     [atom.occupancy]=deal(1);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> max([atom.occupancy])&lt;0.01
+    [atom.occupancy]=deal(0.01);
 <span class="keyword">end</span>
 
 
@@ -231,24 +241,31 @@ disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'<
 <span class="comment">% Write conect records</span>
 
 <span class="keyword">if</span> nargin&gt;3
-    <span class="keyword">if</span> nargin&gt;4
-        short_r=cell2mat(varargin(1));
-        long_r=cell2mat(varargin(2));
+    <span class="keyword">if</span> size(varargin{1},1)&lt;2
+
+        <span class="keyword">if</span> nargin&gt;4
+            short_r=varargin{1};
+            long_r=varargin{2};
+        <span class="keyword">else</span>
+            short_r=1.25;
+            long_r=2.25;
+        <span class="keyword">end</span>
+
+        short_r
+        long_r
+
+        <span class="comment">%     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);</span>
+        atom=bond_atom(atom,Box_dim,long_r);
+        <span class="comment">%     assignin('caller','Dist_matrix',Dist_matrix);</span>
+        assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+        <span class="comment">%     assignin('caller','Angle_index',Angle_index);</span>
+        assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
+        <span class="comment">%     assignin('caller','nAngles',nAngles);</span>
     <span class="keyword">else</span>
-        short_r=1.25;
-        long_r=2.25;
+
+        Bond_index=varargin{1};
+
     <span class="keyword">end</span>
-
-    short_r
-    long_r
-
-    <span class="comment">%     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);</span>
-    atom=bond__atom(atom,Box_dim,long_r);
-    <span class="comment">%     assignin('caller','Dist_matrix',Dist_matrix);</span>
-    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
-    <span class="comment">%     assignin('caller','Angle_index',Angle_index);</span>
-    assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
-    assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</span>,nAngles);
 
     B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
     b1=sortrows(B);
@@ -270,13 +287,13 @@ disp(<span class="string">'.pdb structure file written'</span>)
 <span class="comment">%</span>
 <span class="comment">% assignin('caller','Bond_index',Bond_index);</span>
 <span class="comment">% assignin('caller','Angle_index',Angle_index);</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_pdb.m
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -323,16 +340,31 @@ fprintf(fid, '%s\n','MODEL        1');
 % % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8
 
 % % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
+if length(Box_dim)==9
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
+end
+
 disp('Assuming P1 space group. Box can still be triclinic')
 if length(Box_dim)==3
-    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
-    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1'); % For mercury
-elseif length(Box_dim)==9
     
-    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
-    %     if sum(find(Box_dim(4:end)))<0.0001;
-    %         Box_dim=Box_dim(1:3);
-    %     end
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+    
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90.00;
+    beta=90.00;
+    gamma=90.00;
+    
+elseif length(Box_dim)==9
     
     lx=Box_dim(1);
     ly=Box_dim(2);
@@ -348,23 +380,13 @@ elseif length(Box_dim)==9
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
     
-    %     a=Box_dim(1);
-    %     b=Box_dim(2);
-    %     c=Box_dim(3);
-    %     xy=Box_dim(6);
-    %     xz=Box_dim(8);
-    %     yz=Box_dim(9);
-    %     lx = a;
-    %     ly = (b^2-xy^2)^.5;
-    %     lz = (c^2 - xz^2 - yz^2)^0.5;
-    %     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
-    %     beta=rad2deg(acos(xz/c));
-    %     gamma=rad2deg(acos(xy/b));
-    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
-    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
 else
     disp('No proper box_dim information')
 end
+
+%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
+fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
+assignin('caller','Cell',[a b c alfa beta gamma]);
 
 % See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html
 % COLUMNS        DATA  TYPE    FIELD        DEFINITION
@@ -390,6 +412,10 @@ end
 % Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
 if ~isfield(atom,'occupancy')
     [atom.occupancy]=deal(1);
+end
+
+if max([atom.occupancy])<0.01
+    [atom.occupancy]=deal(0.01);
 end
 
 
@@ -453,24 +479,31 @@ end
 % Write conect records
 
 if nargin>3
-    if nargin>4
-        short_r=cell2mat(varargin(1));
-        long_r=cell2mat(varargin(2));
+    if size(varargin{1},1)<2
+        
+        if nargin>4
+            short_r=varargin{1};
+            long_r=varargin{2};
+        else
+            short_r=1.25;
+            long_r=2.25;
+        end
+        
+        short_r
+        long_r
+        
+        %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+        atom=bond_atom(atom,Box_dim,long_r);
+        %     assignin('caller','Dist_matrix',Dist_matrix);
+        assignin('caller','Bond_index',Bond_index);
+        %     assignin('caller','Angle_index',Angle_index);
+        assignin('caller','nBonds',nBonds);
+        %     assignin('caller','nAngles',nAngles);
     else
-        short_r=1.25;
-        long_r=2.25;
+        
+        Bond_index=varargin{1};
+        
     end
-    
-    short_r
-    long_r
-    
-    %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-    atom=bond__atom(atom,Box_dim,long_r);
-    %     assignin('caller','Dist_matrix',Dist_matrix);
-    assignin('caller','Bond_index',Bond_index);
-    %     assignin('caller','Angle_index',Angle_index);
-    assignin('caller','nBonds',nBonds);
-    assignin('caller','nAngles',nAngles);
     
     B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
     b1=sortrows(B);

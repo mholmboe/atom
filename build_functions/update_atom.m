@@ -3,7 +3,7 @@
 % * Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,7 +13,7 @@
 % # atom = update_atom(atom)
 % # atom = update_atom({atom1 atom2 atom3})
 %
-function atom = update_atom(atom)
+function atom = update_atom(atom,varargin)
 
 if iscell(atom)
     
@@ -89,7 +89,7 @@ for i=1:nAtoms
 end
 
 if numel(fieldnames(atom))~=10
-    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn'};
+    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn' 'molecule'};
     atomAttributes=fieldnames(atom)';
     indDefault=find(ismember(defaultAttributes,atomAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -100,6 +100,10 @@ end
 % assignin('base','atom1',atom);
 
 % atom = resname_atom(atom);
+
+if nargin>1
+   [atom.molid]=deal(varargin{1}); 
+end
 
 assignin('caller','nAtoms',nAtoms);
 

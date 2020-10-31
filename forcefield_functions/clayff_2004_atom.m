@@ -1,13 +1,15 @@
 %% clayff_2004_atom.m
-% * This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...
-% * This clayffmod function was modified accoring to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016. STRUCTURE
+% * This function tries to assign all atoms according to the clayff atom 
+% * types (with modified atom names by MHolmboe), with some modifications 
+% * for edges...
+% * This clayff_2004 function was modified according to Clays and Clay Minerals, Vol. 64, No. 4, 452?471, 2016.
 % * heal_iterations should be a list of numbers 1-7, corresponding to which
 % assigment runs you need in order to heal Al, Mg, Si, O, H and so on...
 % * The variables distance_factor and rmaxlong are related to the
 % neighbour/bond cutoff radius for each atomtype
 
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -18,6 +20,8 @@
 % # atom=clayff_2004_atom(atom,Box_dim,'clayff_2004','spc',heal_iterations)
 %
 function atom=clayff_2004_atom(atom,Box_dim,varargin)
+%%
+format compact;
 
 if nargin >3
     ffname=varargin{1};
@@ -35,8 +39,9 @@ end
 
 atom=element_atom(atom);
 
-distance_factor=1.2;
-rmaxlong=2.1;
+distance_factor=0.6;
+rmaxlong=2.25;
+All_Neighbours=[];
 
 % Initialize some variables
 rm_ind=[];
@@ -70,8 +75,6 @@ for assignment_run=heal_iterations
     end
     
     All_Neighbours={};
-    Bond_index=zeros(4*size(size(atom,2),1),3);
-    Angle_index=zeros(4*size(size(atom,2),1),4);
     
     atom=element_atom(atom);
     
@@ -94,73 +97,20 @@ for assignment_run=heal_iterations
     
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+    atom=remove_sametype_bond(atom,Box_dim,Bond_index);
     
-    Radiiproperties=load('Revised_Shannon_radii.mat');
-    %     atom = rmfield(atom,'neigh');
-    %     atom=bond_valence_atom(atom,Box_dim,1.25,rmax);
-    %     clayff_2004_param(sort(unique([atom.type])),'SPC/E');
-    
-    if size(atom,2)>5000
-        dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    else
-        dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
-    end
-    
-    XYZ_radii=zeros(length(XYZ_labels),1);
-    XYZ_formalcharge=zeros(length(XYZ_labels),1);
-    Atom_label=sort(unique([atom.element]));
-    for i=1:length(Atom_label)
-        try
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
-        catch
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
-        end
-        XYZ_radii(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
-        XYZ_formalcharge(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
-    end
-    
-    assignin('caller','XYZ_radii',XYZ_radii);
-    assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
-    
-    
-    XYZ_radii(XYZ_radii==0)=distance_factor;
-    radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
-    radius_limit=(radius_matrix+radius_matrix')*distance_factor;
-    dist_matrix(dist_matrix==0)=1000;
-    bond_matrix=dist_matrix-radius_limit;
-    dist_matrix(dist_matrix==1000)=0;
-    bond_matrix(bond_matrix>0)=0;
-    bond_matrix(bond_matrix<0)=1;
-    disp('Radii+Radii limits')
-    unique(XYZ_labels,'stable')
-    unique(XYZ_radii,'stable')
-    unique(radius_limit,'stable')
+    assignin('caller','atom_temp',atom);
+    assignin('caller','nBonds',nBonds);
     assignin('caller','radius_limit',radius_limit);
-    assignin('caller','bond_matrix',bond_matrix);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Neigh_index',Neigh_index);
     assignin('caller','dist_matrix',dist_matrix);
     
-    atom = rmfield(atom,'neigh');
-    for i=1:length(XYZ_labels)
-        k=1;j=1;
-        bond_ind=find(bond_matrix(:,i));
-        while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
-            if bond_matrix(bond_ind(j),i)==1
-                if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0 && [atom(i).molid] == [atom(bond_ind(j)).molid]
-                    [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
-                    [atom(i).neigh.index(k)]=bond_ind(j);
-                    [atom(i).neigh.type(k)]=XYZ_labels(bond_ind(j));
-                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
-                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
-                    k=k+1;
-                end
-            end
-            j=j+1;
-        end
-    end
-    
-    assignin('caller','Bond_index',Bond_index);
-    
-    b=1;a=1;i=1;nH_extra=0;
+%     b=1;
+%     a=1;
+    i=1;nH_extra=0;
     while i <= size(atom,2)
         if mod(i,100)==1
             i-1
@@ -172,89 +122,20 @@ for assignment_run=heal_iterations
             n=1;neigh=1;
             
             if numel([atom(i).neigh])>0
-                index=[atom(i).neigh.index];
-                if sum(index)>0
-                    for k=1:length(index)
-                        j=atom(i).neigh.index(k);
-                        r=atom(i).neigh.dist(k);
-                        
-                        if i < size(radius_limit,2)
-                            max_distance=radius_limit(j,i);
-                        else
-                            disp('Manually setting max_distance to...')
-                            max_distance=1.8
-                        end
-                        if r > 0 && r < max_distance/3
-                            r
-                            disp('Atoms too close')
-                            format compact;
-                            format short;
-                            i
-                            j
-                            atom(i).type
-                            atom(j).type
-                            [atom(i).x atom(i).y atom(i).z]
-                            [atom(j).x atom(j).y atom(j).z]
-                        end
-                        
-                        if r > max_distance/3 && r < max_distance
-                            
-                            neigh=neigh+1;
-                            
-                            if i < j
-                                Bond_index(b,1)= i;
-                                Bond_index(b,2)= j;
-                            else
-                                Bond_index(b,1)= j;
-                                Bond_index(b,2)= i;
-                            end
-                            
-                            Bond_index(b,3)= r;
-                            Neigh_ind(n,1)= j;
-                            Neigh_vec(n,1:3)= [atom(i).neigh.r_vec(k,1) atom(i).neigh.r_vec(k,2) atom(i).neigh.r_vec(k,3)];
-                            % Neigh_vec(n,1:3)= [atom(i).neigh(k).r_vec(1) atom(i).neigh(k).r_vec(2) atom(i).neigh(k).r_vec(3)];
-                            b=b+1;
-                            n=n+1;
-                        end
-                    end
-                end
                 
                 Neigh_cell = sort([atom(i).neigh.type]);
-                if length(Neigh_cell) > 0; Neighbours=strcat(Neigh_cell{:});
-                else Neighbours={'Nan'}; end
+                if length(Neigh_cell) > 0
+                    Neighbours=strcat(Neigh_cell{:});
+                    All_Neighbours=[All_Neighbours;{Neighbours}];
+                else
+                    Neighbours={'Nan'};
+                end
                 Neigh_ind(~any(Neigh_ind,2),:) = [];
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
                 
-                size(Neigh_ind,1);
-                for v=1:size(Neigh_ind,1)
-                    for w=1:size(Neigh_ind,1)
-                        angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                        if angle > 0 && angle < 160
-                            if v < w
-                                Angle_index(a,1)= Neigh_ind(v,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(w,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            else
-                                Angle_index(a,1)= Neigh_ind(w,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(v,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            end
-                        end
-                    end
-                end
-                
-                Bond_index=sortrows(Bond_index);
-                Angle_index=sortrows(Angle_index);
                 
                 % If the element is Si
                 if strncmpi(atom(i).type,{'st'},2) % Si
-                    
-                    Neigh_cell = sort([atom(i).neigh.type]);
-                    Neighbours=strcat(Neigh_cell{:});
                     if sum(strncmp({'o'},[atom(i).neigh.type],1)) == 4 % Si O O O O
                         atom(i).fftype={'st'};
                     elseif length(Neigh_ind) > 4
@@ -427,7 +308,6 @@ for assignment_run=heal_iterations
                 % If the element is O
                 if strncmp(atom(i).type,{'o'},1)
                     
-                    All_Neighbours=[All_Neighbours;Neighbours];
                     if strncmp(Neighbours,'aoaoho',5)
                         atom(i).fftype={'oh'};
                     elseif strncmp(Neighbours,'aoaost',5)
@@ -452,9 +332,13 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'ohst'};
                     elseif strncmp(Neighbours,'aoomg',5)
                         atom(i).fftype={'obss'};
+                    elseif strncmp(Neighbours,'aoatmg',6)
+                        atom(i).fftype={'obss'};
                     elseif strncmp(Neighbours,'aoatho',6)
                         atom(i).fftype={'obts'};
                     elseif strncmp(Neighbours,'aoaoat',6)
+                        atom(i).fftype={'obts'};
+                    elseif strncmp(Neighbours,'aoaoao',6)
                         atom(i).fftype={'obts'};
                     elseif strncmp(Neighbours,'aoat',4)
                         atom(i).fftype={'obts'};
@@ -462,7 +346,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'oat'};
                     elseif strncmp(Neighbours,'aost',4) % Al-O-H or Al-O-Si
                         if sum(ismember(find(strcmp([atom.fftype],'at')),[atom(i).neigh.index])) < 1
-                            atom(i).fftype={'oas'};
+                            atom(i).fftype={'oas'}; % Believe this was a special zeolite thing
                         elseif sum(ismember(find(strcmp([atom.fftype],'at')),[atom(i).neigh.index])) > 0
                             atom(i).fftype={'oat'};
                         end
@@ -470,6 +354,10 @@ for assignment_run=heal_iterations
 %                         atom(i).fftype={'o'};
                     elseif strncmp(Neighbours,'mgomgost',7)
                         atom(i).fftype={'odsub'};
+                    elseif strcmp(Neighbours,'mgomgomgost') || strcmp(Neighbours,'feofeofeost')
+                        atom(i).fftype={'op'};
+                    elseif strcmp(Neighbours,'homgomgomgo') || strcmp(Neighbours,'hofeofeofeo')
+                        atom(i).fftype={'oh'};
                     elseif strncmp(Neighbours,'stst',4)
                         atom(i).fftype={'ob'}; % Old version atom(i).fftype={'O'};
                     elseif strncmp(Neighbours,'hoho',4)
@@ -479,6 +367,7 @@ for assignment_run=heal_iterations
                         disp('O atom over coordinated')
                         i
                         Neighbours
+                        atom(i).neigh.index
                         atom(i).fftype='o^';
                     elseif length(Neigh_ind) == 1 || strncmp(Neighbours,'aoao',4) || strncmpi(Neighbours,'aomgo',5)
                         disp('O atom under coordinated')
@@ -564,17 +453,6 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
 for i=1:length(unique([atom.type]))
     new_Atom_label=sort(unique([atom.type]));
     ind=ismember([atom.type],new_Atom_label(i));
@@ -586,12 +464,23 @@ watermodel
 try
     %% If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
-    %% If new atom types
+    [C,ia,ic]=unique([atom.type],'first');
+    [atom(ia).charge]
+%     %% If new atom types
 %     atom_alternative = charge_atom(atom,Box_dim,ffname,watermodel,'more');
 %     assignin('caller','atom_alternative',atom_alternative);
+%     unique([atom_alternative.charge],'stable')
+%     unique([atom_alternative.type],'stable')
 catch
     disp('Could not set the charge...')
 end
+
+ffname
+watermodel
+
+% assignin('caller','newatom',atom);
+% assignin('caller','remove_ind',rm_ind);
+assignin('caller','All_Neighbours',unique(All_Neighbours));
 
 % Atom_label=sort(unique([atom.type]));
 % clayff_param(sort(Atom_label),'SPC/E');

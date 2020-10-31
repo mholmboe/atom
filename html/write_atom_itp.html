@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_itp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_itp.m"><style type="text/css">
+      --><title>write_atom_itp.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="write_atom_itp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_itp.m</h1><!--introduction--><div><ul><li>This script creates and prints a gromacs .itp file</li><li>Works best for clayff or interface ff with spc, spce or tip3p</li><li>The variables explicit_bonds|explicit_angles (1/0) on that are set</li><li>between lines ~50-120 for each specific forcefield, determines if the</li><li>bond and angle terms are added to the .itp file. *</li><li>In the examples below, the first cutoff (1.25) represents max bond</li><li>distance to any H. The second cutoff (2.25) represents the max bond</li><li>distance between any non-H atomtypes, like Si-O.</li><li>Additional commands governing the selection of bonds/angles can be</li><li>found on lines ~140-170, and 175-190 for angles</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Find atomtype specific indexes</a></li><li><a href="#6">To only keep bonds to H's, uncomment the next four lines</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_itp(atom,Box_dim,filename)</li><li>write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004</li><li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')</li><li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_itp(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_itp.m</h1><!--introduction--><div><ul><li>This script creates and prints a gromacs .itp file</li><li>Works best for clayff or interface ff with spc, spce or tip3p</li><li>The variables explicit_bonds|explicit_angles (1/0) on that are set</li><li>between lines ~50-120 for each specific forcefield, determines if the</li><li>bond and angle terms are added to the .itp file. *</li><li>In the examples below, the first cutoff (1.25) represents max bond</li><li>distance to any H. The second cutoff (2.25) represents the max bond</li><li>distance between any non-H atomtypes, like Si-O.</li><li>Additional commands governing the selection of bonds/angles can be</li><li>found on lines ~140-175, and 180-200 for angles</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Find atomtype specific indexes</a></li><li><a href="#6">To only keep bonds to H's, uncomment the next four lines</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_itp(atom,Box_dim,filename)</li><li>write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004</li><li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')</li><li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_itp(atom,Box_dim,filename,varargin)
 </pre><pre class="codeinput">format <span class="string">long</span>
 nAtoms=size(atom,2);
 
@@ -114,7 +115,7 @@ nAtoms=size(atom,2);
         <span class="comment">%         pause</span>
         nrexcl=1; <span class="comment">% See the gromacs manual</span>
         explicit_bonds = 0;
-        explicit_angles = 0;
+        explicit_angles = 1;
     <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface'</span>)
         interface_param(sort(unique([atom.type])),watermodel);
         <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
@@ -215,9 +216,11 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 <span class="comment">%     %     nBonds=size(Bond_index,1);</span>
 <span class="comment">%</span>
 <span class="comment">% end</span>
+
 [Y,I]=sort(Bond_index(:,1));
 Bond_index=Bond_index(I,:);
 Bond_index = unique(Bond_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
+
 <span class="comment">% if strncmpi(ffname,'clayff',5)</span>
 <span class="comment">%     disp('What to do with edge angles with Al')</span>
 <span class="comment">%     disp('Removing angles with Al')</span>
@@ -236,24 +239,23 @@ Bond_index = unique(Bond_index,<span class="string">'rows'</span>,<span class="s
 <span class="comment">%     Angle_index = unique(Angle_index,'rows','stable');</span>
 <span class="comment">% end</span>
 
-
-
 <span class="comment">%</span>
 file_title = <span class="string">'Gromacs awesome itp file'</span>; <span class="comment">% Header in output file</span>
-molecule_name = filename; <span class="comment">% molecule name</span>
+molecule_name = char([atom(1).resname]); <span class="comment">% molecule name</span>
 Atom_label = unique([atom.type]);
 
-fid = fopen(molecule_name, <span class="string">'wt'</span>); <span class="comment">% open a text file that we can write into</span>
+fid = fopen(filename, <span class="string">'wt'</span>); <span class="comment">% open a text file that we can write into</span>
 
 fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,file_title);
 fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,<span class="string">'File written by MHolmboe (michael.holmboe@umu.se)'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ moleculetype ]'</span>);
 fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,<span class="string">'molname   nrexcl'</span>);
-fprintf(fid, <span class="string">'%s       %d\r\n'</span>,strrep(molecule_name(1:3),<span class="string">'.itp'</span>,<span class="string">''</span>),nrexcl);
+<span class="comment">% fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);</span>
+fprintf(fid, <span class="string">'%s       %d\r\n'</span>,molecule_name(1:3),nrexcl);
 fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ atoms ]'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; id   attype  resnr resname  atname   cgnr charge      mass'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; id   attype  resnr resname  atname   cgnr  charge      mass'</span>);
 
 Atom_label_ID=ones(size(atom,2),1);
 <span class="keyword">for</span> i = 1:nAtoms
@@ -265,7 +267,7 @@ Atom_label_ID=ones(size(atom,2),1);
     <span class="keyword">else</span> exist(<span class="string">'Masses'</span>,<span class="string">'var'</span>);
         Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'%-4i%6s%8i%8s%8s%8i\t%8.6f\t%8.6f\r\n'</span>, Atoms_data{i,:});
+    fprintf(fid, <span class="string">'%-4i%6s%8i%8s%8s%8i\t% 8.6f\t% 8.6f\r\n'</span>, Atoms_data{i,:});
 <span class="keyword">end</span>
 
 fprintf(fid, <span class="string">'\r\n'</span>);
@@ -518,7 +520,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</sp
 <span class="comment">% assignin('caller','Masses',Masses);</span>
 
 <span class="comment">% toc</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_itp.m
 % * This script creates and prints a gromacs .itp file
@@ -531,10 +533,10 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</sp
 % * distance to any H. The second cutoff (2.25) represents the max bond
 % * distance between any non-H atomtypes, like Si-O.
 % * Additional commands governing the selection of bonds/angles can be
-% * found on lines ~140-170, and 175-190 for angles
+% * found on lines ~140-175, and 180-200 for angles
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -594,7 +596,7 @@ if nargin>5
         %         pause
         nrexcl=1; % See the gromacs manual
         explicit_bonds = 0;
-        explicit_angles = 0;
+        explicit_angles = 1;
     elseif strcmpi(ffname,'interface')
         interface_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
@@ -699,9 +701,11 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 %     %     nBonds=size(Bond_index,1);
 %     
 % end
+
 [Y,I]=sort(Bond_index(:,1));
 Bond_index=Bond_index(I,:);
 Bond_index = unique(Bond_index,'rows','stable');
+
 % if strncmpi(ffname,'clayff',5)
 %     disp('What to do with edge angles with Al')
 %     disp('Removing angles with Al')
@@ -720,24 +724,23 @@ Bond_index = unique(Bond_index,'rows','stable');
 %     Angle_index = unique(Angle_index,'rows','stable');
 % end
 
-
-
 %
 file_title = 'Gromacs awesome itp file'; % Header in output file
-molecule_name = filename; % molecule name
+molecule_name = char([atom(1).resname]); % molecule name
 Atom_label = unique([atom.type]);
 
-fid = fopen(molecule_name, 'wt'); % open a text file that we can write into
+fid = fopen(filename, 'wt'); % open a text file that we can write into
 
 fprintf(fid, '%s % s\r\n',';',file_title);
 fprintf(fid, '%s % s\r\n',';','File written by MHolmboe (michael.holmboe@umu.se)');
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ moleculetype ]');
 fprintf(fid, '%s % s\r\n',';','molname   nrexcl');
-fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
+% fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
+fprintf(fid, '%s       %d\r\n',molecule_name(1:3),nrexcl);
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ atoms ]');
-fprintf(fid, '%s\r\n','; id   attype  resnr resname  atname   cgnr charge      mass');
+fprintf(fid, '%s\r\n','; id   attype  resnr resname  atname   cgnr  charge      mass');
 
 Atom_label_ID=ones(size(atom,2),1);
 for i = 1:nAtoms
@@ -749,7 +752,7 @@ for i = 1:nAtoms
     else exist('Masses','var');
         Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     end
-    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.6f\t%8.6f\r\n', Atoms_data{i,:});
+    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t% 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
 end
 
 fprintf(fid, '\r\n');

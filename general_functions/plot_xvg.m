@@ -6,7 +6,7 @@
 % Note also that the x and y ranges can also be set, see examples below.
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -61,8 +61,9 @@ if nargin>2
 end
 
 % Create figure
-figure1 = figure('Color',[1 1 1]);
-plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
+% figure1 = figure('Color',[1 1 1]);
+%plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
+plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
 set(gcf,'color','w');%,'units','normalized','position',[0,0,.4,.6]);
 %     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
 set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out');%,'Xtick',...
@@ -82,8 +83,8 @@ end
 % Add a plot legend
 legend(yaxis_all_legends,'Location','best')
 
-assignin('caller','plot1',plot1);
-assignin('caller','figure1',figure1);
+% assignin('caller','plot1',plot1);
+% assignin('caller','figure1',figure1);
 assignin('caller','Data',Data);
 assignin('caller','xaxislabel',xaxislabel);
 assignin('caller','yaxislabel',yaxislabel);

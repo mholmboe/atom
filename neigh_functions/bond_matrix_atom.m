@@ -2,13 +2,13 @@
 % * This function tries to assign all bonds to a bond_matrix
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=clayff_atom(atom,Box_dim)
+% # atom=bond_matrix_atom(atom,Box_dim)
 
 function atom = bond_matrix_atom(atom,Box_dim,varargin)
 

@@ -4,7 +4,7 @@
 %  * Triclinic support untested
 %
 %% Version
-% 2.0
+% 2.07
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

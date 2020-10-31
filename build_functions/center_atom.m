@@ -6,11 +6,13 @@
 % * dim is a string containing for example x, xy, xyz
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
 %
+% * atom = center_atom(atom,Box_dim)
+% * atom = center_atom(atom,Box_dim,'Na')
 % * atom = center_atom(atom,Box_dim,'all','xy')
 % * atom = center_atom(atom,Box_dim,'SOL','Z')
 %
@@ -31,9 +33,15 @@ elseif nargin == 4
 end
 
 tric_Box_dim=Box_dim;
-if size(tric_Box_dim(1,:),2)>3
-   atom=orto_atom(atom,Box_dim);
-   Box_dim=orto_Box_dim;
+if numel(Box_dim)==1
+    Box_dim(2)=Box_dim;
+    Box_dim(3)=Box_dim(2);
+    Box_dim(1)=Box_dim(2);
+else
+    if size(tric_Box_dim(1,:),2)>3
+        atom=orto_atom(atom,Box_dim);
+        Box_dim=orto_Box_dim;
+    end
 end
 
 
@@ -69,16 +77,16 @@ if strfind(dim,'z') | strfind(dim,'Z')
 end
 
 if size(tric_Box_dim(1,:),2)>3
-   xy=tric_Box_dim(6); xz=tric_Box_dim(8); yz=tric_Box_dim(9);
-   atom=triclinic_atom(atom,Box_dim,[xy xz yz],'tilt');
-   Box_dim=tric_Box_dim;
-   
-   if sum(abs(triclinic_Box_dim-tric_Box_dim))>0.01
-      disp('Canged box dimensions between initial and temp triclinic cell')
-      triclinic_Box_dim
-      tric_Box_dim
-      pause 
-   end
+    xy=tric_Box_dim(6); xz=tric_Box_dim(8); yz=tric_Box_dim(9);
+    atom=triclinic_atom(atom,Box_dim,[xy xz yz],'tilt');
+    Box_dim=tric_Box_dim;
+    
+    if sum(abs(triclinic_Box_dim-tric_Box_dim))>0.01
+        disp('Canged box dimensions between initial and temp triclinic cell')
+        triclinic_Box_dim
+        tric_Box_dim
+        pause
+    end
 end
 
 assignin('caller','Box_dim',Box_dim);

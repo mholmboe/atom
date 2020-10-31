@@ -5,7 +5,7 @@
 % * Z 61 and 84-88 are made up....
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

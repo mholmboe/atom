@@ -5,7 +5,7 @@
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

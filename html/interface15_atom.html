@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface15_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="interface15_atom.m"><style type="text/css">
+      --><title>interface15_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="interface15_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>interface15_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the interface15 ff</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>Since the Interface FF 1.5 treats some atomtypes differently depending on the material (like 'CLAY_MINERALS' or 'SILICA'), you may have to pass extra arguments, see the last examples below.</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations)</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'CLAY_MINERALS')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'SILICA')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=interface15_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>interface15_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the interface15 ff</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>Since the Interface FF 1.5 treats some atomtypes differently depending on the material (like 'CLAY_MINERALS' or 'SILICA'), you may have to pass extra arguments, see the last examples below.</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations)</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'CLAY_MINERALS')</li><li>atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'SILICA')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=interface15_atom(atom,Box_dim,varargin)
 
 format <span class="string">compact</span>;
 
@@ -90,12 +91,11 @@ format <span class="string">compact</span>;
     model_database=<span class="string">'CLAY_MINERALS'</span>
 <span class="keyword">end</span>
 
-pause(2)
-
 atom=element_atom(atom);
 
-distance_factor=1.2;
-rmaxlong=2.4;
+distance_factor=0.6;
+rmaxlong=2.25;
+All_Neighbours=[];
 
 Heal_Al=0;
 Heal_Mgo=0;
@@ -131,78 +131,40 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
     Bond_index=zeros(4*size(size(atom,2),1),3);
     Angle_index=zeros(4*size(size(atom,2),1),4);
 
-    atom=element_atom(atom);
+    [atom.element]=atom.type;
 
-    [atom.fftype]=atom.type;
+    <span class="keyword">for</span> i=1:size(atom,2)
+        <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+        <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'SC'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Alt'</span>},3);atom(i).element={<span class="string">'Alt'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ow'</span>},2);atom(i).element={<span class="string">'Ow'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Hw'</span>},2);atom(i).element={<span class="string">'Hw'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'O'</span>},1);atom(i).element={<span class="string">'O'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};
+        <span class="keyword">else</span>
+            [atom(i).element]=atom(i).type;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    [atom.type]=atom.element;
+    [atom.fftype]=atom.element;
 
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 
-    Radiiproperties=load(<span class="string">'Revised_Shannon_radii.mat'</span>);
-    <span class="comment">%     atom = rmfield(atom,'neigh');</span>
-    <span class="comment">%     atom=bond_valence_atom(atom,Box_dim,1.25,rmax);</span>
-    <span class="comment">%     interface15_param(sort(unique([atom.type])),'tip3p');</span>
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+    atom=remove_sametype_bond(atom,Box_dim,Bond_index);
 
-    <span class="keyword">if</span> size(atom,2)&gt;5000
-        dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    <span class="keyword">else</span>
-        dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    <span class="keyword">end</span>
-
-    XYZ_radii=zeros(length(XYZ_labels),1);
-    XYZ_formalcharge=zeros(length(XYZ_labels),1);
-    Atom_label=sort(unique([atom.element]));
-    <span class="keyword">for</span> i=1:length(Atom_label)
-        <span class="keyword">try</span>
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
-        <span class="keyword">catch</span>
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
-        <span class="keyword">end</span>
-        XYZ_radii(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
-        XYZ_formalcharge(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
-    <span class="keyword">end</span>
-
-    assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_radii'</span>,XYZ_radii);
-    assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_formalcharge'</span>,XYZ_formalcharge);
-
-    XYZ_radii(XYZ_radii==0)=distance_factor;
-    radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
-    radius_limit=(radius_matrix+radius_matrix')*distance_factor;
-    dist_matrix(dist_matrix==0)=1000;
-    bond_matrix=dist_matrix-radius_limit;
-    dist_matrix(dist_matrix==1000)=0;
-    bond_matrix(bond_matrix&gt;0)=0;
-    bond_matrix(bond_matrix&lt;0)=1;
-    disp(<span class="string">'Radii+Radii limits'</span>)
-    unique(XYZ_labels,<span class="string">'stable'</span>)
-    unique(XYZ_radii,<span class="string">'stable'</span>)
-    unique(radius_limit,<span class="string">'stable'</span>)
+    assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
     assignin(<span class="string">'caller'</span>,<span class="string">'radius_limit'</span>,radius_limit);
-    assignin(<span class="string">'caller'</span>,<span class="string">'bond_matrix'</span>,bond_matrix);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_index'</span>,Neigh_index);
     assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
 
-    atom = rmfield(atom,<span class="string">'neigh'</span>);
-    <span class="keyword">for</span> i=1:length(XYZ_labels)
-        k=1;j=1;
-        bond_ind=find(bond_matrix(:,i));
-        <span class="keyword">while</span> j &lt;= numel(bond_ind) &amp;&amp; k &lt;= numel(bond_ind) <span class="comment">%&lt;= neigh %atom(i).neigh=[];</span>
-            <span class="keyword">if</span> bond_matrix(bond_ind(j),i)==1
-                <span class="keyword">if</span> XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;0 &amp;&amp; [atom(i).molid] == [atom(bond_ind(j)).molid]
-                    [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
-                    [atom(i).neigh.index(k)]=bond_ind(j);
-                    [atom(i).neigh.type(k)]=XYZ_labels(bond_ind(j));
-                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
-                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
-                    k=k+1;
-                <span class="keyword">end</span>
-            <span class="keyword">end</span>
-            j=j+1;
-        <span class="keyword">end</span>
-    <span class="keyword">end</span>
-
-    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
-
-    b=1;a=1;i=1;nH_extra=0;
+    i=1;nH_extra=0;
     <span class="keyword">while</span> i &lt;= size(atom,2)
         <span class="keyword">if</span> mod(i,100)==1
             i-1
@@ -215,83 +177,16 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
             n=1;neigh=1;
 
             <span class="keyword">if</span> numel([atom(i).neigh])&gt;0
-                index=[atom(i).neigh.index];
-                <span class="keyword">if</span> sum(index)&gt;0
-                    <span class="keyword">for</span> k=1:length(index)
-                        j=atom(i).neigh.index(k);
-                        r=atom(i).neigh.dist(k);
-
-                        <span class="keyword">if</span> i &lt; size(radius_limit,2)
-                            max_distance=radius_limit(j,i);
-                        <span class="keyword">else</span>
-                            disp(<span class="string">'Manually setting max_distance to...'</span>)
-                            max_distance=1.8
-                        <span class="keyword">end</span>
-                        <span class="keyword">if</span> r &gt; 0 &amp;&amp; r &lt; max_distance/3
-                            r
-                            disp(<span class="string">'Atoms too close'</span>)
-                            format <span class="string">compact</span>;
-                            format <span class="string">short</span>;
-                            i
-                            j
-                            atom(i).type
-                            atom(j).type
-                            [atom(i).x atom(i).y atom(i).z]
-                            [atom(j).x atom(j).y atom(j).z]
-                        <span class="keyword">end</span>
-
-                        <span class="keyword">if</span> r &gt; max_distance/3 &amp;&amp; r &lt; max_distance
-
-                            neigh=neigh+1;
-
-                            <span class="keyword">if</span> i &lt; j
-                                Bond_index(b,1)= i;
-                                Bond_index(b,2)= j;
-                            <span class="keyword">else</span>
-                                Bond_index(b,1)= j;
-                                Bond_index(b,2)= i;
-                            <span class="keyword">end</span>
-
-                            Bond_index(b,3)= r;
-                            Neigh_ind(n,1)= j;
-                            Neigh_vec(n,1:3)= [atom(i).neigh.r_vec(k,1) atom(i).neigh.r_vec(k,2) atom(i).neigh.r_vec(k,3)];
-                            <span class="comment">% Neigh_vec(n,1:3)= [atom(i).neigh(k).r_vec(1) atom(i).neigh(k).r_vec(2) atom(i).neigh(k).r_vec(3)];</span>
-                            b=b+1;
-                            n=n+1;
-                        <span class="keyword">end</span>
-                    <span class="keyword">end</span>
-                <span class="keyword">end</span>
 
                 Neigh_cell = sort([atom(i).neigh.type]);
-                <span class="keyword">if</span> length(Neigh_cell) &gt; 0; Neighbours=strcat(Neigh_cell{:});
-                <span class="keyword">else</span> Neighbours={<span class="string">'Nan'</span>}; <span class="keyword">end</span>
+                <span class="keyword">if</span> length(Neigh_cell) &gt; 0
+                    Neighbours=strcat(Neigh_cell{:});
+                    All_Neighbours=[All_Neighbours;{Neighbours}];
+                <span class="keyword">else</span>
+                    Neighbours={<span class="string">'Nan'</span>};
+                <span class="keyword">end</span>
                 Neigh_ind(~any(Neigh_ind,2),:) = [];
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
-
-                size(Neigh_ind,1);
-                <span class="keyword">for</span> v=1:size(Neigh_ind,1)
-                    <span class="keyword">for</span> w=1:size(Neigh_ind,1)
-                        angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                        <span class="keyword">if</span> angle &gt; 0 &amp;&amp; angle &lt; 160
-                            <span class="keyword">if</span> v &lt; w
-                                Angle_index(a,1)= Neigh_ind(v,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(w,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            <span class="keyword">else</span>
-                                Angle_index(a,1)= Neigh_ind(w,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(v,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            <span class="keyword">end</span>
-                        <span class="keyword">end</span>
-                    <span class="keyword">end</span>
-                <span class="keyword">end</span>
-
-                Bond_index=sortrows(Bond_index);
-                Angle_index=sortrows(Angle_index);
 
                 <span class="comment">% If the element is Si</span>
                 <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Si'</span>},2) <span class="comment">% Si</span>
@@ -551,6 +446,12 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                     <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'MgMgSi'</span>)
                         atom(i).fftype={<span class="string">'Odsub'</span>}; <span class="comment">% Odsub</span>
                         atom(i).type={<span class="string">'Odsub'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'MgMgMgSi'</span>) || strcmp(Neighbours,<span class="string">'FeoFeoFeoSi'</span>)
+                        atom(i).fftype={<span class="string">'Op'</span>};
+                        atom(i).fftype={<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'HMgMgMg'</span>) || strcmp(Neighbours,<span class="string">'HFeoFeoFeo'</span>)
+                        atom(i).fftype={<span class="string">'Oh'</span>};
+                        atom(i).fftype={<span class="string">'Oh'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'SiSi'</span>)
                         <span class="keyword">if</span> strcmpi(model_database,<span class="string">'CLAY_MINERALS'</span>)
                             atom(i).fftype={<span class="string">'OY1'</span>}; <span class="comment">% Ob</span>
@@ -643,28 +544,29 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
-<span class="keyword">for</span> i=1:length(unique([atom.fftype]))
-    new_Atom_label=sort(unique([atom.fftype]));
-    ind=ismember([atom.fftype],new_Atom_label(i));
+<span class="keyword">for</span> i=1:length(unique([atom.type]))
+    new_Atom_label=sort(unique([atom.type]));
+    ind=ismember([atom.type],new_Atom_label(i));
     assignin(<span class="string">'caller'</span>,strcat(char(new_Atom_label(i)),<span class="string">'_atom'</span>),atom(ind));
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> sum(strncmp([atom.type],<span class="string">'Ow'</span>,2))&gt;0
+    ind_Ow=find(strncmpi([atom.type],<span class="string">'Ow'</span>,2));
+    ind_Hw=sort([ind_Ow+1 ind_Ow+2]);
+    [atom(ind_Hw).type]=deal({<span class="string">'Hw'</span>});
+<span class="keyword">elseif</span> sum(strncmp([atom.type],<span class="string">'OW'</span>,2))&gt;0
+    ind_Ow=find(strncmpi([atom.type],<span class="string">'OW'</span>,2));
+    ind_Hw1=sort(ind_Ow+1);
+    ind_Hw2=sort(ind_Ow+2);
+    [atom(ind_Hw1).type]=deal({<span class="string">'HW1'</span>});
+    [atom(ind_Hw2).type]=deal({<span class="string">'HW2'</span>});
 <span class="keyword">end</span>
 
 nAtoms=size(atom,2);
 
 ind_edgeO=find(ismember([atom.fftype],{<span class="string">'OAHH'</span>,<span class="string">'OAS'</span>,<span class="string">'OAHH'</span>}));
 ind_H=find(ismember([atom.fftype],{<span class="string">'HOY'</span>}));
-[row,col]=find(bond_matrix(ind_edgeO,:));
+[row,col]=find(dist_matrix(ind_edgeO,:));
 ind_edgeH=intersect(col,ind_H);
 [atom(ind_edgeH).fftype]=deal({<span class="string">'HE'</span>});
 
@@ -680,22 +582,18 @@ ind_edgeH=intersect(col,ind_H);
     [atom(ind_Hw2).type]=deal({<span class="string">'HW2'</span>});
 <span class="keyword">end</span>
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
 <span class="keyword">for</span> i=1:length(unique([atom.type]))
     new_Atom_label=sort(unique([atom.type]));
     ind=ismember([atom.type],new_Atom_label(i));
     assignin(<span class="string">'caller'</span>,strcat(char(new_Atom_label(i)),<span class="string">'_atom'</span>),atom(ind));
 <span class="keyword">end</span>
+
+ffname
+watermodel
+
+<span class="comment">% assignin('caller','newatom',atom);</span>
+<span class="comment">% assignin('caller','remove_ind',rm_ind);</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbours'</span>,unique(All_Neighbours));
 
 <span class="comment">% try</span>
 <span class="comment">%     %% If the usual atom types</span>
@@ -707,7 +605,7 @@ Angle_index(~any(Angle_index,2),:) = [];
 <span class="comment">%     disp('Could not set the charge...')</span>
 <span class="comment">% end</span>
 atom = check_interface15_charge(atom,model_database);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% interface15_atom.m
 % * This function tries to assign all atoms according to the interface15 ff
@@ -720,7 +618,7 @@ atom = check_interface15_charge(atom,model_database);
 % neighbour/bond cutoff radius for each atomtype
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -755,12 +653,11 @@ else
     model_database='CLAY_MINERALS'
 end
 
-pause(2)
-
 atom=element_atom(atom);
 
-distance_factor=1.2;
-rmaxlong=2.4;
+distance_factor=0.6;
+rmaxlong=2.25;
+All_Neighbours=[];
 
 Heal_Al=0;
 Heal_Mgo=0;
@@ -796,78 +693,40 @@ for assignment_run=heal_iterations
     Bond_index=zeros(4*size(size(atom,2),1),3);
     Angle_index=zeros(4*size(size(atom,2),1),4);
     
-    atom=element_atom(atom);
+    [atom.element]=atom.type;
     
-    [atom.fftype]=atom.type;
+    for i=1:size(atom,2)
+        if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+        elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+        elseif strncmpi(atom(i).type,{'Alt'},3);atom(i).element={'Alt'};
+        elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+        elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
+        elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+        elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
+        elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
+        elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
+        elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
+        else
+            [atom(i).element]=atom(i).type;
+        end
+    end
+    
+    [atom.type]=atom.element;
+    [atom.fftype]=atom.element;
     
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
     
-    Radiiproperties=load('Revised_Shannon_radii.mat');
-    %     atom = rmfield(atom,'neigh');
-    %     atom=bond_valence_atom(atom,Box_dim,1.25,rmax);
-    %     interface15_param(sort(unique([atom.type])),'tip3p');
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+    atom=remove_sametype_bond(atom,Box_dim,Bond_index);
     
-    if size(atom,2)>5000
-        dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    else
-        dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    end
-    
-    XYZ_radii=zeros(length(XYZ_labels),1);
-    XYZ_formalcharge=zeros(length(XYZ_labels),1);
-    Atom_label=sort(unique([atom.element]));
-    for i=1:length(Atom_label)
-        try
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
-        catch
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
-        end
-        XYZ_radii(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
-        XYZ_formalcharge(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
-    end
-    
-    assignin('caller','XYZ_radii',XYZ_radii);
-    assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
-    
-    XYZ_radii(XYZ_radii==0)=distance_factor;
-    radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
-    radius_limit=(radius_matrix+radius_matrix')*distance_factor;
-    dist_matrix(dist_matrix==0)=1000;
-    bond_matrix=dist_matrix-radius_limit;
-    dist_matrix(dist_matrix==1000)=0;
-    bond_matrix(bond_matrix>0)=0;
-    bond_matrix(bond_matrix<0)=1;
-    disp('Radii+Radii limits')
-    unique(XYZ_labels,'stable')
-    unique(XYZ_radii,'stable')
-    unique(radius_limit,'stable')
+    assignin('caller','nBonds',nBonds);
     assignin('caller','radius_limit',radius_limit);
-    assignin('caller','bond_matrix',bond_matrix);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Neigh_index',Neigh_index);
     assignin('caller','dist_matrix',dist_matrix);
     
-    atom = rmfield(atom,'neigh');
-    for i=1:length(XYZ_labels)
-        k=1;j=1;
-        bond_ind=find(bond_matrix(:,i));
-        while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
-            if bond_matrix(bond_ind(j),i)==1
-                if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0 && [atom(i).molid] == [atom(bond_ind(j)).molid]
-                    [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
-                    [atom(i).neigh.index(k)]=bond_ind(j);
-                    [atom(i).neigh.type(k)]=XYZ_labels(bond_ind(j));
-                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
-                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
-                    k=k+1;
-                end
-            end
-            j=j+1;
-        end
-    end
-    
-    assignin('caller','Bond_index',Bond_index);
-    
-    b=1;a=1;i=1;nH_extra=0;
+    i=1;nH_extra=0;
     while i <= size(atom,2)
         if mod(i,100)==1
             i-1
@@ -880,83 +739,16 @@ for assignment_run=heal_iterations
             n=1;neigh=1;
             
             if numel([atom(i).neigh])>0
-                index=[atom(i).neigh.index];
-                if sum(index)>0
-                    for k=1:length(index)
-                        j=atom(i).neigh.index(k);
-                        r=atom(i).neigh.dist(k);
-                        
-                        if i < size(radius_limit,2)
-                            max_distance=radius_limit(j,i);
-                        else
-                            disp('Manually setting max_distance to...')
-                            max_distance=1.8
-                        end
-                        if r > 0 && r < max_distance/3
-                            r
-                            disp('Atoms too close')
-                            format compact;
-                            format short;
-                            i
-                            j
-                            atom(i).type
-                            atom(j).type
-                            [atom(i).x atom(i).y atom(i).z]
-                            [atom(j).x atom(j).y atom(j).z]
-                        end
-                        
-                        if r > max_distance/3 && r < max_distance
-                            
-                            neigh=neigh+1;
-                            
-                            if i < j
-                                Bond_index(b,1)= i;
-                                Bond_index(b,2)= j;
-                            else
-                                Bond_index(b,1)= j;
-                                Bond_index(b,2)= i;
-                            end
-                            
-                            Bond_index(b,3)= r;
-                            Neigh_ind(n,1)= j;
-                            Neigh_vec(n,1:3)= [atom(i).neigh.r_vec(k,1) atom(i).neigh.r_vec(k,2) atom(i).neigh.r_vec(k,3)];
-                            % Neigh_vec(n,1:3)= [atom(i).neigh(k).r_vec(1) atom(i).neigh(k).r_vec(2) atom(i).neigh(k).r_vec(3)];
-                            b=b+1;
-                            n=n+1;
-                        end
-                    end
-                end
                 
                 Neigh_cell = sort([atom(i).neigh.type]);
-                if length(Neigh_cell) > 0; Neighbours=strcat(Neigh_cell{:});
-                else Neighbours={'Nan'}; end
+                if length(Neigh_cell) > 0
+                    Neighbours=strcat(Neigh_cell{:});
+                    All_Neighbours=[All_Neighbours;{Neighbours}];
+                else
+                    Neighbours={'Nan'};
+                end
                 Neigh_ind(~any(Neigh_ind,2),:) = [];
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
-                
-                size(Neigh_ind,1);
-                for v=1:size(Neigh_ind,1)
-                    for w=1:size(Neigh_ind,1)
-                        angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                        if angle > 0 && angle < 160
-                            if v < w
-                                Angle_index(a,1)= Neigh_ind(v,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(w,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            else
-                                Angle_index(a,1)= Neigh_ind(w,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(v,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            end
-                        end
-                    end
-                end
-                
-                Bond_index=sortrows(Bond_index);
-                Angle_index=sortrows(Angle_index);
                 
                 % If the element is Si
                 if strncmpi(atom(i).type,{'Si'},2) % Si
@@ -1216,6 +1008,12 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'MgMgSi')
                         atom(i).fftype={'Odsub'}; % Odsub
                         atom(i).type={'Odsub'};
+                    elseif strcmp(Neighbours,'MgMgMgSi') || strcmp(Neighbours,'FeoFeoFeoSi')
+                        atom(i).fftype={'Op'};
+                        atom(i).fftype={'Op'};
+                    elseif strcmp(Neighbours,'HMgMgMg') || strcmp(Neighbours,'HFeoFeoFeo')
+                        atom(i).fftype={'Oh'};
+                        atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'SiSi')
                         if strcmpi(model_database,'CLAY_MINERALS')
                             atom(i).fftype={'OY1'}; % Ob
@@ -1308,28 +1106,29 @@ for assignment_run=heal_iterations
     end
 end
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
-for i=1:length(unique([atom.fftype]))
-    new_Atom_label=sort(unique([atom.fftype]));
-    ind=ismember([atom.fftype],new_Atom_label(i));
+for i=1:length(unique([atom.type]))
+    new_Atom_label=sort(unique([atom.type]));
+    ind=ismember([atom.type],new_Atom_label(i));
     assignin('caller',strcat(char(new_Atom_label(i)),'_atom'),atom(ind));
+end
+
+if sum(strncmp([atom.type],'Ow',2))>0
+    ind_Ow=find(strncmpi([atom.type],'Ow',2));
+    ind_Hw=sort([ind_Ow+1 ind_Ow+2]);
+    [atom(ind_Hw).type]=deal({'Hw'});
+elseif sum(strncmp([atom.type],'OW',2))>0
+    ind_Ow=find(strncmpi([atom.type],'OW',2));
+    ind_Hw1=sort(ind_Ow+1);
+    ind_Hw2=sort(ind_Ow+2);
+    [atom(ind_Hw1).type]=deal({'HW1'});
+    [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
 nAtoms=size(atom,2);
 
 ind_edgeO=find(ismember([atom.fftype],{'OAHH','OAS','OAHH'}));
 ind_H=find(ismember([atom.fftype],{'HOY'}));
-[row,col]=find(bond_matrix(ind_edgeO,:));
+[row,col]=find(dist_matrix(ind_edgeO,:));
 ind_edgeH=intersect(col,ind_H);
 [atom(ind_edgeH).fftype]=deal({'HE'});
 
@@ -1345,22 +1144,18 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
 for i=1:length(unique([atom.type]))
     new_Atom_label=sort(unique([atom.type]));
     ind=ismember([atom.type],new_Atom_label(i));
     assignin('caller',strcat(char(new_Atom_label(i)),'_atom'),atom(ind));
 end
+
+ffname
+watermodel
+
+% assignin('caller','newatom',atom);
+% assignin('caller','remove_ind',rm_ind);
+assignin('caller','All_Neighbours',unique(All_Neighbours));
 
 % try
 %     %% If the usual atom types

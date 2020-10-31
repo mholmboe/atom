@@ -8,7 +8,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -51,11 +51,19 @@ if strncmpi(ion1,'Ow',2)
     ion1='O';
 end
 
+if strncmpi(ion1,'Oh',2)
+    ion1='O';
+end
+
 if strncmpi(ion2,'Hw',2)
     ion2='H';
 end
 
 if strncmpi(ion2,'Ow',2)
+    ion2='O';
+end
+
+if strncmpi(ion2,'Oh',2)
     ion2='O';
 end
 
@@ -89,8 +97,12 @@ if numel(ind)==0
     ind=ind1(ind);
 end
 
-% % Blacklist these H-O entries
-ind(ind==640)=[];ind(ind==639)=[];ind(ind==638)=[];ind(ind==637)=[];ind(ind==636)=[];
+% Ignore these H-O entries
+ind(ind==636)=[];
+ind(ind==637)=[];
+ind(ind==638)=[];
+ind(ind==639)=[];
+ind(ind==640)=[];
 
 if numel(ind)==0
     disp('Could not find any matching pair...')

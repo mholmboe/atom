@@ -2,7 +2,7 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -184,7 +184,7 @@ forcefield.clayff(20).e_kcalmol = 5.02980E-06;
 % Feo
 forcefield.clayff(21).type =    {'Feo'}; % feo
 forcefield.clayff(21).mass =    55.845;
-forcefield.clayff(21).charge =  1.3600; %1.5750;
+forcefield.clayff(21).charge =  1.57500; %1.5750;
 forcefield.clayff(21).radius =  5.5070;
 forcefield.clayff(21).e_kcalmol = 9.0298E-06;
 %
@@ -413,6 +413,43 @@ forcefield.clayff(53).mass =    15.999410;
 forcefield.clayff(53).charge =  -1.7650;
 forcefield.clayff(53).radius =  3.553200;
 forcefield.clayff(53).e_kcalmol = 0.155400;
+
+% Be
+forcefield.clayff(54).type =    {'Be'}; % st tetrahedral silicon
+forcefield.clayff(54).mass =    9.012182;
+forcefield.clayff(54).charge =  1.0500;
+forcefield.clayff(54).radius =  3.70640;
+forcefield.clayff(54).e_kcalmol = 1.8405E-06;
+
+% Fet
+forcefield.clayff(55).type =    {'Fet'}; % at tetrahedral aluminium
+forcefield.clayff(55).mass =    55.845;
+forcefield.clayff(55).charge =  1.5750;
+forcefield.clayff(55).radius =  3.70640;
+forcefield.clayff(55).e_kcalmol = 1.8405E-06;
+
+% Fet
+forcefield.clayff(55).type =    {'Fe2'}; % at tetrahedral aluminium
+forcefield.clayff(55).mass =    55.845;
+forcefield.clayff(55).charge =  1.0500;
+forcefield.clayff(55).radius =  6.24280;
+forcefield.clayff(55).e_kcalmol = 5.02980E-06;
+
+% Omge
+forcefield.clayff(56).type =    {'Ome'}; % at tetrahedral aluminium
+forcefield.clayff(56).mass =    15.999410;
+forcefield.clayff(56).charge =  -1.2667;
+forcefield.clayff(56).radius =  3.553200;
+forcefield.clayff(56).e_kcalmol = 0.155400;
+
+% Oalhh
+forcefield.clayff(57).type =    {'Omhh'}; % edge oxygen
+forcefield.clayff(57).mass =    15.999410;
+forcefield.clayff(57).charge =  -0.6625; %
+forcefield.clayff(57).radius =  3.553200;
+forcefield.clayff(57).e_kcalmol = 0.155400;
+
+
 
 for i=1:size(forcefield.clayff,2)
     forcefield.clayff(i).sigma=forcefield.clayff(i).radius/2^(1/6);

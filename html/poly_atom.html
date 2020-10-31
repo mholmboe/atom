@@ -1,0 +1,446 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>poly_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="poly_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>poly_atom.m</h1><!--introduction--><div><ul><li>This function tries to plot pretty polyhedras, similar to the show_atom</li><li>function</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=poly_atom(atom,Box_dim)                         % Plots polyhedras for all atomtypes except O and H,</li><li>atom=poly_atom(atom,Box_dim,{'Al' 'Mgo' 'Si'})       % Plots polyhedras for the stated atomtypes</li><li>atom=poly_atom(atom,Box_dim,0,2.25)                  % 2.25 is a bond cutoff (sort of)</li><li>atom=poly_atom(atom,Box_dim,0,2.25,1)                % Last argument (1/0) to plot the Box</li><li>atom=poly_atom(atom,Box_dim,0,2.25,1,0.3)            % Last argument sets the transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = poly_atom(atom,Box_dim,varargin)
+
+<span class="keyword">if</span> nargin&gt;2
+    polytype=varargin{1}; <span class="comment">% Dummy value</span>
+<span class="keyword">else</span>
+    polytype=unique([atom.type]);
+    polytype(strncmpi(polytype,<span class="string">'H'</span>,1))=[];
+    polytype(strncmpi(polytype,<span class="string">'O'</span>,1))=[];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isnumeric(polytype)
+    polytype=unique([atom.type]);
+    polytype(strncmpi(polytype,<span class="string">'H'</span>,1))=[];
+    polytype(strncmpi(polytype,<span class="string">'O'</span>,1))=[];
+<span class="keyword">end</span>
+
+polytype_ind=find(ismember([atom.type],polytype));
+
+<span class="keyword">if</span> nargin&gt;3
+    rmaxlong=varargin{2}; <span class="comment">% Dummy value</span>
+<span class="keyword">else</span>
+    rmaxlong=2.25;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;5
+    alpha=1-varargin{4};
+<span class="keyword">else</span>
+    alpha=1; <span class="comment">% Transperacy</span>
+<span class="keyword">end</span>
+
+atom=element_atom(atom);
+XYZ_labels=[atom.type]';
+nAtoms = size(XYZ_labels,1);
+
+<span class="comment">% if strncmpi(style,'crystal',3)</span>
+<span class="comment">%     radii = 1/4*abs(radius_crystal(XYZ_labels));</span>
+<span class="comment">% else</span>
+<span class="comment">%     radii = 1/4*abs(radius_vdw(XYZ_labels));</span>
+<span class="comment">% end</span>
+color =  1*element_color(XYZ_labels);
+
+<span class="keyword">if</span> nargin&gt;6
+    trans_vec=varargin{5};
+    <span class="keyword">if</span> numel(trans_vec)==3
+        atom=translate_atom(atom,trans_vec(1:3));
+        <span class="keyword">if</span> numel(trans_vec)==4
+            atom=wrap_atom(atom,Box_dim);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;7
+    color=varargin{6};
+    color=repmat(color,nAtoms,1);
+<span class="keyword">end</span>
+
+<span class="comment">% XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'color'</span>,color)
+
+<span class="comment">% if nargin&gt;1</span>
+
+<span class="comment">%    Box_dim=varargin{1};</span>
+
+<span class="keyword">if</span> numel(Box_dim)&gt;0
+
+    <span class="keyword">if</span> numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    <span class="keyword">end</span>
+
+    atom = bond_atom(atom,Box_dim,rmaxlong,.6);
+
+    <span class="keyword">if</span> max([atom.molid])&lt;max([atom.index])
+        i=1;
+        <span class="keyword">while</span> numel(Bond_index)==0 &amp;&amp; i &lt; 10
+            atom = bond_atom(atom,Box_dim,rmaxlong+i/4,.6+i/10);
+            i=i+1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="comment">% Sets plot limits for the data</span>
+xlo = floor(min([-5 min([atom.x])-2])); xhi = ceil(max([max([atom.x])+2 Box_dim(1)])/5)*5;
+ylo = floor(min([-5 min([atom.y])-2])); yhi = ceil(max([max([atom.y])+2 Box_dim(2)])/5)*5;
+zlo = floor(min([-5 min([atom.z])-2])); zhi = ceil(max([max([atom.z])+2 Box_dim(3)])/5)*5;
+<span class="comment">% else</span>
+<span class="comment">%     xlo = floor(min([-5 min([atom.x])-max(radii)])); xhi = ceil(max(max([atom.x]))/5)*5;</span>
+<span class="comment">%     ylo = floor(min([-5 min([atom.y])-max(radii)])); yhi = ceil(max(max([atom.y]))/5)*5;</span>
+<span class="comment">%     zlo = floor(min([-5 min([atom.z])-max(radii)])); zhi = ceil(max(max([atom.z]))/5)*5;</span>
+<span class="comment">% end</span>
+
+<span class="keyword">if</span> xhi &lt; 5
+    xhi=5;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> yhi &lt; 5
+    yhi=5;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> zhi &lt; 5
+    zhi=5;
+<span class="keyword">end</span>
+
+<span class="comment">% xhi=35</span>
+<span class="comment">% yhi=40</span>
+<span class="comment">% zhi=45</span>
+hold <span class="string">on</span>;
+cameratoolbar
+rotate3d <span class="string">on</span>;
+camlight(220,210,<span class="string">'infinite'</span>);
+set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'Color'</span>,[1 1 1]);
+set(gca,<span class="string">'Color'</span>,[1 1 1],<span class="string">'PlotBoxAspectRatio'</span>,[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],<span class="string">'FontSize'</span>,24); <span class="comment">%</span>
+
+fig = gcf;
+fig.Color = [1 1 1];
+ax = fig.CurrentAxes;
+ax.XLim = [xlo xhi];
+ax.YLim = [ylo yhi];
+ax.ZLim = [zlo zhi];
+xlabel(<span class="string">'X [&Aring;]'</span>); ylabel(<span class="string">'Y [&Aring;]'</span>); zlabel(<span class="string">'Z [&Aring;]'</span>);
+view([0,0]);
+
+<span class="keyword">for</span> ip=1:numel(polytype_ind)
+
+    i=polytype_ind(ip);
+
+    color_temp = color(i,:);
+
+    <span class="keyword">if</span> numel(atom(i).neigh.index)&gt;0
+
+        r_vec = [[atom(i).neigh.r_vec(:,1)] [atom(i).neigh.r_vec(:,2)] [atom(i).neigh.r_vec(:,3)]];
+
+        dist=[];
+        <span class="keyword">for</span> j=1:size(r_vec,1)
+            dist(j,:)=([ (r_vec(j,1)-r_vec(:,1)).^2 + (r_vec(j,2)-r_vec(:,2)).^2 + ([r_vec(j,3)-r_vec(:,3)]).^2] ).^.5;
+        <span class="keyword">end</span>
+
+        dist(dist&gt;1.5*rmaxlong)=0;
+
+        PolyInd=[];n=0;
+        <span class="keyword">for</span> ik=1:size(r_vec,1)
+            <span class="keyword">for</span> il=ik+1:size(r_vec,1)
+                <span class="keyword">for</span> im=il+1:size(r_vec,1)
+                    <span class="keyword">if</span> dist(il,ik)&gt;0 &amp;&amp; dist(im,ik)&gt;0 &amp;&amp; dist(im,il)&gt;0
+                        n=n+1;
+                        PolyInd(n,:)=[ik il im];
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        poly_color=color_temp.^.5;
+        poly_color_edge=color_temp./5;
+        patch(<span class="string">'Faces'</span>,PolyInd,<span class="string">'Vertices'</span>,[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],<span class="string">'FaceColor'</span>,poly_color,<span class="keyword">...</span>
+            <span class="string">'EdgeColor'</span>,poly_color_edge,<span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="string">'Facealpha'</span>,alpha,<span class="keyword">...</span>
+            <span class="string">'AmbientStrength'</span>,0.8,<span class="string">'DiffuseStrength'</span>,0.6,<span class="string">'SpecularStrength'</span>,0.2,<span class="string">'LineWidth'</span>,1);
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> mod(i,1000)==1 || i==size(atom,2)
+        <span class="keyword">if</span> i &gt; 1
+            i-1
+            drawnow <span class="string">limitrate</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+<span class="keyword">if</span> nargin&gt;4
+    <span class="keyword">if</span> varargin{3}&gt;0
+        Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+hold <span class="string">off</span>;
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% poly_atom.m
+% * This function tries to plot pretty polyhedras, similar to the show_atom
+% * function
+%
+%% Version
+% 2.08
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=poly_atom(atom,Box_dim)                         % Plots polyhedras for all atomtypes except O and H,
+% # atom=poly_atom(atom,Box_dim,{'Al' 'Mgo' 'Si'})       % Plots polyhedras for the stated atomtypes
+% # atom=poly_atom(atom,Box_dim,0,2.25)                  % 2.25 is a bond cutoff (sort of)
+% # atom=poly_atom(atom,Box_dim,0,2.25,1)                % Last argument (1/0) to plot the Box
+% # atom=poly_atom(atom,Box_dim,0,2.25,1,0.3)            % Last argument sets the transperancy
+
+function atom = poly_atom(atom,Box_dim,varargin)
+
+if nargin>2
+    polytype=varargin{1}; % Dummy value
+else
+    polytype=unique([atom.type]);
+    polytype(strncmpi(polytype,'H',1))=[];
+    polytype(strncmpi(polytype,'O',1))=[];
+end
+
+if isnumeric(polytype)
+    polytype=unique([atom.type]);
+    polytype(strncmpi(polytype,'H',1))=[];
+    polytype(strncmpi(polytype,'O',1))=[];
+end
+
+polytype_ind=find(ismember([atom.type],polytype));
+
+if nargin>3
+    rmaxlong=varargin{2}; % Dummy value
+else
+    rmaxlong=2.25;
+end
+
+if nargin>5
+    alpha=1-varargin{4};
+else
+    alpha=1; % Transperacy
+end
+
+atom=element_atom(atom);
+XYZ_labels=[atom.type]';
+nAtoms = size(XYZ_labels,1);
+
+% if strncmpi(style,'crystal',3)
+%     radii = 1/4*abs(radius_crystal(XYZ_labels));
+% else
+%     radii = 1/4*abs(radius_vdw(XYZ_labels));
+% end
+color =  1*element_color(XYZ_labels);
+
+if nargin>6
+    trans_vec=varargin{5};
+    if numel(trans_vec)==3
+        atom=translate_atom(atom,trans_vec(1:3));
+        if numel(trans_vec)==4
+            atom=wrap_atom(atom,Box_dim);
+        end
+    end
+end
+
+if nargin>7
+    color=varargin{6};
+    color=repmat(color,nAtoms,1);
+end
+
+% XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+assignin('caller','color',color)
+
+% if nargin>1
+
+%    Box_dim=varargin{1};
+
+if numel(Box_dim)>0
+    
+    if numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    end
+    
+    atom = bond_atom(atom,Box_dim,rmaxlong,.6);
+    
+    if max([atom.molid])<max([atom.index])
+        i=1;
+        while numel(Bond_index)==0 && i < 10
+            atom = bond_atom(atom,Box_dim,rmaxlong+i/4,.6+i/10);
+            i=i+1;
+        end
+    end
+    
+end
+
+% Sets plot limits for the data
+xlo = floor(min([-5 min([atom.x])-2])); xhi = ceil(max([max([atom.x])+2 Box_dim(1)])/5)*5;
+ylo = floor(min([-5 min([atom.y])-2])); yhi = ceil(max([max([atom.y])+2 Box_dim(2)])/5)*5;
+zlo = floor(min([-5 min([atom.z])-2])); zhi = ceil(max([max([atom.z])+2 Box_dim(3)])/5)*5;
+% else
+%     xlo = floor(min([-5 min([atom.x])-max(radii)])); xhi = ceil(max(max([atom.x]))/5)*5;
+%     ylo = floor(min([-5 min([atom.y])-max(radii)])); yhi = ceil(max(max([atom.y]))/5)*5;
+%     zlo = floor(min([-5 min([atom.z])-max(radii)])); zhi = ceil(max(max([atom.z]))/5)*5;
+% end
+
+if xhi < 5
+    xhi=5;
+end
+
+if yhi < 5
+    yhi=5;
+end
+
+if zhi < 5
+    zhi=5;
+end
+
+% xhi=35
+% yhi=40
+% zhi=45
+hold on;
+cameratoolbar
+rotate3d on;
+camlight(220,210,'infinite');
+set(gcf,'Visible','on','Color',[1 1 1]);
+set(gca,'Color',[1 1 1],'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)],'FontSize',24); %
+
+fig = gcf;
+fig.Color = [1 1 1];
+ax = fig.CurrentAxes;
+ax.XLim = [xlo xhi];
+ax.YLim = [ylo yhi];
+ax.ZLim = [zlo zhi];
+xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
+view([0,0]);
+
+for ip=1:numel(polytype_ind)
+    
+    i=polytype_ind(ip);
+    
+    color_temp = color(i,:);
+    
+    if numel(atom(i).neigh.index)>0
+        
+        r_vec = [[atom(i).neigh.r_vec(:,1)] [atom(i).neigh.r_vec(:,2)] [atom(i).neigh.r_vec(:,3)]];
+        
+        dist=[];
+        for j=1:size(r_vec,1)
+            dist(j,:)=([ (r_vec(j,1)-r_vec(:,1)).^2 + (r_vec(j,2)-r_vec(:,2)).^2 + ([r_vec(j,3)-r_vec(:,3)]).^2] ).^.5;
+        end
+        
+        dist(dist>1.5*rmaxlong)=0;
+        
+        PolyInd=[];n=0;
+        for ik=1:size(r_vec,1)
+            for il=ik+1:size(r_vec,1)
+                for im=il+1:size(r_vec,1)
+                    if dist(il,ik)>0 && dist(im,ik)>0 && dist(im,il)>0
+                        n=n+1;
+                        PolyInd(n,:)=[ik il im];
+                    end
+                end
+            end
+        end
+        
+        poly_color=color_temp.^.5;
+        poly_color_edge=color_temp./5;
+        patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+            'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
+            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
+    end
+    
+    if mod(i,1000)==1 || i==size(atom,2)
+        if i > 1
+            i-1
+            drawnow limitrate
+        end
+    end
+end
+
+
+if nargin>4
+    if varargin{3}>0
+        Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+    end
+end
+
+hold off;
+
+
+##### SOURCE END #####
+--></body></html>

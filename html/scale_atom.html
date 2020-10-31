@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>scale_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="scale_atom.m"><style type="text/css">
+      --><title>scale_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="scale_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>scale_atom.m</h1><!--introduction--><div><ul><li>This function scales the coordinates in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')</li><li>atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = scale_atom(atom,Box_dim,scale_vec,varargin)
+  </style></head><body><div class="content"><h1>scale_atom.m</h1><!--introduction--><div><ul><li>This function scales the coordinates in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')</li><li>atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = scale_atom(atom,Box_dim,scale_vec,varargin)
 
 <span class="keyword">if</span> nargin&gt;3
     Resname=varargin{1};
@@ -74,7 +75,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Resname=<span class="string">'ALL'</span>;
 <span class="keyword">end</span>
 
-disp(<span class="string">'Scaling the coordinates'</span>)
+<span class="comment">% disp('Scaling the coordinates')</span>
 
 nAtoms=size([atom.x],2);
 
@@ -86,29 +87,56 @@ nAtoms=size([atom.x],2);
     ind_resname=find(strcmp([atom.resname],Resname));
 <span class="keyword">end</span>
 
-x_shift=num2cell([atom(ind_resname).x]*scale_vec(1)); [atom(ind_resname).x]=deal(x_shift{:});
+<span class="keyword">if</span> size(Box_dim,2) &gt; 3
+    lx = Box_dim(1);
+    ly = Box_dim(2);
+    lz = Box_dim(3);
+    xy = Box_dim(6);
+    xz = Box_dim(8);
+    yz = Box_dim(9);
+<span class="keyword">else</span>
+    lx = Box_dim(1);
+    ly = Box_dim(2);
+    lz = Box_dim(3);
+    xy = 0;
+    xz = 0;
+    yz = 0;
+<span class="keyword">end</span>
 
-y_shift=num2cell([atom(ind_resname).y]*scale_vec(2)); [atom(ind_resname).y]=deal(y_shift{:});
+a=lx;
+b=(ly^2+xy^2)^.5;
+c=(lz^2+xz^2+yz^2)^.5;
+alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+beta=rad2deg(acos(xz/c));
+gamma=rad2deg(acos(xy/b));
 
-z_shift=num2cell([atom(ind_resname).z]*scale_vec(3)); [atom(ind_resname).z]=deal(z_shift{:});
+orto=orto_atom(atom,Box_dim);
 
-Box_dim(1:3)=Box_dim(1:3).*scale_vec;
-<span class="keyword">if</span> numel(Box_dim(1,1:end))==9
-    Box_dim(6)=Box_dim(6)*scale_vec(1); <span class="comment">% Tested by scaling - replicating triclinic box</span>
-    Box_dim(8)=Box_dim(8)*scale_vec(3); <span class="comment">%</span>
-    Box_dim(9)=Box_dim(9)*scale_vec(2); <span class="comment">%</span>
+Box_dim=[orto_Box_dim(1)*scale_vec(1) orto_Box_dim(2)*scale_vec(2) orto_Box_dim(3)*scale_vec(3)];
+
+x_shift=num2cell([orto(ind_resname).x]*scale_vec(1)); [orto(ind_resname).x]=deal(x_shift{:});
+y_shift=num2cell([orto(ind_resname).y]*scale_vec(2)); [orto(ind_resname).y]=deal(y_shift{:});
+z_shift=num2cell([orto(ind_resname).z]*scale_vec(3)); [orto(ind_resname).z]=deal(z_shift{:});
+
+atom = triclinic_atom(orto,Box_dim,[alfa beta gamma],<span class="string">'angles'</span>);
+
+Box_dim=triclinic_Box_dim;
+
+Box_dim(Box_dim&lt;0.0001&amp;Box_dim&gt;-0.0001)=0;
+<span class="keyword">if</span> sum(Box_dim(4:end))== 0
+    Box_dim=Box_dim(1:3);
 <span class="keyword">end</span>
 
 atom=update_atom(atom);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% scale_atom.m
 % * This function scales the coordinates in the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -125,7 +153,7 @@ else
     Resname='ALL';
 end
 
-disp('Scaling the coordinates')
+% disp('Scaling the coordinates')
 
 nAtoms=size([atom.x],2);
 
@@ -137,17 +165,44 @@ else
     ind_resname=find(strcmp([atom.resname],Resname));
 end
 
-x_shift=num2cell([atom(ind_resname).x]*scale_vec(1)); [atom(ind_resname).x]=deal(x_shift{:});
+if size(Box_dim,2) > 3
+    lx = Box_dim(1);
+    ly = Box_dim(2);
+    lz = Box_dim(3);
+    xy = Box_dim(6);
+    xz = Box_dim(8);
+    yz = Box_dim(9);
+else
+    lx = Box_dim(1);
+    ly = Box_dim(2);
+    lz = Box_dim(3);
+    xy = 0;
+    xz = 0;
+    yz = 0;
+end
 
-y_shift=num2cell([atom(ind_resname).y]*scale_vec(2)); [atom(ind_resname).y]=deal(y_shift{:});
+a=lx;
+b=(ly^2+xy^2)^.5;
+c=(lz^2+xz^2+yz^2)^.5;
+alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+beta=rad2deg(acos(xz/c));
+gamma=rad2deg(acos(xy/b));
 
-z_shift=num2cell([atom(ind_resname).z]*scale_vec(3)); [atom(ind_resname).z]=deal(z_shift{:});
+orto=orto_atom(atom,Box_dim);
 
-Box_dim(1:3)=Box_dim(1:3).*scale_vec;
-if numel(Box_dim(1,1:end))==9
-    Box_dim(6)=Box_dim(6)*scale_vec(1); % Tested by scaling - replicating triclinic box
-    Box_dim(8)=Box_dim(8)*scale_vec(3); %
-    Box_dim(9)=Box_dim(9)*scale_vec(2); %
+Box_dim=[orto_Box_dim(1)*scale_vec(1) orto_Box_dim(2)*scale_vec(2) orto_Box_dim(3)*scale_vec(3)];
+
+x_shift=num2cell([orto(ind_resname).x]*scale_vec(1)); [orto(ind_resname).x]=deal(x_shift{:});
+y_shift=num2cell([orto(ind_resname).y]*scale_vec(2)); [orto(ind_resname).y]=deal(y_shift{:});
+z_shift=num2cell([orto(ind_resname).z]*scale_vec(3)); [orto(ind_resname).z]=deal(z_shift{:});
+
+atom = triclinic_atom(orto,Box_dim,[alfa beta gamma],'angles');
+
+Box_dim=triclinic_Box_dim;
+
+Box_dim(Box_dim<0.0001&Box_dim>-0.0001)=0;
+if sum(Box_dim(4:end))== 0
+    Box_dim=Box_dim(1:3);
 end
 
 atom=update_atom(atom);

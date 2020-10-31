@@ -3,7 +3,7 @@
 % * Todo... check if support for triclinic Box_dim works, because its untested...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -63,23 +63,23 @@ for i=nAtoms_ind
     ry = XYZ_data(:,2) - XYZ_solute(2);
     rz = XYZ_data(:,3) - XYZ_solute(3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
-    rz(z_gt_ind) = rz(z_gt_ind) - lz;
-    rz(z_lt_ind) = rz(z_lt_ind) + lz;
-    rx(z_gt_ind) = rx(z_gt_ind) - xz;
-    rx(z_lt_ind) = rx(z_lt_ind) + xz;
-    ry(z_gt_ind) = ry(z_gt_ind) - yz;
-    ry(z_lt_ind) = ry(z_lt_ind) + yz;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
-    ry(y_gt_ind) = ry(y_gt_ind) - ly;
-    ry(y_lt_ind) = ry(y_lt_ind) + ly;
-    rx(y_gt_ind) = rx(y_gt_ind) - xy;
-    rx(y_lt_ind) = rx(y_lt_ind) + xy;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
-    rx(x_gt_ind) = rx(x_gt_ind) - lx;
-    rx(x_lt_ind) = rx(x_lt_ind) + lx;
+%     z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+%     rz(z_gt_ind) = rz(z_gt_ind) - lz;
+%     rz(z_lt_ind) = rz(z_lt_ind) + lz;
+%     rx(z_gt_ind) = rx(z_gt_ind) - xz;
+%     rx(z_lt_ind) = rx(z_lt_ind) + xz;
+%     ry(z_gt_ind) = ry(z_gt_ind) - yz;
+%     ry(z_lt_ind) = ry(z_lt_ind) + yz;
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+%     ry(y_gt_ind) = ry(y_gt_ind) - ly;
+%     ry(y_lt_ind) = ry(y_lt_ind) + ly;
+%     rx(y_gt_ind) = rx(y_gt_ind) - xy;
+%     rx(y_lt_ind) = rx(y_lt_ind) + xy;
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+%     rx(x_gt_ind) = rx(x_gt_ind) - lx;
+%     rx(x_lt_ind) = rx(x_lt_ind) + lx;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
@@ -88,9 +88,9 @@ for i=nAtoms_ind
     in=intersect(find(dist>0),find(dist<rdist(i)));
     % in=sort(unique(in));
     % in = in(find(in~=i));
-%     in = in(in~=i&~ismember(in,skip_ind));
+    % in = in(in~=i&~ismember(in,skip_ind));
     % neigh(i).in = [in(find(in~=i))];
-%     atom(i).neigh.index = in;
+    % atom(i).neigh.index = in;
     atom(i).neigh.index = orig_index(in)'; % New in version 2.04
     atom(i).neigh.type = deal([atom(in).type])';
     atom(i).neigh.dist = [dist(in,1)];
@@ -102,5 +102,7 @@ for i=nAtoms_ind
     end
     
 end
+
+assignin('caller','dist',[atom(1).neigh.dist]);
 
 end

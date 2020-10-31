@@ -2,7 +2,7 @@
 % * This function transforms a triclinic atom struct to an orthogonal one
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -99,29 +99,33 @@ ToFrac=[1/a -cos(deg2rad(gamma))/(a*sin(deg2rad(gamma))) (cos(deg2rad(alfa))*cos
 
 % FromFrac*ToFrac
 
-XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-XYZ_data_frac=XYZ_data;XYZ_data_orto=XYZ_data;
-for i=1:size(atom,2)
-    XYZ_data_frac(i,:)=ToFrac*[XYZ_data(i,1) XYZ_data(i,2) XYZ_data(i,3)]';
-    XYZ_data_orto(i,:)=[lx ly lz].*XYZ_data_frac(i,:);
-    atom(i).x=XYZ_data_orto(i,1);
-    atom(i).y=XYZ_data_orto(i,2);
-    atom(i).z=XYZ_data_orto(i,3);
-    atom(i).xfrac=XYZ_data_frac(i,1);
-    atom(i).yfrac=XYZ_data_frac(i,2);
-    atom(i).zfrac=XYZ_data_frac(i,3);
+if size(atom,2)>0
+    
+    XYZ_labels=[atom.type]';
+    XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+    XYZ_data_frac=XYZ_data;XYZ_data_orto=XYZ_data;
+    for i=1:size(atom,2)
+        XYZ_data_frac(i,:)=ToFrac*[XYZ_data(i,1) XYZ_data(i,2) XYZ_data(i,3)]';
+        XYZ_data_orto(i,:)=[lx ly lz].*XYZ_data_frac(i,:);
+        atom(i).x=XYZ_data_orto(i,1);
+        atom(i).y=XYZ_data_orto(i,2);
+        atom(i).z=XYZ_data_orto(i,3);
+        atom(i).xfrac=XYZ_data_frac(i,1);
+        atom(i).yfrac=XYZ_data_frac(i,2);
+        atom(i).zfrac=XYZ_data_frac(i,3);
+    end
+    
 end
 
 Box_dim=[lx ly lz];
 
-lx
-ly
-lz
-a
-b
-c
-volume
+% lx
+% ly
+% lz
+% a
+% b
+% c
+% volume
 
 
 assignin('caller','orto_Box_dim',Box_dim);

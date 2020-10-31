@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_angle_dihedral_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="bond_angle_dihedral_atom.m"><style type="text/css">
+      --><title>bond_angle_dihedral_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="bond_angle_dihedral_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,9 +67,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_angle_dihedral_atom.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds, angles and the dihedral angles</li><li>of the atom struct.</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_angle_dihedral_atom(atom) % When the PBC is not important</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim)</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25)</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25,'more')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_angle_dihedral_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>bond_angle_dihedral_atom.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds, angles and the dihedral angles</li><li>of the atom struct.</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_angle_dihedral_atom(atom) % When the PBC is not important</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim)</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25)</li><li>atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25,'more')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_angle_dihedral_atom(atom,varargin)
 
-<span class="keyword">if</span> size(atom,2)&gt;5000
+<span class="keyword">if</span> size(atom,2)&gt;10000
     disp(<span class="string">'This is a large molecule or system, are you sure you want to calculate all dihedrals?'</span>)
     disp(<span class="string">'If not, use the bond_atom() or the bond_angle_atom() functions!'</span>)
     pause(2)
@@ -101,8 +102,9 @@ disp(<span class="string">'Calculating bonds and angles'</span>)
 Dihedral_index=[];
 <span class="keyword">if</span> size(Angle_index,1)&gt;1
 
-disp(<span class="string">'Calculating dihedrals'</span>)
-Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+    disp(<span class="string">'Calculating dihedrals'</span>)
+<span class="comment">%    Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];</span>
+    Ax2=[Angle_index(:,[3 2 1 4 8 9 10 5 6 7]); Angle_index];
     d=1;
     <span class="keyword">for</span> i=1:size(Ax2,1)
         <span class="keyword">for</span> j=i:size(Ax2,1)
@@ -141,6 +143,7 @@ nDihedrals=size(Dihedral_index,2);
 <span class="keyword">end</span>
 
 <span class="keyword">try</span>
+    assignin(<span class="string">'caller'</span>,<span class="string">'Ax2'</span>,Ax2);
     assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
     assignin(<span class="string">'caller'</span>,<span class="string">'overlap_index'</span>,overlap_index);
     assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
@@ -150,14 +153,16 @@ nDihedrals=size(Dihedral_index,2);
     assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</span>,nAngles);
     assignin(<span class="string">'caller'</span>,<span class="string">'nDihedrals'</span>,nDihedrals);
 <span class="keyword">catch</span>
-    assignin(<span class="string">'base'</span>,<span class="string">'Bond_index'</span>,Bond_index);
-    assignin(<span class="string">'base'</span>,<span class="string">'Angle_index'</span>,Angle_index);
-    assignin(<span class="string">'base'</span>,<span class="string">'Dihedral_index'</span>,Dihedral_index);
-    assignin(<span class="string">'base'</span>,<span class="string">'nBonds'</span>,nBonds);
-    assignin(<span class="string">'base'</span>,<span class="string">'nAngles'</span>,nAngles);
-    assignin(<span class="string">'base'</span>,<span class="string">'nDihedrals'</span>,nDihedrals);
+    assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
+    assignin(<span class="string">'caller'</span>,<span class="string">'overlap_index'</span>,overlap_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Dihedral_index'</span>,Dihedral_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
+    assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</span>,nAngles);
+    assignin(<span class="string">'caller'</span>,<span class="string">'nDihedrals'</span>,nDihedrals);
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_angle_dihedral_atom.m
 % * This function tries to find all bonds, angles and the dihedral angles
@@ -165,7 +170,7 @@ nDihedrals=size(Dihedral_index,2);
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -178,7 +183,7 @@ nDihedrals=size(Dihedral_index,2);
 
 function atom = bond_angle_dihedral_atom(atom,varargin)
 
-if size(atom,2)>5000
+if size(atom,2)>10000
     disp('This is a large molecule or system, are you sure you want to calculate all dihedrals?')
     disp('If not, use the bond_atom() or the bond_angle_atom() functions!')
     pause(2)
@@ -211,8 +216,9 @@ end
 Dihedral_index=[];
 if size(Angle_index,1)>1
     
-disp('Calculating dihedrals')
-Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+    disp('Calculating dihedrals')
+%    Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+    Ax2=[Angle_index(:,[3 2 1 4 8 9 10 5 6 7]); Angle_index];
     d=1;
     for i=1:size(Ax2,1)
         for j=i:size(Ax2,1)
@@ -251,6 +257,7 @@ else
 end
 
 try
+    assignin('caller','Ax2',Ax2);
     assignin('caller','dist_matrix',dist_matrix);
     assignin('caller','overlap_index',overlap_index);
     assignin('caller','Bond_index',Bond_index);
@@ -260,12 +267,14 @@ try
     assignin('caller','nAngles',nAngles);
     assignin('caller','nDihedrals',nDihedrals);
 catch
-    assignin('base','Bond_index',Bond_index);
-    assignin('base','Angle_index',Angle_index);
-    assignin('base','Dihedral_index',Dihedral_index);
-    assignin('base','nBonds',nBonds);
-    assignin('base','nAngles',nAngles);
-    assignin('base','nDihedrals',nDihedrals);
+    assignin('caller','dist_matrix',dist_matrix);
+    assignin('caller','overlap_index',overlap_index);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Angle_index',Angle_index);
+    assignin('caller','Dihedral_index',Dihedral_index);
+    assignin('caller','nBonds',nBonds);
+    assignin('caller','nAngles',nAngles);
+    assignin('caller','nDihedrals',nDihedrals);
 end
 
 

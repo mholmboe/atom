@@ -9,7 +9,7 @@
 % neighbour/bond cutoff radius for each atomtype
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -44,12 +44,11 @@ else
     model_database='CLAY_MINERALS'
 end
 
-pause(2)
-
 atom=element_atom(atom);
 
-distance_factor=1.2;
-rmaxlong=2.4;
+distance_factor=0.6;
+rmaxlong=2.25;
+All_Neighbours=[];
 
 Heal_Al=0;
 Heal_Mgo=0;
@@ -85,78 +84,40 @@ for assignment_run=heal_iterations
     Bond_index=zeros(4*size(size(atom,2),1),3);
     Angle_index=zeros(4*size(size(atom,2),1),4);
     
-    atom=element_atom(atom);
+    [atom.element]=atom.type;
     
-    [atom.fftype]=atom.type;
+    for i=1:size(atom,2)
+        if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+        elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+        elseif strncmpi(atom(i).type,{'Alt'},3);atom(i).element={'Alt'};
+        elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+        elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
+        elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+        elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
+        elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
+        elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
+        elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
+        else
+            [atom(i).element]=atom(i).type;
+        end
+    end
+    
+    [atom.type]=atom.element;
+    [atom.fftype]=atom.element;
     
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
     
-    Radiiproperties=load('Revised_Shannon_radii.mat');
-    %     atom = rmfield(atom,'neigh');
-    %     atom=bond_valence_atom(atom,Box_dim,1.25,rmax);
-    %     interface15_param(sort(unique([atom.type])),'tip3p');
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+    atom=remove_sametype_bond(atom,Box_dim,Bond_index);
     
-    if size(atom,2)>5000
-        dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    else
-        dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-    end
-    
-    XYZ_radii=zeros(length(XYZ_labels),1);
-    XYZ_formalcharge=zeros(length(XYZ_labels),1);
-    Atom_label=sort(unique([atom.element]));
-    for i=1:length(Atom_label)
-        try
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
-        catch
-            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
-        end
-        XYZ_radii(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
-        XYZ_formalcharge(ismember([atom.element],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
-    end
-    
-    assignin('caller','XYZ_radii',XYZ_radii);
-    assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
-    
-    XYZ_radii(XYZ_radii==0)=distance_factor;
-    radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
-    radius_limit=(radius_matrix+radius_matrix')*distance_factor;
-    dist_matrix(dist_matrix==0)=1000;
-    bond_matrix=dist_matrix-radius_limit;
-    dist_matrix(dist_matrix==1000)=0;
-    bond_matrix(bond_matrix>0)=0;
-    bond_matrix(bond_matrix<0)=1;
-    disp('Radii+Radii limits')
-    unique(XYZ_labels,'stable')
-    unique(XYZ_radii,'stable')
-    unique(radius_limit,'stable')
+    assignin('caller','nBonds',nBonds);
     assignin('caller','radius_limit',radius_limit);
-    assignin('caller','bond_matrix',bond_matrix);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Neigh_index',Neigh_index);
     assignin('caller','dist_matrix',dist_matrix);
     
-    atom = rmfield(atom,'neigh');
-    for i=1:length(XYZ_labels)
-        k=1;j=1;
-        bond_ind=find(bond_matrix(:,i));
-        while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
-            if bond_matrix(bond_ind(j),i)==1
-                if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0 && [atom(i).molid] == [atom(bond_ind(j)).molid]
-                    [atom(i).neigh.dist(k)]=dist_matrix(bond_ind(j),i);
-                    [atom(i).neigh.index(k)]=bond_ind(j);
-                    [atom(i).neigh.type(k)]=XYZ_labels(bond_ind(j));
-                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
-                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
-                    k=k+1;
-                end
-            end
-            j=j+1;
-        end
-    end
-    
-    assignin('caller','Bond_index',Bond_index);
-    
-    b=1;a=1;i=1;nH_extra=0;
+    i=1;nH_extra=0;
     while i <= size(atom,2)
         if mod(i,100)==1
             i-1
@@ -169,83 +130,16 @@ for assignment_run=heal_iterations
             n=1;neigh=1;
             
             if numel([atom(i).neigh])>0
-                index=[atom(i).neigh.index];
-                if sum(index)>0
-                    for k=1:length(index)
-                        j=atom(i).neigh.index(k);
-                        r=atom(i).neigh.dist(k);
-                        
-                        if i < size(radius_limit,2)
-                            max_distance=radius_limit(j,i);
-                        else
-                            disp('Manually setting max_distance to...')
-                            max_distance=1.8
-                        end
-                        if r > 0 && r < max_distance/3
-                            r
-                            disp('Atoms too close')
-                            format compact;
-                            format short;
-                            i
-                            j
-                            atom(i).type
-                            atom(j).type
-                            [atom(i).x atom(i).y atom(i).z]
-                            [atom(j).x atom(j).y atom(j).z]
-                        end
-                        
-                        if r > max_distance/3 && r < max_distance
-                            
-                            neigh=neigh+1;
-                            
-                            if i < j
-                                Bond_index(b,1)= i;
-                                Bond_index(b,2)= j;
-                            else
-                                Bond_index(b,1)= j;
-                                Bond_index(b,2)= i;
-                            end
-                            
-                            Bond_index(b,3)= r;
-                            Neigh_ind(n,1)= j;
-                            Neigh_vec(n,1:3)= [atom(i).neigh.r_vec(k,1) atom(i).neigh.r_vec(k,2) atom(i).neigh.r_vec(k,3)];
-                            % Neigh_vec(n,1:3)= [atom(i).neigh(k).r_vec(1) atom(i).neigh(k).r_vec(2) atom(i).neigh(k).r_vec(3)];
-                            b=b+1;
-                            n=n+1;
-                        end
-                    end
-                end
                 
                 Neigh_cell = sort([atom(i).neigh.type]);
-                if length(Neigh_cell) > 0; Neighbours=strcat(Neigh_cell{:});
-                else Neighbours={'Nan'}; end
+                if length(Neigh_cell) > 0
+                    Neighbours=strcat(Neigh_cell{:});
+                    All_Neighbours=[All_Neighbours;{Neighbours}];
+                else
+                    Neighbours={'Nan'};
+                end
                 Neigh_ind(~any(Neigh_ind,2),:) = [];
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
-                
-                size(Neigh_ind,1);
-                for v=1:size(Neigh_ind,1)
-                    for w=1:size(Neigh_ind,1)
-                        angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                        if angle > 0 && angle < 160
-                            if v < w
-                                Angle_index(a,1)= Neigh_ind(v,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(w,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            else
-                                Angle_index(a,1)= Neigh_ind(w,1);
-                                Angle_index(a,2)= i;
-                                Angle_index(a,3)= Neigh_ind(v,1);
-                                Angle_index(a,4)= angle;
-                                a=a+1;
-                            end
-                        end
-                    end
-                end
-                
-                Bond_index=sortrows(Bond_index);
-                Angle_index=sortrows(Angle_index);
                 
                 % If the element is Si
                 if strncmpi(atom(i).type,{'Si'},2) % Si
@@ -505,6 +399,12 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'MgMgSi')
                         atom(i).fftype={'Odsub'}; % Odsub
                         atom(i).type={'Odsub'};
+                    elseif strcmp(Neighbours,'MgMgMgSi') || strcmp(Neighbours,'FeoFeoFeoSi')
+                        atom(i).fftype={'Op'};
+                        atom(i).fftype={'Op'};
+                    elseif strcmp(Neighbours,'HMgMgMg') || strcmp(Neighbours,'HFeoFeoFeo')
+                        atom(i).fftype={'Oh'};
+                        atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'SiSi')
                         if strcmpi(model_database,'CLAY_MINERALS')
                             atom(i).fftype={'OY1'}; % Ob
@@ -597,28 +497,29 @@ for assignment_run=heal_iterations
     end
 end
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
-for i=1:length(unique([atom.fftype]))
-    new_Atom_label=sort(unique([atom.fftype]));
-    ind=ismember([atom.fftype],new_Atom_label(i));
+for i=1:length(unique([atom.type]))
+    new_Atom_label=sort(unique([atom.type]));
+    ind=ismember([atom.type],new_Atom_label(i));
     assignin('caller',strcat(char(new_Atom_label(i)),'_atom'),atom(ind));
+end
+
+if sum(strncmp([atom.type],'Ow',2))>0
+    ind_Ow=find(strncmpi([atom.type],'Ow',2));
+    ind_Hw=sort([ind_Ow+1 ind_Ow+2]);
+    [atom(ind_Hw).type]=deal({'Hw'});
+elseif sum(strncmp([atom.type],'OW',2))>0
+    ind_Ow=find(strncmpi([atom.type],'OW',2));
+    ind_Hw1=sort(ind_Ow+1);
+    ind_Hw2=sort(ind_Ow+2);
+    [atom(ind_Hw1).type]=deal({'HW1'});
+    [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
 nAtoms=size(atom,2);
 
 ind_edgeO=find(ismember([atom.fftype],{'OAHH','OAS','OAHH'}));
 ind_H=find(ismember([atom.fftype],{'HOY'}));
-[row,col]=find(bond_matrix(ind_edgeO,:));
+[row,col]=find(dist_matrix(ind_edgeO,:));
 ind_edgeH=intersect(col,ind_H);
 [atom(ind_edgeH).fftype]=deal({'HE'});
 
@@ -634,22 +535,18 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-Bond_index(~any(Bond_index,2),:) = [];
-Angle_index(~any(Angle_index,2),:) = [];
-
 for i=1:length(unique([atom.type]))
     new_Atom_label=sort(unique([atom.type]));
     ind=ismember([atom.type],new_Atom_label(i));
     assignin('caller',strcat(char(new_Atom_label(i)),'_atom'),atom(ind));
 end
+
+ffname
+watermodel
+
+% assignin('caller','newatom',atom);
+% assignin('caller','remove_ind',rm_ind);
+assignin('caller','All_Neighbours',unique(All_Neighbours));
 
 % try
 %     %% If the usual atom types

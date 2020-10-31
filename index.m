@@ -26,13 +26,16 @@
 % * <Advanced_examples.html Advanced_examples>
 
 %% Available functions
-% * <List_import_functions.html Import related functions> 
-% * <List_export_functions.html Export related functions> 
-% * <List_general_functions.html General functions>
+% * <List_all_functions.html All functions sorted alphabetically>
 % * <List_build_functions.html Functions for building molecular boxes> 
 % * <List_forcefield_functions.html Topology and forcefield specific functions> 
-% * <List_all_functions.html All functions sorted alphabetically>
+% * <List_general_functions.html General functions>
+% * <List_export_functions.html Export related functions> 
+% * <List_import_functions.html Import related functions> 
+
+%% Main variables used
+% * <List_variables.html List of the main types of variables used by this MATLAB library>
 
 %% Available pre-equilibrated solvents
-% * <List_of_structures.html List of available solvent structures and more>
+% * <List_structures.html List of available solvent structures and more>
 

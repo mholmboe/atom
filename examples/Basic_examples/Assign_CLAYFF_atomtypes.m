@@ -38,10 +38,11 @@ atom = substitute_atom(atom,Box_dim,6*4*2/3,'Al','Mgo',5.5) % Perform octahedral
 % atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions
 
 %% Assign the CLAYFF (Cygan, 2004) atomtypes to the montmorillonite atom struct
-atom = clayff_2004_atom(atom,Box_dim,'clayff') % Assign the clayff atom types to the atomstruct
+atom_clayff2004 = clayff_2004_atom(atom,Box_dim,'clayff_2004') % Assign the clayff atom types to the atomstruct
+% atom_clayff2004 = clayff_2004_atom(atom,Box_dim,'clayff_2004','spc',[1 2]) % In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly
 
 %% Write a CLAYFF (Cygan, 2004) .pdb file
-write_atom_pdb(atom,Box_dim,filename_out); % Print the clay sheet to a .pdb file
+write_atom_pdb(atom_clayff2004,Box_dim,filename_out); % Print the clay sheet to a .pdb file
 
 %% Assign modified CLAYFF atomtypes to the montmorillonite atom struct
 % The original CLAYFF does not contain all different atomtypes needed to
@@ -82,14 +83,15 @@ write_atom_pdb(atom,Box_dim,filename_out); % Print the clay sheet to a .pdb file
 % modified CLAYFF (MHolmboe) = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
 
 %% Assign the modified CLAYFF atomtypes to the montmorillonite atom struct
-atom = clayff_atom(atom,Box_dim) % Assign the clayff atom types to the atomstruct
+atom_clayff = clayff_atom(atom,Box_dim) % Assign the clayff atom types to the atomstruct
+% atom_clayff = clayff_atom(atom,Box_dim,'clayff','spc',[1 2]) % In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly
 
 %% Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct
 % In cases were atoms need healing, or in order to protonate edge groups,
 % one can use a slighlt longer command like below. For more info look into
 % the <clayff_atom.html clayff_atom> function and lines 49-80.
-atom = clayff_atom(atom,Box_dim,'clayff','spc',[1:7]) % Assign the clayff atom types to the atomstruct
+atom_clayff = clayff_atom(atom_clayff,Box_dim,'clayff','spc',[1:7]) % Assign the clayff atom types to the atomstruct
 
 %% Write the new modified CLAYFF .pdb file
-write_atom_pdb(atom,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
+write_atom_pdb(atom_clayff,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ff_plotfile</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="ff_plotfile.m"><style type="text/css">
+      --><title>ff_plotfile</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="ff_plotfile.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,48 +68,71 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><pre class="codeinput">close <span class="string">all</span>;
-
-atomtypes1={<span class="string">'Li'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Ca'</span>};
+</pre><pre class="codeinput">atomtypes1={<span class="string">'Li'</span>}<span class="comment">% 'Na' 'K' 'Cs' 'Ca'};</span>
 ffstrings={<span class="string">'spc'</span> <span class="string">'spce'</span> <span class="string">'tip3p'</span> <span class="string">'opc3'</span>};
 
-
 <span class="keyword">for</span> i=1:numel(atomtypes1)
-<span class="comment">%     figure</span>
+    <span class="comment">%     figure</span>
     hold <span class="string">on</span>;
     <span class="keyword">for</span> j=1:numel(ffstrings)
-    atomtype1=atomtypes1{i};
-    atomtype2=<span class="string">'OW'</span>;
+        atomtype1=atomtypes1{i};
+        atomtype2=<span class="string">'OW'</span>;
 
-    ffstring=ffstrings{j};
-    atomtype2=strcat(atomtype2,<span class="string">'_'</span>,ffstring);
-    ff1=load(strcat(<span class="string">'ions_'</span>,ffstring,<span class="string">'.mat'</span>));
-    ff2=load(strcat(<span class="string">'water_models.mat'</span>));
+        ffstring=ffstrings{j};
+        atomtype2=strcat(atomtype2,<span class="string">'_'</span>,ffstring);
+        ff1=load(strcat(<span class="string">'ions_'</span>,ffstring,<span class="string">'.mat'</span>));
+        ff2=load(strcat(<span class="string">'water_models.mat'</span>));
 
-    [r,lj,coul,Utot] = ljcoul_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+        [r,lj,coul,Utot] = nonbonded_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><pre class="codeinput">tiledlayout(3,2)
+hold <span class="string">on</span>;
+ff=load(<span class="string">'clayff.mat'</span>);
+atomtypes1={<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Alt'</span> <span class="string">'Mgo'</span> <span class="string">'Si'</span> <span class="string">'Ob'</span>};
+atomtypes2={<span class="string">'Ob'</span>};
+<span class="keyword">for</span> i=1:numel(atomtypes1)
+    nexttile(i)
+    [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}});
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 close all;
 
-atomtypes1={'Li' 'Na' 'K' 'Cs' 'Ca'};
+%%
+atomtypes1={'Li'}% 'Na' 'K' 'Cs' 'Ca'};
 ffstrings={'spc' 'spce' 'tip3p' 'opc3'};
 
-
 for i=1:numel(atomtypes1)
-%     figure
+    %     figure
     hold on;
     for j=1:numel(ffstrings)
-    atomtype1=atomtypes1{i};
-    atomtype2='OW';
-    
-    ffstring=ffstrings{j};
-    atomtype2=strcat(atomtype2,'_',ffstring);
-    ff1=load(strcat('ions_',ffstring,'.mat'));
-    ff2=load(strcat('water_models.mat'));
-    
-    [r,lj,coul,Utot] = ljcoul_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+        atomtype1=atomtypes1{i};
+        atomtype2='OW';
+        
+        ffstring=ffstrings{j};
+        atomtype2=strcat(atomtype2,'_',ffstring);
+        ff1=load(strcat('ions_',ffstring,'.mat'));
+        ff2=load(strcat('water_models.mat'));
+        
+        [r,lj,coul,Utot] = nonbonded_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
     end
 end
+
+%%
+
+%%
+
+tiledlayout(3,2)
+hold on;
+ff=load('clayff.mat');
+atomtypes1={'Al' 'Alt' 'Alt' 'Mgo' 'Si' 'Ob'};
+atomtypes2={'Ob'};
+for i=1:numel(atomtypes1)
+    nexttile(i)
+    [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}});
+end
+
+%%
 ##### SOURCE END #####
 --></body></html>

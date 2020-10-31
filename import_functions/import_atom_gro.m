@@ -5,7 +5,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -17,6 +17,13 @@
 
 function atom = import_atom_gro(filename,varargin)
 tic
+
+if regexp(filename,'.gro') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.gro');
+end
+
 % Get the number of atoms and Box_dim
 fileID = fopen(filename,'r');
 Line1 = {fgets(fileID)};

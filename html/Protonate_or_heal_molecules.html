@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Examples demonstrating how to protonate, heal, fuse or merge molecules</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="Protonate_or_heal_molecules.m"><style type="text/css">
+      --><title>Examples demonstrating how to protonate, heal, fuse or merge molecules</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="Protonate_or_heal_molecules.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -84,7 +85,7 @@ healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.5,<span class="string">'N'</s
 atom = fuse_atom(atom,Box_dim,0.85)
 </pre><h2 id="7">Merge two molecules with <a href="merge_atom.html">merge_atom</a></h2><div><ul><li>This function returns the struct atom2 containing atoms with a distance r (1x1 or 1x2 array) away from the atoms in the atom1 struct. There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting r(2) to a smaller value than r(1).</li><li>You must decide if atom1w should be wrapped or not before running this function</li><li>Do not wrap atomw1 here, do it before calling this function since Box1 does not always equal the full Box_dim, but rather a region in the full Box_dim</li></ul></div><p><b>Examples</b></p><pre class="codeinput">atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,<span class="string">'index'</span>,<span class="string">'C'</span>,1.4)
 atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,<span class="string">'molid'</span>,<span class="string">'Hw'</span>,[1.6 1.0])
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Examples demonstrating how to protonate, heal, fuse or merge molecules
 % (For a full list of functions that can add atoms/ions/molecules, go to 

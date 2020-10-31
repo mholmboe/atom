@@ -9,7 +9,7 @@
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -65,7 +65,7 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',4) || strncmpi(type,'type
     
     atomtype=[];ordered_atom=[];
     if numel(neworder)~=numel(unique([atom.type]))
-        disp('You have not issued a complete list of atomtypes!');
+        disp('You have not issued a list of atomtypes that does not fully match the atom struct!');
     else
         if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.type])))))~=0
             disp('Make sure you have the atomtypes spelled right..');

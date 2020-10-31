@@ -12,7 +12,7 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -20,11 +20,11 @@
 %% Examples
 % # analyze = analyze_atom(atom,Box_dim)
 % # analyze = analyze_atom(atom,Box_dim,2.5)
+% # analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)
 
 function properties = analyze_atom(atom,Box_dim,varargin)
 
 % FIX multiple OxStates and other from the Shannon file
-
 load('Revised_Shannon_radii.mat');
 
 if nargin > 2
@@ -34,17 +34,34 @@ else
 end
 
 element=element_atom(atom); % Optionally, set the names ow water O and water H
-%element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');
-disp('Trying to find bonded atoms')
-element=bond_atom(element,Box_dim,rmax);
-disp('Running Bond Valence analysis...')
-element=bond_valence_atom(element,Box_dim,1.25,rmax);
+% element=bond_angle_atom(element,Box_dim,1.25,rmax,'more');
 
-% other_ind=[];
+if nargin < 4
+    disp('Trying to find bonded atoms')
+    element=bond_atom(element,Box_dim,rmax);
+else
+    disp('Trying to recalculate the bonded atoms')
+    Bond_index=varargin{2};
+    element=recalc_bond_atom(element,Box_dim,Bond_index);
+end
+
+disp('Running Bond Valence analysis...')
+if nargin > 4
+    Valencestates=varargin{3};
+    element=bond_valence_atom(element,Box_dim,1.25,rmax,Valencestates);
+else
+    element=bond_valence_atom(element,Box_dim,1.25,rmax);
+end
+
+Valences=[element.valence];
+modValences=sum(Valences-round(Valences))/numel(Valences);
+
+% other_ind=[];ValenceGuess=zeros(1,size(element,2));
 % for i=1:size(element,2)
 %     try
-%         ValenceGuess=round([element(i).valence]);
-%         element(i)=bond_valence_atom(element(i),Box_dim,1.25,rmax,ValenceGuess);
+%         element(i).type;
+%         ValenceGuess(i)=round([element(i).valence]);
+%         element(i)=bond_valence_atom(element(i),Box_dim,1.25,rmax,ValenceGuess(i));
 %     catch
 %         other_ind=[other_ind i];
 %     end
@@ -55,6 +72,8 @@ element=bond_valence_atom(element,Box_dim,1.25,rmax);
 % if numel(other_ind)>0
 %     element(other_ind)=bond_valence_atom(element(other_ind),Box_dim,1.25,rmax);
 % end
+% assignin('caller','ValenceGuess',ValenceGuess)
+% assignin('caller','other_ind',other_ind)
 
 element=mass_atom(element);
 assignin('caller','element',element);
@@ -64,12 +83,19 @@ for i=1:size(element,2)
         Ion_ind=find(strncmpi([element(i).type],Ion,1));
     end
     CN_ind=find(numel(element(i).neigh.index)==CN);
-    Ox_ind=find(round(element(i).valence)==OxState);
+    Ox_ind=find(round(element(i).valence-modValences)==OxState);
     CN_ind=intersect(Ion_ind,CN_ind);
     Ox_ind=intersect(Ion_ind,Ox_ind);
     ind=intersect(Ox_ind,CN_ind);
+    
     if numel(ind)==0
-        ind=Ion_ind(1);
+        if numel(Ox_ind)==0 && numel(CN_ind)>0
+            ind=CN_ind(1);
+        elseif numel(CN_ind)==0 && numel(Ox_ind)>0
+            ind=Ox_ind(1);
+        else
+            ind=Ion_ind(1);
+        end
     elseif numel(ind)>1
         ind=ind(1);
     end
@@ -80,7 +106,7 @@ for i=1:size(element,2)
     properties(i).bond=element(i).bond;
     %     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()
     properties(i).bv=element(i).bv;
-    properties(i).valence=element(i).valence;
+    properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
     properties(i).rdiffvalence=element(i).Rdiff;
@@ -91,12 +117,26 @@ for i=1:size(element,2)
     properties(i).oxstate=OxState(ind);
     properties(i).cn_guess=CN(ind);
     properties(i).ionicradii=IonicRadii(ind);
+    properties(i).RevShannonind=ind;
+    properties(i).type=Ion(properties(i).RevShannonind);
+    properties(i).MODRevShannonind=properties(i).RevShannonind;
+    %         properties(i).oxstate=OxState(properties(i).RevShannonind);
+    properties(i).ip=ZoverIR(properties(i).RevShannonind);
+    properties(i).cn_guess=CN(properties(i).RevShannonind);
+    properties(i).crysradii=CrysRadii(properties(i).RevShannonind);
+    properties(i).ionicradii=IonicRadii(properties(i).RevShannonind);
+    properties(i).vdwradii=radius_vdw([element(i).type]);
+    properties(i).ip=ZoverIR(properties(i).RevShannonind);
+    properties(i).elecconf=strtrim(ElecConf(properties(i).RevShannonind));
+    properties(i).spinstate=strtrim(SpinState(properties(i).RevShannonind));
+    
     if mod(i,100)==1
         i-1
     end
 end
 
-assignin('caller','pre_properties',properties);
+pre_properties=properties;
+assignin('caller','pre_properties',pre_properties);
 
 for i=1:size(properties,2)
     Ion_ind=find(strcmp([element(i).type],Ion));
@@ -110,34 +150,56 @@ for i=1:size(properties,2)
         current_radii=[properties(i).ionicradii];
         neigh_radii=[properties([properties(i).neigh.index]).ionicradii];
         sum_radii=repmat(current_radii',numel(neigh_radii),1)+repmat(neigh_radii,numel(current_radii),1)';
-        [minvalue,preox_ind]=min(abs(mean(sum_radii-mean([properties(i).neigh.dist]-properties(i).rdiffvalence))));
-        preox_ind;
+        [minvalue,preox_ind]=min(abs(mean(sum_radii-median([properties(i).neigh.dist] - properties(i).rdiffvalence))));
         properties(i).type=Ion(ind(preox_ind));
-%         properties(i).oxstate=OxState(ind(preox_ind));
+        %         properties(i).oxstate=OxState(ind(preox_ind));
+        properties(i).valence=element(i).valence;
         properties(i).ip=ZoverIR(ind(preox_ind));
         properties(i).cn_guess=CN(ind(preox_ind));
         properties(i).crysradii=CrysRadii(ind(preox_ind));
         properties(i).ionicradii=IonicRadii(ind(preox_ind));
         properties(i).vdwradii=radius_vdw([element(i).type]);
-        properties(i).ip=ZoverIR(preox_ind);
+        properties(i).ip=ZoverIR(ind(preox_ind)); %preox_ind);
         properties(i).elecconf=strtrim(ElecConf(ind(preox_ind)));
         properties(i).spinstate=strtrim(SpinState(ind(preox_ind)));
+        properties(i).MODRevShannonind=ind(preox_ind);
     end
     if mod(i,100)==1
         i-1
     end
 end
 
+diff_ind=find([properties.RevShannonind]-[properties.MODRevShannonind]);
+if numel(diff_ind)>0
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    disp('Possible problems with these sites due to non-ideal bonding distances,')
+    disp('Compare with output in the pre_properties struct variable')
+    unique([atom(diff_ind).type])
+    diff_ind
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+end
+
 diff_valence=(abs([properties.oxstate])-[properties.valence])';
 ind=find(abs(diff_valence)>0.5);
 if numel(ind)>0
-    disp('Possible problems with index due to multiple oxidation states,')
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    disp('Possible problems with these sites due to multiple oxidation states,')
     disp('or atoms that are undersaturated!')
     unique([atom(ind).type])
     ind
-    assignin('caller','heal_ind',ind');
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 end
 assignin('caller','heal_ind',ind');
+
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+disp('Total valence from oxstate');
+Tot_valence_oxstate=sum([properties.oxstate])
+
+ind_neg=find([properties.oxstate]<0);
+Tot_valence=[properties.valence];
+Tot_valence(ind_neg)=-Tot_valence(ind_neg);
+disp('Total valence');
+Tot_valence=sum(Tot_valence)
 
 disp('Global instability index is:')
 GII=(sum((abs([properties.oxstate])-[properties.valence]).^2)/size(properties,2))^0.5
@@ -164,21 +226,30 @@ for i=1:size(Bond_index,1)
 end
 
 format short
-diff_bond=Bond_index(:,4)-Bond_index(:,3);
-ind=find(abs(diff_bond)>0.5);
-if numel(ind)>0
-    disp('Possible problems with bond between:')
-    for i=1:numel(ind)
-        [Bond_index(ind(i),1) Bond_index(ind(i),2)]
-        properties(Bond_index(ind(i),1)).type
-        properties(Bond_index(ind(i),2)).type
-        Bond_index(ind(i),3:end)
+try
+    diff_bond=Bond_index(:,4)-Bond_index(:,3);
+    ind=find(abs(diff_bond)>0.5);
+    if numel(ind)>0
+        disp('Possible problems with bond between:')
+        for i=1:numel(ind)
+            [Bond_index(ind(i),1) Bond_index(ind(i),2)]
+            properties(Bond_index(ind(i),1)).type
+            properties(Bond_index(ind(i),2)).type
+            Bond_index(ind(i),3:end)
+        end
     end
+    assignin('caller','diff_bond',diff_bond);
+catch
+    disp('Could not calc diff_bond')
 end
 
+
+
+assignin('caller','Tot_valence',Tot_valence);
+assignin('caller','Tot_valence_oxstate',Tot_valence_oxstate);
 assignin('caller','GII',GII);
 assignin('caller','BondSummary',BondSummary);
-assignin('caller','diff_bond',diff_bond);
+
 assignin('caller','diff_valence',diff_valence);
 assignin('caller','prop_atom',element);
 try
@@ -187,5 +258,8 @@ try
     assignin('caller','dist_matrix',dist_matrix);
     assignin('caller','diff_bond_bv',[properties.rdiffvalence]');
 catch
-    disp('Could not assignin Bond_index, Angle_index, distmatrix')
+    disp('Could not assignin Angle_index, distmatrix')
+    assignin('caller','Bond_index',Bond_index);
 end
+
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')

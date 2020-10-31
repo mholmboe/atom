@@ -12,22 +12,29 @@ atom0=import_atom(strcat('evap_0.gro'));
 % frames1=[0:20:120];frames2=[121:240];
 % frames=sort([frames1 frames2]);
 
-traj=zeros(120,3*size(atom,2));
+traj=zeros(70,3*size(atom,2));
 frame=zeros(1,3*size(atom,2));
-All_Box_dim=zeros(120,9);
-frames=[0:1:120];
-
-for i=1:numel(frames)
+All_Box_dim=zeros(70,9);
+frames=[0:1:70];
+n=0;
+for i=[1:numel(frames)]
    i
    j=frames(i)
     try
-      atom=import_atom(strcat('evap_',num2str(j),'.gro'));
+        if j>60 % To add extra copies of the final frame
+            n=60;
+        else
+            n=j;
+        end
+      atom=import_atom_gro(strcat('evap_',num2str(n),'.gro'));
       tempnum=3*size(atom,2);
       Xdata=XYZ_data(:,1);
       Ydata=XYZ_data(:,2);
-      Zdata=XYZ_data(:,3);% -XYZ_data(1,3)+3.75;
-%       Zdata(Zdata>Box_dim(3))=Zdata(Zdata>Box_dim(3))-Box_dim(3);
-%       Zdata(Zdata<0)=Zdata(Zdata<0)+Box_dim(3);
+      
+      Zdata=XYZ_data(:,3)-XYZ_data(1,3)+3.8;
+      Zdata(Zdata>Box_dim(3))=Zdata(Zdata>Box_dim(3))-Box_dim(3);
+      Zdata(Zdata<0)=Zdata(Zdata<0)+Box_dim(3);
+      
       frame(1:3:tempnum)=Xdata; %0;
       frame(2:3:tempnum)=Ydata;
       frame(3:3:tempnum)=Zdata;

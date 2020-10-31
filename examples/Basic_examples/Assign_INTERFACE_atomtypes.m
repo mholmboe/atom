@@ -77,10 +77,11 @@ atom = substitute_atom(atom,Box_dim,6*4*2/3,'Al','Mgo',5.5) % Perform octahedral
 % atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions
 
 %% Assign the Interface FF (Heinz, 2005) atomtypes to the montmorillonite atom struct
-atom = interface_atom(atom,Box_dim,'interface') % Assign the Interface FF atom types to the atomstruct
+atom_interface15 = interface15_atom(atom,Box_dim,'interface15') % Assign the Interface FF atom types to the atomstruct
+% atom_interface15 = interface15_atom(atom,Box_dim,'interface','spc',[1:5]) In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly
 
 %% Write a Interface FF .pdb file
-write_atom_pdb(atom,Box_dim,filename_out); % Print the clay sheet to a .pdb file
+write_atom_pdb(atom_interface15,Box_dim,filename_out); % Print the clay sheet to a .pdb file
 
 %% Assign modified Interface FF atomtypes to the montmorillonite atom struct
 % The original Interface FF does not contain all different atomtypes needed to
@@ -100,14 +101,15 @@ write_atom_pdb(atom,Box_dim,filename_out); % Print the clay sheet to a .pdb file
 % modified Interface FF (MHolmboe)        = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
 
 %% Assign the modified Interface FF atomtypes to the montmorillonite atom struct
-atom = interface_atom(atom,Box_dim) % Assign the Interface FF (Heinz et al., 2005) atom types to the atomstruct
+atom_interface = interface_atom(atom,Box_dim) % Assign the Interface FF (Heinz et al., 2005) atom types to the atomstruct
+% atom_interface = interface_atom(atom,Box_dim,'interface','spc',[1 2]) In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly
 
 %% Heal and assign the modified Interface FF atomtypes to the montmorillonite atom struct
 % In cases were atoms need healing, or in order to protonate edge groups,
 % one can use a slighlt longer command like below. For more info look into
 % the <interface_atom.html interface_atom> function and lines 46-77.
-atom = interface_atom(atom,Box_dim,'interface','tip3p',[1:5]) % Assign the Interface FF atom types to the atomstruct
+atom_interface = interface_atom(atom,Box_dim,'interface','tip3p',[1:5]) % Assign the Interface FF atom types to the atomstruct
 
 %% Write the new modified Interface FF .pdb file
-write_atom_pdb(atom,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
+write_atom_pdb(atom_interface,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
 

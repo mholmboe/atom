@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_valence_data.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="bond_valence_data.m"><style type="text/css">
+      --><title>bond_valence_data.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="bond_valence_data.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_valence_data.m</h1><!--introduction--><div><ul><li>This function fetches the data and matches it to the passed atom types used to calculate the bond valence values according to</li><li><a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R)</li><li>[mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R,varargin)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
+  </style></head><body><div class="content"><h1>bond_valence_data.m</h1><!--introduction--><div><ul><li>This function fetches the data and matches it to the passed atom types used to calculate the bond valence values according to</li><li><a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R)</li><li>[mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R,varargin)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
 
 <span class="keyword">if</span> nargin==3
     load(<span class="string">'bond_valence_values.mat'</span>);
@@ -100,11 +101,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     ion1=<span class="string">'O'</span>;
 <span class="keyword">end</span>
 
+<span class="keyword">if</span> strncmpi(ion1,<span class="string">'Oh'</span>,2)
+    ion1=<span class="string">'O'</span>;
+<span class="keyword">end</span>
+
 <span class="keyword">if</span> strncmpi(ion2,<span class="string">'Hw'</span>,2)
     ion2=<span class="string">'H'</span>;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> strncmpi(ion2,<span class="string">'Ow'</span>,2)
+    ion2=<span class="string">'O'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> strncmpi(ion2,<span class="string">'Oh'</span>,2)
     ion2=<span class="string">'O'</span>;
 <span class="keyword">end</span>
 
@@ -138,8 +147,12 @@ ind=ind1(ind);
     ind=ind1(ind);
 <span class="keyword">end</span>
 
-<span class="comment">% % Blacklist these H-O entries</span>
-ind(ind==640)=[];ind(ind==639)=[];ind(ind==638)=[];ind(ind==637)=[];ind(ind==636)=[];
+<span class="comment">% Ignore these H-O entries</span>
+ind(ind==636)=[];
+ind(ind==637)=[];
+ind(ind==638)=[];
+ind(ind==639)=[];
+ind(ind==640)=[];
 
 <span class="keyword">if</span> numel(ind)==0
     disp(<span class="string">'Could not find any matching pair...'</span>)
@@ -164,7 +177,7 @@ ind(ind==640)=[];ind(ind==639)=[];ind(ind==638)=[];ind(ind==637)=[];ind(ind==636
 
 mean_bv=mean(bv_temp);
 std_bv=std(bv_temp);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_valence_data.m
 % * This function fetches the data and matches it to the passed atom types
@@ -176,7 +189,7 @@ std_bv=std(bv_temp);
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -219,11 +232,19 @@ if strncmpi(ion1,'Ow',2)
     ion1='O';
 end
 
+if strncmpi(ion1,'Oh',2)
+    ion1='O';
+end
+
 if strncmpi(ion2,'Hw',2)
     ion2='H';
 end
 
 if strncmpi(ion2,'Ow',2)
+    ion2='O';
+end
+
+if strncmpi(ion2,'Oh',2)
     ion2='O';
 end
 
@@ -257,8 +278,12 @@ if numel(ind)==0
     ind=ind1(ind);
 end
 
-% % Blacklist these H-O entries
-ind(ind==640)=[];ind(ind==639)=[];ind(ind==638)=[];ind(ind==637)=[];ind(ind==636)=[];
+% Ignore these H-O entries
+ind(ind==636)=[];
+ind(ind==637)=[];
+ind(ind==638)=[];
+ind(ind==639)=[];
+ind(ind==640)=[];
 
 if numel(ind)==0
     disp('Could not find any matching pair...')

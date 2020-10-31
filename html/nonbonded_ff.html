@@ -1,0 +1,257 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>nonbonded_ff</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="nonbonded_ff.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Plot the Total energy, electrostatic contribution, and the LJ</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Utot] = nonbonded_ff(ff,atomtype) <span class="comment">% ff and atomtype can be single variables or cell 'tuplets'</span>
+</pre><pre class="codeinput"><span class="keyword">if</span> ischar(atomtype)
+    disp(<span class="string">'atomtype must be a {1x1} or {1x2} cell'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(atomtype,2)==1
+    atomtype1=atomtype;
+    atomtype2=atomtype;
+<span class="keyword">elseif</span> size(atomtype,2)==2
+    atomtype1=atomtype(1);
+    atomtype2=atomtype(2);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(ff,2)&gt;2
+    ff1=ff;
+    ff2=ff;
+    atomtype1=ff(strcmpi([ff1.type],atomtype1));
+    atomtype2=ff(strcmpi([ff2.type],atomtype2));
+<span class="keyword">elseif</span> size(ff,2)==2
+    ff1=ff{1};
+    ff2=ff{2};
+    atomtype1=ff1(strcmpi([ff1.type],atomtype1));
+    atomtype2=ff2(strcmpi([ff2.type],atomtype2));
+<span class="keyword">end</span>
+
+q1=atomtype1.charge;
+q2=atomtype2.charge;
+sig1=atomtype1.sigma_nm;
+sig2=atomtype2.sigma_nm;
+eps1=atomtype1.e_kJmol;
+eps2=atomtype2.e_kJmol;
+</pre><h2 id="3">Plot the Total energy, electrostatic contribution, and the LJ</h2><pre class="codeinput">r=.01:.0005:1.2; <span class="comment">% nm</span>
+
+e_mix=(eps1*eps2)^.5
+sig_mix=(sig1+sig2)/2
+
+lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+Utot=lj+coul;
+
+hold <span class="string">on</span>
+plotmin=1000*(round(min(Utot*1.5)/1000));
+<span class="keyword">if</span> plotmin&gt;=0
+    plotmin=10000;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;2
+    plot(r,lj,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1);
+    plot(r,coul,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1);
+    plot(r,Utot,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+<span class="keyword">else</span>
+    plot(r,lj,<span class="string">'LineWidth'</span>,1);
+    plot(r,coul,<span class="string">'LineWidth'</span>,1);
+    plot(r,Utot,<span class="string">'LineWidth'</span>,1);
+<span class="keyword">end</span>
+xlabel(<span class="string">'r [nm]'</span>);
+ylabel(<span class="string">'U [kJ/mol]'</span>);
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+
+[atomtype1.type]
+
+titlestring=strcat([atomtype1.type],<span class="string">'-'</span>,[atomtype2.type]);
+titlestring=strrep(titlestring,<span class="string">'_'</span>,<span class="string">'-'</span>);
+title(titlestring)
+
+<span class="comment">% figure</span>
+<span class="comment">% hold on</span>
+<span class="comment">% P=exp(-Utot./2.4789);</span>
+<span class="comment">% P=P./sum(P);</span>
+<span class="comment">% plot(r,P)</span>
+<span class="comment">% xlabel('r [nm]');</span>
+<span class="comment">% ylabel('P');</span>
+<span class="comment">%</span>
+<span class="comment">% assignin('caller','P',P);</span>
+<span class="comment">%</span>
+<span class="comment">% gaussEqn='a*exp(-((x-b)/(2^.5*c))^2)';%+d';%</span>
+<span class="comment">% startPoints=[0.01 0.15 .25];</span>
+<span class="comment">% gaussEqn='a*exp(-((x-b)/c)^2)+d'; % Orig from Matlab</span>
+<span class="comment">% startPoints=[0.01 0.15 .25 0];</span>
+<span class="comment">% fgauss=fit(r',P',gaussEqn,'Start',startPoints);</span>
+<span class="comment">% coeff=coeffvalues(fgauss);</span>
+<span class="comment">% scale=coeff(1);</span>
+<span class="comment">% ave_r=coeff(2);</span>
+<span class="comment">% fwhm=2*(2*log(2))^.5*abs(coeff(3));</span>
+<span class="comment">% sumP=sum(coeff(1)*exp(-((r-coeff(2))./(2^.5*coeff(3))).^2));%+coeff(4));</span>
+<span class="comment">% plot(fgauss,r,P)</span>
+<span class="comment">% legend('Location','northeast')</span>
+<span class="comment">% xlim([0,0.35]);</span>
+<span class="comment">% hold off</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [r,lj,coul,Utot] = nonbonded_ff(ff,atomtype) % ff and atomtype can be single variables or cell 'tuplets'
+
+if ischar(atomtype)
+    disp('atomtype must be a {1x1} or {1x2} cell')
+end
+
+if size(atomtype,2)==1
+    atomtype1=atomtype;
+    atomtype2=atomtype;
+elseif size(atomtype,2)==2
+    atomtype1=atomtype(1);
+    atomtype2=atomtype(2);
+end
+
+if size(ff,2)>2
+    ff1=ff;
+    ff2=ff;
+    atomtype1=ff(strcmpi([ff1.type],atomtype1));
+    atomtype2=ff(strcmpi([ff2.type],atomtype2));
+elseif size(ff,2)==2
+    ff1=ff{1};
+    ff2=ff{2};
+    atomtype1=ff1(strcmpi([ff1.type],atomtype1));
+    atomtype2=ff2(strcmpi([ff2.type],atomtype2));
+end
+
+q1=atomtype1.charge;
+q2=atomtype2.charge;
+sig1=atomtype1.sigma_nm;
+sig2=atomtype2.sigma_nm;
+eps1=atomtype1.e_kJmol;
+eps2=atomtype2.e_kJmol;
+
+%% Plot the Total energy, electrostatic contribution, and the LJ
+r=.01:.0005:1.2; % nm
+
+e_mix=(eps1*eps2)^.5
+sig_mix=(sig1+sig2)/2
+
+lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+Utot=lj+coul;
+
+hold on
+plotmin=1000*(round(min(Utot*1.5)/1000));
+if plotmin>=0
+    plotmin=10000;
+end
+
+if nargin>2
+    plot(r,lj,'b','LineWidth',1);
+    plot(r,coul,'r','LineWidth',1);
+    plot(r,Utot,'k','LineWidth',1);
+else
+    plot(r,lj,'LineWidth',1);
+    plot(r,coul,'LineWidth',1);
+    plot(r,Utot,'LineWidth',1);
+end
+xlabel('r [nm]');
+ylabel('U [kJ/mol]');
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+
+[atomtype1.type]
+
+titlestring=strcat([atomtype1.type],'-',[atomtype2.type]);
+titlestring=strrep(titlestring,'_','-');
+title(titlestring)
+
+% figure
+% hold on
+% P=exp(-Utot./2.4789);
+% P=P./sum(P);
+% plot(r,P)
+% xlabel('r [nm]');
+% ylabel('P');
+%
+% assignin('caller','P',P);
+%
+% gaussEqn='a*exp(-((x-b)/(2^.5*c))^2)';%+d';%
+% startPoints=[0.01 0.15 .25];
+% gaussEqn='a*exp(-((x-b)/c)^2)+d'; % Orig from Matlab
+% startPoints=[0.01 0.15 .25 0];
+% fgauss=fit(r',P',gaussEqn,'Start',startPoints);
+% coeff=coeffvalues(fgauss);
+% scale=coeff(1);
+% ave_r=coeff(2);
+% fwhm=2*(2*log(2))^.5*abs(coeff(3));
+% sumP=sum(coeff(1)*exp(-((r-coeff(2))./(2^.5*coeff(3))).^2));%+coeff(4));
+% plot(fgauss,r,P)
+% legend('Location','northeast')
+% xlim([0,0.35]);
+% hold off
+
+##### SOURCE END #####
+--></body></html>

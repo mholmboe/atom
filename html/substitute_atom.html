@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>substitute_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="substitute_atom.m"><style type="text/css">
+      --><title>substitute_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="substitute_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>substitute_atom.m</h1><!--introduction--><div><ul><li>This scripts performs isomorphous substitution, by replacing for instance</li><li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li><li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li><li>atom is the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
+  </style></head><body><div class="content"><h1>substitute_atom.m</h1><!--introduction--><div><ul><li>This scripts performs isomorphous substitution, by replacing for instance</li><li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li><li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li><li>atom is the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">% If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges</span>
 <span class="comment">% clear all;</span>
@@ -78,8 +79,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% NumTetSubst=4;                  % How many tetrahedral substituitions do you want</span>
 <span class="comment">% O1={'Al'}; O2={'Mgo'};  % Mgo   % O1 will get replaced by O2 NumOctSubst times</span>
 <span class="comment">% T1={'Si'}; T2={'Alt'};  % Alt   % T1 will get replaced by T2 NumTetSubst times</span>
-<span class="comment">% minO2O2_dist=5.5;                  % Minimum O2/O2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
-<span class="comment">% minT2T2_dist=5.5;                  % Minimum T2/T2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+<span class="comment">% minO2O2_dist=5.5;               % Minimum O2/O2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+<span class="comment">% minT2T2_dist=5.5;               % Minimum T2/T2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+
+shift_z=0;
+<span class="keyword">if</span> (sum([atom.z])/size(atom,2)) &gt; 1
+    shift_z=sum([atom.z])/size(atom,2); <span class="comment">% Average z-position</span>
+    atom=translate_atom(atom,[0 0 -shift_z]) <span class="comment">% Make the atom struct centrosymmetrish around z=0</span>
+<span class="keyword">end</span>
 
 <span class="keyword">if</span> ~iscell(O1)
     disp(<span class="string">'Converting O1 to cell'</span>)
@@ -220,7 +227,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
         <span class="keyword">else</span>
             TO=[];
         <span class="keyword">end</span>
-        <span class="keyword">if</span> length(T)&lt;1 &amp;&amp; length(TO)&lt;1 &amp;&amp;  nTetlo &lt; NumTetSubst &amp;&amp; lolimit &lt; T1_data(rand_T1_Index(i),dimension) &amp;&amp; hilimit &gt; T1_data(rand_T1_Index(i),dimension);
+        <span class="keyword">if</span> length(T)&lt;1 &amp;&amp; length(TO)&lt;1 &amp;&amp;  nTetlo &lt; NumTetSubst &amp;&amp; lolimit &lt; T1_data(rand_T1_Index(i),dimension) &amp;&amp; hilimit &gt; T1_data(rand_T1_Index(i),dimension)
             <span class="keyword">if</span> nTetlo &lt; NumTetSubst/2 &amp;&amp; ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100&lt;=Ave_Tet_z
                 All_subst_index=[All_subst_index; rand_T1_Index(i)];
                 Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
@@ -232,6 +239,9 @@ O2_atom=[]; <span class="comment">% New addition...</span>
                 nTethi=nTethi+1;
                 [T1_atom(rand_T1_Index(i)).type]=T2;
             <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> (nTetlo+nTethi) == NumTetSubst
+            <span class="keyword">break</span>
         <span class="keyword">end</span>
         <span class="keyword">if</span> i == length(T1_data)
             disp(<span class="string">'Stopped the loop'</span>)
@@ -251,6 +261,10 @@ O2_atom=[]; <span class="comment">% New addition...</span>
         <span class="comment">% pause(3)</span>
     <span class="keyword">end</span>
 
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> abs(shift_z)&gt;0
+    atom=translate_atom(atom,[0 0 shift_z]) <span class="comment">% Shift the atom structs z-coordinates back to the original</span>
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> NumOctSubst&gt;0
@@ -309,7 +323,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
 
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% substitute_atom.m
 % * This scripts performs isomorphous substitution, by replacing for instance
@@ -318,7 +332,7 @@ O2_atom=[]; <span class="comment">% New addition...</span>
 % * atom is the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -340,8 +354,14 @@ function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,vara
 % NumTetSubst=4;                  % How many tetrahedral substituitions do you want
 % O1={'Al'}; O2={'Mgo'};  % Mgo   % O1 will get replaced by O2 NumOctSubst times
 % T1={'Si'}; T2={'Alt'};  % Alt   % T1 will get replaced by T2 NumTetSubst times
-% minO2O2_dist=5.5;                  % Minimum O2/O2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
-% minT2T2_dist=5.5;                  % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+% minO2O2_dist=5.5;               % Minimum O2/O2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+% minT2T2_dist=5.5;               % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+
+shift_z=0;
+if (sum([atom.z])/size(atom,2)) > 1
+    shift_z=sum([atom.z])/size(atom,2); % Average z-position
+    atom=translate_atom(atom,[0 0 -shift_z]) % Make the atom struct centrosymmetrish around z=0
+end
 
 if ~iscell(O1)
     disp('Converting O1 to cell')
@@ -452,7 +472,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if NumTetSubst>0
-    
+
     ind_T1=find(strcmp([atom.type],T1));
     ind_O2=find(strcmp([atom.type],O2));
     T1_atom=atom(ind_T1);
@@ -482,7 +502,7 @@ if NumTetSubst>0
         else
             TO=[];
         end
-        if length(T)<1 && length(TO)<1 &&  nTetlo < NumTetSubst && lolimit < T1_data(rand_T1_Index(i),dimension) && hilimit > T1_data(rand_T1_Index(i),dimension);
+        if length(T)<1 && length(TO)<1 &&  nTetlo < NumTetSubst && lolimit < T1_data(rand_T1_Index(i),dimension) && hilimit > T1_data(rand_T1_Index(i),dimension)
             if nTetlo < NumTetSubst/2 && ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100<=Ave_Tet_z
                 All_subst_index=[All_subst_index; rand_T1_Index(i)];
                 Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
@@ -494,6 +514,9 @@ if NumTetSubst>0
                 nTethi=nTethi+1;
                 [T1_atom(rand_T1_Index(i)).type]=T2;
             end
+        end
+        if (nTetlo+nTethi) == NumTetSubst
+            break
         end
         if i == length(T1_data)
             disp('Stopped the loop')
@@ -513,6 +536,10 @@ if NumTetSubst>0
         % pause(3)
     end
     
+end
+
+if abs(shift_z)>0
+    atom=translate_atom(atom,[0 0 shift_z]) % Shift the atom structs z-coordinates back to the original
 end
 
 if NumOctSubst>0

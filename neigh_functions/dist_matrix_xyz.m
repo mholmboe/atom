@@ -3,7 +3,7 @@
 % the distances between two XYZ1 and XYZ2 matrixes
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

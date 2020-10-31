@@ -2,7 +2,7 @@
 % * This function writes an pqr file from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -18,7 +18,10 @@ nAtoms=size(atom,2)
 if exist('[atom.charge]','var') && exist('[atom.radius]','var')
     disp('Charges and radius exist')
 else
-    atom = radius_atom(atom,'clayff','spc');
+    for i=1:size(atom,2)
+        [atom(i).radius] = radius_vdw([atom(i).type]);
+    end
+    
 end
 
 
@@ -157,14 +160,20 @@ end
 % .pqr format usually something like
 % Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
 
+[atom.type]=atom.fftype;
+
 for i=1:size(atom,2)
     if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
     elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};atom(i).formalcharge=6;
+    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};atom(i).formalcharge=5;
+    elseif strncmpi(atom(i).type,{'W'},2);atom(i).element={'W'};atom(i).formalcharge=6;
+    elseif strncmpi(atom(i).type,{'P'},2);atom(i).element={'P'};atom(i).formalcharge=5;
     elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};atom(i).formalcharge=-2;
-    elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
+    elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=0;
@@ -186,28 +195,40 @@ end
 % .pqr format usually something like
 % Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
 for i = 1:nAtoms
-    Atom_section = ['ATOM  ', atom(i).index, atom(i).type, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,atom(i).charge,atom(i).radius,atom(i).element,atom(i).formalcharge];
+    Atom_section = ['ATOM  ', atom(i).index, atom(i).fftype, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,round([atom(i).charge],5),atom(i).radius,atom(i).element,atom(i).formalcharge];
     %sprintf('%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\n',Atom_section{1:length(Atom_section)});
-    fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\n',Atom_section{1:length(Atom_section)});
+    fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\r\n',Atom_section{1:length(Atom_section)});
 end
 
 % Write conect records
 
-if nargin>3;
+if nargin>3
     
-    if nargin > 4
-        short_r=cell2mat(varargin(1));
-        long_r=cell2mat(varargin(2));
+    if size(varargin{1},1)<2
+        
+        if nargin>4
+            short_r=varargin{1};
+            long_r=varargin{2};
+        else
+            short_r=1.25;
+            long_r=2.25;
+        end
+        
+        short_r
+        long_r
+        
+        %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+        atom=bond_atom(atom,Box_dim,long_r);
+        %     assignin('caller','Dist_matrix',Dist_matrix);
+        assignin('caller','Bond_index',Bond_index);
+        %     assignin('caller','Angle_index',Angle_index);
+        assignin('caller','nBonds',nBonds);
+        %     assignin('caller','nAngles',nAngles);
     else
-        short_r=1.25;
-        long_r=1.25;
+        
+        Bond_index=varargin{1};
+        
     end
-    
-    atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-    assignin('caller','Bond_index',Bond_index);
-    assignin('caller','Angle_index',Angle_index);
-    assignin('caller','nBonds',nBonds);
-    assignin('caller','nAngles',nAngles);
     
     B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
     b1=sortrows(B);

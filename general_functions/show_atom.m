@@ -5,7 +5,7 @@
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,17 +13,19 @@
 %% Examples
 % # show_atom(atom)
 % # show_atom(atom,Box_dim)
-% # show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'lines', 'labels' or 'index'
+% # show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'ionic', 'lines', 'labels' or 'index'
 % # show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box
 % # show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency
-% # show_atom(atom,Box_dim,'ballstick',0,0,[0 0 -50]) % Will translate the XYZ coordinates
-% # show_atom(atom,Box_dim,'ballstick',0,0,[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
-%
+% # show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor
+% # show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates
+% # show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
+
 
 function show_atom(atom,varargin)
+tic
 
 disp('Choose between these representations:')
-disp('ballstick licorice halfvdw vdw crystal lines labels index')
+disp('ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels index')
 
 if nargin>2
     style = char(varargin{2}); %'ballstick','licorice','halfvdw','vdw'
@@ -31,20 +33,22 @@ else
     style = 'ballstick';
 end
 
-if ~ismember(style,{'ballstick' 'licorice' 'halfvdw' 'vdw' 'crystal' 'lines' 'labels' 'index'})
+if ~ismember(style,{'ballstick' 'small' 'smallvdw' 'licorice' 'halfvdw' 'vdw' 'crystal' 'ionic' 'lines' 'labels' 'index' 'poly' 'polyhedra' 'filled'})
     style = 'ballstick';
 end
 
-bond_radii = 0.15; % bond radii
+bond_radii = 0.12; % bond radii
 resolution = 30;  % higher looks better, takes more time
-atom=element_atom(atom);
-XYZ_labels=[atom.type]';
+element=element_atom(atom);
+XYZ_labels=[element.type]';
 nAtoms = size(XYZ_labels,1);
 
-if strncmpi(style,'crystal',3)
-    radii = 1/4*abs(radius_crystal(XYZ_labels));
+if strncmpi(style,'crystal',3) || strncmpi(style,'filled',4)
+    radii = 1/5*abs(radius_crystal(XYZ_labels));
+elseif strncmpi(style,'ionic',3)
+    radii = 1/5*abs(radius_ion(XYZ_labels));
 else
-    radii = 1/4*abs(radius_vdw(XYZ_labels));
+    radii = 1/5*abs(radius_vdw(XYZ_labels));
 end
 color =  1*element_color(XYZ_labels);
 
@@ -54,19 +58,31 @@ else
     alpha=1; % Transperacy
 end
 
-if nargin>6
-    color=varargin{6};
-    color=repmat(color,nAtoms,1);
+rmaxlong=2.25
+distance_factor=0.6;
+if nargin>5
+    if numel(varargin{5})>0
+        rmaxlong=varargin{5}; % Dummy value
+        if numel(rmaxlong)>1
+            distance_factor=rmaxlong(2);
+            rmaxlong=rmaxlong(1);
+        end
+    end
 end
 
-if nargin>5
-    trans_vec=varargin{5};
+if nargin>6
+    trans_vec=varargin{6};
     if numel(trans_vec)==3
         atom=translate_atom(atom,trans_vec(1:3));
         if numel(trans_vec)==4
             atom=wrap_atom(atom,Box_dim);
         end
     end
+end
+
+if nargin>7
+    color=varargin{7};
+    color=repmat(color,nAtoms,1);
 end
 
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
@@ -89,11 +105,24 @@ if nargin>1
             Box_dim(3)=Box_dim(1);
         end
         
-        if size(atom,2)>39 && size(atom,2)< 5000 && strcmp(style,'ballstick')
+        if size(atom,2)>39 && size(atom,2) < 5000 && strcmp(style,'ballstick')
             disp('Scanning intramolecular bonds, neglecting the PBC')
-            atom = bond_atom(atom,10*Box_dim,2.1,0.6); % the factor 10 makes sure there are no bonds over the pbc!
+            atom = bond_atom(atom,1.1*Box_dim,rmaxlong,distance_factor); % the factor 10% makes sure there are no bonds over the pbc!
         else
-            atom = bond_atom(atom,Box_dim,2.1,.6);
+            atom = bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+            
+            if max([atom.molid])<max([atom.index])
+                i=1;
+                while numel(Bond_index)==0 && i < 10
+                    rmaxlong=2.2+i/4;
+                    distance_factor=6+i/10;
+                    atom = bond_atom(atom,Box_dim,rmaxlong,distance_factor);
+                    i=i+1;
+                end
+                disp('Used this rmaxlong and distance_factor:')
+                rmaxlong
+                distance_factor
+            end
         end
         
         
@@ -136,20 +165,22 @@ ax = fig.CurrentAxes;
 ax.XLim = [xlo xhi];
 ax.YLim = [ylo yhi];
 ax.ZLim = [zlo zhi];
+
 xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
-
-if strncmpi(style,'lines',4) || strncmpi(style,'labels',5) || strncmpi(style,'index',5)
+toc
+tic
+if strncmpi(style,'labels',5) || strncmpi(style,'index',5) % || strncmpi(style,'lines',4)
     for i = 1:length(XYZ_labels)
         labelradii = 500;
-        ind=strncmpi([atom.type],XYZ_labels(i),3);
+        ind=strncmpi([element.type],XYZ_labels(i),3);
         if numel(ind)==0
-            ind=strncmpi([atom.type],XYZ_labels(i),2);
+            ind=strncmpi([element.type],XYZ_labels(i),2);
         end
         if numel(ind)==0
-            ind=strncmpi([atom.type],XYZ_labels(i),1);
+            ind=strncmpi([element.type],XYZ_labels(i),1);
         end
-        scatter3([atom(ind).x],[atom(ind).y],[atom(ind).z],...
+        scatter3([element(ind).x],[element(ind).y],[element(ind).z],...
             labelradii,...
             'MarkerEdgeColor',[.5 .5 .5],...
             'MarkerFaceColor',[1 1 1]);
@@ -157,34 +188,57 @@ if strncmpi(style,'lines',4) || strncmpi(style,'labels',5) || strncmpi(style,'in
     
     bond_radii=0.05;
     if strncmpi(style,'labels',5)
-        text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,XYZ_labels);
+        text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,[atom.type]);
     elseif strncmpi(style,'index',5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,strsplit(num2str([atom.index])));
     end
-else
+elseif strncmpi(style,'licorice',4) || strncmpi(style,'ballstick',4) || strncmpi(style,'smallvdw',5) || strncmpi(style,'halfvdw',4) || strncmpi(style,'vdw',3) || strncmpi(style,'filled',4) || strncmpi(style,'crystal',4) || strncmpi(style,'ion',3)
     disp('Drawing the atoms')
+    
+    [rx,ry,rz] = sphere(resolution);
     for i = 1:size(XYZ_data,1)
         
         color_temp = color(i,:);
+        
         switch style
             case 'licorice'
                 r_temp = bond_radii;
             case 'ballstick'
                 r_temp = radii(i);
+            case 'small'
+                r_temp = radii(i);
+            case 'smallvdw'
+                r_temp = radii(i);
             case 'halfvdw'
-                r_temp = 2*radii(i);
+                r_temp = 5/2*radii(i);
             case 'vdw'
-                r_temp = 4*radii(i);
+                r_temp = 5*radii(i);
             case 'crystal'
-                r_temp = 4*radii(i);
+                r_temp = 5*radii(i);
+            case 'ionic'
+                r_temp = 5*radii(i);
+            case 'filled'
+                r_temp = 5*radii(i);
         end
         
-        [rx,ry,rz] = sphere(resolution);
-        surface(XYZ_data(i,1) + r_temp*rx,XYZ_data(i,2) + r_temp*ry, ...
-            XYZ_data(i,3) + r_temp*rz,'FaceColor',color_temp, ...
-            'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
-            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
-        
+        if strcmp(style,'filled')
+            slices=100;
+            for s=1:slices
+                surface(XYZ_data(i,1) + s/slices*r_temp*rx,XYZ_data(i,2) + s/slices*r_temp*ry, ...
+                    XYZ_data(i,3) + s/slices*r_temp*rz,'FaceColor',color_temp,...
+                    'EdgeColor','none','FaceLighting','none','FaceAlpha',alpha,...
+                    'AmbientStrength',.1,'DiffuseStrength',.1,'SpecularStrength',0);
+            end
+            surface(XYZ_data(i,1) + s/slices*r_temp*rx,XYZ_data(i,2) + s/slices*r_temp*ry, ...
+                    XYZ_data(i,3) + s/slices*r_temp*rz,'FaceColor',color_temp,...
+                    'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
+                    'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
+        else
+            surface(XYZ_data(i,1) + r_temp*rx,XYZ_data(i,2) + r_temp*ry, ...
+                XYZ_data(i,3) + r_temp*rz,'FaceColor',color_temp, ...
+                'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
+                'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
+        end
         
         if mod(i,1000)==1
             if i > 1
@@ -193,12 +247,67 @@ else
             end
         end
     end
-    i
     drawnow
+    
+elseif strncmpi(style,'polyhedra',4)
+    
+    disp('Plotting polyhedra. See poly_atom function for more options..')
+    
+    polytype=unique([atom.type]);
+    polytype(strncmpi(polytype,'H',1))=[];
+    polytype(strncmpi(polytype,'O',1))=[];
+    
+    polytype_ind=find(ismember([atom.type],polytype));
+    
+    for ip=1:numel(polytype_ind)
+        
+        i=polytype_ind(ip);
+        
+        color_temp = color(i,:);
+        
+        if numel(atom(i).neigh.index)>0
+            
+            r_vec = [[atom(i).neigh.r_vec(:,1)] [atom(i).neigh.r_vec(:,2)] [atom(i).neigh.r_vec(:,3)]];
+            
+            dist=[];
+            for j=1:size(r_vec,1)
+                dist(j,:)=([ (r_vec(j,1)-r_vec(:,1)).^2 + (r_vec(j,2)-r_vec(:,2)).^2 + ([r_vec(j,3)-r_vec(:,3)]).^2] ).^.5;
+            end
+            
+            dist(dist>1.5*rmaxlong)=0;
+            
+            PolyInd=[];n=0;
+            for ik=1:size(r_vec,1)
+                for il=ik+1:size(r_vec,1)
+                    for im=il+1:size(r_vec,1)
+                        if dist(il,ik)>0 && dist(im,ik)>0 && dist(im,il)>0
+                            n=n+1;
+                            PolyInd(n,:)=[ik il im];
+                        end
+                    end
+                end
+            end
+            poly_color=color_temp.^.5;
+            poly_color_edge=color_temp./5;
+            patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+                'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
+                'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
+        end
+        
+        if mod(i,1000)==1 || i==size(atom,2)
+            if i > 1
+                i-1
+                drawnow limitrate
+            end
+        end
+    end
+else
+    disp('Unknown type of representation...')
+    disp('Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels index poly filled')
 end
-
-
-if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'index'})
+toc
+tic
+if exist('Bond_index','var') && numel(Bond_index)>0 && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'index'})
     rdist = Bond_index(:,3);
     % draw cylinders for each bond
     disp('Drawing the bonds')
@@ -245,7 +354,7 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice' 'lines' '
         surface(r1(1) + x,r1(2) + y,r1(3) + z,...
             'FaceColor',color_temp1,...
             'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
-            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
+            'AmbientStrength',.6,'DiffuseStrength',.1,'SpecularStrength',0);
         %'EdgeColor','none',...
         %'FaceLighting','gouraud','FaceAlpha',alpha)
         
@@ -255,7 +364,7 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice' 'lines' '
             'EdgeColor','none','FaceLighting','gouraud','FaceAlpha',alpha,...
             'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',0);
         
-        if mod(i,1000)==1
+        if mod(i,100)==1
             if i > 1
                 i-1
                 drawnow limitrate
@@ -265,10 +374,26 @@ if exist('Bond_index','var') && ismember(style,{'ballstick' 'licorice' 'lines' '
     end
     
 end
-
+toc
 if nargin>3
-    if varargin{3}>0
+    if varargin{3}>0 && ~strncmpi(style,'filled',4)
         Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+    end
+end
+
+if strncmpi(style,'filled',4)
+    Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+    xlim([0 Box_dim(1)+.01]);
+    ylim([0 Box_dim(2)+.01]);
+    zlim([0 Box_dim(3)+.01]);
+    if xhi<20
+        xticks([floor(xlo:1:ceil(xhi))]);
+    end
+    if yhi<20
+        yticks([floor(ylo:1:ceil(yhi))]);
+    end
+    if zhi<20
+        zticks([floor(zlo:1:ceil(zhi))]);
     end
 end
 

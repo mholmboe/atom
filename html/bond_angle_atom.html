@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_angle_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="bond_angle_atom.m"><style type="text/css">
+      --><title>bond_angle_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="bond_angle_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_angle_atom.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles of the atom struct</li><li>One optional argument like 'more' will give more bond info</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_angle_atom(atom,Box_dim,1.25,2.25)</li><li>atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=bond_angle_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>bond_angle_atom.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles of the atom struct</li><li>One optional argument like 'more' will give more bond info</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_angle_atom(atom,Box_dim,1.25,2.25)</li><li>atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=bond_angle_atom(atom,varargin)
 </pre><p>tic</p><pre class="codeinput"><span class="keyword">if</span> nargin&lt;=4
     <span class="keyword">if</span> nargin&lt;4
         <span class="keyword">if</span> nargin==1
@@ -185,7 +186,7 @@ b=1;a=1; overlap_index=[];
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     <span class="keyword">for</span> j=1:length(bond_in)
-        <span class="keyword">if</span> [atom(i).molid]==[atom(bond_in(j)).molid]
+        <span class="keyword">if</span> [atom(i).molid]==[atom(bond_in(j)).molid] &amp;&amp; (strncmpi([atom(i).type],[atom(bond_in(j)).type],1) == 0)
             <span class="comment">% Original, uncomment this section</span>
             <span class="comment">% max_distance = max_short_dist;</span>
             <span class="comment">% Only test</span>
@@ -294,7 +295,7 @@ b=1;a=1; overlap_index=[];
             <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
-    <span class="keyword">if</span> mod(i,1000)==1
+    <span class="keyword">if</span> mod(i,100)==1
         <span class="keyword">if</span> i-1&gt;0
             i-1
         <span class="keyword">end</span>
@@ -318,7 +319,6 @@ overlap_index=overlap_index(1:size(overlap_index,1)/2,:);
 Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 <span class="comment">% overlap_index(~any(overlap_index,2),:) = [];</span>
-
 
 nBonds=size(Bond_index,1);
 nAngles=size(Angle_index,1);
@@ -371,11 +371,13 @@ nAngles=size(Angle_index,1);
     Atom_labels=unique([atom.type]);
     <span class="keyword">for</span> i=1:length(Atom_labels)
         label_ind=find(strcmpi([atom.type],Atom_labels(i)));
-        Tot_dist=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
+        Tot_dist=[];Tot_CN=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
         <span class="keyword">for</span> j=label_ind
             <span class="keyword">if</span> numel([atom(j).neigh])&gt;0
                 Tot_index=[Tot_index; repmat(j,numel([atom(j).neigh.index]),1)];
                 Tot_dist=[Tot_dist; [atom(j).neigh.dist]];
+                CN_temp=numel([atom(j).neigh.dist]);
+                Tot_CN=[Tot_CN;CN_temp*ones(CN_temp,1)];
                 Tot_type=[Tot_type; [atom(j).neigh.type]];
                 Tot_neighindex=[Tot_neighindex; [atom(j).neigh.index]];
                 Tot_coords=[Tot_coords; [atom(j).neigh.coords]];
@@ -391,13 +393,19 @@ nAngles=size(Angle_index,1);
             <span class="keyword">end</span>
         <span class="keyword">end</span>
         <span class="keyword">try</span>
-            assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_dist'</span>)',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_dist'</span>)',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_coords'</span>)',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_bonds'</span>)',[Tot_bondindex Tot_bonds]);
             assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_angles'</span>)',[Tot_angleindex Tot_angles]);
             assignin(<span class="string">'caller'</span>,strcat(char(Atom_labels(i)),<span class="string">'_atom'</span>)',atom(ismember([atom.type],Atom_labels(i))));
+
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_dist'</span>)',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_coords'</span>)',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_bonds'</span>)',[Tot_bondindex Tot_bonds]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_angles'</span>)',[Tot_angleindex Tot_angles]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_atom'</span>)',atom(ismember([atom.type],Atom_labels(i))));
         <span class="keyword">catch</span>
-            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_dist'</span>)',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_dist'</span>)',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_coords'</span>)',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_bonds'</span>)',[Tot_bondindex Tot_bonds]);
             assignin(<span class="string">'base'</span>,strcat(char(Atom_labels(i)),<span class="string">'_angles'</span>)',[Tot_angleindex Tot_angles]);
@@ -423,7 +431,7 @@ nAngles=size(Angle_index,1);
 <span class="keyword">end</span>
 
 <span class="comment">% toc</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_angle_atom.m
 % * This function tries to find all bonds and angles of the atom struct
@@ -432,7 +440,7 @@ nAngles=size(Angle_index,1);
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -564,7 +572,7 @@ for i = 1:size(XYZ_data,1)
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     for j=1:length(bond_in)
-        if [atom(i).molid]==[atom(bond_in(j)).molid]
+        if [atom(i).molid]==[atom(bond_in(j)).molid] && (strncmpi([atom(i).type],[atom(bond_in(j)).type],1) == 0)
             % Original, uncomment this section
             % max_distance = max_short_dist;
             % Only test
@@ -673,7 +681,7 @@ for i = 1:size(XYZ_data,1)
             end
         end
     end
-    if mod(i,1000)==1
+    if mod(i,100)==1
         if i-1>0
             i-1
         end
@@ -697,7 +705,6 @@ overlap_index=overlap_index(1:size(overlap_index,1)/2,:);
 Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 % overlap_index(~any(overlap_index,2),:) = [];
-
 
 nBonds=size(Bond_index,1);
 nAngles=size(Angle_index,1);
@@ -750,11 +757,13 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
     Atom_labels=unique([atom.type]);
     for i=1:length(Atom_labels)
         label_ind=find(strcmpi([atom.type],Atom_labels(i)));
-        Tot_dist=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
+        Tot_dist=[];Tot_CN=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
         for j=label_ind
             if numel([atom(j).neigh])>0
                 Tot_index=[Tot_index; repmat(j,numel([atom(j).neigh.index]),1)];
                 Tot_dist=[Tot_dist; [atom(j).neigh.dist]];
+                CN_temp=numel([atom(j).neigh.dist]);
+                Tot_CN=[Tot_CN;CN_temp*ones(CN_temp,1)];
                 Tot_type=[Tot_type; [atom(j).neigh.type]];
                 Tot_neighindex=[Tot_neighindex; [atom(j).neigh.index]];
                 Tot_coords=[Tot_coords; [atom(j).neigh.coords]];
@@ -770,13 +779,19 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             end
         end
         try
-            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin('caller',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('caller',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('caller',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
             assignin('caller',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
+
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
+            assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
+            assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
+            assignin('base',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
         catch
-            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);

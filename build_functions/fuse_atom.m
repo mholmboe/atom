@@ -2,7 +2,7 @@
 % * This function tries to fuse all sites within a certain rmax
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -30,25 +30,25 @@ while i < size(fused_atom,2)
         x1=[fused_atom(i).x];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
+        
+%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
 
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-        fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+        [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));% mean([fused_atom(rmind).x]);
+        [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));% mean([fused_atom(rmind).y]);
+        [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
         
-        [fused_atom(i).x]=mean([fused_atom(rmind).x]);
-        [fused_atom(i).y]=mean([fused_atom(rmind).y]);
-        [fused_atom(i).z]=mean([fused_atom(rmind).z]);
-        
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
     i=i+1;
     
     if mod(i,100)==1
-            if i > 1
-                i-1
-            end
+        if i > 1
+            i-1
+        end
     end
-        
+    
 end
 fused_atom(rmind_tot)=[];
 
@@ -61,7 +61,7 @@ atom=update_atom(fused_atom);
 %         end
 %     catch
 %     end
-%     
+%
 % %     try
 % %         if isfield(fused_atom,'xfrac')
 % %             fused_atom=rmfield(fused_atom,'xfrac');

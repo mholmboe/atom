@@ -3,7 +3,7 @@
 % * It tries to guess the Box_dim, so watch out!
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -130,7 +130,7 @@ end
 if numel(Box_dim)==0
     disp('Guessing the box dimensions to be .1% larger than max coordinates')
     Box_dim = [(max([atom.x])-min([atom.x]))*1.001    (max([atom.y])-min([atom.y]))*1.001  (max([atom.z])-min([atom.z]))*1.001 0 0 0 0 0 0];
-    pause
+    pause(2)
 end
 
 % atom = resname_atom(atom);

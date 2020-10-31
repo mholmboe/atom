@@ -1,4 +1,4 @@
-%% spce2tip4p.m
+%% tip3p2tip4p.m
 % * This function converts a .gro or .pdb file with spc water to some tip4p
 % water
 % * The coordinate of the new MW center is set to OW coordinates, thus must
@@ -9,7 +9,7 @@
 % an unwrapped structure...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -20,12 +20,14 @@
 % * update_atom.m
 % 
 %% Examples
-% * tip4p_atom = spce2tip4p('SOL.pdb')
-% * tip4p_atom = spce2tip4p('SOL.gro')
+% * tip4p_atom = tip3p2tip4p('SOL.pdb')
+% * tip4p_atom = tip3p2tip4p('SOL.gro')
+% * tip4p_atom = tip3p2tip4p('SOL.pdb')
+% * tip4p_atom = tip3p2tip4p('SOL.gro')
 
-function tip4p_atom = spce2tip4p(filename)
+function tip4p_atom = tip3p2tip4p(filename)
 
-atom=import_atom(filename); % Import the gro file
+atom=import_atom(filename); % Import the .pdb/.gro file
 nAtoms=size(atom,2); % Total number of atoms
 Ow_ind=find(strcmpi([atom.type],'Ow')); % find the index of the water-Oxygens
 SOL_ind=sort([Ow_ind Ow_ind+1 Ow_ind+2]); % find the index of the water-Hydrogens

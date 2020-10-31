@@ -1,163 +1,152 @@
-%% atomic_scattering_factors
-% This function retrieves the atomic scattering factor vs 2theta using the 
-% 11-coeff parameters from Waasmaier&Kirfel, 1995
-% One can use the if statements to control the ionic form of the fetched
-% scattering factors...
-%
-%% Version
-% 2.07
-%
-%% Contact
-% Please report bugs to michael.holmboe@umu.se
-%
-%% Examples
-% # f = atomic_scattering_factors('Si',1.54187,2:.033:60,2)
-%
-function f = atomic_scattering_factors(Atom_label,lambda,twotheta,Biso)
+%% This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&Kirfel, 1995
+function f = atomic_scattering_factors(Atom_label,lambda,twotheta,Biso,varargin)
+
+if ~iscell(Atom_label)
+    Atom_label={Atom_label};
+end
 
 if size(Atom_label{1},2)>1
     Atom_label{1}(2:end)=lower(Atom_label{1}(2:end));
 end
 
-if ismember(Atom_label,['Li','Na','K','Cs'])
-    Atom_label=strcat(Atom_label,'1+');
-elseif ismember(Atom_label,['Mg','Ca','Sr','Ba','Cu'])
-    Atom_label=strcat(Atom_label,'2+');
-end
-
-if strncmp(Atom_label,{'Nc'},1)
-    if strncmpi(Atom_label,{'Nc'},2)
-        %disp('Treating Nc as N')
-        Atom_label={'N'};
-    elseif strncmpi(Atom_label,{'Na'},2)
-        %disp('Treating Nc as N')
-        Atom_label={'Na1+'};
+ind0=cell2mat(regexp(Atom_label,'0'));
+if numel(ind0)>0
+    Atom_label{1}(ind0)=[];
+else
+    if ismember(Atom_label,{'Li','Na','K','Cs'})
+        Atom_label=strcat(Atom_label,'1+');
+    elseif ismember(Atom_label,{'Mg','Ca','Sr','Ba','Cu'})
+        Atom_label=strcat(Atom_label,'2+');
     end
-end
-
-if strcmp(Atom_label,{'Al'})
-    %disp('Treating Al as Al1.5+')
-    Atom_label={'Al1.5+'};
-end
-if strcmp(Atom_label,{'Al0'})
-    %disp('Treating Al as Al1.5+')
-    Atom_label={'Al'};
-end
-if strcmp(Atom_label,{'Alt'})
-    %disp('Treating Al as Al1.5+')
-    Atom_label={'Al1.5+'};
-end
-if strcmp(Atom_label,{'Si'})
-    %disp('Treating Si as Si2+')
-    Atom_label={'Si2+'};
-end
-if strcmp(Atom_label,{'Si0'})
-    %disp('Treating Al as Al1.5+')
-    Atom_label={'Si'};
-end
-if strcmp(Atom_label,{'Mgo'})
-    %disp('Treating Mgo as Mg1+')
-    Atom_label={'Mg1+'};
-end
-if strcmp(Atom_label,{'Mg0'})
-    %disp('Treating Mgo as Mg1+')
-    Atom_label={'Mg'};
-end
-if strcmp(Atom_label,{'Feo'})
-    %disp('Treating Feo as Fe1.5+')
-    Atom_label={'Fe1.5+'};
-end
-if strcmp(Atom_label,{'Fe0'})
-    %disp('Treating Feo as Fe1.5+')
-    Atom_label={'Fe'};
-end
-
-
-if strncmp(Atom_label,{'Oh'},2)
-    %disp('Treating Oh as O1-')
-    Atom_label={'O1-'};
-elseif strcmp(Atom_label,{'Oapical'})
-    %disp('Treating Oapical as O1-')
-    Atom_label={'O1-'};
-elseif strcmp(Atom_label,{'Obasal'}) %|| strcmp(Atom_label,{'O'})
-    %disp('Treating Obasal as O1-')
-    Atom_label={'O1-'};
-elseif strcmp(Atom_label,{'Omg'}) || strncmp(Atom_label,{'Oa'},2) || strncmp(Atom_label,{'Od'},2) || strncmp(Atom_label,{'Os'},2)...
-        || strncmp(Atom_label,{'Ob'},2) || strncmp(Atom_label,{'Op'},2)
-    %disp('Treating Obasal as O1-')
-    Atom_label={'O1-'};
-elseif strcmp(Atom_label,{'OEF'})
-    %disp('Treating OEdelamn/Favejee as O1-')
-    Atom_label={'O1-'};
-elseif strncmpi(Atom_label,{'Ow'},2)
-    %disp('Treating Owx as uncharged O')
-    Atom_label={'O'};
-elseif strncmpi(Atom_label,{'Oc'},2)
-    %disp('Treating Owx as uncharged O')
-    Atom_label={'O'};
-elseif strncmpi(Atom_label,{'O0'},2)
-    %disp('Treating Owx as uncharged O')
-    Atom_label={'O'};
-elseif strncmpi(Atom_label,{'O'},1)
-    %disp('Treating Owx as uncharged O')
-    Atom_label={'O1-'};
-end
-
-if strncmpi(Atom_label,{'H'},1)
-    if strncmpi(Atom_label,{'HEF'},2)
-        %disp('Treating HEdelamn/Favejee as uncharged H')
-        Atom_label={'H'};
-    elseif strncmpi(Atom_label,{'Hw'},2)
-        %disp('Treating HEdelamn/Favejee as uncharged H')
-        Atom_label={'H'};
-    elseif strncmpi(Atom_label,{'Hc'},2)
-        %disp('Treating Hc as a neutral H')
-        Atom_label={'H'};
-    elseif strncmp(Atom_label,{'Hx'},1) && size(Atom_label,2) > 1
-        if isnumeric(Atom_label(2))
-            %disp('Treating Hx as uncharged H')
-            Atom_label={'H'};
-        elseif strncmpi(Atom_label,{'Hw'},2)
-            Atom_label={'H'};
+    
+    if strncmp(Atom_label,{'Nc'},1)
+        if strncmpi(Atom_label,{'Nc'},2)
+            %disp('Treating Nc as N')
+            Atom_label={'N'};
+        elseif strncmpi(Atom_label,{'Na'},2)
+            %disp('Treating Nc as N')
+            Atom_label={'Na1+'};
         end
     end
-end
-
-if strncmp(Atom_label,{'C'},1)
-    if strncmpi(Atom_label,{'Cl'},2)
-        %disp('Treating Cl as Cl1-')
-        Atom_label={'Cl1-'};
-    elseif strncmpi(Atom_label,{'Cs'},2)
-        %disp('Treating Cl as Cl1-')
-        Atom_label={'Cs1+'};
-    elseif strncmpi(Atom_label,{'Ca'},2)
-        %disp('Treating Cl as Cl1-')
-        Atom_label={'Ca2+'};
-    elseif strncmpi(Atom_label,{'Cc'},2)
-        %disp('Treating Cc as C')
-        Atom_label={'C'};
-    else
-        %disp('Treating Cx as uncharged C')
-        Atom_label={'C'};
+    
+    %% This function calculates the 2theta dependent x-ray scattering form factor for element in Atom_label
+    if strcmp(Atom_label,{'Al'})
+        %disp('Treating Al as Al1.5+')
+        Atom_label={'Al1.5+'};
     end
+    if strcmp(Atom_label,{'Alt'})
+        %disp('Treating Al as Al1.5+')
+        Atom_label={'Al1.5+'};
+    end
+    if strcmp(Atom_label,{'Si'})
+        %disp('Treating Si as Si2+')
+        Atom_label={'Si2+'};
+    end
+    if strcmp(Atom_label,{'Mgo'})
+        %disp('Treating Mgo as Mg1+')
+        Atom_label={'Mg1+'};
+    end
+    if strcmp(Atom_label,{'Mgh'})
+        %disp('Treating Mgo as Mg1+')
+        Atom_label={'Mg1+'};
+    end
+    if strcmp(Atom_label,{'Feo'})
+        %disp('Treating Feo as Fe1.5+')
+        Atom_label={'Fe1.5+'};
+    end
+    if strcmp(Atom_label,{'Fet'})
+        %disp('Treating Feo as Fe1.5+')
+        Atom_label={'Fe1.5+'};
+    end
+    if strcmp(Atom_label,{'Fe'})
+        %disp('Treating Feo as Fe1.5+')
+        Atom_label={'Fe1.5+'};
+    end
+    
+    
+    if strncmp(Atom_label,{'Oh'},2)
+        %disp('Treating Oh as O1-')
+        Atom_label={'O1-'};
+    elseif strcmp(Atom_label,{'Oapical'})
+        %disp('Treating Oapical as O1-')
+        Atom_label={'O1-'};
+    elseif strcmp(Atom_label,{'Obasal'}) %|| strcmp(Atom_label,{'O'})
+        %disp('Treating Obasal as O1-')
+        Atom_label={'O1-'};
+    elseif strcmp(Atom_label,{'Omg'}) || strncmp(Atom_label,{'Oa'},2) || strncmp(Atom_label,{'Od'},2) || strncmp(Atom_label,{'Os'},2)...
+            || strncmp(Atom_label,{'Ob'},2) || strncmp(Atom_label,{'Op'},2)
+        %disp('Treating Obasal as O1-')
+        Atom_label={'O1-'};
+    elseif strcmp(Atom_label,{'OEF'})
+        %disp('Treating OEdelamn/Favejee as O1-')
+        Atom_label={'O1-'};
+    elseif strncmpi(Atom_label,{'Ow'},2)
+        %disp('Treating Owx as uncharged O')
+        Atom_label={'O'};
+    elseif strncmpi(Atom_label,{'Oc'},2)
+        %disp('Treating Owx as uncharged O')
+        Atom_label={'O'};
+    elseif strncmpi(Atom_label,{'O'},1)
+        %disp('Treating Owx as uncharged O')
+        Atom_label={'O1-'};
+    end
+    
+    if strncmpi(Atom_label,{'H'},1)
+        if strncmpi(Atom_label,{'HEF'},2)
+            %disp('Treating HEdelamn/Favejee as uncharged H')
+            Atom_label={'H'};
+        elseif strncmpi(Atom_label,{'Hw'},2)
+            %disp('Treating HEdelamn/Favejee as uncharged H')
+            Atom_label={'H'};
+        elseif strncmpi(Atom_label,{'Hc'},2)
+            %disp('Treating Hc as a neutral H')
+            Atom_label={'H'};
+        elseif strncmp(Atom_label,{'Hx'},1) && size(Atom_label,2) > 1
+            if isnumeric(Atom_label(2))
+                %disp('Treating Hx as uncharged H')
+                Atom_label={'H'};
+            elseif strncmpi(Atom_label,{'Hw'},2)
+                Atom_label={'H'};
+            end
+        end
+    end
+    
+    if strncmp(Atom_label,{'C'},1)
+        if strncmpi(Atom_label,{'Cl'},2)
+            %disp('Treating Cl as Cl1-')
+            Atom_label={'Cl1-'};
+        elseif strncmpi(Atom_label,{'Cs'},2)
+            %disp('Treating Cl as Cl1-')
+            Atom_label={'Cs1+'};
+        elseif strncmpi(Atom_label,{'Ca'},2)
+            %disp('Treating Cl as Cl1-')
+            Atom_label={'Ca2+'};
+        elseif strncmpi(Atom_label,{'Cc'},2)
+            %disp('Treating Cc as C')
+            Atom_label={'C'};
+        else
+            %disp('Treating Cx as uncharged C')
+            Atom_label={'C'};
+        end
+    end
+    
+    if strncmp(Atom_label,{'H2O'},3)
+        %disp('Treating H2O as a single particle H2O')
+        Atom_label={'H2O'};
+    end
+    
+    if strncmpi(Atom_label,{'Br'},2)
+        %disp('Treating Nc as N')
+        Atom_label={'Br1-'};
+    end
+    
 end
-
-if strncmp(Atom_label,{'H2O'},3)
-    %disp('Treating H2O as a single particle H2O')
-    Atom_label={'H2O'};
-end
-
-if strncmpi(Atom_label,{'Br'},2)
-    %disp('Treating Nc as N')
-    Atom_label={'Br1-'};
-end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Atom name
+%% Atom name
 Waasmaier_Kirfel_label={...
     'H';...
     'H1-';...
@@ -379,7 +368,7 @@ Waasmaier_Kirfel_label={...
     'Cf';...
     };
 
-% atom_nr,charge,weight,debye-waller factor
+%% atom_nr,charge,weight,debye-waller factor
 Waasmaier_Kirfel_data=[...
     1 0 1.00794 0;...
     1 -1 1.00794 2;...
@@ -826,13 +815,30 @@ coeffs=[...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1)
 
-% Whatwhatwhat?
-if size(index,2)==0
+%% Whatwhatwhat?
+if numel(index)==0
     disp('Did not found the atomtype...')
-    Atom_label
-    pause
+    Unknown_Atom_label=Atom_label
+    if size(Atom_label{1},2)>2
+        Atom_label=Atom_label{1}(1:2)
+        index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+    end
+    if numel(index)==0
+        disp('Did not found the atomtype...')
+        Atom_label
+        if size(Atom_label{1},2)==2
+            Atom_label=Atom_label{1}(1)
+            index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+            if numel(index)==0
+                disp('Did not found the atomtype...')
+                Atom_label
+            end
+        end
+    end
+    disp('Exchanged these atomtypes')
+    [Unknown_Atom_label Atom_label]
 end
 
 c=coeffs(index,1);
@@ -857,7 +863,7 @@ f_zero = a1*exp(-b1.*sinthetaoverlambda.^2)...
     +a4*exp(-b4.*sinthetaoverlambda.^2)...
     +a5*exp(-b5.*sinthetaoverlambda.^2)+c;
 
-% % ANOMALOUS DISPERSION CORRECTION FOR IRON WITH COPPER RADIATION, TAKEN FROM NEWMOD, 1987
+% %% ANOMALOUS DISPERSION CORRECTION FOR IRON WITH COPPER RADIATION, TAKEN FROM NEWMOD, 1987
 % if strncmpi(Atom_label,{'Fe'},2);
 %     f_zero = ((f_zero-1.1).^2+11.56).^0.5;
 % end
@@ -871,7 +877,13 @@ f = f_zero.*exp(-Biso*sin((twotheta/2)*pi()/180).^2/lambda^2);
 
 nElectrons=Waasmaier_Kirfel_data(index,1)-Waasmaier_Kirfel_data(index,2);
 
-Atomtype=char(Atom_label);
+Atomtype=char(Atom_label)
 
 assignin('caller','nElectrons',nElectrons);
 assignin('caller','Atomtype',Atomtype);
+
+if nargin==5
+    Waasmaier_Kirfel_label(index,:)
+    Waasmaier_Kirfel_data(index,:)
+    coeffs(index,:)
+end

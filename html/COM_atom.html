@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>COM_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="COM_atom.m"><style type="text/css">
+      --><title>COM_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="COM_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>COM_atom.m</h1><!--introduction--><div><ul><li>This function calculates the COM for certain elements</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = COM_atom(atom,Box_dim)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = COM_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>COM_atom.m</h1><!--introduction--><div><ul><li>This function calculates the COM for certain elements</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = COM_atom(atom,Box_dim)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = COM_atom(atom,varargin)
 
 <span class="keyword">if</span> nargin &gt; 1
    <span class="comment">% But we do not really use Box_dim do we?</span>
@@ -87,44 +88,13 @@ atom = element_atom(atom);
     atom(i).Mw=0;
 <span class="keyword">end</span>
 
-Element_labels=sort(unique([atom.element]));
-<span class="keyword">for</span> i=1:size(Element_labels,2)
-    <span class="keyword">if</span> strncmp(Element_labels(i),{<span class="string">'C'</span>},1)
-        <span class="keyword">if</span> strncmpi(Element_labels(i),{<span class="string">'Cl'</span>},2)
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(35.453);
-        <span class="keyword">elseif</span> strncmpi(Element_labels(i),{<span class="string">'Ca'</span>},2)
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(40.078);
-        <span class="keyword">else</span>
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(12.01);
-        <span class="keyword">end</span>
-    <span class="keyword">elseif</span> strncmp(Element_labels(i),{<span class="string">'H'</span>},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(1.008);
-    <span class="keyword">elseif</span> strncmp(Element_labels(i),{<span class="string">'N'</span>},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(14.007);
-    <span class="keyword">elseif</span> strncmp(Element_labels(i),{<span class="string">'O'</span>},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(15.9994);
-    <span class="keyword">elseif</span> strncmp(Element_labels(i),{<span class="string">'P'</span>},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(30.97376);
-    <span class="keyword">elseif</span> strncmpi(Element_labels(i),{<span class="string">'Si'</span>},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(28.0855);
-    <span class="keyword">elseif</span> strncmpi(Element_labels(i),{<span class="string">'S'</span>},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(32.0650);
-    <span class="keyword">elseif</span> strncmpi(Element_labels(i),{<span class="string">'Al'</span>},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);
-    <span class="keyword">elseif</span> strncmpi(Element_labels(i),{<span class="string">'Mg'</span>},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(24.305);
-    <span class="keyword">else</span>
-        disp(<span class="string">'Could not find the element this atomtype correspond to!!!'</span>)
-        Element_labels(i)
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
+atom = mass_atom(atom);
 
-
-Mass_molid=sum([atom.Mw]);
+Mass_molid=sum([atom.mass]);
 <span class="keyword">for</span> j=1:size(atom,2)
-    atom(j).COM_x  = atom(j).Mw*atom(j).x/Mass_molid;
-    atom(j).COM_y  = atom(j).Mw*atom(j).y/Mass_molid;
-    atom(j).COM_z  = atom(j).Mw*atom(j).z/Mass_molid;
+    atom(j).COM_x  = atom(j).mass*atom(j).x/Mass_molid;
+    atom(j).COM_y  = atom(j).mass*atom(j).y/Mass_molid;
+    atom(j).COM_z  = atom(j).mass*atom(j).z/Mass_molid;
 <span class="keyword">end</span>
 
 COM(1,1)=sum([atom.COM_x]);
@@ -136,13 +106,65 @@ COM(1,3)=sum([atom.COM_z]);
 [atom.COM_z]=deal(sum([atom.COM_z]));
 
 assignin(<span class="string">'caller'</span>,<span class="string">'COM'</span>,COM);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+
+<span class="comment">% Element_labels=sort(unique([atom.element]));</span>
+<span class="comment">% for i=1:size(Element_labels,2)</span>
+<span class="comment">%     if strncmp(Element_labels(i),{'C'},1)</span>
+<span class="comment">%         if strncmpi(Element_labels(i),{'Cl'},2)</span>
+<span class="comment">%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(35.453);</span>
+<span class="comment">%         elseif strncmpi(Element_labels(i),{'Ca'},2)</span>
+<span class="comment">%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(40.078);</span>
+<span class="comment">%         else</span>
+<span class="comment">%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(12.01);</span>
+<span class="comment">%         end</span>
+<span class="comment">%     elseif strncmp(Element_labels(i),{'H'},1)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(1.008);</span>
+<span class="comment">%     elseif strncmp(Element_labels(i),{'N'},1)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(14.007);</span>
+<span class="comment">%     elseif strncmp(Element_labels(i),{'O'},1)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(15.9994);</span>
+<span class="comment">%     elseif strncmp(Element_labels(i),{'P'},1)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(30.97376);</span>
+<span class="comment">%     elseif strncmpi(Element_labels(i),{'Si'},2)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(28.0855);</span>
+<span class="comment">%     elseif strncmpi(Element_labels(i),{'S'},1)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(32.0650);</span>
+<span class="comment">%     elseif strncmpi(Element_labels(i),{'Al'},2)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);</span>
+<span class="comment">%     elseif strncmpi(Element_labels(i),{'Fe'},2)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);</span>
+<span class="comment">%     elseif strncmpi(Element_labels(i),{'Mg'},2)</span>
+<span class="comment">%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(24.305);</span>
+<span class="comment">%     else</span>
+<span class="comment">%         disp('Could not find the element this atomtype correspond to!!!')</span>
+<span class="comment">%         Element_labels(i)</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% Mass_molid=sum([atom.Mw]);</span>
+<span class="comment">% for j=1:size(atom,2)</span>
+<span class="comment">%     atom(j).COM_x  = atom(j).Mw*atom(j).x/Mass_molid;</span>
+<span class="comment">%     atom(j).COM_y  = atom(j).Mw*atom(j).y/Mass_molid;</span>
+<span class="comment">%     atom(j).COM_z  = atom(j).Mw*atom(j).z/Mass_molid;</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% COM(1,1)=sum([atom.COM_x]);</span>
+<span class="comment">% COM(1,2)=sum([atom.COM_y]);</span>
+<span class="comment">% COM(1,3)=sum([atom.COM_z]);</span>
+<span class="comment">%</span>
+<span class="comment">% [atom.COM_x]=deal(sum([atom.COM_x]));</span>
+<span class="comment">% [atom.COM_y]=deal(sum([atom.COM_y]));</span>
+<span class="comment">% [atom.COM_z]=deal(sum([atom.COM_z]));</span>
+<span class="comment">%</span>
+<span class="comment">% assignin('caller','COM',COM);</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% COM_atom.m
 % * This function calculates the COM for certain elements
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -171,44 +193,13 @@ for i=1:size(atom,2)
     atom(i).Mw=0;
 end
 
-Element_labels=sort(unique([atom.element]));
-for i=1:size(Element_labels,2)
-    if strncmp(Element_labels(i),{'C'},1)
-        if strncmpi(Element_labels(i),{'Cl'},2)
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(35.453);
-        elseif strncmpi(Element_labels(i),{'Ca'},2)
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(40.078);
-        else
-            [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(12.01);
-        end
-    elseif strncmp(Element_labels(i),{'H'},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(1.008);
-    elseif strncmp(Element_labels(i),{'N'},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(14.007);
-    elseif strncmp(Element_labels(i),{'O'},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(15.9994);
-    elseif strncmp(Element_labels(i),{'P'},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(30.97376);
-    elseif strncmpi(Element_labels(i),{'Si'},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(28.0855);
-    elseif strncmpi(Element_labels(i),{'S'},1)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(32.0650);
-    elseif strncmpi(Element_labels(i),{'Al'},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);
-    elseif strncmpi(Element_labels(i),{'Mg'},2)
-        [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(24.305);
-    else
-        disp('Could not find the element this atomtype correspond to!!!')
-        Element_labels(i)
-    end
-end
+atom = mass_atom(atom);
 
-
-Mass_molid=sum([atom.Mw]);
+Mass_molid=sum([atom.mass]);
 for j=1:size(atom,2)
-    atom(j).COM_x  = atom(j).Mw*atom(j).x/Mass_molid;
-    atom(j).COM_y  = atom(j).Mw*atom(j).y/Mass_molid;
-    atom(j).COM_z  = atom(j).Mw*atom(j).z/Mass_molid;
+    atom(j).COM_x  = atom(j).mass*atom(j).x/Mass_molid;
+    atom(j).COM_y  = atom(j).mass*atom(j).y/Mass_molid;
+    atom(j).COM_z  = atom(j).mass*atom(j).z/Mass_molid;
 end
 
 COM(1,1)=sum([atom.COM_x]);
@@ -220,6 +211,58 @@ COM(1,3)=sum([atom.COM_z]);
 [atom.COM_z]=deal(sum([atom.COM_z]));
 
 assignin('caller','COM',COM);
+
+% Element_labels=sort(unique([atom.element]));
+% for i=1:size(Element_labels,2)
+%     if strncmp(Element_labels(i),{'C'},1)
+%         if strncmpi(Element_labels(i),{'Cl'},2)
+%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(35.453);
+%         elseif strncmpi(Element_labels(i),{'Ca'},2)
+%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(40.078);
+%         else
+%             [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(12.01);
+%         end
+%     elseif strncmp(Element_labels(i),{'H'},1)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(1.008);
+%     elseif strncmp(Element_labels(i),{'N'},1)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(14.007);
+%     elseif strncmp(Element_labels(i),{'O'},1)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(15.9994);
+%     elseif strncmp(Element_labels(i),{'P'},1)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(30.97376);
+%     elseif strncmpi(Element_labels(i),{'Si'},2)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(28.0855);
+%     elseif strncmpi(Element_labels(i),{'S'},1)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(32.0650);
+%     elseif strncmpi(Element_labels(i),{'Al'},2)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);
+%     elseif strncmpi(Element_labels(i),{'Fe'},2)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(26.981);
+%     elseif strncmpi(Element_labels(i),{'Mg'},2)
+%         [atom(find(strcmp([atom.element],Element_labels(i)))).Mw]=deal(24.305);
+%     else
+%         disp('Could not find the element this atomtype correspond to!!!')
+%         Element_labels(i)
+%     end
+% end
+% 
+% 
+% Mass_molid=sum([atom.Mw]);
+% for j=1:size(atom,2)
+%     atom(j).COM_x  = atom(j).Mw*atom(j).x/Mass_molid;
+%     atom(j).COM_y  = atom(j).Mw*atom(j).y/Mass_molid;
+%     atom(j).COM_z  = atom(j).Mw*atom(j).z/Mass_molid;
+% end
+% 
+% COM(1,1)=sum([atom.COM_x]);
+% COM(1,2)=sum([atom.COM_y]);
+% COM(1,3)=sum([atom.COM_z]);
+% 
+% [atom.COM_x]=deal(sum([atom.COM_x]));
+% [atom.COM_y]=deal(sum([atom.COM_y]));
+% [atom.COM_z]=deal(sum([atom.COM_z]));
+% 
+% assignin('caller','COM',COM);
 
 ##### SOURCE END #####
 --></body></html>

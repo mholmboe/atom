@@ -15,6 +15,12 @@
 %
 function atom = import_atom_pdb(filename,varargin)
 
+if regexp(filename,'.pdb') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.pdb');
+end
+
 % See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html
 % COLUMNS        DATA  TYPE    FIELD        DEFINITION
 % -------------------------------------------------------------------------------------
@@ -70,7 +76,7 @@ if length(Box_dim)>3
     yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
     lz = (c^2 - xz^2 - yz^2)^0.5;
     Box_dim=[lx ly lz 0 0 xy 0 xz yz];
-Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
     if sum(find(Box_dim(4:end)))<0.0001
         Box_dim=Box_dim(1:3);
     end
@@ -83,10 +89,10 @@ for i = 1:length(data)
         j = j + 1;
         atom(j).molid = str2double(line(23:26));
         atom(j).resname = {strtrim(line(18:20))};
-%         atom(j).type = {strtrim(line(13:16))}; % Changed to 17 for better
-%         compatiblity
-%         atom(j).fftype = {strtrim(line(13:16))}; % Changed to 17 for better
-%         compatiblity
+        %         atom(j).type = {strtrim(line(13:16))}; % Changed to 17 for better
+        %         compatiblity
+        %         atom(j).fftype = {strtrim(line(13:16))}; % Changed to 17 for better
+        %         compatiblity
         atom(j).type = {strtrim(line(13:17))};
         atom(j).fftype = {strtrim(line(13:17))};
         atom(j).index = str2double(line(7:11));
@@ -130,7 +136,6 @@ XYZ_labels=[atom.type]';
 
 assignin('caller','occupancy',occupancy)
 assignin('caller','tempfactor',tempfactor)
-
 assignin('caller','XYZ_labels',XYZ_labels)
 assignin('caller','XYZ_data',XYZ_data)
 assignin('caller','atom',atom)

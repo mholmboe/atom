@@ -2,7 +2,7 @@
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -49,16 +49,31 @@ fprintf(fid, '%s\n','MODEL        1');
 % % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8
 
 % % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
+if length(Box_dim)==9
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
+end
+
 disp('Assuming P1 space group. Box can still be triclinic')
 if length(Box_dim)==3
-    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
-    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1'); % For mercury
-elseif length(Box_dim)==9
     
-    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
-    %     if sum(find(Box_dim(4:end)))<0.0001;
-    %         Box_dim=Box_dim(1:3);
-    %     end
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+    
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90.00;
+    beta=90.00;
+    gamma=90.00;
+    
+elseif length(Box_dim)==9
     
     lx=Box_dim(1);
     ly=Box_dim(2);
@@ -74,23 +89,13 @@ elseif length(Box_dim)==9
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
     
-    %     a=Box_dim(1);
-    %     b=Box_dim(2);
-    %     c=Box_dim(3);
-    %     xy=Box_dim(6);
-    %     xz=Box_dim(8);
-    %     yz=Box_dim(9);
-    %     lx = a;
-    %     ly = (b^2-xy^2)^.5;
-    %     lz = (c^2 - xz^2 - yz^2)^0.5;
-    %     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
-    %     beta=rad2deg(acos(xz/c));
-    %     gamma=rad2deg(acos(xy/b));
-    %     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
-    fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
 else
     disp('No proper box_dim information')
 end
+
+%     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
+fprintf(fid, '%6s%9.4f%9.4f%9.4f%7.2f%7.2f%7.2f %10s\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1'); % For mercury
+assignin('caller','Cell',[a b c alfa beta gamma]);
 
 % See http://deposit.rcsb.org/adit/docs/pdb_atom_format.html
 % COLUMNS        DATA  TYPE    FIELD        DEFINITION
@@ -116,6 +121,10 @@ end
 % Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
 if ~isfield(atom,'occupancy')
     [atom.occupancy]=deal(1);
+end
+
+if max([atom.occupancy])<0.01
+    [atom.occupancy]=deal(0.01);
 end
 
 
@@ -179,24 +188,31 @@ end
 % Write conect records
 
 if nargin>3
-    if nargin>4
-        short_r=cell2mat(varargin(1));
-        long_r=cell2mat(varargin(2));
+    if size(varargin{1},1)<2
+        
+        if nargin>4
+            short_r=varargin{1};
+            long_r=varargin{2};
+        else
+            short_r=1.25;
+            long_r=2.25;
+        end
+        
+        short_r
+        long_r
+        
+        %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
+        atom=bond_atom(atom,Box_dim,long_r);
+        %     assignin('caller','Dist_matrix',Dist_matrix);
+        assignin('caller','Bond_index',Bond_index);
+        %     assignin('caller','Angle_index',Angle_index);
+        assignin('caller','nBonds',nBonds);
+        %     assignin('caller','nAngles',nAngles);
     else
-        short_r=1.25;
-        long_r=2.25;
+        
+        Bond_index=varargin{1};
+        
     end
-    
-    short_r
-    long_r
-    
-    %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-    atom=bond__atom(atom,Box_dim,long_r);
-    %     assignin('caller','Dist_matrix',Dist_matrix);
-    assignin('caller','Bond_index',Bond_index);
-    %     assignin('caller','Angle_index',Angle_index);
-    assignin('caller','nBonds',nBonds);
-    assignin('caller','nAngles',nAngles);
     
     B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
     b1=sortrows(B);

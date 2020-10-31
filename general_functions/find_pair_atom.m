@@ -2,7 +2,7 @@
 % * This function does a cross check of the bond matrix
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

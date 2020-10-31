@@ -5,7 +5,7 @@
 % smoothing thorugh Gaussian convolution will be invoked.
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

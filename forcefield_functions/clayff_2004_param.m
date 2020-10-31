@@ -3,7 +3,7 @@
 % Joung and Cheatham, 2008 + some others...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

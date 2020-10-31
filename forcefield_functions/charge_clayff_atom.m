@@ -4,7 +4,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -36,8 +36,12 @@ if nargin>2
     Met_ind=find(Met_ind);
     Ox_ind=setdiff(1:nAtoms,Met_ind);
     
-%    atom=bond_angle_atom(atom,Box_dim,1.25,2.4,'more');
-    atom = bond_atom(atom,Box_dim);
+    %    atom=bond_angle_atom(atom,Box_dim,1.25,2.4,'more');
+    atom = bond_atom(atom,Box_dim,2.25,0.6);
+    if numel(Ox_ind) >= size(Bond_index,1)
+        atom = bond_atom(atom,Box_dim,2.45,0.6);
+        size(Bond_index,1)
+    end
     
     for i=1:length(Ox_ind)
         bond_ind=setdiff(reshape(atom(Ox_ind(i)).bond.index,[],1),Ox_ind(i));
@@ -47,8 +51,12 @@ if nargin>2
                 for j=1:length(bond_ind)
                     if strncmpi([atom(bond_ind(j)).type],'Si',2)
                         Z=4;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Be',2)
+                        Z=2;
                     elseif strncmpi([atom(bond_ind(j)).type],'Al',2)
                         Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fe2',3)
+                        Z=2;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Mn4',3)
@@ -74,7 +82,7 @@ if nargin>2
                 end
             end
         end
-        atom(Ox_ind(i)).charge= -2.00 + Zsum;
+        atom(Ox_ind(i)).charge = -2.00 + Zsum;
     end
 else
     clayff_param(unique([atom.type]),'SPC/E');
@@ -90,8 +98,8 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge])
-if round(Total_charge)~=sum(Total_charge) 
-   disp('Run tweak_charge_atom() to get an integer charge of the struct')
+if round(Total_charge)~=sum(Total_charge)
+    disp('Run tweak_charge_atom() to get an integer charge of the struct')
 end
 
 

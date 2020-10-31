@@ -5,7 +5,7 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -27,8 +27,14 @@ function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,vara
 % NumTetSubst=4;                  % How many tetrahedral substituitions do you want
 % O1={'Al'}; O2={'Mgo'};  % Mgo   % O1 will get replaced by O2 NumOctSubst times
 % T1={'Si'}; T2={'Alt'};  % Alt   % T1 will get replaced by T2 NumTetSubst times
-% minO2O2_dist=5.5;                  % Minimum O2/O2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
-% minT2T2_dist=5.5;                  % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+% minO2O2_dist=5.5;               % Minimum O2/O2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+% minT2T2_dist=5.5;               % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+
+shift_z=0;
+if (sum([atom.z])/size(atom,2)) > 1
+    shift_z=sum([atom.z])/size(atom,2); % Average z-position
+    atom=translate_atom(atom,[0 0 -shift_z]) % Make the atom struct centrosymmetrish around z=0
+end
 
 if ~iscell(O1)
     disp('Converting O1 to cell')
@@ -139,7 +145,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if NumTetSubst>0
-    
+
     ind_T1=find(strcmp([atom.type],T1));
     ind_O2=find(strcmp([atom.type],O2));
     T1_atom=atom(ind_T1);
@@ -169,7 +175,7 @@ if NumTetSubst>0
         else
             TO=[];
         end
-        if length(T)<1 && length(TO)<1 &&  nTetlo < NumTetSubst && lolimit < T1_data(rand_T1_Index(i),dimension) && hilimit > T1_data(rand_T1_Index(i),dimension);
+        if length(T)<1 && length(TO)<1 &&  nTetlo < NumTetSubst && lolimit < T1_data(rand_T1_Index(i),dimension) && hilimit > T1_data(rand_T1_Index(i),dimension)
             if nTetlo < NumTetSubst/2 && ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100<=Ave_Tet_z
                 All_subst_index=[All_subst_index; rand_T1_Index(i)];
                 Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
@@ -181,6 +187,9 @@ if NumTetSubst>0
                 nTethi=nTethi+1;
                 [T1_atom(rand_T1_Index(i)).type]=T2;
             end
+        end
+        if (nTetlo+nTethi) == NumTetSubst
+            break
         end
         if i == length(T1_data)
             disp('Stopped the loop')
@@ -200,6 +209,10 @@ if NumTetSubst>0
         % pause(3)
     end
     
+end
+
+if abs(shift_z)>0
+    atom=translate_atom(atom,[0 0 shift_z]) % Shift the atom structs z-coordinates back to the original
 end
 
 if NumOctSubst>0

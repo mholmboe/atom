@@ -11,7 +11,7 @@
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -201,7 +201,7 @@ for i = 1:size(pair,1)
     dist_matrix(pair(i,1),pair(i,2))=dist(i);
     dist_matrix(pair(i,2),pair(i,1))=dist(i); % Do we need this?
 end
-
+assignin('caller','dddist_matrix',dist_matrix)
 %         assignin('caller','pair',pair)
 %         assignin('caller','dist',dist)
 
@@ -305,7 +305,7 @@ if nargin > 5
         atom(i).neigh.type = [atom(Neigh_ind).type]';
         atom(i).neigh.index = Neigh_ind;
         atom(i).neigh.dist = Neigh_dist;
-        atom(i).neigh.coords = [[atom(Neigh_ind).x]' [atom(Neigh_ind).y]' [atom(Neigh_ind).z]']; % PBC NOT TAKEN INTO ACCOUNT!!!
+        atom(i).neigh.coords = [[atom(Neigh_ind).x]' [atom(Neigh_ind).y]' [atom(Neigh_ind).z]']; % IS PBC NOT TAKEN INTO ACCOUNT???
         atom(i).bond.type = [];
         atom(i).bond.index = [];
         atom(i).bond.dist = [];

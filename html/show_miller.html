@@ -1,0 +1,692 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>show_miller.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="show_miller.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>show_miller.m</h1><!--introduction--><div><ul><li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li><li>This function is inspired by miller.m, written by Lucas Ennes:</li><li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the unit cell parameters</a></li><li><a href="#7">Set the unit cell parameters</a></li><li><a href="#9">Converting to radians</a></li><li><a href="#10">Determine the two theta values for each h,k,l</a></li><li><a href="#12">Set the plane</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li><li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li><li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li><li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_miller(h,k,l,varargin)
+</pre><pre class="codeinput"><span class="keyword">if</span> nargin==3
+    Box_dim=[1 1 1];
+    color=<span class="string">'b'</span>;
+<span class="keyword">elseif</span> nargin==4
+    Box_dim=varargin{1};
+    color=<span class="string">'b'</span>;
+<span class="keyword">elseif</span> nargin&gt;4
+    Box_dim=varargin{1};
+    color=varargin{2};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;5
+    alpha=1-varargin{3};
+<span class="keyword">else</span>
+    alpha=.5; <span class="comment">% Transperacy</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(Box_dim,2) == 1
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(2);
+<span class="keyword">end</span>
+</pre><h2 id="5">Set the unit cell parameters</h2><pre class="codeinput"><span class="keyword">if</span> size(Box_dim,2) == 9
+</pre><pre class="codeinput">    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+</pre><h2 id="7">Set the unit cell parameters</h2><pre class="codeinput"><span class="keyword">elseif</span> size(Box_dim,2) == 6
+    a = Box_dim(1);
+    b = Box_dim(2);
+    c = Box_dim(3);
+    alfa = Box_dim(4);
+    beta = Box_dim(5);
+    gamma = Box_dim(6);
+    lx = a;
+    xy = b * cos(deg2rad(gamma));
+    ly = (b^2-xy^2)^.5;
+    xz = c*cos(deg2rad(beta));
+    yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+    lz = (c^2 - xz^2 - yz^2)^0.5;
+    Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+    <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
+        Box_dim=Box_dim(1:3);
+    <span class="keyword">end</span>
+<span class="keyword">elseif</span> size(Box_dim,2) == 3
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90;
+    beta=90;
+    gamma=90;
+<span class="keyword">end</span>
+</pre><h2 id="9">Converting to radians</h2><pre class="codeinput">alfa_rad=alfa*pi/180;
+beta_rad=beta*pi/180;
+gamma_rad=gamma*pi/180;
+</pre><h2 id="10">Determine the two theta values for each h,k,l</h2><pre class="codeinput">Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
+recip_d_hkl=1/Volume.*<span class="keyword">...</span>
+    (h.^2*b^2*c^2*sin(alfa_rad)^2+<span class="keyword">...</span>
+    k.^2*a^2*c^2*sin(beta_rad)^2+<span class="keyword">...</span>
+    l.^2*a^2*b^2*sin(gamma_rad)^2+<span class="keyword">...</span>
+    2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+<span class="keyword">...</span>
+    2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+<span class="keyword">...</span>
+    2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
+recip_d_hkl=real(recip_d_hkl);
+
+d_hkl=1./recip_d_hkl;
+</pre><pre class="codeinput">H=[];
+K=[];
+L=[];
+</pre><h2 id="12">Set the plane</h2><pre class="codeinput"><span class="keyword">if</span> h ~= 0 &amp;&amp; k ~= 0 &amp;&amp; l ~= 0
+
+    <span class="comment">% Triangular plane</span>
+    h = 1 / h;    k = 1 / k;    l = 1 / l;
+
+    <span class="comment">%     high = max([abs(h),abs(k),abs(l)]);</span>
+    <span class="comment">%</span>
+    <span class="comment">%     h = h / high;</span>
+    <span class="comment">%     k = k / high;</span>
+    <span class="comment">%     l = l / high;</span>
+
+    subh = 0;    subk = 0;    subl = 0;
+    <span class="keyword">if</span> h &lt; 0
+        subh = - h;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> k &lt; 0
+        subk = - k;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> l &lt; 0
+        subl = - l;
+    <span class="keyword">end</span>
+    H = [h+subh, subh, subh];
+    K = [subk, k+subk, subk];
+    L = [subl, subl, l+subl];
+
+    <span class="keyword">if</span> h &lt; 0
+        H(H&gt;0)=1;
+        H(H==0)=1+h;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> k &lt; 0
+        K(K&gt;0)=1;
+        K(K==0)=1+k;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> l &lt; 0
+        L(L&gt;0)=1;
+        L(L==0)=1+l;
+    <span class="keyword">end</span>
+
+
+<span class="keyword">else</span>
+    <span class="comment">% Rectangular plane</span>
+    <span class="comment">% Count zeros</span>
+    zeros = 0;
+    <span class="keyword">if</span> h == 0
+        zeros = zeros + 1;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> k == 0
+        zeros = zeros + 1;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> l == 0
+        zeros = zeros + 1;
+    <span class="keyword">end</span>
+    <span class="comment">% 2 zeros</span>
+    <span class="keyword">if</span> zeros == 2
+        <span class="keyword">if</span> h ~= 0
+            <span class="keyword">for</span> i=1:abs(h)
+                H = [H;i/h*[1 1 1 1]];
+                K = [K;    [0 0 1 1]];
+                L = [L;    [0 1 1 0]];
+                <span class="keyword">if</span> h &lt; 0
+                    H(H&lt;0)=H(H&lt;0)+1;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> k ~= 0
+            <span class="keyword">for</span> i=1:abs(k)
+                H = [H;    [0 0 1 1]];
+                K = [K;i/k*[1 1 1 1]];
+                L = [L;    [0 1 1 0]];
+                <span class="keyword">if</span> k &lt; 0
+                    K(K&lt;0)=K(K&lt;0)+1;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> l ~= 0
+            <span class="keyword">for</span> i=1:abs(l)
+                H = [H;    [0 1 1 0]];
+                K = [K;    [0 0 1 1]];
+                L = [L;i/l*[1 1 1 1]];
+                <span class="keyword">if</span> l &lt; 0
+                    L(L&lt;0)=L(L&lt;0)+1;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="comment">% 1 zero</span>
+    <span class="keyword">elseif</span> zeros == 1
+
+        subh = 0;        subk = 0;        subl = 0;
+
+        <span class="keyword">if</span> h == 0
+            k = (1/k);
+            l = (1/l);
+
+            <span class="comment">%             high = max([k, l]);</span>
+            <span class="comment">%             k = k/high;</span>
+            <span class="comment">%             l = l/high;</span>
+
+            <span class="keyword">if</span> k &lt; 0
+                subk = -k;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> l &lt; 0
+                subl = -l;
+            <span class="keyword">end</span>
+            <span class="comment">%</span>
+            H = [0 1 1 0];
+            K = [subk subk k+subk k+subk];
+            L = [l+subl l+subl subl subl];
+
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> k == 0
+            h = (1/h);
+            l = (1/l);
+
+            <span class="comment">%             high = max([h, l]);</span>
+            <span class="comment">%             h = h/high;</span>
+            <span class="comment">%             l = l/high;</span>
+
+            <span class="keyword">if</span> h &lt; 0
+                subh = -h;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> l &lt; 0
+                subl = -l;
+            <span class="keyword">end</span>
+            K = [0 1 1 0];
+            H = [h+subh h+subh subh subh];
+            L = [subl subl l+subl l+subl];
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> l == 0
+            k = (1/k);
+            h = (1/h);
+
+            <span class="comment">%             high = max([k, h]);</span>
+            <span class="comment">%             k = k/high;</span>
+            <span class="comment">%             h = h/high;</span>
+
+            <span class="keyword">if</span> k &lt; 0
+                subk = -k;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> h &lt; 0
+                subh = -h;
+            <span class="keyword">end</span>
+            L = [0 1 1 0];
+            K = [subk subk k+subk k+subk];
+            H = [h+subh h+subh subh subh];
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> h &lt; 0
+            H(H&gt;0)=1;
+            H(H==0)=1+h;
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> k &lt; 0
+            K(K&gt;0)=1;
+            K(K==0)=1+k;
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> l &lt; 0
+            L(L&gt;0)=1;
+            L(L==0)=1+l;
+        <span class="keyword">end</span>
+
+    <span class="keyword">else</span>
+        error(<span class="string">'Weird plane'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+Simbox = [a b c alfa beta gamma Volume];
+assignin(<span class="string">'base'</span>,<span class="string">'Simbox'</span>,Simbox);
+
+v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+
+FromFrac=[a b*cos(deg2rad(gamma))  c*cos(deg2rad(beta));<span class="keyword">...</span>
+    0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));<span class="keyword">...</span>
+    0 0                      c*v/sin(deg2rad(gamma))];
+
+max_order=max([size(H,1) size(K,1) size(L,1)]);
+max_dim=max([size(H,2) size(K,2) size(L,2)]);
+<span class="keyword">for</span> i=1:max_order
+    <span class="keyword">for</span> j=1:max_dim
+        HKL=FromFrac*[H(i,j) K(i,j) L(i,j)]';
+        H(i,j)=HKL(1);
+        K(i,j)=HKL(2);
+        L(i,j)=HKL(3);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+hold <span class="string">on</span>;
+cameratoolbar
+rotate3d <span class="string">on</span>;
+camlight(220,210,<span class="string">'infinite'</span>);
+set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'Color'</span>,[1 1 1]);
+set(gca,<span class="string">'Color'</span>,[1 1 1],<span class="string">'FontSize'</span>,24); <span class="comment">% 'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)]</span>
+
+fig = gcf;
+fig.Color = [1 1 1];
+xlabel(<span class="string">'a [&Aring;]'</span>); ylabel(<span class="string">'b [&Aring;]'</span>); zlabel(<span class="string">'c [&Aring;]'</span>);
+<span class="comment">% view([0,0]);</span>
+
+<span class="comment">% if nargin&gt;5</span>
+<span class="comment">%     if varargin{3}==0</span>
+draw_box_atom(Box_dim,[0 0 0.8],2);
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+
+hold <span class="string">on</span>;
+assignin(<span class="string">'caller'</span>,<span class="string">'H'</span>,H);
+assignin(<span class="string">'caller'</span>,<span class="string">'K'</span>,K);
+assignin(<span class="string">'caller'</span>,<span class="string">'L'</span>,L);
+
+<span class="keyword">for</span> i=1:size(H,1)
+    patch(H(i,:),K(i,:),L(i,:),color,<span class="string">'FaceAlpha'</span>,alpha)
+<span class="keyword">end</span>
+view(3)
+<span class="comment">% xlim([0 1]);ylim([0 1]);zlim([0 1])</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%  show_miller.m
+% * This function draws up the h,k,l Miller plane within the Box_dim/Cell
+% * This function is inspired by miller.m, written by Lucas Ennes:
+% * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
+
+%% Version
+% 2.08
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell
+% # show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable
+% # show_miller(h,k,l,Box_dim,[0 0 1]) % Color
+% # show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy
+
+function show_miller(h,k,l,varargin)
+
+if nargin==3
+    Box_dim=[1 1 1];
+    color='b';
+elseif nargin==4
+    Box_dim=varargin{1};
+    color='b';
+elseif nargin>4
+    Box_dim=varargin{1};
+    color=varargin{2};
+end
+
+if nargin>5
+    alpha=1-varargin{3};
+else
+    alpha=.5; % Transperacy
+end
+
+if size(Box_dim,2) == 1
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(2);
+end
+
+%% Set the unit cell parameters
+if size(Box_dim,2) == 9
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    %% Set the unit cell parameters
+elseif size(Box_dim,2) == 6
+    a = Box_dim(1);
+    b = Box_dim(2);
+    c = Box_dim(3);
+    alfa = Box_dim(4);
+    beta = Box_dim(5);
+    gamma = Box_dim(6);
+    lx = a;
+    xy = b * cos(deg2rad(gamma));
+    ly = (b^2-xy^2)^.5;
+    xz = c*cos(deg2rad(beta));
+    yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
+    lz = (c^2 - xz^2 - yz^2)^0.5;
+    Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
+elseif size(Box_dim,2) == 3
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90;
+    beta=90;
+    gamma=90;
+end
+
+%% Converting to radians
+alfa_rad=alfa*pi/180;
+beta_rad=beta*pi/180;
+gamma_rad=gamma*pi/180;
+
+%% Determine the two theta values for each h,k,l
+Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
+recip_d_hkl=1/Volume.*...
+    (h.^2*b^2*c^2*sin(alfa_rad)^2+...
+    k.^2*a^2*c^2*sin(beta_rad)^2+...
+    l.^2*a^2*b^2*sin(gamma_rad)^2+...
+    2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+...
+    2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+...
+    2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
+recip_d_hkl=real(recip_d_hkl);
+
+d_hkl=1./recip_d_hkl;
+
+%%
+
+H=[];
+K=[];
+L=[];
+%% Set the plane
+if h ~= 0 && k ~= 0 && l ~= 0
+    
+    % Triangular plane
+    h = 1 / h;    k = 1 / k;    l = 1 / l;
+    
+    %     high = max([abs(h),abs(k),abs(l)]);
+    %
+    %     h = h / high;
+    %     k = k / high;
+    %     l = l / high;
+    
+    subh = 0;    subk = 0;    subl = 0;
+    if h < 0
+        subh = - h;
+    end
+    if k < 0
+        subk = - k;
+    end
+    if l < 0
+        subl = - l;
+    end
+    H = [h+subh, subh, subh];
+    K = [subk, k+subk, subk];
+    L = [subl, subl, l+subl];
+    
+    if h < 0
+        H(H>0)=1;
+        H(H==0)=1+h;
+    end
+    if k < 0
+        K(K>0)=1;
+        K(K==0)=1+k;
+    end
+    if l < 0
+        L(L>0)=1;
+        L(L==0)=1+l;
+    end
+    
+    
+else
+    % Rectangular plane
+    % Count zeros
+    zeros = 0;
+    if h == 0
+        zeros = zeros + 1;
+    end
+    if k == 0
+        zeros = zeros + 1;
+    end
+    if l == 0
+        zeros = zeros + 1;
+    end
+    % 2 zeros
+    if zeros == 2
+        if h ~= 0
+            for i=1:abs(h)
+                H = [H;i/h*[1 1 1 1]];
+                K = [K;    [0 0 1 1]];
+                L = [L;    [0 1 1 0]];
+                if h < 0
+                    H(H<0)=H(H<0)+1;
+                end
+            end
+        elseif k ~= 0
+            for i=1:abs(k)
+                H = [H;    [0 0 1 1]];
+                K = [K;i/k*[1 1 1 1]];
+                L = [L;    [0 1 1 0]];
+                if k < 0
+                    K(K<0)=K(K<0)+1;
+                end
+            end
+        elseif l ~= 0
+            for i=1:abs(l)
+                H = [H;    [0 1 1 0]];
+                K = [K;    [0 0 1 1]];
+                L = [L;i/l*[1 1 1 1]];
+                if l < 0
+                    L(L<0)=L(L<0)+1;
+                end
+            end
+        end
+        % 1 zero
+    elseif zeros == 1
+        
+        subh = 0;        subk = 0;        subl = 0;
+        
+        if h == 0
+            k = (1/k);
+            l = (1/l);
+            
+            %             high = max([k, l]);
+            %             k = k/high;
+            %             l = l/high;
+            
+            if k < 0
+                subk = -k;
+            end
+            if l < 0
+                subl = -l;
+            end
+            %
+            H = [0 1 1 0];
+            K = [subk subk k+subk k+subk];
+            L = [l+subl l+subl subl subl];
+            
+        end
+        if k == 0
+            h = (1/h);
+            l = (1/l);
+            
+            %             high = max([h, l]);
+            %             h = h/high;
+            %             l = l/high;
+            
+            if h < 0
+                subh = -h;
+            end
+            if l < 0
+                subl = -l;
+            end
+            K = [0 1 1 0];
+            H = [h+subh h+subh subh subh];
+            L = [subl subl l+subl l+subl];
+        end
+        if l == 0
+            k = (1/k);
+            h = (1/h);
+            
+            %             high = max([k, h]);
+            %             k = k/high;
+            %             h = h/high;
+            
+            if k < 0
+                subk = -k;
+            end
+            if h < 0
+                subh = -h;
+            end
+            L = [0 1 1 0];
+            K = [subk subk k+subk k+subk];
+            H = [h+subh h+subh subh subh];
+        end
+        
+        if h < 0
+            H(H>0)=1;
+            H(H==0)=1+h;
+        end
+        if k < 0
+            K(K>0)=1;
+            K(K==0)=1+k;
+        end
+        if l < 0
+            L(L>0)=1;
+            L(L==0)=1+l;
+        end
+        
+    else
+        error('Weird plane')
+    end
+end
+
+Simbox = [a b c alfa beta gamma Volume];
+assignin('base','Simbox',Simbox);
+
+v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+
+FromFrac=[a b*cos(deg2rad(gamma))  c*cos(deg2rad(beta));...
+    0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));...
+    0 0                      c*v/sin(deg2rad(gamma))];
+
+max_order=max([size(H,1) size(K,1) size(L,1)]);
+max_dim=max([size(H,2) size(K,2) size(L,2)]);
+for i=1:max_order
+    for j=1:max_dim
+        HKL=FromFrac*[H(i,j) K(i,j) L(i,j)]';
+        H(i,j)=HKL(1);
+        K(i,j)=HKL(2);
+        L(i,j)=HKL(3);
+    end
+end
+
+hold on;
+cameratoolbar
+rotate3d on;
+camlight(220,210,'infinite');
+set(gcf,'Visible','on','Color',[1 1 1]);
+set(gca,'Color',[1 1 1],'FontSize',24); % 'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)]
+
+fig = gcf;
+fig.Color = [1 1 1];
+xlabel('a [Å]'); ylabel('b [Å]'); zlabel('c [Å]');
+% view([0,0]);
+
+% if nargin>5
+%     if varargin{3}==0
+draw_box_atom(Box_dim,[0 0 0.8],2);
+%     end
+% end
+
+hold on;
+assignin('caller','H',H);
+assignin('caller','K',K);
+assignin('caller','L',L);
+
+for i=1:size(H,1)
+    patch(H(i,:),K(i,:),L(i,:),color,'FaceAlpha',alpha)
+end
+view(3)
+% xlim([0 1]);ylim([0 1]);zlim([0 1])
+
+
+##### SOURCE END #####
+--></body></html>

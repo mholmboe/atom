@@ -1,4 +1,4 @@
-function [r,lj,coul,Utot] = ljcoul_ff(ff,atomtype) % ff and atomtype can be single variables or cell 'tuplets'
+function [r,lj,coul,Utot] = nonbonded_ff(ff,atomtype) % ff and atomtype can be single variables or cell 'tuplets'
 
 if ischar(atomtype)
     disp('atomtype must be a {1x1} or {1x2} cell')
@@ -18,10 +18,10 @@ if size(ff,2)>2
     atomtype1=ff(strcmpi([ff1.type],atomtype1));
     atomtype2=ff(strcmpi([ff2.type],atomtype2));
 elseif size(ff,2)==2
-    ff1=ff(1);
-    ff2=ff(2);
-    atomtype1=ff(strcmpi([ff1.type],atomtype1));
-    atomtype2=ff(strcmpi([ff2.type],atomtype2));
+    ff1=ff{1};
+    ff2=ff{2};
+    atomtype1=ff1(strcmpi([ff1.type],atomtype1));
+    atomtype2=ff2(strcmpi([ff2.type],atomtype2));
 end
 
 q1=atomtype1.charge;
@@ -31,7 +31,7 @@ sig2=atomtype2.sigma_nm;
 eps1=atomtype1.e_kJmol;
 eps2=atomtype2.e_kJmol;
 
-%% PLot the Total energy, electrostatic contribution, and the LJ
+%% Plot the Total energy, electrostatic contribution, and the LJ
 r=.01:.0005:1.2; % nm
 
 e_mix=(eps1*eps2)^.5
@@ -48,20 +48,22 @@ if plotmin>=0
 end
 
 if nargin>2
-    plot(r,lj,'b');
-    plot(r,coul,'r');
-    plot(r,Utot,'k');
+    plot(r,lj,'b','LineWidth',1);
+    plot(r,coul,'r','LineWidth',1);
+    plot(r,Utot,'k','LineWidth',1);
 else
-    plot(r,lj);
-    plot(r,coul);
-    plot(r,Utot);
+    plot(r,lj,'LineWidth',1);
+    plot(r,coul,'LineWidth',1);
+    plot(r,Utot,'LineWidth',1);
 end
 xlabel('r [nm]');
 ylabel('U [kJ/mol]');
 xlim([0,1.2]);
 ylim(sort([-plotmin plotmin]))
 
-titlestring=strcat(char(atomtype1.type),'-',char(atomtype2.type));
+[atomtype1.type]
+
+titlestring=strcat([atomtype1.type],'-',[atomtype2.type]);
 titlestring=strrep(titlestring,'_','-');
 title(titlestring)
 

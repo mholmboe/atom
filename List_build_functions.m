@@ -1,7 +1,7 @@
 %% List of building and simulation cell manipulation functions
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Specific atom struct functions
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct
@@ -45,6 +45,7 @@
 % # <slice_triclinic_atom.html slice_triclinic_atom(atom,limits,invert)>
 
 %% Translate or rotate functions
+% # <bend_atom.html bend_atom(atom,Box_dim,Radii)> % This simple function tries to bend an atom struct
 % # <center_atom.html center_atom(atom,Box_dim,resname,dim)> % This function centers the atom with respect to the resname molecule
 % # <condense_atom.html condense_atom(atom,Box_dim,s)> % This function tries to minimize the box size and remove gaps between molids?
 % # <molid_rotate.html molid_rotate(atom,Box_dim,MolID,rotate_dim)> % This function rotate the atom randomly

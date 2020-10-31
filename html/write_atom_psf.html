@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_psf.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_psf.m"><style type="text/css">
+      --><title>write_atom_psf.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="write_atom_psf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_psf.m</h1><!--introduction--><div><ul><li>This function writes an .psf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_psf(atom,Box_dim,filename_out) % Not recommended, Please specify which cutoff's and forcefield to use</li><li>write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_psf(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_psf.m</h1><!--introduction--><div><ul><li>This function writes an .psf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_psf(atom,Box_dim,filename_out) % Not recommended, Please specify which cutoff's and forcefield to use</li><li>write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_psf(atom,Box_dim,filename,varargin)
 
 nAtoms=size(atom,2);
 
@@ -93,13 +94,13 @@ Atom_label = unique([atom.type]);
         disp(<span class="string">'Unknown watermodel, will try SPC/E'</span>)
         watermodel=<span class="string">'SPC/E'</span>;
     <span class="keyword">end</span>
-    <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
+    <span class="keyword">if</span> strcmpi(ffname,<span class="string">'clayff'</span>)
         clayff_param(sort(unique([atom.type])),watermodel);
         <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
             atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'adjust'</span>);
         <span class="keyword">end</span>
         Total_charge = check_clayff_charge(atom)
-    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff_2004'</span>,5)
+    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff_2004'</span>,10)
         clayff_2004_param(sort(unique([atom.type])),watermodel);
         <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
             atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
@@ -173,7 +174,7 @@ Atom_label_ID=zeros(size([atom.type],2),1);
 <span class="keyword">end</span>
 
 ResNum=[atom.molid];
-SegName=[<span class="string">'SURF'</span>];
+SegName=[<span class="string">'MONT'</span>];
 ResName=[atom.resname];
 <span class="keyword">for</span> i = 1:size([atom.type],2)
 
@@ -205,7 +206,7 @@ bond_list=[reshape(bond_temp',8,[])]';
 
 count_b = 1;
 bondtype=1;
-<span class="keyword">while</span> count_b &lt;= length(bond_list)
+<span class="keyword">while</span> count_b &lt;= size(bond_list,1)<span class="comment">%length(bond_list)</span>
     <span class="keyword">if</span> bond_list(count_b,1)~=0;fprintf(fid, <span class="string">'%8i%8i'</span>,bond_list(count_b,1:2));<span class="keyword">end</span>
     <span class="keyword">if</span> bond_list(count_b,3)~=0;fprintf(fid, <span class="string">'%8i%8i'</span>,bond_list(count_b,3:4));<span class="keyword">end</span>
     <span class="keyword">if</span> bond_list(count_b,5)~=0;fprintf(fid, <span class="string">'%8i%8i'</span>,bond_list(count_b,5:6));<span class="keyword">end</span>
@@ -291,13 +292,13 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 fclose(fid);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'itp_atom'</span>,atom);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_psf.m
 % * This function writes an .psf file from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -333,13 +334,13 @@ if nargin>5
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E';
     end
-    if strncmpi(ffname,'clayff',5)
+    if strcmpi(ffname,'clayff')
         clayff_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
         end
         Total_charge = check_clayff_charge(atom)
-    elseif strncmpi(ffname,'clayff_2004',5)
+    elseif strncmpi(ffname,'clayff_2004',10)
         clayff_2004_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
@@ -413,7 +414,7 @@ for i = 1:length(Atom_label)
 end
 
 ResNum=[atom.molid];
-SegName=['SURF'];
+SegName=['MONT'];
 ResName=[atom.resname];
 for i = 1:size([atom.type],2)
     
@@ -445,7 +446,7 @@ bond_list=[reshape(bond_temp',8,[])]';
 
 count_b = 1;
 bondtype=1;
-while count_b <= length(bond_list)
+while count_b <= size(bond_list,1)%length(bond_list)
     if bond_list(count_b,1)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,1:2));end
     if bond_list(count_b,3)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,3:4));end
     if bond_list(count_b,5)~=0;fprintf(fid, '%8i%8i',bond_list(count_b,5:6));end

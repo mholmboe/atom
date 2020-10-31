@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
+      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
 </pre><pre class="codeinput">format <span class="string">compact</span>;
 
 <span class="comment">% Change these values in case you want to merge a lammps topology file with</span>
@@ -111,7 +112,7 @@ natom_labels=size(Atom_labels,2);
     <span class="keyword">end</span>
     <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
         clayff_param(sort(unique([atom.type])),watermodel);
-        atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel);
+        atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'more'</span>);
         Total_charge
     <span class="keyword">end</span>
 <span class="keyword">else</span>
@@ -144,46 +145,50 @@ nAngles
 nDihedrals
 
 <span class="keyword">if</span> nBonds&gt;0
-<span class="comment">% Calculate the bond_types</span>
-bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
-b1=join([bond_pairs(:,1) bond_pairs(:,2)]);b1=unique(b1,<span class="string">'stable'</span>);
-b2=join([bond_pairs(:,2) bond_pairs(:,1)]);b2=unique(b2,<span class="string">'stable'</span>);
-nbond_types=size(b1,1);
-bond_pairs=join(bond_pairs);
-<span class="keyword">for</span> i=1:size(bond_pairs,1)
-    [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
-<span class="keyword">end</span>
-bond_types(bond_types&gt;nbond_types)=bond_types(bond_types&gt;nbond_types)-nbond_types;
+    <span class="comment">% Calculate the bond_types</span>
+    bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+    <span class="comment">% b1=join([bond_pairs(:,1) bond_pairs(:,2)]); % Does not work in older MATLAB versions?</span>
+    b1=strcat(bond_pairs(:,1),{<span class="string">' '</span>},bond_pairs(:,2));
+    b1=unique(b1,<span class="string">'stable'</span>)
+    <span class="comment">% b2=join([bond_pairs(:,2) bond_pairs(:,1)]); % Does not work in older MATLAB versions?</span>
+    b2=strcat(bond_pairs(:,2),{<span class="string">' '</span>},bond_pairs(:,1));
+    b2=unique(b2,<span class="string">'stable'</span>);
+    nbond_types=size(b1,1);
+    bond_pairs=join(bond_pairs);
+    <span class="keyword">for</span> i=1:size(bond_pairs,1)
+        [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
+    <span class="keyword">end</span>
+    bond_types(bond_types&gt;nbond_types)=bond_types(bond_types&gt;nbond_types)-nbond_types;
 <span class="keyword">else</span>
     nbond_types=0;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nAngles&gt;0
-<span class="comment">% Calculate the angle_types</span>
-angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
-a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,<span class="string">'stable'</span>);
-a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,<span class="string">'stable'</span>);
-nangle_types=size(a1,1);
-angle_triplets=join(angle_triplets);
-<span class="keyword">for</span> i=1:size(angle_triplets,1)
-    [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
-<span class="keyword">end</span>
-angle_types(angle_types&gt;nangle_types)=angle_types(angle_types&gt;nangle_types)-nangle_types;
+    <span class="comment">% Calculate the angle_types</span>
+    angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+    a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,<span class="string">'stable'</span>);
+    a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,<span class="string">'stable'</span>);
+    nangle_types=size(a1,1);
+    angle_triplets=join(angle_triplets);
+    <span class="keyword">for</span> i=1:size(angle_triplets,1)
+        [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
+    <span class="keyword">end</span>
+    angle_types(angle_types&gt;nangle_types)=angle_types(angle_types&gt;nangle_types)-nangle_types;
 <span class="keyword">else</span>
     nangle_types=0;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nDihedrals&gt;0
-<span class="comment">% Calculate the dihedral_types</span>
-dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
-d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,<span class="string">'stable'</span>);
-d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,<span class="string">'stable'</span>);
-ndihedral_types=size(d1,1);
-dihedral_quads=join(dihedral_quads);
-<span class="keyword">for</span> i=1:size(dihedral_quads,1)
-    [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
-<span class="keyword">end</span>
-dihedral_types(dihedral_types&gt;ndihedral_types)=dihedral_types(dihedral_types&gt;ndihedral_types)-ndihedral_types;
+    <span class="comment">% Calculate the dihedral_types</span>
+    dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
+    d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,<span class="string">'stable'</span>);
+    d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,<span class="string">'stable'</span>);
+    ndihedral_types=size(d1,1);
+    dihedral_quads=join(dihedral_quads);
+    <span class="keyword">for</span> i=1:size(dihedral_quads,1)
+        [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
+    <span class="keyword">end</span>
+    dihedral_types(dihedral_types&gt;ndihedral_types)=dihedral_types(dihedral_types&gt;ndihedral_types)-ndihedral_types;
 <span class="keyword">else</span>
     ndihedral_types=0;
 <span class="keyword">end</span>
@@ -197,13 +202,14 @@ dihedral_types(dihedral_types&gt;ndihedral_types)=dihedral_types(dihedral_types&
 
 <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
     <span class="keyword">if</span> exist(<span class="string">'ffname'</span>,<span class="string">'var'</span>)
-        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+        atom = charge_atom(atom,Box_dim,ffname,watermodel,<span class="string">'more'</span>);
     <span class="keyword">else</span>
         clayff_param(Atom_labels,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     disp(<span class="string">'Only clayff implemented sofar'</span>)
 <span class="keyword">end</span>
+
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 <span class="keyword">if</span> length(Box_dim)&gt;3
     triclinic = 1; <span class="comment">% 1 or 0 for ortoghonal</span>
@@ -291,23 +297,23 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 
 <span class="keyword">if</span> nBonds&gt;0
-<span class="comment">% Prints bond data</span>
-fprintf(fid, <span class="string">'Bonds \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
-count_b = 1;
-<span class="keyword">while</span> count_b &lt;= nBonds
-    Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
-    fprintf(fid, <span class="string">'\t%-i %-i %-i %-i\r\n'</span>, Bond_order{count_b,:});
-    count_b = count_b + 1;
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'\r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+    <span class="comment">% Prints bond data</span>
+    fprintf(fid, <span class="string">'Bonds \r\n'</span>);
+    fprintf(fid, <span class="string">'\r\n'</span>);
+    count_b = 1;
+    <span class="keyword">while</span> count_b &lt;= nBonds
+        Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
+        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i\r\n'</span>, Bond_order{count_b,:});
+        count_b = count_b + 1;
+    <span class="keyword">end</span>
+    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'\r\n'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nAngles&gt;0
-<span class="comment">% Prints angle data</span>
-fprintf(fid, <span class="string">'Angles \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+    <span class="comment">% Prints angle data</span>
+    fprintf(fid, <span class="string">'Angles \r\n'</span>);
+    fprintf(fid, <span class="string">'\r\n'</span>);
     count_a = 1;
     <span class="keyword">while</span> count_a &lt;= nAngles
         Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
@@ -319,9 +325,9 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nDihedrals&gt;0
-<span class="comment">% Prints dihedral data</span>
-fprintf(fid, <span class="string">'Dihedrals \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+    <span class="comment">% Prints dihedral data</span>
+    fprintf(fid, <span class="string">'Dihedrals \r\n'</span>);
+    fprintf(fid, <span class="string">'\r\n'</span>);
     count_d = 1;
     <span class="keyword">while</span> count_d &lt;= nDihedrals
         Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};
@@ -333,16 +339,16 @@ fprintf(fid, <span class="string">'\r\n'</span>);
 <span class="keyword">end</span>
 
 fclose(fid);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_lmp.m
 % * This script creates and prints a lammps data file (.lj). Works best for
-% Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. 
+% Clayff systems, defining the ffname 'clayff' and watermodel 'spce'.
 % Nevertheless, this new version should be able to handle bonds|angles|dihedrals
 %
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -395,7 +401,7 @@ if nargin>5
     end
     if strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
-        atom = charge_atom(atom,Box_dim,'clayff',watermodel);
+        atom = charge_atom(atom,Box_dim,'clayff',watermodel,'more');
         Total_charge
     end
 else
@@ -428,46 +434,50 @@ nAngles
 nDihedrals
 
 if nBonds>0
-% Calculate the bond_types
-bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
-b1=join([bond_pairs(:,1) bond_pairs(:,2)]);b1=unique(b1,'stable');
-b2=join([bond_pairs(:,2) bond_pairs(:,1)]);b2=unique(b2,'stable');
-nbond_types=size(b1,1);
-bond_pairs=join(bond_pairs);
-for i=1:size(bond_pairs,1)
-    [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
-end
-bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
+    % Calculate the bond_types
+    bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+    % b1=join([bond_pairs(:,1) bond_pairs(:,2)]); % Does not work in older MATLAB versions?
+    b1=strcat(bond_pairs(:,1),{' '},bond_pairs(:,2));
+    b1=unique(b1,'stable')
+    % b2=join([bond_pairs(:,2) bond_pairs(:,1)]); % Does not work in older MATLAB versions?
+    b2=strcat(bond_pairs(:,2),{' '},bond_pairs(:,1));
+    b2=unique(b2,'stable');
+    nbond_types=size(b1,1);
+    bond_pairs=join(bond_pairs);
+    for i=1:size(bond_pairs,1)
+        [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
+    end
+    bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
 else
     nbond_types=0;
 end
 
 if nAngles>0
-% Calculate the angle_types
-angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
-a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,'stable');
-a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,'stable');
-nangle_types=size(a1,1);
-angle_triplets=join(angle_triplets);
-for i=1:size(angle_triplets,1)
-    [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
-end
-angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
+    % Calculate the angle_types
+    angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+    a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,'stable');
+    a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,'stable');
+    nangle_types=size(a1,1);
+    angle_triplets=join(angle_triplets);
+    for i=1:size(angle_triplets,1)
+        [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
+    end
+    angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
 else
     nangle_types=0;
 end
 
 if nDihedrals>0
-% Calculate the dihedral_types
-dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
-d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,'stable');
-d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,'stable');
-ndihedral_types=size(d1,1);
-dihedral_quads=join(dihedral_quads);
-for i=1:size(dihedral_quads,1)
-    [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
-end
-dihedral_types(dihedral_types>ndihedral_types)=dihedral_types(dihedral_types>ndihedral_types)-ndihedral_types;
+    % Calculate the dihedral_types
+    dihedral_quads=[[atom(Dihedral_index(:,1)).type]' [atom(Dihedral_index(:,2)).type]' [atom(Dihedral_index(:,3)).type]' [atom(Dihedral_index(:,4)).type]'];
+    d1=join([dihedral_quads(:,1) dihedral_quads(:,2) dihedral_quads(:,3) dihedral_quads(:,4)]);d1=unique(d1,'stable');
+    d2=join([dihedral_quads(:,4) dihedral_quads(:,3) dihedral_quads(:,2) dihedral_quads(:,1)]);d2=unique(d2,'stable');
+    ndihedral_types=size(d1,1);
+    dihedral_quads=join(dihedral_quads);
+    for i=1:size(dihedral_quads,1)
+        [ind,dihedral_types(i)]=ismember(dihedral_quads(i),[d1;d2]);
+    end
+    dihedral_types(dihedral_types>ndihedral_types)=dihedral_types(dihedral_types>ndihedral_types)-ndihedral_types;
 else
     ndihedral_types=0;
 end
@@ -481,13 +491,14 @@ end
 
 if strncmpi(ffname,'clayff',5)
     if exist('ffname','var')
-        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+        atom = charge_atom(atom,Box_dim,ffname,watermodel,'more');
     else
         clayff_param(Atom_labels,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
     end
 else
     disp('Only clayff implemented sofar')
 end
+
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if length(Box_dim)>3
     triclinic = 1; % 1 or 0 for ortoghonal
@@ -510,7 +521,7 @@ fprintf(fid, '\r\n');
 
 %%
 AtomBondAnglestring = {num2str(size(atom,2)), 'atoms';...
-    num2str(nBonds), 'bonds';... 
+    num2str(nBonds), 'bonds';...
     num2str(nAngles), 'angles';...
     num2str(nDihedrals), 'dihedrals';...
     ' ',' ';...
@@ -583,23 +594,23 @@ fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 
 if nBonds>0
-% Prints bond data
-fprintf(fid, 'Bonds \r\n');
-fprintf(fid, '\r\n');
-count_b = 1;
-while count_b <= nBonds
-    Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
-    fprintf(fid, '\t%-i %-i %-i %-i\r\n', Bond_order{count_b,:});
-    count_b = count_b + 1;
-end
-fprintf(fid, '\r\n');
-fprintf(fid, '\r\n');
+    % Prints bond data
+    fprintf(fid, 'Bonds \r\n');
+    fprintf(fid, '\r\n');
+    count_b = 1;
+    while count_b <= nBonds
+        Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
+        fprintf(fid, '\t%-i %-i %-i %-i\r\n', Bond_order{count_b,:});
+        count_b = count_b + 1;
+    end
+    fprintf(fid, '\r\n');
+    fprintf(fid, '\r\n');
 end
 
 if nAngles>0
-% Prints angle data
-fprintf(fid, 'Angles \r\n');
-fprintf(fid, '\r\n');
+    % Prints angle data
+    fprintf(fid, 'Angles \r\n');
+    fprintf(fid, '\r\n');
     count_a = 1;
     while count_a <= nAngles
         Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
@@ -611,9 +622,9 @@ fprintf(fid, '\r\n');
 end
 
 if nDihedrals>0
-% Prints dihedral data
-fprintf(fid, 'Dihedrals \r\n');
-fprintf(fid, '\r\n');
+    % Prints dihedral data
+    fprintf(fid, 'Dihedrals \r\n');
+    fprintf(fid, '\r\n');
     count_d = 1;
     while count_d <= nDihedrals
         Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};

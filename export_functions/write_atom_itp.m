@@ -9,10 +9,10 @@
 % * distance to any H. The second cutoff (2.25) represents the max bond
 % * distance between any non-H atomtypes, like Si-O.
 % * Additional commands governing the selection of bonds/angles can be
-% * found on lines ~140-170, and 175-190 for angles
+% * found on lines ~140-175, and 180-200 for angles
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -72,7 +72,7 @@ if nargin>5
         %         pause
         nrexcl=1; % See the gromacs manual
         explicit_bonds = 0;
-        explicit_angles = 0;
+        explicit_angles = 1;
     elseif strcmpi(ffname,'interface')
         interface_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
@@ -177,9 +177,11 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 %     %     nBonds=size(Bond_index,1);
 %     
 % end
+
 [Y,I]=sort(Bond_index(:,1));
 Bond_index=Bond_index(I,:);
 Bond_index = unique(Bond_index,'rows','stable');
+
 % if strncmpi(ffname,'clayff',5)
 %     disp('What to do with edge angles with Al')
 %     disp('Removing angles with Al')
@@ -198,24 +200,23 @@ Bond_index = unique(Bond_index,'rows','stable');
 %     Angle_index = unique(Angle_index,'rows','stable');
 % end
 
-
-
 %
 file_title = 'Gromacs awesome itp file'; % Header in output file
-molecule_name = filename; % molecule name
+molecule_name = char([atom(1).resname]); % molecule name
 Atom_label = unique([atom.type]);
 
-fid = fopen(molecule_name, 'wt'); % open a text file that we can write into
+fid = fopen(filename, 'wt'); % open a text file that we can write into
 
 fprintf(fid, '%s % s\r\n',';',file_title);
 fprintf(fid, '%s % s\r\n',';','File written by MHolmboe (michael.holmboe@umu.se)');
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ moleculetype ]');
 fprintf(fid, '%s % s\r\n',';','molname   nrexcl');
-fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
+% fprintf(fid, '%s       %d\r\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
+fprintf(fid, '%s       %d\r\n',molecule_name(1:3),nrexcl);
 fprintf(fid, '\r\n');
 fprintf(fid, '%s\r\n','[ atoms ]');
-fprintf(fid, '%s\r\n','; id   attype  resnr resname  atname   cgnr charge      mass');
+fprintf(fid, '%s\r\n','; id   attype  resnr resname  atname   cgnr  charge      mass');
 
 Atom_label_ID=ones(size(atom,2),1);
 for i = 1:nAtoms
@@ -227,7 +228,7 @@ for i = 1:nAtoms
     else exist('Masses','var');
         Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     end
-    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t%8.6f\t%8.6f\r\n', Atoms_data{i,:});
+    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t% 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
 end
 
 fprintf(fid, '\r\n');

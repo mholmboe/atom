@@ -12,7 +12,7 @@
 % Be(a)ware of the units...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -69,6 +69,7 @@ else
 end
 
 Distance=0:ds:Box_dim(3);
+DistanceMax=Distance(end);
 
 if strcmpi(dimension,'x')
     Distance=0:ds:Box_dim(1);
@@ -82,7 +83,20 @@ elseif strcmpi(dimension,'z')
 end
 
 Bins = (0:ds:Distance(end)+ds)';
+nBins = numel(Bins);
 assignin('base','Distance',Bins);
+
+%% Set the occupancy of all sites
+occ=1;
+if ~isfield(atom,'occupancy')
+    occ=1;
+    try
+        atom = occupancy_atom(atom,Box_dim);
+    catch
+        [atom.occupancy]=deal(1);
+    end
+end
+Occupancy=[atom.occupancy];
 
 Total_Density=zeros(ceil(Distance(end)/ds),1);
 Total_Density_SI=Total_Density;
@@ -113,6 +127,7 @@ for h=1:length(Atom_label)
     elseif strcmpi(dimension,'z')
         Coords=[atom(ind_atom).z]';
     end
+    Occupancy=[atom(ind_atom).occupancy];
     
     if nargin>6
         center_vec=varargin{5};
@@ -122,7 +137,13 @@ for h=1:length(Atom_label)
     Coords(Coords<0) = Coords(Coords<0) + Distance(end);
     Coords(Coords>Distance(end)) = Coords(Coords>Distance(end)) - Distance(end);
     
-    Element_density=histcounts(Coords(:,1),Bins(1:end-1))';
+%     Element_density=histcounts(Coords(:,1),Bins(1:end-1))';
+    Element_density=zeros(length(Bins),1);
+    for i=1:numel(Coords)
+        Coords(i)
+        bin_ind=floor((Coords(i)/DistanceMax)*nBins+1)
+        Element_density(bin_ind)=Element_density(bin_ind)+Occupancy(i);
+    end
     
     if numel(Element_density)~=numel(Total_Density)
         Element_density=interp1(1:numel(Element_density),Element_density,1:numel(Total_Density),'spline')';
@@ -215,9 +236,12 @@ hold on;
 plot(Distance(1:length(Total_Density)),circshift(Total_Density,[0 0]),'k')
 xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Concentration profile [mol/L]','FontSize',Fontsize);
 legend([Atom_label {'Total'}]);
+hold off
+
 figure
-plot(Distance(1:length(Total_Density)),circshift(Total_Electron_density,[0 0]))
+plot(Distance(1:length(Total_Density)),circshift(Total_Electron_density,[0 0]),'r')
 xlabel('Distance [Å]','FontSize',Fontsize); ylabel('Concentration profile [mol eqv/L]','FontSize',Fontsize);
+
 if isfield(atom,'charge')
     figure
     plot(Distance(1:length(Total_Density)),circshift(Total_Charge_density,[0 0]))

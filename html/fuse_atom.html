@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>fuse_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="fuse_atom.m"><style type="text/css">
+      --><title>fuse_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="fuse_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>fuse_atom.m</h1><!--introduction--><div><ul><li>This function tries to fuse all sites within a certain rmax</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = fuse_atom(atom,Box_dim)</li><li>atom = fuse_atom(atom,Box_dim,0.85)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = fuse_atom(atom,Box_dim,varargin) <span class="comment">% ,rmax);</span>
+  </style></head><body><div class="content"><h1>fuse_atom.m</h1><!--introduction--><div><ul><li>This function tries to fuse all sites within a certain rmax</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = fuse_atom(atom,Box_dim)</li><li>atom = fuse_atom(atom,Box_dim,0.85)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = fuse_atom(atom,Box_dim,varargin) <span class="comment">% ,rmax);</span>
 
 fused_atom=atom;
 
@@ -86,22 +87,22 @@ i=1;rmind_tot=[];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
 
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-        fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+<span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);</span>
+<span class="comment">%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);</span>
 
-        [fused_atom(i).x]=mean([fused_atom(rmind).x]);
-        [fused_atom(i).y]=mean([fused_atom(rmind).y]);
-        [fused_atom(i).z]=mean([fused_atom(rmind).z]);
+        [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).x]);</span>
+        [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).y]);</span>
+        [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).z]);</span>
 
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+<span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);</span>
         rmind_tot=[rmind_tot rmind(rmind&gt;i)];
     <span class="keyword">end</span>
     i=i+1;
 
     <span class="keyword">if</span> mod(i,100)==1
-            <span class="keyword">if</span> i &gt; 1
-                i-1
-            <span class="keyword">end</span>
+        <span class="keyword">if</span> i &gt; 1
+            i-1
+        <span class="keyword">end</span>
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
@@ -126,13 +127,13 @@ atom=update_atom(fused_atom);
 <span class="comment">% %     catch</span>
 <span class="comment">% %     end</span>
 <span class="comment">% end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% fuse_atom.m
 % * This function tries to fuse all sites within a certain rmax
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -160,25 +161,25 @@ while i < size(fused_atom,2)
         x1=[fused_atom(i).x];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
+        
+%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
 
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-        fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+        [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));% mean([fused_atom(rmind).x]);
+        [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));% mean([fused_atom(rmind).y]);
+        [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
         
-        [fused_atom(i).x]=mean([fused_atom(rmind).x]);
-        [fused_atom(i).y]=mean([fused_atom(rmind).y]);
-        [fused_atom(i).z]=mean([fused_atom(rmind).z]);
-        
-        fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
     i=i+1;
     
     if mod(i,100)==1
-            if i > 1
-                i-1
-            end
+        if i > 1
+            i-1
+        end
     end
-        
+    
 end
 fused_atom(rmind_tot)=[];
 
@@ -191,7 +192,7 @@ atom=update_atom(fused_atom);
 %         end
 %     catch
 %     end
-%     
+%
 % %     try
 % %         if isfield(fused_atom,'xfrac')
 % %             fused_atom=rmfield(fused_atom,'xfrac');

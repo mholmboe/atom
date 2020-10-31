@@ -14,6 +14,7 @@ Oalh	8	15.99940	-1.2375	A	0.316556	0.650170	;	Alumino hydroxyl	oxygen	with	subst
 Oalhh	8	15.99940	-0.6625	A	0.316556	0.650170	;	alumino dihydro oxygen	oxygen	with	subst.	
 Oalsi	8	15.99940	-1.2375	A	0.316556	0.650170	;	Alumino-Silica oxygen	oxygen	with	subst.	
 Osih	8	15.99940	-0.9500	A	0.316556	0.650170	;	Silanol hydroxyl	oxygen	with	subst.	
+Oal     8   15.99940    -1.7650 A   0.316556    0.650170    ;   Deprotonated edge oxygens, recent addition
 Si		14	28.08550	2.10000	A	0.330200	7.70065E-06	;	Tetrahedral	silicon			
 Al		13	26.98154	1.57500	A	0.427100	5.56388E-06	;	Octahedral	aluminum
 Ale		13	26.98154	1.81250	A	0.427100	5.56388E-06	;	Octahedral	aluminum			

@@ -27,7 +27,7 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -54,6 +54,14 @@ elseif strcmpi(maxsol,'shell25')
     shellthickness=25;
 elseif strcmpi(maxsol,'shell30')
     shellthickness=30;
+elseif strcmpi(maxsol,'shell5')
+    shellthickness=5;
+elseif strcmpi(maxsol,'shell4')
+    shellthickness=4;
+elseif strcmpi(maxsol,'shell3')
+    shellthickness=3;
+elseif strcmpi(maxsol,'shell2')
+    shellthickness=2;
 elseif strncmpi(maxsol,'shell',5)
     shellthickness=10;
 end
@@ -141,7 +149,7 @@ end
 
 atomsperSOL=sum([SOL.molid]==1);
 
-SOL=scale_atom(SOL,Box_dim,[1 1 1]./density,'all')
+SOL=scale_atom(SOL,Box_dim,[1 1 1]./density,'all');
 
 nx=ceil(Lx/Box_dim(1))
 ny=ceil(Ly/Box_dim(2))

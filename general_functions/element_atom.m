@@ -2,7 +2,7 @@
 % * This function can replace the atomtypes names with the element names
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -37,7 +37,8 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'st'},2);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'s'},1);atom(i).element={'Si'};
-    elseif strncmpi(atom(i).type,{'S'},1);atom(i).element={'S'};
+    elseif strcmp(atom(i).type,{'S'});atom(i).element={'S'};
+    elseif strncmpi(atom(i).type,{'Ti'},2);atom(i).element={'Ti'};
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'AC'},2);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'AY'},2);atom(i).element={'Al'};
@@ -45,6 +46,8 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'ao'},2);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'a'},1);atom(i).element={'Al'};
     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};
+    elseif strncmpi(atom(i).type,{'Ba'},2);atom(i).element={'Ba'};
+    elseif strncmpi(atom(i).type,{'Be'},2);atom(i).element={'Be'};
     elseif strncmpi(atom(i).type,{'B'},1);atom(i).element={'B'};
     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};
     elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
@@ -53,9 +56,13 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'U'},1);atom(i).element={'U'};
     elseif strncmpi(atom(i).type,{'V'},1);atom(i).element={'V'};
     elseif strncmpi(atom(i).type,{'Y'},1);atom(i).element={'Y'};
+    elseif strncmpi(atom(i).type,{'OW'},2);atom(i).element={water_O};
+    elseif strncmpi(atom(i).type,{'Wa'},2);atom(i).element={water_O};
+    elseif strncmpi(atom(i).type,{'OHH'},3);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={water_H};
     elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};
+    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};
     elseif strncmpi(atom(i).type,{'Mn'},2);atom(i).element={'Mn'};
     elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};
     elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};
@@ -64,7 +71,8 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Ne'},2);atom(i).element={'Ne'};
     elseif strncmpi(atom(i).type,{'No'},2);atom(i).element={'No'};
     elseif strncmpi(atom(i).type,{'N'},1);atom(i).element={'N'};
-    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};
+    elseif strncmpi(atom(i).type,{'O-H'},3);atom(i).element={'O'};
+    elseif strncmpi(atom(i).type,{'Oh'},2);atom(i).element={'O'};
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
     elseif strncmpi(atom(i).type,{'o'},1);atom(i).element={'O'};
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
@@ -72,6 +80,13 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};
     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};
     elseif strncmpi(atom(i).type,{'C'},1);atom(i).element={'C'};
+    elseif strncmpi(atom(i).type,{'W'},1);atom(i).element={'W'};
+    elseif strncmpi(atom(i).type,{'P'},1);atom(i).element={'P'};
+    elseif strncmpi(atom(i).type,{'RB'},2);atom(i).element={'Rb'};
+    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};
+    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};
+    elseif strncmpi(atom(i).type,{'XX'},2);atom(i).element={'XX'};
+    elseif strncmpi(atom(i).type,{'X'},2);atom(i).element={'X'};
     else
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         if size([atom(i).type{:}],2)>1

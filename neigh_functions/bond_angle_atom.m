@@ -5,7 +5,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -137,7 +137,7 @@ for i = 1:size(XYZ_data,1)
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     for j=1:length(bond_in)
-        if [atom(i).molid]==[atom(bond_in(j)).molid]
+        if [atom(i).molid]==[atom(bond_in(j)).molid] && (strncmpi([atom(i).type],[atom(bond_in(j)).type],1) == 0)
             % Original, uncomment this section
             % max_distance = max_short_dist;
             % Only test
@@ -246,7 +246,7 @@ for i = 1:size(XYZ_data,1)
             end
         end
     end
-    if mod(i,1000)==1
+    if mod(i,100)==1
         if i-1>0
             i-1
         end
@@ -270,7 +270,6 @@ overlap_index=overlap_index(1:size(overlap_index,1)/2,:);
 Bond_index(~any(Bond_index,2),:) = [];
 Angle_index(~any(Angle_index,2),:) = [];
 % overlap_index(~any(overlap_index,2),:) = [];
-
 
 nBonds=size(Bond_index,1);
 nAngles=size(Angle_index,1);
@@ -323,11 +322,13 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
     Atom_labels=unique([atom.type]);
     for i=1:length(Atom_labels)
         label_ind=find(strcmpi([atom.type],Atom_labels(i)));
-        Tot_dist=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
+        Tot_dist=[];Tot_CN=[];Tot_type=[];Tot_index=[];Tot_angleindex=[];Tot_bondindex=[];Tot_neighindex=[];Tot_coords=[];Tot_bonds=[];Tot_angles=[];
         for j=label_ind
             if numel([atom(j).neigh])>0
                 Tot_index=[Tot_index; repmat(j,numel([atom(j).neigh.index]),1)];
                 Tot_dist=[Tot_dist; [atom(j).neigh.dist]];
+                CN_temp=numel([atom(j).neigh.dist]);
+                Tot_CN=[Tot_CN;CN_temp*ones(CN_temp,1)];
                 Tot_type=[Tot_type; [atom(j).neigh.type]];
                 Tot_neighindex=[Tot_neighindex; [atom(j).neigh.index]];
                 Tot_coords=[Tot_coords; [atom(j).neigh.coords]];
@@ -343,13 +344,19 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             end
         end
         try
-            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin('caller',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('caller',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('caller',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
             assignin('caller',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
+
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
+            assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
+            assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
+            assignin('base',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
         catch
-            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
             assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);

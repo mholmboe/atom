@@ -2,7 +2,7 @@
 % * This function writes a basic file in the mol2 format from the atom struct
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

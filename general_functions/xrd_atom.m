@@ -6,8 +6,7 @@
 % factors should be passed along as a 1x3 vector, see last Example below.
 % The peak shape can be set to Lorentizan or Gaussian or any mixture
 % thereof.  Note that the different hkl XRD reflection witdths can be set
-% individually using the variables FWHM_00l, FWHM_hk0 and FWHM_hkl, resp,
-% and are weighted by a function (1+2*sin(twotheta(n)*pi/180)).
+% individually using the variables FWHM_00l, FWHM_hk0 and FWHM_hkl, resp.
 % There is two ways of setting the prefered orientation, one that
 % relates to the pref. orientation of the hkl planes, and one method
 % dealing with the orientation of the 00l reflections as detailed in the
@@ -18,7 +17,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -31,29 +30,32 @@
 function [exp_twotheta,intensity] = xrd_atom(varargin)
 
 %% Various settings
-num_hkl=18; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
+% num_hkl=72; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=2:anglestep:80; % The twotheta range of interest
-B_all=0; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
+exp_twotheta=2:anglestep:60; % The twotheta range of interest
+B_all=1; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
+neutral_atoms=0;
 
 %% Set FWHM
-FWHM_00l=1; % Specify the full width at half maximum of your choice
-FWHM_hk0=1; % Specify the full width at half maximum of your choice
-FWHM_hkl=1; % Specify the full width at half maximum of your choice
+FWHM_00l=.25; % Specify the full width at half maximum of your choice
+FWHM_hk0=.25; % Specify the full width at half maximum of your choice
+FWHM_hkl=.25; % Specify the full width at half maximum of your choice
 
 %% Various settings
-mode=1; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
+mode=0; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
 Sample_length = 4; % cm
 Gonio_radius = 24; % cm
 Div_slit = .1; % Divergence slit setting, 0 for automatic
-roughness = 1; % Surface roughness
-% misalignment=0.0; % Not yet implemented
-% alfa_strain = 0; % Not yet implemented
+roughness = 0; % Surface roughness
 sigma_star=45; % Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite
-RNDPWD = 0; %  Random powder
+RNDPWD = 1; %  Random powder
 % mu_star=45; % Not yet implemented
+% alfa_strain = 0; % Not yet implemented
+
+% misalignment=0.0; % Not yet implemented
+
 L_type='normal'; % Lorent polarization type, else 'Reynolds';
 S1=2.3;S2=2.3; % Primary and secondary Soller slit , in deg
 
@@ -61,7 +63,7 @@ S1=2.3;S2=2.3; % Primary and secondary Soller slit , in deg
 pref=0;
 preferred_h=1;
 preferred_k=1;
-preferred_l=0;
+preferred_l=1;
 
 %% Fetch either a .pdb|.gro file or use an atom struct with its Box_dim
 if nargin==1
@@ -73,6 +75,8 @@ if nargin==1
         disp('Found .pdb file');
         atom = import_atom_pdb(filename); % Does the pdb come with occupancy and B-factor info?
     end
+    assignin('caller','atom_xrd',atom);
+    assignin('caller','Box_dim_xrd',Box_dim)
 else
     atom=varargin{1};
     Box_dim=varargin{2};
@@ -81,8 +85,6 @@ end
 if nargin>2
     rep_factors=varargin{3};
 else
-    disp('Is you system a single unit cell?')
-    disp('Will assume no replication factors...')
     pause(2)
     rep_factors=[1 1 1];
 end
@@ -93,35 +95,73 @@ else
     selected_indexes=[];
 end
 
-%% Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax <= h <= hmax; -kmax<= k <= kmax; -lmax <= l <= lmax
-hmax=max([num_hkl rep_factors(1)*num_hkl]);
-kmax=max([num_hkl rep_factors(2)*num_hkl]);
-lmax=max([num_hkl rep_factors(3)*num_hkl]);
-
 %% Specials section
-% %% Unreplicate the atom struct
 % atom = unreplicate_atom(atom,Box_dim,rep_factors);
-
-%% Replicate the atom struct
-% atom = replicate_atom(atom,Box_dim,[2 2 1]);
-
-%% Rotate some layers
-% new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
-% rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 4]);
-% rot = translate_atom(rot,[2 5 0]);
-% atom = update_atom({atom rot});
-% new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
-% rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 4]);
-% rot = translate_atom(rot,[2 3 0]);
-% atom = update_atom({atom rot});
+% for R=1:1
+%     % %% Unreplicate the atom struct
+%     % atom = unreplicate_atom(atom,Box_dim,rep_factors);
+% 
+%     %% Replicate and displace the atom struct
+%     atom = replicate_atom(atom,Box_dim,[1 1 2]);
+%     atom(size(atom,2)/2+1:end) = translate_atom(atom(size(atom,2)/2+1:end),[0 Box_dim(2)/3 0]);
+%     atom = replicate_atom(atom,Box_dim,[2 2 1]);
+%     rep_factors=rep_factors.*[2 2 2];
+%     % plot_atom(atom,Box_dim);
+%     % pause;
+% 
+%     %% Rotate some layers
+%     new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
+%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 2]);
+%     rot = translate_atom(rot,[2 5 0]);
+%     atom = update_atom({atom rot});
+%     new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
+%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 2]);
+%     rot = translate_atom(rot,[2 3 0]);
+%     atom = update_atom({atom rot});
+%     rep_factors=rep_factors.*[1 1 4];
+% end
 
 % %% Slice the atom struct
 % atom = slice_triclinic_atom(atom,Box_dim);
 %
-%% Import the structure into an atom struct
-atom=wrap_atom(atom,Box_dim);
+%% Wrap the structure into an atom struct
+% atom=wrap_atom(atom,Box_dim);
+%
+% vmd(atom,Box_dim)
+%
+% pause
+
+%% Enter the maximum h, k, and l values you would like to calculate. The calculated peaks will be for -hmax <= h <= hmax; -kmax<= k <= kmax; -lmax <= l <= lmax
+% hmax=max([num_hkl rep_factors(1)*num_hkl]);
+% kmax=max([num_hkl rep_factors(2)*num_hkl]);
+% lmax=max([num_hkl rep_factors(3)*num_hkl]);
+Cell=Box_dim2Cell(Box_dim);
+hmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(1)));
+kmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(2)));
+lmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(3)));
+
+%% Set the occupancy of all sites
+if ~isfield(atom,'occupancy')
+    try
+        atom = occupancy_atom(atom,Box_dim);
+    catch
+        [atom.occupancy]=deal(1);
+    end
+end
+
+occupancy=[atom.occupancy]';
+
 
 %% /Specials section
+
+%% Set the unit cell parameters
+if size(Box_dim,2) == 9
+    lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+    xy=Box_dim(6);    xz=Box_dim(8);    yz=Box_dim(9);
+elseif size(Box_dim,2) == 3
+    lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
+    xy=0;    xz=0;    yz=0;
+end
 
 %%
 frac=orto_atom(atom,Box_dim);
@@ -129,11 +169,6 @@ frac=orto_atom(atom,Box_dim);
 frac=element_atom(frac);
 atom_type=[frac.type];% atom_type(2:length(atom_type));
 x=[frac.xfrac]';y=[frac.yfrac]';z=[frac.zfrac]';
-if ~isfield(frac,'occupancy')
-    [frac.occupancy]=deal(1);
-end
-
-occupancy=[frac.occupancy]';
 
 if ~isfield(frac,'B')
     [frac.B]=deal(B_all);
@@ -149,15 +184,6 @@ Bvalue=[frac.B]';
 %     end
 %     n=n+1;
 % end
-
-%% Set the unit cell parameters
-if size(Box_dim,2) == 9
-    lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
-    xy=Box_dim(6);    xz=Box_dim(8);    yz=Box_dim(9);
-elseif size(Box_dim,2) == 3
-    lx=Box_dim(1);    ly=Box_dim(2);    lz=Box_dim(3);
-    xy=0;    xz=0;    yz=0;
-end
 
 a=lx;
 b=(ly^2+xy^2)^.5;
@@ -196,6 +222,9 @@ if sum(abs(rep_factors-[1 1 1]))>0
         i=i+1;
     end
     hkl(unique(ind_rm),:)=[];
+else
+    disp('Is you system a single unit cell?')
+    disp('Will assume no replication factors...')
 end
 
 %% To select only the specific indexes
@@ -278,9 +307,15 @@ m=1;
 disp('--------------')
 while m<numel(Atom_labels)+1
     ind=find(ismember(atom_type,Atom_labels(m)));
+    if neutral_atoms==1
+        Atom_labels(m)=strcat(Atom_labels(m),'0');
+    end
     scattering_factor = atomic_scattering_factors(Atom_labels(m),lambda,two_theta_disc,Bvalue(ind(1)));
-    numatoms=numel(ind)
+    numatoms=sum([atom(ind).occupancy])
     disp('--------------')
+    assignin('caller',strcat(char(Atom_labels(m)),'_f')',scattering_factor);
+    assignin('caller',strcat(char(Atom_labels(m)),'_Atomtype')',Atomtype);
+    assignin('caller',strcat(char(Atom_labels(m)),'_nElectrons')',nElectrons);
     n=1;
     while n<numel(ind)+1
         structure_factor=structure_factor+scattering_factor.*occupancy(ind(n)).*exp(2*pi*1i.*(h*x(ind(n))+k*y(ind(n))+l*z(ind(n))));
@@ -332,7 +367,7 @@ if Lorentzian_factor<1
                 temp_FWHM=FWHM_hkl;
             end
         end
-        temp_FWHM=temp_FWHM*(1+2*sin(twotheta(n)*pi/180));
+        %         temp_FWHM=temp_FWHM*(1+2*sin(twotheta(n)*pi/180));
         %         temp_FWHM=FWHM_hkl;
         
         c_g=temp_FWHM/(2*(2*log(2))^0.5);
@@ -358,7 +393,7 @@ if Lorentzian_factor>0
                 temp_FWHM=FWHM_hkl;
             end
         end
-        temp_FWHM=temp_FWHM*(1+2*sin(twotheta(n)*pi/180));
+        %         temp_FWHM=temp_FWHM*(1+2*sin(twotheta(n)*pi/180));
         %         temp_FWHM=FWHM_hkl;
         temp_lorentz=F_squared(n)./((exp_twotheta-twotheta(n)).^2+(0.5*temp_FWHM)^2);
         lorentz_component=lorentz_component+temp_lorentz;
@@ -426,12 +461,15 @@ dlmwrite('xrd.dat',[exp_twotheta' 100*intensity'],'delimiter','\t','precision',5
 
 %% Plot the results
 hold on;
+%plot(exp_twotheta,intensity,'Color',[0 0 0],'LineWidth',1);
 plot(exp_twotheta,intensity,'LineWidth',1);
-% plot(exp_twotheta,intensity+(rand(2,length(intensity))-.5)/100,'k');
+% plot(exp_twotheta,intensity+(rand(2,length(intensity))-.5)/500,'k');
 
-
-[peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.01*max(intensity));
-if numel(peaks_int)<6
+[peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.05*max(intensity));
+if numel(peaks_int)<10
+    [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.01*max(intensity));
+end
+if numel(peaks_int)<10
     [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.001*max(intensity));
 end
 
@@ -449,12 +487,23 @@ hkl_max_Fsq=hkl(ind_Fsq,:);
 
 %% Miller indexes wrt the peak prominence
 hkl_ind=[];
+hkl_abs=abs(hkl);
+hkl_abs_sorted=sort(hkl_abs,2,'descend');
+assignin('caller','hkl_abs_sorted',hkl_abs_sorted);
 for i=1:numel(locs_twotheta)
     [diff, ind] = min(abs(two_theta_disc_Intensity_max-locs_twotheta(i)));
     if diff<1
+        
         Miller_index=num2str(abs(hkl_max_Intensity(ind,:)));
-        text(two_theta_disc_Intensity_max(ind)-0.5,peaks_int(i)+0.05,Miller_index(~isspace(Miller_index)));
+        Miller_seq=abs(hkl_max_Intensity(ind,:));
+        seq=sort(abs(Miller_seq),2,'descend');
+        multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
+        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.03,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
+        if size(atom,2)<100
+            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.09,num2str(multiplicity),'FontSize',14);
+        end
         hkl_ind=[hkl_ind i];
+        
     end
 end
 stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
@@ -463,9 +512,13 @@ stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','b
 
 xlim([0 max(exp_twotheta)]);
 try
-    ylim([-.2 max(intensity)*1.2])
+    ylim([-.2 max(intensity)*1.15])
 catch
 end
+
+set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22);% ,'Xtick',exp_twotheta(1):10:exp_twotheta(end));%,'Xtick',...
+xlabel('Two-theta','FontSize',24);
+ylabel('Norm. intensity','FontSize',24);
 
 % figure
 % hold on;
@@ -482,7 +535,7 @@ end
 %     ylim([-.2 max(intensity)*1.2])
 % catch
 % end
-
+%
 % figure
 % hold on;
 % plot(exp_twotheta,intensity,'LineWidth',1);

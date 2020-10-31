@@ -4,7 +4,7 @@
 % * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -37,8 +37,6 @@ Elements(1,3:3:3*length([atom.x]))=[atom.z];
 Elements(:,1:3:end)=Elements(:,1:3:end) - min(min(Elements(:,1:3:end)));
 Elements(:,2:3:end)=Elements(:,2:3:end) - min(min(Elements(:,2:3:end)));
 Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
-
-% Element = Wrap_Coord_func(Elements, Box_dim);
 
 % ind_Feo=find(ismember([atom.type],'Al'));
 % ind_Feo=ind_Feo(1:9:end);
@@ -232,6 +230,7 @@ for push=1:1
         G_cos=G_cos+Element_cos;
         G_sin=G_sin+Element_sin;
         
+        
         if sum(Element_density) > 0
             SUMNDISCRETE=SUMNDISCRETE+Element_ave_sum;
             %                 assignin('base',strcat(char(Atom_label(h)),'_discr_sum'),Element_ave_sum); % new
@@ -301,7 +300,7 @@ for push=1:1
     figure
     hold on
     plot(Distance(1:length(Total_density)),circshift(Total_density,[0 0]))
-%     plot(Distance_symm(1:length(Total_density)),circshift(Total_Electron_density,[0 0]))
+    %     plot(Distance_symm(1:length(Total_density)),circshift(Total_Electron_density,[0 0]))
     %     xlabel('2Theta','FontSize',Fontsize); ylabel('a.u.','FontSize',Fontsize);
 end
 

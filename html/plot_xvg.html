@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>plot_xvg.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="plot_xvg.m"><style type="text/css">
+      --><title>plot_xvg.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="plot_xvg.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>plot_xvg.m</h1><!--introduction--><div><ul><li>This function imports and plots the type of .xvg files that the MD package Gromacs uses for some of its text-based data output. Note that the function can output the Data and optionally plot only certain data the data columns given as a second argument. Note also that the x and y ranges can also be set, see examples below.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Data = plot_xvg('energy.xvg')</li><li>Data = plot_xvg('energy.xvg',[1 5 3]) % Will plot the 5th and 3rd column vs. the 1st one.</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200]) % Will also set the X-axis to be  between 0 and 200</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Data = plot_xvg(filename,varargin)
+  </style></head><body><div class="content"><h1>plot_xvg.m</h1><!--introduction--><div><ul><li>This function imports and plots the type of .xvg files that the MD package Gromacs uses for some of its text-based data output. Note that the function can output the Data and optionally plot only certain data the data columns given as a second argument. Note also that the x and y ranges can also be set, see examples below.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Data = plot_xvg('energy.xvg')</li><li>Data = plot_xvg('energy.xvg',[1 5 3]) % Will plot the 5th and 3rd column vs. the 1st one.</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200]) % Will also set the X-axis to be  between 0 and 200</li><li>Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Data = plot_xvg(filename,varargin)
 
 <span class="comment">% Check if the filename contains .xvg</span>
 <span class="keyword">if</span> regexp(filename,<span class="string">'.xvg'</span>) ~= false
@@ -110,8 +111,9 @@ Data=import_xvg(filename);
 <span class="keyword">end</span>
 
 <span class="comment">% Create figure</span>
-figure1 = figure(<span class="string">'Color'</span>,[1 1 1]);
-plot1=plot(Data(:,1),Data(:,2:end),<span class="string">'LineWidth'</span>,1.5);
+<span class="comment">% figure1 = figure('Color',[1 1 1]);</span>
+<span class="comment">%plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);</span>
+plot(Data(:,1),Data(:,2:end),<span class="string">'LineWidth'</span>,1.5);
 set(gcf,<span class="string">'color'</span>,<span class="string">'w'</span>);<span class="comment">%,'units','normalized','position',[0,0,.4,.6]);</span>
 <span class="comment">%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)</span>
 set(gca,<span class="string">'LineWidth'</span>,2,<span class="string">'FontName'</span>, <span class="string">'Arial'</span>,<span class="string">'FontSize'</span>,22,<span class="string">'TickDir'</span>,<span class="string">'out'</span>);<span class="comment">%,'Xtick',...</span>
@@ -131,13 +133,13 @@ xlim(<span class="string">'auto'</span>)
 <span class="comment">% Add a plot legend</span>
 legend(yaxis_all_legends,<span class="string">'Location'</span>,<span class="string">'best'</span>)
 
-assignin(<span class="string">'caller'</span>,<span class="string">'plot1'</span>,plot1);
-assignin(<span class="string">'caller'</span>,<span class="string">'figure1'</span>,figure1);
+<span class="comment">% assignin('caller','plot1',plot1);</span>
+<span class="comment">% assignin('caller','figure1',figure1);</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'Data'</span>,Data);
 assignin(<span class="string">'caller'</span>,<span class="string">'xaxislabel'</span>,xaxislabel);
 assignin(<span class="string">'caller'</span>,<span class="string">'yaxislabel'</span>,yaxislabel);
 assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_legends'</span>,yaxis_all_legends);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% plot_xvg.m
 % * This function imports and plots the type of .xvg files that the MD 
@@ -147,7 +149,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_le
 % Note also that the x and y ranges can also be set, see examples below.
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -202,8 +204,9 @@ if nargin>2
 end
 
 % Create figure
-figure1 = figure('Color',[1 1 1]);
-plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
+% figure1 = figure('Color',[1 1 1]);
+%plot1=plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
+plot(Data(:,1),Data(:,2:end),'LineWidth',1.5);
 set(gcf,'color','w');%,'units','normalized','position',[0,0,.4,.6]);
 %     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
 set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out');%,'Xtick',...
@@ -223,8 +226,8 @@ end
 % Add a plot legend
 legend(yaxis_all_legends,'Location','best')
 
-assignin('caller','plot1',plot1);
-assignin('caller','figure1',figure1);
+% assignin('caller','plot1',plot1);
+% assignin('caller','figure1',figure1);
 assignin('caller','Data',Data);
 assignin('caller','xaxislabel',xaxislabel);
 assignin('caller','yaxislabel',yaxislabel);

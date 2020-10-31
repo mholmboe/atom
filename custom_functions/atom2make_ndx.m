@@ -4,7 +4,7 @@
 % * Likely best used interactively... se below
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -36,10 +36,10 @@ ind=find(ind==1);
 % 
 % name 14 hi_Ob
 
-filename='npt.ndx';
-groupname='dihedrals';
-ind=sort([[6:40:960] [10:40:960] [16:40:960] [20:40:960]]);
-ind=sort([[1:10:5000] [2:10:5000] [3:10:5000] [4:10:5000]]);
+% filename='npt.ndx';
+% groupname='dihedrals';
+% ind=sort([[6:40:960] [10:40:960] [16:40:960] [20:40:960]]);
+% ind=sort([[1:10:5000] [2:10:5000] [3:10:5000] [4:10:5000]]);
 
 % groupname='MOH_angle';
 % indMg=find(strncmpi([atom.type],'Al',2));

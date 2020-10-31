@@ -1,0 +1,232 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>remove_sametype_bond.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="remove_sametype_bond.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>remove_sametype_bond.m</h1><!--introduction--><div><ul><li>This function removes covalent bonds, angles and dihedrals (latter two</li><li>optional) between atoms of the same type element, based on already</li><li>existing Bond | Angle | Dihedral_index variables.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=remove_sametype_bond(atom,Box_dim,Bond_index)</li><li>atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index)</li><li>atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index)</li><li>atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = remove_sametype_bond(atom,Box_dim,varargin)
+
+<span class="keyword">if</span> nargin==2
+    disp(<span class="string">'You need to atleast supply the Bond_index variable'</span>)
+<span class="keyword">elseif</span> nargin==3
+    count=1;
+    Bond_index=varargin{1};
+    Angle_index=[];
+    Dihedral_index=[];
+    rmaxlong=0.00001+max(Bond_index(:,3));
+<span class="keyword">elseif</span> nargin==4
+    count=2;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=[];
+    rmaxlong=0.00001+max(Bond_index(:,3));
+<span class="keyword">elseif</span> nargin==5
+    count=3;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=varargin{3};
+    rmaxlong=0.00001+max(Bond_index(:,3));
+<span class="keyword">elseif</span> nargin&gt;5
+    count=3;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=varargin{3};
+    rmaxlong=varargin{4};
+<span class="keyword">end</span>
+
+Atom_labels=unique([atom.type]);
+
+<span class="keyword">for</span> c=1:count
+    index=[];
+    <span class="keyword">if</span> c==1
+        index=Bond_index;
+    <span class="keyword">elseif</span> c==2
+        index=Angle_index;
+    <span class="keyword">elseif</span> c==3
+        index=Dihedral_index;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> length(index)&gt;0
+        all_rm_ind=[];rm_ind=[];
+        <span class="keyword">for</span> i=1:length(Atom_labels)
+            ind_type=find(strncmpi([atom.type],Atom_labels(i),1));
+            <span class="keyword">for</span> j=1:c
+                [type_row,type_col]=ind2sub(size(index(:,j:j+1)),find(ismember(index(:,j:j+1),ind_type)));
+                unique_ind = unique(type_row);
+                rm_ind=find(histc(type_row,unique_ind)-1);
+                all_rm_ind=[all_rm_ind; rm_ind];
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        index(unique(all_rm_ind),:)=[];
+        <span class="keyword">if</span> c==1
+            Bond_index=index;
+            assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+        <span class="keyword">elseif</span> c==2
+            Angle_index=index;
+            assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+        <span class="keyword">elseif</span> c==3
+            Dihedral_index=index;
+            assignin(<span class="string">'caller'</span>,<span class="string">'Dihedral_index'</span>,Dihedral_index);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% remove_sametype_bond.m
+% * This function removes covalent bonds, angles and dihedrals (latter two
+% * optional) between atoms of the same type element, based on already
+% * existing Bond | Angle | Dihedral_index variables.
+%
+%% Version
+% 2.08
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index)
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index)
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index)
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong)
+
+function atom = remove_sametype_bond(atom,Box_dim,varargin)
+
+if nargin==2
+    disp('You need to atleast supply the Bond_index variable')
+elseif nargin==3
+    count=1;
+    Bond_index=varargin{1};
+    Angle_index=[];
+    Dihedral_index=[];
+    rmaxlong=0.00001+max(Bond_index(:,3));
+elseif nargin==4
+    count=2;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=[];
+    rmaxlong=0.00001+max(Bond_index(:,3));
+elseif nargin==5
+    count=3;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=varargin{3};
+    rmaxlong=0.00001+max(Bond_index(:,3));
+elseif nargin>5
+    count=3;
+    Bond_index=varargin{1};
+    Angle_index=varargin{2};
+    Dihedral_index=varargin{3};
+    rmaxlong=varargin{4};
+end
+
+Atom_labels=unique([atom.type]);
+
+for c=1:count
+    index=[];
+    if c==1
+        index=Bond_index;
+    elseif c==2
+        index=Angle_index;
+    elseif c==3
+        index=Dihedral_index;
+    end
+    if length(index)>0
+        all_rm_ind=[];rm_ind=[];
+        for i=1:length(Atom_labels)
+            ind_type=find(strncmpi([atom.type],Atom_labels(i),1));
+            for j=1:c
+                [type_row,type_col]=ind2sub(size(index(:,j:j+1)),find(ismember(index(:,j:j+1),ind_type)));
+                unique_ind = unique(type_row);
+                rm_ind=find(histc(type_row,unique_ind)-1);
+                all_rm_ind=[all_rm_ind; rm_ind];
+            end
+        end
+        index(unique(all_rm_ind),:)=[];
+        if c==1
+            Bond_index=index;
+            assignin('caller','Bond_index',Bond_index);
+        elseif c==2
+            Angle_index=index;
+            assignin('caller','Angle_index',Angle_index);
+        elseif c==3
+            Dihedral_index=index;
+            assignin('caller','Dihedral_index',Dihedral_index);
+        end
+    end
+    
+end
+
+atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong);
+
+end
+
+
+##### SOURCE END #####
+--></body></html>

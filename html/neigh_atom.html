@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>neigh_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="neigh_atom.m"><style type="text/css">
+      --><title>neigh_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="neigh_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>neigh_atom.m</h1><!--introduction--><div><ul><li>This function checks which neighbors each atom has and ouputs their info</li><li>Todo... check if support for triclinic Box_dim works, because its untested...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = neigh_atom(atom,Box_dim,rmax)</li><li>atom = neigh_atom(atom,Box_dim,rmax,101)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = neigh_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>neigh_atom.m</h1><!--introduction--><div><ul><li>This function checks which neighbors each atom has and ouputs their info</li><li>Todo... check if support for triclinic Box_dim works, because its untested...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = neigh_atom(atom,Box_dim,rmax)</li><li>atom = neigh_atom(atom,Box_dim,rmax,101)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = neigh_atom(atom,Box_dim,varargin)
 
 nAtoms_ind=1:size(atom,2);
 
@@ -117,23 +118,23 @@ XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
     ry = XYZ_data(:,2) - XYZ_solute(2);
     rz = XYZ_data(:,3) - XYZ_solute(3);
     <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-    z_gt_ind=find(rz &gt; lz/2);z_lt_ind=find(rz &lt; - lz/2);
-    rz(z_gt_ind) = rz(z_gt_ind) - lz;
-    rz(z_lt_ind) = rz(z_lt_ind) + lz;
-    rx(z_gt_ind) = rx(z_gt_ind) - xz;
-    rx(z_lt_ind) = rx(z_lt_ind) + xz;
-    ry(z_gt_ind) = ry(z_gt_ind) - yz;
-    ry(z_lt_ind) = ry(z_lt_ind) + yz;
-    <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-    y_gt_ind=find(ry &gt; ly/2);y_lt_ind=find(ry &lt; - ly/2);
-    ry(y_gt_ind) = ry(y_gt_ind) - ly;
-    ry(y_lt_ind) = ry(y_lt_ind) + ly;
-    rx(y_gt_ind) = rx(y_gt_ind) - xy;
-    rx(y_lt_ind) = rx(y_lt_ind) + xy;
-    <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-    x_gt_ind=find(rx &gt; lx/2);x_lt_ind=find(rx &lt; - lx/2);
-    rx(x_gt_ind) = rx(x_gt_ind) - lx;
-    rx(x_lt_ind) = rx(x_lt_ind) + lx;
+<span class="comment">%     z_gt_ind=find(rz &gt; lz/2);z_lt_ind=find(rz &lt; - lz/2);</span>
+<span class="comment">%     rz(z_gt_ind) = rz(z_gt_ind) - lz;</span>
+<span class="comment">%     rz(z_lt_ind) = rz(z_lt_ind) + lz;</span>
+<span class="comment">%     rx(z_gt_ind) = rx(z_gt_ind) - xz;</span>
+<span class="comment">%     rx(z_lt_ind) = rx(z_lt_ind) + xz;</span>
+<span class="comment">%     ry(z_gt_ind) = ry(z_gt_ind) - yz;</span>
+<span class="comment">%     ry(z_lt_ind) = ry(z_lt_ind) + yz;</span>
+<span class="comment">%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%     y_gt_ind=find(ry &gt; ly/2);y_lt_ind=find(ry &lt; - ly/2);</span>
+<span class="comment">%     ry(y_gt_ind) = ry(y_gt_ind) - ly;</span>
+<span class="comment">%     ry(y_lt_ind) = ry(y_lt_ind) + ly;</span>
+<span class="comment">%     rx(y_gt_ind) = rx(y_gt_ind) - xy;</span>
+<span class="comment">%     rx(y_lt_ind) = rx(y_lt_ind) + xy;</span>
+<span class="comment">%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%     x_gt_ind=find(rx &gt; lx/2);x_lt_ind=find(rx &lt; - lx/2);</span>
+<span class="comment">%     rx(x_gt_ind) = rx(x_gt_ind) - lx;</span>
+<span class="comment">%     rx(x_lt_ind) = rx(x_lt_ind) + lx;</span>
     <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
     dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
@@ -142,9 +143,9 @@ XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
     in=intersect(find(dist&gt;0),find(dist&lt;rdist(i)));
     <span class="comment">% in=sort(unique(in));</span>
     <span class="comment">% in = in(find(in~=i));</span>
-<span class="comment">%     in = in(in~=i&amp;~ismember(in,skip_ind));</span>
+    <span class="comment">% in = in(in~=i&amp;~ismember(in,skip_ind));</span>
     <span class="comment">% neigh(i).in = [in(find(in~=i))];</span>
-<span class="comment">%     atom(i).neigh.index = in;</span>
+    <span class="comment">% atom(i).neigh.index = in;</span>
     atom(i).neigh.index = orig_index(in)'; <span class="comment">% New in version 2.04</span>
     atom(i).neigh.type = deal([atom(in).type])';
     atom(i).neigh.dist = [dist(in,1)];
@@ -157,15 +158,17 @@ XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 
 <span class="keyword">end</span>
 
+assignin(<span class="string">'caller'</span>,<span class="string">'dist'</span>,[atom(1).neigh.dist]);
+
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% neigh_atom.m
 % * This function checks which neighbors each atom has and ouputs their info
 % * Todo... check if support for triclinic Box_dim works, because its untested...
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -225,23 +228,23 @@ for i=nAtoms_ind
     ry = XYZ_data(:,2) - XYZ_solute(2);
     rz = XYZ_data(:,3) - XYZ_solute(3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
-    rz(z_gt_ind) = rz(z_gt_ind) - lz;
-    rz(z_lt_ind) = rz(z_lt_ind) + lz;
-    rx(z_gt_ind) = rx(z_gt_ind) - xz;
-    rx(z_lt_ind) = rx(z_lt_ind) + xz;
-    ry(z_gt_ind) = ry(z_gt_ind) - yz;
-    ry(z_lt_ind) = ry(z_lt_ind) + yz;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
-    ry(y_gt_ind) = ry(y_gt_ind) - ly;
-    ry(y_lt_ind) = ry(y_lt_ind) + ly;
-    rx(y_gt_ind) = rx(y_gt_ind) - xy;
-    rx(y_lt_ind) = rx(y_lt_ind) + xy;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
-    rx(x_gt_ind) = rx(x_gt_ind) - lx;
-    rx(x_lt_ind) = rx(x_lt_ind) + lx;
+%     z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+%     rz(z_gt_ind) = rz(z_gt_ind) - lz;
+%     rz(z_lt_ind) = rz(z_lt_ind) + lz;
+%     rx(z_gt_ind) = rx(z_gt_ind) - xz;
+%     rx(z_lt_ind) = rx(z_lt_ind) + xz;
+%     ry(z_gt_ind) = ry(z_gt_ind) - yz;
+%     ry(z_lt_ind) = ry(z_lt_ind) + yz;
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+%     ry(y_gt_ind) = ry(y_gt_ind) - ly;
+%     ry(y_lt_ind) = ry(y_lt_ind) + ly;
+%     rx(y_gt_ind) = rx(y_gt_ind) - xy;
+%     rx(y_lt_ind) = rx(y_lt_ind) + xy;
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+%     rx(x_gt_ind) = rx(x_gt_ind) - lx;
+%     rx(x_lt_ind) = rx(x_lt_ind) + lx;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
@@ -250,9 +253,9 @@ for i=nAtoms_ind
     in=intersect(find(dist>0),find(dist<rdist(i)));
     % in=sort(unique(in));
     % in = in(find(in~=i));
-%     in = in(in~=i&~ismember(in,skip_ind));
+    % in = in(in~=i&~ismember(in,skip_ind));
     % neigh(i).in = [in(find(in~=i))];
-%     atom(i).neigh.index = in;
+    % atom(i).neigh.index = in;
     atom(i).neigh.index = orig_index(in)'; % New in version 2.04
     atom(i).neigh.type = deal([atom(in).type])';
     atom(i).neigh.dist = [dist(in,1)];
@@ -264,6 +267,8 @@ for i=nAtoms_ind
     end
     
 end
+
+assignin('caller','dist',[atom(1).neigh.dist]);
 
 end
 ##### SOURCE END #####

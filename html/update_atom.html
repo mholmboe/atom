@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>update_atom.m</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-07"><meta name="DC.source" content="update_atom.m"><style type="text/css">
+      --><title>update_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="update_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>update_atom.m</h1><!--introduction--><div><ul><li>This function updates the molid index and the atoms index in the atom struct</li><li>Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><p># # atom = update_atom(atom) # atom = update_atom({atom1 atom2 atom3})</p><pre class="codeinput"><span class="keyword">function</span> atom = update_atom(atom)
+  </style></head><body><div class="content"><h1>update_atom.m</h1><!--introduction--><div><ul><li>This function updates the molid index and the atoms index in the atom struct</li><li>Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><p># # atom = update_atom(atom) # atom = update_atom({atom1 atom2 atom3})</p><pre class="codeinput"><span class="keyword">function</span> atom = update_atom(atom,varargin)
 
 <span class="keyword">if</span> iscell(atom)
 
@@ -142,7 +143,7 @@ nmol=1;first_in=[1];last_in=[];
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> numel(fieldnames(atom))~=10
-    defaultAttributes={<span class="string">'molid'</span> <span class="string">'resname'</span> <span class="string">'type'</span> <span class="string">'fftype'</span> <span class="string">'index'</span> <span class="string">'neigh'</span> <span class="string">'bond'</span> <span class="string">'angle'</span> <span class="string">'x'</span> <span class="string">'y'</span> <span class="string">'z'</span> <span class="string">'vx'</span> <span class="string">'vy'</span> <span class="string">'vz'</span> <span class="string">'xfrac'</span> <span class="string">'yfrac'</span> <span class="string">'zfrac'</span> <span class="string">'element'</span> <span class="string">'mass'</span> <span class="string">'Mw'</span> <span class="string">'COM_x'</span> <span class="string">'COM_y'</span> <span class="string">'COM_z'</span> <span class="string">'charge'</span> <span class="string">'bv'</span> <span class="string">'mean_bv'</span> <span class="string">'valence'</span> <span class="string">'Rdiff'</span> <span class="string">'atnum'</span> <span class="string">'occupancy'</span> <span class="string">'B'</span> <span class="string">'cn'</span>};
+    defaultAttributes={<span class="string">'molid'</span> <span class="string">'resname'</span> <span class="string">'type'</span> <span class="string">'fftype'</span> <span class="string">'index'</span> <span class="string">'neigh'</span> <span class="string">'bond'</span> <span class="string">'angle'</span> <span class="string">'x'</span> <span class="string">'y'</span> <span class="string">'z'</span> <span class="string">'vx'</span> <span class="string">'vy'</span> <span class="string">'vz'</span> <span class="string">'xfrac'</span> <span class="string">'yfrac'</span> <span class="string">'zfrac'</span> <span class="string">'element'</span> <span class="string">'mass'</span> <span class="string">'Mw'</span> <span class="string">'COM_x'</span> <span class="string">'COM_y'</span> <span class="string">'COM_z'</span> <span class="string">'charge'</span> <span class="string">'bv'</span> <span class="string">'mean_bv'</span> <span class="string">'valence'</span> <span class="string">'Rdiff'</span> <span class="string">'atnum'</span> <span class="string">'occupancy'</span> <span class="string">'B'</span> <span class="string">'cn'</span> <span class="string">'molecule'</span>};
     atomAttributes=fieldnames(atom)';
     indDefault=find(ismember(defaultAttributes,atomAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -154,15 +155,19 @@ nmol=1;first_in=[1];last_in=[];
 
 <span class="comment">% atom = resname_atom(atom);</span>
 
+<span class="keyword">if</span> nargin&gt;1
+   [atom.molid]=deal(varargin{1});
+<span class="keyword">end</span>
+
 assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,nAtoms);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% update_atom.m
 % * This function updates the molid index and the atoms index in the atom struct
 % * Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -172,7 +177,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</spa
 % # atom = update_atom(atom)
 % # atom = update_atom({atom1 atom2 atom3})
 %
-function atom = update_atom(atom)
+function atom = update_atom(atom,varargin)
 
 if iscell(atom)
     
@@ -248,7 +253,7 @@ for i=1:nAtoms
 end
 
 if numel(fieldnames(atom))~=10
-    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn'};
+    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn' 'molecule'};
     atomAttributes=fieldnames(atom)';
     indDefault=find(ismember(defaultAttributes,atomAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -259,6 +264,10 @@ end
 % assignin('base','atom1',atom);
 
 % atom = resname_atom(atom);
+
+if nargin>1
+   [atom.molid]=deal(varargin{1}); 
+end
 
 assignin('caller','nAtoms',nAtoms);
 

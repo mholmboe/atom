@@ -113,7 +113,7 @@ OC23	8	15.99940	-0.55000	A	0.30914	0.2259		; OC23   Oxygen atom in bulk silica (
 OC24	8	15.99940	-0.67500	A	0.30914	0.5104		; OC24   Oxygen atom on silica surface and clay edges (-0.675 in Si-OH, -0.9 in SiO-)							
 OC25	8	15.99940	-0.90000	A	0.30914	0.2259		; OC25   instead of OC24, ie the oxygen atom on silica surface as (-0.9 in SiO-)		
 HOY		1	1.007940	 0.20000	A	0.09666	0.0628		; Also used for clay minerals, supercedes older value (see also HOC)							
-H*		1	1.007940	 0.41000	A	0.00002	0.0000		; SPC water							
+H*		1	1.007940	 0.41000	A	0.00000	0.0000		; SPC water							
 O*		8	15.99940	-0.82000	A	0.31655	0.6502		; SPC water 							
 ;																
 ;Clay minerals (NA+ and HOY from silica needed)																

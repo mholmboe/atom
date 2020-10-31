@@ -1,7 +1,7 @@
 %% Complete list of all ATOM functions
 %
 %% Version
-% 2.07
+% 2.08
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
@@ -13,6 +13,7 @@
 % # <atom2mk_angndx atom2mk_angndx(filename,groupname,atomtypes)> % This function can help you print one custom gromacs angle.ndx group, based on the atomtypes names
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % This function retrieves the atomic scattering factor vs 2theta using the 11 coeff parameters from Waasmaier Kirfel, 1995
 % # <ave_atom.html ave_atom(atom)> % This function calculates the mean of the atom coordinates
+% # <bend_atom.html bend_atom(atom,Box_dim,Radii)> % This simple function tries to bend an atom struct
 % # <bond_atom.html bond_atom(atom,Box_dim,max_long_dist)> % This function tries to assign all bonds to a Bond_matrix and a Bond_index variable
 % # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist,varargin)> % This function tries to find all bonds and angles of the atom struct 'more' is an optional varargin argument
 % # <bond_angle_type.html bond_angle_type(atom1,atom2,Box_dim,rmin,rmax,angle_limit,varargin)> % This tries to find all bonds and angles of the atom types
@@ -21,6 +22,8 @@
 % # <bond_valence_data.html bond_valence_data(ion1,ion2,R,varargin)> % This function fetches the data and matches it to the passed atom types used to calculate the bond valence values according to http://www.iucr.org/resources/data/datasets/bond-valence-parameters
 % # <cat_atom.html cat_atom.m> % This is a special script (and not a function) that imports and appends atom structs into a .gro trajectory file, useful to make a trajectory with varying number of particles
 % # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga
+% # <Box_dim2Cell.html Box_dim2Cell(Box_dim)> % * This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6 Cell variable
+% # <Cell2Box_dim.html Cell2Box_dim(Cell)> % ** This function transforms the 1x6 Cell variable containing the a, b, c cell values and  the alfa, beta, gamma angle values as used in a typical .pdb file, into a 1x3 or the 1x9  Box_dim variable  
 % # <center_atom.html center_atom(atom,Box_dim,resname,dim)> % This function centers the atom with respect to the resname molecule
 % # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % This function tries to charge the atom accorind to clayff or interface ff
 % # <charge_clayff_2004_atom.html charge_clayff_2004_atom(atom,Box_dim,varargin)> % Sets the charge for the original Clayff atomtypes for the original Clayff ff from the Cygan et al., 2004 paper
@@ -64,7 +67,7 @@
 % # <frac2atom.html frac2atom(atom,Box_dim,angleparam,angletype)> % This function transforms fractional coordinates to cartesian
 % # <frame2atom.html frame2atom(atom,traj,frame,Box_dim,varargin)> % This function extracts a frame to the trajectory matrix
 % # <fuse_atom.html fuse_atom(atom,Box_dim,varargin)> % This function tries to fuse all sites within a certain cutoff rmax, typically 0.85 Å
-% # <G2_atom.html G2_atom(atom,Box_dim)> % This function calculates the continuous G2 factor fromthe cos and sin terms and also saves a struct variable for G2_calc_func(). You might wnat to edit the atomtype names below to fit your needs...
+% # <G2_atom.html G2_atom(atom,Box_dim)> % This function calculates the continuous G2 factor from the cos and sin terms and also saves a struct variable for G2_calc_func(). You might wnat to edit the atomtype names below to fit your needs...
 % # <gmx_make_ndx.html gmx_make_ndx(groupname,ind)> % This function helps you print custom gromacs .ndx files
 % # <gmx_mk_angndx.html gmx_mk_angndx(groupname,ind)> % This function helps you print custom gromacs angle .ndx files
 % # <grid2atom.html grid2atom(atom_label,nM,limits,dim,varargin)> %  grid2atom.m - This puts particles such as ions on a 2D grid (i.e. a plane)> % and adds it to an atom struct
@@ -106,16 +109,18 @@
 % # <neigh_atom.html neigh_atom(atom,Box_dim,rmax,varargin)> % This function checks which neighbors each atom has and ouputs their info
 % # <neighbor_func.html neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)> % This function scans xyz data and checks who is within a certain radius. It outputs neighbour index,
 % # <new_neigh_atom.html new_neigh_atom(atom,Box_dim,rmax,varargin)> % Not finished yet...
+% # <neutralize_atom.html neutralize_atom(atom)> % This function appends a 0 to all atomtype names and will also set the  charge (if the field charge exist) to zero (0).
 % # <number_type.html numer_type(atom,varargin)> % This function numbers the atom types, like H1, H2, H3...
 % # <opls_go_atom.html opls_go_atom(atom,Box_dim,rmin,rlarge)> % This function tries to smear out the charge at around -OH and epoxides in GO
 % # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % This custom function holds the extended oplsaa_aa ff for graphite oxide
 % # <orto_atom.html orto_atom(atom,Box_dim)> % This transforms a triclinic atom struct to an orthogonal atom struct. Box_dim must look like [lx ly lz 0 0 xy 0 xz yz]
 % # <overwrite_atom.html overwrite_atom(In_atom,atomtype,resname)> % This function overwrites the atom struct information with new information 
-% # <PATH2GMX.html PATH2<gmx()> % The Gromacs path on your computer
+% # <PATH2GMX.html PATH2GMX()> % The Gromacs path on your computer
 % # <PATH2VMD.html PATH2VMD()> % The VMD path on your computer
 % # <place_atom.html place_atom(atom,position)> % This function places the atom struct according to the position vector called position, trying to use the COM of the molecule
 % # <plot_density_atom.html plot_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
 % # <plot_atom.html plot_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D. Its very simplistic with no cool features
+% # <poly_atom.html poly_atom(atom,Box_dim,varargin)> % This function tries to plot pretty polyhedras, similar to the show_atom function
 % # <position_molid.html position_molid(atom,position_vec,MolID)> % This function movies a molid (COM)> % to a certain position
 % # <protonate_atom.html protonate_atom(atom,Box_dim,varargin)> % This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct.
 % # <radius_atom.html radius_atom(atom,ffname,watermodel)> % This function fetches the ion radius from clayff or interface or interface2015 ff's and
@@ -138,6 +143,12 @@
 % # <rotate_atom.html rotate_atom(atom,Box_dim,alfa,beta,gamma)> % This function rotate the atom randomly
 % # <round_atom.html round_atom(atom,Box_dim,varargin)> % This function rounds the coordinates in the atom struct
 % # <scale_atom.html scale_atom(atom,scale_vec,Box_dim,Resname)> % This function scales the coordinates in the atom struct
+% # <show_density_atom.html show_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
+% # <show_atom.html show_atom(atom,varargin)> % This function draws the atom struct in 3D. Its a bit fancier that plot_atom()
+% # <show_arrow.html show_arrow(p1,p2,varargin)> % * plot a 3D arrow as patch object (cylinder+cone). This function was adapted from mArrow3.m
+% # <show_axis.html show_axis(varargin)> % * This function draws the axis in a plot
+% # <show_box.html show_box(Box_dim)> % * This function draws the simulation box
+% # <show_miller.html show_miller(Box_dim)> % * This function draws the hkl Miller planes of the Box_dim/Cell variables
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % This function fetches the sigma radius parameter, originally taken from the link below from 'A cartography of the van der Waals territories' Santiago Alvarez doi:10.1039/c3dt50599e
 % # <slice_atom.html slice_atom(atom,limits,invert)> % This function checks if the coordinates for each time record in XYZ_data is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
 % # <slice_molid.html slice_molid(atom,limits,invert)> % This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
@@ -145,8 +156,7 @@
 % # <solvate_atom.html solvate_atom(limits,density,r,maxsol,solute_atom,varargin)> % This function generates a certain region defined by <limits> with a solvent structure of density <density>
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
-% # <show_density_atom.html show_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
-% # <show_atom.html show_atom(atom,varargin)> % This function draws the atom struct in 3D. Its a bit fancier that plot_atom()
+% # <sphere_atom.html sphere_atom(atom,Box_dim,radius> % * This function slices a spherical particle (like a colloid) of the atom struct
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water
 % # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
