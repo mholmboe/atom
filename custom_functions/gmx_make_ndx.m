@@ -2,7 +2,7 @@
 % * This function helps you print custom gromacs .ndx files
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

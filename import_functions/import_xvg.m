@@ -3,7 +3,7 @@
 % Gromacs uses for some of its text-based data output
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

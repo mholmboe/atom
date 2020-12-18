@@ -3,7 +3,7 @@
 % * data file.lj file according to atom style full, without image flags
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

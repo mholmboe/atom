@@ -4,7 +4,7 @@
 % * Box_dim(1:3) should contain the real a,b,c unit cell lengths
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

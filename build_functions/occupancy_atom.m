@@ -2,7 +2,7 @@
 % * This function finds the occupancy all sites, within a certain rmax.
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

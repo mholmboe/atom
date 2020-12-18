@@ -3,7 +3,7 @@
 % * the angles alfa, beta, gamma or tilt factors xy, xz, yz
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

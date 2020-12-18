@@ -2,7 +2,7 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

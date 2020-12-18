@@ -2,7 +2,7 @@
 % * For more detailed info, see the Revised Shannon radii...
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

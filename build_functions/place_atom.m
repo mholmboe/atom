@@ -2,7 +2,7 @@
 % * This function places the atom struct according to the position vector called position, trying to use the COM of the molecule
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

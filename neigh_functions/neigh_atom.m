@@ -3,7 +3,7 @@
 % * Todo... check if support for triclinic Box_dim works, because its untested...
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

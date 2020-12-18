@@ -1,7 +1,7 @@
 %% List of the main variables
 %
 %% Version
-% 2.08
+% 2.081
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se
