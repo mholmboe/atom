@@ -63,23 +63,23 @@ for i=nAtoms_ind
     ry = XYZ_data(:,2) - XYZ_solute(2);
     rz = XYZ_data(:,3) - XYZ_solute(3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
-%     rz(z_gt_ind) = rz(z_gt_ind) - lz;
-%     rz(z_lt_ind) = rz(z_lt_ind) + lz;
-%     rx(z_gt_ind) = rx(z_gt_ind) - xz;
-%     rx(z_lt_ind) = rx(z_lt_ind) + xz;
-%     ry(z_gt_ind) = ry(z_gt_ind) - yz;
-%     ry(z_lt_ind) = ry(z_lt_ind) + yz;
-%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
-%     ry(y_gt_ind) = ry(y_gt_ind) - ly;
-%     ry(y_lt_ind) = ry(y_lt_ind) + ly;
-%     rx(y_gt_ind) = rx(y_gt_ind) - xy;
-%     rx(y_lt_ind) = rx(y_lt_ind) + xy;
-%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
-%     rx(x_gt_ind) = rx(x_gt_ind) - lx;
-%     rx(x_lt_ind) = rx(x_lt_ind) + lx;
+    z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+    rz(z_gt_ind) = rz(z_gt_ind) - lz;
+    rz(z_lt_ind) = rz(z_lt_ind) + lz;
+    rx(z_gt_ind) = rx(z_gt_ind) - xz;
+    rx(z_lt_ind) = rx(z_lt_ind) + xz;
+    ry(z_gt_ind) = ry(z_gt_ind) - yz;
+    ry(z_lt_ind) = ry(z_lt_ind) + yz;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+    ry(y_gt_ind) = ry(y_gt_ind) - ly;
+    ry(y_lt_ind) = ry(y_lt_ind) + ly;
+    rx(y_gt_ind) = rx(y_gt_ind) - xy;
+    rx(y_lt_ind) = rx(y_lt_ind) + xy;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+    rx(x_gt_ind) = rx(x_gt_ind) - lx;
+    rx(x_lt_ind) = rx(x_lt_ind) + lx;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
