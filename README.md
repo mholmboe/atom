@@ -98,6 +98,7 @@ Other example functions (see complete list in function_descriptions.m)
  .
  .
  .
+ 
 plus many other functions... see the html documentation.
 
 Citation:

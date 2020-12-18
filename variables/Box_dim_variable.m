@@ -7,7 +7,10 @@
 % a 1x9 vector, the box is a triclinic box defined by the 1 to 9 box size 
 % matrix parameters [lx ly lz 0 0 xy 0 xz yz], where the latter three 
 % non-zero parameters are the tilt factors of the triclinic box.
-
+%
+%% Version
+% 2.081
+%
 %% Example
 % # Box_dim = [10];
 % # Box_dim = [10 20 30];

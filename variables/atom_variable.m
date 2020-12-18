@@ -1,5 +1,9 @@
 %% atom
 %
+%% Version
+% 2.081
+%
+
 %% Introduction to the atom struct
 % The <atom_variable.html atom> struct variable (as in Atomistic Topology Operations 
 % in Matlab) is an indexed Matlab struct variable that stores molecule 

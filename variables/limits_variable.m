@@ -7,7 +7,10 @@
 % [xlo ylo zlo xhi yhi zhi]. Note that a 1x6 vector can alo be used to
 % repsresent any arbitrary plane, as in the last example below where
 % zlo equals zhi.
-
+%
+%% Version
+% 2.081
+%
 %% Example
 % # limits = [10]; % a cube from (0,0,0) to (10,10,10)
 % # limits = [10 20 30];

@@ -20,7 +20,7 @@
 % # 864_swm4_ndp_vds.gro|.pdb * Polarizable water v2
 
 %% Other structures
-% 864_spc.gro|.pdb % equilibrated SPC water box
+% 
 
 %% Conversion functions
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water

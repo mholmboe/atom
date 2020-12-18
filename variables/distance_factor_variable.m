@@ -6,6 +6,10 @@
 % * Explanation: If the sum of two atomtypes radii, multiplied by the 
 % distance_factor is larger than the distance between two atoms, the atoms 
 % are considered to be bonded/neighbours.
+%
+%% Version
+% 2.081
+%
 
 %% Example
 distance_factor = 1.2 % Typical value when using crystal radii
