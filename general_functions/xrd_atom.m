@@ -33,8 +33,8 @@ function [exp_twotheta,intensity] = xrd_atom(varargin)
 % num_hkl=72; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=2:anglestep:60; % The twotheta range of interest
-B_all=1; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
+exp_twotheta=5:anglestep:80; % The twotheta range of interest
+B_all=2; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
 neutral_atoms=0;
 
@@ -50,7 +50,7 @@ Gonio_radius = 24; % cm
 Div_slit = .1; % Divergence slit setting, 0 for automatic
 roughness = 0; % Surface roughness
 sigma_star=45; % Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite
-RNDPWD = 1; %  Random powder
+RNDPWD = 45; %  Random powder
 % mu_star=45; % Not yet implemented
 % alfa_strain = 0; % Not yet implemented
 
@@ -498,21 +498,21 @@ for i=1:numel(locs_twotheta)
         Miller_seq=abs(hkl_max_Intensity(ind,:));
         seq=sort(abs(Miller_seq),2,'descend');
         multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
-        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.03,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
-        if size(atom,2)<100
-            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.09,num2str(multiplicity),'FontSize',14);
-        end
+% remove        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.03,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
+% remove        if size(atom,2)<100
+% remove            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.09,num2str(multiplicity),'FontSize',14);
+% remove        end
         hkl_ind=[hkl_ind i];
         
     end
 end
-stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
-stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
+% remove stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
+% remove stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
 % stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
 
 xlim([0 max(exp_twotheta)]);
 try
-    ylim([-.2 max(intensity)*1.15])
+    ylim([-.4 max(intensity)*1.15])
 catch
 end
 

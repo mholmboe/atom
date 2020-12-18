@@ -61,7 +61,7 @@ Nlig=size(atom2,2);
 
 natom1=size(atom1,2);
 natom2=size(atom2,2);
-if (natom1+natom2)>5000 % Will use the cell list routine to calc the reduced distance matrix
+if (natom1+natom2)>15000 % Will use the cell list routine to calc the reduced distance matrix
     atom12=[atom1 atom2];
     dist_matrix=cell_list_dist_matrix_atom(atom12,Box_dim,0,Distance(end));
     dist_matrix(natom1+1:end,:)=[];

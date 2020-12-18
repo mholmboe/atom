@@ -1,4 +1,4 @@
-function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2)
+function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
 
 % clear all;
 % format compact;
@@ -21,10 +21,15 @@ function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2)
 % %eps2=3.77671E-05;% kJ/mol
 % eps2=7.70065E-06;% kJ/mol
 
-r=.01:.0005:1.2; % nm
+if nargin > 6
+    r=varargin{1};
+else
+%     r=1:length(data);
+    r=.01:.0005:1.2; % nm
+end
 
-e_mix=(eps1*eps2)^.5
-sig_mix=(sig1+sig2)/2
+e_mix=(eps1*eps2)^.5;
+sig_mix=(sig1+sig2)/2;
 
 lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
 coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;

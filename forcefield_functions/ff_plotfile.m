@@ -2,7 +2,8 @@ close all;
 
 %%
 atomtypes1={'Li'}% 'Na' 'K' 'Cs' 'Ca'};
-ffstrings={'spc' 'spce' 'tip3p' 'opc3'};
+ffstrings={'JC_spc' 'JC_spce' 'JC_tip3p' 'JC_opc3'};
+ffstrings={'spc'};
 
 for i=1:numel(atomtypes1)
     %     figure

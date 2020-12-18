@@ -40,14 +40,14 @@ elseif nargin>5
     Bond_index=varargin{1};
     Angle_index=varargin{2};
     Dihedral_index=varargin{3};
-%     rmaxlong=varargin{4};
+    rmaxlong=varargin{4};
 end
 
 disp('Calculating the distance matrix')
 if size(atom,2) < 5000
-    dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,4);
+    dist_matrix = dist_matrix_atom(atom,Box_dim);%,1.25,4);
 elseif size(atom,2) < 20000
-    dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,4);
+    dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim);%,1.25,4);
 else
     disp('The nAtoms in the atoms truct may be too large, try reducing the number of atoms?')
 end

@@ -11,8 +11,8 @@ PATH2VMD = '/Applications/VMD\ 1.9.2.app/Contents/MacOS/startup.command';
 % Example on a Win computer
 % PATH2VMD = '"C:\Program Files (x86)\University of Illinois\VMD\vmd.exe"';
 
-PATH=getenv('PATH');
-PATH=strrep(PATH,'PATH2VMD','');
+% PATH=getenv('PATH');
+% PATH=strrep(PATH,'PATH2VMD','');
 setenv('PATH', [getenv('PATH'),':',PATH2VMD]);
 
 end

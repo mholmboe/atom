@@ -97,6 +97,10 @@ if any(Box_dim(1:3) < (2*rmax))
         assignin('caller',char(varargin{4}),atom);
     end
     assignin('caller','dist_matrix',dist_matrix)
+    assignin('caller','X_dist',(X_dist)');
+    assignin('caller','Y_dist',(Y_dist)');
+    assignin('caller','Z_dist',(Z_dist)');
+    assignin('caller','analyzed_Box_dim',Box_dim);
     return
 end
 

@@ -5,7 +5,7 @@
 
 function PATH2GMX = PATH2GMX() 
 
-PATH2GMX ='/usr/local/gromacs-2019/bin/';
+PATH2GMX ='/usr/local/gromacs-2018.7/bin/';
 % PATH2GMX ='/usr/local/gromacs-2018/bin/'; 
 % PATH2GMX ='/usr/local/gromacs-2016.2/bin/'; 
 % PATH2GMX ='/usr/local/gromacs-5.1.1/bin/';

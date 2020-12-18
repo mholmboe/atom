@@ -115,7 +115,7 @@ else
         try
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance
         catch
             atom(i).valence=0;
             atom(i).Rdiff=0;

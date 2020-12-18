@@ -83,7 +83,7 @@ if sum(size(unique(XYZ_labels),1)) > 3
     [atom.resname]=deal({resname});
 end
 
-atom=[in_atom, atom];
+atom=[in_atom atom];
 
 % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 % XYZ_labels=[atom.type]';

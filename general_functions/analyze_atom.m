@@ -56,6 +56,8 @@ end
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
 
+
+
 % other_ind=[];ValenceGuess=zeros(1,size(element,2));
 % for i=1:size(element,2)
 %     try
@@ -109,9 +111,10 @@ for i=1:size(element,2)
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
+%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
-    properties(i).ShannonParam={'-->'};
+    properties(i).ShannonParam={'>>>>'};
     properties(i).atnum=element(i).atnum;
     properties(i).mass=element(i).mass;
     properties(i).oxstate=OxState(ind);
@@ -168,6 +171,22 @@ for i=1:size(properties,2)
         i-1
     end
 end
+
+%% From Vesta manual... Test with pyrophyllite...
+% for i=1:size(properties,2)
+%     properties(i).DistBondECoN={'>>>>'};
+%     dist=[properties(i).neigh.dist];
+%     properties(i).DistorIndex=sum((dist-mean(dist))./mean(dist))/numel(dist);
+%     properties(i).lmin=min(dist);
+%     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
+%     properties(i).wi=exp(1-(dist./properties(i).la).^6);
+%     properties(i).ECoN=sum([properties(i).wi]);
+% end 
+% for i=1:size(properties,2)
+%     ind=[properties(i).neigh.index];
+%     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
+%     properties(i).Q=sum([properties(i).deltaq]);
+% end
 
 diff_ind=find([properties.RevShannonind]-[properties.MODRevShannonind]);
 if numel(diff_ind)>0

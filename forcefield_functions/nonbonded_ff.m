@@ -1,4 +1,4 @@
-function [r,lj,coul,Utot] = nonbonded_ff(ff,atomtype) % ff and atomtype can be single variables or cell 'tuplets'
+function [r,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,atomtype) % ff and atomtype can be single variables or cell 'tuplets'
 
 if ischar(atomtype)
     disp('atomtype must be a {1x1} or {1x2} cell')
@@ -30,6 +30,8 @@ sig1=atomtype1.sigma_nm;
 sig2=atomtype2.sigma_nm;
 eps1=atomtype1.e_kJmol;
 eps2=atomtype2.e_kJmol;
+
+[q1 q2 sig1 sig2 eps1 eps2]
 
 %% Plot the Total energy, electrostatic contribution, and the LJ
 r=.01:.0005:1.2; % nm

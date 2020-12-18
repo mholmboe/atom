@@ -115,9 +115,9 @@ molid=num2cell(1:size(atom,2));
 
 % Move the particles around a little bit
 for i=1:size(atom,2)
-    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;end
-    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;end
-    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-rmin*(rand(1)-0.5);end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-rmin*(rand(1)-0.5);end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-rmin*(rand(1)-0.5);end
 end
 
 
