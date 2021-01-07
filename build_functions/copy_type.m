@@ -1,16 +1,17 @@
-%% copy_atom.m
+%% copy_type.m
 % * This function copies and translates types in the atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10])
-% * new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10)
-
+% # new_atom=copy_type(atom,'Al','Mgo','ION') % Basic input arguments
+% # new_atom=copy_type(atom,'Al','Mgo','ION',[0 0 10]) % Translates the copied sites
+% # new_atom=copy_type(atom,'Al','Mgo','ION',[0 0 10],10)  % Translates and copies only 10 sites
+%
 function new_atom=copy_type(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)
 %% 
 
@@ -22,7 +23,7 @@ if length(ind_atomtype) > 2
 end
 
 % Duplicate the atomtype entries into a new In_atom struct
-if nargin == 6;
+if nargin == 6
     % Uses the num last entries...
     num=cell2mat(varargin(1));
     new_atom=atom(ind_atomtype(end-num+1:end));

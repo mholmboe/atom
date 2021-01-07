@@ -3,10 +3,10 @@
 % Gromacs uses for some of its text-based data output
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % #  Data = import_xvg('energy.xvg')

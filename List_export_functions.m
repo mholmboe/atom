@@ -1,7 +1,7 @@
 %% List of export functions
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Export of structure/toplogy files
 % # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...

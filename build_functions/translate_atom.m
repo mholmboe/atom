@@ -2,16 +2,16 @@
 % * This function translates the resname by a vector
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = translate_molid(atom,[x y z])
-% # atom = translate_molid(atom,[x y z],'all')
-% # atom = translate_molid(atom,[x y z],'SOL')
-
+% # atom = translate_molid(atom,[x y z]) % Basic input variables
+% # atom = translate_molid(atom,[x y z],'all') % Will translate 'all'
+% # atom = translate_molid(atom,[x y z],'SOL') % Will only translate the resname SOL
+%
 function atom = translate_atom(atom,trans_vec,varargin)
 
 nAtoms=size([atom.x],2);

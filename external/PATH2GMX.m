@@ -2,6 +2,15 @@
 % Add your own path to GROMACS here.
 % Note that you might need a '\' to skip spaces, or double quotations as
 % in "'PATH'"
+%
+%% Version
+% 2.082
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # PATH2GMX
 
 function PATH2GMX = PATH2GMX() 
 

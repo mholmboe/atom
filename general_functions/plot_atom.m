@@ -6,10 +6,10 @@
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # plot_atom(atom,Box_dim)

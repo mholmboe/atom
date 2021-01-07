@@ -6,10 +6,10 @@
 % Note also that the x and y ranges can also be set, see examples below.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % #  Data = plot_xvg('energy.xvg')

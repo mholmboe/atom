@@ -1,11 +1,11 @@
 %% position_molid.m
-% * This function movies a molid (COM) to a certain position
+% * This function movies a MolID (by it's COM) to a certain position
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = position_molid(atom,[0 0 8],1)

@@ -9,10 +9,11 @@
 % zlo equals zhi.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Example
 % # limits = [10]; % a cube from (0,0,0) to (10,10,10)
 % # limits = [10 20 30];
 % # limits = [10 10 0 30 40 20];
 % # limits = [10 10 0 30 40 0]; % a xy plane from (10,10) to (30,40) at z=0
+limits = [10 10 0 30 40 20];

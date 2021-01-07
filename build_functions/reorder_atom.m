@@ -9,15 +9,15 @@
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = reorder_atom(atom,[1 3 4 5 6 7 8 10])
-% # atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname')
-% # atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype')
+% # atom = reorder_atom(atom,[1 3 4 5 6 7 8 10]) % Orders according to index
+% # atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname') % Orders according to resname
+% # atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype') % Orders according to atomtype
 %
 function atom = reorder_atom(atom,neworder,varargin)
 

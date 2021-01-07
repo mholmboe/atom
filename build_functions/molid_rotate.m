@@ -2,13 +2,13 @@
 % * This function rotates the atom molid randomly
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom = molid_rotate(atom,Box_dim,MolID,rotate_dim)
+% * atom = molid_rotate(atom,Box_dim,[1 2 4],'xy')
 %
 function atom = molid_rotate(atom,Box_dim,MolID,rotate_dim)
 
@@ -16,7 +16,7 @@ x_vec=[1 0 0];
 y_vec=[0 1 0];
 z_vec=[0 0 1];
 
-for i=MolID;
+for i=MolID
     
     molid_ind=ismember([atom.molid],i);
     rot_atom = atom(molid_ind);

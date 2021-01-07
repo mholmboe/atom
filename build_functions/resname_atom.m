@@ -2,13 +2,13 @@
 % * This function tries to guess the resname based in the atom types
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = resname_atom(atom)
+% # atom = resname_atom(atom) % Basic inout arguments
 %
 function atom = resname_atom(atom)
 

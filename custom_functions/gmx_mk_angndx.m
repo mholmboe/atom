@@ -6,14 +6,14 @@
 % * rmin and rmax can be used to play around with bond lengths.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * gmx_mk_angndx(atom,Box_dim,'Mgo','Ohmg','H','MgOH')
-% * gmx_mk_angndx(atom,Box_dim,'Mgo','Ohmg','H','MgOH',1,1.95)
+% * gmx_mk_angndx(atom,Box_dim,'Mgo','Ohmg','H','MgOH') % Basic input arguments
+% * gmx_mk_angndx(atom,Box_dim,'Mgo','Ohmg','H','MgOH',1,1.95) % Setting rmin and rmax
 % * gmx_mk_angndx(atom,Box_dim,IndexArray_atom1,'Ohmg',IndexArray_atom3,'angle_index_test')
 
 function ind = gmx_mk_angndx(atom,Box_dim,atomtype1,atomtype2,atomtype3,groupname,varargin)

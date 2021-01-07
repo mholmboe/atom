@@ -3,15 +3,14 @@
 % resnames 
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = remove_resname(atom,{'SOL' 'Protein'})
-
-
+% # atom = remove_resname(atom,{'SOL' 'Protein'}) % Basic input arguments
+%
 function atom = remove_resname(atom,resnames)
 
 for i=1:size(resnames,2)

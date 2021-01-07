@@ -11,10 +11,10 @@
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim)

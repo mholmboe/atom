@@ -2,10 +2,10 @@
 % * This function scales the coordinates in the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')

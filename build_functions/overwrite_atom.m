@@ -2,13 +2,13 @@
 % * This function overwrites the atom struct information with new information 
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # Out_atom=overwrite_atom(atom,'Na','MOL')
+% # Out_atom = overwrite_atom(atom,'Na','MOL')
 % 
 function Out_atom=overwrite_atom(In_atom,atomtype,resname)
 

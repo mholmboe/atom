@@ -12,16 +12,16 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # analyze = analyze_atom(atom,Box_dim)
 % # analyze = analyze_atom(atom,Box_dim,2.5)
 % # analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)
-
+%
 function properties = analyze_atom(atom,Box_dim,varargin)
 
 % FIX multiple OxStates and other from the Shannon file
@@ -172,21 +172,21 @@ for i=1:size(properties,2)
     end
 end
 
-%% From Vesta manual... Test with pyrophyllite...
-% for i=1:size(properties,2)
-%     properties(i).DistBondECoN={'>>>>'};
-%     dist=[properties(i).neigh.dist];
-%     properties(i).DistorIndex=sum((dist-mean(dist))./mean(dist))/numel(dist);
-%     properties(i).lmin=min(dist);
-%     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
-%     properties(i).wi=exp(1-(dist./properties(i).la).^6);
-%     properties(i).ECoN=sum([properties(i).wi]);
-% end 
-% for i=1:size(properties,2)
-%     ind=[properties(i).neigh.index];
-%     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
-%     properties(i).Q=sum([properties(i).deltaq]);
-% end
+% % From Vesta manual... Test with pyrophyllite...
+% % for i=1:size(properties,2)
+% %     properties(i).DistBondECoN={'>>>>'};
+% %     dist=[properties(i).neigh.dist];
+% %     properties(i).DistorIndex=sum((dist-mean(dist))./mean(dist))/numel(dist);
+% %     properties(i).lmin=min(dist);
+% %     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
+% %     properties(i).wi=exp(1-(dist./properties(i).la).^6);
+% %     properties(i).ECoN=sum([properties(i).wi]);
+% % end 
+% % for i=1:size(properties,2)
+% %     ind=[properties(i).neigh.index];
+% %     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
+% %     properties(i).Q=sum([properties(i).deltaq]);
+% % end
 
 diff_ind=find([properties.RevShannonind]-[properties.MODRevShannonind]);
 if numel(diff_ind)>0

@@ -2,10 +2,13 @@
 % * This function places the atom struct according to the position vector called position, trying to use the COM of the molecule
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Function arguments
+% * position is a [1x3] vector
 %
 %% Examples
 % * atom = place_atom(atom,position)

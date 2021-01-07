@@ -9,10 +9,10 @@
 % neighbour/bond cutoff radius for each atomtype
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = interface15_atom(atom,Box_dim,'interface15','tip3p')

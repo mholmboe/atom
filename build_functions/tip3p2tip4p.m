@@ -9,10 +9,10 @@
 % an unwrapped structure...
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Dependent functions
 % * import_atom.m
@@ -24,7 +24,7 @@
 % * tip4p_atom = tip3p2tip4p('SOL.gro')
 % * tip4p_atom = tip3p2tip4p('SOL.pdb')
 % * tip4p_atom = tip3p2tip4p('SOL.gro')
-
+%
 function tip4p_atom = tip3p2tip4p(filename)
 
 atom=import_atom(filename); % Import the .pdb/.gro file

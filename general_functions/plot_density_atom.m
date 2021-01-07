@@ -2,10 +2,10 @@
 % * This function is used to plot density profiles in the X|Y|Z-direction
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # plot_density_atom(atom,Box_dim)

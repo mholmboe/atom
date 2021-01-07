@@ -3,14 +3,14 @@
 % and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = slice_molid(atom,limits)
-% # atom = slice_molid(atom,limits,1)
+% # atom = slice_molid(atom,limits) % Basic input arguments
+% # atom = slice_molid(atom,limits,1) % Inverts the selected MolID's
 %
 function atom = slice_molid(atom,limits,varargin)
 

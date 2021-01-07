@@ -5,10 +5,10 @@
 % nevery frame to import, i.e. a stride value
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # [atom,traj] = import_mc_pdb_traj('molecule.pdb')

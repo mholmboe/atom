@@ -2,14 +2,14 @@
 % * This function slices the atoms into the triclinic box
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = slice_triclinic_atom(atom,Box_dim)
-% # atom = slice_triclinic_atom(atom,Box_dim,'xy')
+% # atom = slice_triclinic_atom(atom,Box_dim) % Basic input arguments
+% # atom = slice_triclinic_atom(atom,Box_dim,'xy') % Will only slice along the xy dimensions
 %
 function atom = slice_triclinic_atom(atom,Box_dim,varargin)
 % Which one is fastest? Ortogonal or triclinic?

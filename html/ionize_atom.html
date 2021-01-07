@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ionize_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="ionize_atom.m"><style type="text/css">
+      --><title>ionize_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="ionize_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ionize_atom.m</h1><!--introduction--><div><ul><li>This function adds ions within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Similar</a></li><li><a href="#4">Version</a></li><li><a href="#5">Contact</a></li><li><a href="#6">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="3">Similar</h2><p>fuse_atom protonate_atom create_atom insert_atom</p><h2 id="4">Version</h2><p>2.08</p><h2 id="5">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="6">Examples</h2><div><ol><li>atom = ionize_atom('Na','Na',[10 20 30],10)</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = ionize_atom(type,resname,limits,nmax,varargin)
+  </style></head><body><div class="content"><h1>ionize_atom.m</h1><!--introduction--><div><ul><li>This function adds ions within a certain region defined by <a href="limits_variable.html">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li><li>Compared to create_atom, this function can also add particles near a 'surface' or in the 'bulk', when an in_atom struct (representing a solid phase) is passed argument.</li><li>If slow, check out insert_atom or solvate_atom or grid_atom...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Dependencies</a></li><li><a href="#3">Similar</a></li><li><a href="#4">Version</a></li><li><a href="#5">Contact</a></li><li><a href="#6">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number, varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="2">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="3">Similar</h2><p>fuse_atom protonate_atom create_atom insert_atom</p><h2 id="4">Version</h2><p>2.082</p><h2 id="5">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="6">Examples</h2><div><ol><li>atom = ionize_atom('Na','Na',[10 20 30],10) % Basic input arguments</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'</li><li>atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = ionize_atom(type,resname,limits,nmax,varargin)
 
 sorted_distratio=[];
 
@@ -140,9 +140,9 @@ molid=num2cell(1:size(atom,2));
 
 <span class="comment">% Move the particles around a little bit</span>
 <span class="keyword">for</span> i=1:size(atom,2)
-    <span class="keyword">if</span> nx&gt;0 &amp;&amp; (limits(4)-limits(1))&gt;5;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
-    <span class="keyword">if</span> ny&gt;0 &amp;&amp; (limits(5)-limits(2))&gt;5;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
-    <span class="keyword">if</span> nz&gt;0 &amp;&amp; (limits(6)-limits(3))&gt;5;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;<span class="keyword">end</span>
+    <span class="keyword">if</span> nx&gt;0 &amp;&amp; (limits(4)-limits(1))&gt;5;atom(i).x=atom(i).x-rmin*(rand(1)-0.5);<span class="keyword">end</span>
+    <span class="keyword">if</span> ny&gt;0 &amp;&amp; (limits(5)-limits(2))&gt;5;atom(i).y=atom(i).y-rmin*(rand(1)-0.5);<span class="keyword">end</span>
+    <span class="keyword">if</span> nz&gt;0 &amp;&amp; (limits(6)-limits(3))&gt;5;atom(i).z=atom(i).z-rmin*(rand(1)-0.5);<span class="keyword">end</span>
 <span class="keyword">end</span>
 
 
@@ -305,7 +305,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'distratio'</
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% ionize_atom.m
-% * This function adds ions within a certain region defined by <limits>
+% * This function adds ions within a certain region defined by <limits_variable.html limits>
 % * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
 % * Compared to create_atom, this function can also add particles near a
 % 'surface' or in the 'bulk', when an in_atom struct (representing a solid
@@ -336,13 +336,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'distratio'</
 % insert_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = ionize_atom('Na','Na',[10 20 30],10)
+% # atom = ionize_atom('Na','Na',[10 20 30],10) % Basic input arguments
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
@@ -421,9 +421,9 @@ molid=num2cell(1:size(atom,2));
 
 % Move the particles around a little bit
 for i=1:size(atom,2)
-    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-2*distance_factor*(rand(1)-0.5)*radii;end
-    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-2*distance_factor*(rand(1)-0.5)*radii;end
-    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-2*distance_factor*(rand(1)-0.5)*radii;end
+    if nx>0 && (limits(4)-limits(1))>5;atom(i).x=atom(i).x-rmin*(rand(1)-0.5);end
+    if ny>0 && (limits(5)-limits(2))>5;atom(i).y=atom(i).y-rmin*(rand(1)-0.5);end
+    if nz>0 && (limits(6)-limits(3))>5;atom(i).z=atom(i).z-rmin*(rand(1)-0.5);end
 end
 
 

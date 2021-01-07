@@ -6,15 +6,14 @@
 % fuse_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * atom=remove_occypancy_atom(atom)
-
-
+%
 function atom=remove_occypancy_atom(atom)
 
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];

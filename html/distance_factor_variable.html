@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>distance_factor</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="distance_factor_variable.m"><style type="text/css">
+      --><title>distance_factor</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="distance_factor_variable.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>distance_factor</h1><!--introduction--><div><ul><li>This variable is used to find bonds or nearest neighbours, and is used in combination with atomtypes crystal or vdw radii, where typical values are 1.2 and 0.6, respectively.</li></ul></div><div><ul><li>Explanation: If the sum of two atomtypes radii, multiplied by the distance_factor is larger than the distance between two atoms, the atoms are considered to be bonded/neighbours.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Example</a></li></ul></div><h2 id="1">Example</h2><pre class="codeinput">distance_factor = 1.2 <span class="comment">% Typical value when using crystal radii</span>
+  </style></head><body><div class="content"><h1>distance_factor</h1><!--introduction--><div><ul><li>This variable is used to find bonds or nearest neighbours, and is used in combination with atomtypes crystal or vdw radii, where typical values are 1.2 and 0.6, respectively.</li></ul></div><div><ul><li>Explanation: If the sum of two atomtypes radii, multiplied by the distance_factor is larger than the distance between two atoms, the atoms are considered to be bonded/neighbours.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Example</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Example</h2><p>distance_factor = 1.2 % Typical value when using crystal radii</p><pre class="codeinput">distance_factor = 1.2
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% distance_factor
@@ -78,8 +78,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % * Explanation: If the sum of two atomtypes radii, multiplied by the 
 % distance_factor is larger than the distance between two atoms, the atoms 
 % are considered to be bonded/neighbours.
+%
+%% Version
+% 2.082
+%
 
 %% Example
-distance_factor = 1.2 % Typical value when using crystal radii
+% distance_factor = 1.2 % Typical value when using crystal radii
+distance_factor = 1.2
 ##### SOURCE END #####
 --></body></html>

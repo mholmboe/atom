@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding="utf-8"?>
+<toc version="2.0">
+
+    <tocitem target="index.html">The atom Toolbox
+    
+        <tocitem target="Common_variables.html" image="HelpIcon.GETTING_STARTED">Common variables
+            <tocitem target="List_variables.html">Main variables</tocitem>
+        </tocitem>
+        
+        <tocitem target="Examples.html">Examples
+            <tocitem target="Basic_examples.html">Basic_examples</tocitem>
+            <tocitem target="Advanced_examples.html">Advanced_examples</tocitem>
+        </tocitem>
+        
+        <tocitem target="Available_functions.html" image="HelpIcon.GETTING_STARTED">Available functions
+            <tocitem target="List_all_functions.html">All functions sorted alphabetically</tocitem>
+            <tocitem target="List_build_functions.html">Functions for building molecular boxes</tocitem>
+            <tocitem target="List_forcefield_functions.html">Topology and forcefield specific functions</tocitem>
+        	<tocitem target="List_export_functions.html">Export related functions</tocitem>
+            <tocitem target="List_import_functions.html">Import related functions</tocitem>
+        </tocitem>
+        
+        <tocitem target="Structures_and_solvents.html">Available structures and pre-equilibrated solvents
+            <tocitem target="List_structures.html">List of available structures, solvents and more</tocitem>
+        </tocitem>
+        
+    </tocitem>
+
+</toc>

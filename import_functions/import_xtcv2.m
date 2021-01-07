@@ -7,7 +7,7 @@
 % * Dien H1, Deane CM, Knapp B.
 % * Journal of Computational Chemistry
 % * Volume 35, Issue 20, Version of Record online: 12 JUN 2014
-% * Please report bugs to michael.holmboe@umu.se
+% * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
 % * [atom,traj] = import_xtcv2('conf.gro',traj.xtc)

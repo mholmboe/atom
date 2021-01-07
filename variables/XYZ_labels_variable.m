@@ -3,8 +3,9 @@
 % the n atomtypes in the atom struct.
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Example
 % # XYZ_labels = {'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2'};
+XYZ_labels = {'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2';'Ow';'Hw1';'Hw2'}

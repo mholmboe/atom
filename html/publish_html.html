@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>publish_html</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-21"><meta name="DC.source" content="publish_html.m"><style type="text/css">
+      --><title>This MATLAB .m file is used to generate the html-documentation</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="publish_html.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,10 +67,35 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput">dirs={<span class="keyword">...</span>
+  </style></head><body><div class="content"><h1>This MATLAB .m file is used to generate the html-documentation</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Set the path's</a></li><li><a href="#4">The lists</a></li><li><a href="#5">The functions, in each subfolder</a></li><li><a href="#6">Lastly, build a searchable html-index</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Set the path's</h2><pre class="codeinput">atompath=pwd;
+docpath=strcat(atompath,<span class="string">'/html'</span>);
+</pre><h2 id="4">The lists</h2><pre class="codeinput">filelist = {<span class="keyword">...</span>
+    <span class="string">'Available_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'Common_variables.m'</span>,<span class="keyword">...</span>
+    <span class="string">'Examples.m'</span>,<span class="keyword">...</span>
+    <span class="string">'index.m'</span>,<span class="keyword">...</span>
+    <span class="string">'Structures_and_solvents.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_all_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_build_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_export_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_forcefield_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_general_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_import_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_neigh_functions.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_structures.m'</span>,<span class="keyword">...</span>
+    <span class="string">'List_variables.m'</span>,<span class="keyword">...</span>
+    };
+
+<span class="keyword">for</span> i=1:length(filelist)
+    filelist{i}
+    publish(filelist{i},<span class="string">'createThumbnail'</span>,true,<span class="string">'maxWidth'</span>,1200,<span class="string">'evalCode'</span>,false,<span class="string">'outputDir'</span>,docpath)
+<span class="keyword">end</span>
+</pre><h2 id="5">The functions, in each subfolder</h2><pre class="codeinput">dirs={<span class="keyword">...</span>
     <span class="string">'build_functions'</span>;<span class="keyword">...</span>
     <span class="string">'custom_functions'</span>;<span class="keyword">...</span>
+    <span class="string">'examples/Basic_examples'</span>;<span class="keyword">...</span>
     <span class="string">'export_functions'</span>;<span class="keyword">...</span>
+    <span class="string">'external'</span>;<span class="keyword">...</span>
     <span class="string">'forcefield_functions'</span>;<span class="keyword">...</span>
     <span class="string">'general_functions'</span>;<span class="keyword">...</span>
     <span class="string">'import_functions'</span>;<span class="keyword">...</span>
@@ -77,34 +103,68 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="string">'variables'</span>;<span class="keyword">...</span>
     <span class="string">'structures'</span>;<span class="keyword">...</span>
     <span class="string">'variables'</span>;<span class="keyword">...</span>
-    <span class="string">'examples/Basic_examples'</span>;<span class="keyword">...</span>
     };
-
-<span class="comment">% dirs={...</span>
-<span class="comment">%     'examples/Basic_examples';...</span>
-<span class="comment">%     };</span>
 
 <span class="keyword">for</span> j=1:size(dirs,1)
 
     cd(char(dirs(j)))
     filelist = dir(<span class="string">'*.m'</span>)
 
+    dirs(j)
 
     <span class="keyword">for</span> i=1:size(filelist,1)
-        publish(filelist(i).name,<span class="string">'createThumbnail'</span>,true,<span class="string">'maxWidth'</span>,1200,<span class="string">'evalCode'</span>,false,<span class="string">'outputDir'</span>,<span class="string">'/Users/miho0052/Dropbox/MATLAB/Matlab_scripts/functions/atom/html'</span>)
+        publish(filelist(i).name,<span class="string">'createThumbnail'</span>,true,<span class="string">'maxWidth'</span>,1200,<span class="string">'evalCode'</span>,false,<span class="string">'outputDir'</span>,docpath)
     <span class="keyword">end</span>
 
-    cd <span class="string">..</span>
+    cd(atompath)
 
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><h2 id="6">Lastly, build a searchable html-index</h2><pre class="codeinput">builddocsearchdb(docpath)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%%
+%% This MATLAB .m file is used to generate the html-documentation
+%
+%% Version
+% 2.082
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
 
+%% Set the path's
+atompath=pwd;
+docpath=strcat(atompath,'/html');
+
+%% The lists
+filelist = {...
+    'Available_functions.m',...
+    'Common_variables.m',...
+    'Examples.m',...
+    'index.m',...    
+    'Structures_and_solvents.m',...
+    'List_all_functions.m',...
+    'List_build_functions.m',...
+    'List_export_functions.m',...
+    'List_forcefield_functions.m',...
+    'List_general_functions.m',...
+    'List_import_functions.m',...
+    'List_neigh_functions.m',...
+    'List_structures.m',...
+    'List_variables.m',...
+    };
+
+for i=1:length(filelist)
+    filelist{i}
+    publish(filelist{i},'createThumbnail',true,'maxWidth',1200,'evalCode',false,'outputDir',docpath)
+end
+
+%% The functions, in each subfolder
 dirs={...
     'build_functions';...
     'custom_functions';...
+    'examples/Basic_examples';...
     'export_functions';...
+    'external';...
     'forcefield_functions';...
     'general_functions';...
     'import_functions';...
@@ -112,25 +172,26 @@ dirs={...
     'variables';...
     'structures';...
     'variables';...
-    'examples/Basic_examples';...
     };
-
-% dirs={...
-%     'examples/Basic_examples';...
-%     };
 
 for j=1:size(dirs,1)
     
     cd(char(dirs(j)))
     filelist = dir('*.m')
     
+    dirs(j)
     
     for i=1:size(filelist,1)
-        publish(filelist(i).name,'createThumbnail',true,'maxWidth',1200,'evalCode',false,'outputDir','/Users/miho0052/Dropbox/MATLAB/Matlab_scripts/functions/atom/html')
+        publish(filelist(i).name,'createThumbnail',true,'maxWidth',1200,'evalCode',false,'outputDir',docpath)
     end
     
-    cd ..
+    cd(atompath)
     
 end
+
+%% Lastly, build a searchable html-index
+builddocsearchdb(docpath)
+
+
 ##### SOURCE END #####
 --></body></html>

@@ -4,7 +4,7 @@
 % .pdb file, into a 1x3 or the 1x9  Box_dim variable  
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Example
@@ -12,5 +12,6 @@
 % # Cell = [10 20 30 90 100.2 90]; % triclinic cell
 
 %% Try this: 
-% Create a Box_dim variable, then run this command:
+% Set a Cell variable, then run:
+Cell = [10 20 30 90 100.2 90];
 Simbox = draw_box_atom(Cell)

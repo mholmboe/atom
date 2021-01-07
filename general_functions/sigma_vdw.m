@@ -5,10 +5,10 @@
 % * Z 61 and 84-88 are made up....
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # sigma = sigma_vdw({'O'})

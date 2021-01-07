@@ -7,10 +7,10 @@
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * atom = charge_atom(atom,Box_dim,'clayff','spc')

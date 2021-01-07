@@ -12,10 +12,10 @@
 % protonate_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])

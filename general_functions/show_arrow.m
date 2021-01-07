@@ -25,10 +25,10 @@
 % hint:     use light to achieve 3D impression
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_arrow([0 0 0],[1 2 3],'color',[0 0 1]);

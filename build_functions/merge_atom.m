@@ -10,17 +10,16 @@
 % full Box_dim
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)
 % # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])
 %
 function atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,rmin)
-%%
 
 % % % %% For testing the script
 % % % clear all;

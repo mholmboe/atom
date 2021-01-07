@@ -4,10 +4,10 @@
 % * Box_dim(1:3) should contain the real a,b,c unit cell lengths
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = frac2atom(atom,Box_dim(1:3),[82 93.1212 104.3232],'angle')

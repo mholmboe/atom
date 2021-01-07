@@ -12,13 +12,13 @@
 % * found on lines ~140-175, and 180-200 for angles
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_itp(atom,Box_dim,filename)
+% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
 % # write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')

@@ -2,10 +2,10 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # clayff_param(Atom_label)

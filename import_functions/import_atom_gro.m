@@ -5,10 +5,10 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = import_atom_gro('molecule.gro')

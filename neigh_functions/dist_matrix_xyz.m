@@ -3,10 +3,10 @@
 % the distances between two XYZ1 and XYZ2 matrixes
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # dist_matrix = dist_matrix_xyz(XYZ1,Box_dim)

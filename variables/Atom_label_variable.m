@@ -3,9 +3,12 @@
 % n unique and different atomtypes in the atom struct.
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Example
 % # Atom_label = {'Si'};
 % # Atom_label = {'Ow' 'Hw'};
+
+%% Try this: 
+Atom_label = {'Ow' 'Hw'}

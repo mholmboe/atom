@@ -7,7 +7,7 @@
 % 2.07
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # Neigh = neighbor_func([1 4 7 2],XYZ_solute,XYZ_data,Box_dim,2.25)

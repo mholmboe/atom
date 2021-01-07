@@ -2,10 +2,10 @@
 % * This function does a cross check of the bond matrix
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # ind_12 = find_pair_atom(atom,bond_matrix,Atom_label1,Atom_label2)

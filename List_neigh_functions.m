@@ -1,10 +1,10 @@
 %% List of neighbour analysis and distance matrix functions
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 % # <bond_atom.html bond_atom(atom,Box_dim,max_long_dist)> % This function tries to assign all bonds to a Bond_matrix and a Bond_index variable
 % # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,varargin)> % This function tries to find all bonds and angles of the atom struct 'more' is an optional varargin argument

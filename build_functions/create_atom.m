@@ -2,16 +2,16 @@
 % * This function creates particles within a certain region defined by <limits>
 % * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
 %
-%% Similar
+%% Similar functions
 % * insert_atom
 % * ionize_atom
 % * solvate_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Arguments
 % * {type} is particle/atomtype
@@ -31,10 +31,10 @@
 % * distance_matrix_atom
 %
 %% Examples
-% # atom = create_atom('Na','Na',[10 20 30],10)
+% # atom = create_atom('Na','Na',[10 20 30],10) % Basic input arguments
 % # atom = create_atom('Na','Na',[10 20 30],10,2) % here 2 scale factor thats multiplied to each particles radii
 % # atom = create_atom('Na','Na',[10 20 30],10,[2 2.25]) % here 2.25 (Å) is the min dist to any other particle
-% # atom = create_atom('Na','Na',[10 20 30],10,2,in_atom)
+% # atom = create_atom('Na','Na',[10 20 30],10,2,in_atom) % in_atom any pre-existing atom struct
 
 function atom = create_atom(type,resname,limits,nmax,varargin)
 

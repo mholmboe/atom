@@ -4,10 +4,10 @@
 % * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
 
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell

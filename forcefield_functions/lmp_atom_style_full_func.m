@@ -3,10 +3,10 @@
 % * data file.lj file according to atom style full, without image flags
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # Atom_prop = lmp_atom_style_full_func(fid,Atom_label,Charge,XYZ_labels,XYZ_data) 

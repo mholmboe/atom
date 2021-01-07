@@ -4,10 +4,10 @@
 % * stride and other thingies.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = import_traj('conf.gro','traj.xtc')

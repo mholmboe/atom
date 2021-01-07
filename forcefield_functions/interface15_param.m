@@ -3,10 +3,10 @@
 % * Call function with find(ismember({forcefield.interface15.atom},'Hw')) to find Hw's index
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 

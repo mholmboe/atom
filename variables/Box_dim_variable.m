@@ -9,7 +9,7 @@
 % non-zero parameters are the tilt factors of the triclinic box.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Example
 % # Box_dim = [10];
@@ -17,5 +17,6 @@
 % # Box_dim = [42.435 24.245 28.452 0 0 1.142 0 2.345 1.97312];
 
 %% Try this: 
-% Create a Box_dim variable, then run this command:
+% Set a Box_dim variable, then run:
+Box_dim = [10 20 30];
 Simbox = draw_box_atom(Box_dim)

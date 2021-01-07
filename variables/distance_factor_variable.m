@@ -8,8 +8,9 @@
 % are considered to be bonded/neighbours.
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Example
-distance_factor = 1.2 % Typical value when using crystal radii
+% distance_factor = 1.2 % Typical value when using crystal radii
+distance_factor = 1.2

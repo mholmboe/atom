@@ -3,10 +3,10 @@
 % charge (if the field charge exist) to zero (0).
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = neutralize_atom(atom)

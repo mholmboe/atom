@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
+      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li><li>analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li><li>analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
 
 <span class="comment">% FIX multiple OxStates and other from the Shannon file</span>
 load(<span class="string">'Revised_Shannon_radii.mat'</span>);
@@ -100,6 +100,8 @@ disp(<span class="string">'Running Bond Valence analysis...'</span>)
 
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
+
+
 
 <span class="comment">% other_ind=[];ValenceGuess=zeros(1,size(element,2));</span>
 <span class="comment">% for i=1:size(element,2)</span>
@@ -154,9 +156,10 @@ assignin(<span class="string">'caller'</span>,<span class="string">'element'</sp
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
+<span class="comment">%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;</span>
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
-    properties(i).ShannonParam={<span class="string">'--&gt;'</span>};
+    properties(i).ShannonParam={<span class="string">'&gt;&gt;&gt;&gt;'</span>};
     properties(i).atnum=element(i).atnum;
     properties(i).mass=element(i).mass;
     properties(i).oxstate=OxState(ind);
@@ -213,6 +216,22 @@ assignin(<span class="string">'caller'</span>,<span class="string">'pre_properti
         i-1
     <span class="keyword">end</span>
 <span class="keyword">end</span>
+
+<span class="comment">% % From Vesta manual... Test with pyrophyllite...</span>
+<span class="comment">% % for i=1:size(properties,2)</span>
+<span class="comment">% %     properties(i).DistBondECoN={'&gt;&gt;&gt;&gt;'};</span>
+<span class="comment">% %     dist=[properties(i).neigh.dist];</span>
+<span class="comment">% %     properties(i).DistorIndex=sum((dist-mean(dist))./mean(dist))/numel(dist);</span>
+<span class="comment">% %     properties(i).lmin=min(dist);</span>
+<span class="comment">% %     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));</span>
+<span class="comment">% %     properties(i).wi=exp(1-(dist./properties(i).la).^6);</span>
+<span class="comment">% %     properties(i).ECoN=sum([properties(i).wi]);</span>
+<span class="comment">% % end</span>
+<span class="comment">% % for i=1:size(properties,2)</span>
+<span class="comment">% %     ind=[properties(i).neigh.index];</span>
+<span class="comment">% %     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];</span>
+<span class="comment">% %     properties(i).Q=sum([properties(i).deltaq]);</span>
+<span class="comment">% % end</span>
 
 diff_ind=find([properties.RevShannonind]-[properties.MODRevShannonind]);
 <span class="keyword">if</span> numel(diff_ind)&gt;0
@@ -324,16 +343,16 @@ disp(<span class="string">'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # analyze = analyze_atom(atom,Box_dim)
 % # analyze = analyze_atom(atom,Box_dim,2.5)
 % # analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)
-
+%
 function properties = analyze_atom(atom,Box_dim,varargin)
 
 % FIX multiple OxStates and other from the Shannon file
@@ -367,6 +386,8 @@ end
 
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
+
+
 
 % other_ind=[];ValenceGuess=zeros(1,size(element,2));
 % for i=1:size(element,2)
@@ -421,9 +442,10 @@ for i=1:size(element,2)
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
+%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
-    properties(i).ShannonParam={'REPLACE_WITH_DASH_DASH>'};
+    properties(i).ShannonParam={'>>>>'};
     properties(i).atnum=element(i).atnum;
     properties(i).mass=element(i).mass;
     properties(i).oxstate=OxState(ind);
@@ -480,6 +502,22 @@ for i=1:size(properties,2)
         i-1
     end
 end
+
+% % From Vesta manual... Test with pyrophyllite...
+% % for i=1:size(properties,2)
+% %     properties(i).DistBondECoN={'>>>>'};
+% %     dist=[properties(i).neigh.dist];
+% %     properties(i).DistorIndex=sum((dist-mean(dist))./mean(dist))/numel(dist);
+% %     properties(i).lmin=min(dist);
+% %     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
+% %     properties(i).wi=exp(1-(dist./properties(i).la).^6);
+% %     properties(i).ECoN=sum([properties(i).wi]);
+% % end 
+% % for i=1:size(properties,2)
+% %     ind=[properties(i).neigh.index];
+% %     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
+% %     properties(i).Q=sum([properties(i).deltaq]);
+% % end
 
 diff_ind=find([properties.RevShannonind]-[properties.MODRevShannonind]);
 if numel(diff_ind)>0

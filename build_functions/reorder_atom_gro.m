@@ -4,13 +4,13 @@
 % * is only one type of molecule in the atom struct.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # reorder_atom_gro(atom,[35	34	33	30	27	24	23	26],Box_dim,'out.gro')
+% # reorder_atom_gro(atom,[35 34 33	30 27 24 23 26],Box_dim,'out.gro')
 % # reorder_atom_gro(atom,[27 26 23 20 17 14 11 8 5 1],Box_dim,'ua_oct.gro')
 
 function reorder_atom_gro(atom,atomlist,Box_dim,filename_out)

@@ -5,14 +5,14 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5)
-% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5)
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements 
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
 %
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)

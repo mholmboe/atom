@@ -2,7 +2,7 @@
 % * This old function puts ions on a grid plane and adds it to an atom struct. 
 % * Use create_atom() instead.
 % * Tested 15/04/2017
-% * Please report bugs to michael.holmboe@umu.se
+% * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
 % * atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])

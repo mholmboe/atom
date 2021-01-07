@@ -3,15 +3,15 @@
 % * Triclinic version untestd but might work.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = replicate_atom(atom,Box_dim,[6 4 1])
-% # atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz')
-% * atom = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid')
+% # atom = replicate_atom(atom,Box_dim,[6 4 1]) % Basic input arguments
+% # atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz') % Replicates in the order of the dimensions y-x-z
+% * atom = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid') % Adds a new MolID to each new replicate entry
 %
 function atom = replicate_atom(atom,Box_dim,replicate,varargin)
 

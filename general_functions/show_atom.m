@@ -5,10 +5,10 @@
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_atom(atom)

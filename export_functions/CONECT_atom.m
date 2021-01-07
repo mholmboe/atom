@@ -1,11 +1,13 @@
 %% CONECT_atom.m
-% * This function prints the CONECT records sometimes used in pdb files
+% * This function prints the CONECT records sometimes used in pdb files to
+% a file named 'conect' (default). It uses the <bond_angle_atom.html bond_angle_atom> function,
+% alt. try the <bond_atom.html bond_atom> function.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # CONECT_atom(atom,Box_dim,1.25,2.25) 

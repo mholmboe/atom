@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>protonate_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="protonate_atom.m"><style type="text/css">
+      --><title>protonate_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="protonate_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>protonate_atom.m</h1><!--introduction--><div><ul><li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded</li><li>Hatom = protonate_atom(atom,Box_dim,ind) % Protonates all sites with index ind</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.25 &Aring;ngstr&ouml;m</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</li></ol></div><pre class="codeinput"><span class="keyword">function</span> H_atom = protonate_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>protonate_atom.m</h1><!--introduction--><div><ul><li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded</li><li>Hatom = protonate_atom(atom,Box_dim,ind) % Protonates all sites with index ind</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.25 &Aring;ngstr&ouml;m</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</li></ol></div><pre class="codeinput"><span class="keyword">function</span> H_atom = protonate_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> numel(Box_dim)==1
     Box_dim(1)=Box_dim(1);
@@ -110,33 +110,22 @@ atom = element_atom(atom);
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
 
-<span class="keyword">if</span> numel(ind)==0
-    i=1; H_atom=[];
-    <span class="keyword">while</span> i&lt;=size(atom,2)
-        Neigh_cell = sort([atom(i).neigh.type]);
-        <span class="keyword">if</span> isempty(Neigh_cell) &gt; 0 &amp;&amp; iscell(Neigh_cell)
-            Neighbours=strcat(Neigh_cell{:});
-        <span class="keyword">else</span>
-            Neighbours={<span class="string">'Nan'</span>};
-        <span class="keyword">end</span>
-        <span class="comment">% numel(atom(i).neigh.index)</span>
-        <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1) &amp;&amp; numel(atom(i).neigh.index) &lt; 2
-            disp(<span class="string">'Adding H to O'</span>)
-            <span class="keyword">if</span> numel(H_atom)==0
-                H_atom=atom(1);
-            <span class="keyword">else</span>
-                H_atom(size(H_atom,2)+1)=H_atom(end);
-            <span class="keyword">end</span>
-            [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
-            H_atom(end).index=size(H_atom,2);
-            r_vec=atom(i).neigh.r_vec;
-            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
-            [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
-        <span class="keyword">end</span>
-        i=i+1;
+i=1;
+<span class="keyword">while</span> i&lt;=size(atom,2)
+    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1) &amp;&amp; numel(atom(i).neigh.index) &lt; 2
+        ind=[ind i];
     <span class="keyword">end</span>
-<span class="keyword">elseif</span> nargin &gt; 2
-    ind=varargin{1};
+    i=i+1;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(ind)&lt;1
+    prop=analyze_atom(atom,Box_dim);
+    ind=heal_ind;
+<span class="keyword">end</span>
+
+disp(<span class="string">'Guessing this many H&acute;s!'</span>)
+
+<span class="keyword">if</span> numel(ind) &gt; 0
     H_atom=[];
     <span class="keyword">for</span> i=ind
         Neigh_cell = sort([atom(i).neigh.type]);
@@ -156,36 +145,39 @@ atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
         H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
         [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
     <span class="keyword">end</span>
-<span class="keyword">end</span>
 
-dist_matrix=dist_matrix_atom(H_atom,Box_dim);
+    <span class="keyword">if</span> size(H_atom,2)&gt;1
+        dist_matrix=dist_matrix_atom(H_atom,Box_dim);
+        i=1;rmind_tot=[];
+        <span class="keyword">while</span> i &lt; size(H_atom,2)
+            rmind=find(dist_matrix(:,i)&lt;+.85);
+            <span class="keyword">if</span> numel(rmind)&gt;1
+                x1=[H_atom(i).x];
+                y1=[H_atom(i).y];
+                z1=[H_atom(i).z];
 
-i=1;rmind_tot=[];
-<span class="keyword">while</span> i &lt; size(H_atom,2)
-    rmind=find(dist_matrix(:,i)&lt;0.85);
-    <span class="keyword">if</span> numel(rmind)&gt;1
-        x1=[H_atom(i).x];
-        y1=[H_atom(i).y];
-        z1=[H_atom(i).z];
+                H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+                H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
 
-        H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-        H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
+                [H_atom(i).x]=mean([H_atom(rmind).x]);
+                [H_atom(i).y]=mean([H_atom(rmind).y]);
+                [H_atom(i).z]=mean([H_atom(rmind).z]);
 
-        [H_atom(i).x]=mean([H_atom(rmind).x]);
-        [H_atom(i).y]=mean([H_atom(rmind).y]);
-        [H_atom(i).z]=mean([H_atom(rmind).z]);
+                H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
 
-        H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-
-        <span class="keyword">try</span>
-            rmind_tot=[rmind_tot; rmind(rmind&gt;i)];
-        <span class="keyword">catch</span>
-            rmind_tot=[rmind_tot; rmind(rmind&gt;i)];
+                <span class="keyword">try</span>
+                    rmind_tot=[rmind_tot; rmind(rmind&gt;i)];
+                <span class="keyword">catch</span>
+                    rmind_tot=[rmind_tot; rmind(rmind&gt;i)];
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            i=i+1;
         <span class="keyword">end</span>
+        H_atom(rmind_tot)=[];
     <span class="keyword">end</span>
-    i=i+1;
 <span class="keyword">end</span>
-H_atom(rmind_tot)=[];
+disp(<span class="string">'Created this many H&acute;s!'</span>)
+size(H_atom,2)
 
 <span class="keyword">if</span> isstruct(H_atom)
     H_atom=rmfield(H_atom,<span class="string">'element'</span>);
@@ -199,10 +191,10 @@ H_atom(rmind_tot)=[];
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded
@@ -254,33 +246,22 @@ end
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
 
-if numel(ind)==0
-    i=1; H_atom=[];
-    while i<=size(atom,2)
-        Neigh_cell = sort([atom(i).neigh.type]);
-        if isempty(Neigh_cell) > 0 && iscell(Neigh_cell)
-            Neighbours=strcat(Neigh_cell{:});
-        else
-            Neighbours={'Nan'};
-        end
-        % numel(atom(i).neigh.index)
-        if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
-            disp('Adding H to O')
-            if numel(H_atom)==0
-                H_atom=atom(1);
-            else
-                H_atom(size(H_atom,2)+1)=H_atom(end);
-            end
-            [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
-            H_atom(end).index=size(H_atom,2);
-            r_vec=atom(i).neigh.r_vec;
-            H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
-            [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
-        end
-        i=i+1;
+i=1;
+while i<=size(atom,2)
+    if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
+        ind=[ind i];
     end
-elseif nargin > 2
-    ind=varargin{1};
+    i=i+1;
+end
+
+if numel(ind)<1
+    prop=analyze_atom(atom,Box_dim);
+    ind=heal_ind;
+end
+
+disp('Guessing this many H´s!')
+
+if numel(ind) > 0
     H_atom=[];
     for i=ind
         Neigh_cell = sort([atom(i).neigh.type]);
@@ -300,36 +281,39 @@ elseif nargin > 2
         H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
         [H_atom(end).x H_atom(end).y H_atom(end).z]=deal(H_coords{:});
     end
-end
 
-dist_matrix=dist_matrix_atom(H_atom,Box_dim);
-
-i=1;rmind_tot=[];
-while i < size(H_atom,2)
-    rmind=find(dist_matrix(:,i)<0.85);
-    if numel(rmind)>1
-        x1=[H_atom(i).x];
-        y1=[H_atom(i).y];
-        z1=[H_atom(i).z];
-        
-        H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-        H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
-        
-        [H_atom(i).x]=mean([H_atom(rmind).x]);
-        [H_atom(i).y]=mean([H_atom(rmind).y]);
-        [H_atom(i).z]=mean([H_atom(rmind).z]);
-        
-        H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-        
-        try
-            rmind_tot=[rmind_tot; rmind(rmind>i)];
-        catch
-            rmind_tot=[rmind_tot; rmind(rmind>i)];
+    if size(H_atom,2)>1
+        dist_matrix=dist_matrix_atom(H_atom,Box_dim);
+        i=1;rmind_tot=[];
+        while i < size(H_atom,2)
+            rmind=find(dist_matrix(:,i)<+.85);
+            if numel(rmind)>1
+                x1=[H_atom(i).x];
+                y1=[H_atom(i).y];
+                z1=[H_atom(i).z];
+                
+                H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+                H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
+                
+                [H_atom(i).x]=mean([H_atom(rmind).x]);
+                [H_atom(i).y]=mean([H_atom(rmind).y]);
+                [H_atom(i).z]=mean([H_atom(rmind).z]);
+                
+                H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+                
+                try
+                    rmind_tot=[rmind_tot; rmind(rmind>i)];
+                catch
+                    rmind_tot=[rmind_tot; rmind(rmind>i)];
+                end
+            end
+            i=i+1;
         end
+        H_atom(rmind_tot)=[];
     end
-    i=i+1;
 end
-H_atom(rmind_tot)=[];
+disp('Created this many H´s!')
+size(H_atom,2)
 
 if isstruct(H_atom)
     H_atom=rmfield(H_atom,'element');

@@ -3,17 +3,17 @@
 % from the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_cif(atom,Box_dim,filename_out)
+% # write_atom_cif(atom,Box_dim,filename_out) % Basic input arguments
 %
 function write_atom_cif(atom,Box_dim,filename_out)
 
-% atom=wrap_atom(atom,Box_dim); % Do we need this
+% atom=wrap_atom(atom,Box_dim); % Do we need this?
 
 if regexp(filename_out,'.cif') ~= false
     filename_out = filename_out;

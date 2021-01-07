@@ -5,10 +5,10 @@
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded

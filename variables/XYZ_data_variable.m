@@ -6,9 +6,9 @@
 % struct using the function <xyz2atom.html xyz2atom>
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Example
-% # XYZ_data = [1 2 3; 4 5 6 ; 7 8 9]; % X data is then 1 4 7... and
-% likewise for Y and Z
+% # XYZ_data = [1 2 3; 4 5 6 ; 7 8 9]; % X data is then 1 4 7... and likewise for Y and Z
+XYZ_data = [1 2 3; 4 5 6 ; 7 8 9]

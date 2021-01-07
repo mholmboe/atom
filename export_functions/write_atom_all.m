@@ -3,15 +3,16 @@
 % * systems designed for Clayff...
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_all(atom,Box_dim,filename)
-% # write_atom_all(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
-
+% # write_atom_all(atom,Box_dim,filename) % Basic input arguments
+% # write_atom_all(atom,Box_dim,filename,1.25,2.25) % rmaxshort and rmaxlong
+% # write_atom_all(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e') % rmaxshort and rmaxlong, ff and water model
+%
 function write_atom_all(atom,Box_dim,filename,varargin)
 
 

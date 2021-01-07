@@ -1,14 +1,14 @@
 %% write_atom_pqr.m
-% * This function writes an pqr file from the atom struct
+% * This function writes an .pqr file from the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_pqr(atom,Box_dim,filename_out)
+% # write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments
 %
 function write_atom_pqr(atom,Box_dim,filename,varargin)
 

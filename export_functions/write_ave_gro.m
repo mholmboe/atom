@@ -8,13 +8,13 @@
 % default option which will compute the median position instead!
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_ave_gro(confstring)
+% # write_ave_gro(confstring) % Basic input arguments
 % # write_ave_gro(confstring,'average')
 
 function write_ave_gro(confstring,varargin)

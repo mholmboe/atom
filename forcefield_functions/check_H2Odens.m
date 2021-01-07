@@ -5,10 +5,10 @@
 % * Box_dim is the box dimension vector [x y z]
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # H2Odens = check_H2Odens(atom,Box_dim)

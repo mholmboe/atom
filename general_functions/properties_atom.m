@@ -12,10 +12,10 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # properties = properties_atom(atom,Box_dim)

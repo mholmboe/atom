@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>show_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="show_atom.m"><style type="text/css">
+      --><title>show_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="show_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>show_atom.m</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. It neglects bonds over the</li><li>pbc for clarity (this can be changed on line 54).</li><li>For less fancier plots, use the plot_atom(atom,Box_dim) function</li><li>This function is inspired by molecule3D.m, written by Andr? Ludwig (<a href="mailto:aludwig@phys.ethz.ch">aludwig@phys.ethz.ch</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_atom(atom)</li><li>show_atom(atom,Box_dim)</li><li>show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'ionic', 'lines', 'labels' or 'index'</li><li>show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box</li><li>show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>show_atom.m</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. It neglects bonds over the</li><li>pbc for clarity (this can be changed on line 54).</li><li>For less fancier plots, use the plot_atom(atom,Box_dim) function</li><li>This function is inspired by molecule3D.m, written by Andr? Ludwig (<a href="mailto:aludwig@phys.ethz.ch">aludwig@phys.ethz.ch</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_atom(atom)</li><li>show_atom(atom,Box_dim)</li><li>show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'ionic', 'lines', 'labels' or 'index'</li><li>show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box</li><li>show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_atom(atom,varargin)
 tic
 
 disp(<span class="string">'Choose between these representations:'</span>)
@@ -453,10 +453,10 @@ hold <span class="string">off</span>;
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_atom(atom)

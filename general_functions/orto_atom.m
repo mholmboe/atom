@@ -2,10 +2,10 @@
 % * This function transforms a triclinic atom struct to an orthogonal one
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = orto_atom(atom,Box_dim)

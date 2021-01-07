@@ -6,10 +6,10 @@
 % wrap_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)

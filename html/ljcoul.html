@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ljcoul</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="ljcoul.m"><style type="text/css">
+      --><title>ljcoul</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="ljcoul.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
 
 <span class="comment">% clear all;</span>
 <span class="comment">% format compact;</span>
@@ -90,10 +90,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% %eps2=3.77671E-05;% kJ/mol</span>
 <span class="comment">% eps2=7.70065E-06;% kJ/mol</span>
 
-r=.01:.0005:1.2; <span class="comment">% nm</span>
+<span class="keyword">if</span> nargin &gt; 6
+    r=varargin{1};
+<span class="keyword">else</span>
+<span class="comment">%     r=1:length(data);</span>
+    r=.01:.0005:1.2; <span class="comment">% nm</span>
+<span class="keyword">end</span>
 
-e_mix=(eps1*eps2)^.5
-sig_mix=(sig1+sig2)/2
+e_mix=(eps1*eps2)^.5;
+sig_mix=(sig1+sig2)/2;
 
 lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
 coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
@@ -114,7 +119,7 @@ xlim([0,1.2]);
 ylim(sort([-plotmin plotmin]))
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2)
+function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
 
 % clear all;
 % format compact;
@@ -137,10 +142,15 @@ function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2)
 % %eps2=3.77671E-05;% kJ/mol
 % eps2=7.70065E-06;% kJ/mol
 
-r=.01:.0005:1.2; % nm
+if nargin > 6
+    r=varargin{1};
+else
+%     r=1:length(data);
+    r=.01:.0005:1.2; % nm
+end
 
-e_mix=(eps1*eps2)^.5
-sig_mix=(sig1+sig2)/2
+e_mix=(eps1*eps2)^.5;
+sig_mix=(sig1+sig2)/2;
 
 lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
 coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;

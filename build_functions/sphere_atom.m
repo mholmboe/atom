@@ -5,14 +5,14 @@
 %
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = sphere_atom(atom,Box_dim,30)
-% # atom = sphere_atom(atom,Box_dim,30,[50 50 50]) % In order to set a new Box_dim
+% # atom = sphere_atom(atom,Box_dim,30) % Basic input arguments
+% # atom = sphere_atom(atom,Box_dim,30,[50 50 50]) % To set a new Box_dim
 %
 function atom = sphere_atom(atom,Box_dim,radius,varargin)
 

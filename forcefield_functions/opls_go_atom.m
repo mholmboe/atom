@@ -1,7 +1,7 @@
 %% charge_opls_go_atom.m
 % * This function tries to smear out the charge at around -OH and epoxides in GO
 % * Tested 15/04/2017
-% * Please report bugs to michael.holmboe@umu.se
+% * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
 % * atom = opls_go_atom(atom,Box_dim,1.1,1.8)

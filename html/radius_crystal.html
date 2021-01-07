@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>radius_crystal.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="radius_crystal.m"><style type="text/css">
+      --><title>radius_crystal.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="radius_crystal.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,10 +67,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>radius_crystal.m</h1><!--introduction--><div><ul><li>For more detailed info, see the Revised Shannon radii...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>radii = radius_crystal({'O'})</li><li>radii = radius_crystal('O')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> radii = radius_crystal(Atom_label)
+  </style></head><body><div class="content"><h1>radius_crystal.m</h1><!--introduction--><div><ul><li>For more detailed info, see the Revised Shannon radii...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>radii = radius_crystal({'O'})</li><li>radii = radius_crystal('O')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> radii = radius_crystal(Atom_label,varargin)
 
 <span class="keyword">if</span> ~iscell(Atom_label)
     Atom_label={Atom_label};
+<span class="keyword">end</span>
+
+Oxidationstate=[];
+<span class="keyword">if</span> nargin&gt;1
+    Oxidationstate=varargin{1};
+<span class="keyword">end</span>
+
+CN=[];
+<span class="keyword">if</span> nargin&gt;2
+    CN=varargin{2};
 <span class="keyword">end</span>
 
 Radiiproperties=load(<span class="string">'Revised_Shannon_radii.mat'</span>);
@@ -80,13 +90,35 @@ radii=zeros(length(Atom_label),1);
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
     <span class="keyword">catch</span>
         <span class="keyword">try</span>
-        ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
         <span class="keyword">catch</span>
-           ind=285;<span class="comment">% As in O</span>
+            ind=285;<span class="comment">% As in O</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
-<span class="comment">%     radii(i)=median(Radiiproperties.IonicRadii(ind))';</span>
-    radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+    <span class="comment">%     radii(i)=median(Radiiproperties.IonicRadii(ind</span>
+    <span class="keyword">if</span> numel(Oxidationstate)&gt;0
+        <span class="keyword">if</span> numel(CN)&gt;0
+            ind_cn=find(CN(i)==[Radiiproperties.CN]);
+            ind_ox=find(Oxidationstate(i)==[Radiiproperties.OxState]);
+            ind_cn_ox=intersect(ind_cn,ind_ox);
+            ind=intersect(ind,ind_cn_ox);
+            <span class="keyword">if</span> numel(ind)&gt;0
+                radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+            <span class="keyword">else</span>
+               disp(<span class="string">'Did not find this combination of ion, oxidation state and coordination number...'</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            ind_ox=find(Oxidationstate(i)==[Radiiproperties.OxState]);
+            ind=intersect(ind,ind_ox);
+            <span class="keyword">if</span> numel(Oxidationstate)&gt;0
+                radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+            <span class="keyword">else</span>
+                disp(<span class="string">'Did not find this combination of ion and oxidation state...'</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -94,19 +126,29 @@ radii=zeros(length(Atom_label),1);
 % * For more detailed info, see the Revised Shannon radii...
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # radii = radius_crystal({'O'})
 % # radii = radius_crystal('O')
 
-function radii = radius_crystal(Atom_label)
+function radii = radius_crystal(Atom_label,varargin)
 
 if ~iscell(Atom_label)
     Atom_label={Atom_label};
+end
+
+Oxidationstate=[];
+if nargin>1
+    Oxidationstate=varargin{1};
+end
+
+CN=[];
+if nargin>2
+    CN=varargin{2};
 end
 
 Radiiproperties=load('Revised_Shannon_radii.mat');
@@ -116,14 +158,37 @@ for i=1:length(Atom_label)
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
     catch
         try
-        ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
         catch
-           ind=285;% As in O 
+            ind=285;% As in O
         end
     end
-%     radii(i)=median(Radiiproperties.IonicRadii(ind))';
-    radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+    %     radii(i)=median(Radiiproperties.IonicRadii(ind
+    if numel(Oxidationstate)>0
+        if numel(CN)>0
+            ind_cn=find(CN(i)==[Radiiproperties.CN]);
+            ind_ox=find(Oxidationstate(i)==[Radiiproperties.OxState]);
+            ind_cn_ox=intersect(ind_cn,ind_ox);
+            ind=intersect(ind,ind_cn_ox);
+            if numel(ind)>0
+                radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+            else
+               disp('Did not find this combination of ion, oxidation state and coordination number...') 
+            end
+        else
+            ind_ox=find(Oxidationstate(i)==[Radiiproperties.OxState]);
+            ind=intersect(ind,ind_ox);
+            if numel(Oxidationstate)>0
+                radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+            else
+                disp('Did not find this combination of ion and oxidation state...') 
+            end
+        end
+    else
+        radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+    end
 end
+
 
 
 

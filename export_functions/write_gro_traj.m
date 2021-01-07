@@ -3,13 +3,13 @@
 % * I think this function works...currently no support for printing velocities, see line 31
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_gro_traj(atom,traj,Box_dim,filename_out)
+% # write_gro_traj(atom,traj,Box_dim,filename_out) % Basic input arguments
 %
 function write_gro_traj(atom,traj,Box_dim,filename_out)
 

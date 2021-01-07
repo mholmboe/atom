@@ -1,7 +1,8 @@
 %% atom
+% * The atom struct, the main variable in the atom MATLAB library.
 %
 %% Version
-% 2.081
+% 2.082
 %
 
 %% Introduction to the atom struct
@@ -93,4 +94,9 @@
 %% Replace some atomtype's or resname's
 % # [atom(index).type]=deal({'Mg'})
 % # [atom(index).resname]=deal({'MIN'})
+
+%% Try this: 
+atom=import_atom('Ethanol.pdb') % Will also output the Box_dim variable and some other stuff, see the variable explorer
+atom=center_atom(atom,Box_dim) % Center the coordinates, i.e. [atom.x|.y|.z]
+show_atom(atom,Box_dim,.1,1) % Plot the atom with the Box_dim
 

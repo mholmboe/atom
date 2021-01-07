@@ -11,7 +11,7 @@
 % 2.0
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = import_atom_car('molecule.car')

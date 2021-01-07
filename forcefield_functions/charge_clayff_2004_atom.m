@@ -4,10 +4,10 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples with some fixed charges, the rest is smeared over the O's
 % # Total_charge = charge_clayff_atom(atom,Box_dim,{'ao' 'mgo' 'st' 'ho'},[1.575 1.36 2.1 0.425])

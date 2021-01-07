@@ -3,10 +3,10 @@
 % * Tested 21/07/2016, there has been bugs.. does it work?
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = unwrap_atom(atom,Box_dim,'x')

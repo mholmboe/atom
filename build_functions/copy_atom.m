@@ -2,15 +2,15 @@
 % * This function copies and translates atoms in the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # new_atom=copy_atom(atom,'Al','Mgo','ION')
-% # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10])
-% # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10)
+% # new_atom=copy_atom(atom,'Al','Mgo','ION') % Basic input arguments
+% # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10]) % Translates the copied sites
+% # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10) % Translates and copies only 10 sites
 %
 function new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,varargin)
 

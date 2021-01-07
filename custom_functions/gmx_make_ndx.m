@@ -2,13 +2,13 @@
 % * This function helps you print custom gromacs .ndx files
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * gmx_make_ndx(groupname,index_vector)
+% * gmx_make_ndx(groupname,index_vector) % Basic input arguments
 
 function gmx_make_ndx(groupname,ind)
 

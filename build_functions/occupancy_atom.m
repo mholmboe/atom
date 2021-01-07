@@ -2,14 +2,14 @@
 % * This function finds the occupancy all sites, within a certain rmax.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom = occupancy_atom(atom,Box_dim)
-% * atom = occupancy_atom(atom,Box_dim,0.85)
+% * atom = occupancy_atom(atom,Box_dim) % Basic input arguments
+% * atom = occupancy_atom(atom,Box_dim,0.85) % Sets rmax to custom value
 
 function atom = occupancy_atom(atom,Box_dim,varargin) % ,rmax);
 

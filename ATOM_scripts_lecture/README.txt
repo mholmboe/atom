@@ -2,7 +2,7 @@ This folder contains some basic presentations about the ATOM library and an intr
 
 Regarding the simulation files, if you are new to Gromacs and do not know where to start inspect the files called job.sh as well as topol.top and go from there!
 
-NOTE: I cannot guarantee that the forcefield parameters and settings are correct and up to date, you should check this yourself by reading the original papers! 
+NOTE: I cannot guarantee that the forcefield parameters and settings are correct, you should check this yourself by reading the original papers! 
 
 Good papers to start with...
 Cygan, R. T., Liang, J. J., & Kalinichev, A. G. (2004). Molecular models of hydroxide, oxyhydroxide, and clay phases and the development of a general force field. Journal of Physical Chemistry B, 108(4), 1255–1266.

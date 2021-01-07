@@ -3,10 +3,10 @@
 % {'OW' 'HW1' 'HW2'}
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = remove_type(atom,{'OW' 'HW1' 'HW2'})

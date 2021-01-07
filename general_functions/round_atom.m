@@ -2,10 +2,10 @@
 % * This function rounds the coordinates in the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = round_atom(atom,Box_dim,varargin)

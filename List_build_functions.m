@@ -1,7 +1,7 @@
 %% List of building and simulation cell manipulation functions
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Specific atom struct functions
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct

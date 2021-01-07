@@ -27,18 +27,18 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * SOL = solvate_atom(limits,density,r,maxsol)
-% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom)
-% * SOL = solvate_atom(limits,density,r,'maxsol',solute_atom)
-% * SOL = solvate_atom(limits,density,r,'shell15',solute_atom)
-% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p')
-% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice')
+% * SOL = solvate_atom(limits,density,r,maxsol) % Basic input arguments
+% * SOL = solvate_atom(limits,density,r,'maxsol',solute_atom) % Will maximize the numer of solvent molecules
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom) % Will account for existing solute sites 
+% * SOL = solvate_atom(limits,density,r,'shell15',solute_atom) % Will solvatize a 15Å shell around the sites in the solute_atom 
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p') % Will use the tip4p water model
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice') % Will use an hexagonal ice structure
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct
 %
 function SOL = solvate_atom(limits,density,r,maxsol,varargin)

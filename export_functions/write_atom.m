@@ -1,13 +1,12 @@
 %% write_atom.m
 % * This function imports a .xyz|.gro|.pdb file and puts the data in the structure variable called atom
-% * varargin can be used to translate, alt. center+translate the molecule
 % * Not finished for all writing functions yet... Tested 15/04/2017
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = write_atom(atom,Box_dim,'molecule.gro')
@@ -45,7 +44,7 @@ elseif regexp(filename,'.cif') > 1
     atom=write_atom_cif(atom,Box_dim,filename);
 elseif regexp(filename,'.sdf') > 1
     disp('Will try to write a .sdf file');
-    atom=write_atom_cif(atom,Box_dim,filename);
+    atom=write_atom_sdf(atom,Box_dim,filename);
 elseif regexp(filename,'.itp') > 1
     disp('Will try to write a .itp file');
     atom=write_atom_itp(atom,Box_dim,filename);

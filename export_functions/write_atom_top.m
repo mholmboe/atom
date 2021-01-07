@@ -1,5 +1,5 @@
 %% write_atom_top.m
-% * This script creates and prints a gromacs .itp file
+% * This script creates and prints a gromacs .top file
 % * Works best for clayff or interface ff with spc, spce or tip3p
 % * The variables explicit_bonds|explicit_angles (1/0) on that are set
 % * between lines ~50-120 for each specific forcefield, determines if the
@@ -12,13 +12,13 @@
 % * found on lines ~140-170, and 175-190 for angles
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_itp(atom,Box_dim,filename)
+% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
 % # write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')

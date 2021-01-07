@@ -3,10 +3,10 @@
 % Bond_index variable
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom=bond_atom(atom,Box_dim)

@@ -6,7 +6,7 @@
 % 2.05
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = import_atom('molecule.pdb')

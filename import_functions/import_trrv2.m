@@ -3,7 +3,7 @@
 % * This function uses trr2matlab + readGmx2Matlab to read gromacs .trr trajectory files
 % * into the variable 'traj'. Note that trr2matlab can output both coordinates, velocities and forces
 % * if they exist in the .trr file
-% * Please report bugs to michael.holmboe@umu.se
+% * Please report problems/bugs to michael.holmboe@umu.se
 % * Can varargin be used for stride?
 
 %% Examples

@@ -2,10 +2,10 @@
 % * This function can replace the atomtypes names with the element names
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = element_atom(atom)

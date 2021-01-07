@@ -2,13 +2,13 @@
 % * This function translates the molid by a vector
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = translate_molid(atom,[x y z],molid)
+% # atom = translate_molid(atom,[x y z],molid) % To translate a certain Molid
 
 function atom = translate_molid(atom,trans_vec,molid)
 

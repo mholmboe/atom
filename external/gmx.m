@@ -1,8 +1,19 @@
-%% This small function let's you run Gromacs tools in MATLAB
+%% This small function let's you run Gromacs utilities in MATLAB
+% * Note that you need to set your own gmx Gromacs path on line 16.
+%
+%% Version
+% 2.082
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # gmx('some utility','-someflag','some file/input') % Basic input syntax
+% # gmx('editconf','-f','Ethanol.pdb','-o','out.pdb') % Calling the gmx editconf utility
 
 function path2gmx = gmx(varargin)
 
-%% Remember to set the gmx Gromacs path
+% Set your own gmx Gromacs path here
 path2gmx='/usr/local/gromacs-2018.7/bin/gmx';
 
 if nargin>0

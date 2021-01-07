@@ -3,10 +3,10 @@
 % * the angles alfa, beta, gamma or tilt factors xy, xz, yz
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = triclinic_atom(atom,Box_dim,[alfa beta gamma],'angle')

@@ -4,10 +4,10 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples with some fixed charges, the rest is smeared over the O's
 % # Total_charge = charge_interface15_atom(atom,Box_dim,{'AY1' 'MY1' 'SY1' 'HOY'},[1.45 1.1 1.1 0.4])

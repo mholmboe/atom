@@ -2,13 +2,14 @@
 % * This function writes a basic file in the mol2 format from the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')
+% # write_atom_mol2(atom,Box_dim,filename_out) % Basic input arguments
+% # write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce') % Specifying the rmaxshort and rmaxlong cutoff's and forcefield to use
 %
 function write_atom_mol2(atom,Box_dim,filename_out,varargin)
 
@@ -22,21 +23,21 @@ else
     long_r=2.25;
 end
 
-if nargin>5;
+if nargin>5
     ffname=varargin(3);
-    if nargin>6;
+    if nargin>6
         watermodel=varargin(4);
     else
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E';
     end
-    if strncmpi(ffname,'clayff',5);
+    if strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
         Total_charge = check_clayff_charge(atom)
-    elseif strcmpi(ffname,'interface');
+    elseif strcmpi(ffname,'interface')
         interface_param(sort(unique([atom.type])),watermodel);
         Total_charge = check_interface_charge(atom)
-    elseif strcmpi(ffname,'interface15');
+    elseif strcmpi(ffname,'interface15')
         interface15_param(sort(unique([atom.type])),watermodel);
         Total_charge = check_interface_charge(atom)
     else

@@ -2,14 +2,14 @@
 % * This function renames atoms in the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=rename_type(atom,'NA','Na')
-% # atom=rename_type(atom,'NA','Na',30)
+% # atom=rename_type(atom,'NA','Na') % Basic input arguments
+% # atom=rename_type(atom,'NA','Na',30) % Renames the 30 last entries
 
 function atom=rename_type(atom,atomtype,new_atomtype,varargin)
 

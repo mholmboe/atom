@@ -4,10 +4,10 @@
 % * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)

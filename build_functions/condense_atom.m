@@ -2,14 +2,15 @@
 % * This function tries to minimize the box size and remove gaps between molecules along x,y,z
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = wrap_atom_func(atom,Box_dim);
+% # atom = condense_atom(atom,Box_dim,s) % Basic input arguments, s is bin size
 %
+
 function atom = condense_atom(atom,Box_dim,s)
 
 x_shift=num2cell([[atom.x]-min([atom.x])]'); [atom(:).x]=deal(x_shift{:});

@@ -1,5 +1,5 @@
 %% ionize_atom.m
-% * This function adds ions within a certain region defined by <limits>
+% * This function adds ions within a certain region defined by <limits_variable.html limits>
 % * Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small
 % * Compared to create_atom, this function can also add particles near a
 % 'surface' or in the 'bulk', when an in_atom struct (representing a solid
@@ -30,13 +30,13 @@
 % insert_atom
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = ionize_atom('Na','Na',[10 20 30],10)
+% # atom = ionize_atom('Na','Na',[10 20 30],10) % Basic input arguments
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement
 % # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'

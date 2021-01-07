@@ -5,13 +5,13 @@
 %
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce')
+% # write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce') % Basic input arguments
 %
 function write_atom_lmp(atom,Box_dim,filename,varargin)
 format compact;

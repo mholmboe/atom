@@ -5,10 +5,10 @@
 % smoothing thorugh Gaussian convolution will be invoked.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Dependent functions
 % * dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim); % Calculates the

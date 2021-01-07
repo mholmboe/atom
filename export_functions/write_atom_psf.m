@@ -2,14 +2,14 @@
 % * This function writes an .psf file from the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_psf(atom,Box_dim,filename_out) % Not recommended, Please specify which cutoff's and forcefield to use
-% # write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce')
+% # write_atom_psf(atom,Box_dim,filename_out) % Basic input arguments
+% # write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce') % Specifying the rmaxshort and rmaxlong cutoff's and forcefield to use
 %
 function write_atom_psf(atom,Box_dim,filename,varargin)
 

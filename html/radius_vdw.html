@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>radius_vdw.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="radius_vdw.m"><style type="text/css">
+      --><title>radius_vdw.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="radius_vdw.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>radius_vdw.m</h1><!--introduction--><div><ul><li>This function fetches the rdw radius, originally taken from below</li><li>from 'A cartography of the van der Waals territories'</li><li>Santiago Alvarez doi:10.1039/c3dt50599e</li><li>rvdw 1,61 and 84-88 are made up....</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>rvdw = radius_vdw({'O'})</li><li>rvdw = radius_vdw('O')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> rvdw = radius_vdw(Atom_label)
+  </style></head><body><div class="content"><h1>radius_vdw.m</h1><!--introduction--><div><ul><li>This function fetches the rdw radius, originally taken from below</li><li>from 'A cartography of the van der Waals territories'</li><li>Santiago Alvarez doi:10.1039/c3dt50599e</li><li>rvdw 1,61 and 84-88 are made up....</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>rvdw = radius_vdw({'O'})</li><li>rvdw = radius_vdw('O')</li></ul></div><pre class="codeinput"><span class="keyword">function</span> rvdw = radius_vdw(Atom_label)
 
 <span class="keyword">if</span> ~iscell(Atom_label)
     Atom_label={Atom_label};
@@ -226,10 +226,10 @@ rvdw = cell2mat(rvdw(ind,2));
 % * rvdw 1,61 and 84-88 are made up....
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * rvdw = radius_vdw({'O'})

@@ -2,14 +2,14 @@
 % * This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = slice_atom(atom,limits)
-% # atom = slice_atom(atom,limits,1)
+% # atom = slice_atom(atom,limits) % Basic input arguments
+% # atom = slice_atom(atom,limits,1) % Inverts the selected sites
 %
 function atom = slice_atom(atom,limits,varargin)
 

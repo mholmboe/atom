@@ -4,13 +4,13 @@
 % * Likely best used interactively... se below
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom2make_ndx(filename,groupname,atomtypes,molid)
+% # atom2make_ndx(filename,groupname,atomtypes,molid) % Basic input arguments
 
 function atom2make_ndx(filename,groupname,atomtypes,molid)
 

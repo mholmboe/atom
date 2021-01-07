@@ -1,12 +1,12 @@
 %% ben_atom.m
-% * This simple function tries to bend an atom struct... downwards. It 
-% works best if the original atom struct initally is centered.
+% * This simple function tries to bend the coordinates in  an atom struct... 
+% downwards. It works best if the original atom struct initally is centered.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = bend_atom(atom,Box_dim,Radii)

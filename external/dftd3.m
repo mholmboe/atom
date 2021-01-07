@@ -3,9 +3,14 @@
 % Note that you might need a '\' to skip spaces, or double quotations as
 % in "'PATH'"
 %
+%% Version
+% 2.082
 %
-% Execute like:
-% dftd3('POSCAR -pbc -zero')
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # dftd3('POSCAR -pbc -zero')
 
 function dftd3(varargin)
 

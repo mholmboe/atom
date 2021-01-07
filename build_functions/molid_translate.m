@@ -3,13 +3,13 @@
 % * trans_vec. It's pretty straingh tforward.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = molid_translate(atom,[0 0 12],14)
+% # atom = molid_translate(atom,[0 0 12],14) % Basic input arguments
 %
 function atom = molid_translate(atom,trans_vec,MolID)
 %% 

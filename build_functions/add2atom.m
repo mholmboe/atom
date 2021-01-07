@@ -9,15 +9,15 @@
 % the XYZ data should be appended to
 % 
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = add2atom(XYZ_labels,XYZ_data)
-% # atom = add2atom(XYZ_labels,XYZ_data,'MOL')
-% # atom = add2atom(XYZ_labels,XYZ_data,'LAC',in_atom)
+% # atom = add2atom(XYZ_labels,XYZ_data) % Basic input arguments
+% # atom = add2atom(XYZ_labels,XYZ_data,'MOL') % Will set the residue name to MOL
+% # atom = add2atom(XYZ_labels,XYZ_data,'LAC',in_atom) % Will set the residue name to LAC and the MolID to whatever comes after the MolID in in_atom
 %
 function atom = add2atom(XYZ_labels,XYZ_data,varargin)
 

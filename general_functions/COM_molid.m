@@ -2,10 +2,10 @@
 % * This function calculates the COM for a certain molid
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * atom = COM_molid(atom,1)

@@ -8,10 +8,10 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # [mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R)

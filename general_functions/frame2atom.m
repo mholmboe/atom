@@ -2,10 +2,10 @@
 % * This function extracts a frame to the trajectory matrix
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % atom = frame2atom(atom,traj,frame,Box_dim)

@@ -3,13 +3,17 @@
 % file) to the atom struct format.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Function arguments
+% * <XYZ_labels_variable.html XYZ_labels> is a a cell list om atom types
+% * <XYZ_data_variable.html XYZ_data> is a nx3 matrix holdnig the XYZ-coordinates
 %
 %% Examples
-% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)
+% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom) % Basic input arguments
 %
 function atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)
 

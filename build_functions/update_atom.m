@@ -1,17 +1,18 @@
 %% update_atom.m
-% * This function updates the molid index and the atoms index in the atom struct
-% * Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})
+% * This function updates the molid index and the atoms index in the atom 
+% struct
+% * Multiple atom structs can be also concatenated by using this format 
+% atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% #
-% # atom = update_atom(atom)
-% # atom = update_atom({atom1 atom2 atom3})
+% # atom = update_atom(atom) % Basic input arguments
+% # atom = update_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively
 %
 function atom = update_atom(atom,varargin)
 

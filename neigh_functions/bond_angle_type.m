@@ -4,10 +4,10 @@
 % angle_limit from max to min angle
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)

@@ -1,15 +1,15 @@
 %% fuse_atom.m
-% * This function tries to fuse all sites within a certain rmax
+% * This function tries to fuse all sites within a certain radii, rmax.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom = fuse_atom(atom,Box_dim)
-% * atom = fuse_atom(atom,Box_dim,0.85)
+% * atom = fuse_atom(atom,Box_dim) % Basic input arguments, rmax set to 0.85
+% * atom = fuse_atom(atom,Box_dim,1.0) % rmax set to 1 Å
 
 function atom = fuse_atom(atom,Box_dim,varargin) % ,rmax);
 

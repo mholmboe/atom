@@ -3,10 +3,10 @@
 % custom solvent boxes to solvate a simulation cell.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Water structures
 % # 864_spc.gro|.pdb % equilibrated SPC water box
@@ -20,7 +20,7 @@
 % # 864_swm4_ndp_vds.gro|.pdb * Polarizable water v2
 
 %% Other structures
-% 
+% 864_spc.gro|.pdb % equilibrated SPC water box
 
 %% Conversion functions
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water

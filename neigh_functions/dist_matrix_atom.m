@@ -5,10 +5,10 @@
 % might be faster for large systems...
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # dist_matrix = dist_matrix_atom(atom1,Box_dim)

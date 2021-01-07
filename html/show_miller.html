@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>show_miller.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="show_miller.m"><style type="text/css">
+      --><title>show_miller.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="show_miller.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>show_miller.m</h1><!--introduction--><div><ul><li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li><li>This function is inspired by miller.m, written by Lucas Ennes:</li><li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the unit cell parameters</a></li><li><a href="#7">Set the unit cell parameters</a></li><li><a href="#9">Converting to radians</a></li><li><a href="#10">Determine the two theta values for each h,k,l</a></li><li><a href="#12">Set the plane</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li><li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li><li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li><li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_miller(h,k,l,varargin)
+  </style></head><body><div class="content"><h1>show_miller.m</h1><!--introduction--><div><ul><li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li><li>This function is inspired by miller.m, written by Lucas Ennes:</li><li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the unit cell parameters</a></li><li><a href="#7">Set the unit cell parameters</a></li><li><a href="#9">Converting to radians</a></li><li><a href="#10">Determine the two theta values for each h,k,l</a></li><li><a href="#12">Set the plane</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li><li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li><li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li><li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_miller(h,k,l,varargin)
 </pre><pre class="codeinput"><span class="keyword">if</span> nargin==3
     Box_dim=[1 1 1];
     color=<span class="string">'b'</span>;
@@ -369,10 +369,10 @@ view(3)
 % * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
 
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell

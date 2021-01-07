@@ -1,14 +1,14 @@
 %% write_atom_gro.m
-% * This function writes a gro file. Does it also write velocities?
+% * This function writes a gro file.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_gro(atom,Box_dim,filename_out)
+% # write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments
 %
 function write_atom_gro(atom,Box_dim,filename_out)
 
@@ -36,7 +36,7 @@ if sum(find(isnan([atom.vx]))) || atom(1).vx == 0
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f\n', Atom_section{1:7});
     end
 else
-    % Untested
+    % To include velocities (if they exist) as well... untested
     for i = 1:nAtoms
         Atom_section(1:10) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10, atom(i).vx/10, atom(i).vy/10, atom(i).vz/10];
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f\n', Atom_section{1:10});

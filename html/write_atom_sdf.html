@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_sdf.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-27"><meta name="DC.source" content="write_atom_sdf.m"><style type="text/css">
+      --><title>write_atom_sdf.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="write_atom_sdf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_sdf.m</h1><!--introduction--><div><ul><li>This function writes an sdf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#4">9  8  0     0  0  0  0  0  0999 V2000</a></li><li><a href="#5">123456789012345678901234567890123456789</a></li><li><a href="#6">The Counts line</a></li><li><a href="#7">The Atoms block</a></li><li><a href="#8">After the counts line comes the atoms block. For each atom mentioned in</a></li><li><a href="#9">the first field of counts, include a line like so:</a></li><li><a href="#10">0.5369    0.9749    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0</a></li><li><a href="#11">The first three fields, 10 characters long each, describe the atom's</a></li><li><a href="#12">position in the X, Y, and Z dimensions. After that there is a space, and</a></li><li><a href="#13">three characters for an atomic symbol (O for oxygen, in this instance).</a></li><li><a href="#14">The Bonds block</a></li></ul></div><h2 id="1">Version</h2><p>2.08</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_sdf(atom,Box_dim,filename_out)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_sdf(atom,Box_dim,filename_out,varargin)
+  </style></head><body><div class="content"><h1>write_atom_sdf.m</h1><!--introduction--><div><ul><li>This function writes an sdf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#4">9  8  0     0  0  0  0  0  0999 V2000</a></li><li><a href="#5">123456789012345678901234567890123456789</a></li><li><a href="#6">The Counts line</a></li><li><a href="#7">The Atoms block</a></li><li><a href="#8">After the counts line comes the atoms block. For each atom mentioned in</a></li><li><a href="#9">the first field of counts, include a line like so:</a></li><li><a href="#10">0.5369    0.9749    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0</a></li><li><a href="#11">The first three fields, 10 characters long each, describe the atom's</a></li><li><a href="#12">position in the X, Y, and Z dimensions. After that there is a space, and</a></li><li><a href="#13">three characters for an atomic symbol (O for oxygen, in this instance).</a></li><li><a href="#14">The Bonds block</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_sdf(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_sdf(atom,Box_dim,filename_out,varargin)
 
 <span class="keyword">if</span> regexp(filename_out,<span class="string">'.sdf'</span>) ~= false
     filename_out = filename_out;
@@ -170,13 +170,13 @@ disp(<span class="string">'.sdf structure file written'</span>)
 % * This function writes an sdf file from the atom struct
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_sdf(atom,Box_dim,filename_out)
+% # write_atom_sdf(atom,Box_dim,filename_out) % Basic input arguments
 %
 function write_atom_sdf(atom,Box_dim,filename_out,varargin)
 

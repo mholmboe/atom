@@ -6,14 +6,14 @@
 % * Ohmg/Oh - H. Note that you can use strncmpi to get a wider search.
 %
 %% Version
-% 2.081
+% 2.082
 %
 %% Contact
-% Please report bugs to michael.holmboe@umu.se
+% Please report problems/bugs to michael.holmboe@umu.se
 %
 
 %% Examples
-% # atom2make_ndx_bonded(filename,groupname,atomtypes)
+% # atom2make_ndx_bonded(filename,groupname,atomtypes) % Basic input arguments
 
 function atom2make_ndx_bonded(filename,groupname,atomtypes)
 
