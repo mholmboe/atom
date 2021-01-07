@@ -11,7 +11,7 @@
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

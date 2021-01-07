@@ -2,7 +2,7 @@
 % * This function transforms a triclinic atom struct to an orthogonal one
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

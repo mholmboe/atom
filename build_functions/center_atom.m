@@ -6,7 +6,7 @@
 % * dim is a string containing for example x, xy, xyz
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

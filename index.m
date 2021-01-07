@@ -2,7 +2,7 @@
 % Below is links to all functions, sorted after topic/purpose or alphabetically
 %
 %% Version
-% 2.082
+% 2.09
 %
  
 %% How-to cite the atom library?

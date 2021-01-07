@@ -5,7 +5,7 @@
 % atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

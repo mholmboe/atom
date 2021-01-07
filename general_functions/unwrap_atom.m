@@ -3,7 +3,7 @@
 % * Tested 21/07/2016, there has been bugs.. does it work?
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

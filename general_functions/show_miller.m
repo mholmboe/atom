@@ -4,7 +4,7 @@
 % * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
 
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

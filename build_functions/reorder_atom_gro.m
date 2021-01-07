@@ -4,7 +4,7 @@
 % * is only one type of molecule in the atom struct.
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

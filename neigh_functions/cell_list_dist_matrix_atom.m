@@ -11,7 +11,7 @@
 % J Comput Chem 25,  Sep;25(12):1474-1486 (2004).
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

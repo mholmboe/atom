@@ -5,7 +5,7 @@
 % * Make sure to edit your own PATH2VMD function!!!
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

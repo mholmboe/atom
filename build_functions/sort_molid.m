@@ -2,7 +2,7 @@
 % * This function sorts the molecular indexes in an ascending order
 % 
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -2,7 +2,7 @@
 % * This function overwrites the atom struct information with new information 
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

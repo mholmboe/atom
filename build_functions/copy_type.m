@@ -2,7 +2,7 @@
 % * This function copies and translates types in the atom
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

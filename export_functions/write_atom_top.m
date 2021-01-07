@@ -12,7 +12,7 @@
 % * found on lines ~140-170, and 175-190 for angles
 %
 %% Version
-% 2.082
+% 2.09
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
