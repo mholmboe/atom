@@ -1,9 +1,0 @@
-; Clayff (Cygan et al 2004) Implemented by MHolmboe
-
-[ defaults ]
-; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
-1               2               no              1.0     1.0
-
-#include "ffnonbonded.itp"
-#include "ffbonded.itp"
-
