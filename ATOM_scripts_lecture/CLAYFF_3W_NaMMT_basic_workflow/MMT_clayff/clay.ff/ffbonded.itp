@@ -1,0 +1,17 @@
+[ bondtypes ]
+;i      j	   func     b0	    kb
+Oh      H		1   	0.1 	463700 ; 
+Ohmg    H		1   	0.1 	463700 ; 
+Oalh    H		1   	0.1 	463700 ; 
+Oalhh   H		1   	0.1 	463700 ; 
+Osih    H		1   	0.1 	463700 ; 
+Al		Oalh    1   	0.195 	463700 ; 
+Si		Osih	1   	0.165 	463700 ; 
+
+[ angletypes ]
+;i      j       k	func	th0	cth
+H        Oalhh   H	1	109.47	383
+Al       Oalh    H	1	110.00	125.52 ; Pouvreau, Greathouse, Cygan, Kalinichev 2017
+Ale      Oalh    H	1	110.00	125.52 ; Pouvreau, Greathouse, Cygan, Kalinichev 2017
+Mgo      Oalh    H	1	110.00 	50.208 ; Pouvreau, Greathouse, Cygan, Kalinichev 2017
+Si       Osih    H	1	110.00	125.52 ; Pouvreau, Thesis...
