@@ -3,6 +3,10 @@
 %% Version
 % 2.09
 %
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+
 %% Export of structure/toplogy files
 % # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...
 % # <write_atom_cif.html write_atom_cif(atom,Box_dim,filename_out)> % This function writes a basic .cif file from the atom struct
@@ -22,6 +26,10 @@
 % # <write_atom_multiple_gro.html write_atom_multiple_gro(atom,traj,filename_out)> % % * This function writes a .gro trajectory I think this function works...
 % # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % This function writes a .pdb trajectory 
 % # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % This function writes a .xyz trajectory 
+
 %
-
-
+%% Version
+% 2.09
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

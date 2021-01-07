@@ -3,6 +3,10 @@
 %% Version
 % 2.09
 %
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+
 %% Custom toplogy tools
 %% Clayff, with atomtypes by MHolmboe
 % # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % This function tries to charge the atom accorind to clayff or interface ff
@@ -44,3 +48,10 @@
 % # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % This script creates and prints a lammps data file (.lj). Works best for Clayff(_2004) systems
 % # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % This custom made script creates and prints a gromacs .itp file for 
 % # <write_atom_psf.html write_atom_psf(atom,Box_dim,filename_out,varargin)> % This function writes an .psf file from the atom struct
+
+%
+%% Version
+% 2.09
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

@@ -6,6 +6,7 @@
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
+
 %% Convert water functions
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water

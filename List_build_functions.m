@@ -3,6 +3,10 @@
 %% Version
 % 2.09
 %
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+
 %% Specific atom struct functions
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct
 % # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format
@@ -76,3 +80,10 @@
 % # <remove_resname.html remove_resname(atom,resnames)> % This function removes residue with molid MolID, resnames = {'SOL' 'Protein'}
 % # <remove_SOL.html remove_SOL(atom,atomname,lo,hi,dim)> %  This section is used to remove residues in the simulation box between limits lo and hi
 % # <remove_type.html remove_type(atom,typescell)> % This function removes atomtypes with types as in typescell = {'OW' 'HW1' 'HW2'}
+
+%
+%% Version
+% 2.09
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

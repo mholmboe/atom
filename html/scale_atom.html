@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>scale_atom.m</h1><!--introduction--><div><ul><li>This function scales the coordinates in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')</li><li>atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = scale_atom(atom,Box_dim,scale_vec,varargin)
+  </style></head><body><div class="content"><h1>scale_atom.m</h1><!--introduction--><div><ul><li>This function scales the coordinates in the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')</li><li>atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = scale_atom(atom,Box_dim,scale_vec,varargin)
 
 <span class="keyword">if</span> nargin&gt;3
     Resname=varargin{1};

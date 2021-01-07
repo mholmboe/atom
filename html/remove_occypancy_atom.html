@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>remove_occypancy_atom.m</h1><!--introduction--><div><ul><li>This function removes all succeding particles in the atom struct that has</li><li>identical coordinates to a preceding particle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom</p><h2 id="2">Version</h2><p>2.082</p><h2 id="3">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ul><li>atom=remove_occypancy_atom(atom)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom=remove_occypancy_atom(atom)
+  </style></head><body><div class="content"><h1>remove_occypancy_atom.m</h1><!--introduction--><div><ul><li>This function removes all succeding particles in the atom struct that has</li><li>identical coordinates to a preceding particle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom</p><h2 id="2">Version</h2><p>2.09</p><h2 id="3">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ul><li>atom=remove_occypancy_atom(atom)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom=remove_occypancy_atom(atom)
 
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 

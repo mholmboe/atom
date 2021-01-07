@@ -8,6 +8,7 @@
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
+
 %% Water structures
 % # 864_spc.gro|.pdb % equilibrated SPC water box
 % # 864_spce.gro|.pdb % equilibrated SPC/E water box

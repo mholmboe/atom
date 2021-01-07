@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>replace_atom.m</h1><!--introduction--><div><ul><li>This function replaces a molecule (by its MolID) in an atom struct with a new (single MolID) atom struct by placing the COM of the latter in the place of the former</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.082</p><h2 id="2">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = replace_atom(in_atom,old_atom,3)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=replace_atom(new_atom,prev_atom,MolID)
+  </style></head><body><div class="content"><h1>replace_atom.m</h1><!--introduction--><div><ul><li>This function replaces a molecule (by its MolID) in an atom struct with a new (single MolID) atom struct by placing the COM of the latter in the place of the former</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = replace_atom(in_atom,old_atom,3)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=replace_atom(new_atom,prev_atom,MolID)
 
 disp(<span class="string">'Assuming all atom structs are unwrapped and whole...'</span>)
 

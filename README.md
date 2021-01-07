@@ -5,9 +5,6 @@ The purpose of the atom scripts and functions is to automate and enable construc
 Download the whole function library from the:
 Matlab Filexchange | GitHub
 
-%% Version
-% 2.09
-
 See also the link to the:
 
 html documentation

@@ -4,6 +4,9 @@
 %% Version
 % 2.09
 %
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
  
 %% How-to cite the atom library?
 % * The atom library has been described in the following paper:
