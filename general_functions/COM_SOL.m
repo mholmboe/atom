@@ -2,7 +2,7 @@
 % * This super  old function calculates the center of mass for water. Slow due to pbc...
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

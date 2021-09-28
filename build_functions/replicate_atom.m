@@ -2,8 +2,13 @@
 % * This function replicates the atom struct and the orthogonal box dimensions
 % * Triclinic version untestd but might work.
 %
+%% Function arguments
+% * atom is the normal atom struct
+% * Box_dim is the normal Box_dim variable
+% * replicate is a [1x3] row vector indicating the replicating factors in x/y/z or a/b/c directions, resp.
+%
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>wrap_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="wrap_atom.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>wrap_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="wrap_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,33 +67,42 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>wrap_atom.m</h1><!--introduction--><div><ul><li>This function wraps the atoms into the box. It can also wrap only along the x and y dimensions, ie neglecting wrapping along the z-direction</li><li>Which one is fastest? Ortogonal or triclinic version?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = wrap_atom(atom,Box_dim)</li><li>atom = wrap_atom(atom,Box_dim,'xy')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = wrap_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>wrap_atom.m</h1><!--introduction--><div><ul><li>This function wraps the atoms into the box. It can also wrap only along the x and y dimensions, ie neglecting wrapping along the z-direction</li><li>Which one is fastest? Ortogonal or triclinic version?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = wrap_atom(atom,Box_dim)</li><li>atom = wrap_atom(atom,Box_dim,'xy')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = wrap_atom(atom,Box_dim,varargin)
 
 attribut_in=fieldnames(atom);
 
 <span class="keyword">if</span> nargin==2
     <span class="keyword">if</span> size(Box_dim(1,:),2)==3
-        <span class="comment">% disp('assuming othogonal box when wrapping!!!')</span>
-        ind_hiz=find([atom.z]&gt;=Box_dim(3));
-        z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
-        [atom((ind_hiz)).z]=deal(z_shift{:});
-        ind_loz=find([atom.z]&lt;0);
-        z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
-        [atom((ind_loz)).z]=deal(z_shift{:});
+        <span class="comment">% disp('assuming orthogonal box when wrapping!!!')</span>
+<span class="comment">%         ind_hiz=find([atom.z]&gt;=Box_dim(3));</span>
+<span class="comment">%         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');</span>
+<span class="comment">%         [atom((ind_hiz)).z]=deal(z_shift{:});</span>
+<span class="comment">%         ind_loz=find([atom.z]&lt;0);</span>
+<span class="comment">%         z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');</span>
+<span class="comment">%         [atom((ind_loz)).z]=deal(z_shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%         ind_hiy=find([atom.y]&gt;=Box_dim(2));</span>
+<span class="comment">%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');</span>
+<span class="comment">%         [atom((ind_hiy)).y]=deal(y_shift{:});</span>
+<span class="comment">%         ind_loy=find([atom.y]&lt;0);</span>
+<span class="comment">%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');</span>
+<span class="comment">%         [atom((ind_loy)).y]=deal(y_shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%         ind_hix=find([atom.x]&gt;=Box_dim(1));</span>
+<span class="comment">%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');</span>
+<span class="comment">%         [atom((ind_hix)).x]=deal(x_shift{:});</span>
+<span class="comment">%         ind_lox=find([atom.x]&lt;0);</span>
+<span class="comment">%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');</span>
+<span class="comment">%         [atom((ind_lox)).x]=deal(x_shift{:});</span>
 
-        ind_hiy=find([atom.y]&gt;=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]&lt;0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+        Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+        [atom.z]=deal(Z_data{:});
 
-        ind_hix=find([atom.x]&gt;=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]&lt;0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        pause
     <span class="keyword">else</span>
  <span class="comment">%       disp('will try to wrap triclinic Box_dim!!!')</span>
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -110,7 +119,7 @@ attribut_in=fieldnames(atom);
 
 <span class="keyword">elseif</span> nargin == 3
     <span class="keyword">if</span> size(Box_dim(1,:),2)==3
- <span class="comment">%       disp('assuming othogonal box when wrapping!!!')</span>
+ <span class="comment">%       disp('assuming orthogonal box when wrapping!!!')</span>
         <span class="comment">% ind_hiz=find([atom.z]&gt;=Box_dim(3));</span>
         <span class="comment">% z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');</span>
         <span class="comment">% [atom((ind_hiz)).z]=deal(z_shift{:});</span>
@@ -118,19 +127,27 @@ attribut_in=fieldnames(atom);
         <span class="comment">% z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');</span>
         <span class="comment">% [atom((ind_loz)).z]=deal(z_shift{:});</span>
 
-        ind_hiy=find([atom.y]&gt;=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]&lt;0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
+<span class="comment">%         ind_hiy=find([atom.y]&gt;=Box_dim(2));</span>
+<span class="comment">%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');</span>
+<span class="comment">%         [atom((ind_hiy)).y]=deal(y_shift{:});</span>
+<span class="comment">%         ind_loy=find([atom.y]&lt;0);</span>
+<span class="comment">%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');</span>
+<span class="comment">%         [atom((ind_loy)).y]=deal(y_shift{:});</span>
+<span class="comment">%</span>
+<span class="comment">%         ind_hix=find([atom.x]&gt;=Box_dim(1));</span>
+<span class="comment">%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');</span>
+<span class="comment">%         [atom((ind_hix)).x]=deal(x_shift{:});</span>
+<span class="comment">%         ind_lox=find([atom.x]&lt;0);</span>
+<span class="comment">%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');</span>
+<span class="comment">%         [atom((ind_lox)).x]=deal(x_shift{:});</span>
 
-        ind_hix=find([atom.x]&gt;=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]&lt;0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+<span class="comment">%         Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));</span>
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+<span class="comment">%         [atom.z]=deal(Z_data{:});</span>
+
     <span class="keyword">else</span>
  <span class="comment">%       disp('will try to wrap triclinic Box_dim!!!')</span>
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -146,10 +163,6 @@ attribut_in=fieldnames(atom);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-
-
-
-
 <span class="keyword">try</span>
     attribut_out=fieldnames(atom);
     different_ind=find(~ismember(attribut_out,attribut_in));
@@ -159,7 +172,7 @@ attribut_in=fieldnames(atom);
 <span class="keyword">end</span>
 
 <span class="comment">%assignin('caller','atom',atom);</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% wrap_atom.m
 % * This function wraps the atoms into the box. It can also wrap only along
@@ -167,7 +180,7 @@ attribut_in=fieldnames(atom);
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -182,27 +195,36 @@ attribut_in=fieldnames(atom);
 
 if nargin==2
     if size(Box_dim(1,:),2)==3
-        % disp('assuming othogonal box when wrapping!!!')
-        ind_hiz=find([atom.z]>=Box_dim(3));
-        z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
-        [atom((ind_hiz)).z]=deal(z_shift{:});
-        ind_loz=find([atom.z]<0);
-        z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
-        [atom((ind_loz)).z]=deal(z_shift{:});
+        % disp('assuming orthogonal box when wrapping!!!')
+%         ind_hiz=find([atom.z]>=Box_dim(3));
+%         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
+%         [atom((ind_hiz)).z]=deal(z_shift{:});
+%         ind_loz=find([atom.z]<0);
+%         z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
+%         [atom((ind_loz)).z]=deal(z_shift{:});
+%         
+%         ind_hiy=find([atom.y]>=Box_dim(2));
+%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
+%         [atom((ind_hiy)).y]=deal(y_shift{:});
+%         ind_loy=find([atom.y]<0);
+%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
+%         [atom((ind_loy)).y]=deal(y_shift{:});
+%         
+%         ind_hix=find([atom.x]>=Box_dim(1));
+%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
+%         [atom((ind_hix)).x]=deal(x_shift{:});
+%         ind_lox=find([atom.x]<0);
+%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
+%         [atom((ind_lox)).x]=deal(x_shift{:});
+     
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+        Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+        [atom.z]=deal(Z_data{:});  
         
-        ind_hiy=find([atom.y]>=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]<0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
-        
-        ind_hix=find([atom.x]>=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]<0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        pause
     else
  %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -219,7 +241,7 @@ if nargin==2
     
 elseif nargin == 3
     if size(Box_dim(1,:),2)==3
- %       disp('assuming othogonal box when wrapping!!!')
+ %       disp('assuming orthogonal box when wrapping!!!')
         % ind_hiz=find([atom.z]>=Box_dim(3));
         % z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         % [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -227,19 +249,27 @@ elseif nargin == 3
         % z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
         % [atom((ind_loz)).z]=deal(z_shift{:});
         
-        ind_hiy=find([atom.y]>=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]<0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
+%         ind_hiy=find([atom.y]>=Box_dim(2));
+%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
+%         [atom((ind_hiy)).y]=deal(y_shift{:});
+%         ind_loy=find([atom.y]<0);
+%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
+%         [atom((ind_loy)).y]=deal(y_shift{:});
+%         
+%         ind_hix=find([atom.x]>=Box_dim(1));
+%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
+%         [atom((ind_hix)).x]=deal(x_shift{:});
+%         ind_lox=find([atom.x]<0);
+%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
+%         [atom((ind_lox)).x]=deal(x_shift{:});
         
-        ind_hix=find([atom.x]>=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]<0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+%         Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+%         [atom.z]=deal(Z_data{:});  
+        
     else
  %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -254,10 +284,6 @@ elseif nargin == 3
         atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
     end
 end
-
-
-
-
 
 try
     attribut_out=fieldnames(atom);

@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>The GROMACS path on your computer</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="PATH2GMX.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>The GROMACS path on your computer</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="PATH2GMX.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,49 +67,55 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>The GROMACS path on your computer</h1><!--introduction--><p>Add your own path to GROMACS here. Note that you might need a '\' to skip spaces, or double quotations as in "'PATH'"</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>PATH2GMX</li></ol></div><pre class="codeinput"><span class="keyword">function</span> PATH2GMX = PATH2GMX()
+  </style></head><body><div class="content"><h1>The GROMACS path on your computer</h1><!--introduction--><p>Add your own path to a mpi version of GROMACS here. Note that you might need a '\' to skip spaces, or double quotations as in "'PATH'"</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>PATH2GMX        % Can be used to invoke Gromacs utilities, see for instance the gmx() function</li><li>PATH2GMX('add') % adds Gromacs to the MATLAB path</li></ol></div><pre class="codeinput"><span class="keyword">function</span> PATH2GMX = PATH2GMX(varargin)
 
-PATH2GMX =<span class="string">'/usr/local/gromacs-2018.7/bin/'</span>;
-<span class="comment">% PATH2GMX ='/usr/local/gromacs-2018/bin/';</span>
-<span class="comment">% PATH2GMX ='/usr/local/gromacs-2016.2/bin/';</span>
-<span class="comment">% PATH2GMX ='/usr/local/gromacs-5.1.1/bin/';</span>
+PATH2GMX =<span class="string">'/usr/local/gromacs-2021/bin'</span>; <span class="comment">% Note, this is a version compiled wth mpi</span>
 
-<span class="comment">% Does this work for the 'base' ?</span>
-PATH=getenv(<span class="string">'PATH'</span>);
-PATH=strrep(PATH,<span class="string">'PATH2GMX'</span>,<span class="string">''</span>);
-setenv(<span class="string">'PATH'</span>, [getenv(<span class="string">'PATH'</span>),<span class="string">':'</span>,PATH2GMX]);
-<span class="comment">% Now you could try</span>
-<span class="comment">% system('gmx editconf -h')</span>
+<span class="keyword">if</span> nargin&gt;0
+
+    <span class="comment">% Does this work for the 'base' ?</span>
+    PATH=getenv(<span class="string">'PATH'</span>);
+    PATH=strrep(PATH,<span class="string">'PATH2GMX'</span>,<span class="string">''</span>);
+    setenv(<span class="string">'PATH'</span>, [getenv(<span class="string">'PATH'</span>),<span class="string">':'</span>,PATH2GMX]);
+    <span class="comment">% Now you could try</span>
+    <span class="comment">% system('gmx editconf -h')</span>
+
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% The GROMACS path on your computer
-% Add your own path to GROMACS here.
+% Add your own path to a mpi version of GROMACS here.
 % Note that you might need a '\' to skip spaces, or double quotations as
 % in "'PATH'"
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # PATH2GMX
+% # PATH2GMX        % Can be used to invoke Gromacs utilities, see for instance the gmx() function
+% # PATH2GMX('add') % adds Gromacs to the MATLAB path
 
-function PATH2GMX = PATH2GMX() 
+function PATH2GMX = PATH2GMX(varargin) 
 
-PATH2GMX ='/usr/local/gromacs-2018.7/bin/';
-% PATH2GMX ='/usr/local/gromacs-2018/bin/'; 
-% PATH2GMX ='/usr/local/gromacs-2016.2/bin/'; 
-% PATH2GMX ='/usr/local/gromacs-5.1.1/bin/';
+PATH2GMX ='/usr/local/gromacs-2021/bin'; % Note, this is a version compiled wth mpi
 
-% Does this work for the 'base' ?
-PATH=getenv('PATH');
-PATH=strrep(PATH,'PATH2GMX','');
-setenv('PATH', [getenv('PATH'),':',PATH2GMX]);
-% Now you could try
-% system('gmx editconf -h')
+if nargin>0
+    
+    % Does this work for the 'base' ?
+    PATH=getenv('PATH');
+    PATH=strrep(PATH,'PATH2GMX','');
+    setenv('PATH', [getenv('PATH'),':',PATH2GMX]);
+    % Now you could try
+    % system('gmx editconf -h')
+    
 end
+
+end
+
 ##### SOURCE END #####
 --></body></html>

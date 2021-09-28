@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>rdf_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="rdf_atom.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>rdf_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="rdf_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>rdf_atom.m</h1><!--introduction--><div><ul><li>This function calculates the radial distribution function (RDF) and the coordination number, CN, between the atom1 (solute) and atom2 (ligand/s), see Examples below. If passing a numeric fifth argunment, smoothing thorugh Gaussian convolution will be invoked.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Dependent functions</a></li><li><a href="#4">Usage</a></li><li><a href="#5">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Dependent functions</h2><div><ul><li>dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim); % Calculates the distance matrix between all sites in atom1 and all sites in atom2</li><li>dist_matrix = cell_list_dist_matrix_atom(atom12,Box_dim,0,Distance(end)); % Used for systems with nAtoms&gt;5000. Calculates the distance matrix between all sites in atom1+atom2.</li></ul></div><h2 id="4">Usage</h2><div><ul><li>Assuming an atom struct contains Na ions in water with Ow water oxygens first separate the Na solute struct (atom1) and the Ow ligands (atom2):</li></ul></div><div><ol><li>atom1 = atom(strcmpi([atom.type],'Na'))</li><li>atom2 = atom(strcmpi([atom.type],'Ow'))</li></ol></div><p>The run the rdf_atom() function as shown below.</p><h2 id="5">Examples</h2><div><ol><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim)               % atom1 is the central atomtype, atom2 is the ligand/s</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,[0:0.025:12])  % The full distance vector in &Aring;ngstr&ouml;m</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025)         % Here 0.025 is the binsize in &Aring;ngstr&ouml;m</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025,2)       % Here 2 is a smoothing factor</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>rdf_atom.m</h1><!--introduction--><div><ul><li>This function calculates the radial distribution function (RDF) and the coordination number, CN, between the atom1 (solute) and atom2 (ligand/s), see Examples below. If passing a numeric fifth argunment, smoothing thorugh Gaussian convolution will be invoked.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Dependent functions</a></li><li><a href="#4">Usage</a></li><li><a href="#5">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Dependent functions</h2><div><ul><li>dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim); % Calculates the distance matrix between all sites in atom1 and all sites in atom2</li><li>dist_matrix = cell_list_dist_matrix_atom(atom12,Box_dim,0,Distance(end)); % Used for systems with nAtoms&gt;5000. Calculates the distance matrix between all sites in atom1+atom2.</li></ul></div><h2 id="4">Usage</h2><div><ul><li>Assuming an atom struct contains Na ions in water with Ow water oxygens first separate the Na solute struct (atom1) and the Ow ligands (atom2):</li></ul></div><div><ol><li>atom1 = atom(strcmpi([atom.type],'Na'))</li><li>atom2 = atom(strcmpi([atom.type],'Ow'))</li></ol></div><p>The run the rdf_atom() function as shown below.</p><h2 id="5">Examples</h2><div><ol><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim)               % atom1 is the central atomtype, atom2 is the ligand/s</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,[0:0.025:12])  % The full distance vector in &Aring;ngstr&ouml;m</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025)         % Here 0.025 is the binsize in &Aring;ngstr&ouml;m</li><li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025,2)       % Here 2 is a smoothing factor</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;3
     temp_var=varargin{1};
@@ -97,7 +97,7 @@ Nlig=size(atom2,2);
 
 natom1=size(atom1,2);
 natom2=size(atom2,2);
-<span class="keyword">if</span> (natom1+natom2)&gt;15000 <span class="comment">% Will use the cell list routine to calc the reduced distance matrix</span>
+<span class="keyword">if</span> (natom1+natom2)&gt;50000 &amp;&amp; numel(Box_dim)&lt;9 <span class="comment">% Will use the cell list routine to calc the reduced distance matrix</span>
     atom12=[atom1 atom2];
     dist_matrix=cell_list_dist_matrix_atom(atom12,Box_dim,0,Distance(end));
     dist_matrix(natom1+1:end,:)=[];
@@ -132,7 +132,7 @@ CN=cumsum(Bins./Nsolute);
 <span class="comment">% hold on</span>
 <span class="comment">% plot(Distance,RDF)</span>
 <span class="comment">% plot(Distance,CN)</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% rdf_atom.m
 % * This function calculates the radial distribution function (RDF)
@@ -141,7 +141,7 @@ CN=cumsum(Bins./Nsolute);
 % smoothing thorugh Gaussian convolution will be invoked.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -197,7 +197,7 @@ Nlig=size(atom2,2);
 
 natom1=size(atom1,2);
 natom2=size(atom2,2);
-if (natom1+natom2)>15000 % Will use the cell list routine to calc the reduced distance matrix
+if (natom1+natom2)>50000 && numel(Box_dim)<9 % Will use the cell list routine to calc the reduced distance matrix
     atom12=[atom1 atom2];
     dist_matrix=cell_list_dist_matrix_atom(atom12,Box_dim,0,Distance(end));
     dist_matrix(natom1+1:end,:)=[];

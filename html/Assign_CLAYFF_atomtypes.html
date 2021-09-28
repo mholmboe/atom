@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example on how to assign CLAYFF atomtypes to a mineral atom struct</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="Assign_CLAYFF_atomtypes.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Example on how to assign CLAYFF atomtypes to a mineral atom struct</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="Assign_CLAYFF_atomtypes.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -83,7 +83,7 @@ atom = replicate_atom(atom,Box_dim,[6 4 1]); <span class="comment">% Replicate t
 <span class="comment">% atom_clayff = clayff_atom(atom,Box_dim,'clayff','spc',[1 2]) % In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly</span>
 </pre><h2 id="10">Heal and assign the modified CLAYFF atomtypes to the montmorillonite atom struct</h2><p>In cases were atoms need healing, or in order to protonate edge groups, one can use a slighlt longer command like below. For more info look into the <a href="clayff_atom.html">clayff_atom</a> function and lines 49-80.</p><pre class="codeinput">atom_clayff = clayff_atom(atom_clayff,Box_dim,<span class="string">'clayff'</span>,<span class="string">'spc'</span>,[1:7]) <span class="comment">% Assign the clayff atom types to the atomstruct</span>
 </pre><h2 id="11">Write the new modified CLAYFF .pdb file</h2><pre class="codeinput">write_atom_pdb(atom_clayff,Box_dim,strcat(<span class="string">'mod_'</span>,filename_out)); <span class="comment">% Print the clay layer to a .pdb file</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Example on how to assign CLAYFF atomtypes to a mineral atom struct
 % See also the <Advanced_examples.html advanced examples>

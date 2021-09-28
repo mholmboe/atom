@@ -1,7 +1,7 @@
 %% This MATLAB .m file is used to generate the html-documentation
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -16,7 +16,7 @@ filelist = {...
     'Available_functions.m',...
     'Common_variables.m',...
     'Examples.m',...
-    'index.m',...    
+    'index.m',...
     'Structures_and_solvents.m',...
     'List_all_functions.m',...
     'List_build_functions.m',...
@@ -50,6 +50,7 @@ dirs={...
     'variables';...
     };
 
+new_list={};
 for j=1:size(dirs,1)
     
     cd(char(dirs(j)))
@@ -58,6 +59,14 @@ for j=1:size(dirs,1)
     dirs(j)
     
     for i=1:size(filelist,1)
+        
+        if ~isfile(filelist(i).name)
+            new_list={new_list;[dirs(j) filelist(i).name]};
+            dirs(j)
+            filelist(i).name
+            pause
+        end
+        
         publish(filelist(i).name,'createThumbnail',true,'maxWidth',1200,'evalCode',false,'outputDir',docpath)
     end
     
@@ -67,4 +76,7 @@ end
 
 %% Lastly, build a searchable html-index
 builddocsearchdb(docpath)
+
+new_list
+
 

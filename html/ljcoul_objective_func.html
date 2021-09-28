@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ljcoul_objective_func</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="ljcoul_objective_func.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>ljcoul_objective_func</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="ljcoul_objective_func.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -80,15 +80,48 @@ sig2=param(4);
 eps1=param(5);
 eps2=param(6);
 
-e_mix=(eps1*eps2)^.5;
-sig_mix=(sig1+sig2)/2;
+<span class="keyword">if</span> numel(param)&gt;6
+    C41=param(7);
+    C42=param(7);
+<span class="keyword">end</span>
 
-lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
-coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+<span class="keyword">if</span> numel(param)&gt;7
+    C41=param(7);
+    C42=param(8);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(param)&lt;7
+
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">else</span>
+
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+
+    <span class="keyword">if</span> numel(param)&gt;7
+        lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    <span class="keyword">else</span>
+        lj=C12_mix./r.^12-C6_mix./r.^6;
+    <span class="keyword">end</span>
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">end</span>
+
 Utot=lj+coul;
 
 res=data-Utot;
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function res = ljcoul_objective_func(param,data,r,scalefactors,varargin)
 
@@ -103,11 +136,44 @@ sig2=param(4);
 eps1=param(5);
 eps2=param(6);
 
-e_mix=(eps1*eps2)^.5;
-sig_mix=(sig1+sig2)/2;
+if numel(param)>6
+    C41=param(7);
+    C42=param(7);
+end
 
-lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
-coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+if numel(param)>7
+    C41=param(7);
+    C42=param(8);
+end
+
+if numel(param)<7
+    
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+    
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+else
+    
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+    
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+    
+    if numel(param)>7
+        lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    else
+        lj=C12_mix./r.^12-C6_mix./r.^6;
+    end
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+end
+
 Utot=lj+coul;
 
 res=data-Utot;

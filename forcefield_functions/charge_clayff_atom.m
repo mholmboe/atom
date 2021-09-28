@@ -4,7 +4,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -36,8 +36,8 @@ if nargin>2
     Met_ind=find(Met_ind);
     Ox_ind=setdiff(1:nAtoms,Met_ind);
     
-    %    atom=bond_angle_atom(atom,Box_dim,1.25,2.4,'more');
-    atom = bond_atom(atom,Box_dim,2.25,0.6);
+    %    atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more');
+    atom = bond_atom(atom,Box_dim,2.45,0.6);
     if numel(Ox_ind) >= size(Bond_index,1)
         atom = bond_atom(atom,Box_dim,2.45,0.6);
         size(Bond_index,1)

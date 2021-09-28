@@ -1,28 +1,31 @@
 %% The GROMACS path on your computer
-% Add your own path to GROMACS here.
+% Add your own path to a mpi version of GROMACS here.
 % Note that you might need a '\' to skip spaces, or double quotations as
 % in "'PATH'"
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # PATH2GMX
+% # PATH2GMX        % Can be used to invoke Gromacs utilities, see for instance the gmx() function
+% # PATH2GMX('add') % adds Gromacs to the MATLAB path
 
-function PATH2GMX = PATH2GMX() 
+function PATH2GMX = PATH2GMX(varargin) 
 
-PATH2GMX ='/usr/local/gromacs-2018.7/bin/';
-% PATH2GMX ='/usr/local/gromacs-2018/bin/'; 
-% PATH2GMX ='/usr/local/gromacs-2016.2/bin/'; 
-% PATH2GMX ='/usr/local/gromacs-5.1.1/bin/';
+PATH2GMX ='/usr/local/gromacs-2021/bin'; % Note, this is a version compiled wth mpi
 
-% Does this work for the 'base' ?
-PATH=getenv('PATH');
-PATH=strrep(PATH,'PATH2GMX','');
-setenv('PATH', [getenv('PATH'),':',PATH2GMX]);
-% Now you could try
-% system('gmx editconf -h')
+if nargin>0
+    
+    % Does this work for the 'base' ?
+    PATH=getenv('PATH');
+    PATH=strrep(PATH,'PATH2GMX','');
+    setenv('PATH', [getenv('PATH'),':',PATH2GMX]);
+    % Now you could try
+    % system('gmx editconf -h')
+    
+end
+
 end

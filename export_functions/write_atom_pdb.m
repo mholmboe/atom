@@ -2,7 +2,7 @@
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -191,18 +191,18 @@ if nargin>3
     if size(varargin{1},1)<2
         
         if nargin>4
-            short_r=varargin{1};
-            long_r=varargin{2};
+            maxrshort=varargin{1};
+            maxrlong=varargin{2};
         else
-            short_r=1.25;
-            long_r=2.25;
+            maxrshort=1.25;
+            maxrlong=2.25;
         end
         
-        short_r
-        long_r
+        maxrshort
+        maxrlong
         
         %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-        atom=bond_atom(atom,Box_dim,long_r);
+        atom=bond_atom(atom,Box_dim,maxrlong);
         %     assignin('caller','Dist_matrix',Dist_matrix);
         assignin('caller','Bond_index',Bond_index);
         %     assignin('caller','Angle_index',Angle_index);

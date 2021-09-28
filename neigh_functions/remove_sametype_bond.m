@@ -4,16 +4,16 @@
 % * existing Bond | Angle | Dihedral_index variables.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=remove_sametype_bond(atom,Box_dim,Bond_index)
-% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index)
-% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index)
-% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong)
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index) % Basic input arguments
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index) % Will also remove any angles
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index) % Will also remove any dihedrals
+% # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong) % Allows setting of the max cutoff
 
 function atom = remove_sametype_bond(atom,Box_dim,varargin)
 

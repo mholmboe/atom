@@ -1,5 +1,6 @@
 % clear;
 close all;
+hold on
 format compact;
 
 r=.1:.001:1.2; % nm
@@ -10,18 +11,22 @@ r=.1:.001:1.2; % nm
 % sig2=0.3165;
 % eps1=7.7e-6;
 % eps2=0.6504;
+C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Lio' 'Ob'});
-[r,lj,coul,data] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,r);
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
 
-eps1=.6;
-eps2=.2;
-q1=.525;
-q2=-1.05;
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
+
+% eps1=.6;
+% eps2=.6;
+% q1=2.1;
+% q2=-1.05;
+C4 = 0.05
 %% Initial values
-xinit    = [ q1  q2  sig1  sig2  eps1  eps2  ];
-delta    = [ 1   1   .2    1     1     1];
+xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
+delta    = [ .1   1   .1      1    .1     1   ];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -43,15 +48,13 @@ end
 %% Set Options for Optimization
 objective_func_string='ljcoul_objective_func(x,data,r,scalefactors)';
 eval(strcat('f=@(x)',objective_func_string,';'));
-options = optimset('Diagnostics','on','Display','iter','MaxFunEvals',5000,...
-    'MaxIter',5000,'Tolfun',1e-14);%,'OutputFcn',custOutput);
-
-% custOutput = @(x,optimValues,state,varargin)plot_iterations(x,optimValues,state,varargin);
-% options = optimoptions(@lsqnonlin,'Diagnostics','off','Display','off','MaxFunctionEvaluations',5000,'MaxIterations',500,'Tolfun',1e-7,'PlotFcns',@plot_iterations);
-% options.Algorithm = 'trust-region-reflective';%'levenberg-marquardt'; % or
-% options.FiniteDifferenceStepSize = 'sqrt(eps)'; % 0.5;%
-% options.DiffMinChange = 1;
-% options.DiffMaxChange = 0.1;
+options = optimoptions(@lsqnonlin,'Diagnostics','on','Display','iter-detailed','MaxFunctionEvaluations',50000,'MaxIterations',5000,'Tolfun',1e-12);
+options.Algorithm = 'levenberg-marquardt'; %'trust-region-reflective';%'levenberg-marquardt'; % or
+options.StepTolerance = 1.000000000000000e-12
+options.FiniteDifferenceType = 'central';
+options.FiniteDifferenceStepSize = eps^(1/3);
+options.CheckGradients = true;
+options.OptimalityTolerance = 1E-18;
 
 %% Run lsqnonlin
 fx=lsqnonlin(f,x0,lb,ub,options);
@@ -60,9 +63,13 @@ fx=fx./scalefactors
 
 copy(fx)
 
-[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx(1),fx(2),fx(3),fx(4),fx(5),fx(6),r);
+r_plot=.1:.001:1.2;
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
+[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+%[r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
+norm((fxdata-data_plot)/numel(data_plot))
+plot(r_plot,fxdata-data_plot)
 
-plot(r,data-fxdata)
 % x0=fx;
 % eval(strcat('res=',objective_func_string,';'));
 % disp('Mean abs(residual):');

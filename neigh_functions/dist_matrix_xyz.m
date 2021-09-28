@@ -1,16 +1,16 @@
-%% dist_matrix.m
+%% dist_matrix_xyz.m
 % * This function calculates the distance matrix from a 3XN xyz matrix, or 
 % the distances between two XYZ1 and XYZ2 matrixes
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # dist_matrix = dist_matrix_xyz(XYZ1,Box_dim)
-% # dist_matrix = dist_matrix_xyz(XYZ1,XYZ2,Box_dim)
+% # dist_matrix = dist_matrix_xyz(XYZ1,Box_dim) % Basic input arguments
+% # dist_matrix = dist_matrix_xyz(XYZ1,XYZ2,Box_dim) % Calculates the distance matrix between sites in XYZ1 and in XYZ2
 %
 function dist_matrix = dist_matrix_xyz(XYZ1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
 
@@ -37,7 +37,7 @@ else
     xy=0;xz=0;yz=0;
 end
 
-dist_matrix = zeros(nAtoms2,nAtoms1);
+dist_matrix = single(zeros(nAtoms2,nAtoms1)); % use of single instead of double 
 X_dist = dist_matrix;
 Y_dist = dist_matrix;
 Z_dist = dist_matrix;

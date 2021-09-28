@@ -10,7 +10,7 @@
 % full Box_dim
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -20,20 +20,6 @@
 % # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])
 %
 function atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,rmin)
-
-% % % %% For testing the script
-% % % clear all;
-% % % format compact;
-% % % atom1=import_atom('newTCH.gro');Box1=Box_dim;% atom1=translate_atom(atom1,[0 0 Box1(3)/2],'all');
-% % % atom2=import_atom('spc216_1.00.gro');Box2=Box_dim;
-% % % atom2 = replicate_atom(atom2,Box2,[5 5 3]);Box2=Box_dim;
-% % % atom1=center_atom(atom1,Box1,'all','xyz');
-% % % atom2=center_atom(atom2,Box2,'all','xyz');
-% % % rmin=[2.2 3.2];
-% % % limits=[0 0 0 Box1]
-% % % Atom_label={'H' 'O'};
-% % % type='molid';
-% % %%
 
 % if max([atom1.x])>Box1(1)
 %     disp('Box1 smaller that Box_dim in x direction, perhaps using unwrapped atom1?')
@@ -75,11 +61,13 @@ nAtoms1=size(atom1w,2);
 nAtoms2=size(atom2w,2);
 indvec=zeros(1,nAtoms2);
 
-if size(atom2w,2)>6000
+if size(atom2w,2)>20000
     % To do it stepwise to save memory...
     disp('Splitting up the distance matrix')
     size(atom1w);
     size(atom2w);
+    dist_matrix = dist_matrix_atom(atom1,varargin)
+    
     X1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(1:floor(nAtoms2/2)).x]');
     Y1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(1:floor(nAtoms2/2)).y]');
     Z1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(1:floor(nAtoms2/2)).z]');
@@ -134,18 +122,6 @@ elseif size(atom2w,2)>0
 else
     disp('atom2w is empty')
 end
-
-% vmd([atom1w atom2w],Box1)
-% disp('sizes X,Y,Z and distance matrix')
-% size(X_dist)
-%
-% size(Y_dist)
-%
-% size(Z_dist)
-%
-% size(dist_matrix)
-
-
 
 % This section loops though the atom1 atoms
 % indvec=zeros(1,size(dist_matrix,2));

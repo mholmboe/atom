@@ -10,7 +10,7 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # Neigh = neighbor_func([1 4 7 2],XYZ_solute,XYZ_data,Box_dim,2.25)
+% # Neigh = neighbor_func([1 4 7 2],XYZ_solute,XYZ_data,Box_dim,2.25) % Basic input arguments
 %
 function Neigh = neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)
 

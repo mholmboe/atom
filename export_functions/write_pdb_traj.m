@@ -2,7 +2,7 @@
 % * This function writes a .pdb trajectory
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

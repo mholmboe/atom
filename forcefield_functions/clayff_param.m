@@ -2,7 +2,7 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -88,7 +88,7 @@ forcefield.clayff(6).e_kcalmol = 0.155400;
 % Oalt
 forcefield.clayff(7).type =    {'Oalt'}; % obts bridging oxygen w. tetrahedral substitution
 forcefield.clayff(7).mass =    15.999410;
-forcefield.clayff(7).charge =  -1.16880;%75;%-1.16880; Changed for ZSM-5
+forcefield.clayff(7).charge =  -1.1687;%-1.16880; Changed for ZSM-5
 forcefield.clayff(7).radius =  3.553200;
 forcefield.clayff(7).e_kcalmol = 0.155400;
 %
@@ -339,7 +339,7 @@ forcefield.clayff(42).e_kcalmol = 0.160036571;
 forcefield.clayff(43).type =    {'Ob'}; % Clayffmod basal O
 forcefield.clayff(43).mass =    15.99941;
 forcefield.clayff(43).charge =  -1.05000;
-forcefield.clayff(43).radius =  3.8;
+forcefield.clayff(43).radius =  3.553200;
 forcefield.clayff(43).e_kcalmol = 0.160036571;
 
 % O

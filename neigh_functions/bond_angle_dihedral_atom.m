@@ -4,16 +4,16 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # atom=bond_angle_dihedral_atom(atom,Box_dim) % Basic input arguments
 % # atom=bond_angle_dihedral_atom(atom) % When the PBC is not important
-% # atom=bond_angle_dihedral_atom(atom,Box_dim)
-% # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25)
-% # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25,'more')
+% # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25) % Setting the max distance rmaxshort and rmaxlong for bonds with H's
+% # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25,'more') % Will write more info to the calling workspace
 
 function atom = bond_angle_dihedral_atom(atom,varargin)
 

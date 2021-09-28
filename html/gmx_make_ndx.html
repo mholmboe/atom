@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>gmx_make_ndx.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="gmx_make_ndx.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>gmx_make_ndx.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="gmx_make_ndx.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,95 +67,133 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>gmx_make_ndx.m</h1><!--introduction--><div><ul><li>This function helps you print custom gromacs .ndx files</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>gmx_make_ndx(groupname,index_vector) % Basic input arguments</li></ul></div><pre class="codeinput"><span class="keyword">function</span> gmx_make_ndx(groupname,ind)
+  </style></head><body><div class="content"><h1>gmx_make_ndx.m</h1><!--introduction--><div><ul><li>This function can help you print custom gromacs .ndx files, you just have to find a way to find the indexes id you want to print out with the group name {groupname}. The printed index file (default index.ndx) can be appended with new groups. See also <a href="Make_selections.html">Make_selections</a> how to make custom selections and find the corresponding atom indexes, MolID's etc.</li></ul></div><div><ul><li>Example on how to select all molID's of water (having [atom.types], the site names 'Ow') having z &lt; 10, run this:</li></ul></div><p>ind=find(strcmpi([atom.type],'Ow')&amp;[atom.z]&lt;10); % find all Ow atoms with z coordinates &lt; 10</p><p>id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command</p><p>gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>gmx_make_ndx(id,groupname,filename) % Basic input arguments</li><li>gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called inde.ndx</li><li>gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename</li></ol></div><pre class="codeinput"><span class="keyword">function</span> gmx_make_ndx(groupname,id,varargin)
 
-<span class="comment">%clear all; format compact;</span>
-<span class="comment">%You could set the groupname here manually if you want</span>
-<span class="comment">%groupname='FIX_MMT_2';</span>
-<span class="comment">%ind=[1+2880:40:2880+1992];</span>
-<span class="comment">%This is in case you want to create a group with multiple selections</span>
-<span class="comment">%ind1=1:10:960;</span>
-<span class="comment">%ind2=6:10:960;</span>
-<span class="comment">%ind3=10:10:960;</span>
-<span class="comment">%ind=sort([ind1 ind2 ind3]);</span>
-<span class="comment">%</span>
-<span class="comment">% Or tho generate/multiply the indexes for multiple molecues, having 'ind'</span>
-<span class="comment">% being the repeated local index vector:</span>
-<span class="comment">% for i=1:5; IND=[IND; ind+(i-1)*98]; end</span>
-<span class="comment">%</span>
+<span class="keyword">if</span> nargin==1
+    disp(<span class="string">'You did not supply enough input arguments!'</span>)
+    disp(<span class="string">'See the examples in the function.'</span>)
+<span class="keyword">elseif</span> nargin==2
+    filename=<span class="string">'index.ndx'</span>
+<span class="keyword">elseif</span> nargin &gt;2
+    filename=varargin{1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> iscell(groupname)
+    groupname=char(groupname);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> iscell(filename)
+    filename=char(filename);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> regexp(filename,<span class="string">'.ndx'</span>) ~= false
+    filename = filename;
+<span class="keyword">else</span>
+    filename = strcat(filename,<span class="string">'.ndx'</span>);
+<span class="keyword">end</span>
+
+
 
 <span class="comment">% Format the ind vector to have 15 entries per row</span>
-ext_ind=zeros(1,15*ceil(length(ind)/15));
-ext_ind(1:length(ind))=ind;
+ext_ind=zeros(1,15*ceil(length(id)/15));
+ext_ind(1:length(id))=id;
 ext_ind=reshape(ext_ind,15,[])';
 
 <span class="comment">% Print the index file</span>
-fid = fopen(strcat(groupname,<span class="string">'.ndx'</span>), <span class="string">'wt'</span>);
+fid = fopen(filename, <span class="string">'a+'</span>);
 fprintf(fid, <span class="string">'%s %s %s\r\n'</span>,<span class="string">'['</span>,groupname,<span class="string">']'</span>);
-<span class="keyword">for</span> i = 1:size(ext_ind,1);
+<span class="keyword">for</span> i = 1:size(ext_ind,1)
     row=ext_ind(i,:);
     row(row==0)=[];
-    <span class="keyword">if</span> max(row)&lt;1000;
-    fprintf(fid, <span class="string">'%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n'</span>, row);
-    <span class="keyword">elseif</span> max(row)&lt;10000;
-    fprintf(fid, <span class="string">'%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n'</span>, row);
-    <span class="keyword">elseif</span> max(row)&lt;100000;
-    fprintf(fid, <span class="string">'%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n'</span>, row);
+    <span class="keyword">if</span> max(row)&lt;1000
+        fprintf(fid, <span class="string">'%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n'</span>, row);
+    <span class="keyword">elseif</span> max(row)&lt;10000
+        fprintf(fid, <span class="string">'%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n'</span>, row);
+    <span class="keyword">elseif</span> max(row)&lt;100000
+        fprintf(fid, <span class="string">'%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n'</span>, row);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
 fclose(fid);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% gmx_make_ndx.m
-% * This function helps you print custom gromacs .ndx files
+% * This function can help you print custom gromacs .ndx files, you
+% just have to find a way to find the indexes id you want to print out
+% with the group name {groupname}. The printed index file (default
+% index.ndx) can be appended with new groups. See also <Make_selections.html Make_selections> 
+% how to make custom selections and find the corresponding atom indexes, MolID's etc.
+%
+% * Example on how to select all molID's of water (having [atom.types], 
+% the site names 'Ow') having z < 10, run this:
+%
+% ind=find(strcmpi([atom.type],'Ow')&[atom.z]<10); % find all Ow atoms with z coordinates < 10 
+%
+% id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command
+%
+% gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * gmx_make_ndx(groupname,index_vector) % Basic input arguments
+% # gmx_make_ndx(id,groupname,filename) % Basic input arguments
+% # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called inde.ndx
+% # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
-function gmx_make_ndx(groupname,ind)
+function gmx_make_ndx(groupname,id,varargin)
 
-%clear all; format compact;
-%You could set the groupname here manually if you want
-%groupname='FIX_MMT_2';
-%ind=[1+2880:40:2880+1992];
-%This is in case you want to create a group with multiple selections
-%ind1=1:10:960;
-%ind2=6:10:960;
-%ind3=10:10:960;
-%ind=sort([ind1 ind2 ind3]);
-%
-% Or tho generate/multiply the indexes for multiple molecues, having 'ind'
-% being the repeated local index vector:
-% for i=1:5; IND=[IND; ind+(i-1)*98]; end
-%
+if nargin==1
+    disp('You did not supply enough input arguments!')
+    disp('See the examples in the function.')
+elseif nargin==2
+    filename='index.ndx'
+elseif nargin >2
+    filename=varargin{1};
+end
+
+if iscell(groupname)
+    groupname=char(groupname);
+end
+
+if iscell(filename)
+    filename=char(filename);
+end
+
+if regexp(filename,'.ndx') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.ndx');
+end
+
+
 
 % Format the ind vector to have 15 entries per row
-ext_ind=zeros(1,15*ceil(length(ind)/15));
-ext_ind(1:length(ind))=ind;
+ext_ind=zeros(1,15*ceil(length(id)/15));
+ext_ind(1:length(id))=id;
 ext_ind=reshape(ext_ind,15,[])';
 
 % Print the index file
-fid = fopen(strcat(groupname,'.ndx'), 'wt');
+fid = fopen(filename, 'a+');
 fprintf(fid, '%s %s %s\r\n','[',groupname,']');
-for i = 1:size(ext_ind,1);
+for i = 1:size(ext_ind,1)
     row=ext_ind(i,:);
     row(row==0)=[];
-    if max(row)<1000;
-    fprintf(fid, '%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n', row);
-    elseif max(row)<10000;
-    fprintf(fid, '%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n', row);
-    elseif max(row)<100000;
-    fprintf(fid, '%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n', row);
+    if max(row)<1000
+        fprintf(fid, '%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n', row);
+    elseif max(row)<10000
+        fprintf(fid, '%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n', row);
+    elseif max(row)<100000
+        fprintf(fid, '%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n', row);
     end
 end
 fprintf(fid, '\r\n');
+fprintf(fid, '\r\n');
 fclose(fid);
+
 ##### SOURCE END #####
 --></body></html>

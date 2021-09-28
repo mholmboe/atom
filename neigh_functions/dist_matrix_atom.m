@@ -2,17 +2,17 @@
 % * This function calculates the distance matrix from the atom struct, or 
 % the distances between atom1 and atom2
 % * Note that there is also and cell_list_dist_matrix_atom function that 
-% might be faster for large systems...
+% might be faster for large orthogonal systems...
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # dist_matrix = dist_matrix_atom(atom1,Box_dim)
-% # dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim)
+% # dist_matrix = dist_matrix_atom(atom1,Box_dim) % Basic input arguments
+% # dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % Calculates the distance matrix between sites in atom1 and in atom2
 %
 function dist_matrix = dist_matrix_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
 
@@ -29,8 +29,8 @@ end
 nAtoms1=size(atom1,2);
 nAtoms2=size(atom2,2);
 
-XYZ1=[[atom1.x]' [atom1.y]' [atom1.z]'];
-XYZ2=[[atom2.x]' [atom2.y]' [atom2.z]'];
+XYZ1=single([[atom1.x]' [atom1.y]' [atom1.z]']);
+XYZ2=single([[atom2.x]' [atom2.y]' [atom2.z]']);
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if length(Box_dim) == 6
@@ -42,7 +42,7 @@ else
     xy=0;xz=0;yz=0;
 end
 
-dist_matrix = zeros(nAtoms2,nAtoms1);
+dist_matrix = single(zeros(nAtoms2,nAtoms1)); % use of single instead of double 
 X_dist = dist_matrix;
 Y_dist = dist_matrix;
 Z_dist = dist_matrix;

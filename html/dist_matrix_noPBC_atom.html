@@ -1,0 +1,195 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>dist_matrix_noPBC_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="dist_matrix_noPBC_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>dist_matrix_noPBC_atom.m</h1><!--introduction--><div><ul><li>This function calculates the distance matrix from the atom struct, or the distances between atom1 and atom2</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>dist_matrix = dist_matrix_noPBC_atom(atom1) % Basic input arguments</li><li>dist_matrix = dist_matrix_noPBC_atom(atom1,atom2) % Calculates the distance matrix between sites in atom1 and in atom2</li></ol></div><pre class="codeinput"><span class="keyword">function</span> dist_matrix = dist_matrix_noPBC_atom(atom1,varargin) <span class="comment">% ,atom2,Box_dim); % or % ,Box_dim);</span>
+
+format <span class="string">compact</span>;
+
+<span class="keyword">if</span> nargin==2
+    atom2=varargin{1};
+<span class="keyword">else</span>
+    atom2=atom1;
+<span class="keyword">end</span>
+
+nAtoms1=size(atom1,2);
+nAtoms2=size(atom2,2);
+
+XYZ1=single([[atom1.x]' [atom1.y]' [atom1.z]']);
+XYZ2=single([[atom2.x]' [atom2.y]' [atom2.z]']);
+
+dist_matrix = single(zeros(nAtoms2,nAtoms1)); <span class="comment">% use of single instead of double</span>
+X_dist = dist_matrix;
+Y_dist = dist_matrix;
+Z_dist = dist_matrix;
+
+    <span class="keyword">for</span> i = 1:size(XYZ1,1)
+        <span class="comment">%Calculate Distance Components</span>
+        rx = XYZ1(i,1) - XYZ2(:,1);
+
+        ry = XYZ1(i,2) - XYZ2(:,2);
+
+        rz = XYZ1(i,3) - XYZ2(:,3);
+
+        r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
+        dist_matrix(:,i)=r;
+        X_dist(:,i)=rx;
+        Y_dist(:,i)=ry;
+        Z_dist(:,i)=rz;
+
+        <span class="keyword">if</span> mod(i,1000)==1
+            <span class="keyword">if</span> i &gt; 1
+                i-1
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="comment">% New transposed output</span>
+dist_matrix=dist_matrix';
+<span class="keyword">try</span>
+    assignin(<span class="string">'caller'</span>,<span class="string">'X_dist'</span>,(X_dist)');
+    assignin(<span class="string">'caller'</span>,<span class="string">'Y_dist'</span>,(Y_dist)');
+    assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</span>,(Z_dist)');
+<span class="keyword">catch</span>
+    assignin(<span class="string">'base'</span>,<span class="string">'X_dist'</span>,(X_dist)');
+    assignin(<span class="string">'base'</span>,<span class="string">'Y_dist'</span>,(Y_dist)');
+    assignin(<span class="string">'base'</span>,<span class="string">'Z_dist'</span>,(Z_dist)');
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% dist_matrix_noPBC_atom.m
+% * This function calculates the distance matrix from the atom struct, or 
+% the distances between atom1 and atom2
+%
+%% Version
+% 2.10
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # dist_matrix = dist_matrix_noPBC_atom(atom1) % Basic input arguments
+% # dist_matrix = dist_matrix_noPBC_atom(atom1,atom2) % Calculates the distance matrix between sites in atom1 and in atom2
+%
+function dist_matrix = dist_matrix_noPBC_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
+
+format compact;
+
+if nargin==2
+    atom2=varargin{1};
+else
+    atom2=atom1;
+end
+
+nAtoms1=size(atom1,2);
+nAtoms2=size(atom2,2);
+
+XYZ1=single([[atom1.x]' [atom1.y]' [atom1.z]']);
+XYZ2=single([[atom2.x]' [atom2.y]' [atom2.z]']);
+
+dist_matrix = single(zeros(nAtoms2,nAtoms1)); % use of single instead of double 
+X_dist = dist_matrix;
+Y_dist = dist_matrix;
+Z_dist = dist_matrix;
+
+    for i = 1:size(XYZ1,1)
+        %Calculate Distance Components
+        rx = XYZ1(i,1) - XYZ2(:,1);
+
+        ry = XYZ1(i,2) - XYZ2(:,2);
+
+        rz = XYZ1(i,3) - XYZ2(:,3);
+
+        r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
+        dist_matrix(:,i)=r;
+        X_dist(:,i)=rx;
+        Y_dist(:,i)=ry;
+        Z_dist(:,i)=rz;
+        
+        if mod(i,1000)==1
+            if i > 1
+                i-1
+            end
+        end
+    end
+
+% New transposed output
+dist_matrix=dist_matrix';
+try
+    assignin('caller','X_dist',(X_dist)');
+    assignin('caller','Y_dist',(Y_dist)');
+    assignin('caller','Z_dist',(Z_dist)');
+catch
+    assignin('base','X_dist',(X_dist)');
+    assignin('base','Y_dist',(Y_dist)');
+    assignin('base','Z_dist',(Z_dist)');
+end
+
+
+##### SOURCE END #####
+--></body></html>

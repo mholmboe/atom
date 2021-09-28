@@ -2,7 +2,7 @@
 % * This function writes an .pqr file from the atom struct
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -163,20 +163,20 @@ end
 [atom.type]=atom.fftype;
 
 for i=1:size(atom,2)
-    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
-    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
-    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
-    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};atom(i).formalcharge=6;
-    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};atom(i).formalcharge=5;
-    elseif strncmpi(atom(i).type,{'W'},2);atom(i).element={'W'};atom(i).formalcharge=6;
-    elseif strncmpi(atom(i).type,{'P'},2);atom(i).element={'P'};atom(i).formalcharge=5;
-    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
+    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=+4;
+    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=+3;
+    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=+2;
+    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};atom(i).formalcharge=+6;
+    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};atom(i).formalcharge=+5;
+    elseif strncmpi(atom(i).type,{'W'},2);atom(i).element={'W'};atom(i).formalcharge=+6;
+    elseif strncmpi(atom(i).type,{'P'},2);atom(i).element={'P'};atom(i).formalcharge=+5;
+    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=+3;
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=0;
+    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=+1;
+    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=+1;
+    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=+1;
     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;

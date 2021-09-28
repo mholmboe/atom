@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_angle_type.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="bond_angle_type.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>bond_angle_type.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="bond_angle_type.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_angle_type.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles between the  atom1 and atom2 structures. One optional argument like 'reverse' reverses the angle_limit from max to min angle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
+  </style></head><body><div class="content"><h1>bond_angle_type.m</h1><!--introduction--><div><ul><li>This function tries to find all bonds and angles between the atom1 and atom2 structures. One optional argument like 'reverse' reverses the angle_limit from max to min angle</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150) % Basic input arguments</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1) % Allows skipping of internal angles, like for water</li><li>atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse') % Reverses the angle_limit from max to min angle</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
 </pre><pre class="codeinput"><span class="comment">% rmin=0;</span>
 <span class="comment">% rmax=3.5;</span>
 <span class="comment">% min_angle=120;</span>
@@ -88,7 +88,7 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 <span class="keyword">end</span>
 
 <span class="keyword">for</span> i=1:size(atom1,2)
-    XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
+    XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); <span class="comment">% use of single instead of double</span>
 
     <span class="keyword">if</span> sum(strncmpi([atom1.type],<span class="string">'OW'</span>,2))&gt;0 &amp;&amp; sum(strncmpi([atom2.type],<span class="string">'HW'</span>,2))&gt;0 &amp;&amp; skip_internal == 1
         ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
@@ -214,28 +214,34 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
     atom1(i).neigh.vec=neigh.r_vec;
     atom1(i).neigh.angle=neigh.angle;
 
+    <span class="keyword">if</span> mod(i,1000)==1
+        <span class="keyword">if</span> i-1&gt;0
+            i-1
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
 <span class="keyword">end</span>
 
 <span class="comment">% assignin('caller','Neigh',neigh)</span>
 <span class="comment">% assignin('caller','Angle_index',angle_index)</span>
 </pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_angle_type.m
-% * This function tries to find all bonds and angles between the  atom1 and
-% atom2 structures. One optional argument like 'reverse' reverses the 
+% * This function tries to find all bonds and angles between the atom1 and
+% atom2 structures. One optional argument like 'reverse' reverses the
 % angle_limit from max to min angle
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150) % Basic input arguments
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1) % Allows skipping of internal angles, like for water
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse') % Reverses the angle_limit from max to min angle
 
 function atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
 %%
@@ -260,7 +266,7 @@ elseif numel(Box_dim)==9
 end
 
 for i=1:size(atom1,2)
-    XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
+    XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
     
     if sum(strncmpi([atom1.type],'OW',2))>0 && sum(strncmpi([atom2.type],'HW',2))>0 && skip_internal == 1
         ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
@@ -385,6 +391,12 @@ for i=1:size(atom1,2)
     atom1(i).neigh.coords=neigh.coords;
     atom1(i).neigh.vec=neigh.r_vec;
     atom1(i).neigh.angle=neigh.angle;
+    
+    if mod(i,1000)==1
+        if i-1>0
+            i-1
+        end
+    end
     
 end
 

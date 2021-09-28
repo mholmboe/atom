@@ -1,0 +1,228 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ljcoul_force</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="ljcoul_force.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Ftot] = ljcoul_force(param,varargin)
+
+q1=param(1);
+q2=param(2);
+
+sig1=param(3);
+sig2=param(4);
+
+eps1=param(5);
+eps2=param(6);
+
+<span class="keyword">if</span> numel(param)&gt;6
+    C41=param(7);
+    C42=param(7);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(param)&gt;7
+    C41=param(7);
+    C42=param(8);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 1
+    r=varargin{1};
+<span class="keyword">else</span>
+    <span class="comment">%     r=1:length(data);</span>
+    r=.01:.0005:1.2; <span class="comment">% nm</span>
+<span class="keyword">end</span>
+
+
+<span class="keyword">if</span> nargin &gt; 7
+    LineWidth=varargin{2};
+<span class="keyword">else</span>
+    LineWidth=0.5;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(param)&lt;7
+
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">else</span>
+
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+
+    lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">end</span>
+
+lj=-diff(lj)/(r(2)-r(1));
+coul=-diff(coul)/(r(2)-r(1));
+Ftot=lj+coul;
+
+hold <span class="string">on</span>
+
+plotmin=1000*(round(min(Ftot*1.5)/1000));
+<span class="keyword">if</span> plotmin&gt;=0
+    plotmin=10000;
+<span class="keyword">end</span>
+
+plot(r(2:end),lj,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,LineWidth);
+plot(r(2:end),coul,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,LineWidth);
+plot(r(2:end),Ftot,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,LineWidth);
+xlabel(<span class="string">'r [nm]'</span>);
+ylabel(<span class="string">'F [kJ mol^-^1 nm^-^1]'</span>);
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [r,lj,coul,Ftot] = ljcoul_force(param,varargin)
+
+q1=param(1);
+q2=param(2);
+
+sig1=param(3);
+sig2=param(4);
+
+eps1=param(5);
+eps2=param(6);
+
+if numel(param)>6
+    C41=param(7);
+    C42=param(7);
+end
+
+if numel(param)>7
+    C41=param(7);
+    C42=param(8);
+end
+
+if nargin > 1
+    r=varargin{1};
+else
+    %     r=1:length(data);
+    r=.01:.0005:1.2; % nm
+end
+
+
+if nargin > 7
+    LineWidth=varargin{2};
+else
+    LineWidth=0.5;
+end
+
+if numel(param)<7
+    
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+    
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+else
+    
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+    
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+    
+    lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+end
+
+lj=-diff(lj)/(r(2)-r(1));
+coul=-diff(coul)/(r(2)-r(1));
+Ftot=lj+coul;
+
+hold on
+
+plotmin=1000*(round(min(Ftot*1.5)/1000));
+if plotmin>=0
+    plotmin=10000;
+end
+
+plot(r(2:end),lj,'b','LineWidth',LineWidth);
+plot(r(2:end),coul,'r','LineWidth',LineWidth);
+plot(r(2:end),Ftot,'k','LineWidth',LineWidth);
+xlabel('r [nm]');
+ylabel('F [kJ mol^-^1 nm^-^1]');
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+
+##### SOURCE END #####
+--></body></html>

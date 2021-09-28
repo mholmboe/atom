@@ -3,14 +3,15 @@
 % * Todo... check if support for triclinic Box_dim works, because its untested...
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = neigh_atom(atom,Box_dim,rmax)
-% # atom = neigh_atom(atom,Box_dim,rmax,101)
+% # atom = neigh_atom(atom,Box_dim,rmax) % Basic input arguments
+% # atom = neigh_atom(atom,Box_dim,rmax) % Allows settng the max cutoff
+% # atom = neigh_atom(atom,Box_dim,rmax,101) % To analyze selected indexes
 %
 function atom = neigh_atom(atom,Box_dim,varargin)
 
@@ -43,7 +44,7 @@ if nargin>4
     nAtoms_ind=varargin{3};
 end
 
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']);
 
 for i=nAtoms_ind
     
@@ -97,7 +98,7 @@ for i=nAtoms_ind
     atom(i).neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
     atom(i).neigh.r_vec = [rx(in) ry(in) rz(in)];
     
-    if mod(i,100)== 0
+    if mod(i,1000)== 0
         i
     end
     

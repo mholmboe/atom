@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Bragg</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="Bragg.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Bragg</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="Bragg.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,25 +67,39 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> new_var = Bragg(lambda,string,var)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> new_var = Bragg(lambda,string,var,varargin)
+
+<span class="comment">% Order of reflection</span>
+<span class="keyword">if</span> nargin&gt;3
+   n=varargin{1};
+<span class="keyword">else</span>
+    n=1;
+<span class="keyword">end</span>
 
 <span class="keyword">if</span> strcmp(string,<span class="string">'twotheta'</span>)
-    new_var=lambda/sin(var/2*pi()/180)/2;
+    new_var=n*lambda/sin(var/2*pi()/180)/2;
 <span class="keyword">elseif</span> strcmp(string,<span class="string">'theta'</span>)
-    new_var=lambda/sin(var*pi()/180)/2;
+    new_var=n*lambda/sin(var*pi()/180)/2;
 <span class="keyword">else</span>
-    new_var=2*asin(lambda/(2*var))*180/pi();
+    new_var=2*asin((n*lambda)/(2*var))*180/pi();
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function new_var = Bragg(lambda,string,var)
+function new_var = Bragg(lambda,string,var,varargin)
+
+% Order of reflection
+if nargin>3
+   n=varargin{1}; 
+else
+    n=1;
+end
 
 if strcmp(string,'twotheta')
-    new_var=lambda/sin(var/2*pi()/180)/2;
+    new_var=n*lambda/sin(var/2*pi()/180)/2;
 elseif strcmp(string,'theta')
-    new_var=lambda/sin(var*pi()/180)/2;
+    new_var=n*lambda/sin(var*pi()/180)/2;
 else
-    new_var=2*asin(lambda/(2*var))*180/pi();
+    new_var=2*asin((n*lambda)/(2*var))*180/pi();
 end
 ##### SOURCE END #####
 --></body></html>

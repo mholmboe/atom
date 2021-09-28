@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_pqr.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="write_atom_pqr.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>write_atom_pqr.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="write_atom_pqr.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_pqr.m</h1><!--introduction--><div><ul><li>This function writes an .pqr file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pqr(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_pqr.m</h1><!--introduction--><div><ul><li>This function writes an .pqr file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pqr(atom,Box_dim,filename,varargin)
 
 <span class="comment">% Have you done this?</span>
 nAtoms=size(atom,2)
@@ -220,20 +220,20 @@ disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'<
 [atom.type]=atom.fftype;
 
 <span class="keyword">for</span> i=1:size(atom,2)
-    <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};atom(i).formalcharge=4;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};atom(i).formalcharge=3;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};atom(i).formalcharge=2;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mo'</span>},2);atom(i).element={<span class="string">'Mo'</span>};atom(i).formalcharge=6;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Nb'</span>},2);atom(i).element={<span class="string">'Nb'</span>};atom(i).formalcharge=5;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'W'</span>},2);atom(i).element={<span class="string">'W'</span>};atom(i).formalcharge=6;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'P'</span>},2);atom(i).element={<span class="string">'P'</span>};atom(i).formalcharge=5;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};atom(i).formalcharge=3;
+    <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};atom(i).formalcharge=+4;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};atom(i).formalcharge=+3;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};atom(i).formalcharge=+2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mo'</span>},2);atom(i).element={<span class="string">'Mo'</span>};atom(i).formalcharge=+6;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Nb'</span>},2);atom(i).element={<span class="string">'Nb'</span>};atom(i).formalcharge=+5;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'W'</span>},2);atom(i).element={<span class="string">'W'</span>};atom(i).formalcharge=+6;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'P'</span>},2);atom(i).element={<span class="string">'P'</span>};atom(i).formalcharge=+5;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};atom(i).formalcharge=+3;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ow'</span>},2);atom(i).element={<span class="string">'Ow'</span>};atom(i).formalcharge=-2;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'O'</span>},1);atom(i).element={<span class="string">'O'</span>};atom(i).formalcharge=-2;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Hw'</span>},2);atom(i).element={<span class="string">'Hw'</span>};atom(i).formalcharge=1;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};atom(i).formalcharge=1;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'K'</span>},1);atom(i).element={<span class="string">'K'</span>};atom(i).formalcharge=1;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Na'</span>},1);atom(i).element={<span class="string">'Na'</span>};atom(i).formalcharge=0;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};atom(i).formalcharge=+1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'K'</span>},1);atom(i).element={<span class="string">'K'</span>};atom(i).formalcharge=+1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Na'</span>},1);atom(i).element={<span class="string">'Na'</span>};atom(i).formalcharge=+1;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Cl'</span>},2);atom(i).element={<span class="string">'Cl'</span>};atom(i).formalcharge=-1;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Br'</span>},2);atom(i).element={<span class="string">'Br'</span>};atom(i).formalcharge=-1;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ca'</span>},2);atom(i).element={<span class="string">'Ca'</span>};atom(i).formalcharge=2;
@@ -310,13 +310,13 @@ disp(<span class="string">'.pqr structure file written'</span>)
 
 <span class="comment">% assignin('caller','atom',atom);</span>
 <span class="comment">% Total_charge=sum([atom.charge])</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_pqr.m
 % * This function writes an .pqr file from the atom struct
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -477,20 +477,20 @@ end
 [atom.type]=atom.fftype;
 
 for i=1:size(atom,2)
-    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=4;
-    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
-    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
-    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};atom(i).formalcharge=6;
-    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};atom(i).formalcharge=5;
-    elseif strncmpi(atom(i).type,{'W'},2);atom(i).element={'W'};atom(i).formalcharge=6;
-    elseif strncmpi(atom(i).type,{'P'},2);atom(i).element={'P'};atom(i).formalcharge=5;
-    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
+    if strncmp(atom(i).type,{'Si'},2);atom(i).element={'Si'};atom(i).formalcharge=+4;
+    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=+3;
+    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=+2;
+    elseif strncmpi(atom(i).type,{'Mo'},2);atom(i).element={'Mo'};atom(i).formalcharge=+6;
+    elseif strncmpi(atom(i).type,{'Nb'},2);atom(i).element={'Nb'};atom(i).formalcharge=+5;
+    elseif strncmpi(atom(i).type,{'W'},2);atom(i).element={'W'};atom(i).formalcharge=+6;
+    elseif strncmpi(atom(i).type,{'P'},2);atom(i).element={'P'};atom(i).formalcharge=+5;
+    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=+3;
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
-    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=0;
+    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=+1;
+    elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=+1;
+    elseif strncmpi(atom(i).type,{'Na'},1);atom(i).element={'Na'};atom(i).formalcharge=+1;
     elseif strncmpi(atom(i).type,{'Cl'},2);atom(i).element={'Cl'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Br'},2);atom(i).element={'Br'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'Ca'},2);atom(i).element={'Ca'};atom(i).formalcharge=2;

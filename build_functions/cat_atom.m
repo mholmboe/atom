@@ -6,23 +6,23 @@
 % * in a trajectory
 
 atom0=import_atom(strcat('evap_0.gro'));
-% traj=zeros(125,3*size(atom,2));
-% frame=zeros(1,3*size(atom,2));
-% All_Box_dim=zeros(125,9);
-% frames1=[0:20:120];frames2=[121:240];
-% frames=sort([frames1 frames2]);
-
-traj=zeros(70,3*size(atom,2));
+traj=zeros(125,3*size(atom,2));
 frame=zeros(1,3*size(atom,2));
-All_Box_dim=zeros(70,9);
-frames=[0:1:70];
+All_Box_dim=zeros(125,9);
+frames1=[0:20:120];frames2=[121:240];
+frames=sort([frames1 frames2]);
+
+% traj=zeros(70,3*size(atom,2));
+% frame=zeros(1,3*size(atom,2));
+% All_Box_dim=zeros(70,9);
+% frames=[0:1:70];
 n=0;
 for i=[1:numel(frames)]
    i
    j=frames(i)
     try
-        if j>60 % To add extra copies of the final frame
-            n=60;
+        if j>240 % To add extra copies of the final frame
+            n=240;
         else
             n=j;
         end
@@ -31,7 +31,7 @@ for i=[1:numel(frames)]
       Xdata=XYZ_data(:,1);
       Ydata=XYZ_data(:,2);
       
-      Zdata=XYZ_data(:,3)-XYZ_data(1,3)+3.8;
+      Zdata=XYZ_data(:,3)-XYZ_data(1,3)+1; % Shift the lattice up a bit..
       Zdata(Zdata>Box_dim(3))=Zdata(Zdata>Box_dim(3))-Box_dim(3);
       Zdata(Zdata<0)=Zdata(Zdata<0)+Box_dim(3);
       

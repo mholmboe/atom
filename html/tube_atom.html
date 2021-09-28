@@ -1,0 +1,300 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>tube_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="tube_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>tube_atom.m</h1><!--introduction--><div><ul><li>This quirky function ca be used to create a nano-tube or nano-roll of the coordinates from an atom struct. It works best if the the input atom struct consists of one centered unit cell (to keep the number of atoms down). You can always the replicate_atom() function later to build the entire roll/tube.</li><li>See needed variables/parameters below on line 22-27 and 37 to play around with. For non-centrosymmetric layers, chosing +R or -R on line 45 allow you to choose the type of inner-surface atoms. The spiral_vector and Rshift on 37 can be used to skew the spiral in the x and/or the y direction/s.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = tube_atom(atom,Box_dim,Radii)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = tube_atom(atom,Box_dim,Dim,nUC,AngularRange,UCaccuracy,deltaaccuracy,Rshift)
+
+<span class="comment">% Dim=2; % 1 for X-direction, 2 for the Y-direction</span>
+<span class="comment">% nUC=36; % Ideal number of unit cells per revolution</span>
+<span class="comment">% AngularRange=2*360; % Ideal number of revolutions, ie n*360deg. The final angular range might be different..</span>
+<span class="comment">% UCaccuracy=0.05; % Connected to UC placement accuracy, lower is better, but harder.. will affect the actual angular range</span>
+<span class="comment">% deltaaccuracy=0.4; % Connected to UC placement speed, higher is faster, but worse.. will affect the actual angular range</span>
+<span class="comment">% Rshift=0.3; % Lateral shift in &Aring; between each UC, resulting in a roll rather than a tube (Rshift=0)</span>
+
+<span class="keyword">if</span> Dim==1
+    L=Box_dim(1);
+<span class="keyword">elseif</span> Dim==2
+    L=Box_dim(2);
+<span class="keyword">elseif</span> Dim==3
+    L=Box_dim(3);
+<span class="keyword">end</span>
+
+spiral_vector = [0   0   Rshift*(Rshift/(Rshift+i/AngularRange/2))] <span class="comment">% [0 0 0] makes a tube, anything else creates a spiral roll perpendicular to [x y z]</span>
+R = L*nUC/(2*pi) <span class="comment">% Target inner radii</span>
+Cf = 2*pi*R <span class="comment">% Target inner circumference, not used</span>
+
+atom=translate_atom(atom,-[min([atom.x]) min([atom.y]) max([atom.z])]);
+atom=replicate_atom(atom,Box_dim,[1 1 1]);
+
+atom=translate_atom(atom,-Box_dim./2);
+atom=translate_atom(atom,[0 0 R]); <span class="comment">% Try also -R, do you see any difference</span>
+
+System=atom;
+nUCreal=nUC*AngularRange/360;
+prev_temp=atom;AngleList(1)=0;DeltaList(1)=0;
+
+<span class="keyword">for</span> i=1:nUCreal
+    A=0;delta=0;angle=0;MajorAtomicOverlap=0;
+    <span class="keyword">while</span> abs(A-L)&gt;(UCaccuracy*L)
+
+        <span class="keyword">if</span> A-L &gt; UCaccuracy*L
+            angle=(i-1)*AngularRange/nUCreal-delta;
+        <span class="keyword">elseif</span> A-L &lt; UCaccuracy*L
+            angle=(i-1)*AngularRange/nUCreal+delta;
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> angle&lt;AngleList(end)
+            angle=AngleList(end);
+        <span class="keyword">end</span>
+
+        <span class="comment">%         if angle&gt;AngularRange</span>
+        <span class="comment">%             disp('angle larger than the AngularRange')</span>
+        <span class="comment">%             [angle AngularRange]</span>
+        <span class="comment">%</span>
+        <span class="comment">%         end</span>
+
+        <span class="keyword">if</span> Dim==1
+            trans_temp = spiral_atom(atom,Box_dim,[angle 0 0],i*spiral_vector);
+        <span class="keyword">elseif</span> Dim==2
+            trans_temp = spiral_atom(atom,Box_dim,[0 angle 0],i*spiral_vector);
+        <span class="keyword">elseif</span> Dim==3
+            disp(<span class="string">'Not supported in Z'</span>)
+            pause
+            <span class="comment">%             trans_temp = spiral_atom(atom,Box_dim,[0 0 angle],i*[0 0 Rshift]);</span>
+        <span class="keyword">end</span>
+
+        D=dist_matrix_noPBC_atom(trans_temp,prev_temp);
+        A=mean(diag(D));
+        delta=delta+deltaaccuracy;
+
+    <span class="keyword">end</span>
+
+    angle
+
+    DeltaList(i)=delta;
+    AngleList(i)=angle;
+    System=update_atom({System trans_temp});
+    prev_temp=trans_temp;
+
+    <span class="comment">%     if mod(i,10)==1</span>
+    <span class="comment">%         if i &gt; 1</span>
+    <span class="comment">%             i-1</span>
+    <span class="comment">%         end</span>
+    <span class="comment">%     end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> Rshift==0
+    D=dist_matrix_noPBC_atom(atom,trans_temp);
+    A=mean(diag(D));
+    disp(<span class="string">'last-to-first distance         ideal distance'</span>)
+    [A L]
+    <span class="keyword">if</span> A-L &gt; UCaccuracy*L
+        disp(<span class="string">'Play around with AngularRange and UCaccuracy to optimize the sealing of the tube'</span>)
+    <span class="keyword">elseif</span> A-L &lt; UCaccuracy*L
+        disp(<span class="string">'Play around with AngularRange and UCaccuracy to optimize the sealing of the tube'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+atom=System;
+
+assignin(<span class="string">'caller'</span>,<span class="string">'DeltaList'</span>,DeltaList);
+assignin(<span class="string">'caller'</span>,<span class="string">'AngleList'</span>,AngleList);
+disp(<span class="string">'.'</span>)
+disp(<span class="string">'.'</span>)
+disp(<span class="string">'.'</span>)
+disp(<span class="string">'Note that this function offers no error-checking in terms of overlapping atoms'</span>)
+disp(<span class="string">'..no clever math can be found here..'</span>)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% tube_atom.m
+% * This quirky function ca be used to create a nano-tube or nano-roll of the 
+% coordinates from an atom struct. It works best if the the input atom struct 
+% consists of one centered unit cell (to keep the number of atoms down). 
+% You can always the replicate_atom() function later to build the entire roll/tube.
+% * See needed variables/parameters below on line 22-27 and 37 to play around with.
+% For non-centrosymmetric layers, chosing +R or -R on line 45 allow you to
+% choose the type of inner-surface atoms. The spiral_vector and Rshift on 
+% 37 can be used to skew the spiral in the x and/or the y direction/s.
+%
+%% Version
+% 2.10
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = tube_atom(atom,Box_dim,Radii)
+
+function atom = tube_atom(atom,Box_dim,Dim,nUC,AngularRange,UCaccuracy,deltaaccuracy,Rshift)
+
+% Dim=2; % 1 for X-direction, 2 for the Y-direction
+% nUC=36; % Ideal number of unit cells per revolution
+% AngularRange=2*360; % Ideal number of revolutions, ie n*360deg. The final angular range might be different..
+% UCaccuracy=0.05; % Connected to UC placement accuracy, lower is better, but harder.. will affect the actual angular range
+% deltaaccuracy=0.4; % Connected to UC placement speed, higher is faster, but worse.. will affect the actual angular range
+% Rshift=0.3; % Lateral shift in Å between each UC, resulting in a roll rather than a tube (Rshift=0)
+
+if Dim==1
+    L=Box_dim(1);
+elseif Dim==2
+    L=Box_dim(2);
+elseif Dim==3
+    L=Box_dim(3);
+end
+
+spiral_vector = [0   0   Rshift*(Rshift/(Rshift+i/AngularRange/2))] % [0 0 0] makes a tube, anything else creates a spiral roll perpendicular to [x y z]
+R = L*nUC/(2*pi) % Target inner radii
+Cf = 2*pi*R % Target inner circumference, not used
+
+atom=translate_atom(atom,-[min([atom.x]) min([atom.y]) max([atom.z])]);
+atom=replicate_atom(atom,Box_dim,[1 1 1]);
+
+atom=translate_atom(atom,-Box_dim./2);
+atom=translate_atom(atom,[0 0 R]); % Try also -R, do you see any difference
+
+System=atom;
+nUCreal=nUC*AngularRange/360;
+prev_temp=atom;AngleList(1)=0;DeltaList(1)=0;
+
+for i=1:nUCreal
+    A=0;delta=0;angle=0;MajorAtomicOverlap=0;
+    while abs(A-L)>(UCaccuracy*L)
+        
+        if A-L > UCaccuracy*L
+            angle=(i-1)*AngularRange/nUCreal-delta;
+        elseif A-L < UCaccuracy*L
+            angle=(i-1)*AngularRange/nUCreal+delta;
+        end
+        
+        if angle<AngleList(end)
+            angle=AngleList(end);
+        end
+        
+        %         if angle>AngularRange
+        %             disp('angle larger than the AngularRange')
+        %             [angle AngularRange]
+        %
+        %         end
+        
+        if Dim==1
+            trans_temp = spiral_atom(atom,Box_dim,[angle 0 0],i*spiral_vector);
+        elseif Dim==2
+            trans_temp = spiral_atom(atom,Box_dim,[0 angle 0],i*spiral_vector);
+        elseif Dim==3
+            disp('Not supported in Z')
+            pause
+            %             trans_temp = spiral_atom(atom,Box_dim,[0 0 angle],i*[0 0 Rshift]);
+        end
+        
+        D=dist_matrix_noPBC_atom(trans_temp,prev_temp);
+        A=mean(diag(D));
+        delta=delta+deltaaccuracy;
+        
+    end
+    
+    angle
+    
+    DeltaList(i)=delta;
+    AngleList(i)=angle;
+    System=update_atom({System trans_temp});
+    prev_temp=trans_temp;
+    
+    %     if mod(i,10)==1
+    %         if i > 1
+    %             i-1
+    %         end
+    %     end
+    
+end
+
+if Rshift==0
+    D=dist_matrix_noPBC_atom(atom,trans_temp);
+    A=mean(diag(D));
+    disp('last-to-first distance         ideal distance')
+    [A L]
+    if A-L > UCaccuracy*L
+        disp('Play around with AngularRange and UCaccuracy to optimize the sealing of the tube')
+    elseif A-L < UCaccuracy*L
+        disp('Play around with AngularRange and UCaccuracy to optimize the sealing of the tube')
+    end
+end
+
+atom=System;
+
+assignin('caller','DeltaList',DeltaList);
+assignin('caller','AngleList',AngleList);
+disp('.')
+disp('.')
+disp('.')
+disp('Note that this function offers no error-checking in terms of overlapping atoms')
+disp('..no clever math can be found here..')
+
+
+##### SOURCE END #####
+--></body></html>

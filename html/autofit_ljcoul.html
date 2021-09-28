@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>autofit_ljcoul</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="autofit_ljcoul.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>autofit_ljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="autofit_ljcoul.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -69,6 +69,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
   </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Initial values</a></li><li><a href="#3">In order to keep parameters around 1..</a></li><li><a href="#4">Set lower/upper bounds</a></li><li><a href="#5">Set Options for Optimization</a></li><li><a href="#6">Run lsqnonlin</a></li></ul></div><pre class="codeinput"><span class="comment">% clear;</span>
 close <span class="string">all</span>;
+hold <span class="string">on</span>
 format <span class="string">compact</span>;
 
 r=.1:.001:1.2; <span class="comment">% nm</span>
@@ -79,17 +80,21 @@ r=.1:.001:1.2; <span class="comment">% nm</span>
 <span class="comment">% sig2=0.3165;</span>
 <span class="comment">% eps1=7.7e-6;</span>
 <span class="comment">% eps2=0.6504;</span>
+C4=0.05;
 
 hold <span class="string">on</span>
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Lio'</span> <span class="string">'Ob'</span>});
-[r,lj,coul,data] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,r);
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Si'</span> <span class="string">'Ob'</span>});
 
-eps1=.6;
-eps2=.2;
-q1=.525;
-q2=-1.05;
-</pre><h2 id="2">Initial values</h2><pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2  ];
-delta    = [ 1   1   .2    1     1     1];
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+<span class="comment">%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);</span>
+
+<span class="comment">% eps1=.6;</span>
+<span class="comment">% eps2=.6;</span>
+<span class="comment">% q1=2.1;</span>
+<span class="comment">% q2=-1.05;</span>
+C4 = 0.05
+</pre><h2 id="2">Initial values</h2><pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
+delta    = [ .1   1   .1      1    .1     1   ];
 
 x0=xinit;
 </pre><h2 id="3">In order to keep parameters around 1..</h2><pre class="codeinput">scalefactors=1./x0;
@@ -106,24 +111,26 @@ ind_neg=find(lb&gt;ub);
 <span class="keyword">end</span>
 </pre><h2 id="5">Set Options for Optimization</h2><pre class="codeinput">objective_func_string=<span class="string">'ljcoul_objective_func(x,data,r,scalefactors)'</span>;
 eval(strcat(<span class="string">'f=@(x)'</span>,objective_func_string,<span class="string">';'</span>));
-options = optimset(<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'MaxFunEvals'</span>,5000,<span class="keyword">...</span>
-    <span class="string">'MaxIter'</span>,5000,<span class="string">'Tolfun'</span>,1e-14);<span class="comment">%,'OutputFcn',custOutput);</span>
-
-<span class="comment">% custOutput = @(x,optimValues,state,varargin)plot_iterations(x,optimValues,state,varargin);</span>
-<span class="comment">% options = optimoptions(@lsqnonlin,'Diagnostics','off','Display','off','MaxFunctionEvaluations',5000,'MaxIterations',500,'Tolfun',1e-7,'PlotFcns',@plot_iterations);</span>
-<span class="comment">% options.Algorithm = 'trust-region-reflective';%'levenberg-marquardt'; % or</span>
-<span class="comment">% options.FiniteDifferenceStepSize = 'sqrt(eps)'; % 0.5;%</span>
-<span class="comment">% options.DiffMinChange = 1;</span>
-<span class="comment">% options.DiffMaxChange = 0.1;</span>
+options = optimoptions(@lsqnonlin,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'Display'</span>,<span class="string">'iter-detailed'</span>,<span class="string">'MaxFunctionEvaluations'</span>,50000,<span class="string">'MaxIterations'</span>,5000,<span class="string">'Tolfun'</span>,1e-12);
+options.Algorithm = <span class="string">'levenberg-marquardt'</span>; <span class="comment">%'trust-region-reflective';%'levenberg-marquardt'; % or</span>
+options.StepTolerance = 1.000000000000000e-12
+options.FiniteDifferenceType = <span class="string">'central'</span>;
+options.FiniteDifferenceStepSize = eps^(1/3);
+options.CheckGradients = true;
+options.OptimalityTolerance = 1E-18;
 </pre><h2 id="6">Run lsqnonlin</h2><pre class="codeinput">fx=lsqnonlin(f,x0,lb,ub,options);
 
 fx=fx./scalefactors
 
 copy(fx)
 
-[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx(1),fx(2),fx(3),fx(4),fx(5),fx(6),r);
+r_plot=.1:.001:1.2;
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
+[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+<span class="comment">%[r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);</span>
+norm((fxdata-data_plot)/numel(data_plot))
+plot(r_plot,fxdata-data_plot)
 
-plot(r,data-fxdata)
 <span class="comment">% x0=fx;</span>
 <span class="comment">% eval(strcat('res=',objective_func_string,';'));</span>
 <span class="comment">% disp('Mean abs(residual):');</span>
@@ -137,10 +144,11 @@ plot(r,data-fxdata)
 <span class="comment">%     xlim([min(r) max(r)]);</span>
 <span class="comment">%     ylim([min(data) max(data)]);</span>
 <span class="comment">% end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 % clear;
 close all;
+hold on
 format compact;
 
 r=.1:.001:1.2; % nm
@@ -151,18 +159,22 @@ r=.1:.001:1.2; % nm
 % sig2=0.3165;
 % eps1=7.7e-6;
 % eps2=0.6504;
+C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Lio' 'Ob'});
-[r,lj,coul,data] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,r);
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
 
-eps1=.6;
-eps2=.2;
-q1=.525;
-q2=-1.05;
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
+
+% eps1=.6;
+% eps2=.6;
+% q1=2.1;
+% q2=-1.05;
+C4 = 0.05
 %% Initial values
-xinit    = [ q1  q2  sig1  sig2  eps1  eps2  ];
-delta    = [ 1   1   .2    1     1     1];
+xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
+delta    = [ .1   1   .1      1    .1     1   ];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -184,15 +196,13 @@ end
 %% Set Options for Optimization
 objective_func_string='ljcoul_objective_func(x,data,r,scalefactors)';
 eval(strcat('f=@(x)',objective_func_string,';'));
-options = optimset('Diagnostics','on','Display','iter','MaxFunEvals',5000,...
-    'MaxIter',5000,'Tolfun',1e-14);%,'OutputFcn',custOutput);
-
-% custOutput = @(x,optimValues,state,varargin)plot_iterations(x,optimValues,state,varargin);
-% options = optimoptions(@lsqnonlin,'Diagnostics','off','Display','off','MaxFunctionEvaluations',5000,'MaxIterations',500,'Tolfun',1e-7,'PlotFcns',@plot_iterations);
-% options.Algorithm = 'trust-region-reflective';%'levenberg-marquardt'; % or
-% options.FiniteDifferenceStepSize = 'sqrt(eps)'; % 0.5;%
-% options.DiffMinChange = 1;
-% options.DiffMaxChange = 0.1;
+options = optimoptions(@lsqnonlin,'Diagnostics','on','Display','iter-detailed','MaxFunctionEvaluations',50000,'MaxIterations',5000,'Tolfun',1e-12);
+options.Algorithm = 'levenberg-marquardt'; %'trust-region-reflective';%'levenberg-marquardt'; % or
+options.StepTolerance = 1.000000000000000e-12
+options.FiniteDifferenceType = 'central';
+options.FiniteDifferenceStepSize = eps^(1/3);
+options.CheckGradients = true;
+options.OptimalityTolerance = 1E-18;
 
 %% Run lsqnonlin
 fx=lsqnonlin(f,x0,lb,ub,options);
@@ -201,9 +211,13 @@ fx=fx./scalefactors
 
 copy(fx)
 
-[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx(1),fx(2),fx(3),fx(4),fx(5),fx(6),r);
+r_plot=.1:.001:1.2;
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
+[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+%[r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
+norm((fxdata-data_plot)/numel(data_plot))
+plot(r_plot,fxdata-data_plot)
 
-plot(r,data-fxdata)
 % x0=fx;
 % eval(strcat('res=',objective_func_string,';'));
 % disp('Mean abs(residual):');

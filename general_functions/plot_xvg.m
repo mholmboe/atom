@@ -1,12 +1,12 @@
 %% plot_xvg.m
-% * This function imports and plots the type of .xvg files that the MD 
-% package Gromacs uses for some of its text-based data output. Note that 
-% the function can output the Data and optionally plot only certain data 
+% * This function imports and plots the type of .xvg files that the MD
+% package Gromacs uses for some of its text-based data output. Note that
+% the function can output the Data and optionally plot only certain data
 % the data columns given as a second argument.
 % Note also that the x and y ranges can also be set, see examples below.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -16,6 +16,7 @@
 % #  Data = plot_xvg('energy.xvg',[1 5 3]) % Will plot the 5th and 3rd column vs. the 1st one.
 % #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200]) % Will also set the X-axis to be  between 0 and 200
 % #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5
+% #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5],2) % Will apply a Gaussian smoothing...
 %
 function Data = plot_xvg(filename,varargin)
 
@@ -44,7 +45,7 @@ if nargin>1
     else
         Data=Data(:,columns);
         try
-        yaxis_all_legends=yaxis_all_legends(columns(2:end)-1);
+            yaxis_all_legends=yaxis_all_legends(columns(2:end)-1);
         catch
             disp('Did not get the yaxis_all_legends')
         end
@@ -58,6 +59,12 @@ if nargin>2
     indlo=find(Data(:,1)<xlimits(1));
     indhi=find(Data(:,1)>xlimits(2));
     Data([indlo; indhi],:)=[];
+end
+
+if nargin>4
+    for i=2:size(Data,2)
+         Data(:,i) = smooth(Data(:,i),varargin{4});
+    end
 end
 
 % Create figure

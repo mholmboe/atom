@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>mass_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="mass_atom.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>mass_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="mass_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>mass_atom.m</h1><!--introduction--><div><ul><li>This function fetches the mass for each atomtype and place it into the the field [atom.mass]. It also tries to calculate the (Box) molecular weight, box volume and density.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the occupancy of all sites</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = mass_atom(atom)</li><li>atom = mass_atom(atom,Box_dim) % To calculate the density</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = mass_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>mass_atom.m</h1><!--introduction--><div><ul><li>This function fetches the mass for each atomtype and place it into the the field [atom.mass]. It also tries to calculate the (Box) molecular weight, box volume and density.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the occupancy of all sites</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = mass_atom(atom)</li><li>atom = mass_atom(atom,Box_dim) % To calculate the density</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = mass_atom(atom,varargin)
 </pre><pre class="codeinput">element=element_atom(atom);
 
 mass={<span class="keyword">...</span>
@@ -200,7 +200,7 @@ ind=[];ind_array=[];
     <span class="keyword">end</span>
     ind=ind_array;
 <span class="keyword">else</span>
-    ind=find(strcmpi([element.type],mass(:,1)));
+    ind=find(strcmpi([element.type],mass(:,1)))
     <span class="keyword">if</span> numel(ind) == 0
         ind = 6;
     <span class="keyword">end</span>
@@ -222,10 +222,10 @@ mass = cell2mat(mass(ind,1));
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-disp(<span class="string">'Molecular weight in g/mol, Mw:'</span>)
-Mw=sum([atom.mass])
-disp(<span class="string">'Molecular weight in g/mol, considering Mw_occupancy:'</span>)
-Mw_occupancy=sum([atom.mass].*[atom.occupancy])
+<span class="comment">% disp('Molecular weight in g/mol, Mw:')</span>
+Mw=sum([atom.mass]);
+<span class="comment">% disp('Molecular weight in g/mol, considering Mw_occupancy:')</span>
+Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
 <span class="keyword">if</span> nargin&gt;1
     Box_dim=varargin{1};
@@ -251,10 +251,10 @@ Mw_occupancy=sum([atom.mass].*[atom.occupancy])
 
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
     Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
-    disp(<span class="string">'Volume in &Aring;^3:'</span>)
-    Box_volume
-    disp(<span class="string">'Density in g/cm^3'</span>)
-    Box_density
+<span class="comment">%     disp('Volume in &Aring;^3:')</span>
+<span class="comment">%     Box_volume</span>
+<span class="comment">%     disp('Density in g/cm^3')</span>
+<span class="comment">%     Box_density</span>
     assignin(<span class="string">'caller'</span>,<span class="string">'Box_volume'</span>,Box_volume);
     assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'</span>,Box_density);
 <span class="keyword">end</span>
@@ -265,7 +265,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Mw_occupancy
 <span class="keyword">if</span> occ==0
     atom = rmfield(atom,<span class="string">'occupancy'</span>);
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% mass_atom.m
 % * This function fetches the mass for each atomtype and place it into the
@@ -273,7 +273,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Mw_occupancy
 % weight, box volume and density.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -416,7 +416,7 @@ if iscell([element.type]) && length([element.type]) > 1
     end
     ind=ind_array;
 else
-    ind=find(strcmpi([element.type],mass(:,1)));
+    ind=find(strcmpi([element.type],mass(:,1)))
     if numel(ind) == 0
         ind = 6;
     end
@@ -440,10 +440,10 @@ if ~isfield(atom,'occupancy')
     end
 end
 
-disp('Molecular weight in g/mol, Mw:')
-Mw=sum([atom.mass])
-disp('Molecular weight in g/mol, considering Mw_occupancy:')
-Mw_occupancy=sum([atom.mass].*[atom.occupancy])
+% disp('Molecular weight in g/mol, Mw:')
+Mw=sum([atom.mass]);
+% disp('Molecular weight in g/mol, considering Mw_occupancy:')
+Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
 if nargin>1
     Box_dim=varargin{1};
@@ -469,10 +469,10 @@ if nargin>1
     
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
     Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
-    disp('Volume in Å^3:')
-    Box_volume
-    disp('Density in g/cm^3')
-    Box_density
+%     disp('Volume in Å^3:')
+%     Box_volume
+%     disp('Density in g/cm^3')
+%     Box_density
     assignin('caller','Box_volume',Box_volume);
     assignin('caller','Box_density',Box_density);
 end

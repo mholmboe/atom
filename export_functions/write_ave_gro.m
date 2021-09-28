@@ -8,7 +8,7 @@
 % default option which will compute the median position instead!
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

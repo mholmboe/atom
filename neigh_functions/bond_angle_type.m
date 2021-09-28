@@ -1,18 +1,18 @@
 %% bond_angle_type.m
-% * This function tries to find all bonds and angles between the  atom1 and
-% atom2 structures. One optional argument like 'reverse' reverses the 
+% * This function tries to find all bonds and angles between the atom1 and
+% atom2 structures. One optional argument like 'reverse' reverses the
 % angle_limit from max to min angle
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150)
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)
-% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150) % Basic input arguments
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1) % Allows skipping of internal angles, like for water
+% # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse') % Reverses the angle_limit from max to min angle
 
 function atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
 %%
@@ -37,7 +37,7 @@ elseif numel(Box_dim)==9
 end
 
 for i=1:size(atom1,2)
-    XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
+    XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
     
     if sum(strncmpi([atom1.type],'OW',2))>0 && sum(strncmpi([atom2.type],'HW',2))>0 && skip_internal == 1
         ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
@@ -162,6 +162,12 @@ for i=1:size(atom1,2)
     atom1(i).neigh.coords=neigh.coords;
     atom1(i).neigh.vec=neigh.r_vec;
     atom1(i).neigh.angle=neigh.angle;
+    
+    if mod(i,1000)==1
+        if i-1>0
+            i-1
+        end
+    end
     
 end
 

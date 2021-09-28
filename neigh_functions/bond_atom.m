@@ -3,15 +3,15 @@
 % Bond_index variable
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=bond_atom(atom,Box_dim)
-% # atom=bond_atom(atom,Box_dim,2.25) % Last argument is the max bond distance
-
+% # atom=bond_atom(atom,Box_dim) % Basic input arguments
+% # atom=bond_atom(atom,Box_dim,2.25) % Allows setting the max cutoff
+%
 function atom = bond_atom(atom,Box_dim,varargin)
 
 if nargin>2
@@ -27,7 +27,7 @@ else
 end
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
 
 [atom.fftype]=atom.type;
 
@@ -42,7 +42,7 @@ Radiiproperties=load('Revised_Shannon_radii.mat');
 % clayff_param(sort(unique([atom.type])),'SPC/E');
 
 disp('Calculating the distance matrix')
-if size(atom,2)>20000
+if size(atom,2)>50000 && numel(Box_dim)<9
      dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25);
 else
      dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
@@ -81,7 +81,8 @@ if isfield(atom,'bond')
 end
 
 disp('Looking for neighbours/bonds')
-Bond_index=[];b=1;
+Bond_index=[];
+b=1;
 for i=1:length(XYZ_labels)
     k=0;j=1;
     bond_ind=find(dist_matrix(:,i)>0);

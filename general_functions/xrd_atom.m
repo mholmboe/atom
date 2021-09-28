@@ -17,7 +17,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -33,9 +33,9 @@ function [exp_twotheta,intensity] = xrd_atom(varargin)
 % num_hkl=72; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=5:anglestep:80; % The twotheta range of interest
+exp_twotheta=4:anglestep:80; % The twotheta range of interest
 B_all=2; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
-Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian function vs. a gaussian function
+Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian peak shape vs. a gaussian peak shape
 neutral_atoms=0;
 
 %% Set FWHM
@@ -47,17 +47,22 @@ FWHM_hkl=.25; % Specify the full width at half maximum of your choice
 mode=0; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
 Sample_length = 4; % cm
 Gonio_radius = 24; % cm
-Div_slit = .1; % Divergence slit setting, 0 for automatic
+Div_slit = .01; % Divergence slit setting, 0 for automatic
 roughness = 0; % Surface roughness
 sigma_star=45; % Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite
-RNDPWD = 45; %  Random powder
+RNDPWD = 1; %  Random powder
 % mu_star=45; % Not yet implemented
 % alfa_strain = 0; % Not yet implemented
 
 % misalignment=0.0; % Not yet implemented
 
-L_type='normal'; % Lorent polarization type, else 'Reynolds';
+L_type='normal'; % 'normal'; % Lorent polarization type, else 'Reynolds';
 S1=2.3;S2=2.3; % Primary and secondary Soller slit , in deg
+
+if mode==0
+monochromator=0;
+monochromator_angle=26.6;
+end
 
 %% Enter the degree (number greater than or equal to 0) and direction of preferential orientation
 pref=0;
@@ -100,7 +105,7 @@ end
 % for R=1:1
 %     % %% Unreplicate the atom struct
 %     % atom = unreplicate_atom(atom,Box_dim,rep_factors);
-% 
+%
 %     %% Replicate and displace the atom struct
 %     atom = replicate_atom(atom,Box_dim,[1 1 2]);
 %     atom(size(atom,2)/2+1:end) = translate_atom(atom(size(atom,2)/2+1:end),[0 Box_dim(2)/3 0]);
@@ -108,7 +113,7 @@ end
 %     rep_factors=rep_factors.*[2 2 2];
 %     % plot_atom(atom,Box_dim);
 %     % pause;
-% 
+%
 %     %% Rotate some layers
 %     new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
 %     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 2]);
@@ -135,6 +140,7 @@ end
 % hmax=max([num_hkl rep_factors(1)*num_hkl]);
 % kmax=max([num_hkl rep_factors(2)*num_hkl]);
 % lmax=max([num_hkl rep_factors(3)*num_hkl]);
+
 Cell=Box_dim2Cell(Box_dim);
 hmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(1)));
 kmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(2)));
@@ -441,8 +447,14 @@ if mode==1
     intensity=real(intensity/max(intensity));
     %     intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
 else
-    intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(8*sin(exp_twotheta*pi/180/2).^2.*cos(exp_twotheta*pi/180/2));
+    if monochromator==0
+        %     intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(8*sin(exp_twotheta/2*pi/180/2).^2.*cos(exp_twotheta/2*pi/180));
+        intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(cos(exp_twotheta/2*pi/180).*sin(exp_twotheta/2*pi/180).^2);
+    else
+        intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)*(cos(monochromator_angle*pi/180).^2)./(cos(exp_twotheta/2*pi/180).*sin(exp_twotheta/2*pi/180).^2);
+    end
     intensity=real(intensity/max(intensity));
+    
     %     intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
 end
 
@@ -498,21 +510,21 @@ for i=1:numel(locs_twotheta)
         Miller_seq=abs(hkl_max_Intensity(ind,:));
         seq=sort(abs(Miller_seq),2,'descend');
         multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
-% remove        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.03,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
-% remove        if size(atom,2)<100
-% remove            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.09,num2str(multiplicity),'FontSize',14);
-% remove        end
+        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.06,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
+        if size(atom,2)<100
+            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.12,num2str(multiplicity),'FontSize',14);
+        end
         hkl_ind=[hkl_ind i];
         
     end
 end
-% remove stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
-% remove stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
-% stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
+stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
+stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
 
 xlim([0 max(exp_twotheta)]);
 try
-    ylim([-.4 max(intensity)*1.15])
+    ylim([-.1 max(intensity)*1.15])
 catch
 end
 
@@ -552,7 +564,7 @@ ylabel('Norm. intensity','FontSize',24);
 %     %     ylim([-.2 max(intensity)*1.2])
 % catch
 % end
-
+%
 % assignin('caller','peaks_int',peaks_int)
 % assignin('caller','locs_twotheta',locs_twotheta)
-
+%

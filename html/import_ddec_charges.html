@@ -1,0 +1,239 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_atom_ddec.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="import_ddec_charges.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>import_atom_ddec.m</h1><!--introduction--><div><ul><li>This function imports the partial net atomic charges (NAC's) from the chargemol/DDEC6 code. Not tested alot..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Close the text file.</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_ddec('XYZ6_even_tempered_net_atomic_charges.xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_ddec_charges(varargin)
+</pre><pre class="codeinput"><span class="keyword">if</span> nargin&gt;0
+    filename=varargin{1};
+<span class="keyword">else</span>
+    filename=<span class="string">'DDEC6_even_tempered_net_atomic_charges.xyz'</span>;
+<span class="keyword">end</span>
+
+fileID = fopen(filename,<span class="string">'r'</span>);
+line1 = {fgets(fileID)};
+line2 = {fgets(fileID)};
+nAtoms=str2double(line1);
+Box_string=strsplit(char(line2));
+Box_dim=zeros(1,9);
+Box_dim(1)=str2double(Box_string(11)); <span class="comment">% Lx,a</span>
+Box_dim(2)=str2double(Box_string(17)); <span class="comment">% Ly,b</span>
+Box_dim(3)=str2double(Box_string(23)); <span class="comment">% Lz,c</span>
+
+Box_dim(6)=str2double(Box_string(16)); <span class="comment">% xy</span>
+Box_dim(8)=str2double(Box_string(21)); <span class="comment">% xz</span>
+Box_dim(9)=str2double(Box_string(22)); <span class="comment">% yz</span>
+</pre><h2 id="5">Close the text file.</h2><pre class="codeinput">fclose(fileID);
+
+filetempID = fopen(filename,<span class="string">'r'</span>);
+line1 = {fgets(filetempID)};
+line2 = {fgets(filetempID)};
+<span class="keyword">for</span> i=1:nAtoms
+    line = fgetl(filetempID);
+    XYZ_string=strsplit((line));
+    XYZ_labels(i,1) = XYZ_string(1);
+    X(i) = XYZ_string(2);
+    Y(i) = XYZ_string(3);
+    Z(i) = XYZ_string(4);
+    ddec_charge(i) = XYZ_string(5);
+
+<span class="keyword">end</span>
+fclose(filetempID);
+ddec_charge=str2double(ddec_charge);
+XYZ_data=[str2double(X)' str2double(Y)' str2double(Z)'];
+
+<span class="comment">% size(XYZ_labels)</span>
+<span class="comment">% size(XYZ_data)</span>
+<span class="comment">% XYZ_labels = dataArray{:, 1};</span>
+<span class="comment">% XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];</span>
+
+<span class="keyword">for</span> i=1:nAtoms
+    atom(i).resname={<span class="string">'MOL'</span>};
+    atom(i).molid=1;
+    atom(i).type        = XYZ_labels(i,1);
+    atom(i).fftype  = XYZ_labels(i,1);
+    atom(i).charge      = 0;
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x = XYZ_data(i,1);
+    atom(i).y = XYZ_data(i,2);
+    atom(i).z = XYZ_data(i,3);
+    atom(i).vx=0;
+    atom(i).vy=0;
+    atom(i).vz=0;
+    atom(i).charge=ddec_charge(i);
+<span class="keyword">end</span>
+
+<span class="comment">% atom = resname_atom(atom);</span>
+
+write_atom_pqr(atom,Box_dim,<span class="string">'ddec.pqr'</span>)
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% import_atom_ddec.m
+% * This function imports the partial net atomic charges (NAC's) from the
+% chargemol/DDEC6 code. Not tested alot..
+%
+%% Version
+% 2.10
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_atom_ddec('XYZ6_even_tempered_net_atomic_charges.xyz')
+%
+function atom = import_ddec_charges(varargin)
+
+if nargin>0
+    filename=varargin{1};
+else
+    filename='DDEC6_even_tempered_net_atomic_charges.xyz';
+end
+
+fileID = fopen(filename,'r');
+line1 = {fgets(fileID)};
+line2 = {fgets(fileID)};
+nAtoms=str2double(line1);
+Box_string=strsplit(char(line2));
+Box_dim=zeros(1,9);
+Box_dim(1)=str2double(Box_string(11)); % Lx,a
+Box_dim(2)=str2double(Box_string(17)); % Ly,b
+Box_dim(3)=str2double(Box_string(23)); % Lz,c
+
+Box_dim(6)=str2double(Box_string(16)); % xy
+Box_dim(8)=str2double(Box_string(21)); % xz
+Box_dim(9)=str2double(Box_string(22)); % yz
+
+%% Close the text file.
+fclose(fileID);
+
+filetempID = fopen(filename,'r');
+line1 = {fgets(filetempID)};
+line2 = {fgets(filetempID)};
+for i=1:nAtoms
+    line = fgetl(filetempID);
+    XYZ_string=strsplit((line));
+    XYZ_labels(i,1) = XYZ_string(1);
+    X(i) = XYZ_string(2);
+    Y(i) = XYZ_string(3);
+    Z(i) = XYZ_string(4);
+    ddec_charge(i) = XYZ_string(5);
+    
+end
+fclose(filetempID);
+ddec_charge=str2double(ddec_charge);
+XYZ_data=[str2double(X)' str2double(Y)' str2double(Z)'];
+
+% size(XYZ_labels)
+% size(XYZ_data)
+% XYZ_labels = dataArray{:, 1};
+% XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
+
+for i=1:nAtoms
+    atom(i).resname={'MOL'};
+    atom(i).molid=1;
+    atom(i).type        = XYZ_labels(i,1);
+    atom(i).fftype  = XYZ_labels(i,1);
+    atom(i).charge      = 0;
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x = XYZ_data(i,1);
+    atom(i).y = XYZ_data(i,2);
+    atom(i).z = XYZ_data(i,3);
+    atom(i).vx=0;
+    atom(i).vy=0;
+    atom(i).vz=0;
+    atom(i).charge=ddec_charge(i);
+end
+
+% atom = resname_atom(atom);
+
+write_atom_pqr(atom,Box_dim,'ddec.pqr')
+
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','XYZ_labels',XYZ_labels)
+assignin('caller','XYZ_data',XYZ_data)
+
+
+##### SOURCE END #####
+--></body></html>

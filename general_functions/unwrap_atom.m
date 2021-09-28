@@ -3,7 +3,7 @@
 % * Tested 21/07/2016, there has been bugs.. does it work?
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -16,13 +16,14 @@ function atom = unwrap_atom(atom,Box_dim,dim)
 
 atom_Tot=atom;
 
+disp('Unwrap in x')
 for m=unique([atom_Tot.molid])
 
 atom = atom_Tot([atom_Tot.molid]==m);
 %Broken_molid=[];
 if sum(ismember(dim,'x'))>0
     Broken_molid=[];
-    disp('Unwrap in x')
+    
     
 %     for i=1:max([atom(:).molid])
 %         ind=find([atom.molid]==i);
@@ -70,9 +71,10 @@ if sum(ismember(dim,'x'))>0
     
 end
 
+disp('Unwrap in y')
 if sum(ismember(dim,'y'))>0
     Broken_molid=[];
-    disp('Unwrap in y')
+    
     
 %     for i=1:max([atom(:).molid])
 %         ind=find([atom.molid]==i);
@@ -117,9 +119,10 @@ if sum(ismember(dim,'y'))>0
     
 end
 
+disp('Unwrap in z')
 if sum(ismember(dim,'z'))>0
     Broken_molid=[];
-    disp('Unwrap in z')
+    
     
 %     for i=1:max([atom(:).molid])
 %         ind=find([atom.molid]==i);

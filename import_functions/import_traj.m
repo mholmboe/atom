@@ -4,14 +4,14 @@
 % * stride and other thingies.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = import_traj('conf.gro','traj.xtc')
-% # atom = import_traj('conf.gro','traj.trr')
+% # atom = import_traj('conf.pdb','traj.trr')
 % # atom = import_traj('conf.gro','traj.dcd')
 % # atom = import_traj('traj.pdb')
 % # atom = import_traj('traj.xyz')
@@ -80,7 +80,12 @@ elseif regexp(filenametraj,'.gro') > 1
 elseif regexp(filenametraj,'.xyz') > 1
     % Note that varargin can be used for importing n frames or using stride
     disp('Found .xyz trajectory');
-    atom = import_xyz_traj(filenametraj);
+    atomXYZ = import_xyz_traj(filenametraj);
+    if nargin>1
+        atom=import_atom(filenameconf); 
+    else
+        atom=atomXYZ;
+    end
 end
 
 if ~exist('atom','var')

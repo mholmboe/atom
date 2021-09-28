@@ -4,15 +4,16 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_atom('molecule.gro')
-% # atom = import_atom('molecule.pdb',[10 5 2])
-% # atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23])
+% # atom = import_atom('molecule.gro') %
+% # atom = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
+% # atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23]) %
+% Translates the atom struct by a [x y z] Ångströms and
 
 function atom = import_atom(filename,varargin)
 %%
@@ -51,7 +52,23 @@ elseif regexp(filename,'.pdb') > 1
     
     assignin('caller','occupancy',occupancy)
     assignin('caller','tempfactor',tempfactor)
-
+    
+elseif regexp(filename,'.pqr') > 1
+    disp('Found .pdb file');
+    if nargin==2
+        trans_vec=cell2mat(varargin(1));
+        atom = import_atom_pqr(filename,trans_vec);
+    elseif nargin==3
+        trans_vec=cell2mat(varargin(1));
+        NewBox_dim=cell2mat(varargin(2));
+        atom = import_atom_pqr(filename,trans_vec,NewBox_dim);
+    else
+        atom = import_atom_pqr(filename);
+    end
+    
+    assignin('caller','occupancy',occupancy)
+    assignin('caller','tempfactor',tempfactor)
+    
 elseif regexp(filename,'.mol2') > 1
     disp('Found .mol2 file');
     if nargin==2

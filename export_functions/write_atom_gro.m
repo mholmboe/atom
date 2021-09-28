@@ -2,7 +2,7 @@
 % * This function writes a gro file.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -24,22 +24,26 @@ if numel(Box_dim)==1
     Box_dim(3)=Box_dim(1);
 end
 
-nAtoms=length(atom);
+nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename_out, 'wt');
 fprintf(fid, '%s\n','Created in Matlab');
 fprintf(fid, '%-5i\n',nAtoms);
 
 if sum(find(isnan([atom.vx]))) || atom(1).vx == 0
-    for i = 1:nAtoms
+    i=1;
+    while i<nAtoms+1
         Atom_section(1:7) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10];
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f\n', Atom_section{1:7});
+        i=i+1;
     end
 else
     % To include velocities (if they exist) as well... untested
-    for i = 1:nAtoms
+    i=1;
+    while i<nAtoms+1
         Atom_section(1:10) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10, atom(i).vx/10, atom(i).vy/10, atom(i).vz/10];
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f\n', Atom_section{1:10});
+        i=i+1;
     end
 end
 Box_dim

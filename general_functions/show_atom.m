@@ -5,7 +5,7 @@
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -43,8 +43,11 @@ element=element_atom(atom);
 XYZ_labels=[element.type]';
 nAtoms = size(XYZ_labels,1);
 
-if strncmpi(style,'crystal',3) || strncmpi(style,'filled',4)
-    radii = 1/5*abs(radius_crystal(XYZ_labels));
+if strncmpi(style,'crystal',3) 
+        radii = 1/5*abs(radius_crystal(XYZ_labels));
+elseif  strncmpi(style,'filled',4)
+%     radii = 1/5*abs(radius_crystal(XYZ_labels));
+    radii = 1/9*abs(radius_vdw(XYZ_labels));
 elseif strncmpi(style,'ionic',3)
     radii = 1/5*abs(radius_ion(XYZ_labels));
 else
@@ -397,4 +400,19 @@ if strncmpi(style,'filled',4)
     end
 end
 
+
+
 hold off;
+
+end
+
+function rotmat = roty(beta)
+% rotate in the direction of z->x, counter-clockwise
+rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
+end
+
+function rotmat = rotz(gamma)
+% rotate in the direction of x->y, counter-clockwise
+rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
+end
+

@@ -1,7 +1,7 @@
 %% Complete list of all atom functions
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -194,7 +194,7 @@
 % # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

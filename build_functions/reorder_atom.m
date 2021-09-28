@@ -9,7 +9,7 @@
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -26,21 +26,21 @@ if nargin>2
 end
 
 if iscell(neworder)==0
-    
-    nResidues=max([atom.molid]); % How many residues do we have?
+    disp('Will re-order the order of the atoms');
+    nResidues=max([atom.molid]) % How many residues do we have?
     nResidueatoms_prev=sum([atom.molid]==1); % How many atoms per residue did we have initially?
     nResidueatoms_current=length(neworder); % How many atoms per residue did will we output?
     nAtoms=length(neworder)*nResidues; % How many atoms in total will we output? Can be lower than the initial number
     
-    newatom=atom(1:nAtoms); % Create an atom struct to overwrite
+    ordered_atom=atom(1:nAtoms); % Create an atom struct to overwrite
     for i=1:nResidues
-        newatom(1+(i-1)*nResidueatoms_current:i*nResidueatoms_current)=atom(neworder+(i-1)*nResidueatoms_prev);
+        ordered_atom(1+(i-1)*nResidueatoms_current:i*nResidueatoms_current)=atom(neworder+(i-1)*nResidueatoms_prev);
     end
     
-    atom=newatom;
+    atom=update_atom(ordered_atom);
     
-    % Write the new structure to a .gro file
-    write_atom_gro(newatom,Box_dim,'reordered.gro')
+%     % Write the new structure to a .gro file
+%     write_atom_gro(newatom,Box_dim,'reordered.gro')
     
 elseif iscell(neworder)==1 && strncmpi(type,'resname',3)
     
@@ -61,11 +61,15 @@ elseif iscell(neworder)==1 && strncmpi(type,'resname',3)
     end
     atom=update_atom(ordered_atom);
     
-elseif iscell(neworder)==1 && strncmpi(type,'atomtype',4) || strncmpi(type,'type',4)
+elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type',4)
     
     atomtype=[];ordered_atom=[];
     if numel(neworder)~=numel(unique([atom.type]))
-        disp('You have not issued a list of atomtypes that does not fully match the atom struct!');
+        disp('You have not issued a list of atomtypes that fully match the atom struct!');
+        if numel(setdiff(unique([atom.type]),unique(neworder)))>0
+            setdiff(unique([atom.type]),unique(neworder))
+            pause
+        end
     else
         if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.type])))))~=0
             disp('Make sure you have the atomtypes spelled right..');

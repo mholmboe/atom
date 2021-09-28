@@ -2,7 +2,7 @@
 % * This function transforms a triclinic atom struct to an orthogonal one
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -107,12 +107,12 @@ if size(atom,2)>0
     for i=1:size(atom,2)
         XYZ_data_frac(i,:)=ToFrac*[XYZ_data(i,1) XYZ_data(i,2) XYZ_data(i,3)]';
         XYZ_data_orto(i,:)=[lx ly lz].*XYZ_data_frac(i,:);
-        atom(i).x=XYZ_data_orto(i,1);
-        atom(i).y=XYZ_data_orto(i,2);
-        atom(i).z=XYZ_data_orto(i,3);
-        atom(i).xfrac=XYZ_data_frac(i,1);
-        atom(i).yfrac=XYZ_data_frac(i,2);
-        atom(i).zfrac=XYZ_data_frac(i,3);
+        atom(i).x=round(XYZ_data_orto(i,1),4);
+        atom(i).y=round(XYZ_data_orto(i,2),4);
+        atom(i).z=round(XYZ_data_orto(i,3),4);
+        atom(i).xfrac=round(XYZ_data_frac(i,1),4);
+        atom(i).yfrac=round(XYZ_data_frac(i,2),4);
+        atom(i).zfrac=round(XYZ_data_frac(i,3),4);
     end
     
 end

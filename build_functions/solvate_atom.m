@@ -27,16 +27,16 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * SOL = solvate_atom(limits,density,r,maxsol) % Basic input arguments
-% * SOL = solvate_atom(limits,density,r,'maxsol',solute_atom) % Will maximize the numer of solvent molecules
-% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom) % Will account for existing solute sites 
-% * SOL = solvate_atom(limits,density,r,'shell15',solute_atom) % Will solvatize a 15Å shell around the sites in the solute_atom 
+% * SOL = solvate_atom(limits,density,r,'maxsol',solute_atom) % Will maximize the number of solvent molecules
+% * SOL = solvate_atom(limits,density,r,maxsol,solute_atom) % Will account for existing solute sites
+% * SOL = solvate_atom(limits,density,r,'shell15',solute_atom) % Will solvatize a 15Å shell around the sites in the solute_atom
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'tip4p') % Will use the tip4p water model
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice') % Will use an hexagonal ice structure
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct
@@ -136,10 +136,14 @@ if nargin>5
         SOL=import_atom_gro('864_swm4_ndp.gro');
         disp('Adding swm4_ndp!!!')
     elseif strncmpi(watermodel,'custom',5)
-        disp('You use your own solvent, you brave')
+        disp('You are using your own solvent, you must be brave')
         SOL=varargin{3};
         if nargin>7
             Box_dim=varargin{4};
+            if numel(Box_dim)>3
+                disp('Custom solvent boxes must be orthogonal, i.e. numel(Box_dim)==3')
+                pause
+            end
         end
     end
 else
@@ -162,21 +166,9 @@ if (limits(1)+limits(2)+limits(3)) ~= 0
     disp('Translating the solvent box');
     SOL=translate_atom(SOL,[limits(1) limits(2) limits(3)],'all');
 end
-% SOL=slice_atom(SOL,limits,0);
-% assignin('caller','SOL',SOL);
-% pause
+
 disp('nSOL before merge');
 size(SOL,2)/atomsperSOL
-
-% limits
-% min([SOL.x])
-% min([SOL.y])
-% min([SOL.z])
-% max([SOL.x])
-% max([SOL.y])
-% max([SOL.z])
-% pause
-% vmd([solute_atom SOL],limits(4:6))
 
 if size(solute_atom,2) > 0
     if size(SOL,2) > 10000 || size(solute_atom,2) > 10000
@@ -184,7 +176,7 @@ if size(solute_atom,2) > 0
         SOL_count=1;SOL_merged=[];count=1;
         while SOL_count<size(SOL,2)
             SOL_block= SOL(SOL_count:SOL_count+nSOL_block-1);
-            SOL_block = merge_atom(solute_atom,limits(4:6)-.4,SOL_block,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
+            SOL_block = merge_atom(solute_atom,limits(4:6)-.2,SOL_block,'molid','H',[r-.4 r]); % Can shell be implemented here instead?
             SOL_merged = [SOL_merged SOL_block];
             SOL_count=SOL_count+nSOL_block;
             disp('Number of solvent molecules...');
@@ -193,7 +185,7 @@ if size(solute_atom,2) > 0
         end
         SOL=SOL_merged;
     else
-        SOL = merge_atom(solute_atom,limits(4:6)-.4,SOL,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
+        SOL = merge_atom(solute_atom,limits(4:6)-.2,SOL,'molid','Hw',[r-.4 r]); % Can shell be implemented here instead?
     end
 else
     SOL=slice_atom(SOL,[limits(1) limits(2) limits(3) limits(4:6)-.4],0);
@@ -209,7 +201,7 @@ if iscellstr({maxsol}) == 1
     elseif strncmpi(maxsol,'shell',5)
         disp('Will solvate a shell around the solute molecule')
         nSolute=size(solute_atom,2);
-        if (size(SOL,2)+size(solute_atom,2))>10000
+        if (size(SOL,2)+size(solute_atom,2))>50000
             dist_matrix = cell_list_dist_matrix_atom(update_atom({solute_atom SOL}),Box_dim);
             dist_matrix(dist_matrix==0)=2*shellthickness; % Set some high dummy value
         else
@@ -229,18 +221,19 @@ if iscellstr({maxsol}) == 1
         SOL=update_atom(SOL);
     end
 end
-
 rand_molid=randperm(nSOL/atomsperSOL);
 if maxsol>size(rand_molid,2)
-    maxsol
-    size(rand_molid,2)
+    disp('You have tried to add too many solvent molecules for the given region')
 end
+disp('Number of maximum solvent molecules possible')
+size(rand_molid,2)
+disp('Number of solvent molecules requested')
 maxsol
+
 rand_molid=rand_molid(1:maxsol);
+
 rand_index=ismember([SOL.molid],rand_molid);
 SOL=SOL(rand_index);
-
-% vmd([solute_atom SOL],limits(4:6))
 
 % Delete water molecules if not using the <maxsol> option
 if iscellstr({maxsol}) == 0

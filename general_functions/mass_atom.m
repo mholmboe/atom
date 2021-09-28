@@ -4,7 +4,7 @@
 % weight, box volume and density.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -147,7 +147,7 @@ if iscell([element.type]) && length([element.type]) > 1
     end
     ind=ind_array;
 else
-    ind=find(strcmpi([element.type],mass(:,1)));
+    ind=find(strcmpi([element.type],mass(:,1)))
     if numel(ind) == 0
         ind = 6;
     end
@@ -171,10 +171,10 @@ if ~isfield(atom,'occupancy')
     end
 end
 
-disp('Molecular weight in g/mol, Mw:')
-Mw=sum([atom.mass])
-disp('Molecular weight in g/mol, considering Mw_occupancy:')
-Mw_occupancy=sum([atom.mass].*[atom.occupancy])
+% disp('Molecular weight in g/mol, Mw:')
+Mw=sum([atom.mass]);
+% disp('Molecular weight in g/mol, considering Mw_occupancy:')
+Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
 if nargin>1
     Box_dim=varargin{1};
@@ -200,10 +200,10 @@ if nargin>1
     
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
     Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
-    disp('Volume in Å^3:')
-    Box_volume
-    disp('Density in g/cm^3')
-    Box_density
+%     disp('Volume in Å^3:')
+%     Box_volume
+%     disp('Density in g/cm^3')
+%     Box_density
     assignin('caller','Box_volume',Box_volume);
     assignin('caller','Box_density',Box_density);
 end

@@ -6,14 +6,14 @@
 %
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=cn_atom(atom,Box_dim)
-% # atom=cn_atom(atom,Box_dim,2.1) % Last argument is the max bond distance
+% # atom=cn_atom(atom,Box_dim) % Basic input arguments
+% # atom=cn_atom(atom,Box_dim,rmaxlong) % Allows setting the max cutoff
 
 function atom = cn_atom(atom,Box_dim,varargin)
 
@@ -23,10 +23,10 @@ else
     rmaxlong=2.25;
 end
 
-if size(atom,2)<15000
-    atom=bond_atom(atom,Box_dim,rmaxlong);
-else
+if size(atom,2)>50000 && numel(Box_dim)<9
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
+else
+    atom=bond_atom(atom,Box_dim,rmaxlong);
 end
 
 CN=num2cell(CoordNumber);

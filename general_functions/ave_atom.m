@@ -3,7 +3,7 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -19,4 +19,9 @@ for i=1:max([atom(:).molid])
     [atom(ind).ave_y]=deal(mean([atom(ind).y]));
     [atom(ind).ave_z]=deal(mean([atom(ind).z]));
 end
+
+assignin('caller','X_ave',mean([atom.x]));
+assignin('caller','Y_ave',mean([atom.y]));
+assignin('caller','Z_ave',mean([atom.z]));
+
 

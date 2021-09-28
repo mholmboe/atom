@@ -2,13 +2,13 @@
 % * This function tries to assign all bonds to a bond_matrix
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=bond_matrix_atom(atom,Box_dim)
+% # atom=bond_matrix_atom(atom,Box_dim) % Basic input arguments
 
 function atom = bond_matrix_atom(atom,Box_dim,varargin)
 
@@ -20,7 +20,7 @@ end
 [atom.fftype]=atom.element;
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
 
 Radiiproperties=load('Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
@@ -32,8 +32,8 @@ else
     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
 end
 
-XYZ_radii=zeros(length(XYZ_labels),1);
-XYZ_formalcharge=zeros(length(XYZ_labels),1);
+XYZ_radii=single(zeros(length(XYZ_labels),1));
+XYZ_formalcharge=single(zeros(length(XYZ_labels),1));
 Atom_label=sort(unique([atom.type]));
 for i=1:length(Atom_label)
     try
@@ -64,8 +64,8 @@ atom=rmfield(atom,'neigh');
 for i=1:length(XYZ_labels)
     k=0;j=1;
     bond_ind=find(bond_matrix(:,i));
-%     XYZ_labels(i)
-%     numel(bond_ind)
+    %     XYZ_labels(i)
+    %     numel(bond_ind)
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if bond_matrix(bond_ind(j),i)==1
             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0
@@ -78,6 +78,11 @@ for i=1:length(XYZ_labels)
             end
         end
         j=j+1;
+    end
+    if mod(i,1000)==1
+        if i-1>0
+            i-1
+        end
     end
 end
 

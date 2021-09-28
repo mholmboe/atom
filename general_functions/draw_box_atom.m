@@ -3,13 +3,17 @@
 % does it work with triclinic sim box?
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # draw_box_atom(Box_dim,[0.5 0.5 0.5],2)
+% # draw_box_atom(Box_dim)
+% # draw_box_atom(Box_dim,[0.5 0.5 0.5]) % RGB color
+% # draw_box_atom(Box_dim,[0.5 0.5 0.5],2) % Line thickness
+% # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times
+% # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions
 %
 function Simbox = draw_box_atom(Box_dim,varargin)
 

@@ -2,7 +2,7 @@
 % * Note that you need to set your own gmx Gromacs path on line 16.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -11,19 +11,16 @@
 % # gmx('some utility','-someflag','some file/input') % Basic input syntax
 % # gmx('editconf','-f','Ethanol.pdb','-o','out.pdb') % Calling the gmx editconf utility
 
-function path2gmx = gmx(varargin)
-
-% Set your own gmx Gromacs path here
-path2gmx='/usr/local/gromacs-2018.7/bin/gmx';
+function gmx(varargin)
 
 if nargin>0
     tool=varargin{1};
     if nargin==1
-        gmx_cmd=strcat(path2gmx,{' '},tool);
+        gmx_cmd=strcat(PATH2GMX,'/gmx',{' '},tool);
     elseif nargin==2
-        gmx_cmd=strcat(path2gmx,{' '},tool,{' -h'});
+        gmx_cmd=strcat(PATH2GMX,'/gmx',{' '},tool,{' -h'});
     else
-        gmx_cmd=strcat(path2gmx,{' '},tool);
+        gmx_cmd=strcat(PATH2GMX,'/gmx',{' '},tool);
         for i=2:2:nargin-1
             eval(strcat('inflag=varargin{',num2str(i),'};'));
             eval(strcat('invar=varargin{',num2str(i+1),'};'));
@@ -31,7 +28,7 @@ if nargin>0
         end
     end
 else
-    gmx_cmd=strcat(path2gmx,{' -h'});
+    gmx_cmd=strcat(PATH2GMX,'/gmx',{' -h'});
 end
 
 system(char(gmx_cmd));

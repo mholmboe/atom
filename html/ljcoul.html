@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ljcoul</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="ljcoul.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>ljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="ljcoul.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [r,lj,coul,Utot] = ljcoul(param,varargin)
 
 <span class="comment">% clear all;</span>
 <span class="comment">% format compact;</span>
@@ -90,25 +90,63 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% %eps2=3.77671E-05;% kJ/mol</span>
 <span class="comment">% eps2=7.70065E-06;% kJ/mol</span>
 
-<span class="keyword">if</span> nargin &gt; 6
+q1=param(1);
+q2=param(2);
+
+sig1=param(3);
+sig2=param(4);
+
+eps1=param(5);
+eps2=param(6);
+
+<span class="keyword">if</span> numel(param)&gt;6
+    C41=param(7);
+    C42=param(7);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(param)&gt;7
+    C41=param(7);
+    C42=param(8);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 1
     r=varargin{1};
 <span class="keyword">else</span>
-<span class="comment">%     r=1:length(data);</span>
+    <span class="comment">%     r=1:length(data);</span>
     r=.01:.0005:1.2; <span class="comment">% nm</span>
 <span class="keyword">end</span>
 
-e_mix=(eps1*eps2)^.5;
-sig_mix=(sig1+sig2)/2;
+<span class="keyword">if</span> numel(param)&lt;7
 
-lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
-coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">else</span>
+
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+
+    lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="keyword">end</span>
+
 Utot=lj+coul;
 
 hold <span class="string">on</span>
 
 plotmin=1000*(round(min(Utot*1.5)/1000));
 <span class="keyword">if</span> plotmin&gt;=0
-   plotmin=10000;
+    plotmin=10000;
 <span class="keyword">end</span>
 plot(r,lj,<span class="string">'b'</span>);
 plot(r,coul,<span class="string">'r'</span>);
@@ -117,9 +155,9 @@ xlabel(<span class="string">'r [nm]'</span>);
 ylabel(<span class="string">'U [kJ/mol]'</span>);
 xlim([0,1.2]);
 ylim(sort([-plotmin plotmin]))
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
+function [r,lj,coul,Utot] = ljcoul(param,varargin)
 
 % clear all;
 % format compact;
@@ -133,34 +171,72 @@ function [r,lj,coul,Utot] = ljcoul(q1,q2,sig1,sig2,eps1,eps2,varargin)
 % q1=-1.05;
 % q2=2.1;
 % % q2=2.0;
-% %  
+% %
 % sig1=0.31656; %nm
 % %sig2=0.407222; %nm
 % sig2=0.3302; %nm
-% %  
+% %
 % eps1=0.65017;% kJ/mol
 % %eps2=3.77671E-05;% kJ/mol
 % eps2=7.70065E-06;% kJ/mol
 
-if nargin > 6
+q1=param(1);
+q2=param(2);
+
+sig1=param(3);
+sig2=param(4);
+
+eps1=param(5);
+eps2=param(6);
+
+if numel(param)>6
+    C41=param(7);
+    C42=param(7);
+end
+
+if numel(param)>7
+    C41=param(7);
+    C42=param(8);
+end
+
+if nargin > 1
     r=varargin{1};
 else
-%     r=1:length(data);
+    %     r=1:length(data);
     r=.01:.0005:1.2; % nm
 end
 
-e_mix=(eps1*eps2)^.5;
-sig_mix=(sig1+sig2)/2;
+if numel(param)<7
+    
+    e_mix=(eps1*eps2)^.5;
+    sig_mix=(sig1+sig2)/2;
+    
+    lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+else
+    
+    C61=4*eps1*sig1^6;
+    C121=4*eps1*sig1^12;
+    C62=4*eps2*sig2^6;
+    C122=4*eps2*sig2^12;
+    
+    C12_mix=(C121*C122)^.5;
+    C6_mix=(C61*C62)^.5;
+    C4_mix=(C41*C42)^.5;
+    
+    lj=C12_mix./r.^12-C6_mix./r.^6-C4_mix./r.^4;
+    coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+    
+end
 
-lj=4*e_mix.*((sig_mix./r).^12-(sig_mix./r).^6);
-coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
 Utot=lj+coul;
 
 hold on
 
 plotmin=1000*(round(min(Utot*1.5)/1000));
 if plotmin>=0
-   plotmin=10000; 
+    plotmin=10000;
 end
 plot(r,lj,'b');
 plot(r,coul,'r');

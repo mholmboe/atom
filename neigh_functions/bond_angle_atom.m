@@ -5,14 +5,16 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=bond_angle_atom(atom,Box_dim,1.25,2.25)
-% # atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more')
+% # atom=bond_angle_atom(atom,Box_dim) % Basic input arguments
+% # atom=bond_angle_atom(atom) % When PBC is not important
+% # atom=bond_angle_atom(atom,Box_dim,1.25,2.25) % Allows setting the rmaxshort and rmaxlong
+% # atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more') % Will write more info to the calling workspace
 %
 
 function atom=bond_angle_atom(atom,varargin)
@@ -44,7 +46,7 @@ nAtoms=size(atom,2);
 % max_long_dist=2.3;
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double 
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if length(Box_dim) > 3
@@ -54,9 +56,9 @@ else
 end
 
 close_count=1;
-Bond_index=zeros(4*size(XYZ_data,1),3);
-Angle_index=zeros(4*size(XYZ_data,1),4);
-dist_matrix=zeros(nAtoms,nAtoms);
+Bond_index=single(zeros(4*size(XYZ_data,1),3)); % use of single instead of double 
+Angle_index=single(zeros(4*size(XYZ_data,1),4)); % use of single instead of double 
+dist_matrix=single(zeros(nAtoms,nAtoms)); % use of single instead of double 
 % dist_matrix = dist_matrix_atom(atom,Box_dim); % Do this if you want to calc dist_matrix_atom first
 b=1;a=1; overlap_index=[];
 for i = 1:size(XYZ_data,1)
@@ -246,7 +248,7 @@ for i = 1:size(XYZ_data,1)
             end
         end
     end
-    if mod(i,100)==1
+    if mod(i,1000)==1
         if i-1>0
             i-1
         end

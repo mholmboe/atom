@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_gro.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="write_atom_gro.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>write_atom_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="write_atom_gro.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_gro.m</h1><!--introduction--><div><ul><li>This function writes a gro file.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_gro(atom,Box_dim,filename_out)
+  </style></head><body><div class="content"><h1>write_atom_gro.m</h1><!--introduction--><div><ul><li>This function writes a gro file.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_gro(atom,Box_dim,filename_out)
 
 <span class="keyword">if</span> regexp(filename_out,<span class="string">'.gro'</span>) ~= false
     filename_out = filename_out;
@@ -81,22 +81,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Box_dim(3)=Box_dim(1);
 <span class="keyword">end</span>
 
-nAtoms=length(atom);
+nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename_out, <span class="string">'wt'</span>);
 fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'Created in Matlab'</span>);
 fprintf(fid, <span class="string">'%-5i\n'</span>,nAtoms);
 
 <span class="keyword">if</span> sum(find(isnan([atom.vx]))) || atom(1).vx == 0
-    <span class="keyword">for</span> i = 1:nAtoms
+    i=1;
+    <span class="keyword">while</span> i&lt;nAtoms+1
         Atom_section(1:7) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10];
         fprintf(fid, <span class="string">'%5d%-5s%5s%5d%8.3f%8.3f%8.3f\n'</span>, Atom_section{1:7});
+        i=i+1;
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     <span class="comment">% To include velocities (if they exist) as well... untested</span>
-    <span class="keyword">for</span> i = 1:nAtoms
+    i=1;
+    <span class="keyword">while</span> i&lt;nAtoms+1
         Atom_section(1:10) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10, atom(i).vx/10, atom(i).vy/10, atom(i).vz/10];
         fprintf(fid, <span class="string">'%5d%-5s%5s%5d%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f\n'</span>, Atom_section{1:10});
+        i=i+1;
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 Box_dim
@@ -108,13 +112,13 @@ Box_dim
 <span class="comment">%fprintf(fid, '\n');</span>
 fclose(fid);
 disp(<span class="string">'.gro structure file written'</span>)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_gro.m
 % * This function writes a gro file.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -136,22 +140,26 @@ if numel(Box_dim)==1
     Box_dim(3)=Box_dim(1);
 end
 
-nAtoms=length(atom);
+nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename_out, 'wt');
 fprintf(fid, '%s\n','Created in Matlab');
 fprintf(fid, '%-5i\n',nAtoms);
 
 if sum(find(isnan([atom.vx]))) || atom(1).vx == 0
-    for i = 1:nAtoms
+    i=1;
+    while i<nAtoms+1
         Atom_section(1:7) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10];
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f\n', Atom_section{1:7});
+        i=i+1;
     end
 else
     % To include velocities (if they exist) as well... untested
-    for i = 1:nAtoms
+    i=1;
+    while i<nAtoms+1
         Atom_section(1:10) = [atom(i).molid, atom(i).resname, atom(i).type, atom(i).index, atom(i).x/10, atom(i).y/10, atom(i).z/10, atom(i).vx/10, atom(i).vy/10, atom(i).vz/10];
         fprintf(fid, '%5d%-5s%5s%5d%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f\n', Atom_section{1:10});
+        i=i+1;
     end
 end
 Box_dim

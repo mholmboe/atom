@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_matrix_atom.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="bond_matrix_atom.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>bond_matrix_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="bond_matrix_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_matrix_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all bonds to a bond_matrix</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_matrix_atom(atom,Box_dim)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_matrix_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>bond_matrix_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all bonds to a bond_matrix</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_matrix_atom(atom,Box_dim) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_matrix_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'element'</span>)
     atom = element_atom(atom);
@@ -77,7 +77,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 [atom.fftype]=atom.element;
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); <span class="comment">% use of single instead of double</span>
 
 Radiiproperties=load(<span class="string">'Revised_Shannon_radii.mat'</span>);
 <span class="comment">% atom=bond_valence_atom(atom,Box_dim,1.25,2.25);</span>
@@ -89,8 +89,8 @@ Radiiproperties=load(<span class="string">'Revised_Shannon_radii.mat'</span>);
     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
 <span class="keyword">end</span>
 
-XYZ_radii=zeros(length(XYZ_labels),1);
-XYZ_formalcharge=zeros(length(XYZ_labels),1);
+XYZ_radii=single(zeros(length(XYZ_labels),1));
+XYZ_formalcharge=single(zeros(length(XYZ_labels),1));
 Atom_label=sort(unique([atom.type]));
 <span class="keyword">for</span> i=1:length(Atom_label)
     <span class="keyword">try</span>
@@ -121,8 +121,8 @@ atom=rmfield(atom,<span class="string">'neigh'</span>);
 <span class="keyword">for</span> i=1:length(XYZ_labels)
     k=0;j=1;
     bond_ind=find(bond_matrix(:,i));
-<span class="comment">%     XYZ_labels(i)</span>
-<span class="comment">%     numel(bond_ind)</span>
+    <span class="comment">%     XYZ_labels(i)</span>
+    <span class="comment">%     numel(bond_ind)</span>
     <span class="keyword">while</span> j &lt;= numel(bond_ind) &amp;&amp; k &lt;= numel(bond_ind) <span class="comment">%&lt;= neigh %atom(i).neigh=[];</span>
         <span class="keyword">if</span> bond_matrix(bond_ind(j),i)==1
             <span class="keyword">if</span> XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;0
@@ -135,6 +135,11 @@ atom=rmfield(atom,<span class="string">'neigh'</span>);
             <span class="keyword">end</span>
         <span class="keyword">end</span>
         j=j+1;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> mod(i,1000)==1
+        <span class="keyword">if</span> i-1&gt;0
+            i-1
+        <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
@@ -154,19 +159,19 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Radius_limit
 assignin(<span class="string">'caller'</span>,<span class="string">'Bond_matrix'</span>,bond_matrix);
 assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index2'</span>,Bond_index);
 assignin(<span class="string">'caller'</span>,<span class="string">'Dist_matrix'</span>,dist_matrix);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% bond_matrix_atom.m
 % * This function tries to assign all bonds to a bond_matrix
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=bond_matrix_atom(atom,Box_dim)
+% # atom=bond_matrix_atom(atom,Box_dim) % Basic input arguments
 
 function atom = bond_matrix_atom(atom,Box_dim,varargin)
 
@@ -178,7 +183,7 @@ end
 [atom.fftype]=atom.element;
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
 
 Radiiproperties=load('Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
@@ -190,8 +195,8 @@ else
     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
 end
 
-XYZ_radii=zeros(length(XYZ_labels),1);
-XYZ_formalcharge=zeros(length(XYZ_labels),1);
+XYZ_radii=single(zeros(length(XYZ_labels),1));
+XYZ_formalcharge=single(zeros(length(XYZ_labels),1));
 Atom_label=sort(unique([atom.type]));
 for i=1:length(Atom_label)
     try
@@ -222,8 +227,8 @@ atom=rmfield(atom,'neigh');
 for i=1:length(XYZ_labels)
     k=0;j=1;
     bond_ind=find(bond_matrix(:,i));
-%     XYZ_labels(i)
-%     numel(bond_ind)
+    %     XYZ_labels(i)
+    %     numel(bond_ind)
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if bond_matrix(bond_ind(j),i)==1
             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<0
@@ -236,6 +241,11 @@ for i=1:length(XYZ_labels)
             end
         end
         j=j+1;
+    end
+    if mod(i,1000)==1
+        if i-1>0
+            i-1
+        end
     end
 end
 

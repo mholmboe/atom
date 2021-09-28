@@ -3,7 +3,7 @@
 % rotate vector
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -56,7 +56,6 @@ x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
 y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
 z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
 
-rot_atom=atom;
 atom = rmfield(atom,'Mw');
 atom = rmfield(atom,'element');
 atom = rmfield(atom,'COM_x');

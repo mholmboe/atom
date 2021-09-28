@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>write_atom_lmp.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="write_atom_lmp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce') % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_lmp.m</h1><!--introduction--><div><ul><li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce') % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_lmp(atom,Box_dim,filename,varargin)
 </pre><pre class="codeinput">format <span class="string">compact</span>;
 
 <span class="comment">% Change these values in case you want to merge a lammps topology file with</span>
@@ -110,10 +110,18 @@ natom_labels=size(Atom_labels,2);
         disp(<span class="string">'Unknown watermodel, will try SPC/E'</span>)
         watermodel=<span class="string">'SPC/E'</span>;
     <span class="keyword">end</span>
-    <span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
+    <span class="keyword">if</span> strcmpi(ffname,<span class="string">'clayff_2004'</span>)
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+            atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
+        <span class="keyword">end</span>
+        Total_charge=sum([atom.charge])
+        round(Total_charge,5)
+    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
         clayff_param(sort(unique([atom.type])),watermodel);
         atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'more'</span>);
         Total_charge
+        round(Total_charge,5)
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     <span class="comment">%     disp('Unknown forcefield, will try clayff')</span>
@@ -125,12 +133,11 @@ natom_labels=size(Atom_labels,2);
     ffname=<span class="string">'clayff_2004'</span>
     watermodel=<span class="string">'SPC/E'</span>
     clayff_2004_param(sort(unique([atom.type])),watermodel);
-    atom = mass_atom(atom);
-    element=element_atom(atom);
-    [atom.element]=element.type;
     <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
-        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+        atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
     <span class="keyword">end</span>
+    Total_charge=sum([atom.charge])
+    round(Total_charge,5)
 <span class="keyword">end</span>
 
 <span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
@@ -200,16 +207,6 @@ nDihedrals
     pause
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
-    <span class="keyword">if</span> exist(<span class="string">'ffname'</span>,<span class="string">'var'</span>)
-        atom = charge_atom(atom,Box_dim,ffname,watermodel,<span class="string">'more'</span>);
-    <span class="keyword">else</span>
-        clayff_param(Atom_labels,watermodel); <span class="comment">% Import forcefield parameters, state water model, SPC or SPC/E</span>
-    <span class="keyword">end</span>
-<span class="keyword">else</span>
-    disp(<span class="string">'Only clayff implemented sofar'</span>)
-<span class="keyword">end</span>
-
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 <span class="keyword">if</span> length(Box_dim)&gt;3
     triclinic = 1; <span class="comment">% 1 or 0 for ortoghonal</span>
@@ -227,8 +224,8 @@ fid = fopen(filename, <span class="string">'wt'</span>);
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 file_title = strcat(<span class="string">'LAMMPS input data file #'</span>,datestr(now)); <span class="comment">% Header in output file</span>
-fprintf(fid, <span class="string">'%s\r\n'</span>, file_title);
-fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>, file_title);
+fprintf(fid, <span class="string">'\n'</span>);
 </pre><pre class="codeinput">AtomBondAnglestring = {num2str(size(atom,2)), <span class="string">'atoms'</span>;<span class="keyword">...</span>
     num2str(nBonds), <span class="string">'bonds'</span>;<span class="keyword">...</span>
     num2str(nAngles), <span class="string">'angles'</span>;<span class="keyword">...</span>
@@ -245,101 +242,98 @@ Boxsizestring = {  num2str(0,precision), num2str(lx,precision), <span class="str
     num2str(xy,precision), num2str(xz,precision),num2str(yz,precision), <span class="string">'xy xz yz'</span>};
 
 <span class="keyword">for</span> i = 1:size(AtomBondAnglestring,1)
-    fprintf(fid, <span class="string">'%-s %-s\r\n'</span>, AtomBondAnglestring{i,:});
+    fprintf(fid, <span class="string">'%-s %-s\n'</span>, AtomBondAnglestring{i,:});
 <span class="keyword">end</span>
-fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="keyword">for</span> i = 1:size(Boxsizestring,1) <span class="comment">% Im not sure what this code is doing</span>
     <span class="keyword">if</span> triclinic == 0
         Boxsizestring(end,:) = {<span class="string">' '</span>,<span class="string">' '</span>,<span class="string">' '</span>,<span class="string">' '</span>};
     <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'%-s %-s %-s %-s\r\n'</span>, Boxsizestring{i,:});
+    fprintf(fid, <span class="string">'%-s %-s %-s %-s\n'</span>, Boxsizestring{i,:});
 <span class="keyword">end</span>
-</pre><p>fprintf(fid, '\r\n');</p><pre class="codeinput">fprintf(fid, <span class="string">'Masses \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+</pre><p>fprintf(fid, '\n');</p><pre class="codeinput">fprintf(fid, <span class="string">'Masses \n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 
-<span class="keyword">if</span> isfield(atom,<span class="string">'mass'</span>)
-    <span class="keyword">for</span> i =1:natom_labels
-        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), <span class="string">'#'</span>, Atom_labels{i}};
-        fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
-    <span class="keyword">end</span>
-<span class="keyword">else</span> exist(<span class="string">'Masses'</span>,<span class="string">'var'</span>);
+<span class="comment">% if isfield(atom,'mass')</span>
+<span class="comment">%     for i =1:natom_labels</span>
+<span class="comment">%         masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};</span>
+<span class="comment">%         fprintf(fid, '%i %-s %s %s\n', masses{i,:});</span>
+<span class="comment">%     end</span>
+<span class="comment">% else exist('Masses','var');</span>
     <span class="keyword">for</span> i =1:natom_labels
         masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_labels{i}};
-        fprintf(fid, <span class="string">'%i %-s %s %s\r\n'</span>, masses{i,:});
+        fprintf(fid, <span class="string">'%i %-s %s %s\n'</span>, masses{i,:});
     <span class="keyword">end</span>
-<span class="keyword">end</span>
-<span class="comment">% for i =1:length(Atom_label)</span>
-<span class="comment">%     masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};</span>
-<span class="comment">%     fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});</span>
 <span class="comment">% end</span>
-fprintf(fid, <span class="string">'\r\n'</span>);
-</pre><pre class="codeinput">fprintf(fid, <span class="string">'Pair Coeffs \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+
+fprintf(fid, <span class="string">'\n'</span>);
+</pre><pre class="codeinput">fprintf(fid, <span class="string">'Pair Coeffs \n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="keyword">for</span> i =1:natom_labels
     paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), <span class="string">'#'</span>, Atom_labels{i}};
-    fprintf(fid, <span class="string">'%i %E %f %s %s\r\n'</span>, paircoeffs{i,:});
+    fprintf(fid, <span class="string">'%i %E %f %s %s\n'</span>, paircoeffs{i,:});
 <span class="keyword">end</span>
-fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 <span class="comment">%</span>
-fprintf(fid, <span class="string">'Atoms \r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'Atoms \n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="keyword">for</span> i = 1:nAtoms
     <span class="keyword">if</span> sum(ismember(Atom_labels,[atom(i).type])) &gt; 0
         Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     <span class="keyword">end</span>
     Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
-    fprintf(fid, <span class="string">'\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\r\n'</span>, Atoms_data{i,:});
+    fprintf(fid, <span class="string">'\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\n'</span>, Atoms_data{i,:});
 <span class="keyword">end</span>
-</pre><pre class="codeinput">fprintf(fid, <span class="string">'\r\n'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
+</pre><pre class="codeinput">fprintf(fid, <span class="string">'\n'</span>);
+fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="keyword">if</span> nBonds&gt;0
     <span class="comment">% Prints bond data</span>
-    fprintf(fid, <span class="string">'Bonds \r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'Bonds \n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
     count_b = 1;
     <span class="keyword">while</span> count_b &lt;= nBonds
         Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
-        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i\r\n'</span>, Bond_order{count_b,:});
+        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i\n'</span>, Bond_order{count_b,:});
         count_b = count_b + 1;
     <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'\r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nAngles&gt;0
     <span class="comment">% Prints angle data</span>
-    fprintf(fid, <span class="string">'Angles \r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'Angles \n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
     count_a = 1;
     <span class="keyword">while</span> count_a &lt;= nAngles
         Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
-        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i\r\n'</span>, Angle_order{count_a,:});
+        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i\n'</span>, Angle_order{count_a,:});
         count_a = count_a + 1;
     <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'\r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nDihedrals&gt;0
     <span class="comment">% Prints dihedral data</span>
-    fprintf(fid, <span class="string">'Dihedrals \r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'Dihedrals \n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
     count_d = 1;
     <span class="keyword">while</span> count_d &lt;= nDihedrals
         Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};
-        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i %-i\r\n'</span>, Dihedral_order{count_d,:});
+        fprintf(fid, <span class="string">'\t%-i %-i %-i %-i %-i %-i\n'</span>, Dihedral_order{count_d,:});
         count_d = count_d + 1;
     <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'\r\n'</span>);
-    fprintf(fid, <span class="string">'\r\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
+    fprintf(fid, <span class="string">'\n'</span>);
 <span class="keyword">end</span>
 
 fclose(fid);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% write_atom_lmp.m
 % * This script creates and prints a lammps data file (.lj). Works best for
@@ -348,7 +342,7 @@ fclose(fid);
 %
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -399,10 +393,18 @@ if nargin>5
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E';
     end
-    if strncmpi(ffname,'clayff',5)
+    if strcmpi(ffname,'clayff_2004')
+        clayff_2004_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+        round(Total_charge,5)
+    elseif strncmpi(ffname,'clayff',5)
         clayff_param(sort(unique([atom.type])),watermodel);
         atom = charge_atom(atom,Box_dim,'clayff',watermodel,'more');
         Total_charge
+        round(Total_charge,5)
     end
 else
     %     disp('Unknown forcefield, will try clayff')
@@ -414,12 +416,11 @@ else
     ffname='clayff_2004'
     watermodel='SPC/E'
     clayff_2004_param(sort(unique([atom.type])),watermodel);
-    atom = mass_atom(atom);
-    element=element_atom(atom);
-    [atom.element]=element.type;
     if ~isfield(atom,'charge')
-        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+        atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
     end
+    Total_charge=sum([atom.charge])
+    round(Total_charge,5)
 end
 
 % Scan the xyz data and look for O-H bonds and angles
@@ -432,7 +433,7 @@ nAtoms=size(atom,2)
 nBonds
 nAngles
 nDihedrals
-
+ 
 if nBonds>0
     % Calculate the bond_types
     bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
@@ -489,16 +490,6 @@ if ~exist('Box_dim','var');disp('We need to set Box_dim?');
     pause
 end
 
-if strncmpi(ffname,'clayff',5)
-    if exist('ffname','var')
-        atom = charge_atom(atom,Box_dim,ffname,watermodel,'more');
-    else
-        clayff_param(Atom_labels,watermodel); % Import forcefield parameters, state water model, SPC or SPC/E
-    end
-else
-    disp('Only clayff implemented sofar')
-end
-
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if length(Box_dim)>3
     triclinic = 1; % 1 or 0 for ortoghonal
@@ -516,8 +507,8 @@ fid = fopen(filename, 'wt');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 file_title = strcat('LAMMPS input data file #',datestr(now)); % Header in output file
-fprintf(fid, '%s\r\n', file_title);
-fprintf(fid, '\r\n');
+fprintf(fid, '%s\n', file_title);
+fprintf(fid, '\n');
 
 %%
 AtomBondAnglestring = {num2str(size(atom,2)), 'atoms';...
@@ -536,103 +527,100 @@ Boxsizestring = {  num2str(0,precision), num2str(lx,precision), 'xlo', 'xhi';...
     num2str(xy,precision), num2str(xz,precision),num2str(yz,precision), 'xy xz yz'};
 
 for i = 1:size(AtomBondAnglestring,1)
-    fprintf(fid, '%-s %-s\r\n', AtomBondAnglestring{i,:});
+    fprintf(fid, '%-s %-s\n', AtomBondAnglestring{i,:});
 end
-fprintf(fid, '\r\n');
+fprintf(fid, '\n');
 
 for i = 1:size(Boxsizestring,1) % Im not sure what this code is doing
     if triclinic == 0
         Boxsizestring(end,:) = {' ',' ',' ',' '};
     end
-    fprintf(fid, '%-s %-s %-s %-s\r\n', Boxsizestring{i,:});
+    fprintf(fid, '%-s %-s %-s %-s\n', Boxsizestring{i,:});
 end
 %%
-% fprintf(fid, '\r\n');
-fprintf(fid, 'Masses \r\n');
-fprintf(fid, '\r\n');
+% fprintf(fid, '\n');
+fprintf(fid, 'Masses \n');
+fprintf(fid, '\n');
 
-if isfield(atom,'mass')
-    for i =1:natom_labels
-        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};
-        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
-    end
-else exist('Masses','var');
+% if isfield(atom,'mass')
+%     for i =1:natom_labels
+%         masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};
+%         fprintf(fid, '%i %-s %s %s\n', masses{i,:});
+%     end
+% else exist('Masses','var');
     for i =1:natom_labels
         masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_labels{i}};
-        fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
+        fprintf(fid, '%i %-s %s %s\n', masses{i,:});
     end
-end
-% for i =1:length(Atom_label)
-%     masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_label{i}};
-%     fprintf(fid, '%i %-s %s %s\r\n', masses{i,:});
 % end
-fprintf(fid, '\r\n');
+
+fprintf(fid, '\n');
 %%
 %%
-fprintf(fid, 'Pair Coeffs \r\n');
-fprintf(fid, '\r\n');
+fprintf(fid, 'Pair Coeffs \n');
+fprintf(fid, '\n');
 
 for i =1:natom_labels
     paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_labels{i}};
-    fprintf(fid, '%i %E %f %s %s\r\n', paircoeffs{i,:});
+    fprintf(fid, '%i %E %f %s %s\n', paircoeffs{i,:});
 end
-fprintf(fid, '\r\n');
+fprintf(fid, '\n');
 %
-fprintf(fid, 'Atoms \r\n');
-fprintf(fid, '\r\n');
+fprintf(fid, 'Atoms \n');
+fprintf(fid, '\n');
 
 for i = 1:nAtoms
     if sum(ismember(Atom_labels,[atom(i).type])) > 0
         Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     end
     Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
-    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\r\n', Atoms_data{i,:});
+    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\n', Atoms_data{i,:});
 end
 
 %%
-fprintf(fid, '\r\n');
-fprintf(fid, '\r\n');
+fprintf(fid, '\n');
+fprintf(fid, '\n');
 
 if nBonds>0
     % Prints bond data
-    fprintf(fid, 'Bonds \r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, 'Bonds \n');
+    fprintf(fid, '\n');
     count_b = 1;
     while count_b <= nBonds
         Bond_order(count_b,:)= {count_b+prev_bond_num, bond_types(count_b)+prev_bond_types, Bond_index(count_b,1)+prev_atom_index, Bond_index(count_b,2)+prev_atom_index};
-        fprintf(fid, '\t%-i %-i %-i %-i\r\n', Bond_order{count_b,:});
+        fprintf(fid, '\t%-i %-i %-i %-i\n', Bond_order{count_b,:});
         count_b = count_b + 1;
     end
-    fprintf(fid, '\r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, '\n');
+    fprintf(fid, '\n');
 end
 
 if nAngles>0
     % Prints angle data
-    fprintf(fid, 'Angles \r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, 'Angles \n');
+    fprintf(fid, '\n');
     count_a = 1;
     while count_a <= nAngles
         Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index};
-        fprintf(fid, '\t%-i %-i %-i %-i %-i\r\n', Angle_order{count_a,:});
+        fprintf(fid, '\t%-i %-i %-i %-i %-i\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     end
-    fprintf(fid, '\r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, '\n');
+    fprintf(fid, '\n');
 end
 
 if nDihedrals>0
     % Prints dihedral data
-    fprintf(fid, 'Dihedrals \r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, 'Dihedrals \n');
+    fprintf(fid, '\n');
     count_d = 1;
     while count_d <= nDihedrals
         Dihedral_order(count_d,:)= {count_d+prev_dihedral_num, dihedral_types(count_d)+prev_dihedral_types, Dihedral_index(count_d,1)+prev_atom_index,Dihedral_index(count_d,2)+prev_atom_index,Dihedral_index(count_d,3)+prev_atom_index,Dihedral_index(count_d,4)+prev_atom_index};
-        fprintf(fid, '\t%-i %-i %-i %-i %-i %-i\r\n', Dihedral_order{count_d,:});
+        fprintf(fid, '\t%-i %-i %-i %-i %-i %-i\n', Dihedral_order{count_d,:});
         count_d = count_d + 1;
     end
-    fprintf(fid, '\r\n');
-    fprintf(fid, '\r\n');
+    fprintf(fid, '\n');
+    fprintf(fid, '\n');
 end
 
 fclose(fid);

@@ -4,7 +4,7 @@
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -19,27 +19,36 @@ attribut_in=fieldnames(atom);
 
 if nargin==2
     if size(Box_dim(1,:),2)==3
-        % disp('assuming othogonal box when wrapping!!!')
-        ind_hiz=find([atom.z]>=Box_dim(3));
-        z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
-        [atom((ind_hiz)).z]=deal(z_shift{:});
-        ind_loz=find([atom.z]<0);
-        z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
-        [atom((ind_loz)).z]=deal(z_shift{:});
+        % disp('assuming orthogonal box when wrapping!!!')
+%         ind_hiz=find([atom.z]>=Box_dim(3));
+%         z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
+%         [atom((ind_hiz)).z]=deal(z_shift{:});
+%         ind_loz=find([atom.z]<0);
+%         z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
+%         [atom((ind_loz)).z]=deal(z_shift{:});
+%         
+%         ind_hiy=find([atom.y]>=Box_dim(2));
+%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
+%         [atom((ind_hiy)).y]=deal(y_shift{:});
+%         ind_loy=find([atom.y]<0);
+%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
+%         [atom((ind_loy)).y]=deal(y_shift{:});
+%         
+%         ind_hix=find([atom.x]>=Box_dim(1));
+%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
+%         [atom((ind_hix)).x]=deal(x_shift{:});
+%         ind_lox=find([atom.x]<0);
+%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
+%         [atom((ind_lox)).x]=deal(x_shift{:});
+     
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+        Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+        [atom.z]=deal(Z_data{:});  
         
-        ind_hiy=find([atom.y]>=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]<0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
-        
-        ind_hix=find([atom.x]>=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]<0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        pause
     else
  %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -56,7 +65,7 @@ if nargin==2
     
 elseif nargin == 3
     if size(Box_dim(1,:),2)==3
- %       disp('assuming othogonal box when wrapping!!!')
+ %       disp('assuming orthogonal box when wrapping!!!')
         % ind_hiz=find([atom.z]>=Box_dim(3));
         % z_shift=num2cell([[atom(ind_hiz).z]-Box_dim(3)]');
         % [atom((ind_hiz)).z]=deal(z_shift{:});
@@ -64,19 +73,27 @@ elseif nargin == 3
         % z_shift=num2cell([[atom(ind_loz).z]+Box_dim(3)]');
         % [atom((ind_loz)).z]=deal(z_shift{:});
         
-        ind_hiy=find([atom.y]>=Box_dim(2));
-        y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
-        [atom((ind_hiy)).y]=deal(y_shift{:});
-        ind_loy=find([atom.y]<0);
-        y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
-        [atom((ind_loy)).y]=deal(y_shift{:});
+%         ind_hiy=find([atom.y]>=Box_dim(2));
+%         y_shift=num2cell([[atom(ind_hiy).y]-Box_dim(2)]');
+%         [atom((ind_hiy)).y]=deal(y_shift{:});
+%         ind_loy=find([atom.y]<0);
+%         y_shift=num2cell([[atom(ind_loy).y]+Box_dim(2)]');
+%         [atom((ind_loy)).y]=deal(y_shift{:});
+%         
+%         ind_hix=find([atom.x]>=Box_dim(1));
+%         x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
+%         [atom((ind_hix)).x]=deal(x_shift{:});
+%         ind_lox=find([atom.x]<0);
+%         x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
+%         [atom((ind_lox)).x]=deal(x_shift{:});
         
-        ind_hix=find([atom.x]>=Box_dim(1));
-        x_shift=num2cell([[atom(ind_hix).x]-Box_dim(1)]');
-        [atom((ind_hix)).x]=deal(x_shift{:});
-        ind_lox=find([atom.x]<0);
-        x_shift=num2cell([[atom(ind_lox).x]+Box_dim(1)]');
-        [atom((ind_lox)).x]=deal(x_shift{:});
+        X_data = num2cell([atom.x]' - Box_dim(1)*floor([atom.x]'./Box_dim(1)));
+        Y_data = num2cell([atom.y]' - Box_dim(2)*floor([atom.y]'./Box_dim(2)));
+%         Z_data = num2cell([atom.z]' - Box_dim(3)*floor([atom.z]'./Box_dim(3)));
+        [atom.x]=deal(X_data{:});
+        [atom.y]=deal(Y_data{:});
+%         [atom.z]=deal(Z_data{:});  
+        
     else
  %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
@@ -91,10 +108,6 @@ elseif nargin == 3
         atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
     end
 end
-
-
-
-
 
 try
     attribut_out=fieldnames(atom);

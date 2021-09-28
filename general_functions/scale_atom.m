@@ -2,7 +2,7 @@
 % * This function scales the coordinates in the atom struct
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -55,6 +55,12 @@ beta=rad2deg(acos(xz/c));
 gamma=rad2deg(acos(xy/b));
 
 orto=orto_atom(atom,Box_dim);
+
+if numel(scale_vec)==1
+    scale_vec(1)=scale_vec;
+    scale_vec(2)=scale_vec(1);
+    scale_vec(3)=scale_vec(1);
+end
 
 Box_dim=[orto_Box_dim(1)*scale_vec(1) orto_Box_dim(2)*scale_vec(2) orto_Box_dim(3)*scale_vec(3)];
 

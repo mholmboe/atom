@@ -4,23 +4,23 @@
 % * variables.
 %
 %% Version
-% 2.09
+% 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom=recalc_bond_atom(atom,Box_dim,Bond_index)
-% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index)
-% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index)
-% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong)
+% # atom=recalc_bond_atom(atom,Box_dim,Bond_index) % Basic input arguments
+% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index) % Also recalculates the angles
+% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index) % Also recalculates the dihedrals
+% # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong) % Allows setting the max cutoff
 
 function atom = recalc_bond_atom(atom,Box_dim,varargin)
 
 % rmaxlong=2.25; % May be reset below
 
 XYZ_labels=[atom.type]';
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']);
 
 if nargin==2
     disp('You need to atleast supply the Bond_index variable')
@@ -44,10 +44,12 @@ elseif nargin>5
 end
 
 disp('Calculating the distance matrix')
-if size(atom,2) < 5000
-    dist_matrix = dist_matrix_atom(atom,Box_dim);%,1.25,4);
-elseif size(atom,2) < 20000
+
+
+if size(atom,2)>50000 && numel(Box_dim)<9
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim);%,1.25,4);
+elseif size(atom,2) < 50000
+    dist_matrix = dist_matrix_atom(atom,Box_dim);%,1.25,4);
 else
     disp('The nAtoms in the atoms truct may be too large, try reducing the number of atoms?')
 end
