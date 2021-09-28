@@ -101,22 +101,22 @@ z_rot=num2cell(XYZ_data(:,3)); [atom.z]=deal(z_rot{:});
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = rotx(alpha)
-eml_assert_no_varsize(1,alpha);
-sigdatatypes.validateAngle(alpha,<span class="string">'rotx'</span>,<span class="string">'ALPHA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% eml_assert_no_varsize(1,alpha);</span>
+<span class="comment">% sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});</span>
 <span class="comment">% spiral in the direction of y-&gt;z, counter-clockwise</span>
 rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = roty(beta)
-eml_assert_no_varsize(1,beta);
-sigdatatypes.validateAngle(beta,<span class="string">'roty'</span>,<span class="string">'BETA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% eml_assert_no_varsize(1,beta);</span>
+<span class="comment">% sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});</span>
 <span class="comment">% spiral in the direction of z-&gt;x, counter-clockwise</span>
 rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = rotz(gamma)
-eml_assert_no_varsize(1,gamma);
-sigdatatypes.validateAngle(gamma,<span class="string">'rotz'</span>,<span class="string">'GAMMA'</span>,{<span class="string">'scalar'</span>});
+<span class="comment">% eml_assert_no_varsize(1,gamma);</span>
+<span class="comment">% sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});</span>
 <span class="comment">% spiral in the direction of x-&gt;y, counter-clockwise</span>
 rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 <span class="keyword">end</span>
@@ -169,22 +169,22 @@ z_rot=num2cell(XYZ_data(:,3)); [atom.z]=deal(z_rot{:});
 end
 
 function rotmat = rotx(alpha)
-eml_assert_no_varsize(1,alpha);
-sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});
+% eml_assert_no_varsize(1,alpha);
+% sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});
 % spiral in the direction of y->z, counter-clockwise
 rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
 end
 
 function rotmat = roty(beta)
-eml_assert_no_varsize(1,beta);
-sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});
+% eml_assert_no_varsize(1,beta);
+% sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});
 % spiral in the direction of z->x, counter-clockwise
 rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
 end
 
 function rotmat = rotz(gamma)
-eml_assert_no_varsize(1,gamma);
-sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});
+% eml_assert_no_varsize(1,gamma);
+% sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});
 % spiral in the direction of x->y, counter-clockwise
 rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 end

@@ -22,6 +22,8 @@
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
 % # <scale_atom.html scale_atom(atom,scale_vec,Box_dim,Resname)> % This function scales the coordinates in the atom struct
+% # <tile_atom.html tile_atom(atom,scale_vec,Box_dim,Resname)> % This function tiles the atom struct similar to replicate atom, but with a translation along some direction. Triclinic version untestd but might work..
+% # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % * This quirky function can be used to create a nano-tube or nano-roll of the  coordinates from an atom struct. It works best if the the input atom struct  consists of one centered unit cell (to keep the number of atoms down).
 % # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
 
 

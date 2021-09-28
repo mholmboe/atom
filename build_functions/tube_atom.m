@@ -1,5 +1,5 @@
 %% tube_atom.m
-% * This quirky function ca be used to create a nano-tube or nano-roll of the 
+% * This quirky function can be used to create a nano-tube or nano-roll of the 
 % coordinates from an atom struct. It works best if the the input atom struct 
 % consists of one centered unit cell (to keep the number of atoms down). 
 % You can always the replicate_atom() function later to build the entire roll/tube.

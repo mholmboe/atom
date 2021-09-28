@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_cp2k_resp.m</h1><!--introduction--><div><ul><li>This function imports resp charges calculated in/from cp2k. Not tested too much..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>resp_charges = import_cp2k_resp('molecule.resp')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> resp_charges = import_cp2k_resp(varargin)
+  </style></head><body><div class="content"><h1>import_cp2k_resp.m</h1><!--introduction--><div><ul><li>This function imports resp charges calculated in/from cp2k. Not very well tested...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>resp_charges = import_cp2k_resp('molecule.resp')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> resp_charges = import_cp2k_resp(varargin)
 
 <span class="keyword">if</span> nargin&gt;0
     filename=varargin{1};
@@ -99,7 +99,7 @@ resp_charges=[];
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% import_cp2k_resp.m
-% * This function imports resp charges calculated in/from cp2k. Not tested too much..
+% * This function imports resp charges calculated in/from cp2k. Not very well tested...
 %
 %% Version
 % 2.10

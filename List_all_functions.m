@@ -164,9 +164,11 @@
 % # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <substitute_atom.html substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)> % This scripts performs isomorphous substitution, by replacing some O1->O2 atomtypes and optionally T1->T2 atomtypes
 % # <tip3p2tip4p.html tip3p2tip4p(filename)> % This function converts a .gro file with spc water to some tip4p water
+% # <tile_atom.html tile_atom(atom,scale_vec,Box_dim,Resname)> % This function tiles the atom struct similar to replicate atom, but with a translation along some direction. Triclinic version untestd but might work..
 % # <translate_atom.html translate_atom(atom,trans_vec,Resname)> % translate_atom.m - This translates the resname by a vector
 % # <translate_molid.html translate_molid(atom,trans_vec,molid)> %  translate_molid.m - This translates the molid by a vector
 % # <triclinic_atom.html triclinic_atom(atom,Box_dim,angleparam,angletype)> %  triclinic_atom.m - This transforms an orthogonal atom struct to a triclinic with the angles alfa, beta, gamma or tilt factors xy, xz, yz
+% # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % * This quirky function can be used to create a nano-tube or nano-roll of the  coordinates from an atom struct. It works best if the the input atom struct  consists of one centered unit cell (to keep the number of atoms down).
 % # <tweak_charge_atom.html tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
 % # <unwrap_atom.html unwrap_atom(atom,Box_dim,dim)> % This function unwraps the atom struct along the dimension dim
 % # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
