@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>This MATLAB .m file is used to generate the html-documentation</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-07"><meta name="DC.source" content="publish_html.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>This MATLAB .m file is used to generate the html-documentation</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-29"><meta name="DC.source" content="publish_html.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>This MATLAB .m file is used to generate the html-documentation</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Set the path's</a></li><li><a href="#4">The lists</a></li><li><a href="#5">The functions, in each subfolder</a></li><li><a href="#6">Lastly, build a searchable html-index</a></li></ul></div><h2 id="1">Version</h2><p>2.09</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Set the path's</h2><pre class="codeinput">atompath=pwd;
+  </style></head><body><div class="content"><h1>This MATLAB .m file is used to generate the html-documentation</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version 2.10</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Set the path's</a></li><li><a href="#4">The lists</a></li><li><a href="#5">The functions, in each subfolder</a></li><li><a href="#6">Lastly, build a searchable html-index</a></li></ul></div><h2 id="1">Version 2.10</h2><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Set the path's</h2><pre class="codeinput">atompath=pwd;
 docpath=strcat(atompath,<span class="string">'/html'</span>);
 </pre><h2 id="4">The lists</h2><pre class="codeinput">filelist = {<span class="keyword">...</span>
     <span class="string">'Available_functions.m'</span>,<span class="keyword">...</span>
@@ -105,6 +105,7 @@ docpath=strcat(atompath,<span class="string">'/html'</span>);
     <span class="string">'variables'</span>;<span class="keyword">...</span>
     };
 
+new_list={};
 <span class="keyword">for</span> j=1:size(dirs,1)
 
     cd(char(dirs(j)))
@@ -113,6 +114,14 @@ docpath=strcat(atompath,<span class="string">'/html'</span>);
     dirs(j)
 
     <span class="keyword">for</span> i=1:size(filelist,1)
+
+        <span class="keyword">if</span> ~isfile(filelist(i).name)
+            new_list={new_list;[dirs(j) filelist(i).name]};
+            dirs(j)
+            filelist(i).name
+            pause
+        <span class="keyword">end</span>
+
         publish(filelist(i).name,<span class="string">'createThumbnail'</span>,true,<span class="string">'maxWidth'</span>,1200,<span class="string">'evalCode'</span>,false,<span class="string">'outputDir'</span>,docpath)
     <span class="keyword">end</span>
 
@@ -120,12 +129,13 @@ docpath=strcat(atompath,<span class="string">'/html'</span>);
 
 <span class="keyword">end</span>
 </pre><h2 id="6">Lastly, build a searchable html-index</h2><pre class="codeinput">builddocsearchdb(docpath)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+
+new_list
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% This MATLAB .m file is used to generate the html-documentation
 %
-%% Version
-% 2.09
+%% Version 2.10
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -140,7 +150,7 @@ filelist = {...
     'Available_functions.m',...
     'Common_variables.m',...
     'Examples.m',...
-    'index.m',...    
+    'index.m',...
     'Structures_and_solvents.m',...
     'List_all_functions.m',...
     'List_build_functions.m',...
@@ -174,6 +184,7 @@ dirs={...
     'variables';...
     };
 
+new_list={};
 for j=1:size(dirs,1)
     
     cd(char(dirs(j)))
@@ -182,6 +193,14 @@ for j=1:size(dirs,1)
     dirs(j)
     
     for i=1:size(filelist,1)
+        
+        if ~isfile(filelist(i).name)
+            new_list={new_list;[dirs(j) filelist(i).name]};
+            dirs(j)
+            filelist(i).name
+            pause
+        end
+        
         publish(filelist(i).name,'createThumbnail',true,'maxWidth',1200,'evalCode',false,'outputDir',docpath)
     end
     
@@ -191,6 +210,9 @@ end
 
 %% Lastly, build a searchable html-index
 builddocsearchdb(docpath)
+
+new_list
+
 
 
 ##### SOURCE END #####

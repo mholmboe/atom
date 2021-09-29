@@ -78,7 +78,7 @@ EOF
 ################################################
 echo $gmx_run/$moldir
 
-$gmx_grompp -f ./"$sim".mdp -c pre"$sim".gro -r pre"$sim".gro -p $gmx_run/$moldir/topol.top -n $gmx_run/$moldir/index.ndx -o "$sim".tpr -pp -maxwarn 2
+$gmx_grompp -f ./"$sim".mdp -c pre"$sim".gro -r pre"$sim".gro -p $gmx_run/$moldir/topol.top -n $gmx_run/$moldir/index.ndx -o "$sim".tpr -pp -po -maxwarn 2
  
 $gmx_mdrun -v -deffnm "$sim"
 

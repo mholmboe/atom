@@ -71,22 +71,16 @@ atom = rmfield(atom,'COM_z');
 end
 
 function rotmat = rotx(alpha)
-eml_assert_no_varsize(1,alpha);
-sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});
 % rotate in the direction of y->z, counter-clockwise
 rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
 end
 
 function rotmat = roty(beta)
-eml_assert_no_varsize(1,beta);
-sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});
 % rotate in the direction of z->x, counter-clockwise
 rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
 end
 
 function rotmat = rotz(gamma)
-eml_assert_no_varsize(1,gamma);
-sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});
 % rotate in the direction of x->y, counter-clockwise
 rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 end

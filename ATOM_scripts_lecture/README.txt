@@ -1,6 +1,6 @@
 This folder contains some basic presentations about the ATOM library and an introduction to Gromacs, as well as simple example systems of clay systems using a modifed CLAYFF (containing new atomtypes/names), the original CLAYFF (Cygan, 2004) as well as a custom implementation of the Heinz, 2005 version of the Interface FF as well as the later Interface FF package from Heinz, 2013, using structures from the model database in the Interface FF 1.5 package.
 
-Regarding the simulation files, if you are new to Gromacs and do not know where to start inspect the files called job.sh as well as topol.top and go from there!
+Regarding the simulation files, if you are new to Gromacs and do not know where to start inspect the files called job.sh as well as topol.top and go from there! The systems have been tested with Gromacs 2018. More recent versions may demand using a -DFLEXIBLE flag in the .mdp files
 
 NOTE: I cannot guarantee that the forcefield parameters and settings are correct, you should check this yourself by reading the original papers! 
 

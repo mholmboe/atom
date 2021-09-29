@@ -48,7 +48,6 @@ if nargin==2
         [atom.y]=deal(Y_data{:});
         [atom.z]=deal(Z_data{:});  
         
-        pause
     else
  %       disp('will try to wrap triclinic Box_dim!!!')
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
