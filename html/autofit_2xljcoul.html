@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>autofit_2xljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="autofit_2xljcoul.m"><style type="text/css">
+      --><title>autofit_2xljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="autofit_2xljcoul.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,30 +67,57 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Initial values</a></li><li><a href="#3">In order to keep parameters around 1..</a></li><li><a href="#4">Set lower/upper bounds</a></li><li><a href="#5">Set Options for Optimization</a></li><li><a href="#6">Run lsqnonlin</a></li></ul></div><pre class="codeinput"><span class="comment">% clear;</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Initial values</a></li><li><a href="#3">In order to keep parameters around 1..</a></li><li><a href="#4">Set lower/upper bounds</a></li><li><a href="#5">Set Options for Optimization</a></li><li><a href="#6">Run lsqnonlin</a></li></ul></div><pre class="codeinput">clear;
 close <span class="string">all</span>;
 hold <span class="string">on</span>
 format <span class="string">compact</span>;
 
-r=.1:.001:1.2; <span class="comment">% nm</span>
+initial_ff=<span class="string">'ions_Merz_IOD_monovalent_opc3_ff'</span>;
+ref_ff1=<span class="string">'ions_Merz_12_6_4_monovalent_opc3_ff.mat'</span>
+ref_ff2=<span class="string">'water_models.mat'</span>
+ff=load(initial_ff);
+ff1=load(ref_ff1)
+ff2=load(ref_ff2)
 
-C4 = 0.05;
+<span class="comment">% extraff1='ions_Merz_CM_monovalent_OPC3_ff';extraff1=load(extraff1);</span>
+<span class="comment">% extraff2='ions_Merz_IOD_monovalent_OPC3_ff';extraff2=load(extraff2);</span>
+<span class="comment">% extraff3='ions_Merz_HFE_monovalent_OPC3_ff';extraff3=load(extraff3);</span>
+
+Ion1=<span class="string">'F-'</span>
+Ion2=<span class="string">'OW'</span>
+Water_model=<span class="string">'opc3'</span>
+
+r=.1:.001:1.2; <span class="comment">% nm</span>
+rfull=r;
 
 hold <span class="string">on</span>
 
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Si'</span> <span class="string">'Ob'</span>});
-<span class="comment">%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);</span>
-[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+<span class="comment">% nonbonded_ff([extraff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'g');</span>
+<span class="comment">% nonbonded_ff([extraff2 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'m');</span>
+<span class="comment">% nonbonded_ff([extraff3 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'c');</span>
 
-dvalue=1.5;
-eps11=eps1*dvalue;
-eps12=eps1/dvalue;
-sig11=sig1*dvalue;
-sig12=sig1/dvalue;
-q11=2.1/2;
-q12=2.1/2;
-</pre><h2 id="2">Initial values</h2><pre class="codeinput">xinit    = [ q11  q12  q2  sig11  sig12   sig2  eps11  eps12   eps2]
-delta    = [ 1    1    1    .1     .1     1     .1       .1    1   ];
+[rout,lj_init,coul_init,Utot_init,q1_init,q2_init,sig1_init,sig2_init,eps1_init,eps2_init] = nonbonded_ff([ff ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)});
+[rout,lj,coul,Utot,q1ref,q2ref,sig1ref,sig2ref,eps1ref,eps2ref,C4] = nonbonded_ff([ff1 ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)});
+[~, ind_start]=min(abs(Utot));
+rmin=r(1)<span class="comment">%rout(ind_start)%+floor(ind_start/20))</span>
+r=rmin:.001:1.2; <span class="comment">% nm</span>
+[r,lj,coul,data] = ljcoul_C12C6C4([q1ref,q2ref,sig1ref,sig2ref,eps1ref,eps2ref,C4,C4],r);
+
+dvalue=1;
+sig11=sig1_init/dvalue;
+sig12=sig1_init*dvalue;
+eps11=eps1_init/dvalue;
+eps12=eps1_init*dvalue;
+q11=q1_init;
+q12=1E-7;
+
+sig1=sig1ref;
+sig2=sig2ref;
+eps1=eps1ref;
+eps2=eps2ref;
+q2=q2ref;
+</pre><h2 id="2">Initial values</h2><pre class="codeinput">xinit    = [ q11  q12  q2   sig11  sig12   sig2  eps11  eps12  eps2]
+delta    = [ 1    1    1    .5     .1      1     .5     .1     1   ];
 
 x0=xinit;
 </pre><h2 id="3">In order to keep parameters around 1..</h2><pre class="codeinput">scalefactors=1./x0;
@@ -118,57 +145,89 @@ options.OptimalityTolerance = 1E-18;
 
 fx=fx./scalefactors
 
-r_plot=.1:.001:1.2;
+<span class="comment">% copy(fx)</span>
 
-
-copy(fx)
-
-[fxr,fxlj,fxcoul,fxdata] = ljcoul_2x(fx,r_plot);
+[fxr,fxlj,fxcoul,fxdata] = ljcoul_2x(fx,rfull);
 <span class="comment">% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r_plot);</span>
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+
+ff1=load(ref_ff1);
+ff2=load(ref_ff2);
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff([ff1 ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)});
+[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],rfull);
+
+disp(<span class="string">'Init values'</span>)
+[q1_init,q2_init,sig1_init,sig2_init,eps1_init,eps2_init]
+
 norm((fxdata-data_plot)/numel(data_plot))
 plot(r_plot,fxdata-data_plot,<span class="string">'g--'</span>)
-<span class="comment">% x0=fx;</span>
-<span class="comment">% eval(strcat('res=',objective_func_string,';'));</span>
-<span class="comment">% disp('Mean abs(residual):');</span>
-<span class="comment">% mean(abs(res))</span>
+disp(<span class="string">'Final values'</span>)
+x=fx
+eval(strcat(<span class="string">'res='</span>,objective_func_string,<span class="string">';'</span>));
+disp(<span class="string">'Mean abs(residual):'</span>);
+mean(abs(res))
 
-<span class="comment">% if nargin&gt;5</span>
-<span class="comment">% hold on</span>
-<span class="comment">% plot(r,data,'r');</span>
-<span class="comment">% plot(r,data+res,'g');</span>
-<span class="comment">% plot(r,res,'b');</span>
-<span class="comment">%     xlim([min(r) max(r)]);</span>
-<span class="comment">%     ylim([min(data) max(data)]);</span>
-<span class="comment">% end</span>
+Err=100*mean(abs(fxdata(ind_start:end)-data_plot(ind_start:end)))
+
+plotmin=1000*(round(min(Utot*1.5)/1000));
+<span class="keyword">if</span> plotmin&gt;=0
+    plotmin=1500;
+<span class="keyword">end</span>
+ylim(sort([-plotmin plotmin]))
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-% clear;
+clear;
 close all;
 hold on
 format compact;
 
-r=.1:.001:1.2; % nm
+initial_ff='ions_Merz_IOD_monovalent_opc3_ff';
+ref_ff1='ions_Merz_12_6_4_monovalent_opc3_ff.mat'
+ref_ff2='water_models.mat'
+ff=load(initial_ff);
+ff1=load(ref_ff1)
+ff2=load(ref_ff2)
 
-C4 = 0.05;
+% extraff1='ions_Merz_CM_monovalent_OPC3_ff';extraff1=load(extraff1);
+% extraff2='ions_Merz_IOD_monovalent_OPC3_ff';extraff2=load(extraff2);
+% extraff3='ions_Merz_HFE_monovalent_OPC3_ff';extraff3=load(extraff3);
+
+Ion1='F-'
+Ion2='OW'
+Water_model='opc3'
+
+r=.1:.001:1.2; % nm
+rfull=r;
 
 hold on
 
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
-%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
-[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+% nonbonded_ff([extraff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'g');
+% nonbonded_ff([extraff2 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'m');
+% nonbonded_ff([extraff3 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'c');
 
-dvalue=1.5;
-eps11=eps1*dvalue;
-eps12=eps1/dvalue;
-sig11=sig1*dvalue;
-sig12=sig1/dvalue;
-q11=2.1/2;
-q12=2.1/2;
+[rout,lj_init,coul_init,Utot_init,q1_init,q2_init,sig1_init,sig2_init,eps1_init,eps2_init] = nonbonded_ff([ff ff2],{Ion1 strcat(Ion2,'_',Water_model)});
+[rout,lj,coul,Utot,q1ref,q2ref,sig1ref,sig2ref,eps1ref,eps2ref,C4] = nonbonded_ff([ff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)});
+[~, ind_start]=min(abs(Utot));
+rmin=r(1)%rout(ind_start)%+floor(ind_start/20))
+r=rmin:.001:1.2; % nm
+[r,lj,coul,data] = ljcoul_C12C6C4([q1ref,q2ref,sig1ref,sig2ref,eps1ref,eps2ref,C4,C4],r);
+
+dvalue=1;
+sig11=sig1_init/dvalue;
+sig12=sig1_init*dvalue;
+eps11=eps1_init/dvalue;
+eps12=eps1_init*dvalue;
+q11=q1_init;
+q12=1E-7;
+
+sig1=sig1ref;
+sig2=sig2ref;
+eps1=eps1ref;
+eps2=eps2ref;
+q2=q2ref;
 
 %% Initial values
-xinit    = [ q11  q12  q2  sig11  sig12   sig2  eps11  eps12   eps2]
-delta    = [ 1    1    1    .1     .1     1     .1       .1    1   ];
+xinit    = [ q11  q12  q2   sig11  sig12   sig2  eps11  eps12  eps2]
+delta    = [ 1    1    1    .5     .1      1     .5     .1     1   ];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -203,29 +262,34 @@ fx=lsqnonlin(f,x0,lb,ub,options);
 
 fx=fx./scalefactors
 
-r_plot=.1:.001:1.2;
+% copy(fx)
 
-
-copy(fx)
-
-[fxr,fxlj,fxcoul,fxdata] = ljcoul_2x(fx,r_plot);
+[fxr,fxlj,fxcoul,fxdata] = ljcoul_2x(fx,rfull);
 % [r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r_plot);
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+
+ff1=load(ref_ff1);
+ff2=load(ref_ff2);
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff([ff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)});
+[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],rfull);
+
+disp('Init values')
+[q1_init,q2_init,sig1_init,sig2_init,eps1_init,eps2_init]
+
 norm((fxdata-data_plot)/numel(data_plot))
 plot(r_plot,fxdata-data_plot,'gREPLACE_WITH_DASH_DASH')
-% x0=fx;
-% eval(strcat('res=',objective_func_string,';'));
-% disp('Mean abs(residual):');
-% mean(abs(res))
+disp('Final values')
+x=fx
+eval(strcat('res=',objective_func_string,';'));
+disp('Mean abs(residual):');
+mean(abs(res))
 
-% if nargin>5
-% hold on
-% plot(r,data,'r');
-% plot(r,data+res,'g');
-% plot(r,res,'b');
-%     xlim([min(r) max(r)]);
-%     ylim([min(data) max(data)]);
-% end
+Err=100*mean(abs(fxdata(ind_start:end)-data_plot(ind_start:end)))
+
+plotmin=1000*(round(min(Utot*1.5)/1000));
+if plotmin>=0
+    plotmin=1500;
+end
+ylim(sort([-plotmin plotmin]))
 
 ##### SOURCE END #####
 --></body></html>

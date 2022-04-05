@@ -2,7 +2,7 @@
 % * This function writes a gro file.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -46,7 +46,7 @@ else
         i=i+1;
     end
 end
-Box_dim
+% Box_dim
 if size(Box_dim,2) == 3 || Box_dim(6) == 0 && Box_dim(8) == 0 && Box_dim(9) == 0
     fprintf(fid, '%10.5f%10.5f%10.5f\n',Box_dim(1:3)/10);
 else

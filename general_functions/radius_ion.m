@@ -2,7 +2,7 @@
 % * For more detailed info, see the Revised Shannon radii...
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -11,7 +11,7 @@
 % # radii = radius_ion({'O'})
 % # radii = radius_ion('O')
 
-function radii = radius_ion(Atom_label,varargin)
+function [radii,Atom_label] = radius_ion(Atom_label,varargin)
 
 if ~iscell(Atom_label)
     Atom_label={Atom_label};
@@ -30,6 +30,11 @@ end
 Radiiproperties=load('Revised_Shannon_radii.mat');
 radii=zeros(length(Atom_label),1);
 for i=1:length(Atom_label)
+    
+    if numel(Atom_label{i})>2
+        Atom_label{i}=Atom_label{i}(1:2);
+    end
+    
     try
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
     catch
@@ -37,6 +42,24 @@ for i=1:length(Atom_label)
             ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
         catch
             ind=285;% As in O
+        end
+    end
+    ind_type=ind;
+    if numel(ind_type)>1
+        ind_type=ind_type(1);
+    elseif numel(ind_type)==0
+        try
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label{i}(1),1));
+            if numel(ind)==0
+                ind=285;
+                ind_type=285;
+            else
+                ind=ind(1);
+                ind_type=ind;
+            end
+        catch
+            ind=285;
+            ind_type=285;
         end
     end
     %     radii(i)=median(Radiiproperties.IonicRadii(ind))';
@@ -61,7 +84,12 @@ for i=1:length(Atom_label)
             end
         end
     else
-        radii(i,1)=Radiiproperties.IonicRadii(ind(1));
+        if numel(ind)>1
+            ind=ind(1);
+        end
+        radii(i,1)=Radiiproperties.IonicRadii(ind_type);
     end
 end
-
+Atom_label
+ind_type(1)
+Atom_label=[Radiiproperties.Ion(ind_type)];

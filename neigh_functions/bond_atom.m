@@ -3,7 +3,7 @@
 % Bond_index variable
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -23,7 +23,7 @@ end
 if nargin>3
     distance_factor=varargin{2};
 else
-    distance_factor=0.6; % 1.3
+    distance_factor=0.65; % 1.3
 end
 
 XYZ_labels=[atom.type]';
@@ -42,11 +42,14 @@ Radiiproperties=load('Revised_Shannon_radii.mat');
 % clayff_param(sort(unique([atom.type])),'SPC/E');
 
 disp('Calculating the distance matrix')
-if size(atom,2)>50000 && numel(Box_dim)<9
-     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25);
-else
-     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);
-end
+% if size(atom,2)>100000 && numel(Box_dim)<9
+%     disp('Will use the cell list method')
+%     disp('Does not work for triclinic systems...')
+%     pause(5)
+%      dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
+% else
+     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
+% end
 
 XYZ_radii=zeros(length(XYZ_labels),1);
 XYZ_formalcharge=zeros(length(XYZ_labels),1);
@@ -82,8 +85,8 @@ end
 
 disp('Looking for neighbours/bonds')
 Bond_index=[];
-b=1;
-for i=1:length(XYZ_labels)
+b=1;i=1;
+while i<size(atom,2)+1
     k=0;j=1;
     bond_ind=find(dist_matrix(:,i)>0);
     
@@ -115,7 +118,6 @@ for i=1:length(XYZ_labels)
                     Bond_index(b,3)=[atom(i).bond.dist(k,1)];
                     b=b+1;
                 end
-                
             end
         end
         j=j+1;
@@ -125,8 +127,9 @@ for i=1:length(XYZ_labels)
             i-1
         end
     end
+    i=i+1;
 end
-
+i-1
 
 if length(Bond_index)>0
     [Y,i] = sort(Bond_index(:,1));
@@ -174,4 +177,7 @@ assignin('caller','Bond_index',Bond_index);
 assignin('caller','Neigh_index',Neigh_index);
 % assignin('caller','bond_matrix',dist_matrix);
 assignin('caller','dist_matrix',dist_matrix);
+assignin('caller','X_dist',X_dist);
+assignin('caller','Y_dist',Y_dist);
+assignin('caller','Z_dist',Z_dist);
 

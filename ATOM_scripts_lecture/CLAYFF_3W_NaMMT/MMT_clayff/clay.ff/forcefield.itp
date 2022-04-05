@@ -1,4 +1,4 @@
-; CLAYFF
+; CLAYFF_EXT as in extended 
 
 [ defaults ]
 ; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ

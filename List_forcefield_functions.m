@@ -1,7 +1,7 @@
 %% List of topology functions
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -19,10 +19,10 @@
 % # <check_H2Odens.html check_H2Odens(atom,Box_dim)> % Computes the water density
 % # <clayff_2004_atom.html clayff_2004_atom(atom,Box_dim,varargin)> % Assigns the original Clayff atom types by Cygan et al., 2004. Can also 'heal' edges 
 % # <clayff_2004_param.html clayff_2004_param(Atom_label,varargin)> % Holds the ion and the original Clayff atomtype parameters
-% # <clayff_atom_old.m  clayff_atom_old(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges. This is an older version... 
 % # <clayff_atom.html clayff_atom(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges 
 % # <clayff_param.html clayff_param(Atom_label,varargin)> % Holds the ion and Clayff atomtype parameters
-% # <clayffmod_atom.html clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <clayff210_atom.html clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <clayff211_atom.html clayffmod_atom(atom,Box_dim,varargin)> % New faster version. Assigns the modififed Clayff atom types. Can also 'heal' edges 
 % # <tweak_charge_atom.html tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
 
 %% INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe
@@ -51,7 +51,7 @@
 
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

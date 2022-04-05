@@ -2,7 +2,7 @@
 % * This function tries to fuse all sites within a certain radii, rmax.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -41,18 +41,23 @@ while i < size(fused_atom,2)
 %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
-    i=i+1;
     
     if mod(i,100)==1
         if i > 1
             i-1
         end
     end
-    
+    i=i+1;
 end
+i-1
+
+assignin('caller','rm_ind',rmind_tot);
+assignin('caller','rm_atom',atom(rmind_tot));
+
 fused_atom(rmind_tot)=[];
 
 atom=update_atom(fused_atom);
+
 
 % if isstruct(fused_atom)
 %     try

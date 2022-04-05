@@ -1,0 +1,691 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>import_itp</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_itp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">import_itp.m</a></li><li><a href="#3">This function imports a itp file Each existing section should be</a></li><li><a href="#4">followed by a line starting with a ';' and labels indicating the</a></li><li><a href="#5">parameters, something like this below...</a></li><li><a href="#7">Written by MHolmboe</a></li><li><a href="#8">Please report bugs, issues</a></li><li><a href="#9"><a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></a></li><li><a href="#10">If we have duplicate sections</a></li><li><a href="#11">Create vars for the sections</a></li><li><a href="#12">Parse the [ moleculetype ] section</a></li><li><a href="#14">Parse the [ atoms ] section</a></li><li><a href="#15">Parse the [ atomtypes ] section</a></li><li><a href="#17">Parse the [ bonds ] section</a></li><li><a href="#18">Parse the [ angles ] section</a></li><li><a href="#20">To avoid vertcat problems</a></li><li><a href="#22">Parse the [ pairs ] section</a></li><li><a href="#24">Parse the [ exclusions ] section</a></li><li><a href="#26">Parse the [ dihedrals ] section</a></li><li><a href="#28">Parse the [ impropers ] section</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> itp = import_itp(filename)
+</pre><h2 id="2">import_itp.m</h2><h2 id="3">This function imports a itp file Each existing section should be</h2><h2 id="4">followed by a line starting with a ';' and labels indicating the</h2><h2 id="5">parameters, something like this below...</h2><h2 id="7">Written by MHolmboe</h2><h2 id="8">Please report bugs, issues</h2><h2 id="9"><a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></h2><pre class="codeinput"><span class="comment">% [ atomtypes ]</span>
+<span class="comment">% ; type name atnum charge ptype v w ; v usually sigma and epsilon</span>
+<span class="comment">%</span>
+<span class="comment">% [ atoms ]</span>
+<span class="comment">% ;   nr      type  resnr residue  atom   cgnr    charge      mass</span>
+<span class="comment">%</span>
+<span class="comment">% [ bonds ]</span>
+<span class="comment">% ai  aj   funct  c0  c1  c2  c3</span>
+<span class="comment">%</span>
+<span class="comment">% [ angles ]</span>
+<span class="comment">% ;  ai    aj    ak funct    c0    c1    c2    c3</span>
+<span class="comment">%</span>
+<span class="comment">% [ pairs ]</span>
+<span class="comment">% ;  ai    aj    ak funct    c0    c1    c2    c3</span>
+<span class="comment">%</span>
+<span class="comment">% [ exclusions ]</span>
+<span class="comment">% ;  ai   aj   ak   funct</span>
+<span class="comment">%</span>
+<span class="comment">% [ dihedrals ]</span>
+<span class="comment">% ;  ai    aj    ak    al funct    c0    c1    c2    c3    c4    c5</span>
+<span class="comment">%</span>
+<span class="comment">% [ impropers ]</span>
+<span class="comment">% ;  ai   aj   ak   al  funct   c0   c1   c2   c3   c4   c5</span>
+
+inputfile = fopen(filename, <span class="string">'r'</span>);
+C = textscan(inputfile, <span class="string">'%s'</span>, <span class="string">'Delimiter'</span>, <span class="string">'\n'</span>);
+fclose(inputfile);
+D=C;
+nondatarows1=find(strncmp(C{1},<span class="string">';'</span>,1));
+nondatarows2=find(strncmp(C{1},{<span class="string">''</span>},1));
+nondatarows3=find(strncmp(C{1},{<span class="string">'#'</span>},1));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+section_rows=strfind(D{1},<span class="string">'['</span>);
+section_rows = find(~cellfun(<span class="string">'isempty'</span>,section_rows));
+sections=D{1,1}(section_rows);
+
+Data=D{1,1};
+
+i=1;
+<span class="keyword">while</span> i&lt;size(sections,1)+1
+    i;
+    sections(i)=strtrim(sections(i));
+    <span class="keyword">if</span> i &gt; 1
+        <span class="keyword">if</span> ismember(sections(i),sections(1:i-1))
+            sections(i);
+            sections(i)=[];
+            Data(section_rows(i))=[];
+            section_rows(i)=[];
+            i=i-1;
+            <span class="keyword">try</span>
+                section_rows(i+1:end)=section_rows(i+1:end)-1;
+            <span class="keyword">catch</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    i=i+1;
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:size(sections,1)
+    sections(i)=strtrim(sections(i));
+    sections(i)=strrep(sections(i),<span class="string">'[ '</span>,<span class="string">''</span>);
+    sections(i)=strrep(sections(i),<span class="string">' ]'</span>,<span class="string">''</span>);
+<span class="keyword">end</span>
+</pre><h2 id="10">If we have duplicate sections</h2><pre class="codeinput"><span class="keyword">for</span> i=1:size(sections,1)
+    field=char(sections(i))
+    field(regexp(field,<span class="string">';'</span>):end)=[];
+    field(regexp(field,<span class="string">' '</span>):end)=[];
+    <span class="keyword">if</span> i==size(sections,1)
+        itp.(field)=Data(section_rows(i)+1:end);
+    <span class="keyword">else</span>
+        itp.(field)=Data(section_rows(i)+1:section_rows(i+1)-1);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="11">Create vars for the sections</h2><pre class="codeinput">names = fieldnames(itp);
+<span class="keyword">for</span> i=1:length(names)
+    eval([names{i} <span class="string">'=itp.'</span> names{i} <span class="string">';'</span>]);
+<span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="12">Parse the [ moleculetype ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'moleculetype'</span>,<span class="string">'var'</span>)
+        clearvars <span class="string">moleculetype</span>
+        atoms_cell = regexp(itp.moleculetype,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {<span class="string">'moleculetype'</span> <span class="string">'nrexcl'</span>};
+        <span class="keyword">for</span> i=1:size(atoms_cell,2)
+            field=char(atoms_section_labels(i));
+            <span class="comment">%       if ismember(atoms_section_labels(i),{'moleculetype' 'nrexcl'})</span>
+            <span class="comment">%         bonds.(field)=cellfun(@str2double,atoms_cell(:,i));</span>
+            <span class="comment">%         else</span>
+            moleculetype.(field)=atoms_cell(:,i);
+            <span class="comment">%         end</span>
+        <span class="keyword">end</span>
+        itp.moleculetype=moleculetype;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+    disp(<span class="string">'Found no moleculetype section'</span>)
+<span class="keyword">end</span>
+</pre><h2 id="14">Parse the [ atoms ] section</h2><pre class="codeinput"><span class="keyword">if</span> exist(<span class="string">'atoms'</span>,<span class="string">'var'</span>)
+    clearvars <span class="string">atoms</span>
+    atoms_cell = regexp(itp.atoms,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {<span class="string">'nr'</span> <span class="string">'type'</span> <span class="string">'resnr'</span> <span class="string">'residue'</span> <span class="string">'atom'</span> <span class="string">'cgnr'</span> <span class="string">'charge'</span> <span class="string">'mass'</span> <span class="string">'typeB'</span> <span class="string">'chargeB'</span> <span class="string">'massB'</span>  <span class="string">'comment'</span>};
+    <span class="keyword">for</span> i=1:min([12 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'nr'</span> <span class="string">'resnr'</span> <span class="string">'cgnr'</span> <span class="string">'charge'</span> <span class="string">'mass'</span>})
+            atoms.(field)=cellfun(@str2double,atoms_cell(:,i));
+        <span class="keyword">else</span>
+            atoms.(field)=atoms_cell(:,i);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    itp.atoms=atoms;
+<span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="15">Parse the [ atomtypes ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'atomtypes'</span>,<span class="string">'var'</span>)
+        <span class="keyword">try</span>
+            clearvars <span class="string">atomtypes</span>
+            atoms_cell = regexp(itp.atomtypes,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+            atoms_cell = vertcat(atoms_cell{:});
+            atoms_cell = sortrows(atoms_cell,1);
+            atoms_section_labels = {<span class="string">'type'</span> <span class="string">'name'</span> <span class="string">'atnum'</span> <span class="string">'charge'</span> <span class="string">'ptype'</span> <span class="string">'v'</span> <span class="string">'w'</span>};
+            <span class="keyword">for</span> i=1:min([7 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'atnum'</span> <span class="string">'charge'</span> <span class="string">'v'</span> <span class="string">'w'</span>})
+                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                <span class="keyword">else</span>
+                    atomtypes.(field)=atoms_cell(:,i);
+                <span class="keyword">end</span>
+
+            <span class="keyword">end</span>
+            itp.atomtypes=atomtypes;
+            <span class="keyword">for</span> i=1:size(itp.atoms.type,1)
+                itp.atoms.typeind(i)=find(strcmp([itp.atoms.type(i)],[itp.atomtypes.type]));
+            <span class="keyword">end</span>
+        <span class="keyword">catch</span>
+            clearvars <span class="string">atomtypes</span>
+            atoms_cell = regexp(itp.atomtypes,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+
+            colmin=100;
+            <span class="keyword">for</span> i=1:size(atoms_cell,1)
+                colmin=min([size(atoms_cell{i},2) colmin]);
+            <span class="keyword">end</span>
+            <span class="keyword">for</span> i=1:size(atoms_cell,1)
+                atoms_cell{i}=atoms_cell{i}(1:colmin);
+            <span class="keyword">end</span>
+            atoms_cell = vertcat(atoms_cell{:});
+            atoms_cell = sortrows(atoms_cell,1);
+            atoms_section_labels = {<span class="string">'name'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'ptype'</span> <span class="string">'sigma'</span> <span class="string">'epsilon'</span>};
+            <span class="keyword">for</span> i=1:min([7 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'atnum'</span> <span class="string">'charge'</span> <span class="string">'sigma'</span> <span class="string">'epsilon'</span>})
+                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                <span class="keyword">else</span>
+                    atomtypes.(field)=atoms_cell(:,i);
+                <span class="keyword">end</span>
+
+            <span class="keyword">end</span>
+            itp.atomtypes=atomtypes;
+            itp.atomtypes.type=itp.atomtypes.name;
+            <span class="keyword">for</span> i=1:size(itp.atoms.type,1)
+                itp.atoms.typeind(i)=find(strcmp([itp.atoms.type(i)],[itp.atomtypes.type]));
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+    disp(<span class="string">'Found no atomtypes section'</span>)
+<span class="keyword">end</span>
+</pre><h2 id="17">Parse the [ bonds ] section</h2><pre class="codeinput"><span class="keyword">if</span> exist(<span class="string">'bonds'</span>,<span class="string">'var'</span>)
+    clearvars <span class="string">bonds</span>
+    atoms_cell = regexp(itp.bonds,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>};
+    <span class="keyword">for</span> i=1:min([5 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>})
+            bonds.(field)=cellfun(@str2double,atoms_cell(:,i));
+            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+        <span class="keyword">else</span>
+            bonds.(field)=atoms_cell(:,i:end);
+            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+    itp.bonds=bonds;
+<span class="keyword">end</span>
+</pre><h2 id="18">Parse the [ angles ] section</h2><pre class="codeinput"><span class="keyword">if</span> exist(<span class="string">'angles'</span>,<span class="string">'var'</span>)
+</pre><pre class="codeinput">    clearvars <span class="string">angles</span>
+    atoms_cell = regexp(itp.angles,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+</pre><h2 id="20">To avoid vertcat problems</h2><pre class="codeinput">    mincol=1000;
+    <span class="keyword">for</span> s=1:size(atoms_cell,1)
+        temp=size(atoms_cell{s},2);
+        <span class="keyword">if</span> temp &lt; mincol
+            mincol=temp;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> s=1:size(atoms_cell,1)
+        atoms_cell{s}(1:mincol);
+    <span class="keyword">end</span>
+
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>};
+    <span class="keyword">for</span> i=1:min([6 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>})
+            angles.(field)=cellfun(@str2double,atoms_cell(:,i));
+            [angles.(field)(isnan(angles.(field)))]=deal(0);
+        <span class="keyword">else</span>
+            angles.(field)=atoms_cell(:,i);
+            [angles.(field)(isnan(angles.(field)))]=deal(0);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    itp.angles=angles;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="22">Parse the [ pairs ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'pairs'</span>,<span class="string">'var'</span>)
+        clearvars <span class="string">pairs</span>
+        atoms_cell = regexp(itp.pairs,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>};
+        <span class="keyword">for</span> i=1:min([7 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>})
+                pairs.(field)=cellfun(@str2double,atoms_cell(:,i));
+                <span class="comment">%             [pairs.(field)(isnan(pairs.(field)))]=deal(0);</span>
+            <span class="keyword">else</span>
+                pairs.(field)=atoms_cell(:,i);
+                <span class="comment">%             [pairs.(field)(isnan(pairs.(field)))]=deal(0);</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        itp.pairs=pairs;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+<span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="24">Parse the [ exclusions ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'exclusions'</span>,<span class="string">'var'</span>)
+        clearvars <span class="string">exclusions</span>
+        atoms_cell = regexp(itp.exclusions,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span> <span class="string">'funct'</span>};
+        <span class="keyword">for</span> i=1:min([4 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span> <span class="string">'funct'</span>})
+                exclusions.(field)=cellfun(@str2double,atoms_cell(:,i));
+            <span class="keyword">else</span>
+                exclusions.(field)=atoms_cell(:,i);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        itp.exclusions=exclusions;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+<span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="26">Parse the [ dihedrals ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'dihedrals'</span>,<span class="string">'var'</span>)
+        clearvars <span class="string">dihedrals</span>
+        atoms_cell = regexp(itp.dihedrals,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span>  <span class="string">'al'</span>  <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>  <span class="string">'c4'</span> <span class="string">'c5'</span>};
+        <span class="keyword">for</span> i=1:min([11 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span>  <span class="string">'al'</span>  <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>  <span class="string">'c4'</span> <span class="string">'c5'</span>})
+                dihedrals.(field)=cellfun(@str2double,atoms_cell(:,i));
+            <span class="keyword">else</span>
+                dihedrals.(field)=char(atoms_cell(:,i));
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        itp.dihedrals=dihedrals;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+<span class="keyword">end</span>
+
+<span class="keyword">try</span>
+</pre><h2 id="28">Parse the [ impropers ] section</h2><pre class="codeinput">    <span class="keyword">if</span> exist(<span class="string">'impropers'</span>,<span class="string">'var'</span>)
+        clearvars <span class="string">impropers</span>
+        atoms_cell = regexp(itp.impropers,<span class="string">'\s+'</span>, <span class="string">'split'</span>);
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span>  <span class="string">'al'</span>  <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>  <span class="string">'c4'</span> <span class="string">'c5'</span>};
+        <span class="keyword">for</span> i=1:min([11 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            <span class="keyword">if</span> ismember(atoms_section_labels(i),{<span class="string">'ai'</span> <span class="string">'aj'</span> <span class="string">'ak'</span>  <span class="string">'al'</span>  <span class="string">'funct'</span> <span class="string">'c0'</span> <span class="string">'c1'</span> <span class="string">'c2'</span> <span class="string">'c3'</span>  <span class="string">'c4'</span> <span class="string">'c5'</span>})
+                impropers.(field)=cellfun(@str2double,atoms_cell(:,i));
+            <span class="keyword">else</span>
+                impropers.(field)=atoms_cell(:,i);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        itp.impropers=impropers;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">catch</span>
+<span class="keyword">end</span>
+<span class="comment">% assignin('caller','itp',itp);</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function itp = import_itp(filename)
+%% import_itp.m
+%% This function imports a itp file Each existing section should be
+%% followed by a line starting with a ';' and labels indicating the
+%% parameters, something like this below...
+%%
+%% Written by MHolmboe
+%% Please report bugs, issues
+%% michael.holmboe@umu.se
+
+% [ atomtypes ]
+% ; type name atnum charge ptype v w ; v usually sigma and epsilon
+%
+% [ atoms ]
+% ;   nr      type  resnr residue  atom   cgnr    charge      mass
+%
+% [ bonds ]
+% ai  aj   funct  c0  c1  c2  c3
+%
+% [ angles ]
+% ;  ai    aj    ak funct    c0    c1    c2    c3
+%
+% [ pairs ]
+% ;  ai    aj    ak funct    c0    c1    c2    c3
+%
+% [ exclusions ]
+% ;  ai   aj   ak   funct
+%
+% [ dihedrals ]
+% ;  ai    aj    ak    al funct    c0    c1    c2    c3    c4    c5
+%
+% [ impropers ]
+% ;  ai   aj   ak   al  funct   c0   c1   c2   c3   c4   c5
+
+inputfile = fopen(filename, 'r');
+C = textscan(inputfile, '%s', 'Delimiter', '\n');
+fclose(inputfile);
+D=C;
+nondatarows1=find(strncmp(C{1},';',1));
+nondatarows2=find(strncmp(C{1},{''},1));
+nondatarows3=find(strncmp(C{1},{'#'},1));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+section_rows=strfind(D{1},'[');
+section_rows = find(~cellfun('isempty',section_rows));
+sections=D{1,1}(section_rows);
+
+Data=D{1,1};
+
+i=1;
+while i<size(sections,1)+1
+    i;
+    sections(i)=strtrim(sections(i));
+    if i > 1
+        if ismember(sections(i),sections(1:i-1))
+            sections(i);
+            sections(i)=[];
+            Data(section_rows(i))=[];
+            section_rows(i)=[];
+            i=i-1;
+            try
+                section_rows(i+1:end)=section_rows(i+1:end)-1;
+            catch
+            end
+        end
+    end
+    i=i+1;
+end
+
+for i = 1:size(sections,1)
+    sections(i)=strtrim(sections(i));
+    sections(i)=strrep(sections(i),'[ ','');
+    sections(i)=strrep(sections(i),' ]','');
+end
+
+%% If we have duplicate sections
+for i=1:size(sections,1)
+    field=char(sections(i))
+    field(regexp(field,';'):end)=[];
+    field(regexp(field,' '):end)=[];
+    if i==size(sections,1)
+        itp.(field)=Data(section_rows(i)+1:end);
+    else
+        itp.(field)=Data(section_rows(i)+1:section_rows(i+1)-1);
+    end
+end
+
+%% Create vars for the sections
+names = fieldnames(itp);
+for i=1:length(names)
+    eval([names{i} '=itp.' names{i} ';']);
+end
+
+try
+    %% Parse the [ moleculetype ] section
+    if exist('moleculetype','var')
+        clearvars moleculetype
+        atoms_cell = regexp(itp.moleculetype,'\s+', 'split');
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {'moleculetype' 'nrexcl'};
+        for i=1:size(atoms_cell,2)
+            field=char(atoms_section_labels(i));
+            %       if ismember(atoms_section_labels(i),{'moleculetype' 'nrexcl'})
+            %         bonds.(field)=cellfun(@str2double,atoms_cell(:,i));
+            %         else
+            moleculetype.(field)=atoms_cell(:,i);
+            %         end
+        end
+        itp.moleculetype=moleculetype;
+    end
+catch
+    disp('Found no moleculetype section')
+end
+
+%% Parse the [ atoms ] section
+if exist('atoms','var')
+    clearvars atoms
+    atoms_cell = regexp(itp.atoms,'\s+', 'split');
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {'nr' 'type' 'resnr' 'residue' 'atom' 'cgnr' 'charge' 'mass' 'typeB' 'chargeB' 'massB'  'comment'};
+    for i=1:min([12 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        if ismember(atoms_section_labels(i),{'nr' 'resnr' 'cgnr' 'charge' 'mass'})
+            atoms.(field)=cellfun(@str2double,atoms_cell(:,i));
+        else
+            atoms.(field)=atoms_cell(:,i);
+        end
+    end
+    itp.atoms=atoms;
+end
+
+try
+    %% Parse the [ atomtypes ] section
+    if exist('atomtypes','var')
+        try
+            clearvars atomtypes
+            atoms_cell = regexp(itp.atomtypes,'\s+', 'split');
+            atoms_cell = vertcat(atoms_cell{:});
+            atoms_cell = sortrows(atoms_cell,1);
+            atoms_section_labels = {'type' 'name' 'atnum' 'charge' 'ptype' 'v' 'w'};
+            for i=1:min([7 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'atnum' 'charge' 'v' 'w'})
+                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                else
+                    atomtypes.(field)=atoms_cell(:,i);
+                end
+                
+            end
+            itp.atomtypes=atomtypes;
+            for i=1:size(itp.atoms.type,1)
+                itp.atoms.typeind(i)=find(strcmp([itp.atoms.type(i)],[itp.atomtypes.type]));
+            end
+        catch
+            clearvars atomtypes
+            atoms_cell = regexp(itp.atomtypes,'\s+', 'split');
+            
+            colmin=100;
+            for i=1:size(atoms_cell,1)
+                colmin=min([size(atoms_cell{i},2) colmin]);
+            end
+            for i=1:size(atoms_cell,1)
+                atoms_cell{i}=atoms_cell{i}(1:colmin);
+            end
+            atoms_cell = vertcat(atoms_cell{:});
+            atoms_cell = sortrows(atoms_cell,1);
+            atoms_section_labels = {'name' 'atnum' 'mass' 'charge' 'ptype' 'sigma' 'epsilon'};
+            for i=1:min([7 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'atnum' 'charge' 'sigma' 'epsilon'})
+                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                else
+                    atomtypes.(field)=atoms_cell(:,i);
+                end
+                
+            end
+            itp.atomtypes=atomtypes;
+            itp.atomtypes.type=itp.atomtypes.name;
+            for i=1:size(itp.atoms.type,1)
+                itp.atoms.typeind(i)=find(strcmp([itp.atoms.type(i)],[itp.atomtypes.type]));
+            end
+        end
+    end
+catch
+    disp('Found no atomtypes section')
+end
+
+%% Parse the [ bonds ] section
+if exist('bonds','var')
+    clearvars bonds
+    atoms_cell = regexp(itp.bonds,'\s+', 'split');
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
+    for i=1:min([5 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
+            bonds.(field)=cellfun(@str2double,atoms_cell(:,i));
+            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+        else
+            bonds.(field)=atoms_cell(:,i:end);
+            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+        end
+        
+    end
+    itp.bonds=bonds;
+end
+
+%% Parse the [ angles ] section
+if exist('angles','var')
+    clearvars angles
+    atoms_cell = regexp(itp.angles,'\s+', 'split');
+    
+    %% To avoid vertcat problems
+    mincol=1000;
+    for s=1:size(atoms_cell,1)
+        temp=size(atoms_cell{s},2);
+        if temp < mincol
+            mincol=temp;
+        end
+    end
+    for s=1:size(atoms_cell,1)
+        atoms_cell{s}(1:mincol);
+    end
+    
+    atoms_cell = vertcat(atoms_cell{:});
+    atoms_section_labels = {'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'};
+    for i=1:min([6 size(atoms_cell,2)])
+        field=char(atoms_section_labels(i));
+        if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'})
+            angles.(field)=cellfun(@str2double,atoms_cell(:,i));
+            [angles.(field)(isnan(angles.(field)))]=deal(0);
+        else
+            angles.(field)=atoms_cell(:,i);
+            [angles.(field)(isnan(angles.(field)))]=deal(0);
+        end
+    end
+    itp.angles=angles;
+end
+
+try
+    %% Parse the [ pairs ] section
+    if exist('pairs','var')
+        clearvars pairs
+        atoms_cell = regexp(itp.pairs,'\s+', 'split');
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
+        for i=1:min([7 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
+                pairs.(field)=cellfun(@str2double,atoms_cell(:,i));
+                %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
+            else
+                pairs.(field)=atoms_cell(:,i);
+                %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
+            end
+        end
+        itp.pairs=pairs;
+    end
+catch
+end
+
+try
+    %% Parse the [ exclusions ] section
+    if exist('exclusions','var')
+        clearvars exclusions
+        atoms_cell = regexp(itp.exclusions,'\s+', 'split');
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {'ai' 'aj' 'ak' 'funct'};
+        for i=1:min([4 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct'})
+                exclusions.(field)=cellfun(@str2double,atoms_cell(:,i));
+            else
+                exclusions.(field)=atoms_cell(:,i);
+            end
+        end
+        itp.exclusions=exclusions;
+    end
+catch
+end
+
+try
+    %% Parse the [ dihedrals ] section
+    if exist('dihedrals','var')
+        clearvars dihedrals
+        atoms_cell = regexp(itp.dihedrals,'\s+', 'split');
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
+        for i=1:min([11 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
+                dihedrals.(field)=cellfun(@str2double,atoms_cell(:,i));
+            else
+                dihedrals.(field)=char(atoms_cell(:,i));
+            end
+        end
+        itp.dihedrals=dihedrals;
+    end
+catch
+end
+
+try
+    %% Parse the [ impropers ] section
+    if exist('impropers','var')
+        clearvars impropers
+        atoms_cell = regexp(itp.impropers,'\s+', 'split');
+        atoms_cell = vertcat(atoms_cell{:});
+        atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
+        for i=1:min([11 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
+                impropers.(field)=cellfun(@str2double,atoms_cell(:,i));
+            else
+                impropers.(field)=atoms_cell(:,i);
+            end
+        end
+        itp.impropers=impropers;
+    end
+catch
+end
+% assignin('caller','itp',itp);
+
+
+
+##### SOURCE END #####
+--></body></html>

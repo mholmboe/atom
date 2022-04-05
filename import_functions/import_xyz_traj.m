@@ -2,7 +2,7 @@
 % * This function imports a .xyz trajectory
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -54,6 +54,7 @@ end
 Frames
 traj=zeros(length(Frames),nAtoms*3);
 Box_dim=zeros(length(Frames),3);
+Comments={};
 fileID = fopen(filename,'r');
 
 if strcmp(Boxinfo,'no')
@@ -62,7 +63,10 @@ if strcmp(Boxinfo,'no')
         frewind(fileID)
         startRow = 1+nAtoms*(Frames(t)-1)+2*(Frames(t)-1);
 
-        Line2 = textscan(fileID, '%s%[^\n\r]', 1,'HeaderLines',startRow);
+        Line2 = textscan(fileID, '%[^\n\r]', 1,'HeaderLines',startRow);
+        
+        Comments(t,1)=Line2;
+
         
         formatSpec = '%s%f%f%f%[^\n\r]';
         dataArray = textscan(fileID, formatSpec, nAtoms, 'Delimiter',{'\t',' '}, 'MultipleDelimsAsOne', true, 'EmptyValue' ,NaN,'HeaderLines',0, 'ReturnOnError', false);
@@ -71,17 +75,23 @@ if strcmp(Boxinfo,'no')
         traj(t,2:3:end)=[dataArray{:,3}];
         traj(t,3:3:end)=[dataArray{:,4}];
         
+        % Extra stuff - will print a .xyf for every frame. Note you could set the Box_dim
+        XYZ_labels = dataArray{:,1};
+        XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
+        write_xyz(XYZ_labels,XYZ_data,[],strcat('out_',num2str(t),'.xyz'),Comments(t,1));
+        
         if t==1
             XYZ_labels = dataArray{:,1};
             XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
         end
-        
+       
         Box_dim(t,:) = [(max([dataArray{:,2}])-min([dataArray{:,2}]))*1.001    (max([dataArray{:,3}])-min([dataArray{:,3}]))*1.001  (max([dataArray{:,4}])-min([dataArray{:,4}]))*1.001];
         
         if mod(t,10)==0
             t
         end
     end
+    assignin('caller','Comments',Comments);
     disp('Guessing the box dimensions to be .1% larger than the max-min distances')
 else
     for t=1:length(Frames)
@@ -116,6 +126,12 @@ else
         traj(t,1:3:end)=[dataArray{:,2}];
         traj(t,2:3:end)=[dataArray{:,3}];
         traj(t,3:3:end)=[dataArray{:,4}];
+        
+%         % Extra stuff - will print a .xyf for every frame. Note you could set the Box_dim
+%         XYZ_labels = dataArray{:,1};
+%         XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
+%         write_xyz(XYZ_labels,XYZ_data,[15 15 15],strcat('out_',num2str(t),'.xyz'));
+
         
         if t==1
             XYZ_labels = dataArray{:,1};

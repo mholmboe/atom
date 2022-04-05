@@ -1,8 +1,9 @@
 %% The atom script library
-% Below is links to all functions, sorted after topic/purpose or alphabetically
+% Below is links to all functions, sorted after topic/purpose
 %
+
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

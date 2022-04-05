@@ -3,7 +3,7 @@ close all;
 hold on
 format compact;
 
-r=.1:.001:1.2; % nm
+r=.12:.001:1.2; % nm
 
 C4=0.05;
 
@@ -57,12 +57,12 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = buckinghamcoul(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 %[r_plot,lj_plot,coul_plot,data_plot] = buckinghamcoul([q1,q2,sig1,sig2,eps1,eps2],r);
 norm((fxdata-data_plot)/numel(data_plot))
-plot(r_plot,fxdata-data_plot)
+plot(r_plot,fxdata-data_plot,'g--')
 
 % x0=fx;
 % eval(strcat('res=',objective_func_string,';'));

@@ -1,15 +1,22 @@
-    O  15.99940 ;     CARBONYL OXYGEN (C=O)
-   Ow  15.99940 ;     WATER OXYGEN
-   Odsub  15.99940 ;     HYDROXYL OXYGEN (OH)
-   OW  15.99940 ;     WATER OXYGEN
-   Oh  15.99940 ;     CARBONYL OXYGEN (C=O)
-   Omg  15.99940 ;     CARBOXYL OXYGEN (CO-)
-   Ohmg  15.99940 ;     HYDROXYL OXYGEN (OH)
-   Oalt  15.99940 ;     CARBONYL OXYGEN (C=O)
-   Oalh  15.99940 ;     CARBOXYL OXYGEN (CO-)
-   Oalhh  15.99940 ;     HYDROXYL OXYGEN (OH)
-   Oalsi  15.99940 ;     HYDROXYL OXYGEN (OH)
-   Osih  15.99940 ;     HYDROXYL OXYGEN (OH)
+    O  15.99940 ;     
+   Ow  15.99940 ;    
+Odsub  15.99940 ;     
+   OW  15.99940 ;    
+   Ob  15.99940 ;    
+   Op  15.99940 ;     
+   Oh  15.99940 ;     
+  Omg  15.99940 ;     
+  hmg  15.99940 ;     
+ Oalt  15.99940 ;     
+ Oalh  15.99940 ;     
+Oalhh  15.99940 ; 
+  Oal  15.99940 ;     
+  Ome  15.99940 ;    
+ Omhh  15.99940 ;     
+  Oli  15.99940 ;     
+  Osi  15.99940 ;     
+Oalsi  15.99940 ;   
+ Osih  15.99940 ;   
     N  14.00670 ;     PEPTIDE NITROGEN (N OR NH)
    NT  14.00670 ;     TERMINAL NITROGEN (NH2)
    NL  14.00670 ;     TERMINAL NITROGEN (NH3)

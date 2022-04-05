@@ -1,9 +1,9 @@
-%% ben_atom.m
+%% bend_atom.m
 % * This simple function tries to bend the coordinates in  an atom struct... 
 % downwards. It works best if the original atom struct initally is centered.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

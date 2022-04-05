@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>clayff_param.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="clayff_param.m"><style type="text/css">
+      --><title>clayff_param.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="clayff_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>clayff_param.m</h1><!--introduction--><div><ul><li>This function holds some of the extended Clayff parameters</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>clayff_param(Atom_label)</li><li>clayff_param(Atom_label,'spc')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> clayff_param(Atom_label,varargin)
+  </style></head><body><div class="content"><h1>clayff_param.m</h1><!--introduction--><div><ul><li>This function holds some of the extended Clayff parameters</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>clayff_param(Atom_label)</li><li>clayff_param(Atom_label,'spc')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> clayff_param(Atom_label,varargin)
 
 <span class="keyword">if</span> nargin &lt; 2
     water_model=<span class="string">'SPC/E'</span>;
@@ -240,8 +240,8 @@ forcefield.clayff(20).e_kcalmol = 5.02980E-06;
 <span class="comment">% Feo</span>
 forcefield.clayff(21).type =    {<span class="string">'Feo'</span>}; <span class="comment">% feo</span>
 forcefield.clayff(21).mass =    55.845;
-forcefield.clayff(21).charge =  1.57500; <span class="comment">%1.5750;</span>
-forcefield.clayff(21).radius =  5.5070;
+forcefield.clayff(21).charge =  1.57500;
+forcefield.clayff(21).radius =  4.570910278; <span class="comment">% Kerisit, original 5.5070;</span>
 forcefield.clayff(21).e_kcalmol = 9.0298E-06;
 <span class="comment">%</span>
 <span class="comment">% Lio</span>
@@ -415,7 +415,7 @@ forcefield.clayff(45).e_kcalmol = 0.155400;
 <span class="comment">% forcefield.clayff=forcefield.clayff(Forcefield_index);</span>
 
 <span class="comment">% Fe (dummy for Feo)</span>
-forcefield.clayff(46).type =    {<span class="string">'Fe'</span>}; <span class="comment">% fe</span>
+forcefield.clayff(46).type =    {<span class="string">'DFeo'</span>}; <span class="comment">% Dubblet fe</span>
 forcefield.clayff(46).mass =    55.845;
 forcefield.clayff(46).charge =  1.3600; <span class="comment">%1.5750; feo</span>
 forcefield.clayff(46).radius =  4.570910278; <span class="comment">% Kerisit, original 5.5070;</span>
@@ -470,40 +470,61 @@ forcefield.clayff(53).charge =  -1.7650;
 forcefield.clayff(53).radius =  3.553200;
 forcefield.clayff(53).e_kcalmol = 0.155400;
 
-<span class="comment">% Be</span>
-forcefield.clayff(54).type =    {<span class="string">'Be'</span>}; <span class="comment">% st tetrahedral silicon</span>
-forcefield.clayff(54).mass =    9.012182;
-forcefield.clayff(54).charge =  1.0500;
-forcefield.clayff(54).radius =  3.70640;
-forcefield.clayff(54).e_kcalmol = 1.8405E-06;
+<span class="comment">% Oli</span>
+forcefield.clayff(54).type =    {<span class="string">'Oli'</span>}; <span class="comment">%</span>
+forcefield.clayff(54).mass =    15.999410;
+forcefield.clayff(54).charge =  -1.2875;
+forcefield.clayff(54).radius =  3.553200;
+forcefield.clayff(54).e_kcalmol = 0.155400;
 
-<span class="comment">% Fet</span>
-forcefield.clayff(55).type =    {<span class="string">'Fet'</span>}; <span class="comment">% at tetrahedral aluminium</span>
-forcefield.clayff(55).mass =    55.845;
-forcefield.clayff(55).charge =  1.5750;
+<span class="comment">% Be</span>
+forcefield.clayff(55).type =    {<span class="string">'Be'</span>}; <span class="comment">% st tetrahedral silicon</span>
+forcefield.clayff(55).mass =    9.012182;
+forcefield.clayff(55).charge =  1.0500;
 forcefield.clayff(55).radius =  3.70640;
 forcefield.clayff(55).e_kcalmol = 1.8405E-06;
 
 <span class="comment">% Fet</span>
-forcefield.clayff(55).type =    {<span class="string">'Fe2'</span>}; <span class="comment">% at tetrahedral aluminium</span>
-forcefield.clayff(55).mass =    55.845;
-forcefield.clayff(55).charge =  1.0500;
-forcefield.clayff(55).radius =  6.24280;
-forcefield.clayff(55).e_kcalmol = 5.02980E-06;
+forcefield.clayff(56).type =    {<span class="string">'Fet'</span>}; <span class="comment">% tetrahedral Fe</span>
+forcefield.clayff(56).mass =    55.845;
+forcefield.clayff(56).charge =  1.5750;
+forcefield.clayff(56).radius =  4.570910278; <span class="comment">% Kerisit, original 5.5070;</span>
+forcefield.clayff(56).e_kcalmol = 9.0298E-06;
+
+<span class="comment">% Fee</span>
+forcefield.clayff(57).type =    {<span class="string">'Fee'</span>}; <span class="comment">%</span>
+forcefield.clayff(57).mass =    55.845;
+forcefield.clayff(57).charge =  1.5750;
+forcefield.clayff(57).radius =  4.570910278; <span class="comment">% Kerisit, original 5.5070;</span>
+forcefield.clayff(57).e_kcalmol = 9.0298E-06;
+
+<span class="comment">% Fe2</span>
+forcefield.clayff(58).type =    {<span class="string">'Fe2'</span>}; <span class="comment">%</span>
+forcefield.clayff(58).mass =    55.845;
+forcefield.clayff(58).charge =  1.0500;
+forcefield.clayff(58).radius =  6.24280;
+forcefield.clayff(58).e_kcalmol = 5.02980E-06;
 
 <span class="comment">% Omge</span>
-forcefield.clayff(56).type =    {<span class="string">'Ome'</span>}; <span class="comment">% at tetrahedral aluminium</span>
-forcefield.clayff(56).mass =    15.999410;
-forcefield.clayff(56).charge =  -1.2667;
-forcefield.clayff(56).radius =  3.553200;
-forcefield.clayff(56).e_kcalmol = 0.155400;
+forcefield.clayff(59).type =    {<span class="string">'Ome'</span>}; <span class="comment">% at tetrahedral aluminium</span>
+forcefield.clayff(59).mass =    15.999410;
+forcefield.clayff(59).charge =  -1.2667;
+forcefield.clayff(59).radius =  3.553200;
+forcefield.clayff(59).e_kcalmol = 0.155400;
 
 <span class="comment">% Oalhh</span>
-forcefield.clayff(57).type =    {<span class="string">'Omhh'</span>}; <span class="comment">% edge oxygen</span>
-forcefield.clayff(57).mass =    15.999410;
-forcefield.clayff(57).charge =  -0.6625; <span class="comment">%</span>
-forcefield.clayff(57).radius =  3.553200;
-forcefield.clayff(57).e_kcalmol = 0.155400;
+forcefield.clayff(60).type =    {<span class="string">'Omhh'</span>}; <span class="comment">% edge oxygen</span>
+forcefield.clayff(60).mass =    15.999410;
+forcefield.clayff(60).charge =  -0.6625; <span class="comment">%</span>
+forcefield.clayff(60).radius =  3.553200;
+forcefield.clayff(60).e_kcalmol = 0.155400;
+
+<span class="comment">% Fs</span>
+forcefield.clayff(61).type =    {<span class="string">'Fs'</span>}; <span class="comment">% structural F,</span>
+forcefield.clayff(61).mass =    18.9984;
+forcefield.clayff(61).charge =  -0.525; <span class="comment">%</span>
+forcefield.clayff(61).radius =  4.514;
+forcefield.clayff(61).e_kcalmol = 0.0074005;
 
 
 
@@ -616,7 +637,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'forcefield'<
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -798,8 +819,8 @@ forcefield.clayff(20).e_kcalmol = 5.02980E-06;
 % Feo
 forcefield.clayff(21).type =    {'Feo'}; % feo
 forcefield.clayff(21).mass =    55.845;
-forcefield.clayff(21).charge =  1.57500; %1.5750;
-forcefield.clayff(21).radius =  5.5070;
+forcefield.clayff(21).charge =  1.57500; 
+forcefield.clayff(21).radius =  4.570910278; % Kerisit, original 5.5070;
 forcefield.clayff(21).e_kcalmol = 9.0298E-06;
 %
 % Lio
@@ -973,7 +994,7 @@ forcefield.clayff(45).e_kcalmol = 0.155400;
 % forcefield.clayff=forcefield.clayff(Forcefield_index);
 
 % Fe (dummy for Feo)
-forcefield.clayff(46).type =    {'Fe'}; % fe
+forcefield.clayff(46).type =    {'DFeo'}; % Dubblet fe
 forcefield.clayff(46).mass =    55.845;
 forcefield.clayff(46).charge =  1.3600; %1.5750; feo
 forcefield.clayff(46).radius =  4.570910278; % Kerisit, original 5.5070;
@@ -1028,40 +1049,61 @@ forcefield.clayff(53).charge =  -1.7650;
 forcefield.clayff(53).radius =  3.553200;
 forcefield.clayff(53).e_kcalmol = 0.155400;
 
-% Be
-forcefield.clayff(54).type =    {'Be'}; % st tetrahedral silicon
-forcefield.clayff(54).mass =    9.012182;
-forcefield.clayff(54).charge =  1.0500;
-forcefield.clayff(54).radius =  3.70640;
-forcefield.clayff(54).e_kcalmol = 1.8405E-06;
+% Oli 
+forcefield.clayff(54).type =    {'Oli'}; % 
+forcefield.clayff(54).mass =    15.999410;
+forcefield.clayff(54).charge =  -1.2875;
+forcefield.clayff(54).radius =  3.553200;
+forcefield.clayff(54).e_kcalmol = 0.155400;
 
-% Fet
-forcefield.clayff(55).type =    {'Fet'}; % at tetrahedral aluminium
-forcefield.clayff(55).mass =    55.845;
-forcefield.clayff(55).charge =  1.5750;
+% Be
+forcefield.clayff(55).type =    {'Be'}; % st tetrahedral silicon
+forcefield.clayff(55).mass =    9.012182;
+forcefield.clayff(55).charge =  1.0500;
 forcefield.clayff(55).radius =  3.70640;
 forcefield.clayff(55).e_kcalmol = 1.8405E-06;
 
 % Fet
-forcefield.clayff(55).type =    {'Fe2'}; % at tetrahedral aluminium
-forcefield.clayff(55).mass =    55.845;
-forcefield.clayff(55).charge =  1.0500;
-forcefield.clayff(55).radius =  6.24280;
-forcefield.clayff(55).e_kcalmol = 5.02980E-06;
+forcefield.clayff(56).type =    {'Fet'}; % tetrahedral Fe
+forcefield.clayff(56).mass =    55.845;
+forcefield.clayff(56).charge =  1.5750;
+forcefield.clayff(56).radius =  4.570910278; % Kerisit, original 5.5070;
+forcefield.clayff(56).e_kcalmol = 9.0298E-06;
+
+% Fee
+forcefield.clayff(57).type =    {'Fee'}; % 
+forcefield.clayff(57).mass =    55.845;
+forcefield.clayff(57).charge =  1.5750;
+forcefield.clayff(57).radius =  4.570910278; % Kerisit, original 5.5070;
+forcefield.clayff(57).e_kcalmol = 9.0298E-06;
+
+% Fe2
+forcefield.clayff(58).type =    {'Fe2'}; % 
+forcefield.clayff(58).mass =    55.845;
+forcefield.clayff(58).charge =  1.0500;
+forcefield.clayff(58).radius =  6.24280;
+forcefield.clayff(58).e_kcalmol = 5.02980E-06;
 
 % Omge
-forcefield.clayff(56).type =    {'Ome'}; % at tetrahedral aluminium
-forcefield.clayff(56).mass =    15.999410;
-forcefield.clayff(56).charge =  -1.2667;
-forcefield.clayff(56).radius =  3.553200;
-forcefield.clayff(56).e_kcalmol = 0.155400;
+forcefield.clayff(59).type =    {'Ome'}; % at tetrahedral aluminium
+forcefield.clayff(59).mass =    15.999410;
+forcefield.clayff(59).charge =  -1.2667;
+forcefield.clayff(59).radius =  3.553200;
+forcefield.clayff(59).e_kcalmol = 0.155400;
 
 % Oalhh
-forcefield.clayff(57).type =    {'Omhh'}; % edge oxygen
-forcefield.clayff(57).mass =    15.999410;
-forcefield.clayff(57).charge =  -0.6625; %
-forcefield.clayff(57).radius =  3.553200;
-forcefield.clayff(57).e_kcalmol = 0.155400;
+forcefield.clayff(60).type =    {'Omhh'}; % edge oxygen
+forcefield.clayff(60).mass =    15.999410;
+forcefield.clayff(60).charge =  -0.6625; %
+forcefield.clayff(60).radius =  3.553200;
+forcefield.clayff(60).e_kcalmol = 0.155400;
+
+% Fs
+forcefield.clayff(61).type =    {'Fs'}; % structural F,
+forcefield.clayff(61).mass =    18.9984;
+forcefield.clayff(61).charge =  -0.525; %
+forcefield.clayff(61).radius =  4.514;
+forcefield.clayff(61).e_kcalmol = 0.0074005;
 
 
 

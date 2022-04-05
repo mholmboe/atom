@@ -5,7 +5,7 @@
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -25,7 +25,7 @@ function show_atom(atom,varargin)
 tic
 
 disp('Choose between these representations:')
-disp('ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels index')
+disp('ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels charge index')
 
 if nargin>2
     style = char(varargin{2}); %'ballstick','licorice','halfvdw','vdw'
@@ -33,7 +33,7 @@ else
     style = 'ballstick';
 end
 
-if ~ismember(style,{'ballstick' 'small' 'smallvdw' 'licorice' 'halfvdw' 'vdw' 'crystal' 'ionic' 'lines' 'labels' 'index' 'poly' 'polyhedra' 'filled'})
+if ~ismember(style,{'ballstick' 'small' 'smallvdw' 'licorice' 'halfvdw' 'vdw' 'crystal' 'ionic' 'lines' 'labels' 'charge' 'index' 'poly' 'polyhedra' 'filled'})
     style = 'ballstick';
 end
 
@@ -173,9 +173,9 @@ xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
 toc
 tic
-if strncmpi(style,'labels',5) || strncmpi(style,'index',5) % || strncmpi(style,'lines',4)
+if strncmpi(style,'labels',5) || strncmpi(style,'charge',5) || strncmpi(style,'index',5) % || strncmpi(style,'lines',4)
     for i = 1:length(XYZ_labels)
-        labelradii = 500;
+        labelradii = 750;
         ind=strncmpi([element.type],XYZ_labels(i),3);
         if numel(ind)==0
             ind=strncmpi([element.type],XYZ_labels(i),2);
@@ -192,6 +192,13 @@ if strncmpi(style,'labels',5) || strncmpi(style,'index',5) % || strncmpi(style,'
     bond_radii=0.05;
     if strncmpi(style,'labels',5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,[atom.type]);
+    elseif strncmpi(style,'charge',5)
+        try
+            text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,num2str([atom.charge]));
+        catch
+            disp('Did not find any charge...')
+        end
+        
     elseif strncmpi(style,'index',5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,strsplit(num2str([atom.index])));
     end
@@ -306,11 +313,11 @@ elseif strncmpi(style,'polyhedra',4)
     end
 else
     disp('Unknown type of representation...')
-    disp('Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels index poly filled')
+    disp('Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels charge index poly filled')
 end
 toc
 tic
-if exist('Bond_index','var') && numel(Bond_index)>0 && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'index'})
+if exist('Bond_index','var') && numel(Bond_index)>0 && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'charge' 'index'})
     rdist = Bond_index(:,3);
     % draw cylinders for each bond
     disp('Drawing the bonds')

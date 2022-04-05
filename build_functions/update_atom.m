@@ -1,11 +1,11 @@
 %% update_atom.m
-% * This function updates the molid index and the atoms index in the atom 
+% * This function updates the molid index and the atoms index in the atom
 % struct
-% * Multiple atom structs can be also concatenated by using this format 
+% * Multiple atom structs can be also concatenated by using this format
 % atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -36,12 +36,16 @@ if iscell(atom)
     keepfieldnames=fieldnames(atom{1}); % Orig line
     if size(atom,2) > 1
         for i=1:size(atom,2)
-            keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            if numel(atom{i})
+                keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            end
         end
         for i=1:size(atom,2)
-            rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
-            for j=1:numel(rmfieldnames)
-                atom{i}=rmfield(atom{i},rmfieldnames(j))
+            if numel(atom{i})
+                rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
+                for j=1:numel(rmfieldnames)
+                    atom{i}=rmfield(atom{i},rmfieldnames(j));
+                end
             end
         end
     end
@@ -66,7 +70,7 @@ if iscell(atom)
     atom=atom_Tot;
 end
 
-nAtoms=size([atom.x],2);
+nAtoms=size(atom,2);
 
 MolID=[atom.molid];
 
@@ -89,21 +93,14 @@ for i=1:nAtoms
     atom(i).index=mod(i,100000);
 end
 
-if numel(fieldnames(atom))~=10
-    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn' 'molecule'};
-    atomAttributes=fieldnames(atom)';
-    indDefault=find(ismember(defaultAttributes,atomAttributes));
-    defaultAttributes=defaultAttributes(indDefault);
-    ind_atom=find(ismember(atomAttributes,defaultAttributes));
-    atomAttributes=atomAttributes(ind_atom);
-    atom=orderfields(atom,unique({defaultAttributes{:} atomAttributes{:}},'stable'));
-end
+atom=order_attributes(atom); % Order all attributes
+
 % assignin('base','atom1',atom);
 
 % atom = resname_atom(atom);
 
 if nargin>1
-   [atom.molid]=deal(varargin{1}); 
+    [atom.molid]=deal(varargin{1});
 end
 
 assignin('caller','nAtoms',nAtoms);

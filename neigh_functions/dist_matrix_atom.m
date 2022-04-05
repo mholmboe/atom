@@ -1,11 +1,11 @@
 %% dist_matrix.m
-% * This function calculates the distance matrix from the atom struct, or 
+% * This function calculates the distance matrix from the atom struct, or
 % the distances between atom1 and atom2
-% * Note that there is also and cell_list_dist_matrix_atom function that 
+% * Note that there is also and cell_list_dist_matrix_atom function that
 % might be faster for large orthogonal systems...
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -42,12 +42,13 @@ else
     xy=0;xz=0;yz=0;
 end
 
-dist_matrix = single(zeros(nAtoms2,nAtoms1)); % use of single instead of double 
+dist_matrix = single(zeros(nAtoms2,nAtoms1)); % use of single instead of double
 X_dist = dist_matrix;
 Y_dist = dist_matrix;
 Z_dist = dist_matrix;
+i=1;
 if size(Box_dim,2)==3
-    for i = 1:size(XYZ1,1)
+    while i<size(XYZ1,1)+1
         %Calculate Distance Components
         rx = XYZ1(i,1) - XYZ2(:,1);
         x_gt_ind=find(rx > lx/2); x_lt_ind=find(rx < - lx/2);
@@ -75,9 +76,10 @@ if size(Box_dim,2)==3
                 i-1
             end
         end
+        i=i+1;
     end
 else % if cell is triclinic, and this part is not actually tested yet...
-    for i = 1:size(XYZ1,1)
+    while i<size(XYZ1,1)+1
         % Calculate Distance Components %%%%%%%%%%%%%%%%%%%%
         rx = XYZ1(i,1) - XYZ2(:,1);
         ry = XYZ1(i,2) - XYZ2(:,2);
@@ -112,10 +114,10 @@ else % if cell is triclinic, and this part is not actually tested yet...
                 i-1
             end
         end
+        i=i+1;
     end
 end
-
-i
+i-1;
 
 % New transposed output
 dist_matrix=dist_matrix';

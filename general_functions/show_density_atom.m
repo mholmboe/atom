@@ -3,7 +3,7 @@
 % * It's fancier than plot_density_atom, but slower..
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

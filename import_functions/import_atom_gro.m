@@ -5,7 +5,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -57,6 +57,27 @@ X_velo = dataArray{:,8}*10;
 Y_velo = dataArray{:,9}*10;
 Z_velo = dataArray{:,10}*10;
 
+% Preallocate the atom struct attributes/fields
+atom(1).molid=[];
+atom(1).resname={};
+atom(1).type={};
+atom(1).fftype={};
+atom(1).index=[];
+atom(1).neigh.type  = {};
+atom(1).neigh.index  = [0;0;0;0;0;0];
+atom(1).neigh.dist  = [0;0;0;0;0;0];
+atom(1).bond.type  = [0;0;0;0;0;0];
+atom(1).bond.index  = [0;0;0;0;0;0];
+atom(1).angle.type  = [0;0;0;0;0;0];
+atom(1).angle.index  = [0;0;0;0;0;0];
+atom(1).x=[];
+atom(1).y=[];
+atom(1).z=[];
+atom(1).vx=[];
+atom(1).vy=[];
+atom(1).vz=[];
+atom=repmat(atom,1,nAtoms);
+
 nmol=1;first_in=[1];last_in=[];
 for i=1:nAtoms
     if i > 1 && MolID(i) ~= MolID(i-1)
@@ -82,9 +103,9 @@ for i=1:nAtoms
     atom(i).x=X_coord(i);
     atom(i).y=Y_coord(i);
     atom(i).z=Z_coord(i);
-%     atom(i).fx=X_coord(i)/Box_dim(1);
-%     atom(i).fy=Y_coord(i)/Box_dim(2);
-%     atom(i).fz=Z_coord(i)/Box_dim(3);
+    %     atom(i).fx=X_coord(i)/Box_dim(1);
+    %     atom(i).fy=Y_coord(i)/Box_dim(2);
+    %     atom(i).fz=Z_coord(i)/Box_dim(3);
     atom(i).vx=X_velo(i);
     atom(i).vy=Y_velo(i);
     atom(i).vz=Z_velo(i);

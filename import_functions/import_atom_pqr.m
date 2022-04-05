@@ -3,7 +3,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -81,6 +81,8 @@ if length(Box_dim)>3
         Box_dim=Box_dim(1:3);
     end
 end
+
+
 
 j = 0;atom=[];
 for i = 1:length(data)

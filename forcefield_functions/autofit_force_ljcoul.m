@@ -17,6 +17,12 @@ C4=100/10000;
 
 hold on
 [rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+
+[~, ind_start]=min(abs(Utot));
+rmin=rout(ind_start+20)
+r=rmin:.001:1.2; % nm
+r=r-(r(2)-r(1))/2;
+
 % [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);
 [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
@@ -65,12 +71,13 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 
 r_plot(1)=[];
 plot(r_plot,data_plot-fxdata,'k.')
+plot(r_plot,fxdata-data_plot,'g--')
 
 [rmin_data,indref]=min(data_plot);
 [rmin,indopt]=min(fxdata);

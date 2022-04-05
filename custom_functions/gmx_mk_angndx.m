@@ -6,7 +6,7 @@
 % * rmin and rmax can be used to play around with bond lengths.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

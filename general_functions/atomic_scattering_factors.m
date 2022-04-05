@@ -108,6 +108,9 @@ else
             elseif strncmpi(Atom_label,{'Hw'},2)
                 Atom_label={'H'};
             end
+        else
+            %disp('Treating H as a neutral H')
+            Atom_label={'H'};
         end
     end
     

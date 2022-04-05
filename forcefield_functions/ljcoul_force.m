@@ -68,10 +68,33 @@ if plotmin>=0
     plotmin=10000;
 end
 
-plot(r(2:end),lj,'b','LineWidth',LineWidth);
-plot(r(2:end),coul,'r','LineWidth',LineWidth);
-plot(r(2:end),Ftot,'k','LineWidth',LineWidth);
-xlabel('r [nm]');
-ylabel('F [kJ mol^-^1 nm^-^1]');
-xlim([0,1.2]);
-ylim(sort([-plotmin plotmin]))
+if nargin>2
+    %% Plot the Total energy, electrostatic contribution, and the LJ
+    
+    if nargin>3
+        color1=varargin{3};
+        color2=varargin{3};
+        color3=varargin{3};
+    else
+        color1='b';
+        color2='r';
+        color3='k';
+    end
+    
+    hold on
+    plotmin=1000*(round(min(Ftot*1.5)/1000));
+    if plotmin>=0
+        plotmin=10000;
+    end
+    
+    
+    plot(r(2:end),lj,color1,'LineWidth',1);
+    plot(r(2:end),coul,color2,'LineWidth',1);
+    plot(r(2:end),Ftot,color3,'LineWidth',1);
+    
+    xlabel('r [nm]');
+    ylabel('F [kJ mol^-^1 nm^-^1]');
+    xlim([0,1.2]);
+    ylim(sort([-plotmin plotmin]))
+    
+end

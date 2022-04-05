@@ -4,7 +4,7 @@
 % in "'PATH'"
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -21,11 +21,12 @@ PATH2VMD = '/Applications/VMD\ 1.9.2.app/Contents/MacOS/startup.command';
 % PATH2VMD = '"C:\Program Files (x86)\University of Illinois\VMD\vmd.exe"';
 
 if nargin>0
-    
-    % PATH=getenv('PATH');
-    % PATH=strrep(PATH,'PATH2VMD','');
+    PATH=getenv('PATH');
+    if regexp(PATH,strcat(':',PATH2VMD))
+        PATH=strrep(PATH,strcat(':',PATH2VMD),'');
+        setenv('PATH',PATH);
+    end
     setenv('PATH', [getenv('PATH'),':',PATH2VMD]);
-    
 end
 
 end

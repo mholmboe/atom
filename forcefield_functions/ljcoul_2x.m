@@ -42,11 +42,13 @@ plotmin=1000*(round(min(Utot*1.5)/1000));
 if plotmin>=0
     plotmin=10000;
 end
-plot(r,lj,'b--');
-plot(r,coul,'r--');
-% plot(r,Utot1,'k--');
-% plot(r,Utot2,'k--');
-plot(r,Utot,'k--');
+plot(r,lj1,'b--');
+plot(r,lj2,'k--');
+plot(r,lj,'b');
+plot(r,coul,'r');
+% plot(r,Utot1,'k');
+% plot(r,Utot2,'k');
+plot(r,Utot,'k');
 xlabel('r [nm]');
 ylabel('U [kJ/mol]');
 xlim([0,1.2]);

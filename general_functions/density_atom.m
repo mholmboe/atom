@@ -12,7 +12,7 @@
 % Be(a)ware of the units...
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -69,7 +69,6 @@ else
 end
 
 Distance=0:ds:Box_dim(3);
-DistanceMax=Distance(end);
 
 if strcmpi(dimension,'x')
     Distance=0:ds:Box_dim(1);
@@ -82,6 +81,7 @@ elseif strcmpi(dimension,'z')
     Area=(Limits(4)-Limits(1))*(Limits(5)-Limits(2));
 end
 
+DistanceMax=Distance(end);
 Bins = (0:ds:Distance(end)+ds)';
 nBins = numel(Bins);
 assignin('base','Distance',Bins);
@@ -150,7 +150,6 @@ for h=1:length(Atom_label)
     end
     
     Element_density=Element_density/(ds*Area*1E-30*6.022e23*1000); % mol/L
-    Element_density_SI=Element_density*1000*Na; % npart/m^3.
     
     if nargin>4
         sigma = varargin{3};
@@ -168,6 +167,8 @@ for h=1:length(Atom_label)
             Element_density=(Element_density+flipud(Element_density))/2;
         end
     end
+    
+    Element_density_SI=Element_density*1000*Na; % npart/m^3.
     
     nElectrons = atomic_scattering_factors(Atom_label(h),1.542,0,0); % From X-ray scattering tables, hence not identical to electron density
     Element_electron_density=nElectrons*Element_density; % mol eq/L

@@ -3,7 +3,7 @@
 % * It tries to guess the Box_dim, so watch out!
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -12,6 +12,12 @@
 % # atom = import_atom_xyz('molecule.xyz')
 %
 function atom = import_atom_xyz(filename)
+
+if regexp(filename,'.xyz') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.xyz');
+end
 
 fileID = fopen(filename,'r');
 line1 = {fgets(fileID)};
@@ -46,7 +52,6 @@ for i=1:nAtoms
     X(i) = XYZ_string(2);
     Y(i) = XYZ_string(3);
     Z(i) = XYZ_string(4);
-    
 end
 fclose(filetempID);
 
@@ -130,7 +135,7 @@ end
 if numel(Box_dim)==0
     disp('Guessing the box dimensions to be .1% larger than max coordinates')
     Box_dim = [(max([atom.x])-min([atom.x]))*1.001    (max([atom.y])-min([atom.y]))*1.001  (max([atom.z])-min([atom.z]))*1.001 0 0 0 0 0 0];
-    pause(2)
+%     pause(2)
 end
 
 % atom = resname_atom(atom);

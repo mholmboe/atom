@@ -9,7 +9,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -56,6 +56,7 @@ end
 
 if numel(valence_ion1)==size(atom,2)
     for i=1:size(atom,2)
+        
         if numel(atom(i).neigh.index)>0
             for j=1:size(atom(i).neigh.index,1)
                 %             if (atom(i).neigh.dist(j)< 1.25 && strncmpi([atom(i).type],'H',1)) ||...
@@ -70,6 +71,9 @@ if numel(valence_ion1)==size(atom,2)
                 atom(i).bv(j)=bv;
                 atom(i).mean_bv(j)=mean_bv;
                 %             end
+                
+%                 valencestates(i)
+%                 valencestates(atom(i).neigh.index(j))
             end
         end
         if size(atom(i).neigh.type,1)==0

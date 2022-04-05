@@ -9,7 +9,7 @@
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -47,6 +47,9 @@ elseif iscell(neworder)==1 && strncmpi(type,'resname',3)
     resnames=[];ordered_atom=[];
     if numel(neworder)~=numel(unique([atom.resname]))
         disp('You have not issued a complete list of resnames!');
+        disp('only this resname was found...');
+        unique([atom.resname])
+        pause(1)
     else
         if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.resname])))))~=0
             disp('Make sure you have the resnames spelled right..');
@@ -68,6 +71,7 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type
         disp('You have not issued a list of atomtypes that fully match the atom struct!');
         if numel(setdiff(unique([atom.type]),unique(neworder)))>0
             setdiff(unique([atom.type]),unique(neworder))
+            unique([atom.type])
             pause
         end
     else
@@ -86,6 +90,6 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type
     
 end
 
-
+assignin('caller','neworder',neworder)
 
 

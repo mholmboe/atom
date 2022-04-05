@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
+      --><title>analyze_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="analyze_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li><li>analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
+  </style></head><body><div class="content"><h1>analyze_atom.m</h1><!--introduction--><div><ul><li>This function fetches the ionic radius, originally taken from below</li><li>Ref. 1	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.</li><li>Ref. 2	Electronic Table of Shannon Ionic Radii, J. David Van Horn, 2001, downloaded MO/DA/YEAR. *</li><li>This function also calculates the bond valence values according to <a href="http://www.iucr.org/resources/data/datasets/bond-valence-parameters">http://www.iucr.org/resources/data/datasets/bond-valence-parameters</a> compiled by I. David Brown, McMaster University, Ontario, Canada</li><li>Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>analyze = analyze_atom(atom,Box_dim)</li><li>analyze = analyze_atom(atom,Box_dim,2.5)</li><li>analyze = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> properties = analyze_atom(atom,Box_dim,varargin)
 
 <span class="comment">% FIX multiple OxStates and other from the Shannon file</span>
 load(<span class="string">'Revised_Shannon_radii.mat'</span>);
@@ -100,9 +100,6 @@ disp(<span class="string">'Running Bond Valence analysis...'</span>)
 
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
-
-
-
 <span class="comment">% other_ind=[];ValenceGuess=zeros(1,size(element,2));</span>
 <span class="comment">% for i=1:size(element,2)</span>
 <span class="comment">%     try</span>
@@ -122,8 +119,11 @@ modValences=sum(Valences-round(Valences))/numel(Valences);
 <span class="comment">% assignin('caller','ValenceGuess',ValenceGuess)</span>
 <span class="comment">% assignin('caller','other_ind',other_ind)</span>
 
-element=mass_atom(element);
+element=mass_atom(element,Box_dim);
 assignin(<span class="string">'caller'</span>,<span class="string">'element'</span>,element);
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_volume'</span>,Box_volume);
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'</span>,Box_density);
+
 <span class="keyword">for</span> i=1:size(element,2)
     Ion_ind=find(strcmp([element(i).type],Ion));
     <span class="keyword">if</span> numel(Ion_ind)==0
@@ -156,7 +156,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'element'</sp
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
-<span class="comment">%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;</span>
+    <span class="comment">%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;</span>
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
     properties(i).ShannonParam={<span class="string">'&gt;&gt;&gt;&gt;'</span>};
@@ -271,6 +271,16 @@ GII=(sum((abs([properties.oxstate])-[properties.valence]).^2)/size(properties,2)
     disp(<span class="string">'GII &gt; 0.2 --&gt; Structure likely not super stable...'</span>);
 <span class="keyword">end</span>
 
+GII_noH=0;
+<span class="keyword">if</span> sum(strncmpi([properties.type],<span class="string">'H'</span>,1))&gt;0
+    disp(<span class="string">'Global instability (ignoring the H...) index is:'</span>)
+    ind_noH=find(~strncmpi([properties.type],<span class="string">'H'</span>,1));
+    GII_noH=(sum((abs([properties(ind_noH).oxstate])-[properties(ind_noH).valence]).^2)/numel(ind_noH))
+    <span class="keyword">if</span> GII_noH&gt;0.2
+        disp(<span class="string">'GII_noH &gt; 0.2 --&gt; Structure likely not super stable...'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
 Atom_labels=unique([atom.fftype]);
 <span class="keyword">for</span> i=1:length(Atom_labels)
     ind=find(strcmp([atom.fftype],Atom_labels(i)));
@@ -285,7 +295,7 @@ Atom_labels=unique([atom.fftype]);
 load(<span class="string">'bond_valence_values.mat'</span>);
 <span class="keyword">for</span> i=1:size(Bond_index,1)
     Bond_index(i,4)=properties(Bond_index(i,1)).ionicradii+properties(Bond_index(i,2)).ionicradii;
-    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2);
+    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,properties(Bond_index(i,1)).oxstate,properties(Bond_index(i,2)).oxstate);
     Bond_index(i,5)=bv;
 <span class="keyword">end</span>
 
@@ -312,6 +322,7 @@ format <span class="string">short</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'Tot_valence'</span>,Tot_valence);
 assignin(<span class="string">'caller'</span>,<span class="string">'Tot_valence_oxstate'</span>,Tot_valence_oxstate);
 assignin(<span class="string">'caller'</span>,<span class="string">'GII'</span>,GII);
+assignin(<span class="string">'caller'</span>,<span class="string">'GII_noH'</span>,GII_noH);
 assignin(<span class="string">'caller'</span>,<span class="string">'BondSummary'</span>,BondSummary);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'diff_valence'</span>,diff_valence);
@@ -343,7 +354,7 @@ disp(<span class="string">'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -386,9 +397,6 @@ end
 
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
-
-
-
 % other_ind=[];ValenceGuess=zeros(1,size(element,2));
 % for i=1:size(element,2)
 %     try
@@ -408,8 +416,11 @@ modValences=sum(Valences-round(Valences))/numel(Valences);
 % assignin('caller','ValenceGuess',ValenceGuess)
 % assignin('caller','other_ind',other_ind)
 
-element=mass_atom(element);
+element=mass_atom(element,Box_dim);
 assignin('caller','element',element);
+assignin('caller','Box_volume',Box_volume);
+assignin('caller','Box_density',Box_density);
+
 for i=1:size(element,2)
     Ion_ind=find(strcmp([element(i).type],Ion));
     if numel(Ion_ind)==0
@@ -442,7 +453,7 @@ for i=1:size(element,2)
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
-%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
+    %     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
     properties(i).ShannonParam={'>>>>'};
@@ -512,7 +523,7 @@ end
 % %     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
 % %     properties(i).wi=exp(1-(dist./properties(i).la).^6);
 % %     properties(i).ECoN=sum([properties(i).wi]);
-% % end 
+% % end
 % % for i=1:size(properties,2)
 % %     ind=[properties(i).neigh.index];
 % %     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
@@ -557,6 +568,16 @@ if GII>0.2
     disp('GII > 0.2 REPLACE_WITH_DASH_DASH> Structure likely not super stable...');
 end
 
+GII_noH=0;
+if sum(strncmpi([properties.type],'H',1))>0
+    disp('Global instability (ignoring the H...) index is:')
+    ind_noH=find(~strncmpi([properties.type],'H',1));
+    GII_noH=(sum((abs([properties(ind_noH).oxstate])-[properties(ind_noH).valence]).^2)/numel(ind_noH))
+    if GII_noH>0.2
+        disp('GII_noH > 0.2 REPLACE_WITH_DASH_DASH> Structure likely not super stable...');
+    end
+end
+
 Atom_labels=unique([atom.fftype]);
 for i=1:length(Atom_labels)
     ind=find(strcmp([atom.fftype],Atom_labels(i)));
@@ -571,7 +592,7 @@ end
 load('bond_valence_values.mat');
 for i=1:size(Bond_index,1)
     Bond_index(i,4)=properties(Bond_index(i,1)).ionicradii+properties(Bond_index(i,2)).ionicradii;
-    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2);
+    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,properties(Bond_index(i,1)).oxstate,properties(Bond_index(i,2)).oxstate);
     Bond_index(i,5)=bv;
 end
 
@@ -598,6 +619,7 @@ end
 assignin('caller','Tot_valence',Tot_valence);
 assignin('caller','Tot_valence_oxstate',Tot_valence_oxstate);
 assignin('caller','GII',GII);
+assignin('caller','GII_noH',GII_noH);
 assignin('caller','BondSummary',BondSummary);
 
 assignin('caller','diff_valence',diff_valence);

@@ -12,6 +12,12 @@ Li               1
    1    1       1000       1000       1000
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 [ moleculetype ]
 ; molname   nrexcl
 Na          1
@@ -27,6 +33,12 @@ Na          1
    1    1       1000       1000       1000
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 [ moleculetype ]
 ; molname       nrexcl
 K               1
@@ -36,6 +48,12 @@ K               1
 1       K       1       K               K        1       1
 
 #ifdef POSRES_K
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
+#ifdef POSRES_Ion
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
@@ -55,6 +73,12 @@ Cs               1
    1    1       1000       1000       1000
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 [ moleculetype ]
 ; molname   nrexcl
 Ca          1
@@ -64,6 +88,12 @@ Ca          1
 1       Ca      1       Ca          Ca       1      2
 
 #ifdef POSRES_Ca
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
+#ifdef POSRES_Ion
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
@@ -83,6 +113,12 @@ Sr          1
    1    1       1000       1000       1000
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 [ moleculetype ]
 ; molname   nrexcl
 Mg          1
@@ -97,6 +133,12 @@ Mg          1
    1    1    10000       10000       10000
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 [ moleculetype ]
 ; molname   nrexcl
 Ba          1
@@ -106,6 +148,12 @@ Ba          1
 1       Ba      1       Ba          Ba       1      2
 
 #ifdef POSRES_Ba
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
+#ifdef POSRES_Ion
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
@@ -123,6 +171,12 @@ Cl          1
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1    1000       1000       1000
+#endif
+
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
 #endif
 
 ; ############################################################
@@ -165,6 +219,12 @@ Cls          1
    1    1    100     100    0
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 ; ############################################################
 
 [ moleculetype ]
@@ -203,6 +263,12 @@ Clr          1
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1    100     100   50
+#endif
+
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
 #endif
 
 ; ############################################################
@@ -245,6 +311,12 @@ Cll          1
    1    1    100     100    0
 #endif
 
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
 ; ############################################################
 
 [ moleculetype ]
@@ -256,6 +328,12 @@ Br          1
 1       Br      1       Br          Br       1      -1
 
 #ifdef POSRES_Br
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
+#ifdef POSRES_Ion
 [ position_restraints ]
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
@@ -274,4 +352,12 @@ I          1
 ; ai  funct  fcx    fcy    fcz
    1    1       1000       1000       1000
 #endif
+
+#ifdef POSRES_Ion
+[ position_restraints ]
+; ai  funct  fcx    fcy    fcz
+   1    1       1000       1000       1000
+#endif
+
+
 

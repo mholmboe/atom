@@ -27,12 +27,6 @@ else
 end
 
 
-if nargin > 7
-    LineWidth=varargin{2};
-else
-    LineWidth=0.5;
-end
-
 if numel(param)<7
     
     e_mix=(eps1*eps2)^.5;
@@ -68,9 +62,9 @@ if plotmin>=0
     plotmin=10000;
 end
 
-plot(r(2:end),lj,'b','LineWidth',LineWidth);
-plot(r(2:end),coul,'r','LineWidth',LineWidth);
-plot(r(2:end),Ftot,'k--','LineWidth',LineWidth);
+plot(r(2:end),lj,'b--','LineWidth',1);
+plot(r(2:end),coul,'r--','LineWidth',1);
+plot(r(2:end),Ftot,'k--','LineWidth',1);
 xlabel('r [nm]');
 ylabel('F [kJ mol^-^1 nm^-^1]');
 xlim([0,1.2]);

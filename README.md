@@ -1,6 +1,6 @@
 Atomistic Topology Operations in Matlab, i.e. matlab scripts for building and manipulating molecular simulation cells to be used with for instance molecular dynamics or monte carlo simulations.
 
-The purpose of the atom scripts and functions is to automate and enable construction and analysis of complex and anisotropic multicomponent molecular systems, and generate topological information with bonds, angles and dihedrals.
+The purpose of the atom scripts and functions is to automate and enable construction and analysis of complex and anisotropic multicomponent molecular systems, and generate topological information with bonds, angles and (optionally) dihedrals.
 
 Download the whole function library from the:
 Matlab Filexchange | GitHub
@@ -9,8 +9,7 @@ See also the link to the:
 
 html documentation
 
-
-What can these scripts/functions do for me?
+What can these scripts/functions do?
 
 You can easily build new custom made molecular systems by issuing a few Matlab commands, typically by issuing something like:
 

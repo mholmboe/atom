@@ -17,7 +17,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -228,9 +228,9 @@ if sum(abs(rep_factors-[1 1 1]))>0
         i=i+1;
     end
     hkl(unique(ind_rm),:)=[];
-else
-    disp('Is you system a single unit cell?')
-    disp('Will assume no replication factors...')
+elseif max(Cell(1:3))>20
+    disp('Is your system really a single unit cell?')
+    disp('will assume no replication factors in assigning the Miller indices...')
 end
 
 %% To select only the specific indexes

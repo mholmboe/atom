@@ -4,7 +4,7 @@
 % * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -45,11 +45,11 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 for push=1:1
     
     scale_water=1;
-    nUC=6*4*3;
+    nUC=1;%6*4*3;
     dim='z';
     stride=1;
     pushSOL=0;%(-5+push)/10; %Å
-    nLayers=3;
+    nLayers=1; %3;
     lambda=1.54187;
     step=0.01; % Do not change
     twotheta=[2:step:60]';

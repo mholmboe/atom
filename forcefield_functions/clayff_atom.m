@@ -11,7 +11,7 @@
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -64,6 +64,7 @@ Add_H=0; % Add H to get neutral edge
 Add_extra_H=0; % Add H to get positive edge As a final step, add extra H's to a Oalhh atoms...nH_extra=16;
 % n=7; % with edge structure
 for assignment_run=heal_iterations
+        
     All_Neighbours=[];
     % Heal broken bonds in the structure in steps, start from the center of the particle
     if assignment_run==1
@@ -79,7 +80,7 @@ for assignment_run=heal_iterations
     elseif assignment_run==6
         Heal_O=1 % 1 for yes and 0 for no
     elseif assignment_run==7
-        Heal_H=1 % 1 for yes and 0 for no
+        Heal_H=0 % 1 for yes and 0 for no
     elseif assignment_run==8
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==9
@@ -95,6 +96,8 @@ for assignment_run=heal_iterations
         elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
         elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
         elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+        elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'Fs'};
+        elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Lio'};
             %         elseif strncmpi(atom(i).type,{'Mn'},2);atom(i).element={'Mn'};
         elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
         elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
@@ -122,6 +125,7 @@ for assignment_run=heal_iterations
     
     i=1;nH_extra=0;
     while i <= size(atom,2)
+              
         if mod(i,100)==1
             i-1
         end
@@ -138,7 +142,7 @@ for assignment_run=heal_iterations
                 Neigh_cell = sort([atom(i).neigh.type]);
                 if length(Neigh_cell) > 0
                     Neighbours=strcat(Neigh_cell{:});
-                    All_Neighbours=[All_Neighbours;{Neighbours}];
+                    All_Neighbours=[All_Neighbours;strcat(atom(i).type,':',Neighbours)]; % New 2.11
                 else
                     Neighbours={'Nan'};
                 end
@@ -163,11 +167,12 @@ for assignment_run=heal_iterations
                         i
                         Neighbours
                         atom(i).fftype={'Si_'};
+
                         if Heal_Si == 1
                             atom(size(atom,2)+1)=atom(find(strcmp([atom.type],'O'),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
-                            NewNeighCoords=num2cell([atom(i).x atom(i).y atom(i).z]+0.85*max_distance*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1.5*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1.5*Neigh.r_vec(:,3)],1)));
+                            NewNeighCoords=num2cell([atom(i).x atom(i).y atom(i).z]+1.61*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1.5*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1.5*Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                         end
                     else
@@ -269,12 +274,17 @@ for assignment_run=heal_iterations
                 % If the element is Mg
                 if strncmpi(atom(i).type,{'Mg'},2) % Mgo
                     
-                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
+                    if numel([atom(i).neigh.type]) == 6 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
                         if sum(strncmpi([atom.type],'Al',2))<sum(strncmpi([atom.type],'Mg',2)) && ...
-                                2*sum(strncmpi([atom.type],'H',1)) > sum(strncmpi([atom.type],'Mg',2))
+                            2*sum(strncmpi([atom.type],'H',1)) > sum(strncmpi([atom.type],'Mg',2))
                             atom(i).fftype={'Mgh'};
                         else
                             atom(i).fftype={'Mgo'};
+                        end
+                        if sum(strncmpi([atom.type],'Al',2))==0
+                            atom(i).fftype={'Mgh'};
+%                         else
+%                             atom(i).fftype={'Mgo'};
                         end
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
                         atom(i).fftype={'Mgo'};
@@ -506,6 +516,8 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Oz'};
                     elseif strcmp(Neighbours,'CahCahH')
                         atom(i).fftype={'Oh'};
+                    elseif strcmp(Neighbours,'CaCaCaH')
+                        atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'AltFeoFeo')
                         atom(i).fftype={'Oalt'};
                     elseif strcmp(Neighbours,'FeFe') || strcmp(Neighbours,'FeoFeo')
@@ -513,6 +525,8 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'FeFeFe') || strcmp(Neighbours,'FeoFeoFeo')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'FeFeFeFe') || strcmp(Neighbours,'FeoFeoFeoFeo')
+                        atom(i).fftype={'Ob'};
+                    elseif strcmp(Neighbours,'FeFeFeFeFeFe') || strcmp(Neighbours,'Fe2Fe2Fe2Fe2Fe2Fe2')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'FeFeSi') || strcmp(Neighbours,'FeoFeoSi')
                         atom(i).fftype={'Op'};
@@ -528,10 +542,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'FetFetH')
                         atom(i).fftype={'Oh'};
-                    elseif strcmp(Neighbours,'Fe2Fe2Fe2Fe2Fe2Fe2')
-                        atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'CaoCaoCaoCaoCaoCao') || strcmp(Neighbours,'CaCaCaCaCaCa')
                         atom(i).fftype={'Ob'};
+                    elseif strcmp(Neighbours,'LioMgMgSi') || strcmp(Neighbours,'LioMgoMgoSi') || strcmp(Neighbours,'LiMgMgSi')
+                        atom(i).fftype={'Oli'};
                     elseif strcmp(Neighbours,'MghMghMghMghMghMgh')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'MgoMgoMgoMgoMgoMgo') || strcmp(Neighbours,'MgMgMgMgMgMg')
@@ -578,7 +592,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Ow'};
                         disp('Water?')
                     elseif length(nNeigh) > 2
-                        disp('O atom over coordinated')
+                        disp('O atom overcoordinated')
                         i
                         Neighbours
                         atom(i).fftype={'O^'};
@@ -588,12 +602,13 @@ for assignment_run=heal_iterations
                         elseif strncmp(Neighbours,'AlAl',2)
                             atom(i).fftype={'Oal'};
                         else
-                            disp('O atom under coordinated')
+                            disp('O atom undercoordinated')
                             i
                             Neighbours
                             atom(i).fftype={'O_'};
                         end
-                        if Heal_O == 1
+                        if Heal_O == 1 % && assignment_run == 6
+                            disp('Adding H to unsaturated O')
                             try
                                 atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'H',1),1));
                             catch
@@ -602,7 +617,7 @@ for assignment_run=heal_iterations
                             atom(end).type={'H'};
                             atom(end).fftype={'H'};
                             atom(end).index=size(atom,2);
-                            Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
+                            Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.25);
                             NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1*Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                         end
@@ -616,14 +631,15 @@ for assignment_run=heal_iterations
                         rm_ind=[rm_ind i];
                         pause
                     end
-                    if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 %&& nH_extra > nH_added;
+                    if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 % && assignment_run == 8
                         disp('Adding acidic H to Oalh-->Oalhh')
                         atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'H',1),1));
                         atom(end).index=size(atom,2);
-                        Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
-                        NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -1/2*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1/2*Neigh.r_vec(:,3)],1)));
+                        Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.25);
+                        NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -1/3*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1/3*Neigh.r_vec(:,3)],1)));
                         [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
-                    end
+                    end      
+                                  
                     % Special thingy to add Na on the edge
                     %             if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 ;%&& nH_extra > nH_added;
                     %                 disp('Adding Na!!!')

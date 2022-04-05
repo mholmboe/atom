@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ff_helpfile</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="ff_helpfile.m"><style type="text/css">
+      --><title>ff_helpfile</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="ff_helpfile.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -69,25 +69,27 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
   </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Constants</a></li><li><a href="#4">Order the records</a></li><li><a href="#5">Order the fields</a></li></ul></div><pre class="codeinput">format <span class="string">long</span>
 
-ffname=<span class="string">'Merz_12-6-4_divalent'</span>
+ffname=<span class="string">'Zhang_monovalent'</span>
 
-watermodels={<span class="string">'OPC3'</span> <span class="string">'OPC'</span> <span class="string">'tip3p_fb'</span> <span class="string">'tip4p_fb'</span>}
+watermodels={<span class="string">'tip3p'</span> <span class="string">'opc3'</span> <span class="string">'spce'</span> <span class="string">'spceb'</span> <span class="string">'tip3pfb'</span> <span class="string">'a99SB-disp'</span> <span class="string">'tip4pew'</span> <span class="string">'opc'</span> <span class="string">'tip4p2005'</span> <span class="string">'tip4pd'</span> <span class="string">'tip4pfb'</span>}
 
+ff=[];
 <span class="keyword">for</span> n=1:numel(watermodels)
 </pre><pre class="codeinput">    watermodel=char(watermodels(n))
 
-    Ions=PolyvalentIons;
+    Ions=monovalentIons;
+    Rmin=monovalent(:,2*n-1);
+    eps=monovalent(:,2*n);
     <span class="keyword">for</span> i=1:numel(Ions)
-        eval(strcat(<span class="string">'ff(i).type=Ions(i)'</span>));
-        eval(strcat(<span class="string">'ff(i).radius_A=2*R2min_'</span>,watermodel,<span class="string">'(i)'</span>));
-        eval(strcat(<span class="string">'ff(i).e_kcalmol=eps_'</span>,watermodel,<span class="string">'(i)'</span>));
-
+        eval(strcat(<span class="string">'ff(i).type=Ions(i,1)'</span>));
+        eval(strcat(<span class="string">'ff(i).radius_A=2*Rmin(i,1)'</span>)); <span class="comment">% _',watermodel,'(i)'));</span>
+        eval(strcat(<span class="string">'ff(i).e_kcalmol=eps(i,1)'</span>)); <span class="comment">% _',watermodel,'(i)'));</span>
         <span class="keyword">try</span>
             eval(strcat(<span class="string">'ff(i).C4_kcalmolA=C4_'</span>,watermodel,<span class="string">'(i)'</span>));
         <span class="keyword">catch</span>
 
         <span class="keyword">end</span>
-        eval(strcat(<span class="string">'ff(i).charge=2'</span>));
+        eval(strcat(<span class="string">'ff(i).charge=1'</span>));
     <span class="keyword">end</span>
 
     ff_temp = mass_atom(ff); <span class="comment">% Relies on element_atom...</span>
@@ -98,17 +100,24 @@ watermodels={<span class="string">'OPC3'</span> <span class="string">'OPC'</span
     Na=6.022140857E+23;
     kBinJK=1.3806485279E-23;
 
-    <span class="keyword">for</span> i=1:size(ff,2)
-        <span class="comment">%     ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);</span>
-        ff(i).radius_nm=ff(i).radius_A/10;
-        <span class="comment">%    ff(i).radius_A=ff(i).radius_nm*10;</span>
-        ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
-        ff(i).sigma_A=ff(i).radius_A/2^(1/6);
+<span class="comment">%     for i=1:12</span>
+<span class="comment">%     [ff(i).radius_A]=2*A(i,1)</span>
+<span class="comment">%     [ff(i).e_kcalmol]=A(i,2)</span>
+<span class="comment">%     [ff(i).C4_kcalmolA]=A(i,3)*4.184/10000;</span>
+<span class="comment">%     end</span>
 
-        <span class="comment">%     ff(i).e_kcalmol=ff(i).e_kJmol/4.184;</span>
-        ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
-        ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
-        ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+
+    <span class="keyword">for</span> i=1:size(ff,2)
+<span class="comment">%         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);</span>
+         ff(i).radius_nm=ff(i).radius_A/10;
+<span class="comment">%         ff(i).radius_A=ff(i).radius_nm*10;</span>
+         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
+         ff(i).sigma_A=ff(i).sigma_nm*10; <span class="comment">%ff(i).radius_A/2^(1/6);</span>
+<span class="comment">%</span>
+<span class="comment">%         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;</span>
+         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
+         ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
+         ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
 
         <span class="keyword">try</span>
             ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
@@ -116,6 +125,7 @@ watermodels={<span class="string">'OPC3'</span> <span class="string">'OPC'</span
 
         <span class="keyword">end</span>
     <span class="keyword">end</span>
+<span class="comment">%     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')</span>
 </pre><h2 id="4">Order the records</h2><pre class="codeinput">    [atomtypes,atomtypes_order]=sort([ff.type]);
     ff_temp=ff;
     <span class="keyword">for</span> i=1:size(ff,2)
@@ -129,7 +139,7 @@ watermodels={<span class="string">'OPC3'</span> <span class="string">'OPC'</span
         ff_temp(i)=ff(atnum_order(i));
     <span class="keyword">end</span>
     ff=ff_temp;
-</pre><h2 id="5">Order the fields</h2><pre class="codeinput">    defaultAttributes={<span class="string">'type'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'radius_nm'</span> <span class="string">'radius_A'</span> <span class="string">'sigma_nm'</span> <span class="string">'sigma_A'</span> <span class="string">'e_kJmol'</span> <span class="string">'e_kcalmol'</span> <span class="string">'e_eV'</span> <span class="string">'e_kB'</span> <span class="string">'C4_kcalmolA'</span> <span class="string">'C4_kJmolnm'</span> }
+</pre><h2 id="5">Order the fields</h2><pre class="codeinput">    defaultAttributes={<span class="string">'type'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'radius_nm'</span> <span class="string">'radius_A'</span> <span class="string">'sigma_nm'</span> <span class="string">'sigma_A'</span> <span class="string">'e_kJmol'</span> <span class="string">'e_kcalmol'</span> <span class="string">'e_eV'</span> <span class="string">'e_kB'</span> } <span class="comment">% 'C4_kcalmolA' 'C4_kJmolnm' }</span>
     ffAttributes=fieldnames(ff)';
     indDefault=find(ismember(defaultAttributes,ffAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -143,32 +153,34 @@ watermodels={<span class="string">'OPC3'</span> <span class="string">'OPC'</span
 <span class="comment">%         ff(i).charge=fff.ff(i).charge;</span>
 <span class="comment">%     end</span>
 
-     save(strcat(<span class="string">'ions_'</span>,ffname,<span class="string">'_'</span>,watermodel,<span class="string">'_ff'</span>),<span class="string">'ff'</span>)
+    save(strcat(<span class="string">'ions_'</span>,ffname,<span class="string">'_'</span>,watermodel,<span class="string">'_ff'</span>),<span class="string">'ff'</span>)
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 format long
 
-ffname='Merz_12-6-4_divalent'
+ffname='Zhang_monovalent'
 
-watermodels={'OPC3' 'OPC' 'tip3p_fb' 'tip4p_fb'}
+watermodels={'tip3p' 'opc3' 'spce' 'spceb' 'tip3pfb' 'a99SB-disp' 'tip4pew' 'opc' 'tip4p2005' 'tip4pd' 'tip4pfb'}
 
+ff=[];
 for n=1:numel(watermodels)
     
     watermodel=char(watermodels(n))
     
-    Ions=PolyvalentIons;
+    Ions=monovalentIons;
+    Rmin=monovalent(:,2*n-1);
+    eps=monovalent(:,2*n);
     for i=1:numel(Ions)
-        eval(strcat('ff(i).type=Ions(i)'));
-        eval(strcat('ff(i).radius_A=2*R2min_',watermodel,'(i)'));
-        eval(strcat('ff(i).e_kcalmol=eps_',watermodel,'(i)'));
-        
+        eval(strcat('ff(i).type=Ions(i,1)'));
+        eval(strcat('ff(i).radius_A=2*Rmin(i,1)')); % _',watermodel,'(i)'));
+        eval(strcat('ff(i).e_kcalmol=eps(i,1)')); % _',watermodel,'(i)'));
         try
             eval(strcat('ff(i).C4_kcalmolA=C4_',watermodel,'(i)'));
         catch
             
         end
-        eval(strcat('ff(i).charge=2'));
+        eval(strcat('ff(i).charge=1'));
     end
     
     ff_temp = mass_atom(ff); % Relies on element_atom...
@@ -181,17 +193,24 @@ for n=1:numel(watermodels)
     Na=6.022140857E+23;
     kBinJK=1.3806485279E-23;
     
+%     for i=1:12
+%     [ff(i).radius_A]=2*A(i,1)
+%     [ff(i).e_kcalmol]=A(i,2)
+%     [ff(i).C4_kcalmolA]=A(i,3)*4.184/10000;
+%     end
+
+    
     for i=1:size(ff,2)
-        %     ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
-        ff(i).radius_nm=ff(i).radius_A/10;
-        %    ff(i).radius_A=ff(i).radius_nm*10;
-        ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
-        ff(i).sigma_A=ff(i).radius_A/2^(1/6);
-        
-        %     ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
-        ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
-        ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
-        ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+%         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
+         ff(i).radius_nm=ff(i).radius_A/10;
+%         ff(i).radius_A=ff(i).radius_nm*10;
+         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
+         ff(i).sigma_A=ff(i).sigma_nm*10; %ff(i).radius_A/2^(1/6);
+%         
+%         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
+         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
+         ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
+         ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
         
         try
             ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
@@ -199,7 +218,7 @@ for n=1:numel(watermodels)
             
         end
     end
-    
+%     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')
     %% Order the records
     [atomtypes,atomtypes_order]=sort([ff.type]);
     ff_temp=ff;
@@ -216,7 +235,7 @@ for n=1:numel(watermodels)
     ff=ff_temp;
     
     %% Order the fields
-    defaultAttributes={'type' 'atnum' 'mass' 'charge' 'radius_nm' 'radius_A' 'sigma_nm' 'sigma_A' 'e_kJmol' 'e_kcalmol' 'e_eV' 'e_kB' 'C4_kcalmolA' 'C4_kJmolnm' }
+    defaultAttributes={'type' 'atnum' 'mass' 'charge' 'radius_nm' 'radius_A' 'sigma_nm' 'sigma_A' 'e_kJmol' 'e_kcalmol' 'e_eV' 'e_kB' } % 'C4_kcalmolA' 'C4_kJmolnm' }
     ffAttributes=fieldnames(ff)';
     indDefault=find(ismember(defaultAttributes,ffAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -230,7 +249,7 @@ for n=1:numel(watermodels)
 %         ff(i).charge=fff.ff(i).charge;
 %     end
     
-     save(strcat('ions_',ffname,'_',watermodel,'_ff'),'ff')
+    save(strcat('ions_',ffname,'_',watermodel,'_ff'),'ff')
     
 end
 ##### SOURCE END #####

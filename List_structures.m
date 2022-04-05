@@ -3,13 +3,13 @@
 % custom solvent boxes to solvate a simulation cell.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
-%% Water structures
+%% water
 % # 864_spc.gro|.pdb % equilibrated SPC water box
 % # 864_spce.gro|.pdb % equilibrated SPC/E water box
 % # 864_tip3p.gro|.pdb % equilibrated TIP3P water box
@@ -20,8 +20,15 @@
 % # 864_swm4_ndp.gro|.pdb * Polarizable water v1
 % # 864_swm4_ndp_vds.gro|.pdb * Polarizable water v2
 
-%% Other structures
-% 864_spc.gro|.pdb % equilibrated SPC water box
+%% organics
+% 500xEtOH.gro|.pdb % equilibrated SPC water box
+
+%% mineral
+% # 1xPyro_Lee_Guggenheim_1981_alfabeta90.pdb
+% # Pyrophyllite.pdb
+% # Hexagonal layered particles
+%    - Pyrophyllite / Montmorillonite
+%    - Talc / Laponite
 
 %% Conversion functions
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_atom_ddec.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="import_ddec_charges.m"><style type="text/css">
+      --><title>import_atom_ddec.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_ddec_charges.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_atom_ddec.m</h1><!--introduction--><div><ul><li>This function imports the partial net atomic charges (NAC's) from the chargemol/DDEC6 code. Not tested alot..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Close the text file.</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_ddec('XYZ6_even_tempered_net_atomic_charges.xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_ddec_charges(varargin)
+  </style></head><body><div class="content"><h1>import_atom_ddec.m</h1><!--introduction--><div><ul><li>This function imports the partial net atomic charges (NAC's) from the chargemol/DDEC6 code. Not tested alot..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Close the text file.</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_ddec_charges(varargin)
 </pre><pre class="codeinput"><span class="keyword">if</span> nargin&gt;0
     filename=varargin{1};
 <span class="keyword">else</span>
@@ -79,14 +79,54 @@ line1 = {fgets(fileID)};
 line2 = {fgets(fileID)};
 nAtoms=str2double(line1);
 Box_string=strsplit(char(line2));
-Box_dim=zeros(1,9);
-Box_dim(1)=str2double(Box_string(11)); <span class="comment">% Lx,a</span>
-Box_dim(2)=str2double(Box_string(17)); <span class="comment">% Ly,b</span>
-Box_dim(3)=str2double(Box_string(23)); <span class="comment">% Lz,c</span>
 
-Box_dim(6)=str2double(Box_string(16)); <span class="comment">% xy</span>
-Box_dim(8)=str2double(Box_string(21)); <span class="comment">% xz</span>
-Box_dim(9)=str2double(Box_string(22)); <span class="comment">% yz</span>
+<span class="keyword">if</span> strcmp(Box_string(1),<span class="string">'Nonperiodic'</span>)
+    disp(<span class="string">'Using dummy Box_dim info'</span>)
+    Box_string(2)={<span class="string">'10'</span>};
+    Box_string(3)={<span class="string">'10'</span>};
+    Box_string(4)={<span class="string">'10'</span>};
+<span class="keyword">end</span>
+
+<span class="comment">%     lx=Box_dim(1);</span>
+<span class="comment">%     ly=Box_dim(2);</span>
+<span class="comment">%     lz=Box_dim(3);</span>
+<span class="comment">%     xy=Box_dim(6);</span>
+<span class="comment">%     xz=Box_dim(8);</span>
+<span class="comment">%     yz=Box_dim(9);</span>
+<span class="comment">%</span>
+<span class="comment">%     a=lx;</span>
+<span class="comment">%     b=(ly^2+xy^2)^.5;</span>
+<span class="comment">%     c=(lz^2+xz^2+yz^2)^.5;</span>
+<span class="comment">%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));</span>
+<span class="comment">%     beta=rad2deg(acos(xz/c));</span>
+<span class="comment">%     gamma=rad2deg(acos(xy/b));</span>
+<span class="comment">%</span>
+<span class="comment">%     Cell=[a b c alfa beta gamma];</span>
+<span class="comment">%</span>
+<span class="comment">% UNITCELL [ax, ay, az, bx, by, bz, cx, cy, cz] ?</span>
+<span class="comment">%  CELL| Volume [angstrom^3]:                                            40.037000</span>
+<span class="comment">%  CELL| Vector a [angstrom]:       3.126     0.000     0.000   |a| =     3.126000</span>
+<span class="comment">%  CELL| Vector b [angstrom]:      -1.563     2.707     0.000   |b| =     3.126000</span>
+<span class="comment">%  CELL| Vector c [angstrom]:       0.000     0.000     4.731   |c| =     4.731000</span>
+<span class="comment">%  CELL| Angle (b,c), alpha [degree]:                                    90.000000</span>
+<span class="comment">%  CELL| Angle (a,c), beta  [degree]:                                    90.000000</span>
+<span class="comment">%  CELL| Angle (a,b), gamma [degree]:                                   120.000000</span>
+<span class="comment">%  CELL| Requested initial symmetry:                                     TRICLINIC</span>
+<span class="keyword">if</span> length(Box_string)&lt;=5
+    Box_dim=zeros(1,3);
+    Box_dim(1)=str2double(Box_string(2)); <span class="comment">% Lx,a</span>
+    Box_dim(2)=str2double(Box_string(3)); <span class="comment">% Ly,b</span>
+    Box_dim(3)=str2double(Box_string(4)); <span class="comment">% Lz,c</span>
+<span class="keyword">else</span>
+    Box_dim=zeros(1,9);
+    Box_dim(1)=str2double(Box_string(11)); <span class="comment">% Lx,a</span>
+    Box_dim(2)=str2double(Box_string(17)); <span class="comment">% Ly,b</span>
+    Box_dim(3)=str2double(Box_string(23)); <span class="comment">% Lz,c</span>
+
+    Box_dim(6)=str2double(Box_string(16)); <span class="comment">% xy</span>
+    Box_dim(8)=str2double(Box_string(21)); <span class="comment">% xz</span>
+    Box_dim(9)=str2double(Box_string(22)); <span class="comment">% yz</span>
+<span class="keyword">end</span>
 </pre><h2 id="5">Close the text file.</h2><pre class="codeinput">fclose(fileID);
 
 filetempID = fopen(filename,<span class="string">'r'</span>);
@@ -116,7 +156,6 @@ XYZ_data=[str2double(X)' str2double(Y)' str2double(Z)'];
     atom(i).molid=1;
     atom(i).type        = XYZ_labels(i,1);
     atom(i).fftype  = XYZ_labels(i,1);
-    atom(i).charge      = 0;
     atom(i).index=mod(i,100000);
     atom(i).neigh.type  = {};
     atom(i).neigh.index  = zeros(6,1);
@@ -134,13 +173,38 @@ XYZ_data=[str2double(X)' str2double(Y)' str2double(Z)'];
     atom(i).charge=ddec_charge(i);
 <span class="keyword">end</span>
 
+ddec_charge
+
+<span class="keyword">try</span>
+    filePattern = fullfile(<span class="string">'./'</span>, <span class="string">'*sorted.pdb'</span>);
+    filename = dir(filePattern);
+    filename=strrep(filename.name,<span class="string">'.pdb'</span>,<span class="string">''</span>);
+
+    <span class="keyword">if</span> min(Box_dim(1:3))&lt;24.5
+        nAtoms_init=size(atom,2);
+        Box_dim_init=Box_dim;
+        atom=replicate_atom(atom,Box_dim,ceil(24.5./Box_dim(1:3)));
+        prop=analyze_atom(atom,Box_dim,2.5);
+        prop=prop(1:nAtoms_init);
+<span class="comment">%         Box_dim=Box_dim_init;</span>
+    <span class="keyword">else</span>
+        prop=analyze_atom(atom,Box_dim);
+    <span class="keyword">end</span>
+    newfilename=strcat(char(filename),<span class="string">'_CP2K_GII_'</span>,num2str(GII,3),<span class="string">'_'</span>,num2str(GII_noH,3),<span class="string">'.pdb'</span>);
+    write_atom_pdb(atom,Box_dim,newfilename);
+    copyfile(fullfile(<span class="string">'.'</span>,newfilename),fullfile(<span class="string">'.'</span>,<span class="string">'..'</span>,newfilename));
+
+    assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+    assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+    assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+
+<span class="keyword">catch</span>
+
+<span class="keyword">end</span>
+
 <span class="comment">% atom = resname_atom(atom);</span>
-
-write_atom_pqr(atom,Box_dim,<span class="string">'ddec.pqr'</span>)
-
-assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
-assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
-assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+write_atom_pdb(atom(1:nAtoms_init),Box_dim_init,<span class="string">'ddec.pdb'</span>)
+write_atom_pqr(atom(1:nAtoms_init),Box_dim_init,<span class="string">'ddec.pqr'</span>)
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% import_atom_ddec.m
@@ -148,13 +212,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % chargemol/DDEC6 code. Not tested alot..
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_atom_ddec('XYZ6_even_tempered_net_atomic_charges.xyz')
+% # atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')
 %
 function atom = import_ddec_charges(varargin)
 
@@ -169,14 +233,54 @@ line1 = {fgets(fileID)};
 line2 = {fgets(fileID)};
 nAtoms=str2double(line1);
 Box_string=strsplit(char(line2));
-Box_dim=zeros(1,9);
-Box_dim(1)=str2double(Box_string(11)); % Lx,a
-Box_dim(2)=str2double(Box_string(17)); % Ly,b
-Box_dim(3)=str2double(Box_string(23)); % Lz,c
 
-Box_dim(6)=str2double(Box_string(16)); % xy
-Box_dim(8)=str2double(Box_string(21)); % xz
-Box_dim(9)=str2double(Box_string(22)); % yz
+if strcmp(Box_string(1),'Nonperiodic')
+    disp('Using dummy Box_dim info')
+    Box_string(2)={'10'};
+    Box_string(3)={'10'};
+    Box_string(4)={'10'};
+end
+
+%     lx=Box_dim(1);
+%     ly=Box_dim(2);
+%     lz=Box_dim(3);
+%     xy=Box_dim(6);
+%     xz=Box_dim(8);
+%     yz=Box_dim(9);
+%
+%     a=lx;
+%     b=(ly^2+xy^2)^.5;
+%     c=(lz^2+xz^2+yz^2)^.5;
+%     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+%     beta=rad2deg(acos(xz/c));
+%     gamma=rad2deg(acos(xy/b));
+%
+%     Cell=[a b c alfa beta gamma];
+%
+% UNITCELL [ax, ay, az, bx, by, bz, cx, cy, cz] ?
+%  CELL| Volume [angstrom^3]:                                            40.037000
+%  CELL| Vector a [angstrom]:       3.126     0.000     0.000   |a| =     3.126000
+%  CELL| Vector b [angstrom]:      -1.563     2.707     0.000   |b| =     3.126000
+%  CELL| Vector c [angstrom]:       0.000     0.000     4.731   |c| =     4.731000
+%  CELL| Angle (b,c), alpha [degree]:                                    90.000000
+%  CELL| Angle (a,c), beta  [degree]:                                    90.000000
+%  CELL| Angle (a,b), gamma [degree]:                                   120.000000
+%  CELL| Requested initial symmetry:                                     TRICLINIC
+if length(Box_string)<=5
+    Box_dim=zeros(1,3);
+    Box_dim(1)=str2double(Box_string(2)); % Lx,a
+    Box_dim(2)=str2double(Box_string(3)); % Ly,b
+    Box_dim(3)=str2double(Box_string(4)); % Lz,c
+else
+    Box_dim=zeros(1,9);
+    Box_dim(1)=str2double(Box_string(11)); % Lx,a
+    Box_dim(2)=str2double(Box_string(17)); % Ly,b
+    Box_dim(3)=str2double(Box_string(23)); % Lz,c
+    
+    Box_dim(6)=str2double(Box_string(16)); % xy
+    Box_dim(8)=str2double(Box_string(21)); % xz
+    Box_dim(9)=str2double(Box_string(22)); % yz
+end
 
 %% Close the text file.
 fclose(fileID);
@@ -208,7 +312,6 @@ for i=1:nAtoms
     atom(i).molid=1;
     atom(i).type        = XYZ_labels(i,1);
     atom(i).fftype  = XYZ_labels(i,1);
-    atom(i).charge      = 0;
     atom(i).index=mod(i,100000);
     atom(i).neigh.type  = {};
     atom(i).neigh.index  = zeros(6,1);
@@ -226,13 +329,39 @@ for i=1:nAtoms
     atom(i).charge=ddec_charge(i);
 end
 
+ddec_charge
+
+try
+    filePattern = fullfile('./', '*sorted.pdb');
+    filename = dir(filePattern);
+    filename=strrep(filename.name,'.pdb','');
+    
+    if min(Box_dim(1:3))<24.5
+        nAtoms_init=size(atom,2);
+        Box_dim_init=Box_dim;
+        atom=replicate_atom(atom,Box_dim,ceil(24.5./Box_dim(1:3)));
+        prop=analyze_atom(atom,Box_dim,2.5);
+        prop=prop(1:nAtoms_init);
+%         Box_dim=Box_dim_init;
+    else
+        prop=analyze_atom(atom,Box_dim);
+    end
+    newfilename=strcat(char(filename),'_CP2K_GII_',num2str(GII,3),'_',num2str(GII_noH,3),'.pdb');
+    write_atom_pdb(atom,Box_dim,newfilename);
+    copyfile(fullfile('.',newfilename),fullfile('.','..',newfilename));
+    
+    assignin('caller','Box_dim',Box_dim)
+    assignin('caller','XYZ_labels',XYZ_labels)
+    assignin('caller','XYZ_data',XYZ_data)
+    
+catch
+    
+end
+
 % atom = resname_atom(atom);
+write_atom_pdb(atom(1:nAtoms_init),Box_dim_init,'ddec.pdb')
+write_atom_pqr(atom(1:nAtoms_init),Box_dim_init,'ddec.pqr')
 
-write_atom_pqr(atom,Box_dim,'ddec.pqr')
-
-assignin('caller','Box_dim',Box_dim)
-assignin('caller','XYZ_labels',XYZ_labels)
-assignin('caller','XYZ_data',XYZ_data)
 
 
 ##### SOURCE END #####

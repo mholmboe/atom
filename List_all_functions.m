@@ -1,7 +1,7 @@
 %% Complete list of all atom functions
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -39,12 +39,14 @@
 % # <check_H2Odens.html check_H2Odens(atom,Box_dim)> % Computes the water density
 % # <check_interface_charge.html check_interface_charge(atom)> %  This checks the charge of the INTERFACE atomtypes by Mholmboe
 % # <check_interface15_charge.html check_interface15_charge(atom)> %  This checks the charge of the INTERFACE 1.5 atomtypes by Mholmboe
+% # <cn_atom.html cn_atom(atom,Box_dim)> % This function tries to extract the coordination number of all the atom struct indexes and store it in the field [atom.cn]. 
 % # <clayff_2004_atom.html clayff_2004_atom(atom,Box_dim,varargin)> % Assigns the original Clayff atom types by Cygan et al., 2004. Can also 'heal' edges 
 % # <clayff_2004_param.html clayff_2004_param(Atom_label,varargin)> % Holds the ion and the original Clayff atomtype parameters
-% # <clayff_atom_old.m  clayff_atom_old(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges. This is an older version... 
 % # <clayff_atom.html clayff_atom(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges 
 % # <clayff_param.html clayff_param(Atom_label,varargin)> % Holds the ion and Clayff atomtype parameters
-% # <clayffmod_atom.html clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <clayff210_atom.html clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <clayff211_atom.html clayffmod_atom(atom,Box_dim,varargin)> % New faster version. Assigns the modififed Clayff atom types. Can also 'heal' edges 
+% # <closest_atom.html closest_atom(atom1,atom2,Box_dim)> % This function returns the atom1 struct with the nMolId's in atom1 closest to the atom2 struct.
 % # <COM_atom.html COM_atom(atom,MolID)> % This function calculates the COM for certain elements
 % # <COM_func.html COM_func(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)> % This calculates the center of mass for water. Slow due to pbc...
 % # <COM_molid.html COM_molid(atom,MolID)> % This function calculates the COM for certain elements
@@ -66,6 +68,7 @@
 % # <element_color.html element_color(Atom_label)> % This function assigns a certain color to each element. Estethic improvements are welcome...
 % # <find_bonded_atom.html find_bonded_atom(atom,bond_matrix,label1,label2)> % This function does a cross check of the bond matrix
 % # <find_pair_atom.html find_pair_atom(atom,bond_matrix,Atom_label1,Atom_label2)> % This function does a cross check of the bond matrix
+% # <fit2lattice_atom.html fit2lattice_atom(atom_model,atom_ref,Box_dim_ref)> % This is a special function imports a model structure of a single molecule like PO43- and tries to fit it into a crystal lattice possibly holding multiple such sites.
 % # <frac2atom.html frac2atom(atom,Box_dim,angleparam,angletype)> % This function transforms fractional coordinates to cartesian
 % # <frame2atom.html frame2atom(atom,traj,frame,Box_dim,varargin)> % This function extracts a frame to the trajectory matrix
 % # <fuse_atom.html fuse_atom(atom,Box_dim,varargin)> % This function tries to fuse all sites within a certain cutoff rmax, typically 0.85 Å
@@ -116,6 +119,7 @@
 % # <opls_go_atom.html opls_go_atom(atom,Box_dim,rmin,rlarge)> % This function tries to smear out the charge at around -OH and epoxides in GO
 % # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % This custom function holds the extended oplsaa_aa ff for graphite oxide
 % # <orto_atom.html orto_atom(atom,Box_dim)> % This transforms a triclinic atom struct to an orthogonal atom struct. Box_dim must look like [lx ly lz 0 0 xy 0 xz yz]
+% # <order_attributes.html order_attributes(atom)> % This function order the struct attributes, or fields in a certain order.
 % # <overwrite_atom.html overwrite_atom(In_atom,atomtype,resname)> % This function overwrites the atom struct information with new information 
 % # <PATH2GMX.html PATH2GMX()> % The Gromacs path on your computer
 % # <PATH2VMD.html PATH2VMD()> % The VMD path on your computer
@@ -130,6 +134,7 @@
 % # <radius_vdw.html radius_vdw(Atom_label)> % This function fetches the rdw radius, originally taken from below from 'A cartography of the van der Waals territories' Santiago Alvarez doi:10.1039/c3dt50599e
 % # <rdf_atom.html rdf_atom(atom,Box_dim,varargin)> % This function calculates the radial distributtion function and the coordination number. Can also do Gaussion smoothing.
 % # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % This function calculates the reduced mass.
+% # <remove_H2O.html remove_H2O(atom,Box_dim)> % This function removes H2O molecules, by searching for all water-like bonded H,O atoms within rmin, which optionally can be set manually.
 % # <remove_molid.html remove_molid(atom,MolID)> %  remove_molid.m - This removes residue with molid MolID = [1 2 3 .....]
 % # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % This function removes all succeding particles in the atom struct that has identical coordinates to a preceding particle
 % # <remove_residues.html remove_residues(atom,resnames,lo,hi,dim)> % This function section is used to remove residues in the simulation box between limits lo and hi
@@ -158,7 +163,8 @@
 % # <solvate_atom.html solvate_atom(limits,density,r,maxsol,solute_atom,varargin)> % This function generates a certain region defined by <limits> with a solvent structure of density <density>
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
-% # <sphere_atom.html sphere_atom(atom,Box_dim,radius> % * This function slices a spherical particle (like a colloid) of the atom struct
+% # <sphere_atom.html sphere_atom(atom,Box_dim,radius)> % * This function slices a spherical particle (like a colloid) of the atom struct
+% # <spiral_atom.html spiral_atomspiral_atom(atom,Box_dim,[0 0 90])> % This function spiral the atom randomly or by the angles given by the spiral vector
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
 % # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water
 % # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
@@ -196,7 +202,7 @@
 % # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)> % This function can be used to add XYZ data (like from a .xyz structure file)to the atom struct format
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

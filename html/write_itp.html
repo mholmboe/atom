@@ -1,0 +1,412 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>write_itp</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="write_itp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">write_itp.m</a></li><li><a href="#3">This function prints a gromacs .itp file from a itp struct</a></li><li><a href="#4">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></a></li><li><a href="#5">Todo, varargin could be a distance_matrix whose values could be printed</a></li><li><a href="#6">to the bonds section...</a></li><li><a href="#7">Version</a></li><li><a href="#8">Contact</a></li><li><a href="#9">Create vars for the sections</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> write_itp(itp,filename,varargin)
+</pre><h2 id="2">write_itp.m</h2><h2 id="3">This function prints a gromacs .itp file from a itp struct</h2><h2 id="4">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></h2><h2 id="5">Todo, varargin could be a distance_matrix whose values could be printed</h2><h2 id="6">to the bonds section...</h2><h2 id="7">Version</h2><p>2.05</p><h2 id="8">Contact</h2><p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><pre class="codeinput">format <span class="string">long</span>
+
+natoms=size(itp.atoms.nr,1);
+
+<span class="keyword">if</span> regexp(filename,<span class="string">'.itp'</span>) ~= false
+    filename = filename;
+<span class="keyword">else</span>
+    filename = strcat(filename,<span class="string">'.itp'</span>);
+<span class="keyword">end</span>
+</pre><h2 id="9">Create vars for the sections</h2><pre class="codeinput">names = fieldnames(itp);
+<span class="keyword">for</span> i=1:length(names)
+    eval([names{i} <span class="string">'=itp.'</span> names{i} <span class="string">';'</span>]);
+<span class="keyword">end</span>
+
+fid = fopen(filename, <span class="string">'wt'</span>);
+
+<span class="comment">% fprintf(fid, '%s % s\r\n',';',filename);</span>
+fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,<span class="string">'Modifed itp file written by MHolmboe (michael.holmboe@umu.se)'</span>);
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'moleculetype'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ moleculetype ]'</span>);
+    fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,<span class="string">'molname   nrexcl'</span>);
+    fprintf(fid, <span class="string">'%s       %d\r\n'</span>,char(itp.moleculetype.moleculetype),str2double(itp.moleculetype.nrexcl));
+    fprintf(fid, <span class="string">'\r\n'</span>);
+<span class="keyword">end</span>
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ atoms ]'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';    nr       type resnr residue  atom   cgnr     charge       mass     ; comment'</span>);
+
+ChargeSumColumn=round(cumsum(itp.atoms.charge),5);
+<span class="keyword">if</span> exist(<span class="string">'atoms'</span>,<span class="string">'var'</span>)
+    <span class="keyword">for</span> i = 1:size(itp.atoms.nr,1)
+        atoms_section(i,:) = {itp.atoms.nr(i), char(atoms.type(i)),itp.atoms.resnr(i),char(itp.atoms.residue(i)),char(itp.atoms.atom(i)),itp.atoms.nr(i), itp.atoms.charge(i),itp.atoms.mass(i), <span class="string">'; qtot '</span>, ChargeSumColumn(i)};
+        fprintf(fid, <span class="string">'%6i%11s%9i%5s%7s%7i\t%8.5f\t%8.4f\t%5s\t%8.5f\r\n'</span>,atoms_section{i,:});
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'bonds'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ bonds ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj funct            c0            c1            c2            c3'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.bonds.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.bonds))&lt;5
+            <span class="keyword">if</span> isfield(itp.bonds,<span class="string">'c0'</span>) &amp;&amp; ~isnan(itp.bonds.c0(i)) &amp;&amp; ~itp.bonds.c0(i)==0
+                Bond_order(i,:)= {itp.bonds.ai(i),itp.bonds.aj(i),itp.bonds.funct(i),itp.bonds.c0(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.bonds.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.bonds.aj(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %8.2f %s %s %s\r\n'</span>, Bond_order{i,:});
+                pause
+            <span class="keyword">else</span>
+                Bond_order(i,:)= {itp.bonds.ai(i),itp.bonds.aj(i),itp.bonds.funct(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.bonds.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.bonds.aj(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %s %s %s\r\n'</span>, Bond_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all bonded params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'angles'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ angles ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj    ak  funct            c0            c1            c2            c3'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.angles.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.angles))&lt;6
+            <span class="keyword">if</span> isfield(itp.angles,<span class="string">'c0'</span>) &amp;&amp; ~isnan(itp.angles.c0(i)) &amp;&amp; ~itp.angles.c0(i)==0
+                Angle_order(i,:)= {itp.angles.ai(i),itp.angles.aj(i),itp.angles.ak(i),itp.angles.funct(i),itp.angles.c0(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.angles.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.ak(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %8.2f %s %s %s %s\r\n'</span>, Angle_order{i,:});
+            <span class="keyword">else</span>
+                Angle_order(i,:)= {itp.angles.ai(i),itp.angles.aj(i),itp.angles.ak(i),itp.angles.funct(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.angles.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.ak(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %s %s %s %s\r\n'</span>, Angle_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all angle params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'pairs'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ pairs ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj funct            c0            c1            c2            c3'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.pairs.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.pairs))&lt;5
+            <span class="keyword">if</span> ~isnan(itp.pairs.c0(i))
+                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),itp.pairs.c0(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %8.2f %s %s %s\r\n'</span>, Pair_order{i,:});
+            <span class="keyword">else</span>
+                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %s %s %s\r\n'</span>, Pair_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all pair params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'exclusions'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ exclusions ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj    ak  funct'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.exclusions.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.exclusions))&lt;5
+            <span class="keyword">if</span> ~isnan(itp.exclusions.c0(i))
+                Exclusion_order(i,:)= {itp.exclusions.ai(i),itp.exclusions.aj(i),itp.exclusions.ak(i),itp.exclusions.funct(i),itp.exclusions.c0(i)};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %8.2f\r\n'</span>, Exclusion_order{i,:});
+            <span class="keyword">else</span>
+                Exclusion_order(i,:)= {itp.exclusions.ai(i),itp.exclusions.aj(i),itp.exclusions.ak(i),itp.exclusions.funct(i)};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i\r\n'</span>, Exclusion_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all exclusion params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'dihedrals'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ dihedrals ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.dihedrals.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.dihedrals))&lt;7
+            <span class="keyword">if</span> isfield(itp.dihedrals,<span class="string">'c0'</span>) &amp;&amp; ~isnan(itp.dihedrals.c0(i))
+                Dihedral_order(i,:)= {itp.dihedrals.ai(i),itp.dihedrals.aj(i),itp.dihedrals.ak(i),itp.dihedrals.al(i),itp.dihedrals.funct(i),itp.dihedrals.c0(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.dihedrals.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.al(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %5i %8.2f %s %s %s %s %s\r\n'</span>, Dihedral_order{i,:});
+            <span class="keyword">else</span>
+                Dihedral_order(i,:)= {itp.dihedrals.ai(i),itp.dihedrals.aj(i),itp.dihedrals.ak(i),itp.dihedrals.al(i),itp.dihedrals.funct(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.dihedrals.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.al(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %5i %s %s %s %s %s\r\n'</span>, Dihedral_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all dihedral params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+<span class="keyword">if</span> exist(<span class="string">'impropers'</span>,<span class="string">'var'</span>)
+    fprintf(fid, <span class="string">'[ impropers ] \r\n'</span>);
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5'</span>);
+    <span class="keyword">for</span> i = 1:size(itp.impropers.ai,1)
+        <span class="keyword">if</span> numel(fieldnames(itp.impropers))&lt;7
+            <span class="keyword">if</span> isfield(itp.impropers,<span class="string">'c0'</span>) &amp;&amp; ~isnan(itp.impropers.c0(i))
+                Improper_order(i,:)= {itp.impropers.ai(i),itp.impropers.aj(i),itp.impropers.ak(i),itp.impropers.al(i),itp.impropers.funct(i),itp.impropers.c0(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.impropers.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.al(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %5i %8.2f %s %s %s %s %s\r\n'</span>, Improper_order{i,:});
+            <span class="keyword">else</span>
+                Improper_order(i,:)= {itp.impropers.ai(i),itp.impropers.aj(i),itp.impropers.ak(i),itp.impropers.al(i),itp.impropers.funct(i),<span class="string">';'</span>,char(itp.atoms.atom(itp.impropers.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.al(i)==itp.atoms.nr))};
+                fprintf(fid, <span class="string">'%5i %5i %5i %5i %5i %s %s %s %s %s\r\n'</span>, Improper_order{i,:});
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            disp(<span class="string">'Did not write all improper params, need to edit a new section for that...'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fclose(fid);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function write_itp(itp,filename,varargin)
+%% write_itp.m
+%% This function prints a gromacs .itp file from a itp struct
+%% Please report bugs to michael.holmboe@umu.se
+%% Todo, varargin could be a distance_matrix whose values could be printed
+%% to the bonds section...
+%
+%% Version
+% 2.05
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+
+format long
+
+natoms=size(itp.atoms.nr,1);
+
+if regexp(filename,'.itp') ~= false
+    filename = filename;
+else
+    filename = strcat(filename,'.itp');
+end
+
+%% Create vars for the sections
+names = fieldnames(itp);
+for i=1:length(names)
+    eval([names{i} '=itp.' names{i} ';']);
+end
+
+fid = fopen(filename, 'wt');
+
+% fprintf(fid, '%s % s\r\n',';',filename);
+fprintf(fid, '%s % s\r\n',';','Modifed itp file written by MHolmboe (michael.holmboe@umu.se)');
+fprintf(fid, '\r\n');
+
+if exist('moleculetype','var')
+    fprintf(fid, '%s\r\n','[ moleculetype ]');
+    fprintf(fid, '%s % s\r\n',';','molname   nrexcl');
+    fprintf(fid, '%s       %d\r\n',char(itp.moleculetype.moleculetype),str2double(itp.moleculetype.nrexcl));
+    fprintf(fid, '\r\n');
+end
+fprintf(fid, '%s\r\n','[ atoms ]');
+fprintf(fid, '%s\r\n',';    nr       type resnr residue  atom   cgnr     charge       mass     ; comment');
+
+ChargeSumColumn=round(cumsum(itp.atoms.charge),5);
+if exist('atoms','var')
+    for i = 1:size(itp.atoms.nr,1)
+        atoms_section(i,:) = {itp.atoms.nr(i), char(atoms.type(i)),itp.atoms.resnr(i),char(itp.atoms.residue(i)),char(itp.atoms.atom(i)),itp.atoms.nr(i), itp.atoms.charge(i),itp.atoms.mass(i), '; qtot ', ChargeSumColumn(i)};
+        fprintf(fid, '%6i%11s%9i%5s%7s%7i\t%8.5f\t%8.4f\t%5s\t%8.5f\r\n',atoms_section{i,:});
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('bonds','var')
+    fprintf(fid, '[ bonds ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj funct            c0            c1            c2            c3');
+    for i = 1:size(itp.bonds.ai,1)
+        if numel(fieldnames(itp.bonds))<5
+            if isfield(itp.bonds,'c0') && ~isnan(itp.bonds.c0(i)) && ~itp.bonds.c0(i)==0
+                Bond_order(i,:)= {itp.bonds.ai(i),itp.bonds.aj(i),itp.bonds.funct(i),itp.bonds.c0(i),';',char(itp.atoms.atom(itp.bonds.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.bonds.aj(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %8.2f %s %s %s\r\n', Bond_order{i,:});
+                pause
+            else
+                Bond_order(i,:)= {itp.bonds.ai(i),itp.bonds.aj(i),itp.bonds.funct(i),';',char(itp.atoms.atom(itp.bonds.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.bonds.aj(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Bond_order{i,:});
+            end
+        else
+            disp('Did not write all bonded params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('angles','var')
+    fprintf(fid, '[ angles ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak  funct            c0            c1            c2            c3');
+    for i = 1:size(itp.angles.ai,1)
+        if numel(fieldnames(itp.angles))<6
+            if isfield(itp.angles,'c0') && ~isnan(itp.angles.c0(i)) && ~itp.angles.c0(i)==0
+                Angle_order(i,:)= {itp.angles.ai(i),itp.angles.aj(i),itp.angles.ak(i),itp.angles.funct(i),itp.angles.c0(i),';',char(itp.atoms.atom(itp.angles.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.ak(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %8.2f %s %s %s %s\r\n', Angle_order{i,:});
+            else
+                Angle_order(i,:)= {itp.angles.ai(i),itp.angles.aj(i),itp.angles.ak(i),itp.angles.funct(i),';',char(itp.atoms.atom(itp.angles.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.angles.ak(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %s %s %s %s\r\n', Angle_order{i,:});
+            end
+        else
+            disp('Did not write all angle params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('pairs','var')
+    fprintf(fid, '[ pairs ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj funct            c0            c1            c2            c3');
+    for i = 1:size(itp.pairs.ai,1)
+        if numel(fieldnames(itp.pairs))<5
+            if ~isnan(itp.pairs.c0(i))
+                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),itp.pairs.c0(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %8.2f %s %s %s\r\n', Pair_order{i,:});
+            else
+                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Pair_order{i,:});
+            end
+        else
+            disp('Did not write all pair params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('exclusions','var')
+    fprintf(fid, '[ exclusions ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak  funct');
+    for i = 1:size(itp.exclusions.ai,1)
+        if numel(fieldnames(itp.exclusions))<5
+            if ~isnan(itp.exclusions.c0(i))
+                Exclusion_order(i,:)= {itp.exclusions.ai(i),itp.exclusions.aj(i),itp.exclusions.ak(i),itp.exclusions.funct(i),itp.exclusions.c0(i)};
+                fprintf(fid, '%5i %5i %5i %5i %8.2f\r\n', Exclusion_order{i,:});
+            else
+                Exclusion_order(i,:)= {itp.exclusions.ai(i),itp.exclusions.aj(i),itp.exclusions.ak(i),itp.exclusions.funct(i)};
+                fprintf(fid, '%5i %5i %5i %5i\r\n', Exclusion_order{i,:});
+            end
+        else
+            disp('Did not write all exclusion params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('dihedrals','var')
+    fprintf(fid, '[ dihedrals ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5');
+    for i = 1:size(itp.dihedrals.ai,1)
+        if numel(fieldnames(itp.dihedrals))<7
+            if isfield(itp.dihedrals,'c0') && ~isnan(itp.dihedrals.c0(i))
+                Dihedral_order(i,:)= {itp.dihedrals.ai(i),itp.dihedrals.aj(i),itp.dihedrals.ak(i),itp.dihedrals.al(i),itp.dihedrals.funct(i),itp.dihedrals.c0(i),';',char(itp.atoms.atom(itp.dihedrals.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.al(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %5i %8.2f %s %s %s %s %s\r\n', Dihedral_order{i,:});
+            else
+                Dihedral_order(i,:)= {itp.dihedrals.ai(i),itp.dihedrals.aj(i),itp.dihedrals.ak(i),itp.dihedrals.al(i),itp.dihedrals.funct(i),';',char(itp.atoms.atom(itp.dihedrals.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.dihedrals.al(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %5i %s %s %s %s %s\r\n', Dihedral_order{i,:});
+            end
+        else
+            disp('Did not write all dihedral params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('impropers','var')
+    fprintf(fid, '[ impropers ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5');
+    for i = 1:size(itp.impropers.ai,1)
+        if numel(fieldnames(itp.impropers))<7
+            if isfield(itp.impropers,'c0') && ~isnan(itp.impropers.c0(i))
+                Improper_order(i,:)= {itp.impropers.ai(i),itp.impropers.aj(i),itp.impropers.ak(i),itp.impropers.al(i),itp.impropers.funct(i),itp.impropers.c0(i),';',char(itp.atoms.atom(itp.impropers.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.al(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %5i %8.2f %s %s %s %s %s\r\n', Improper_order{i,:});
+            else
+                Improper_order(i,:)= {itp.impropers.ai(i),itp.impropers.aj(i),itp.impropers.ak(i),itp.impropers.al(i),itp.impropers.funct(i),';',char(itp.atoms.atom(itp.impropers.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.aj(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.ak(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.impropers.al(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %5i %5i %s %s %s %s %s\r\n', Improper_order{i,:});
+            end
+        else
+            disp('Did not write all improper params, need to edit a new section for that...')
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+fclose(fid);
+
+##### SOURCE END #####
+--></body></html>

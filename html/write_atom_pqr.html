@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_pqr.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="write_atom_pqr.m"><style type="text/css">
+      --><title>write_atom_pqr.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="write_atom_pqr.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_pqr.m</h1><!--introduction--><div><ul><li>This function writes an .pqr file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pqr(atom,Box_dim,filename,varargin)
+  </style></head><body><div class="content"><h1>write_atom_pqr.m</h1><!--introduction--><div><ul><li>This function writes an .pqr file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_pqr(atom,Box_dim,filename,varargin)
 
 <span class="comment">% Have you done this?</span>
 nAtoms=size(atom,2)
@@ -77,6 +77,8 @@ nAtoms=size(atom,2)
 <span class="keyword">else</span>
     <span class="keyword">for</span> i=1:size(atom,2)
         [atom(i).radius] = radius_vdw([atom(i).type]);
+        <span class="comment">% [atom(i).radius] = radius_ion([atom(i).type]);</span>
+<span class="comment">%         [atom(i).radius] = radius_crystal([atom(i).type]);</span>
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
@@ -119,16 +121,16 @@ nAtoms=size(atom,2)
     sum([atom.charge])
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> abs(round(sum([atom.charge]))-sum([atom.charge])) &gt; 0.00001
-    disp(<span class="string">'Tweaking the charge'</span>)
-    round(sum([atom.charge]))
-    sum([atom.charge])
-    qtot=sum([atom.charge]);
-    charge=num2cell([atom.charge]-qtot/nAtoms); [atom.charge]=deal(charge{:});
-<span class="keyword">end</span>
+<span class="comment">% if abs(round(sum([atom.charge]))-sum([atom.charge])) &gt; 0.00001</span>
+<span class="comment">%     disp('Tweaking the charge')</span>
+<span class="comment">%     round(sum([atom.charge]))</span>
+<span class="comment">%     sum([atom.charge])</span>
+<span class="comment">%     qtot=sum([atom.charge]);</span>
+<span class="comment">%     charge=num2cell([atom.charge]-qtot/nAtoms); [atom.charge]=deal(charge{:});</span>
+<span class="comment">% end</span>
 
 indH= strncmpi([atom.type],<span class="string">'H'</span>,1);
-[atom(indH).radius]=deal(0.1);
+[atom(indH).radius]=deal(0.5834);
 
 <span class="comment">% .pqr format usually something like</span>
 <span class="comment">% Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius</span>
@@ -138,6 +140,57 @@ indH= strncmpi([atom.type],<span class="string">'H'</span>,1);
 <span class="keyword">else</span>
     filename = strcat(filename,<span class="string">'.pqr'</span>);
 <span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> length(Box_dim)==9
+    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
+    <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
+        Box_dim=Box_dim(1:3);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+disp(<span class="string">'Assuming P1 space group. Box/Cell is assumed to be triclinic'</span>)
+<span class="keyword">if</span> length(Box_dim)==3
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90.00;
+    beta=90.00;
+    gamma=90.00;
+
+<span class="keyword">elseif</span> length(Box_dim)==9
+
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+
+<span class="keyword">else</span>
+    disp(<span class="string">'No proper box_dim information'</span>)
+<span class="keyword">end</span>
+
 
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename, <span class="string">'wt'</span>);
@@ -170,22 +223,10 @@ fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'AUTHOR    
 <span class="comment">% % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8</span>
 
 <span class="comment">% % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1</span>
-disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'</span>)
+disp(<span class="string">'Assuming P1 space group. Box/Cell is assumed to be triclinic'</span>)
 <span class="keyword">if</span> length(Box_dim)==3
-    fprintf(fid, <span class="string">'%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n'</span>,<span class="string">'CRYST1'</span>, Box_dim(1:3), 90.00, 90.00, 90.00, <span class="string">'P1'</span>, 1);
+    fprintf(fid, <span class="string">'%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n'</span>,<span class="string">'CRYST1'</span>, Box_dim(1:3), alfa, beta, gamma, <span class="string">'P1'</span>, 1);
 <span class="keyword">elseif</span> length(Box_dim)==9
-    a=Box_dim(1);
-    b=Box_dim(2);
-    c=Box_dim(3);
-    xy=Box_dim(6);
-    xz=Box_dim(8);
-    yz=Box_dim(9);
-    lx = a;
-    ly = (b^2-xy^2)^.5;
-    lz = (c^2 - xz^2 - yz^2)^0.5;
-    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
-    beta=rad2deg(acos(xz/c));
-    gamma=rad2deg(acos(xy/b));
     fprintf(fid, <span class="string">'%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n'</span>,<span class="string">'CRYST1'</span>, a, b, c, alfa, beta, gamma, <span class="string">'P1'</span>, 1);
 <span class="keyword">else</span>
     disp(<span class="string">'No proper box_dim information'</span>)
@@ -254,7 +295,7 @@ disp(<span class="string">'Assuming P1 space group. Box can still be triclinic'<
 <span class="keyword">for</span> i = 1:nAtoms
     Atom_section = [<span class="string">'ATOM  '</span>, atom(i).index, atom(i).fftype, atom(i).resname, <span class="string">'A'</span>,atom(i).molid, atom(i).x, atom(i).y, atom(i).z,round([atom(i).charge],5),atom(i).radius,atom(i).element,atom(i).formalcharge];
     <span class="comment">%sprintf('%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\n',Atom_section{1:length(Atom_section)});</span>
-    fprintf(fid,<span class="string">'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\r\n'</span>,Atom_section{1:length(Atom_section)});
+    fprintf(fid,<span class="string">'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i \n'</span>,Atom_section{1:length(Atom_section)});
 <span class="keyword">end</span>
 
 <span class="comment">% Write conect records</span>
@@ -316,7 +357,7 @@ disp(<span class="string">'.pqr structure file written'</span>)
 % * This function writes an .pqr file from the atom struct
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -334,6 +375,8 @@ if exist('[atom.charge]','var') && exist('[atom.radius]','var')
 else
     for i=1:size(atom,2)
         [atom(i).radius] = radius_vdw([atom(i).type]);
+        % [atom(i).radius] = radius_ion([atom(i).type]);
+%         [atom(i).radius] = radius_crystal([atom(i).type]);
     end
     
 end
@@ -376,16 +419,16 @@ if abs(sum([atom.charge])) > 0.01
     sum([atom.charge])
 end
 
-if abs(round(sum([atom.charge]))-sum([atom.charge])) > 0.00001
-    disp('Tweaking the charge')
-    round(sum([atom.charge]))
-    sum([atom.charge])
-    qtot=sum([atom.charge]);
-    charge=num2cell([atom.charge]-qtot/nAtoms); [atom.charge]=deal(charge{:});
-end
+% if abs(round(sum([atom.charge]))-sum([atom.charge])) > 0.00001
+%     disp('Tweaking the charge')
+%     round(sum([atom.charge]))
+%     sum([atom.charge])
+%     qtot=sum([atom.charge]);
+%     charge=num2cell([atom.charge]-qtot/nAtoms); [atom.charge]=deal(charge{:});
+% end
 
 indH= strncmpi([atom.type],'H',1);
-[atom(indH).radius]=deal(0.1);
+[atom(indH).radius]=deal(0.5834);
 
 % .pqr format usually something like
 % Field_name Atom_number Atom_name Residue_name Chain_ID Residue_number X Y Z Charge Radius
@@ -395,6 +438,57 @@ if regexp(filename,'.pqr') ~= false
 else
     filename = strcat(filename,'.pqr');
 end
+
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+end
+
+if length(Box_dim)==9
+    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
+    if sum(find(Box_dim(4:end)))<0.0001
+        Box_dim=Box_dim(1:3);
+    end
+end
+
+disp('Assuming P1 space group. Box/Cell is assumed to be triclinic')
+if length(Box_dim)==3
+    
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=0;
+    xz=0;
+    yz=0;
+    
+    a=lx;
+    b=ly;
+    c=lz;
+    alfa=90.00;
+    beta=90.00;
+    gamma=90.00;
+    
+elseif length(Box_dim)==9
+    
+    lx=Box_dim(1);
+    ly=Box_dim(2);
+    lz=Box_dim(3);
+    xy=Box_dim(6);
+    xz=Box_dim(8);
+    yz=Box_dim(9);
+    
+    a=lx;
+    b=(ly^2+xy^2)^.5;
+    c=(lz^2+xz^2+yz^2)^.5;
+    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+    beta=rad2deg(acos(xz/c));
+    gamma=rad2deg(acos(xy/b));
+    
+else
+    disp('No proper box_dim information')
+end
+
 
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename, 'wt');
@@ -427,22 +521,10 @@ fprintf(fid, '%s\n','AUTHOR    GENERATED BY MATLAB');
 % % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8
 
 % % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
-disp('Assuming P1 space group. Box can still be triclinic')
+disp('Assuming P1 space group. Box/Cell is assumed to be triclinic')
 if length(Box_dim)==3
-    fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), 90.00, 90.00, 90.00, 'P1', 1);
+    fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', Box_dim(1:3), alfa, beta, gamma, 'P1', 1);
 elseif length(Box_dim)==9
-    a=Box_dim(1);
-    b=Box_dim(2);
-    c=Box_dim(3);
-    xy=Box_dim(6);
-    xz=Box_dim(8);
-    yz=Box_dim(9);
-    lx = a;
-    ly = (b^2-xy^2)^.5;
-    lz = (c^2 - xz^2 - yz^2)^0.5;
-    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)))
-    beta=rad2deg(acos(xz/c));
-    gamma=rad2deg(acos(xy/b));
     fprintf(fid, '%6s%9.3f%9.3f%9.3f%7.2f%7.2f%7.2f %11s%4i\n','CRYST1', a, b, c, alfa, beta, gamma, 'P1', 1);
 else
     disp('No proper box_dim information')
@@ -511,7 +593,7 @@ end
 for i = 1:nAtoms
     Atom_section = ['ATOM  ', atom(i).index, atom(i).fftype, atom(i).resname, 'A',atom(i).molid, atom(i).x, atom(i).y, atom(i).z,round([atom(i).charge],5),atom(i).radius,atom(i).element,atom(i).formalcharge];
     %sprintf('%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\n',Atom_section{1:length(Atom_section)});
-    fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i\r\n',Atom_section{1:length(Atom_section)});
+    fprintf(fid,'%-6s%5i %4s %3s %1s%4i    %8.3f%8.3f%8.3f %8.5f%8.5f          %2s%2i \n',Atom_section{1:length(Atom_section)});
 end
 
 % Write conect records

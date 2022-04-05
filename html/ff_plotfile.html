@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ff_plotfile</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="ff_plotfile.m"><style type="text/css">
+      --><title>ff_plotfile</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="ff_plotfile.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -68,73 +68,86 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><pre class="codeinput">close <span class="string">all</span>;
-</pre><pre class="codeinput">atomtypes1={<span class="string">'Li'</span>}<span class="comment">% 'Na' 'K' 'Cs' 'Ca'};</span>
-ffstrings={<span class="string">'JC_spc'</span> <span class="string">'JC_spce'</span> <span class="string">'JC_tip3p'</span> <span class="string">'JC_opc3'</span>};
-ffstrings={<span class="string">'spc'</span>};
+</pre><pre class="codeinput">atomtypes1=<span class="string">'OW'</span>;
+ffstrings1={<span class="string">'opc3'</span> <span class="string">'opc3'</span> <span class="string">'opc3'</span>};
+atomtypes2={<span class="string">'Al'</span>};
+ffstrings2={<span class="string">'Merz_IOD_polyvalent_OPC3_ff'</span> <span class="string">'Merz_HFE_polyvalent_OPC3_ff'</span> <span class="string">'Merz_12_6_4_polyvalent_OPC3_ff'</span>};
 
-<span class="keyword">for</span> i=1:numel(atomtypes1)
+<span class="comment">% for j=1:numel(ffstrings1)</span>
+<span class="keyword">for</span> i=1:numel(atomtypes2)
     <span class="comment">%     figure</span>
     hold <span class="string">on</span>;
-    <span class="keyword">for</span> j=1:numel(ffstrings)
-        atomtype1=atomtypes1{i};
-        atomtype2=<span class="string">'OW'</span>;
+    <span class="keyword">for</span> j=1:numel(ffstrings2)
+        atomtype2=atomtypes2{i};
 
-        ffstring=ffstrings{j};
-        atomtype2=strcat(atomtype2,<span class="string">'_'</span>,ffstring);
+        ffstring=ffstrings2{j}
+        <span class="keyword">try</span>
+            atomtype1=strcat(atomtypes1,<span class="string">'_'</span>,ffstrings1{j})
+        <span class="keyword">catch</span>
+            atomtype1=strcat(atomtypes1,<span class="string">'_'</span>,ffstrings1{end})
+        <span class="keyword">end</span>
+
         ff1=load(strcat(<span class="string">'ions_'</span>,ffstring,<span class="string">'.mat'</span>));
-        ff2=load(strcat(<span class="string">'water_models.mat'</span>));
+        ff2=load(<span class="string">'water_models.mat'</span>);
 
-        [r,lj,coul,Utot] = nonbonded_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+        [r,lj,coul,Utot] = nonbonded_ff([ff1 ff2],{atomtype2 atomtype1},1);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><pre class="codeinput">tiledlayout(3,2)
-hold <span class="string">on</span>;
-ff=load(<span class="string">'clayff.mat'</span>);
-atomtypes1={<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Alt'</span> <span class="string">'Mgo'</span> <span class="string">'Si'</span> <span class="string">'Ob'</span>};
-atomtypes2={<span class="string">'Ob'</span>};
-<span class="keyword">for</span> i=1:numel(atomtypes1)
-    nexttile(i)
-    [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}});
-<span class="keyword">end</span>
+<span class="comment">% end</span>
+</pre><pre class="codeinput"><span class="comment">% tiledlayout(3,2)</span>
+<span class="comment">% hold on;</span>
+<span class="comment">% ff=load('clayff.mat');</span>
+<span class="comment">% atomtypes1={'Al' 'Alt' 'Alt' 'Mgo' 'Si' 'Ob'};</span>
+<span class="comment">% atomtypes2={'Oh'};</span>
+<span class="comment">% for i=1:numel(atomtypes1)</span>
+<span class="comment">%     nexttile(i)</span>
+<span class="comment">% %     [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}},1);</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% %%</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 close all;
 
 %%
-atomtypes1={'Li'}% 'Na' 'K' 'Cs' 'Ca'};
-ffstrings={'JC_spc' 'JC_spce' 'JC_tip3p' 'JC_opc3'};
-ffstrings={'spc'};
+atomtypes1='OW';
+ffstrings1={'opc3' 'opc3' 'opc3'};
+atomtypes2={'Al'};
+ffstrings2={'Merz_IOD_polyvalent_OPC3_ff' 'Merz_HFE_polyvalent_OPC3_ff' 'Merz_12_6_4_polyvalent_OPC3_ff'};
 
-for i=1:numel(atomtypes1)
+% for j=1:numel(ffstrings1)
+for i=1:numel(atomtypes2)
     %     figure
     hold on;
-    for j=1:numel(ffstrings)
-        atomtype1=atomtypes1{i};
-        atomtype2='OW';
+    for j=1:numel(ffstrings2)
+        atomtype2=atomtypes2{i};
         
-        ffstring=ffstrings{j};
-        atomtype2=strcat(atomtype2,'_',ffstring);
+        ffstring=ffstrings2{j}
+        try
+            atomtype1=strcat(atomtypes1,'_',ffstrings1{j})
+        catch
+            atomtype1=strcat(atomtypes1,'_',ffstrings1{end})
+        end
+        
         ff1=load(strcat('ions_',ffstring,'.mat'));
-        ff2=load(strcat('water_models.mat'));
+        ff2=load('water_models.mat');
         
-        [r,lj,coul,Utot] = nonbonded_ff([ff1.ff ff2.ff],{atomtype1 atomtype2});
+        [r,lj,coul,Utot] = nonbonded_ff([ff1 ff2],{atomtype2 atomtype1},1);
     end
 end
-
+% end
 %%
 
-%%
-
-tiledlayout(3,2)
-hold on;
-ff=load('clayff.mat');
-atomtypes1={'Al' 'Alt' 'Alt' 'Mgo' 'Si' 'Ob'};
-atomtypes2={'Ob'};
-for i=1:numel(atomtypes1)
-    nexttile(i)
-    [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}});
-end
-
-%%
+% tiledlayout(3,2)
+% hold on;
+% ff=load('clayff.mat');
+% atomtypes1={'Al' 'Alt' 'Alt' 'Mgo' 'Si' 'Ob'};
+% atomtypes2={'Oh'};
+% for i=1:numel(atomtypes1)
+%     nexttile(i)
+% %     [r,lj,coul,Utot] = nonbonded_ff({ff.ff ff.ff},{atomtypes1{i} atomtypes2{1}},1);
+% end
+%
+% %%
 ##### SOURCE END #####
 --></body></html>

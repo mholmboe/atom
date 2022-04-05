@@ -12,7 +12,7 @@ rmin=2;
 water_density=1.1;
 nlayers=2;
 nSOL=1440;%UCinX*UCinY*5*3; % 5 water molecules per unit cell and monolayer per MMT layer is reasonable 
-Cation='Na';nCation=16; % Per interlayer
+Cation='Na';nCation=16; % Per claylayer
 spacer=10;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -26,10 +26,10 @@ System = update_atom({MMT1 MMT2});
 
 %% Add ions randomly wherever there is space (this function is similar to solvate_atom())
 %% atom = create_atom(type,resname,limits,scale,maxion,in_atom)  
-Ion1 = create_atom(Cation,Cation,[0 0 spacer Full_Box_dim(1) Full_Box_dim(2) spacer],nCation/2,1,System);
-Ion2 = create_atom(Cation,Cation,[0 0 d001-spacer Full_Box_dim(1) Full_Box_dim(2) d001-spacer],nCation/2,1,System);
-Ion3 = create_atom(Cation,Cation,[0 0 d001+spacer Full_Box_dim(1) Full_Box_dim(2) d001+spacer],nCation/2,1,System);
-Ion4 = create_atom(Cation,Cation,[0 0 2*d001-spacer Full_Box_dim(1) Full_Box_dim(2) 2*d001-spacer],nCation/2,1,System);
+Ion1 = create_atom(Cation,Cation,[0 0 spacer Full_Box_dim(1) Full_Box_dim(2) spacer],nCation/nlayers,rmin,System);
+Ion2 = create_atom(Cation,Cation,[0 0 d001-spacer Full_Box_dim(1) Full_Box_dim(2) d001-spacer],nCation/nlayers,rmin,System);
+Ion3 = create_atom(Cation,Cation,[0 0 d001+spacer Full_Box_dim(1) Full_Box_dim(2) d001+spacer],nCation/nlayers,rmin,System);
+Ion4 = create_atom(Cation,Cation,[0 0 2*d001-spacer Full_Box_dim(1) Full_Box_dim(2) 2*d001-spacer],nCation/nlayers,rmin,System);
 System = update_atom({System Ion1 Ion2 Ion3 Ion4});
 System = wrap_atom(System,Full_Box_dim); % Do we want to wrap atoms into cell
 %vmd(System,Full_Box_dim);
@@ -39,7 +39,7 @@ System = wrap_atom(System,Full_Box_dim); % Do we want to wrap atoms into cell
 SOL1 = solvate_atom([0 0 0 Full_Box_dim(1) Full_Box_dim(2) d001],water_density,rmin,nSOL,System);
 SOL2 = solvate_atom([0 0 0+d001 Full_Box_dim(1) Full_Box_dim(2) 2*d001],water_density,rmin,nSOL,System);
 System = update_atom({System SOL1 SOL2});
-vmd(System,Full_Box_dim);
+% vmd(System,Full_Box_dim);
 
 %% Put all atom structs together
 % System = translate_atom(System,[0 0 -spacer/2],'all'); % Do we want to translate the system

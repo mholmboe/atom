@@ -15,14 +15,14 @@
 % gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # gmx_make_ndx(id,groupname,filename) % Basic input arguments
-% # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called inde.ndx
+% # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
 function gmx_make_ndx(groupname,id,varargin)

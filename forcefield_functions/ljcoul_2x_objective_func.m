@@ -27,3 +27,4 @@ coul2=(1.60217646E-19)^2*6.022E+23*q12*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
 Utot=lj1+lj2+coul1+coul2;
 
 res=data-Utot;
+res=res.*abs(data-min(data));

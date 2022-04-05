@@ -5,7 +5,7 @@
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -78,6 +78,8 @@ disp('Guessing this many H´s!')
 if numel(ind) > 0
     H_atom=[];
     for i=ind
+        i
+        atom(i).neigh.type
         Neigh_cell = sort([atom(i).neigh.type]);
         if isempty(Neigh_cell) > 0 && iscell(Neigh_cell)
             Neighbours=strcat(Neigh_cell{:});

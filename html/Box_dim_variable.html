@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Box_dim</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="Box_dim_variable.m"><style type="text/css">
+      --><title>Box_dim</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="Box_dim_variable.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Box_dim</h1><!--introduction--><div><ul><li>This variable is a 1x1 or 1x3 or 1x9 vector, and holds the size parameters of the system box/simulation cell. If <a href="Box_dim.html">Box_dim</a> is a 1x1 vector, the box is a cube expanding from (0,0,0) to (Box_dim(1),Box_dim(1),Box_dim(1)). If Box_dim is a 1x3 vector, the box expands from (0,0,0) to (Box_dim(1),Box_dim(2),Box_dim(3)). If Box_dim is a 1x9 vector, the box is a triclinic box defined by the 1 to 9 box size matrix parameters [lx ly lz 0 0 xy 0 xz yz], where the latter three non-zero parameters are the tilt factors of the triclinic box.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Example</a></li><li><a href="#3">Try this:</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Example</h2><div><ol><li>Box_dim = [10];</li><li>Box_dim = [10 20 30];</li><li>Box_dim = [42.435 24.245 28.452 0 0 1.142 0 2.345 1.97312];</li></ol></div><h2 id="3">Try this:</h2><p>Set a Box_dim variable, then run:</p><pre class="codeinput">Box_dim = [10 20 30];
+  </style></head><body><div class="content"><h1>Box_dim</h1><!--introduction--><div><ul><li>This variable is a 1x1 or 1x3 or 1x9 vector, and holds the size parameters of the system box/simulation cell. If <a href="Box_dim.html">Box_dim</a> is a 1x1 vector, the box is a cube expanding from (0,0,0) to (Box_dim(1),Box_dim(1),Box_dim(1)). If Box_dim is a 1x3 vector, the box expands from (0,0,0) to (Box_dim(1),Box_dim(2),Box_dim(3)). If Box_dim is a 1x9 vector, the box is a triclinic box defined by the 1 to 9 box size matrix parameters [lx ly lz 0 0 xy 0 xz yz], where the latter three non-zero parameters are the tilt factors of the triclinic box.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Example</a></li><li><a href="#3">Try this:</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Example</h2><div><ol><li>Box_dim = [10];</li><li>Box_dim = [10 20 30];</li><li>Box_dim = [42.435 24.245 28.452 0 0 1.142 0 2.345 1.97312];</li></ol></div><h2 id="3">Try this:</h2><p>Set a Box_dim variable, then run:</p><pre class="codeinput">Box_dim = [10 20 30];
 Simbox = draw_box_atom(Box_dim)
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -82,7 +82,7 @@ Simbox = draw_box_atom(Box_dim)
 % non-zero parameters are the tilt factors of the triclinic box.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Example
 % # Box_dim = [10];

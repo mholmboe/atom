@@ -1,8 +1,9 @@
 %% hist_atom.m
-% * This function is used to calculate density profiles along X|Y|Z
+% * This function is used to calculate density profiles along X|Y|Z. See
+% also the density_atom function.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

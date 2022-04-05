@@ -4,7 +4,7 @@
 % * variables.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -132,13 +132,15 @@ if nargin>2
         Dihedral_index=[0 0 0 0 0];
     end
 end
+i
 
 %%%%%%%%%%%%%%%%%%%%%%%
 
 Bx2=[Bond_index;[Bond_index(:,2) Bond_index(:,1) Bond_index(:,3)]];
 Bx2=sortrows(Bx2);
 disp('Looking for neighbours/bonds')
-for i=1:size(atom,2)
+i=1;
+while i<size(atom,2)+1
     k=1;j=1;
     ind=Bx2(:,1)==i;
     neigh_ind=Bx2(ind,2);
@@ -187,7 +189,9 @@ for i=1:size(atom,2)
             i-1
         end
     end
+    i=i+1;
 end
+i-1
 
 if nargin>6
     Atom_labels=unique([atom.type]);

@@ -1,5 +1,5 @@
 %% bond_valence_data.m
-% * This function fetches the data and matches it to the passed atom types
+% * This function fetch the BVS data and matches it to the passed atom types
 % used to calculate the bond valence values according to
 % * http://www.iucr.org/resources/data/datasets/bond-valence-parameters
 % compiled by I. David Brown, McMaster University, Ontario, Canada
@@ -8,7 +8,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -35,12 +35,12 @@ end
 if nargin>9
     valence_ion1=varargin{7};
 else
-    valence_ion1=-100; % Dummy value
+    valence_ion1=-111; % Dummy value
 end
 if nargin>10
     valence_ion2=varargin{8};
 else
-    valence_ion2=-100; % Dummy value
+    valence_ion2=-111; % Dummy value
 end
 
 if strncmpi(ion1,'Hw',2)
@@ -67,6 +67,15 @@ if strncmpi(ion2,'Oh',2)
     ion2='O';
 end
 
+if ~strcmp(ion1,ion2)
+    if sum(ismember(Ion_2,ion1)) > sum(ismember(Ion_2,ion2)) ...
+            && sum(ismember(Ion_1,ion1)) < sum(ismember(Ion_1,ion2))
+        temp_ion1=ion2;      temp_valence_ion1=valence_ion2;
+        ion2=ion1;           valence_ion2=valence_ion1;
+        ion1=temp_ion1;      valence_ion1=temp_valence_ion1;
+    end
+end
+
 ind1=find(strcmpi(Ion_1,ion1));
 ind2=find(strcmpi(Ion_2,ion2));
 
@@ -83,13 +92,6 @@ end
 ind=find(ismember(ind1,ind2));
 ind=ind1(ind);
 
-% ind
-% Ion_1(ind)
-% Valence_1(ind)
-%
-% Ion_2(ind)
-% Valence_2(ind)
-
 if numel(ind)==0
     ind1=find(ismember(Ion_2,ion1));
     ind2=find(ismember(Ion_1,ion2));
@@ -103,6 +105,10 @@ ind(ind==637)=[];
 ind(ind==638)=[];
 ind(ind==639)=[];
 ind(ind==640)=[];
+
+ind(ind==642)=[];
+ind(ind==643)=[];
+ind(ind==644)=[];
 
 if numel(ind)==0
     disp('Could not find any matching pair...')
@@ -127,5 +133,3 @@ end
 
 mean_bv=mean(bv_temp);
 std_bv=std(bv_temp);
-
-

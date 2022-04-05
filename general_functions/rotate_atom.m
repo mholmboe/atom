@@ -3,17 +3,30 @@
 % rotate vector
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # atom = rotate_atom(atom,Box_dim)
 % # atom = rotate_atom(atom,Box_dim,'random')
 % # atom = rotate_atom(atom,Box_dim,[0 0 90])
-%
-function atom = rotate_atom(atom,Box_dim,rotate)
+% # atom = rotate_atom(atom,Box_dim,[0 0 90],ind)
 
+function atom = rotate_atom(atom,Box_dim,varargin)
+
+if nargin>2
+    rotate=varargin{1};
+else
+    rotate='random';
+end
+
+if nargin>3
+    ind=varargin{2};
+else
+    ind=0;
+end
 
 angles=[0 0 0];
 if ischar(rotate)
@@ -28,10 +41,10 @@ elseif iscell(rotate)
             end
         end
     end
-else 
+else
     if size(rotate,2)==3
-        disp('Set the angles to..')
-        rotate
+%         disp('Set the angles to..')
+%         rotate
         angles(1)=rotate(1);
         angles(2)=rotate(2);
         angles(3)=rotate(3);
@@ -44,7 +57,12 @@ alfa=angles(1);
 beta=angles(2);
 gamma=angles(3);
 
-atom = COM_atom(atom,Box_dim);
+if ind==0
+    atom = COM_atom(atom,Box_dim);
+else
+    COM=[atom(ind).x atom(ind).y atom(ind).z];
+end
+
 x_shift=num2cell([atom.x]-COM(1)); [atom.x]=deal(x_shift{:});
 y_shift=num2cell([atom.y]-COM(2)); [atom.y]=deal(y_shift{:});
 z_shift=num2cell([atom.z]-COM(3)); [atom.z]=deal(z_shift{:});
@@ -56,11 +74,15 @@ x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
 y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
 z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
 
-atom = rmfield(atom,'Mw');
-atom = rmfield(atom,'element');
-atom = rmfield(atom,'COM_x');
-atom = rmfield(atom,'COM_y');
-atom = rmfield(atom,'COM_z');
+
+try atom = rmfield(atom,'Mw'); catch; end
+try atom = rmfield(atom,'element'); catch; end
+try
+    atom = rmfield(atom,'COM_x');
+    atom = rmfield(atom,'COM_y');
+    atom = rmfield(atom,'COM_z');
+catch
+end
 
 % assignin('caller','rot_atom',rot_atom);
 

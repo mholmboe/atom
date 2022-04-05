@@ -5,7 +5,7 @@
 % smoothing thorugh Gaussian convolution will be invoked.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -52,7 +52,7 @@ if ~exist('Distance','var')
 end
 
 if Distance(end)>min([Box_dim(1:3)./2])
-    disp('Note that the integration distance is larger than half the smallest system size')
+%     disp('Note that the integration distance is larger than half the smallest system size')
 end
 
 V=4/3*pi()*Distance(end)^3;

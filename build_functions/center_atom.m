@@ -6,13 +6,13 @@
 % * dim is a string containing for example x, xy, xyz
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 % * atom = center_atom(atom,Box_dim) % Basic input arguments
-% * atom = center_atom(atom,Box_dim,'Na') % Will center woth respect to all residues named Na
+% * atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na
 % * atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.
 %
 function atom = center_atom(atom,Box_dim,varargin)

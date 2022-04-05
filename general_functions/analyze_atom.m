@@ -12,7 +12,7 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -55,9 +55,6 @@ end
 
 Valences=[element.valence];
 modValences=sum(Valences-round(Valences))/numel(Valences);
-
-
-
 % other_ind=[];ValenceGuess=zeros(1,size(element,2));
 % for i=1:size(element,2)
 %     try
@@ -77,8 +74,11 @@ modValences=sum(Valences-round(Valences))/numel(Valences);
 % assignin('caller','ValenceGuess',ValenceGuess)
 % assignin('caller','other_ind',other_ind)
 
-element=mass_atom(element);
+element=mass_atom(element,Box_dim);
 assignin('caller','element',element);
+assignin('caller','Box_volume',Box_volume);
+assignin('caller','Box_density',Box_density);
+
 for i=1:size(element,2)
     Ion_ind=find(strcmp([element(i).type],Ion));
     if numel(Ion_ind)==0
@@ -111,7 +111,7 @@ for i=1:size(element,2)
     properties(i).valence=element(i).valence-modValences;
     properties(i).ave_dist=mean(properties(i).bond.dist);
     properties(i).std_dist=std(properties(i).bond.dist);
-%     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
+    %     properties(i).exp_dist=properties(i).ave_dist+element(i).Rdiff;
     properties(i).rdiffvalence=element(i).Rdiff;
     properties(i).cn_bv=size(properties(i).bv,2);
     properties(i).ShannonParam={'>>>>'};
@@ -181,7 +181,7 @@ end
 % %     properties(i).la=sum(dist.*exp(1-(dist./properties(i).lmin).^6))/sum((exp(1-(dist./properties(i).lmin).^6)));
 % %     properties(i).wi=exp(1-(dist./properties(i).la).^6);
 % %     properties(i).ECoN=sum([properties(i).wi]);
-% % end 
+% % end
 % % for i=1:size(properties,2)
 % %     ind=[properties(i).neigh.index];
 % %     properties(i).deltaq=-([properties(ind).oxstate].*[properties(i).wi]')./[properties(ind).ECoN];
@@ -226,6 +226,16 @@ if GII>0.2
     disp('GII > 0.2 --> Structure likely not super stable...');
 end
 
+GII_noH=0;
+if sum(strncmpi([properties.type],'H',1))>0
+    disp('Global instability (ignoring the H...) index is:')
+    ind_noH=find(~strncmpi([properties.type],'H',1));
+    GII_noH=(sum((abs([properties(ind_noH).oxstate])-[properties(ind_noH).valence]).^2)/numel(ind_noH))
+    if GII_noH>0.2
+        disp('GII_noH > 0.2 --> Structure likely not super stable...');
+    end
+end
+
 Atom_labels=unique([atom.fftype]);
 for i=1:length(Atom_labels)
     ind=find(strcmp([atom.fftype],Atom_labels(i)));
@@ -240,7 +250,7 @@ end
 load('bond_valence_values.mat');
 for i=1:size(Bond_index,1)
     Bond_index(i,4)=properties(Bond_index(i,1)).ionicradii+properties(Bond_index(i,2)).ionicradii;
-    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2);
+    [mean_bv,std_bv,bv,bvalue]=bond_valence_data(properties(Bond_index(i,1)).type,properties(Bond_index(i,2)).type,Bond_index(i,3),Ion_1,Ion_2,R0,b,Valence_1,Valence_2,properties(Bond_index(i,1)).oxstate,properties(Bond_index(i,2)).oxstate);
     Bond_index(i,5)=bv;
 end
 
@@ -267,6 +277,7 @@ end
 assignin('caller','Tot_valence',Tot_valence);
 assignin('caller','Tot_valence_oxstate',Tot_valence_oxstate);
 assignin('caller','GII',GII);
+assignin('caller','GII_noH',GII_noH);
 assignin('caller','BondSummary',BondSummary);
 
 assignin('caller','diff_valence',diff_valence);

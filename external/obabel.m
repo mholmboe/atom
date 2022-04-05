@@ -7,12 +7,12 @@ function obabel(varargin)
 
 if nargin>0
     
-%     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))
+    %     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))
     eval(char(strcat({'!/Users/miho0052/opt/miniconda3/bin/obabel'},{' '},varargin{1})))
     
 else
     
-%     eval('!/usr/local/bin/obabel -H')
-eval('!/Users/miho0052/opt/miniconda3/bin/obabel -H')
+    %     eval('!/usr/local/bin/obabel -H')
+    eval('!/Users/miho0052/opt/miniconda3/bin/obabel -H')
     
 end

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>To run OBABEL from MATLAB</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="obabel.m"><style type="text/css">
+      --><title>To run OBABEL from MATLAB</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="obabel.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -71,13 +71,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 <span class="keyword">if</span> nargin&gt;0
 
-<span class="comment">%     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))</span>
+    <span class="comment">%     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))</span>
     eval(char(strcat({<span class="string">'!/Users/miho0052/opt/miniconda3/bin/obabel'</span>},{<span class="string">' '</span>},varargin{1})))
 
 <span class="keyword">else</span>
 
-<span class="comment">%     eval('!/usr/local/bin/obabel -H')</span>
-eval(<span class="string">'!/Users/miho0052/opt/miniconda3/bin/obabel -H'</span>)
+    <span class="comment">%     eval('!/usr/local/bin/obabel -H')</span>
+    eval(<span class="string">'!/Users/miho0052/opt/miniconda3/bin/obabel -H'</span>)
 
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
@@ -91,13 +91,13 @@ function obabel(varargin)
 
 if nargin>0
     
-%     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))
+    %     eval(char(strcat({'!/usr/local/bin/obabel'},{' '},varargin{1})))
     eval(char(strcat({'!/Users/miho0052/opt/miniconda3/bin/obabel'},{' '},varargin{1})))
     
 else
     
-%     eval('!/usr/local/bin/obabel -H')
-eval('!/Users/miho0052/opt/miniconda3/bin/obabel -H')
+    %     eval('!/usr/local/bin/obabel -H')
+    eval('!/Users/miho0052/opt/miniconda3/bin/obabel -H')
     
 end
 ##### SOURCE END #####

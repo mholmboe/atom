@@ -4,7 +4,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -66,8 +66,8 @@ elseif regexp(filename,'.pqr') > 1
         atom = import_atom_pqr(filename);
     end
     
-    assignin('caller','occupancy',occupancy)
-    assignin('caller','tempfactor',tempfactor)
+%     assignin('caller','occupancy',occupancy)
+%     assignin('caller','tempfactor',tempfactor)
     
 elseif regexp(filename,'.mol2') > 1
     disp('Found .mol2 file');

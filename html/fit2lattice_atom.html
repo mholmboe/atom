@@ -1,0 +1,312 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fit2lattice_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="fit2lattice_atom.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>fit2lattice_atom.m</h1><!--introduction--><div><ul><li>This is a special function imports a model structure of a single molecule</li><li>like PO43- and tries to fit it into a crystal lattice possibly holding</li><li>multiple such sites. Any waters or counter-ions (see lin 39) can be</li><li>reordered and reintroduced to the final model.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Choose a main atomtype used for centering the model onto the reference structure</a></li><li><a href="#6">Calculate how many models would fit in reference</a></li><li><a href="#7">Place the model at origo</a></li><li><a href="#8">For every model to be superpositioned over the reference...</a></li><li><a href="#11">Generate random angles between -180 to +180</a></li><li><a href="#12">Rotate and move the temporary model structure</a></li><li><a href="#13">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</a></li><li><a href="#14">Calculate the difference</a></li><li><a href="#15">Save the best angles</a></li><li><a href="#17">Add the temp_model to the the full model</a></li><li><a href="#19">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref) % Basic imput arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref,varargin)
+</pre><pre class="codeinput"><span class="comment">% clear all;</span>
+<span class="comment">% format compact;</span>
+<span class="comment">%</span>
+<span class="comment">% %% Set filenames/residue name</span>
+<span class="comment">% ref_filename='H3PO4_CollCode15887.pdb'</span>
+<span class="comment">% model_filename='1xH3PO4.pdb'</span>
+<span class="comment">% %% Import and setup reference and model structures, strip away waters and counter-ions..</span>
+<span class="comment">% model=import_atom(model_filename);</span>
+<span class="comment">% ref=import_atom(ref_filename);</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    outfilename=varargin{1};
+<span class="keyword">else</span>
+    outfilename=<span class="string">'preem.gro'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 4
+    resname=varargin{2};
+<span class="keyword">else</span>
+    resname=<span class="string">'PO4'</span>;
+<span class="keyword">end</span>
+
+model=atom_model;
+ref=atom_ref;
+Box_dim=Box_dim_ref;
+
+ref=element_atom(ref);
+[ref,SOL]=remove_H2O(ref,Box_dim); <span class="comment">% Will output SOL</span>
+ref=resname_atom(ref,resname);
+[ref.molid]=deal(1);
+
+model=element_atom(model);
+[model.molid]=deal(1);
+[model.resname]=deal({resname});
+model=bond_angle_atom(model,Box_dim,1.25,2.45,<span class="string">'more'</span>);
+
+Ion=ref(strcmp([ref.resname],<span class="string">'ION'</span>));
+<span class="keyword">if</span> numel(Ion)==0
+    Ion=[];
+<span class="keyword">end</span>
+ref(strcmp([ref.resname],<span class="string">'ION'</span>))=[];
+ref(strcmp([ref.resname],<span class="string">'SOL'</span>))=[];
+ref=bond_angle_atom(ref,Box_dim,1.25,2.45,<span class="string">'more'</span>);
+</pre><h2 id="5">Choose a main atomtype used for centering the model onto the reference structure</h2><pre class="codeinput">Atom_type=unique([ref.type]);
+Atom_type(ismember(Atom_type,{<span class="string">'H'</span> <span class="string">'O'</span> <span class="string">'Li'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Ca'</span> <span class="string">'Mg'</span> <span class="string">'Cs'</span>}))=[];
+
+nAtomtypeRef=sum(strcmp([ref.type],Atom_type));
+nAtomtypeModel=sum(strcmp([model.type],Atom_type));
+
+AtomtypeRef_ind=find(strcmp([ref.type],Atom_type));
+AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
+</pre><h2 id="6">Calculate how many models would fit in reference</h2><pre class="codeinput">nRepFactor=nAtomtypeRef/nAtomtypeModel;
+</pre><h2 id="7">Place the model at origo</h2><pre class="codeinput">model=translate_atom(model,-[model(AtomtypeModel_ind(1)).x model(AtomtypeModel_ind(1)).y model(AtomtypeModel_ind(1)).z]);
+</pre><h2 id="8">For every model to be superpositioned over the reference...</h2><pre class="codeinput">full_model=[];BestAngles=[0 0 0]; BestAngles_all=[];res_all=[];
+<span class="keyword">for</span> i=1:nRepFactor
+</pre><pre class="codeinput">    close <span class="string">all</span>
+    n=1; prev_res=1E23;
+    <span class="keyword">while</span> sum(prev_res.^2)&gt;0.5 &amp;&amp; n &lt; 2000
+</pre><h2 id="11">Generate random angles between -180 to +180</h2><pre class="codeinput">        angles=[360*rand-180 360*rand-180 360*rand-180];
+</pre><h2 id="12">Rotate and move the temporary model structure</h2><pre class="codeinput">        temp_model = rotate_atom(model,Box_dim,angles,AtomtypeModel_ind); <span class="comment">% Rotate the temp_model around origo</span>
+        temp_model = translate_atom(temp_model,[ref(AtomtypeRef_ind(i)).x ref(AtomtypeRef_ind(i)).y ref(AtomtypeRef_ind(i)).z]); <span class="comment">% Translate the temp_model to the i:th position</span>
+</pre><h2 id="13">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</h2><pre class="codeinput">        d_ref_matrix=dist_matrix_atom(ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),<span class="keyword">...</span>
+            ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
+        d_ref_matrix=sort(d_ref_matrix,2);
+        d_ref_matrix=reshape(d_ref_matrix,1,[]);
+
+        d_model_matrix=dist_matrix_atom(temp_model(unique(temp_model((AtomtypeModel_ind(1))).angle.index(:,1:2:end))),<span class="keyword">...</span>
+            ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
+        d_model_matrix=sort(d_model_matrix,2);
+        d_model_matrix=reshape(d_model_matrix,1,[]);
+</pre><h2 id="14">Calculate the difference</h2><pre class="codeinput">        res=d_ref_matrix-d_model_matrix;
+</pre><h2 id="15">Save the best angles</h2><pre class="codeinput">        <span class="keyword">if</span> sum(res.^2)&lt;sum(prev_res.^2)
+            prev_res=res;
+            BestAngles=[BestAngles;angles];
+            hold <span class="string">on</span>
+            drawnow
+            plot(res)
+        <span class="keyword">end</span>
+        n=n+1;
+</pre><pre class="codeinput">    <span class="keyword">end</span>
+
+    i
+    sum(prev_res.^2)
+    n
+
+    sum(res.^2)
+    res_all=[res_all sum(res.^2)];
+    BestAngles_all = [BestAngles_all BestAngles(end,:)];
+</pre><h2 id="17">Add the temp_model to the the full model</h2><pre class="codeinput">    full_model = update_atom({full_model temp_model});
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2 id="19">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</h2><pre class="codeinput">full_model = wrap_atom(full_model,Box_dim);
+System=update_atom({full_model Ion SOL});
+prop = analyze_atom(System,Box_dim,2.65);
+write_atom_gro(System,Box_dim,strcat(char(outfilename),<span class="string">'_GII_'</span>,num2str(GII,3),<span class="string">'_'</span>,num2str(GII_noH,3),<span class="string">'.gro'</span>));
+
+atom = System;
+<span class="comment">% vmd(update_atom({ref full_model}),Box_dim)</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% fit2lattice_atom.m
+% * This is a special function imports a model structure of a single molecule
+% * like PO43- and tries to fit it into a crystal lattice possibly holding
+% * multiple such sites. Any waters or counter-ions (see lin 39) can be
+% * reordered and reintroduced to the final model.
+%
+%
+%% Version
+% 2.11
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref) % Basic imput arguments
+%
+
+function [atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref,varargin)
+
+% clear all;
+% format compact;
+%
+% %% Set filenames/residue name
+% ref_filename='H3PO4_CollCode15887.pdb'
+% model_filename='1xH3PO4.pdb'
+% %% Import and setup reference and model structures, strip away waters and counter-ions..
+% model=import_atom(model_filename);
+% ref=import_atom(ref_filename);
+
+if nargin>3
+    outfilename=varargin{1};
+else
+    outfilename='preem.gro';
+end
+
+if nargin > 4
+    resname=varargin{2};
+else
+    resname='PO4';
+end
+
+model=atom_model;
+ref=atom_ref;
+Box_dim=Box_dim_ref;
+
+ref=element_atom(ref);
+[ref,SOL]=remove_H2O(ref,Box_dim); % Will output SOL
+ref=resname_atom(ref,resname);
+[ref.molid]=deal(1);
+
+model=element_atom(model);
+[model.molid]=deal(1);
+[model.resname]=deal({resname});
+model=bond_angle_atom(model,Box_dim,1.25,2.45,'more');
+
+Ion=ref(strcmp([ref.resname],'ION'));
+if numel(Ion)==0
+    Ion=[];
+end
+ref(strcmp([ref.resname],'ION'))=[];
+ref(strcmp([ref.resname],'SOL'))=[];
+ref=bond_angle_atom(ref,Box_dim,1.25,2.45,'more');
+
+%% Choose a main atomtype used for centering the model onto the reference structure
+Atom_type=unique([ref.type]);
+Atom_type(ismember(Atom_type,{'H' 'O' 'Li' 'Na' 'K' 'Ca' 'Mg' 'Cs'}))=[];
+
+nAtomtypeRef=sum(strcmp([ref.type],Atom_type));
+nAtomtypeModel=sum(strcmp([model.type],Atom_type));
+
+AtomtypeRef_ind=find(strcmp([ref.type],Atom_type));
+AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
+
+%% Calculate how many models would fit in reference
+nRepFactor=nAtomtypeRef/nAtomtypeModel;
+
+%% Place the model at origo
+model=translate_atom(model,-[model(AtomtypeModel_ind(1)).x model(AtomtypeModel_ind(1)).y model(AtomtypeModel_ind(1)).z]);
+
+%% For every model to be superpositioned over the reference...
+full_model=[];BestAngles=[0 0 0]; BestAngles_all=[];res_all=[];
+for i=1:nRepFactor
+    close all
+    n=1; prev_res=1E23;
+    while sum(prev_res.^2)>0.5 && n < 2000
+        
+        %% Generate random angles between -180 to +180
+        angles=[360*rand-180 360*rand-180 360*rand-180];
+        
+        %% Rotate and move the temporary model structure
+        temp_model = rotate_atom(model,Box_dim,angles,AtomtypeModel_ind); % Rotate the temp_model around origo
+        temp_model = translate_atom(temp_model,[ref(AtomtypeRef_ind(i)).x ref(AtomtypeRef_ind(i)).y ref(AtomtypeRef_ind(i)).z]); % Translate the temp_model to the i:th position
+        
+        %% Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure
+        d_ref_matrix=dist_matrix_atom(ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),...
+            ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
+        d_ref_matrix=sort(d_ref_matrix,2);
+        d_ref_matrix=reshape(d_ref_matrix,1,[]);
+        
+        d_model_matrix=dist_matrix_atom(temp_model(unique(temp_model((AtomtypeModel_ind(1))).angle.index(:,1:2:end))),...
+            ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
+        d_model_matrix=sort(d_model_matrix,2);
+        d_model_matrix=reshape(d_model_matrix,1,[]);
+        
+        %% Calculate the difference
+        res=d_ref_matrix-d_model_matrix;
+        
+        %% Save the best angles
+        if sum(res.^2)<sum(prev_res.^2)
+            prev_res=res;
+            BestAngles=[BestAngles;angles];
+            hold on
+            drawnow
+            plot(res)
+        end
+        n=n+1;
+    end
+    
+    i
+    sum(prev_res.^2)
+    n
+    
+    sum(res.^2)
+    res_all=[res_all sum(res.^2)];
+    BestAngles_all = [BestAngles_all BestAngles(end,:)];
+    
+    %% Add the temp_model to the the full model
+    full_model = update_atom({full_model temp_model});
+    
+end
+
+%% Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)
+full_model = wrap_atom(full_model,Box_dim);
+System=update_atom({full_model Ion SOL});
+prop = analyze_atom(System,Box_dim,2.65);
+write_atom_gro(System,Box_dim,strcat(char(outfilename),'_GII_',num2str(GII,3),'_',num2str(GII_noH,3),'.gro'));
+
+atom = System;
+% vmd(update_atom({ref full_model}),Box_dim)
+
+
+##### SOURCE END #####
+--></body></html>

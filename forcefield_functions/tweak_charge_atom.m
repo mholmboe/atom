@@ -3,7 +3,7 @@
 % rounding errors.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -60,6 +60,9 @@ if abs(final_delta_q) < 0.05
 end
 
 round(unique([atom.charge]),8)
+
+disp('Total charge after tweaking')
+Total_charge=sum([atom.charge])
 
 assignin('caller','Total_charge',Total_charge);
 

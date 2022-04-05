@@ -2,7 +2,7 @@
 % * This function extracts a frame to the trajectory matrix
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

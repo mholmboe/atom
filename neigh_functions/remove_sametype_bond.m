@@ -4,7 +4,7 @@
 % * existing Bond | Angle | Dihedral_index variables.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

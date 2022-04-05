@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_ave_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="write_ave_gro.m"><style type="text/css">
+      --><title>write_ave_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="write_ave_gro.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,9 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_ave_gro.m</h1><!--introduction--><div><ul><li>This function reads in a number of .gro files and writes out the average (or median, as default) atom struct and Box_dim to a file ave_conf.gro, as well as the variables atom_ave and Box_dim_ave below.</li></ul></div><div><ul><li>Note!! If chosing the 'average' option as a second argument, make sure your molecule does not overlap any PBC!!! If it does, just leave the default option which will compute the median position instead!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_ave_gro(confstring) % Basic input arguments</li><li>write_ave_gro(confstring,'average')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_ave_gro(confstring,varargin)
-
-<span class="comment">% confstring='conf';</span>
+  </style></head><body><div class="content"><h1>write_ave_gro.m</h1><!--introduction--><div><ul><li>This function reads in a number of .gro files and writes out the average (or median, as default) atom struct and Box_dim to a file ave_conf.gro, as well as the variables atom_ave and Box_dim_ave below.</li></ul></div><div><ul><li>Note!! If chosing the 'average' option as a second argument, make sure your molecule does not overlap any PBC!!! If it does, just leave the default option which will compute the median position instead!</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_ave_gro(confstring) % Basic input arguments</li><li>write_ave_gro(confstring,'average')</li><li>write_ave_gro(confstring,'median')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_ave_gro(confstring,varargin)
 
 numConf=size(dir(strcat(confstring,<span class="string">'*'</span>)),1);
 
@@ -77,35 +75,42 @@ numConf=size(dir(strcat(confstring,<span class="string">'*'</span>)),1);
     disp(<span class="string">'Only found a few structure files, hence the average structure may not be statistically sound...'</span>)
 <span class="keyword">end</span>
 
-atom_all=[];Box_dim_all=[];
+atom_all = import_atom_gro(strcat(confstring,num2str(0),<span class="string">'.gro'</span>)); <span class="comment">% Also gives Box_dim</span>
+nAtoms=size(atom_all,2);
+
+atom_all = repmat(atom_all,1,numConf);
+Box_dim_all = repmat(Box_dim,numConf,1);
+
 <span class="keyword">for</span> i=1:numConf
-    atom = import_atom_gro(strcat(confstring,num2str(i-1),<span class="string">'.gro'</span>)); <span class="comment">% Also gives Box_dim</span>
-    atom_all=[atom_all atom];
-    Box_dim_all=[Box_dim_all;Box_dim];
+    [Coord,Box] = import_ave_gro(strcat(confstring,num2str(i-1),<span class="string">'.gro'</span>));
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).x]=Coord.x;
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).y]=Coord.y;
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).z]=Coord.z;
+    Box_dim_all(i,:)=Box;
 <span class="keyword">end</span>
 Box_dim_ave=mean(Box_dim_all);
 
-nAtoms=size(atom,2);atom_ave=atom;
+atom_ave=atom_all(1:nAtoms);
 <span class="keyword">if</span> nargin&gt;1 &amp;&amp; strncmpi(varargin{1},<span class="string">'ave'</span>,3)
+    disp(<span class="string">'Computing average structure!!!!'</span>)
     <span class="keyword">for</span> i=1:nAtoms
-        disp(<span class="string">'Computing average structure!!!!'</span>)
         [atom_ave(i).x]=mean([atom_all(i:nAtoms:end).x]);
         [atom_ave(i).y]=mean([atom_all(i:nAtoms:end).y]);
         [atom_ave(i).z]=mean([atom_all(i:nAtoms:end).z]);
     <span class="keyword">end</span>
 <span class="keyword">else</span>
+    disp(<span class="string">'Computing median structure!!!!'</span>)
     <span class="keyword">for</span> i=1:nAtoms
-        disp(<span class="string">'Computing median structure!!!!'</span>)
         [atom_ave(i).x]=median([atom_all(i:nAtoms:end).x]);
         [atom_ave(i).y]=median([atom_all(i:nAtoms:end).y]);
         [atom_ave(i).z]=median([atom_all(i:nAtoms:end).z]);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-write_atom_gro(atom_ave,Box_dim_ave,<span class="string">'ave_conf.gro'</span>);
-
 assignin(<span class="string">'caller'</span>,<span class="string">'atom_ave'</span>,atom_ave);
 assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim_ave'</span>,Box_dim_ave);
+
+write_atom_gro(atom_ave,Box_dim_ave,strcat(<span class="string">'ave_'</span>,confstring,<span class="string">'.gro'</span>));
 
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
@@ -120,7 +125,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim_ave'
 % default option which will compute the median position instead!
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -128,10 +133,9 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim_ave'
 %% Examples
 % # write_ave_gro(confstring) % Basic input arguments
 % # write_ave_gro(confstring,'average')
+% # write_ave_gro(confstring,'median')
 
 function write_ave_gro(confstring,varargin)
-
-% confstring='conf';
 
 numConf=size(dir(strcat(confstring,'*')),1);
 
@@ -139,35 +143,42 @@ if numConf<3
     disp('Only found a few structure files, hence the average structure may not be statistically sound...')
 end
 
-atom_all=[];Box_dim_all=[];
+atom_all = import_atom_gro(strcat(confstring,num2str(0),'.gro')); % Also gives Box_dim
+nAtoms=size(atom_all,2);
+
+atom_all = repmat(atom_all,1,numConf);
+Box_dim_all = repmat(Box_dim,numConf,1);
+
 for i=1:numConf
-    atom = import_atom_gro(strcat(confstring,num2str(i-1),'.gro')); % Also gives Box_dim
-    atom_all=[atom_all atom];
-    Box_dim_all=[Box_dim_all;Box_dim];
+    [Coord,Box] = import_ave_gro(strcat(confstring,num2str(i-1),'.gro'));
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).x]=Coord.x;
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).y]=Coord.y;
+    [atom_all(1+(i-1)*nAtoms:nAtoms+(i-1)*nAtoms).z]=Coord.z;
+    Box_dim_all(i,:)=Box;
 end
 Box_dim_ave=mean(Box_dim_all);
 
-nAtoms=size(atom,2);atom_ave=atom;
+atom_ave=atom_all(1:nAtoms);
 if nargin>1 && strncmpi(varargin{1},'ave',3)
+    disp('Computing average structure!!!!')
     for i=1:nAtoms
-        disp('Computing average structure!!!!')
         [atom_ave(i).x]=mean([atom_all(i:nAtoms:end).x]);
         [atom_ave(i).y]=mean([atom_all(i:nAtoms:end).y]);
         [atom_ave(i).z]=mean([atom_all(i:nAtoms:end).z]);
     end
 else
+    disp('Computing median structure!!!!')
     for i=1:nAtoms
-        disp('Computing median structure!!!!')
         [atom_ave(i).x]=median([atom_all(i:nAtoms:end).x]);
         [atom_ave(i).y]=median([atom_all(i:nAtoms:end).y]);
         [atom_ave(i).z]=median([atom_all(i:nAtoms:end).z]);
     end
 end
 
-write_atom_gro(atom_ave,Box_dim_ave,'ave_conf.gro');
-
 assignin('caller','atom_ave',atom_ave);
 assignin('caller','Box_dim_ave',Box_dim_ave);
+
+write_atom_gro(atom_ave,Box_dim_ave,strcat('ave_',confstring,'.gro'));
 
 end
 ##### SOURCE END #####

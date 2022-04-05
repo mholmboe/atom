@@ -5,7 +5,7 @@
 % * Make sure to edit your own PATH2VMD function!!!
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -21,7 +21,7 @@ function vmd(varargin)
 
 % You need to set your own VMD path here!!!
 PATH2VMD = '/Applications/VMD\ 1.9.4a38.app/Contents/MacOS/startup.command';
-           '/Applications/VMD 1.9.4a38.app/Contents/MacOS'
+
 
 if nargin==1
     filename=varargin{1};

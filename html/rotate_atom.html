@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>atom_rotate.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="rotate_atom.m"><style type="text/css">
+      --><title>atom_rotate.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="rotate_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>atom_rotate.m</h1><!--introduction--><div><ul><li>This function rotate the atom randomly or by the angles given by the rotate vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = rotate_atom(atom,Box_dim,'random')</li><li>atom = rotate_atom(atom,Box_dim,[0 0 90])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = rotate_atom(atom,Box_dim,rotate)
+  </style></head><body><div class="content"><h1>atom_rotate.m</h1><!--introduction--><div><ul><li>This function rotate the atom randomly or by the angles given by the rotate vector</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = rotate_atom(atom,Box_dim)</li><li>atom = rotate_atom(atom,Box_dim,'random')</li><li>atom = rotate_atom(atom,Box_dim,[0 0 90])</li><li>atom = rotate_atom(atom,Box_dim,[0 0 90],ind)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = rotate_atom(atom,Box_dim,varargin)
 
+<span class="keyword">if</span> nargin&gt;2
+    rotate=varargin{1};
+<span class="keyword">else</span>
+    rotate=<span class="string">'random'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    ind=varargin{2};
+<span class="keyword">else</span>
+    ind=0;
+<span class="keyword">end</span>
 
 angles=[0 0 0];
 <span class="keyword">if</span> ischar(rotate)
@@ -85,8 +96,8 @@ angles=[0 0 0];
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     <span class="keyword">if</span> size(rotate,2)==3
-        disp(<span class="string">'Set the angles to..'</span>)
-        rotate
+<span class="comment">%         disp('Set the angles to..')</span>
+<span class="comment">%         rotate</span>
         angles(1)=rotate(1);
         angles(2)=rotate(2);
         angles(3)=rotate(3);
@@ -99,7 +110,12 @@ alfa=angles(1);
 beta=angles(2);
 gamma=angles(3);
 
-atom = COM_atom(atom,Box_dim);
+<span class="keyword">if</span> ind==0
+    atom = COM_atom(atom,Box_dim);
+<span class="keyword">else</span>
+    COM=[atom(ind).x atom(ind).y atom(ind).z];
+<span class="keyword">end</span>
+
 x_shift=num2cell([atom.x]-COM(1)); [atom.x]=deal(x_shift{:});
 y_shift=num2cell([atom.y]-COM(2)); [atom.y]=deal(y_shift{:});
 z_shift=num2cell([atom.z]-COM(3)); [atom.z]=deal(z_shift{:});
@@ -111,11 +127,15 @@ x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
 y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
 z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
 
-atom = rmfield(atom,<span class="string">'Mw'</span>);
-atom = rmfield(atom,<span class="string">'element'</span>);
-atom = rmfield(atom,<span class="string">'COM_x'</span>);
-atom = rmfield(atom,<span class="string">'COM_y'</span>);
-atom = rmfield(atom,<span class="string">'COM_z'</span>);
+
+<span class="keyword">try</span> atom = rmfield(atom,<span class="string">'Mw'</span>); <span class="keyword">catch</span>; <span class="keyword">end</span>
+<span class="keyword">try</span> atom = rmfield(atom,<span class="string">'element'</span>); <span class="keyword">catch</span>; <span class="keyword">end</span>
+<span class="keyword">try</span>
+    atom = rmfield(atom,<span class="string">'COM_x'</span>);
+    atom = rmfield(atom,<span class="string">'COM_y'</span>);
+    atom = rmfield(atom,<span class="string">'COM_z'</span>);
+<span class="keyword">catch</span>
+<span class="keyword">end</span>
 
 <span class="comment">% assignin('caller','rot_atom',rot_atom);</span>
 
@@ -126,22 +146,16 @@ atom = rmfield(atom,<span class="string">'COM_z'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = rotx(alpha)
-eml_assert_no_varsize(1,alpha);
-sigdatatypes.validateAngle(alpha,<span class="string">'rotx'</span>,<span class="string">'ALPHA'</span>,{<span class="string">'scalar'</span>});
 <span class="comment">% rotate in the direction of y-&gt;z, counter-clockwise</span>
 rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = roty(beta)
-eml_assert_no_varsize(1,beta);
-sigdatatypes.validateAngle(beta,<span class="string">'roty'</span>,<span class="string">'BETA'</span>,{<span class="string">'scalar'</span>});
 <span class="comment">% rotate in the direction of z-&gt;x, counter-clockwise</span>
 rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> rotmat = rotz(gamma)
-eml_assert_no_varsize(1,gamma);
-sigdatatypes.validateAngle(gamma,<span class="string">'rotz'</span>,<span class="string">'GAMMA'</span>,{<span class="string">'scalar'</span>});
 <span class="comment">% rotate in the direction of x-&gt;y, counter-clockwise</span>
 rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 <span class="keyword">end</span>
@@ -152,17 +166,30 @@ rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 % rotate vector
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # atom = rotate_atom(atom,Box_dim)
 % # atom = rotate_atom(atom,Box_dim,'random')
 % # atom = rotate_atom(atom,Box_dim,[0 0 90])
-%
-function atom = rotate_atom(atom,Box_dim,rotate)
+% # atom = rotate_atom(atom,Box_dim,[0 0 90],ind)
 
+function atom = rotate_atom(atom,Box_dim,varargin)
+
+if nargin>2
+    rotate=varargin{1};
+else
+    rotate='random';
+end
+
+if nargin>3
+    ind=varargin{2};
+else
+    ind=0;
+end
 
 angles=[0 0 0];
 if ischar(rotate)
@@ -177,10 +204,10 @@ elseif iscell(rotate)
             end
         end
     end
-else 
+else
     if size(rotate,2)==3
-        disp('Set the angles to..')
-        rotate
+%         disp('Set the angles to..')
+%         rotate
         angles(1)=rotate(1);
         angles(2)=rotate(2);
         angles(3)=rotate(3);
@@ -193,7 +220,12 @@ alfa=angles(1);
 beta=angles(2);
 gamma=angles(3);
 
-atom = COM_atom(atom,Box_dim);
+if ind==0
+    atom = COM_atom(atom,Box_dim);
+else
+    COM=[atom(ind).x atom(ind).y atom(ind).z];
+end
+
 x_shift=num2cell([atom.x]-COM(1)); [atom.x]=deal(x_shift{:});
 y_shift=num2cell([atom.y]-COM(2)); [atom.y]=deal(y_shift{:});
 z_shift=num2cell([atom.z]-COM(3)); [atom.z]=deal(z_shift{:});
@@ -205,11 +237,15 @@ x_rot=num2cell(XYZ_data(:,1)+COM(1)); [atom.x]=deal(x_rot{:});
 y_rot=num2cell(XYZ_data(:,2)+COM(2)); [atom.y]=deal(y_rot{:});
 z_rot=num2cell(XYZ_data(:,3)+COM(3)); [atom.z]=deal(z_rot{:});
 
-atom = rmfield(atom,'Mw');
-atom = rmfield(atom,'element');
-atom = rmfield(atom,'COM_x');
-atom = rmfield(atom,'COM_y');
-atom = rmfield(atom,'COM_z');
+
+try atom = rmfield(atom,'Mw'); catch; end
+try atom = rmfield(atom,'element'); catch; end
+try
+    atom = rmfield(atom,'COM_x');
+    atom = rmfield(atom,'COM_y');
+    atom = rmfield(atom,'COM_z');
+catch
+end
 
 % assignin('caller','rot_atom',rot_atom);
 
@@ -220,22 +256,16 @@ atom = rmfield(atom,'COM_z');
 end
 
 function rotmat = rotx(alpha)
-eml_assert_no_varsize(1,alpha);
-sigdatatypes.validateAngle(alpha,'rotx','ALPHA',{'scalar'});
 % rotate in the direction of y->z, counter-clockwise
 rotmat = [1 0 0;0 cosd(alpha) -sind(alpha); 0 sind(alpha) cosd(alpha)];
 end
 
 function rotmat = roty(beta)
-eml_assert_no_varsize(1,beta);
-sigdatatypes.validateAngle(beta,'roty','BETA',{'scalar'});
 % rotate in the direction of z->x, counter-clockwise
 rotmat = [cosd(beta) 0 sind(beta); 0 1 0; -sind(beta) 0 cosd(beta)];
 end
 
 function rotmat = rotz(gamma)
-eml_assert_no_varsize(1,gamma);
-sigdatatypes.validateAngle(gamma,'rotz','GAMMA',{'scalar'});
 % rotate in the direction of x->y, counter-clockwise
 rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 end

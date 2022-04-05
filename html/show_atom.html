@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>show_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="show_atom.m"><style type="text/css">
+      --><title>show_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="show_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>show_atom.m</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. It neglects bonds over the</li><li>pbc for clarity (this can be changed on line 54).</li><li>For less fancier plots, use the plot_atom(atom,Box_dim) function</li><li>This function is inspired by molecule3D.m, written by Andr? Ludwig (<a href="mailto:aludwig@phys.ethz.ch">aludwig@phys.ethz.ch</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_atom(atom)</li><li>show_atom(atom,Box_dim)</li><li>show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'ionic', 'lines', 'labels' or 'index'</li><li>show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box</li><li>show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>show_atom.m</h1><!--introduction--><div><ul><li>This function draws the atom struct in 3D. It neglects bonds over the</li><li>pbc for clarity (this can be changed on line 54).</li><li>For less fancier plots, use the plot_atom(atom,Box_dim) function</li><li>This function is inspired by molecule3D.m, written by Andr? Ludwig (<a href="mailto:aludwig@phys.ethz.ch">aludwig@phys.ethz.ch</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_atom(atom)</li><li>show_atom(atom,Box_dim)</li><li>show_atom(atom,Box_dim,'vdw') % representation style, should be either 'ballstick' (default),'licorice','halfvdw','vdw', 'crystal', 'ionic', 'lines', 'labels' or 'index'</li><li>show_atom(atom,Box_dim,'ballstick',1) % Will show the unit cell/box</li><li>show_atom(atom,Box_dim,'ballstick',0,0.3) % Will use 30% transparency</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates</li><li>show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_atom(atom,varargin)
 tic
 
 disp(<span class="string">'Choose between these representations:'</span>)
-disp(<span class="string">'ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels index'</span>)
+disp(<span class="string">'ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels charge index'</span>)
 
 <span class="keyword">if</span> nargin&gt;2
     style = char(varargin{2}); <span class="comment">%'ballstick','licorice','halfvdw','vdw'</span>
@@ -79,7 +79,7 @@ disp(<span class="string">'ballstick licorice smallvdw halfvdw vdw crystal ionic
     style = <span class="string">'ballstick'</span>;
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> ~ismember(style,{<span class="string">'ballstick'</span> <span class="string">'small'</span> <span class="string">'smallvdw'</span> <span class="string">'licorice'</span> <span class="string">'halfvdw'</span> <span class="string">'vdw'</span> <span class="string">'crystal'</span> <span class="string">'ionic'</span> <span class="string">'lines'</span> <span class="string">'labels'</span> <span class="string">'index'</span> <span class="string">'poly'</span> <span class="string">'polyhedra'</span> <span class="string">'filled'</span>})
+<span class="keyword">if</span> ~ismember(style,{<span class="string">'ballstick'</span> <span class="string">'small'</span> <span class="string">'smallvdw'</span> <span class="string">'licorice'</span> <span class="string">'halfvdw'</span> <span class="string">'vdw'</span> <span class="string">'crystal'</span> <span class="string">'ionic'</span> <span class="string">'lines'</span> <span class="string">'labels'</span> <span class="string">'charge'</span> <span class="string">'index'</span> <span class="string">'poly'</span> <span class="string">'polyhedra'</span> <span class="string">'filled'</span>})
     style = <span class="string">'ballstick'</span>;
 <span class="keyword">end</span>
 
@@ -219,9 +219,9 @@ xlabel(<span class="string">'X [&Aring;]'</span>); ylabel(<span class="string">'
 view([0,0]);
 toc
 tic
-<span class="keyword">if</span> strncmpi(style,<span class="string">'labels'</span>,5) || strncmpi(style,<span class="string">'index'</span>,5) <span class="comment">% || strncmpi(style,'lines',4)</span>
+<span class="keyword">if</span> strncmpi(style,<span class="string">'labels'</span>,5) || strncmpi(style,<span class="string">'charge'</span>,5) || strncmpi(style,<span class="string">'index'</span>,5) <span class="comment">% || strncmpi(style,'lines',4)</span>
     <span class="keyword">for</span> i = 1:length(XYZ_labels)
-        labelradii = 500;
+        labelradii = 750;
         ind=strncmpi([element.type],XYZ_labels(i),3);
         <span class="keyword">if</span> numel(ind)==0
             ind=strncmpi([element.type],XYZ_labels(i),2);
@@ -238,6 +238,13 @@ tic
     bond_radii=0.05;
     <span class="keyword">if</span> strncmpi(style,<span class="string">'labels'</span>,5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,[atom.type]);
+    <span class="keyword">elseif</span> strncmpi(style,<span class="string">'charge'</span>,5)
+        <span class="keyword">try</span>
+            text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,num2str([atom.charge]));
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Did not find any charge...'</span>)
+        <span class="keyword">end</span>
+
     <span class="keyword">elseif</span> strncmpi(style,<span class="string">'index'</span>,5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,strsplit(num2str([atom.index])));
     <span class="keyword">end</span>
@@ -352,11 +359,11 @@ tic
     <span class="keyword">end</span>
 <span class="keyword">else</span>
     disp(<span class="string">'Unknown type of representation...'</span>)
-    disp(<span class="string">'Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels index poly filled'</span>)
+    disp(<span class="string">'Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels charge index poly filled'</span>)
 <span class="keyword">end</span>
 toc
 tic
-<span class="keyword">if</span> exist(<span class="string">'Bond_index'</span>,<span class="string">'var'</span>) &amp;&amp; numel(Bond_index)&gt;0 &amp;&amp; ismember(style,{<span class="string">'ballstick'</span> <span class="string">'licorice'</span> <span class="string">'lines'</span> <span class="string">'labels'</span> <span class="string">'index'</span>})
+<span class="keyword">if</span> exist(<span class="string">'Bond_index'</span>,<span class="string">'var'</span>) &amp;&amp; numel(Bond_index)&gt;0 &amp;&amp; ismember(style,{<span class="string">'ballstick'</span> <span class="string">'licorice'</span> <span class="string">'lines'</span> <span class="string">'labels'</span> <span class="string">'charge'</span> <span class="string">'index'</span>})
     rdist = Bond_index(:,3);
     <span class="comment">% draw cylinders for each bond</span>
     disp(<span class="string">'Drawing the bonds'</span>)
@@ -470,7 +477,7 @@ rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 % * This function is inspired by molecule3D.m, written by Andr? Ludwig (aludwig@phys.ethz.ch)
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -490,7 +497,7 @@ function show_atom(atom,varargin)
 tic
 
 disp('Choose between these representations:')
-disp('ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels index')
+disp('ballstick licorice smallvdw halfvdw vdw crystal ionic polyhedra lines labels charge index')
 
 if nargin>2
     style = char(varargin{2}); %'ballstick','licorice','halfvdw','vdw'
@@ -498,7 +505,7 @@ else
     style = 'ballstick';
 end
 
-if ~ismember(style,{'ballstick' 'small' 'smallvdw' 'licorice' 'halfvdw' 'vdw' 'crystal' 'ionic' 'lines' 'labels' 'index' 'poly' 'polyhedra' 'filled'})
+if ~ismember(style,{'ballstick' 'small' 'smallvdw' 'licorice' 'halfvdw' 'vdw' 'crystal' 'ionic' 'lines' 'labels' 'charge' 'index' 'poly' 'polyhedra' 'filled'})
     style = 'ballstick';
 end
 
@@ -638,9 +645,9 @@ xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
 toc
 tic
-if strncmpi(style,'labels',5) || strncmpi(style,'index',5) % || strncmpi(style,'lines',4)
+if strncmpi(style,'labels',5) || strncmpi(style,'charge',5) || strncmpi(style,'index',5) % || strncmpi(style,'lines',4)
     for i = 1:length(XYZ_labels)
-        labelradii = 500;
+        labelradii = 750;
         ind=strncmpi([element.type],XYZ_labels(i),3);
         if numel(ind)==0
             ind=strncmpi([element.type],XYZ_labels(i),2);
@@ -657,6 +664,13 @@ if strncmpi(style,'labels',5) || strncmpi(style,'index',5) % || strncmpi(style,'
     bond_radii=0.05;
     if strncmpi(style,'labels',5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,[atom.type]);
+    elseif strncmpi(style,'charge',5)
+        try
+            text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,num2str([atom.charge]));
+        catch
+            disp('Did not find any charge...')
+        end
+        
     elseif strncmpi(style,'index',5)
         text(XYZ_data(:,1)-.2,XYZ_data(:,2)-.2,XYZ_data(:,3)+.1,strsplit(num2str([atom.index])));
     end
@@ -771,11 +785,11 @@ elseif strncmpi(style,'polyhedra',4)
     end
 else
     disp('Unknown type of representation...')
-    disp('Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels index poly filled')
+    disp('Try any of these: ballstick small smallvdw licorice halfvdw vdw crystal lines labels charge index poly filled')
 end
 toc
 tic
-if exist('Bond_index','var') && numel(Bond_index)>0 && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'index'})
+if exist('Bond_index','var') && numel(Bond_index)>0 && ismember(style,{'ballstick' 'licorice' 'lines' 'labels' 'charge' 'index'})
     rdist = Bond_index(:,3);
     % draw cylinders for each bond
     disp('Drawing the bonds')

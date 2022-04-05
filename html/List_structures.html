@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>List of available solvents</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="List_structures.m"><style type="text/css">
+      --><title>List of available solvents</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="List_structures.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,20 +67,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>List of available solvents</h1><!--introduction--><p>.pdb or .gro files to be used with the function solvate_atom. Note that you could also use custom solvent boxes to solvate a simulation cell.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Water structures</a></li><li><a href="#4">Other structures</a></li><li><a href="#5">Conversion functions</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Water structures</h2><div><ol><li>864_spc.gro|.pdb % equilibrated SPC water box</li><li>864_spce.gro|.pdb % equilibrated SPC/E water box</li><li>864_tip3p.gro|.pdb % equilibrated TIP3P water box</li><li>864_tip4p.gro|.pdb % equilibrated TIP4P water box</li><li>864_tip5p.gro|.pdb % equilibrated TIP5P water box</li><li>96spc_hex_ice_h.gro|.pdb % equilibrated SPC hex-ice water box</li><li>96tip4p_hex_ice_h.gro|.pdb % equilibrated TIP4P hex-ice water box</li><li>864_swm4_ndp.gro|.pdb * Polarizable water v1</li><li>864_swm4_ndp_vds.gro|.pdb * Polarizable water v2</li></ol></div><h2 id="4">Other structures</h2><p>864_spc.gro|.pdb % equilibrated SPC water box</p><h2 id="5">Conversion functions</h2><div><ol><li><a href="spc2tip4p.html">spc2tip4p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip4p water</li><li><a href="spc2tip5p.html">spc2tip5p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip5p water</li><li><a href="spce2tip4p.html">spce2tip4p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip4p water</li><li><a href="tip3p2tip4p.html">tip3p2tip4p(filename)</a> %&nbsp;This function converts a .gro file with spc water to some tip4p water</li></ol></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>List of available solvents</h1><!--introduction--><p>.pdb or .gro files to be used with the function solvate_atom. Note that you could also use custom solvent boxes to solvate a simulation cell.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">water</a></li><li><a href="#4">organics</a></li><li><a href="#5">mineral</a></li><li><a href="#6">Conversion functions</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">water</h2><div><ol><li>864_spc.gro|.pdb % equilibrated SPC water box</li><li>864_spce.gro|.pdb % equilibrated SPC/E water box</li><li>864_tip3p.gro|.pdb % equilibrated TIP3P water box</li><li>864_tip4p.gro|.pdb % equilibrated TIP4P water box</li><li>864_tip5p.gro|.pdb % equilibrated TIP5P water box</li><li>96spc_hex_ice_h.gro|.pdb % equilibrated SPC hex-ice water box</li><li>96tip4p_hex_ice_h.gro|.pdb % equilibrated TIP4P hex-ice water box</li><li>864_swm4_ndp.gro|.pdb * Polarizable water v1</li><li>864_swm4_ndp_vds.gro|.pdb * Polarizable water v2</li></ol></div><h2 id="4">organics</h2><p>500xEtOH.gro|.pdb % equilibrated SPC water box</p><h2 id="5">mineral</h2><div><ol><li>1xPyro_Lee_Guggenheim_1981_alfabeta90.pdb</li><li>Pyrophyllite.pdb</li><li>Hexagonal layered particles    - Pyrophyllite / Montmorillonite    - Talc / Laponite</li></ol></div><h2 id="6">Conversion functions</h2><div><ol><li><a href="spc2tip4p.html">spc2tip4p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip4p water</li><li><a href="spc2tip5p.html">spc2tip5p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip5p water</li><li><a href="spce2tip4p.html">spce2tip4p(filename)</a> % This function converts a .gro or .pdb file with spc water to some tip4p water</li><li><a href="tip3p2tip4p.html">tip3p2tip4p(filename)</a> %&nbsp;This function converts a .gro file with spc water to some tip4p water</li></ol></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% List of available solvents
 % .pdb or .gro files to be used with the function solvate_atom. Note that you could also use
 % custom solvent boxes to solvate a simulation cell.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
-%% Water structures
+%% water
 % # 864_spc.gro|.pdb % equilibrated SPC water box
 % # 864_spce.gro|.pdb % equilibrated SPC/E water box
 % # 864_tip3p.gro|.pdb % equilibrated TIP3P water box
@@ -91,8 +91,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # 864_swm4_ndp.gro|.pdb * Polarizable water v1
 % # 864_swm4_ndp_vds.gro|.pdb * Polarizable water v2
 
-%% Other structures
-% 864_spc.gro|.pdb % equilibrated SPC water box
+%% organics
+% 500xEtOH.gro|.pdb % equilibrated SPC water box
+
+%% mineral
+% # 1xPyro_Lee_Guggenheim_1981_alfabeta90.pdb
+% # Pyrophyllite.pdb
+% # Hexagonal layered particles
+%    - Pyrophyllite / Montmorillonite
+%    - Talc / Laponite
 
 %% Conversion functions
 % # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water

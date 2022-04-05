@@ -1,8 +1,9 @@
 %% hist_atom.m
-% * This function is used to calculate density profiles in the Z-direction
+% * This function is used to calculate density profiles in the Z-direction.
+% See also the density_atom function.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>autofit_buckcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="autofit_buckcoul.m"><style type="text/css">
+      --><title>autofit_buckcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="autofit_buckcoul.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -72,7 +72,7 @@ close <span class="string">all</span>;
 hold <span class="string">on</span>
 format <span class="string">compact</span>;
 
-r=.1:.001:1.2; <span class="comment">% nm</span>
+r=.12:.001:1.2; <span class="comment">% nm</span>
 
 C4=0.05;
 
@@ -118,12 +118,12 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = buckinghamcoul(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 <span class="comment">%[r_plot,lj_plot,coul_plot,data_plot] = buckinghamcoul([q1,q2,sig1,sig2,eps1,eps2],r);</span>
 norm((fxdata-data_plot)/numel(data_plot))
-plot(r_plot,fxdata-data_plot)
+plot(r_plot,fxdata-data_plot,<span class="string">'g--'</span>)
 
 <span class="comment">% x0=fx;</span>
 <span class="comment">% eval(strcat('res=',objective_func_string,';'));</span>
@@ -145,7 +145,7 @@ close all;
 hold on
 format compact;
 
-r=.1:.001:1.2; % nm
+r=.12:.001:1.2; % nm
 
 C4=0.05;
 
@@ -199,12 +199,12 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = buckinghamcoul(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 %[r_plot,lj_plot,coul_plot,data_plot] = buckinghamcoul([q1,q2,sig1,sig2,eps1,eps2],r);
 norm((fxdata-data_plot)/numel(data_plot))
-plot(r_plot,fxdata-data_plot)
+plot(r_plot,fxdata-data_plot,'gREPLACE_WITH_DASH_DASH')
 
 % x0=fx;
 % eval(strcat('res=',objective_func_string,';'));

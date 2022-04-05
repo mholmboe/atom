@@ -1,12 +1,12 @@
 %% cn_atom.m
 % * This function tries to extract the coordination number of all the atom
-% struct indexes and store it in the field atom.cn. The function calls
+% struct indexes and store it in the field [atom.cn]. The function calls
 % either the bond_atom() or the cell_list_dist_matrix_atom() function
 % directly to do this.
 %
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -23,7 +23,10 @@ else
     rmaxlong=2.25;
 end
 
-if size(atom,2)>50000 && numel(Box_dim)<9
+if size(atom,2)>100000 && numel(Box_dim)<9
+    disp('Will use the cell list method')
+    disp('Does not work for triclinic systems...')
+    pause(5)
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
 else
     atom=bond_atom(atom,Box_dim,rmaxlong);
@@ -31,7 +34,6 @@ end
 
 CN=num2cell(CoordNumber);
 [atom.cn]=CN{:};
-
 
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','CoordNumber',CoordNumber);
@@ -57,5 +59,5 @@ if nargin>3
     
 end
 
-
+atom = order_attributes(atom);
 

@@ -2,7 +2,7 @@
 % * This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

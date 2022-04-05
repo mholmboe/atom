@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>autofit_force_ljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="autofit_force_ljcoul.m"><style type="text/css">
+      --><title>autofit_force_ljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="autofit_force_ljcoul.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -86,6 +86,12 @@ C4=100/10000;
 
 hold <span class="string">on</span>
 [rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Si'</span> <span class="string">'Ob'</span>});
+
+[~, ind_start]=min(abs(Utot));
+rmin=rout(ind_start+20)
+r=rmin:.001:1.2; <span class="comment">% nm</span>
+r=r-(r(2)-r(1))/2;
+
 <span class="comment">% [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);</span>
 [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
@@ -125,12 +131,13 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 
 r_plot(1)=[];
 plot(r_plot,data_plot-fxdata,<span class="string">'k.'</span>)
+plot(r_plot,fxdata-data_plot,<span class="string">'g--'</span>)
 
 [rmin_data,indref]=min(data_plot);
 [rmin,indopt]=min(fxdata);
@@ -174,6 +181,12 @@ C4=100/10000;
 
 hold on
 [rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+
+[~, ind_start]=min(abs(Utot));
+rmin=rout(ind_start+20)
+r=rmin:.001:1.2; % nm
+r=r-(r(2)-r(1))/2;
+
 % [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);
 [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
@@ -222,12 +235,13 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
+r_plot=.12:.001:1.2;
 [fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
 [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 
 r_plot(1)=[];
 plot(r_plot,data_plot-fxdata,'k.')
+plot(r_plot,fxdata-data_plot,'gREPLACE_WITH_DASH_DASH')
 
 [rmin_data,indref]=min(data_plot);
 [rmin,indopt]=min(fxdata);

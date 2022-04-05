@@ -1,7 +1,7 @@
 % clear;
 close all;
 hold on
-format compact;
+format short;
 
 r=.1:.001:1.2; % nm
 
@@ -17,6 +17,11 @@ hold on
 [rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
 
 [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+
+[~, ind_start]=min(abs(Utot));
+rmin=rout(322)
+r=rmin:.001:1.2; % nm
+
 %[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
 
 % eps1=.6;

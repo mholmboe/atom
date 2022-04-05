@@ -2,8 +2,8 @@
     xsi:noNamespaceSchemaLocation="optional">
     <?xml-stylesheet type="text/xsl"href="optional"?>
     <!-- info.xml file for the atom toolbox -->
-    <!-- Version 2.10 -->
-    <!-- Copyright 2021-09-26 Michael Holmboe.-->
+    <!-- Version 2.11 -->
+    <!-- Copyright 2022-04-04 Michael Holmboe.-->
     <matlabrelease>R2021a</matlabrelease>
     <!-- (Required) Title of toolbox. Appears in the Contents pane -->
     <name>atom</name>

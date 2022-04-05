@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>update_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="update_atom.m"><style type="text/css">
+      --><title>update_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="update_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>update_atom.m</h1><!--introduction--><div><ul><li>This function updates the molid index and the atoms index in the atom struct</li><li>Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = update_atom(atom) % Basic input arguments</li><li>atom = update_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = update_atom(atom,varargin)
+  </style></head><body><div class="content"><h1>update_atom.m</h1><!--introduction--><div><ul><li>This function updates the molid index and the atoms index in the atom struct</li><li>Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = update_atom(atom) % Basic input arguments</li><li>atom = update_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = update_atom(atom,varargin)
 
 <span class="keyword">if</span> iscell(atom)
 
@@ -89,12 +89,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     keepfieldnames=fieldnames(atom{1}); <span class="comment">% Orig line</span>
     <span class="keyword">if</span> size(atom,2) &gt; 1
         <span class="keyword">for</span> i=1:size(atom,2)
-            keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            <span class="keyword">if</span> numel(atom{i})
+                keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            <span class="keyword">end</span>
         <span class="keyword">end</span>
         <span class="keyword">for</span> i=1:size(atom,2)
-            rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
-            <span class="keyword">for</span> j=1:numel(rmfieldnames)
-                atom{i}=rmfield(atom{i},rmfieldnames(j))
+            <span class="keyword">if</span> numel(atom{i})
+                rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
+                <span class="keyword">for</span> j=1:numel(rmfieldnames)
+                    atom{i}=rmfield(atom{i},rmfieldnames(j));
+                <span class="keyword">end</span>
             <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
@@ -119,7 +123,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     atom=atom_Tot;
 <span class="keyword">end</span>
 
-nAtoms=size([atom.x],2);
+nAtoms=size(atom,2);
 
 MolID=[atom.molid];
 
@@ -142,34 +146,27 @@ nmol=1;first_in=[1];last_in=[];
     atom(i).index=mod(i,100000);
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> numel(fieldnames(atom))~=10
-    defaultAttributes={<span class="string">'molid'</span> <span class="string">'resname'</span> <span class="string">'type'</span> <span class="string">'fftype'</span> <span class="string">'index'</span> <span class="string">'neigh'</span> <span class="string">'bond'</span> <span class="string">'angle'</span> <span class="string">'x'</span> <span class="string">'y'</span> <span class="string">'z'</span> <span class="string">'vx'</span> <span class="string">'vy'</span> <span class="string">'vz'</span> <span class="string">'xfrac'</span> <span class="string">'yfrac'</span> <span class="string">'zfrac'</span> <span class="string">'element'</span> <span class="string">'mass'</span> <span class="string">'Mw'</span> <span class="string">'COM_x'</span> <span class="string">'COM_y'</span> <span class="string">'COM_z'</span> <span class="string">'charge'</span> <span class="string">'bv'</span> <span class="string">'mean_bv'</span> <span class="string">'valence'</span> <span class="string">'Rdiff'</span> <span class="string">'atnum'</span> <span class="string">'occupancy'</span> <span class="string">'B'</span> <span class="string">'cn'</span> <span class="string">'molecule'</span>};
-    atomAttributes=fieldnames(atom)';
-    indDefault=find(ismember(defaultAttributes,atomAttributes));
-    defaultAttributes=defaultAttributes(indDefault);
-    ind_atom=find(ismember(atomAttributes,defaultAttributes));
-    atomAttributes=atomAttributes(ind_atom);
-    atom=orderfields(atom,unique({defaultAttributes{:} atomAttributes{:}},<span class="string">'stable'</span>));
-<span class="keyword">end</span>
+atom=order_attributes(atom); <span class="comment">% Order all attributes</span>
+
 <span class="comment">% assignin('base','atom1',atom);</span>
 
 <span class="comment">% atom = resname_atom(atom);</span>
 
 <span class="keyword">if</span> nargin&gt;1
-   [atom.molid]=deal(varargin{1});
+    [atom.molid]=deal(varargin{1});
 <span class="keyword">end</span>
 
 assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,nAtoms);
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% update_atom.m
-% * This function updates the molid index and the atoms index in the atom 
+% * This function updates the molid index and the atoms index in the atom
 % struct
-% * Multiple atom structs can be also concatenated by using this format 
+% * Multiple atom structs can be also concatenated by using this format
 % atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -200,12 +197,16 @@ if iscell(atom)
     keepfieldnames=fieldnames(atom{1}); % Orig line
     if size(atom,2) > 1
         for i=1:size(atom,2)
-            keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            if numel(atom{i})
+                keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            end
         end
         for i=1:size(atom,2)
-            rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
-            for j=1:numel(rmfieldnames)
-                atom{i}=rmfield(atom{i},rmfieldnames(j))
+            if numel(atom{i})
+                rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
+                for j=1:numel(rmfieldnames)
+                    atom{i}=rmfield(atom{i},rmfieldnames(j));
+                end
             end
         end
     end
@@ -230,7 +231,7 @@ if iscell(atom)
     atom=atom_Tot;
 end
 
-nAtoms=size([atom.x],2);
+nAtoms=size(atom,2);
 
 MolID=[atom.molid];
 
@@ -253,21 +254,14 @@ for i=1:nAtoms
     atom(i).index=mod(i,100000);
 end
 
-if numel(fieldnames(atom))~=10
-    defaultAttributes={'molid' 'resname' 'type' 'fftype' 'index' 'neigh' 'bond' 'angle' 'x' 'y' 'z' 'vx' 'vy' 'vz' 'xfrac' 'yfrac' 'zfrac' 'element' 'mass' 'Mw' 'COM_x' 'COM_y' 'COM_z' 'charge' 'bv' 'mean_bv' 'valence' 'Rdiff' 'atnum' 'occupancy' 'B' 'cn' 'molecule'};
-    atomAttributes=fieldnames(atom)';
-    indDefault=find(ismember(defaultAttributes,atomAttributes));
-    defaultAttributes=defaultAttributes(indDefault);
-    ind_atom=find(ismember(atomAttributes,defaultAttributes));
-    atomAttributes=atomAttributes(ind_atom);
-    atom=orderfields(atom,unique({defaultAttributes{:} atomAttributes{:}},'stable'));
-end
+atom=order_attributes(atom); % Order all attributes
+
 % assignin('base','atom1',atom);
 
 % atom = resname_atom(atom);
 
 if nargin>1
-   [atom.molid]=deal(varargin{1}); 
+    [atom.molid]=deal(varargin{1});
 end
 
 assignin('caller','nAtoms',nAtoms);

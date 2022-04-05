@@ -4,7 +4,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -59,6 +59,8 @@ if nargin>2
                         Z=2;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'F',1) % Fs
+                        Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Mn4',3)
                         Z=4;
                     elseif strncmpi([atom(bond_ind(j)).type],'Mn3',3)
@@ -67,6 +69,8 @@ if nargin>2
                         Z=2;
                     elseif strncmpi([atom(bond_ind(j)).type],'Mn',2)
                         Z=4;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Li',2)
+                        Z=1;
                     elseif strncmpi([atom(bond_ind(j)).type],'Mg',2)
                         Z=2;
                     elseif strncmpi([atom(bond_ind(j)).type],'Ca',2)
@@ -84,6 +88,11 @@ if nargin>2
         end
         atom(Ox_ind(i)).charge = -2.00 + Zsum;
     end
+    
+    [Atom_label,at_ind]=unique([atom.type],'stable');
+    Atom_label
+    Charge=unique([atom(at_ind).charge],'stable')
+    
 else
     clayff_param(unique([atom.type]),'SPC/E');
     for i=1:length(atom)
@@ -102,7 +111,7 @@ if round(Total_charge)~=sum(Total_charge)
     disp('Run tweak_charge_atom() to get an integer charge of the struct')
 end
 
-
 assignin('caller','Total_charge',Total_charge);
+
 
 

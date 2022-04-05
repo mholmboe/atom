@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>resname_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="resname_atom.m"><style type="text/css">
+      --><title>resname_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="resname_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>resname_atom.m</h1><!--introduction--><div><ul><li>This function tries to guess the resname based in the atom types</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = resname_atom(atom) % Basic inout arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = resname_atom(atom)
+  </style></head><body><div class="content"><h1>resname_atom.m</h1><!--introduction--><div><ul><li>This function tries to guess the resname based in the atom types</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = resname_atom(atom) % Basic inout arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = resname_atom(atom,varargin)
 
 nAtoms=size(atom,2);
 Atom_label=sort(unique([atom.type]));
@@ -77,9 +77,9 @@ Atom_label=sort(unique([atom.type]));
 
 sol={<span class="string">'Hw'</span>,<span class="string">'Ow'</span>};
 ion={<span class="string">'Li'</span>,<span class="string">'LI'</span>,<span class="string">'Li+'</span>,<span class="string">'LI+'</span>,<span class="string">'Na'</span>,<span class="string">'NA'</span>,<span class="string">'Na+'</span>,<span class="string">'NA+'</span>,<span class="string">'K'</span>,<span class="string">'K+'</span>,<span class="string">'Rb'</span>,<span class="string">'RB'</span>,<span class="string">'Rb+'</span>,<span class="string">'RB+'</span>,<span class="string">'Cs'</span>,<span class="string">'CS'</span>,<span class="string">'Cs+'</span>,<span class="string">'CS+'</span>,<span class="keyword">...</span>
-     <span class="string">'Ca'</span>,<span class="string">'CA'</span>,<span class="string">'Ca2+'</span>,<span class="string">'CA2+'</span>,<span class="string">'Cu'</span>,<span class="string">'CU'</span>,<span class="string">'Cu2+'</span>,<span class="string">'CU2+'</span>,<span class="string">'Ni'</span>,<span class="string">'NI'</span>,<span class="string">'Ni2+'</span>,<span class="string">'NI2+'</span>,<span class="keyword">...</span>
-     <span class="string">'Zn'</span>,<span class="string">'ZN'</span>,<span class="string">'Zn2+'</span>,<span class="string">'ZN2+'</span>,<span class="string">'Sr'</span>,<span class="string">'SR'</span>,<span class="string">'Sr2+'</span>,<span class="string">'SR2+'</span>,<span class="string">'Ba'</span>,<span class="string">'BA'</span>,<span class="string">'Ba2+'</span>,<span class="string">'BA2+'</span>,<span class="string">'F'</span>,<span class="string">'F-'</span>,<span class="string">'Cl'</span>,<span class="string">'CL'</span>,<span class="string">'Cl-'</span>,<span class="string">'CL-'</span>,<span class="keyword">...</span>
-     <span class="string">'Br'</span>,<span class="string">'BR'</span>,<span class="string">'Br-'</span>,<span class="string">'BR-'</span>,<span class="string">'I'</span>,<span class="string">'I-'</span>}; <span class="comment">% 'Mg','MG','Mg2+','MG2+',</span>
+    <span class="string">'Ca'</span>,<span class="string">'CA'</span>,<span class="string">'Ca2+'</span>,<span class="string">'CA2+'</span>,<span class="string">'Cu'</span>,<span class="string">'CU'</span>,<span class="string">'Cu2+'</span>,<span class="string">'CU2+'</span>,<span class="string">'Ni'</span>,<span class="string">'NI'</span>,<span class="string">'Ni2+'</span>,<span class="string">'NI2+'</span>,<span class="keyword">...</span>
+    <span class="string">'Zn'</span>,<span class="string">'ZN'</span>,<span class="string">'Zn2+'</span>,<span class="string">'ZN2+'</span>,<span class="string">'Sr'</span>,<span class="string">'SR'</span>,<span class="string">'Sr2+'</span>,<span class="string">'SR2+'</span>,<span class="string">'Ba'</span>,<span class="string">'BA'</span>,<span class="string">'Ba2+'</span>,<span class="string">'BA2+'</span>,<span class="string">'F'</span>,<span class="string">'F-'</span>,<span class="string">'Cl'</span>,<span class="string">'CL'</span>,<span class="string">'Cl-'</span>,<span class="string">'CL-'</span>,<span class="keyword">...</span>
+    <span class="string">'Br'</span>,<span class="string">'BR'</span>,<span class="string">'Br-'</span>,<span class="string">'BR-'</span>,<span class="string">'I'</span>,<span class="string">'I-'</span>}; <span class="comment">% 'Mg','MG','Mg2+','MG2+',</span>
 ION=upper(ion);ion=[ion ION];
 
 Sol_ind=sort([find(strncmpi([atom.type],sol(1),2)) find(strncmpi([atom.type],sol(2),2))]);
@@ -87,13 +87,21 @@ Sol_ind=sort([find(strncmpi([atom.type],sol(1),2)) find(strncmpi([atom.type],sol
 Ion_ind=find(ismember([atom.type],ion));
 [atom(Ion_ind).resname]=deal({<span class="string">'ION'</span>});
 <span class="comment">% noSol_ind=setdiff([atom.index],Sol_ind);</span>
+
+<span class="keyword">if</span> nargin&gt;1
+    resname=varargin{1};
+    <span class="keyword">if</span> ~iscell(resname)
+        resname={resname};
+    <span class="keyword">end</span>
+    [atom(~ismember([atom.index],[Sol_ind Ion_ind])).resname]=deal(resname);
+<span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% resname_atom.m
 % * This function tries to guess the resname based in the atom types
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -101,7 +109,7 @@ Ion_ind=find(ismember([atom.type],ion));
 %% Examples
 % # atom = resname_atom(atom) % Basic inout arguments
 %
-function atom = resname_atom(atom)
+function atom = resname_atom(atom,varargin)
 
 nAtoms=size(atom,2);
 Atom_label=sort(unique([atom.type]));
@@ -111,9 +119,9 @@ Atom_label=sort(unique([atom.type]));
 
 sol={'Hw','Ow'};
 ion={'Li','LI','Li+','LI+','Na','NA','Na+','NA+','K','K+','Rb','RB','Rb+','RB+','Cs','CS','Cs+','CS+',...
-     'Ca','CA','Ca2+','CA2+','Cu','CU','Cu2+','CU2+','Ni','NI','Ni2+','NI2+',...
-     'Zn','ZN','Zn2+','ZN2+','Sr','SR','Sr2+','SR2+','Ba','BA','Ba2+','BA2+','F','F-','Cl','CL','Cl-','CL-',...
-     'Br','BR','Br-','BR-','I','I-'}; % 'Mg','MG','Mg2+','MG2+',
+    'Ca','CA','Ca2+','CA2+','Cu','CU','Cu2+','CU2+','Ni','NI','Ni2+','NI2+',...
+    'Zn','ZN','Zn2+','ZN2+','Sr','SR','Sr2+','SR2+','Ba','BA','Ba2+','BA2+','F','F-','Cl','CL','Cl-','CL-',...
+    'Br','BR','Br-','BR-','I','I-'}; % 'Mg','MG','Mg2+','MG2+',
 ION=upper(ion);ion=[ion ION];
 
 Sol_ind=sort([find(strncmpi([atom.type],sol(1),2)) find(strncmpi([atom.type],sol(2),2))]);
@@ -121,6 +129,14 @@ Sol_ind=sort([find(strncmpi([atom.type],sol(1),2)) find(strncmpi([atom.type],sol
 Ion_ind=find(ismember([atom.type],ion));
 [atom(Ion_ind).resname]=deal({'ION'});
 % noSol_ind=setdiff([atom.index],Sol_ind);
+
+if nargin>1
+    resname=varargin{1};
+    if ~iscell(resname)
+        resname={resname};
+    end
+    [atom(~ismember([atom.index],[Sol_ind Ion_ind])).resname]=deal(resname);
+end
 
 ##### SOURCE END #####
 --></body></html>

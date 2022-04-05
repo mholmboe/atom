@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>reorder_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="reorder_atom.m"><style type="text/css">
+      --><title>reorder_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="reorder_atom.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>reorder_atom.m</h1><!--introduction--><div><ul><li>This function reorders the atoms in an atom struct. Useful for instance</li><li>for creating united-atom structures from all-atom structures, by simply</li><li>ignoring the non-polar H's from the original list of atoms, or</li><li>reordering the atom struct with respect to residue name or atom type *</li><li>In case of reordering the the atom order, neworder is a [1xn] array of</li><li>n index numbers with a new order. Else if varargin is 'resname' or</li><li>'atomtype', neworder is a cell list of 'stringnames'</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = reorder_atom(atom,[1 3 4 5 6 7 8 10]) % Orders according to index</li><li>atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname') % Orders according to resname</li><li>atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype') % Orders according to atomtype</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = reorder_atom(atom,neworder,varargin)
+  </style></head><body><div class="content"><h1>reorder_atom.m</h1><!--introduction--><div><ul><li>This function reorders the atoms in an atom struct. Useful for instance</li><li>for creating united-atom structures from all-atom structures, by simply</li><li>ignoring the non-polar H's from the original list of atoms, or</li><li>reordering the atom struct with respect to residue name or atom type *</li><li>In case of reordering the the atom order, neworder is a [1xn] array of</li><li>n index numbers with a new order. Else if varargin is 'resname' or</li><li>'atomtype', neworder is a cell list of 'stringnames'</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = reorder_atom(atom,[1 3 4 5 6 7 8 10]) % Orders according to index</li><li>atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname') % Orders according to resname</li><li>atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype') % Orders according to atomtype</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = reorder_atom(atom,neworder,varargin)
 
 <span class="keyword">if</span> nargin&gt;2
     type=varargin{1};
@@ -95,6 +95,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     resnames=[];ordered_atom=[];
     <span class="keyword">if</span> numel(neworder)~=numel(unique([atom.resname]))
         disp(<span class="string">'You have not issued a complete list of resnames!'</span>);
+        disp(<span class="string">'only this resname was found...'</span>);
+        unique([atom.resname])
+        pause(1)
     <span class="keyword">else</span>
         <span class="keyword">if</span> sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.resname])))))~=0
             disp(<span class="string">'Make sure you have the resnames spelled right..'</span>);
@@ -116,6 +119,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         disp(<span class="string">'You have not issued a list of atomtypes that fully match the atom struct!'</span>);
         <span class="keyword">if</span> numel(setdiff(unique([atom.type]),unique(neworder)))&gt;0
             setdiff(unique([atom.type]),unique(neworder))
+            unique([atom.type])
             pause
         <span class="keyword">end</span>
     <span class="keyword">else</span>
@@ -133,6 +137,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     atom=update_atom(ordered_atom);
 
 <span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'neworder'</span>,neworder)
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% reorder_atom.m
@@ -146,7 +152,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % * 'atomtype', neworder is a cell list of 'stringnames'
 % 
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -184,6 +190,9 @@ elseif iscell(neworder)==1 && strncmpi(type,'resname',3)
     resnames=[];ordered_atom=[];
     if numel(neworder)~=numel(unique([atom.resname]))
         disp('You have not issued a complete list of resnames!');
+        disp('only this resname was found...');
+        unique([atom.resname])
+        pause(1)
     else
         if sum(ones(1,numel(neworder))-strcmp(sort(unique(upper(neworder))),sort(unique(upper([atom.resname])))))~=0
             disp('Make sure you have the resnames spelled right..');
@@ -205,6 +214,7 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type
         disp('You have not issued a list of atomtypes that fully match the atom struct!');
         if numel(setdiff(unique([atom.type]),unique(neworder)))>0
             setdiff(unique([atom.type]),unique(neworder))
+            unique([atom.type])
             pause
         end
     else
@@ -223,7 +233,7 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type
     
 end
 
-
+assignin('caller','neworder',neworder)
 
 
 

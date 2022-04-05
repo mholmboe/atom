@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_atom_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-28"><meta name="DC.source" content="import_atom_gro.m"><style type="text/css">
+      --><title>import_atom_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_atom_gro.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_atom_gro.m</h1><!--introduction--><div><ul><li>This function import .gro files into an atom struct variable</li><li>This function is faster than the usual import_atom_gro but is not</li><li>compatible with Octave</li><li>varargin can be used to translate, alt. center+translate the molecule</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_gro('molecule.gro')</li><li>atom = import_atom_gro('molecule.gro',[10 5 2])</li><li>atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_gro(filename,varargin)
+  </style></head><body><div class="content"><h1>import_atom_gro.m</h1><!--introduction--><div><ul><li>This function import .gro files into an atom struct variable</li><li>This function is faster than the usual import_atom_gro but is not</li><li>compatible with Octave</li><li>varargin can be used to translate, alt. center+translate the molecule</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = import_atom_gro('molecule.gro')</li><li>atom = import_atom_gro('molecule.gro',[10 5 2])</li><li>atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = import_atom_gro(filename,varargin)
 tic
 
 <span class="keyword">if</span> regexp(filename,<span class="string">'.gro'</span>) ~= false
@@ -109,6 +109,27 @@ X_velo = dataArray{:,8}*10;
 Y_velo = dataArray{:,9}*10;
 Z_velo = dataArray{:,10}*10;
 
+<span class="comment">% Preallocate the atom struct attributes/fields</span>
+atom(1).molid=[];
+atom(1).resname={};
+atom(1).type={};
+atom(1).fftype={};
+atom(1).index=[];
+atom(1).neigh.type  = {};
+atom(1).neigh.index  = [0;0;0;0;0;0];
+atom(1).neigh.dist  = [0;0;0;0;0;0];
+atom(1).bond.type  = [0;0;0;0;0;0];
+atom(1).bond.index  = [0;0;0;0;0;0];
+atom(1).angle.type  = [0;0;0;0;0;0];
+atom(1).angle.index  = [0;0;0;0;0;0];
+atom(1).x=[];
+atom(1).y=[];
+atom(1).z=[];
+atom(1).vx=[];
+atom(1).vy=[];
+atom(1).vz=[];
+atom=repmat(atom,1,nAtoms);
+
 nmol=1;first_in=[1];last_in=[];
 <span class="keyword">for</span> i=1:nAtoms
     <span class="keyword">if</span> i &gt; 1 &amp;&amp; MolID(i) ~= MolID(i-1)
@@ -134,9 +155,9 @@ nmol=1;first_in=[1];last_in=[];
     atom(i).x=X_coord(i);
     atom(i).y=Y_coord(i);
     atom(i).z=Z_coord(i);
-<span class="comment">%     atom(i).fx=X_coord(i)/Box_dim(1);</span>
-<span class="comment">%     atom(i).fy=Y_coord(i)/Box_dim(2);</span>
-<span class="comment">%     atom(i).fz=Z_coord(i)/Box_dim(3);</span>
+    <span class="comment">%     atom(i).fx=X_coord(i)/Box_dim(1);</span>
+    <span class="comment">%     atom(i).fy=Y_coord(i)/Box_dim(2);</span>
+    <span class="comment">%     atom(i).fz=Z_coord(i)/Box_dim(3);</span>
     atom(i).vx=X_velo(i);
     atom(i).vy=Y_velo(i);
     atom(i).vz=Z_velo(i);
@@ -174,7 +195,7 @@ toc
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -226,6 +247,27 @@ X_velo = dataArray{:,8}*10;
 Y_velo = dataArray{:,9}*10;
 Z_velo = dataArray{:,10}*10;
 
+% Preallocate the atom struct attributes/fields
+atom(1).molid=[];
+atom(1).resname={};
+atom(1).type={};
+atom(1).fftype={};
+atom(1).index=[];
+atom(1).neigh.type  = {};
+atom(1).neigh.index  = [0;0;0;0;0;0];
+atom(1).neigh.dist  = [0;0;0;0;0;0];
+atom(1).bond.type  = [0;0;0;0;0;0];
+atom(1).bond.index  = [0;0;0;0;0;0];
+atom(1).angle.type  = [0;0;0;0;0;0];
+atom(1).angle.index  = [0;0;0;0;0;0];
+atom(1).x=[];
+atom(1).y=[];
+atom(1).z=[];
+atom(1).vx=[];
+atom(1).vy=[];
+atom(1).vz=[];
+atom=repmat(atom,1,nAtoms);
+
 nmol=1;first_in=[1];last_in=[];
 for i=1:nAtoms
     if i > 1 && MolID(i) ~= MolID(i-1)
@@ -251,9 +293,9 @@ for i=1:nAtoms
     atom(i).x=X_coord(i);
     atom(i).y=Y_coord(i);
     atom(i).z=Z_coord(i);
-%     atom(i).fx=X_coord(i)/Box_dim(1);
-%     atom(i).fy=Y_coord(i)/Box_dim(2);
-%     atom(i).fz=Z_coord(i)/Box_dim(3);
+    %     atom(i).fx=X_coord(i)/Box_dim(1);
+    %     atom(i).fy=Y_coord(i)/Box_dim(2);
+    %     atom(i).fz=Z_coord(i)/Box_dim(3);
     atom(i).vx=X_velo(i);
     atom(i).vy=Y_velo(i);
     atom(i).vz=Z_velo(i);

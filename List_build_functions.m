@@ -1,7 +1,7 @@
 %% List of building and simulation cell manipulation functions
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -13,15 +13,18 @@
 % # <analyze_atom.html analyze_atom(atom,Box_dim,max_H_dist,max_dist)> % This function analyzes variofus things of the MMT atom struct
 % # <concatenate_atom.html concatenate_atom(atom_1,atom_2)> % This function concatenats atom sections.
 % # <composition_atom.html composition_atom(atom)> % This function looks at the composition of the atom struct
+% # <fit2lattice_atom.html fit2lattice_atom(atom_model,atom_ref,Box_dim_ref)> % This is a special function imports a model structure of a single molecule like PO43- and tries to fit it into a crystal lattice possibly holding multiple such sites.
 % # <number_type.html numer_type(atom,varargin)> % This function numbers the atom types, like H1, H2, H3...
 % # <rename_type.html rename_type(atom,atomtype,new_atomtype,varargin)> % This function renames atoms in the atom
 % # <reorder_atom_gro.html reorder_atom_gro(atom,atomlist,Box_dim,filename_out)> % This function reorders the atoms in a .gro file
 % # <reorder_atom.html reorder_atom(atom,atomlist)> % This function reorders the atoms in the atom struct
 % # <resname_atom.html resname_atom(atom)> % This function tries to guess the resname of all atom types
+% # <remove_H2O.html remove_H2O(atom,Box_dim)> % This function removes H2O molecules, by searching for all water-like bonded H,O atoms within rmin, which optionally can be set manually.
 % # <round_atom.html round_atom(atom,Box_dim,varargin)> % This function rounds the coordinates in the atom struct
 % # <sort_atom.html sort_atom(atom)> % sort_atom.m - This section orders to atoms with respect to z
 % # <sort_molid.html sort_molid(Molid)> % This function sorts the molecular indexes in an ascending order
 % # <scale_atom.html scale_atom(atom,scale_vec,Box_dim,Resname)> % This function scales the coordinates in the atom struct
+% # <spiral_atom.html spiral_atomspiral_atom(atom,Box_dim,[0 0 90])> % This function spiral the atom randomly or by the angles given by the spiral vector
 % # <tile_atom.html tile_atom(atom,scale_vec,Box_dim,Resname)> % This function tiles the atom struct similar to replicate atom, but with a translation along some direction. Triclinic version untestd but might work..
 % # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % * This quirky function can be used to create a nano-tube or nano-roll of the  coordinates from an atom struct. It works best if the the input atom struct  consists of one centered unit cell (to keep the number of atoms down).
 % # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
@@ -33,6 +36,7 @@
 % # <create_atom.html create_atom(type,resname,limits,nmax,varargin)> % Creates new atoms, good for adding ions to a system. Creates atoms within a certain region defined by <limits>
 % # <create_grid_atom.html create_grid_atom(atom_label,nM,limits,dim,varargin)> % This old function puts ions on a grid plane and adds it to an atom struct
 % # <duplicate_atom.html duplicate_atom(atom,molID)> % This function duplicates residue with molid MolID
+% # <fit2lattice_atom.html fit2lattice_atom(atom_model,atom_ref,Box_dim_ref)> % This is a special function imports a model structure of a single molecule like PO43- and tries to fit it into a crystal lattice possibly holding multiple such sites.
 % # <fuse_atom.html fuse_atom(atom,Box_dim,varargin)> % This function tries to fuse all sites within a certain cutoff rmax, typically 0.85 Å
 % # <grid2atom.html grid2atom(atom_label,nM,limits,dim,varargin)> %  grid2atom.m - This puts particles such as ions on a 2D grid (i.e. a plane)> % and adds it to an atom struct
 % # <heal_atom.html heal_atom(atom,Box_dim,ind,varargin)> % This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [Å] of the healed site.
@@ -40,6 +44,7 @@
 % # <merge_atom.html merge_atom(atom1,Box1,atom2,type,Atom_label,r)> % This function returns the atom2 struct with atoms in the atom2 struct with a distance r [1x1 or 1x2] away from the atoms in the atom1 struct. There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting r(2) to a smaller value than r(1)
 % # <overwrite_atom.html overwrite_atom(In_atom,atomtype,resname)> % This function overwrites the atom struct information with new information 
 % # <protonate_atom.html protonate_atom(atom,Box_dim,varargin)> % This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct.
+% # <remove_H2O.html remove_H2O(atom,Box_dim)> % This function removes H2O molecules, by searching for all water-like bonded H,O atoms within rmin, which optionally can be set manually.
 % # <replicate_atom.html replicate_atom(atom,Box_dim,replicate)> %  replicate_atom.m This replicates the atom struct and the orthogonal box dimensions
 % # <replace_atom.html replace_atom(new_atom,prev_atom,molid_index)> % This function replaces molid's in an atom struct with a new (single molid) atom struct by placing the latters COM in the formers place
 % # <solvate_atom.html solvate_atom(limits,density,r,maxsol,solute_atom,varargin)> % This function generates a certain region defined by <limits> with a solvent structure of density <density>
@@ -76,6 +81,7 @@
 %% Keep/remove functions
 % # <keep_atom.html keep_atom(atom,resname)> % keep_atom.m - This removes all but resname
 % # <keep_resname.html keep_resname(atom,resnames)> % keep_resname.m - This removes all but the resnames
+% # <remove_H2O.html remove_H2O(atom,Box_dim)> % This function removes H2O molecules, by searching for all water-like bonded H,O atoms within rmin, which optionally can be set manually.
 % # <remove_molid.html remove_molid(atom,MolID)> %  remove_molid.m - This removes residue with molid MolID = [1 2 3 .....]
 % # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % This function removes all succeding particles in the atom struct that has identical coordinates to a preceding particle
 % # <remove_residues.html remove_residues(atom,resnames,lo,hi,dim)> % This function section is used to remove residues in the simulation box between limits lo and hi
@@ -85,7 +91,7 @@
 
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

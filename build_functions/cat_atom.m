@@ -5,11 +5,12 @@
 % * other trajectory viewers cannot handle non-constant number of particles
 % * in a trajectory
 
+nSim=60;
 atom0=import_atom(strcat('evap_0.gro'));
-traj=zeros(125,3*size(atom,2));
+traj=zeros(nSim,3*size(atom,2));
 frame=zeros(1,3*size(atom,2));
-All_Box_dim=zeros(125,9);
-frames1=[0:20:120];frames2=[121:240];
+All_Box_dim=zeros(nSim,9);
+frames1=[0:nSim];frames2=[];%121:240];
 frames=sort([frames1 frames2]);
 
 % traj=zeros(70,3*size(atom,2));

@@ -5,7 +5,7 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -272,4 +272,5 @@ if NumTetSubst>0
     end
 end
 
+composition_atom(atom);
 

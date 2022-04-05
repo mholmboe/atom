@@ -2,7 +2,7 @@
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.10
+% 2.11
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -56,7 +56,7 @@ if length(Box_dim)==9
     end
 end
 
-disp('Assuming P1 space group. Box can still be triclinic')
+disp('Assuming P1 space group. Box/Cell is assumed to be triclinic')
 if length(Box_dim)==3
     
     lx=Box_dim(1);
