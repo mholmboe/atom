@@ -9,7 +9,7 @@
 % neighbour/bond cutoff radius for each atomtype
 
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -343,12 +343,12 @@ for assignment_run=heal_iterations
                     elseif strncmp(Neighbours,'aoat',4)
                         atom(i).fftype={'obts'};
                     elseif strncmp(Neighbours,'atst',4)
-                        atom(i).fftype={'oat'};
+                        atom(i).fftype={'obts'};
                     elseif strncmp(Neighbours,'aost',4) % Al-O-H or Al-O-Si
                         if sum(ismember(find(strcmp([atom.fftype],'at')),[atom(i).neigh.index])) < 1
                             atom(i).fftype={'oas'}; % Believe this was a special zeolite thing
                         elseif sum(ismember(find(strcmp([atom.fftype],'at')),[atom(i).neigh.index])) > 0
-                            atom(i).fftype={'oat'};
+                            atom(i).fftype={'obts'};
                         end
 %                     elseif strncmp(Neighbours,'aoao',4)
 %                         atom(i).fftype={'o'};

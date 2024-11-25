@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Wrap_Coord_func.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="Wrap_Coord_func.m"><style type="text/css">
+      -->
+<title>Wrap_Coord_func.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="Wrap_Coord_func.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,57 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Wrap_Coord_func.m</h1><!--introduction--><div><ul><li>This is an old function that wraps atoms 'sticking out' back into the box.</li><li>Important notice: Untested for triclinic boxes... use wrap_atom instead</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li><li><a href="#7">Does this work?</a></li></ul></div><h2 id="1">Similar</h2><p>wrap_atom</p><h2 id="2">Version</h2><p>2.11</p><h2 id="3">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
-</pre><pre class="codeinput"><span class="keyword">if</span> size(Box_dim,2) &gt; 3
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Wrap_Coord_func.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This is an old function that wraps atoms 'sticking out' back into the box.</li>
+<li>Important notice: Untested for triclinic boxes... use wrap_atom instead</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Similar</a>
+</li>
+<li>
+<a href="#2">Version</a>
+</li>
+<li>
+<a href="#3">Contact</a>
+</li>
+<li>
+<a href="#4">Examples</a>
+</li>
+<li>
+<a href="#7">Does this work?</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Similar</h2>
+<p>wrap_atom</p>
+<h2 id="2">Version</h2>
+<p>3.00</p>
+<h2 id="3">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="4">Examples</h2>
+<div>
+<ol>
+<li>XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
+</pre>
+<pre class="codeinput">
+<span class="keyword">if</span> size(Box_dim,2) &gt; 6
     Lx = Box_dim(1);
     Ly = Box_dim(2);
     Lz = Box_dim(3);
@@ -105,9 +159,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 
+<span class="keyword">elseif</span> size(Box_dim,2) == 6
+    Box_dim(1)=Box_dim(2);
+    Box_dim(2)=Box_dim(4);
+    Box_dim(3)=Box_dim(6);
+    Box_dim=Box_dim(1:3);
+<span class="keyword">end</span>
 
-<span class="keyword">elseif</span> length(Box_dim) == 3
-</pre><pre class="codeinput">    <span class="comment">%     Lx = Box_dim(1);</span>
+<span class="keyword">if</span> length(Box_dim) == 3
+</pre>
+<pre class="codeinput">    <span class="comment">%     Lx = Box_dim(1);</span>
     <span class="comment">%     Ly = Box_dim(2);</span>
     <span class="comment">%     Lz = Box_dim(3);</span>
     <span class="comment">%</span>
@@ -138,7 +199,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="comment">%</span>
     <span class="comment">%         end</span>
     <span class="comment">%     end</span>
-</pre><h2 id="7">Does this work?</h2><pre class="codeinput">    <span class="keyword">for</span> i = 1:3:size(XYZ_data,2)
+</pre>
+<h2 id="7">Does this work?</h2>
+<pre class="codeinput">    <span class="keyword">for</span> i = 1:3:size(XYZ_data,2)
         indxlo=find(XYZ_data(:,i)&lt;0);
         XYZ_data(indxlo,i)=XYZ_data(indxlo,i)+Box_dim(1);
         indxhi=find(XYZ_data(:,i)&gt;Box_dim(1));
@@ -156,13 +219,22 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
             XYZ_data(indzhi,i+2)=XYZ_data(indzhi,i+2)-Box_dim(3);
         <span class="keyword">end</span>
     <span class="keyword">end</span>
-</pre><pre class="codeinput"><span class="keyword">else</span>
+</pre>
+<pre class="codeinput">
+<span class="keyword">else</span>
     indlo=find(XYZ_data&lt;0);
     XYZ_data(indlo)=XYZ_data(indlo)+Box_dim;
     indhi=find(XYZ_data(:)&gt;Box_dim);
     XYZ_data(indhi)=XYZ_data(indhi)-Box_dim;
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% Wrap_Coord_func.m
 % * This is an old function that wraps atoms 'sticking out' back into the box.
@@ -172,7 +244,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % wrap_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -183,7 +255,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 function XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 %%
 
-if size(Box_dim,2) > 3
+if size(Box_dim,2) > 6
     Lx = Box_dim(1);
     Ly = Box_dim(2);
     Lz = Box_dim(3);
@@ -220,8 +292,14 @@ if size(Box_dim,2) > 3
         end
     end
     
-    
-elseif length(Box_dim) == 3
+elseif size(Box_dim,2) == 6
+    Box_dim(1)=Box_dim(2);
+    Box_dim(2)=Box_dim(4);
+    Box_dim(3)=Box_dim(6);
+    Box_dim=Box_dim(1:3);
+end
+
+if length(Box_dim) == 3
     %     Lx = Box_dim(1);
     %     Ly = Box_dim(2);
     %     Lz = Box_dim(3);
@@ -282,4 +360,6 @@ end
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

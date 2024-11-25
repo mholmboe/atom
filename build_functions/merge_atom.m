@@ -10,7 +10,7 @@
 % full Box_dim
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -67,7 +67,7 @@ if size(atom2w,2)>20000
     size(atom1w);
     size(atom2w);
     dist_matrix = dist_matrix_atom(atom1,varargin)
-    
+
     X1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(1:floor(nAtoms2/2)).x]');
     Y1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(1:floor(nAtoms2/2)).y]');
     Z1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(1:floor(nAtoms2/2)).z]');
@@ -80,7 +80,7 @@ if size(atom2w,2)>20000
     X4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');
     Y4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');
     Z4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');
-    
+
     if regional_solvation==0
         X1_dist(X1_dist>Box1(1)/2)=X1_dist(X1_dist>Box1(1)/2)-Box1(1);
         Y1_dist(Y1_dist>Box1(2)/2)=Y1_dist(Y1_dist>Box1(2)/2)-Box1(2);
@@ -95,11 +95,11 @@ if size(atom2w,2)>20000
         Y4_dist(Y4_dist>Box1(2)/2)=Y4_dist(Y4_dist>Box1(2)/2)-Box1(2);
         Z4_dist(Z4_dist>Box1(3)/2)=Z4_dist(Z4_dist>Box1(3)/2)-Box1(3);
     end
-    
+
     X_dist=[X1_dist X2_dist;X3_dist X4_dist];
     Y_dist=[Y1_dist Y2_dist;Y3_dist Y4_dist];
     Z_dist=[Z1_dist Z2_dist;Z3_dist Z4_dist];
-    
+
     dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
     clear X*dist Y*dist Z*dist;
 elseif size(atom2w,2)>0
@@ -110,8 +110,8 @@ elseif size(atom2w,2)>0
     X_dist=pdist2([atom1w.x]',[atom2w.x]');
     Y_dist=pdist2([atom1w.y]',[atom2w.y]');
     Z_dist=pdist2([atom1w.z]',[atom2w.z]');
-    
-    if regional_solvation==0     
+
+    if regional_solvation==0
         X_dist(X_dist>Box1(1)/2)=X_dist(X_dist>Box1(1)/2)-Box1(1);
         Y_dist(Y_dist>Box1(2)/2)=Y_dist(Y_dist>Box1(2)/2)-Box1(2);
         Z_dist(Z_dist>Box1(3)/2)=Z_dist(Z_dist>Box1(3)/2)-Box1(3);
@@ -137,7 +137,7 @@ if exist('dist_matrix','var')
         rsmall=rmin(1);
         rlarge=rmin(2);
     end
-    
+
     for i=1:size(dist_matrix,2)
         if strncmpi([atom2w(i).type],minAtom,1)
             if any((dist_matrix(:,i)-rsmall)<0)
@@ -149,13 +149,13 @@ if exist('dist_matrix','var')
             end
         end
     end
-    
+
     clear dist_matrix;
-    
+
     removed_molid=unique([atom2w(find(indvec)).molid]);
     removed_molid_index=[atom2w(ismember([atom2w.molid],removed_molid)).index];
     removed_index=find(indvec);
-    
+
     pre_size=size(atom2w,2);
     if strcmpi(type,'molid')
         atom2w(ismember([atom2w.molid],removed_molid))=[];
@@ -163,18 +163,20 @@ if exist('dist_matrix','var')
         atom2w(removed_index)=[];
     end
     post_size=size(atom2w,2);
-    
+
     %     vmd([atom1w atom2w],Box1)
-    
+
     % disp('Removed this many atoms')
     % pre_size-post_size
-    
+
     assignin('caller','removed_molid',removed_molid);
     assignin('caller','removed_molid_index',removed_molid_index);
     assignin('caller','removed_index',removed_index);
-    
+
 end
 % vmd([atom1w atom2w],Box1)
+
+end
 
 
 

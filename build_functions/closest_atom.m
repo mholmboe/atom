@@ -1,5 +1,5 @@
 %% closest_atom.m
-% * This function returns the atom1 struct with the nMolId's in atom1 closest 
+% * This function returns the atom1 struct with the nMolId's in atom1 closest
 % to the atom2 struct. nMolId can be set to be lower than the original
 % number of molecules in atom1.
 %
@@ -11,14 +11,14 @@
 % * nMolID is the number of molecules to keep
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom1 = closest_atom(atom1,atom2,Box_dim)
-% # atom1 = closest_atom(atom1,atom2,Box_dim,nMolId)
+% # atom1 = closest_atom(atom1,atom2,Box_dim) % Basic input arguments
+% # atom1 = closest_atom(atom1,atom2,Box_dim,nMolId) % Basic input arguments
 %
 function atom1 = closest_atom(atom1,atom2,Box_dim,varargin)
 
@@ -49,4 +49,6 @@ end
 atom1=atom1(ind);
 
 atom1=update_atom(atom1);
+
+end
 

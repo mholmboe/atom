@@ -25,7 +25,7 @@
 % hint:     use light to achieve 3D impression
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -47,13 +47,13 @@ for argno = 1:2:nargin-2
             if isreal(varargin{argno+1})
                 stemWidth = varargin{argno+1};
             else
-                warning('mArrow3:stemWidth','stemWidth must be a real number');
+                warning('Arrow:stemWidth','stemWidth must be a real number');
             end
         case 'tipWidth'
             if isreal(varargin{argno+1})
                 tipWidth = varargin{argno+1};
             else
-                warning('mArrow3:tipWidth','tipWidth must be a real number');
+                warning('Arrow:tipWidth','tipWidth must be a real number');
             end
         otherwise
             propertyNames = {propertyNames{:},varargin{argno}};

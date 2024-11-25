@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>clayff_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="clayff210_atom.m"><style type="text/css">
+      -->
+<title>clayff_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="clayff210_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,51 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>clayff_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li><li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.10</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=clayff210_atom(atom,Box_dim)</li><li>atom=clayff210_atom(atom,Box_dim,'clayff','spc')</li><li>atom=clayff210_atom(atom,Box_dim,'clayff','spc',heal_iterations)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom=clayff210_atom(atom,Box_dim,varargin)
-</pre><pre class="codeinput">format <span class="string">compact</span>;
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>clayff_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to assign all atoms according to the clayff atom types (with modified atom names by MHolmboe), with some modifications for edges...</li>
+<li>heal_iterations should be a list of numbers 1-7, corresponding to which assigment runs you need in order to heal Al, Mg, Si, O, H and so on...</li>
+<li>The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>2.10</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=clayff210_atom(atom,Box_dim)</li>
+<li>atom=clayff210_atom(atom,Box_dim,'clayff','spc')</li>
+<li>atom=clayff210_atom(atom,Box_dim,'clayff','spc',heal_iterations)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom=clayff210_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">format <span class="string">compact</span>;
 
 <span class="keyword">if</span> nargin&gt;3
     ffname=varargin{1};
@@ -509,7 +557,8 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
 
                 <span class="comment">% If the element is O</span>
                 <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'O'</span>},1)
-</pre><pre class="codeinput">                    <span class="keyword">if</span> strcmp(Neighbours,<span class="string">'AlAlH'</span>)
+</pre>
+<pre class="codeinput">                    <span class="keyword">if</span> strcmp(Neighbours,<span class="string">'AlAlH'</span>)
                         atom(i).fftype={<span class="string">'Oh'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'AlAlSi'</span>)
                         atom(i).fftype={<span class="string">'Op'</span>};
@@ -696,7 +745,8 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                     <span class="comment">%                 NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]+3*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 10*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 10*Neigh.r_vec(:,3)],1)));</span>
                     <span class="comment">%                 [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});</span>
                     <span class="comment">%             end</span>
-</pre><pre class="codeinput">                    <span class="keyword">if</span> strcmp(atom(i).fftype,<span class="string">'Oalsi'</span>) &amp;&amp; Add_extra_H == 1 <span class="comment">%&amp;&amp; nH_extra &gt; nH_added;</span>
+</pre>
+<pre class="codeinput">                    <span class="keyword">if</span> strcmp(atom(i).fftype,<span class="string">'Oalsi'</span>) &amp;&amp; Add_extra_H == 1 <span class="comment">%&amp;&amp; nH_extra &gt; nH_added;</span>
                         disp(<span class="string">'Adding acidic H to Oalsi--&gt;Oahs'</span>)
                         atom(i).fftype={<span class="string">'Oahs'</span>};
                         atom(size(atom,2)+1)=atom(find(strncmp([atom.type],<span class="string">'H'</span>,1),1));
@@ -705,7 +755,8 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                         NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 0*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 0*Neigh.r_vec(:,3)],1)));
                         [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                     <span class="keyword">end</span>
-</pre><pre class="codeinput">                <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">                <span class="keyword">end</span>
             <span class="keyword">end</span>
         <span class="keyword">end</span>
         i=i+1;
@@ -759,7 +810,8 @@ watermodel
 <span class="comment">% assignin('caller','newatom',atom);</span>
 <span class="comment">% assignin('caller','remove_ind',rm_ind);</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbours'</span>,unique(All_Neighbours));
-
+</pre>
+<pre class="codeinput">
 <span class="comment">% Atom_label=sort(unique([atom.type]));</span>
 <span class="comment">% clayff_param(sort(Atom_label),'SPC/E');</span>
 <span class="comment">% no_O_label=Atom_label(~strncmp(Atom_label,'O',1));</span>
@@ -767,7 +819,14 @@ assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbou
 <span class="comment">% atom = charge_clayff_atom(atom,Box_dim,Atom_label(no_O_ind),Charge(no_O_ind));</span>
 <span class="comment">% atom = charge_clayff_atom(atom,Box_dim)</span>
 <span class="comment">% Total_charge</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% clayff_atom.m
 % * This function tries to assign all atoms according to the clayff atom
@@ -1495,4 +1554,6 @@ assignin('caller','All_Neighbours',unique(All_Neighbours));
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

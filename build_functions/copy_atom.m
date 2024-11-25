@@ -2,7 +2,7 @@
 % * This function copies and translates atoms in the atom struct
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -47,7 +47,7 @@ molid=num2cell(([1:size(new_atom,2)]+[atom(end).molid]));
 [new_atom.fftype]=deal({new_atomtype});
 
 if max(abs(trans_vec))>0
-    new_atom = translate_atom(new_atom,trans_vec,'all')
+    new_atom = translate_atom(new_atom,trans_vec,'all');
 end
 
 end

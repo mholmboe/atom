@@ -2,7 +2,7 @@
 % * This function extracts a frame to the trajectory matrix
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -54,3 +54,4 @@ Z=num2cell(XYZ(1,3:3:end));
 % toc;
 
 %assignin('caller','frame',frame);
+end

@@ -8,7 +8,7 @@
 % * solvate_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -158,7 +158,7 @@ end
 % end
 % size(atom,2)
 
-%% New v2.07
+% New since v2.07
 % Check that no added particles are too close
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
@@ -194,6 +194,8 @@ size(atom,2)
 atom=update_atom(atom);
 
 assignin('caller','limits',limits);
+
+end
 
 
 

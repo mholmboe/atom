@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_xvg.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_xvg.m"><style type="text/css">
+      -->
+<title>import_xvg.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="import_xvg.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,51 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_xvg.m</h1><!--introduction--><div><ul><li>This function imports the type of .xvg files that the MD package Gromacs uses for some of its text-based data output</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Data = import_xvg('energy.xvg')</li><li>Data = import_xvg('energy.xvg','plot')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Data = import_xvg(filename,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>import_xvg.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function imports the type of .xvg files that the MD package Gromacs uses for some of its text-based data output</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Data = import_xvg('energy.xvg')</li>
+<li>Data = import_xvg('energy.xvg','plot')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> Data = import_xvg(filename,varargin)
+
+<span class="comment">% Check if filename is cell</span>
+<span class="keyword">if</span> iscell(filename)
+    filename=char(filename);
+<span class="keyword">end</span>
 
 <span class="comment">% Check if .xvg is given in the filename</span>
 <span class="keyword">if</span> regexp(filename,<span class="string">'.xvg'</span>) ~= false
@@ -177,7 +226,7 @@ Data = cellfun(@str2double,D);
 <span class="keyword">if</span> nargin&gt;1
     plot(Data(:,1),Data(:,2:end),<span class="string">'LineWidth'</span>,2)
     set(gcf,<span class="string">'color'</span>,<span class="string">'w'</span>);<span class="comment">%,'units','normalized','position',[0,0,.4,.6]);</span>
-<span class="comment">%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)</span>
+    <span class="comment">%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)</span>
     set(gca,<span class="string">'LineWidth'</span>,2,<span class="string">'FontName'</span>, <span class="string">'Arial'</span>,<span class="string">'FontSize'</span>,22,<span class="string">'TickDir'</span>,<span class="string">'out'</span>)<span class="comment">%,'Xtick',floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)</span>
     xlabel(xaxislabel,<span class="string">'FontSize'</span>,24);
     ylabel(yaxislabel,<span class="string">'FontSize'</span>,24);
@@ -189,14 +238,21 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Data'</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'xaxislabel'</span>,xaxislabel);
 assignin(<span class="string">'caller'</span>,<span class="string">'yaxislabel'</span>,yaxislabel);
 assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_legends'</span>,yaxis_all_legends);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% import_xvg.m
-% * This function imports the type of .xvg files that the MD package 
+% * This function imports the type of .xvg files that the MD package
 % Gromacs uses for some of its text-based data output
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -206,6 +262,11 @@ assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_le
 % #  Data = import_xvg('energy.xvg','plot')
 %
 function Data = import_xvg(filename,varargin)
+
+% Check if filename is cell
+if iscell(filename)
+    filename=char(filename);
+end
 
 % Check if .xvg is given in the filename
 if regexp(filename,'.xvg') ~= false
@@ -315,7 +376,7 @@ end
 if nargin>1
     plot(Data(:,1),Data(:,2:end),'LineWidth',2)
     set(gcf,'color','w');%,'units','normalized','position',[0,0,.4,.6]);
-%     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
+    %     set(gca, 'FontName', 'Arial','FontSize',22,'TickDir','out','Ytick',min(Data(:,2:end)):ceil(max(Data(:,2:end))/10)*10/5:ceil(max(Data(:,2:end))/10)*10)
     set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22,'TickDir','out')%,'Xtick',floor(Data(1,1)/10)*10:ceil(Data(end,1)/10)*10/5:ceil(Data(end,1)/10)*10)
     xlabel(xaxislabel,'FontSize',24);
     ylabel(yaxislabel,'FontSize',24);
@@ -331,4 +392,6 @@ assignin('caller','yaxis_all_legends',yaxis_all_legends);
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

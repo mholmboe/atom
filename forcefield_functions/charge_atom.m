@@ -7,7 +7,7 @@
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -41,6 +41,7 @@ if strcmpi(ffname,'clayff')
         clayff_param(sort(Atom_label),watermodel)
         no_adjust_labels=[Atom_label(~strncmp(Atom_label,'O',1))];
         no_adjust_labels=[no_adjust_labels Atom_label(strncmp(Atom_label,'Ow',2))];
+        no_adjust_labels=[Atom_label(~strncmp(Atom_label,'Fs',2))];
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label

@@ -6,7 +6,7 @@
 %
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -39,14 +39,13 @@ else
     resname='PO4';
 end
 
-model=atom_model;
+model=atom_model;ref=atom_ref; % ref=preem;
 ref=atom_ref;
 Box_dim=Box_dim_ref;
 
 ref=element_atom(ref);
 [ref,SOL]=remove_H2O(ref,Box_dim); % Will output SOL
 ref=resname_atom(ref,resname);
-[ref.molid]=deal(1);
 
 model=element_atom(model);
 [model.molid]=deal(1);
@@ -59,11 +58,13 @@ if numel(Ion)==0
 end
 ref(strcmp([ref.resname],'ION'))=[];
 ref(strcmp([ref.resname],'SOL'))=[];
+[ref.molid]=deal(1);
+ref=update_atom(ref);
 ref=bond_angle_atom(ref,Box_dim,1.25,2.45,'more');
 
 %% Choose a main atomtype used for centering the model onto the reference structure
 Atom_type=unique([ref.type]);
-Atom_type(ismember(Atom_type,{'H' 'O' 'Li' 'Na' 'K' 'Ca' 'Mg' 'Cs'}))=[];
+Atom_type(ismember(Atom_type,{'H' 'O' 'C' 'Li' 'Na' 'K' 'Ca' 'Mg' 'Cs'}))=[];
 
 nAtomtypeRef=sum(strcmp([ref.type],Atom_type));
 nAtomtypeModel=sum(strcmp([model.type],Atom_type));
@@ -82,31 +83,32 @@ full_model=[];BestAngles=[0 0 0]; BestAngles_all=[];res_all=[];
 for i=1:nRepFactor
     close all
     n=1; prev_res=1E23;
-    while sum(prev_res.^2)>0.5 && n < 2000
-        
+    while sum(prev_res.^2)>0.1 && n < 5000
+
         %% Generate random angles between -180 to +180
         angles=[360*rand-180 360*rand-180 360*rand-180];
-        
+
         %% Rotate and move the temporary model structure
         temp_model = rotate_atom(model,Box_dim,angles,AtomtypeModel_ind); % Rotate the temp_model around origo
         temp_model = translate_atom(temp_model,[ref(AtomtypeRef_ind(i)).x ref(AtomtypeRef_ind(i)).y ref(AtomtypeRef_ind(i)).z]); % Translate the temp_model to the i:th position
-        
+
         %% Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure
         d_ref_matrix=dist_matrix_atom(ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),...
             ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
         d_ref_matrix=sort(d_ref_matrix,2);
-        d_ref_matrix=reshape(d_ref_matrix,1,[]);
-        
+        d_ref_vec=reshape(d_ref_matrix,1,[]);
+
         d_model_matrix=dist_matrix_atom(temp_model(unique(temp_model((AtomtypeModel_ind(1))).angle.index(:,1:2:end))),...
             ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
         d_model_matrix=sort(d_model_matrix,2);
-        d_model_matrix=reshape(d_model_matrix,1,[]);
-        
+        d_model_vec=reshape(d_model_matrix,1,[]);
+
         %% Calculate the difference
-        res=d_ref_matrix-d_model_matrix;
-        
+        res=d_ref_vec-d_model_vec;
+
         %% Save the best angles
         if sum(res.^2)<sum(prev_res.^2)
+            best_model=temp_model; % New
             prev_res=res;
             BestAngles=[BestAngles;angles];
             hold on
@@ -115,18 +117,22 @@ for i=1:nRepFactor
         end
         n=n+1;
     end
-    
+    if n>=10000
+        disp('Did not really converge...')
+        pause(2)
+    end
+
     i
     sum(prev_res.^2)
     n
-    
+
     sum(res.^2)
     res_all=[res_all sum(res.^2)];
     BestAngles_all = [BestAngles_all BestAngles(end,:)];
-    
+
     %% Add the temp_model to the the full model
-    full_model = update_atom({full_model temp_model});
-    
+    full_model = update_atom({full_model best_model}); % New
+
 end
 
 %% Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)

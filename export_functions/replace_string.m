@@ -2,7 +2,7 @@
 % * This special function is used to replace strings in text files.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -49,3 +49,5 @@ end
 fid  = fopen(outfilename,'w');
 fprintf(fid,'%s',f);
 fclose(fid);
+
+delete(bckp);

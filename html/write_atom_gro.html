@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_gro.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="write_atom_gro.m"><style type="text/css">
+      -->
+<title>write_atom_gro.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="write_atom_gro.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,53 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_gro.m</h1><!--introduction--><div><ul><li>This function writes a gro file.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_gro(atom,Box_dim,filename_out)
-
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>write_atom_gro.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function writes a Gromacs .gro file.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Box vectors for the .gro format is (free format, space separated reals), values:</a>
+</li>
+<li>
+<a href="#6">Box matrix</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> write_atom_gro(atom,Box_dim,filename_out)
+</pre>
+<pre class="codeinput">
 <span class="keyword">if</span> regexp(filename_out,<span class="string">'.gro'</span>) ~= false
     filename_out = filename_out;
 <span class="keyword">else</span>
@@ -79,9 +129,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Box_dim(1)=Box_dim(1);
     Box_dim(2)=Box_dim(1);
     Box_dim(3)=Box_dim(1);
+<span class="keyword">elseif</span> numel(Box_dim)==6
+    Box_dim=Cell2Box_dim(Box_dim);
 <span class="keyword">end</span>
-
-nAtoms=size(atom,2);
+</pre>
+<h2 id="5">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
+<p>v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y) the last 6 values may be omitted (they will be set to zero) when all angles are 90 GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.</p>
+<h2 id="6">Box matrix</h2>
+<p>v1(x) v2(x) v3(x) v1(x) v2(x) v3(x) v1(y) v2(y) v3(y) == 0 v2(y) v3(y) v1(z) v2(z) v3(z) 0 0 v3(z)</p>
+<pre class="codeinput">nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);
 fid = fopen(filename_out, <span class="string">'wt'</span>);
 fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'Created in Matlab'</span>);
@@ -112,13 +168,20 @@ fprintf(fid, <span class="string">'%-5i\n'</span>,nAtoms);
 <span class="comment">%fprintf(fid, '\n');</span>
 fclose(fid);
 disp(<span class="string">'.gro structure file written'</span>)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% write_atom_gro.m
-% * This function writes a gro file.
+% * This function writes a Gromacs .gro file.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -138,7 +201,19 @@ if numel(Box_dim)==1
     Box_dim(1)=Box_dim(1);
     Box_dim(2)=Box_dim(1);
     Box_dim(3)=Box_dim(1);
+elseif numel(Box_dim)==6
+    Box_dim=Cell2Box_dim(Box_dim);
 end
+
+%% Box vectors for the .gro format is (free format, space separated reals), values:
+% v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)
+% the last 6 values may be omitted (they will be set to zero) when all angles are 90
+% GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.
+
+%% Box matrix
+% v1(x) v2(x) v3(x)    v1(x) v2(x) v3(x)
+% v1(y) v2(y) v3(y) == 0     v2(y) v3(y)
+% v1(z) v2(z) v3(z)    0     0     v3(z)
 
 nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);
@@ -173,4 +248,6 @@ fclose(fid);
 disp('.gro structure file written')
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

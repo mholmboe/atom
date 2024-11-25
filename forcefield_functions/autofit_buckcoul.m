@@ -8,7 +8,7 @@ r=.12:.001:1.2; % nm
 C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Cc' 'Ob'});
 
 [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
 %[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
@@ -19,7 +19,7 @@ hold on
 % q2=-1.05;
 C4 = 0.05
 %% Initial values
-xinit    = [ q1  q2  5E5 5E6 60 60 0.007 0.007 ]
+xinit    = [ q1  q2  5E8 5E8 60 60 0.007 0.007 ]
 delta    = [ 1   1   .01 .01 .01 .01 .01   .01 ];
 
 x0=xinit;

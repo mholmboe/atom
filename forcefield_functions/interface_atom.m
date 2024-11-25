@@ -8,7 +8,7 @@
 % neighbour/bond cutoff radius for each atomtype
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -56,7 +56,7 @@ Add_H=0; % Add H to get neutral edge
 Add_extra_H=0; % Add H to get positive edge As a final step, add extra H's to a Oalhh atoms...nH_extra=16;
 % n=7; % with edge structure
 for assignment_run=heal_iterations
-    
+
     % Heal broken bonds in the structure in steps, start from the center of the particle
     if assignment_run==1
         Heal_Al=0
@@ -73,13 +73,13 @@ for assignment_run=heal_iterations
     elseif assignment_run==7
         Add_extra_H=0 % As a final step, add extra H's to a Oalhh atoms...nH_extra=16;
     end
-    
+
     All_Neighbours={};
     Bond_index=zeros(4*size(size(atom,2),1),3);
     Angle_index=zeros(4*size(size(atom,2),1),4);
-    
+
     [atom.element]=atom.type;
-    
+
     for i=1:size(atom,2)
         if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
         elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
@@ -95,36 +95,36 @@ for assignment_run=heal_iterations
             [atom(i).element]=atom(i).type;
         end
     end
-    
+
     [atom.type]=atom.element;
     [atom.fftype]=atom.element;
-    
+
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-    
+
     atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
     atom=remove_sametype_bond(atom,Box_dim,Bond_index);
-    
+
     assignin('caller','nBonds',nBonds);
     assignin('caller','radius_limit',radius_limit);
     assignin('caller','Bond_index',Bond_index);
     assignin('caller','Neigh_index',Neigh_index);
     assignin('caller','dist_matrix',dist_matrix);
-    
+
     i=1;nH_extra=0;
     while i <= size(atom,2)
         if mod(i,100)==1
             i-1
         end
-        
+
         if strncmpi([atom(i).resname],'SOL',3)==0 && strncmpi([atom(i).resname],'ION',3)==0
-            
+
             Neigh_ind=zeros(12,1);
             Neigh_vec=zeros(12,3);
             n=1;neigh=1;
-            
+
             if numel([atom(i).neigh])>0
-                
+
                 Neigh_cell = sort([atom(i).neigh.type]);
                 if length(Neigh_cell) > 0
                     Neighbours=strcat(Neigh_cell{:});
@@ -134,10 +134,10 @@ for assignment_run=heal_iterations
                 end
                 Neigh_ind(~any(Neigh_ind,2),:) = [];
                 Neigh_vec(~any(Neigh_vec,2),:) = [];
-                
+
                 % If the element is Si
                 if strncmpi(atom(i).type,{'Si'},2) % Si
-                    
+
                     Neigh_cell = sort([atom(i).neigh.type]);
                     Neighbours=strcat(Neigh_cell{:});
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Si O O O O
@@ -175,10 +175,10 @@ for assignment_run=heal_iterations
                     %                 i
                     %             end
                 end
-                
+
                 % If the element is Al
                 if strncmpi(atom(i).type,{'Al'},2) % Al
-                    
+
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
                         atom(i).fftype={'Al'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
@@ -207,8 +207,8 @@ for assignment_run=heal_iterations
                         %                 atom(i)=[];
                         %                 disp('removed atom...')
                         i
-                        
-                        
+
+
                     end
                     %             else
                     %                 Neighbours
@@ -216,12 +216,12 @@ for assignment_run=heal_iterations
                     %                 disp('removed atom...')
                     %                 i
                     %             end
-                    
+
                 end
-                
+
                 % If the element is Mg
                 if strncmpi(atom(i).type,{'Mg'},2) % Mgo
-                    
+
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
                         if sum(strncmpi([atom.type],'Al',2))<sum(strncmpi([atom.type],'Mg',2))
                             atom(i).fftype={'Mgh'};
@@ -254,12 +254,12 @@ for assignment_run=heal_iterations
                         i
                         %pause
                     end
-                    
+
                 end
-                
+
                 % If the element is H
                 if strncmp(atom(i).type,{'H'},1) % H
-                    
+
                     if size(Neigh_cell,1) == 1
                         atom(i).fftype={'H'};
                     elseif length(Neigh_ind) > 1
@@ -286,11 +286,11 @@ for assignment_run=heal_iterations
                             i
                             %pause
                         end
-                        
+
                     end
-                    
+
                 end
-                
+
                 % If the element is O
                 if strncmp(atom(i).type,{'O'},1)
                     All_Neighbours=[All_Neighbours;Neighbours];
@@ -390,19 +390,19 @@ for assignment_run=heal_iterations
                         atom(i)
                         %                     atom(i)=[];
                         disp('remove O atom...?')
-                        
+
                         rm_ind=[rm_ind i];
-                        
+
                     else
                         disp('Cannot assign this one...')
                         atom(i).type
                         i
                         Neighbours
                     end
-                    
+
                     %%
-                    
-                    
+
+
                     if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 %&& nH_extra > nH_added;
                         disp('Adding acidic H to Oalh-->Oalhh')
                         atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'H',1),1));
@@ -433,7 +433,7 @@ for assignment_run=heal_iterations
                     end
                 end
             end
-            
+
         end
         i=i+1;
         [atom.type]=atom.fftype;
@@ -487,12 +487,28 @@ end
 try
     %% If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
-    pause(2)
-    %% If new atom types
-    atom = charge_atom(atom,Box_dim,ffname,watermodel,'adjust');
+    %     pause(2)
+    %     %% If new atom types
+    %     atom = charge_atom(atom,Box_dim,ffname,watermodel,'adjust');
+    assignin('caller','Total_charge',Total_charge);
 catch
     disp('Could not set the charge...')
 end
+
+if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.00001
+    disp('Initial total charge!')
+    Total_charge=sum([atom.charge])
+    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    %     atom=tweak_charge_atom(atom,'Al');
+    disp('Final total charge, modfying the first atoms charge somewhat!')
+    Total_charge=sum([atom.charge])
+    round(sum(Total_charge),6)
+    assignin('caller','Total_charge',Total_charge);
+end
+
+[C,ia,ic]=unique([atom.type],'last');
+[atom(ia).type]
+[atom(ia).charge]
 
 ffname
 watermodel

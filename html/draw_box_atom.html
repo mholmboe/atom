@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>draw_box_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="draw_box_atom.m"><style type="text/css">
+      -->
+<title>draw_box_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="draw_box_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>draw_box_atom.m</h1><!--introduction--><div><ul><li>This function draws the simulation box, have not used it in a while, does it work with triclinic sim box?</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>draw_box_atom(Box_dim)</li><li>draw_box_atom(Box_dim,[0.5 0.5 0.5]) % RGB color</li><li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2) % Line thickness</li><li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times</li><li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Simbox = draw_box_atom(Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>draw_box_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function draws the simulation box, have not used it in a while, does it work with triclinic sim box?</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>draw_box_atom(Box_dim)</li>
+<li>draw_box_atom(Box_dim,[0.5 0.5 0.5]) % RGB color</li>
+<li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2) % Line thickness</li>
+<li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times</li>
+<li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> Simbox = draw_box_atom(Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;1
     LineColor=varargin{1};
@@ -155,9 +202,9 @@ zmax=-1000;
     <span class="keyword">for</span> ny=1:replicate(2)
         <span class="keyword">for</span> nx=1:replicate(1)
             <span class="comment">% Old code</span>
-<span class="comment">%           x = [0 a  a+xy  xy 0 nan xz  a+xz  a+xy+xz  xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz]+(nx-1)*a+(ny-1)*xy+(nz-1)*xz;</span>
-<span class="comment">%           y = [0 0  b     b  0 nan yz  yz    b+yz     b+yz    yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ]+(ny-1)*b+(nz-1)*yz;</span>
-<span class="comment">%           z = [0 0  0     0  0 nan c   c     c        c       c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ]+(nz-1)*c;</span>
+            <span class="comment">%           x = [0 a  a+xy  xy 0 nan xz  a+xz  a+xy+xz  xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz]+(nx-1)*a+(ny-1)*xy+(nz-1)*xz;</span>
+            <span class="comment">%           y = [0 0  b     b  0 nan yz  yz    b+yz     b+yz    yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ]+(ny-1)*b+(nz-1)*yz;</span>
+            <span class="comment">%           z = [0 0  0     0  0 nan c   c     c        c       c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ]+(nz-1)*c;</span>
             <span class="comment">% new code</span>
             x = [0 Lx Lx+xy xy 0 nan xz  Lx+xz Lx+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan Lx+xy Lx+xy+xz nan Lx Lx+xz]+(nx-1)*Lx+(ny-1)*xy+(nz-1)*xz;
             y = [0 0  Ly    Ly 0 nan yz  yz    Ly+yz    Ly+yz   yz nan 0 yz nan Ly  Ly+yz nan Ly    Ly+yz    nan 0  yz    ]+(ny-1)*Ly+(nz-1)*yz;
@@ -182,14 +229,21 @@ zmax=-1000;
 
 set(gcf,<span class="string">'Color'</span>,[1,1,1]);
 axis <span class="string">normal</span> <span class="string">tight</span> <span class="string">equal</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% draw_box_atom.m
 % * This function draws the simulation box, have not used it in a while,
 % does it work with triclinic sim box?
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -230,7 +284,7 @@ if nargin>3
 end
 
 if size(Box_dim,2)==3 || size(Box_dim,2)==9
-    
+
     Lx = Box_dim(1);
     Ly = Box_dim(2);
     Lz = Box_dim(3);
@@ -243,7 +297,7 @@ if size(Box_dim,2)==3 || size(Box_dim,2)==9
         xz = Box_dim(8);
         yz = Box_dim(9);
     end
-    
+
     a = Lx;
     b = (Ly^2 + xy^2)^0.5;
     c = (Lz^2 + xz^2 + yz^2)^0.5;
@@ -251,12 +305,12 @@ if size(Box_dim,2)==3 || size(Box_dim,2)==9
     beta = acosd(xz/c);
     gamma = acosd(xy/b);
     Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
-    
+
     Simbox = [a b c alfa beta gamma Volume];
     assignin('base','Simbox',Simbox);
-    
+
 elseif size(Box_dim,2)==6
-    
+
     disp('Using angles')
     a=Box_dim(1);
     b=Box_dim(2);
@@ -270,12 +324,12 @@ elseif size(Box_dim,2)==6
     xz = c*cos(deg2rad(beta));
     yz = (b*c*cos(deg2rad(alfa))-xy*xz)/Ly;
     Lz = (c^2 - xz^2 - yz^2)^0.5;
-    
+
     Volume=a*b*c* ((1-cos(alfa*pi()/180)^2-cos(beta*pi()/180)^2-cos(gamma*pi()/180)^2)+2*(cos(alfa*pi()/180)*cos(beta*pi()/180)*cos(gamma*pi()/180)))^0.5;
-    
+
     Simbox = [a b c alfa beta gamma Volume];
     assignin('base','Simbox',Simbox);
-    
+
 end
 
 xmin=1000;
@@ -289,21 +343,21 @@ for nz=1:replicate(3)
     for ny=1:replicate(2)
         for nx=1:replicate(1)
             % Old code
-%           x = [0 a  a+xy  xy 0 nan xz  a+xz  a+xy+xz  xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz]+(nx-1)*a+(ny-1)*xy+(nz-1)*xz;
-%           y = [0 0  b     b  0 nan yz  yz    b+yz     b+yz    yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ]+(ny-1)*b+(nz-1)*yz;
-%           z = [0 0  0     0  0 nan c   c     c        c       c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ]+(nz-1)*c;
+            %           x = [0 a  a+xy  xy 0 nan xz  a+xz  a+xy+xz  xy+xz   xz nan 0 xz nan xy  xy+xz nan a+xy a+xy+xz nan a a+xz]+(nx-1)*a+(ny-1)*xy+(nz-1)*xz;
+            %           y = [0 0  b     b  0 nan yz  yz    b+yz     b+yz    yz nan 0 yz nan b   b+yz  nan b    b+yz    nan 0 yz  ]+(ny-1)*b+(nz-1)*yz;
+            %           z = [0 0  0     0  0 nan c   c     c        c       c  nan 0 c  nan 0   c     nan 0    c       nan 0 c   ]+(nz-1)*c;
             % new code
             x = [0 Lx Lx+xy xy 0 nan xz  Lx+xz Lx+xy+xz xy+xz   xz nan 0 xz nan xy  xy+xz nan Lx+xy Lx+xy+xz nan Lx Lx+xz]+(nx-1)*Lx+(ny-1)*xy+(nz-1)*xz;
             y = [0 0  Ly    Ly 0 nan yz  yz    Ly+yz    Ly+yz   yz nan 0 yz nan Ly  Ly+yz nan Ly    Ly+yz    nan 0  yz    ]+(ny-1)*Ly+(nz-1)*yz;
             z = [0 0  0     0  0 nan Lz  Lz    Lz       Lz      Lz nan 0 Lz nan 0   Lz    nan 0     Lz       nan 0  Lz    ]+(nz-1)*Lz;
-            
+
             xmin=min([x xmin]);
             ymin=min([y ymin]);
             zmin=min([z zmin]);
             xmax=max([x xmax]);
             ymax=max([y ymax]);
             zmax=max([z zmax]);
-            
+
             hold on;
             if size(LineColor,2)<3
                 plot3(x,y,z,'kREPLACE_WITH_DASH_DASH');
@@ -323,4 +377,6 @@ axis normal tight equal
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

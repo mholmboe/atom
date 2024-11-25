@@ -42,22 +42,27 @@ for n=1:numel(watermodels)
 
     
     for i=1:size(ff,2)
-%         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
-         ff(i).radius_nm=ff(i).radius_A/10;
-%         ff(i).radius_A=ff(i).radius_nm*10;
-         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
-         ff(i).sigma_A=ff(i).sigma_nm*10; %ff(i).radius_A/2^(1/6);
+         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
+         % ff(i).radius_nm=ff(i).radius_A/10;
+         ff(i).radius_A=ff(i).radius_nm*10;
+%         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
+          ff(i).sigma_A=ff(i).sigma_nm*10; %ff(i).radius_A/2^(1/6);
 %         
-%         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
-         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
-         ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
-         ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
+%         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
+          ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
+          ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+% 
+% ff(i).C12_kJmolnm12=4*ff(i).e_kJmol*(ff(i).sigma_nm)^12;
+% ff(i).C6_kJmolnm6=4*ff(i).e_kJmol*(ff(i).sigma_nm)^6;
+
+
         
-        try
-            ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
-        catch
-            
-        end
+%         try
+%             ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
+%         catch
+%             
+%         end
     end
 %     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')
     %% Order the records

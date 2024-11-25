@@ -4,7 +4,7 @@
 % in "'PATH'"
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -15,7 +15,7 @@
 function PATH2VMD = PATH2VMD(varargin)
 
 % Example on a Mac computer
-PATH2VMD = '/Applications/VMD\ 1.9.2.app/Contents/MacOS/startup.command';
+PATH2VMD = '/Applications/VMD\ 1.9.4a57.app/Contents/MacOS/startup.command';
 
 % Example on a Win computer
 % PATH2VMD = '"C:\Program Files (x86)\University of Illinois\VMD\vmd.exe"';

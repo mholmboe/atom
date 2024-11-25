@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>poly_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="poly_atom.m"><style type="text/css">
+      -->
+<title>poly_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="poly_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,50 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>poly_atom.m</h1><!--introduction--><div><ul><li>This function tries to plot pretty polyhedras, similar to the show_atom</li><li>function</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=poly_atom(atom,Box_dim)                         % Plots polyhedras for all atomtypes except O and H,</li><li>atom=poly_atom(atom,Box_dim,{'Al' 'Mgo' 'Si'})       % Plots polyhedras for the stated atomtypes</li><li>atom=poly_atom(atom,Box_dim,0,2.25)                  % 2.25 is a bond cutoff (sort of)</li><li>atom=poly_atom(atom,Box_dim,0,2.25,1)                % Last argument (1/0) to plot the Box</li><li>atom=poly_atom(atom,Box_dim,0,2.25,1,0.3)            % Last argument sets the transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = poly_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>poly_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to plot pretty polyhedras, similar to the show_atom</li>
+<li>function</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=poly_atom(atom,Box_dim) % Plots polyhedras for all atomtypes except O and H,</li>
+<li>atom=poly_atom(atom,Box_dim,{'Al' 'Mgo' 'Si'}) % Plots polyhedras for the stated atomtypes</li>
+<li>atom=poly_atom(atom,Box_dim,0,2.25) % 2.25 is a bond cutoff (sort of)</li>
+<li>atom=poly_atom(atom,Box_dim,0,2.25,1) % Last argument (1/0) to plot the Box</li>
+<li>atom=poly_atom(atom,Box_dim,0,2.25,1,0.3) % Last argument sets the transperancy</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = poly_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;2
     polytype=varargin{1}; <span class="comment">% Dummy value</span>
@@ -75,12 +123,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,<span class="string">'H'</span>,1))=[];
     polytype(strncmpi(polytype,<span class="string">'O'</span>,1))=[];
+    polytype(strncmpi(polytype,<span class="string">'Cl'</span>,2))=[];
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> isnumeric(polytype)
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,<span class="string">'H'</span>,1))=[];
     polytype(strncmpi(polytype,<span class="string">'O'</span>,1))=[];
+    polytype(strncmpi(polytype,<span class="string">'Cl'</span>,2))=[];
 <span class="keyword">end</span>
 
 polytype_ind=find(ismember([atom.type],polytype));
@@ -225,7 +275,10 @@ view([0,0]);
         poly_color_edge=color_temp./5;
         patch(<span class="string">'Faces'</span>,PolyInd,<span class="string">'Vertices'</span>,[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],<span class="string">'FaceColor'</span>,poly_color,<span class="keyword">...</span>
             <span class="string">'EdgeColor'</span>,poly_color_edge,<span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="string">'Facealpha'</span>,alpha,<span class="keyword">...</span>
-            <span class="string">'AmbientStrength'</span>,0.8,<span class="string">'DiffuseStrength'</span>,0.6,<span class="string">'SpecularStrength'</span>,0.2,<span class="string">'LineWidth'</span>,1);
+            <span class="string">'AmbientStrength'</span>,0.8,<span class="string">'DiffuseStrength'</span>,0.6,<span class="string">'SpecularStrength'</span>,0.2,<span class="string">'LineWidth'</span>,1.25);
+            <span class="comment">%     patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...</span>
+            <span class="comment">% 'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...</span>
+            <span class="comment">% 'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);</span>
     <span class="keyword">end</span>
 
     <span class="keyword">if</span> mod(i,1000)==1 || i==size(atom,2)
@@ -236,7 +289,6 @@ view([0,0]);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-
 <span class="keyword">if</span> nargin&gt;4
     <span class="keyword">if</span> varargin{3}&gt;0
         Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
@@ -244,14 +296,21 @@ view([0,0]);
 <span class="keyword">end</span>
 
 hold <span class="string">off</span>;
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% poly_atom.m
 % * This function tries to plot pretty polyhedras, similar to the show_atom
 % * function
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -271,12 +330,14 @@ else
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,'H',1))=[];
     polytype(strncmpi(polytype,'O',1))=[];
+    polytype(strncmpi(polytype,'Cl',2))=[];
 end
 
 if isnumeric(polytype)
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,'H',1))=[];
     polytype(strncmpi(polytype,'O',1))=[];
+    polytype(strncmpi(polytype,'Cl',2))=[];
 end
 
 polytype_ind=find(ismember([atom.type],polytype));
@@ -328,15 +389,15 @@ assignin('caller','color',color)
 %    Box_dim=varargin{1};
 
 if numel(Box_dim)>0
-    
+
     if numel(Box_dim)==1
         Box_dim(1)=Box_dim(1);
         Box_dim(2)=Box_dim(1);
         Box_dim(3)=Box_dim(1);
     end
-    
+
     atom = bond_atom(atom,Box_dim,rmaxlong,.6);
-    
+
     if max([atom.molid])<max([atom.index])
         i=1;
         while numel(Bond_index)==0 && i < 10
@@ -344,7 +405,7 @@ if numel(Box_dim)>0
             i=i+1;
         end
     end
-    
+
 end
 
 % Sets plot limits for the data
@@ -389,22 +450,22 @@ xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
 
 for ip=1:numel(polytype_ind)
-    
+
     i=polytype_ind(ip);
-    
+
     color_temp = color(i,:);
-    
+
     if numel(atom(i).neigh.index)>0
-        
+
         r_vec = [[atom(i).neigh.r_vec(:,1)] [atom(i).neigh.r_vec(:,2)] [atom(i).neigh.r_vec(:,3)]];
-        
+
         dist=[];
         for j=1:size(r_vec,1)
             dist(j,:)=([ (r_vec(j,1)-r_vec(:,1)).^2 + (r_vec(j,2)-r_vec(:,2)).^2 + ([r_vec(j,3)-r_vec(:,3)]).^2] ).^.5;
         end
-        
+
         dist(dist>1.5*rmaxlong)=0;
-        
+
         PolyInd=[];n=0;
         for ik=1:size(r_vec,1)
             for il=ik+1:size(r_vec,1)
@@ -416,14 +477,17 @@ for ip=1:numel(polytype_ind)
                 end
             end
         end
-        
+
         poly_color=color_temp.^.5;
         poly_color_edge=color_temp./5;
         patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
             'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
-            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
+            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1.25);
+            %     patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+            % 'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
+            % 'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
     end
-    
+
     if mod(i,1000)==1 || i==size(atom,2)
         if i > 1
             i-1
@@ -431,7 +495,6 @@ for ip=1:numel(polytype_ind)
         end
     end
 end
-
 
 if nargin>4
     if varargin{3}>0
@@ -443,4 +506,6 @@ hold off;
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

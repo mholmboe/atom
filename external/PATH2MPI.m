@@ -3,7 +3,7 @@
 % skip spaces, or double quotations as in "'PATH'"
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -13,7 +13,7 @@
 
 function PATH2MPI = PATH2MPI(varargin)
 
-PATH2MPI ='/usr/local/bin/';
+PATH2MPI ='/opt/homebrew/bin/';
 
 if nargin == 1
     % Does this work for the 'base' ?

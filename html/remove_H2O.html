@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>remove_H2O.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="remove_H2O.m"><style type="text/css">
+      -->
+<title>remove_H2O.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="remove_H2O.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>remove_H2O.m</h1><!--introduction--><div><ul><li>This function removes H2O molecules, by searching for all atoms within rmin, which optionally can be set manually.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=remove_H2O(atom,Box_dim) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [atom,SOL] = remove_H2O(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>remove_H2O.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function removes H2O molecules, by searching for all atoms within rmin, which optionally can be set manually.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=remove_H2O(atom,Box_dim) % Basic input arguments</li>
+<li>atom=remove_H2O(atom,Box_dim,1.05) % Manually setting the rmin, the minimum distance for the H-O bond in water</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [atom,SOL] = remove_H2O(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;2
     rmin=varargin{1};
@@ -81,7 +125,7 @@ temp_atom=element_atom(atom);
 O_ind=find(strncmp([temp_atom.type],{<span class="string">'O'</span>},1));
 H_ind=find(strncmp([temp_atom.type],{<span class="string">'H'</span>},1));
 
-SOL=[];
+SOL=[];SOL_ind=[];
 <span class="keyword">if</span> numel(O_ind)&gt;0
     rm_ind=[];n=1;molid=1;
     SOL=atom(O_ind(1));
@@ -101,13 +145,15 @@ SOL=[];
         <span class="keyword">end</span>
     <span class="keyword">end</span>
     numel(SOL)
+    assignin(<span class="string">'caller'</span>,<span class="string">'SOL_ind'</span>,SOL_ind);
     <span class="keyword">if</span> size(SOL,2)&gt;1
         [SOL.resname]=deal({<span class="string">'SOL'</span>});
         SOL
         SOL=update_atom(SOL);
         SOL=bond_atom(SOL,Box_dim,rmin);
         SOL=update_atom(SOL);
-        <span class="comment">%     assignin('caller','SOL',SOL);</span>
+<span class="comment">%         assignin('caller','SOL',SOL);</span>
+<span class="comment">%         assignin('caller','H2O',SOL);</span>
     <span class="keyword">else</span>
         SOL=[];
     <span class="keyword">end</span>
@@ -123,20 +169,28 @@ SOL=[];
 atom=update_atom(atom);
 
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% remove_H2O.m
 % * This function removes H2O molecules, by searching for all atoms within
 % rmin, which optionally can be set manually.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom=remove_H2O(atom,Box_dim) % Basic input arguments
+% # atom=remove_H2O(atom,Box_dim,1.05) % Manually setting the rmin, the minimum distance for the H-O bond in water
 
 function [atom,SOL] = remove_H2O(atom,Box_dim,varargin)
 
@@ -152,7 +206,7 @@ temp_atom=element_atom(atom);
 O_ind=find(strncmp([temp_atom.type],{'O'},1));
 H_ind=find(strncmp([temp_atom.type],{'H'},1));
 
-SOL=[];
+SOL=[];SOL_ind=[];
 if numel(O_ind)>0
     rm_ind=[];n=1;molid=1;
     SOL=atom(O_ind(1));
@@ -172,13 +226,15 @@ if numel(O_ind)>0
         end
     end
     numel(SOL)
+    assignin('caller','SOL_ind',SOL_ind);
     if size(SOL,2)>1
         [SOL.resname]=deal({'SOL'});
         SOL
         SOL=update_atom(SOL);
         SOL=bond_atom(SOL,Box_dim,rmin);
         SOL=update_atom(SOL);
-        %     assignin('caller','SOL',SOL);
+%         assignin('caller','SOL',SOL);
+%         assignin('caller','H2O',SOL);
     else
         SOL=[];
     end
@@ -197,4 +253,6 @@ end
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

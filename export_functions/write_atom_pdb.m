@@ -2,7 +2,7 @@
 % * This function writes an pdb file from the atom struct
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -16,12 +16,6 @@ if regexp(filename_out,'.pdb') ~= false
     filename_out = filename_out;
 else
     filename_out = strcat(filename_out,'.pdb');
-end
-
-if numel(Box_dim)==1
-    Box_dim(1)=Box_dim(1);
-    Box_dim(2)=Box_dim(1);
-    Box_dim(3)=Box_dim(1);
 end
 
 nAtoms=length(atom);
@@ -49,6 +43,15 @@ fprintf(fid, '%s\n','MODEL        1');
 % % % CRYST1  117.000   15.000   39.000  90.00  90.00  90.00 P 21 21 21    8
 
 % % % CRYST1   31.188   54.090   20.000  90.00  90.00  90.00 P1          1
+
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+elseif numel(Box_dim)==6
+    Box_dim = Cell2Box_dim(Box_dim); % If Box_dim actually is Cell
+end
+
 if length(Box_dim)==9
     Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
     if sum(find(Box_dim(4:end)))<0.0001
@@ -57,38 +60,41 @@ if length(Box_dim)==9
 end
 
 disp('Assuming P1 space group. Box/Cell is assumed to be triclinic')
+
 if length(Box_dim)==3
-    
+
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
     xy=0;
     xz=0;
     yz=0;
-    
+
     a=lx;
     b=ly;
     c=lz;
     alfa=90.00;
     beta=90.00;
     gamma=90.00;
-    
+
 elseif length(Box_dim)==9
-    
+
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
     xy=Box_dim(6);
     xz=Box_dim(8);
     yz=Box_dim(9);
-    
+
     a=lx;
     b=(ly^2+xy^2)^.5;
     c=(lz^2+xz^2+yz^2)^.5;
     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
-    
+
+    Cell=[a b c alfa beta gamma];
+
 else
     disp('No proper box_dim information')
 end
@@ -139,8 +145,10 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};atom(i).formalcharge=3;
     elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};atom(i).formalcharge=3;
+    elseif strncmpi(atom(i).type,{'Fs'},2);atom(i).element={'F'};atom(i).formalcharge=-1;
     elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};atom(i).formalcharge=-2;
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
     elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;
     elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
@@ -189,7 +197,7 @@ end
 
 if nargin>3
     if size(varargin{1},1)<2
-        
+
         if nargin>4
             maxrshort=varargin{1};
             maxrlong=varargin{2};
@@ -197,10 +205,10 @@ if nargin>3
             maxrshort=1.25;
             maxrlong=2.25;
         end
-        
+
         maxrshort
         maxrlong
-        
+
         %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
         atom=bond_atom(atom,Box_dim,maxrlong);
         %     assignin('caller','Dist_matrix',Dist_matrix);
@@ -209,11 +217,11 @@ if nargin>3
         assignin('caller','nBonds',nBonds);
         %     assignin('caller','nAngles',nAngles);
     else
-        
+
         Bond_index=varargin{1};
-        
+
     end
-    
+
     B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
     b1=sortrows(B);
     for i=min(b1(:,1)):max(b1(:,1))

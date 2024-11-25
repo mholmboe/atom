@@ -1,11 +1,9 @@
 %% import_atom_gro.m
 % * This function import .gro files into an atom struct variable
-% * This function is faster than the usual import_atom_gro but is not
-% * compatible with Octave
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -15,7 +13,7 @@
 % # atom = import_atom_gro('molecule.gro',[10 5 2])
 % # atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
-function atom = import_atom_gro(filename,varargin)
+function [atom,Box_dim] = import_atom_gro(filename,varargin)
 tic
 
 if regexp(filename,'.gro') ~= false
@@ -33,6 +31,17 @@ nAtoms=str2double(Line2);
 Box_string = textscan(fileID, '%s',1,'delimiter', '\n','HeaderLines', nAtoms);
 Box_dim=str2double(strsplit(char(Box_string{1,1})))*10;
 fclose(fileID);
+
+%% Box vectors for the .gro format is (free format, space separated reals), values:
+% v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)
+% the last 6 values may be omitted (they will be set to zero) when all angles are 90
+% GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.
+
+%% Box matrix
+% v1(x) v2(x) v3(x)    v1(x) v2(x) v3(x)
+% v1(y) v2(y) v3(y) == 0     v2(y) v3(y)
+% v1(z) v2(z) v3(z)    0     0     v3(z)
+
 
 % Read columns of data as strings:
 formatSpec = '%5s%5s%5s%5.0f%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f%[^\n\r]';
@@ -124,12 +133,15 @@ end
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 XYZ_labels=[atom.type]';
 
+Cell=Box_dim2Cell(Box_dim);
+
 % atom = resname_atom(atom);
 assignin('caller','XYZ_labels',XYZ_labels)
 assignin('caller','XYZ_data',XYZ_data)
 assignin('caller','atom',atom)
 assignin('caller','nAtoms',nAtoms)
 assignin('caller','Box_dim',Box_dim)
+assignin('caller','Cell',Cell)
 assignin('caller','MolID',MolID)
 
 disp('.gro file imported')

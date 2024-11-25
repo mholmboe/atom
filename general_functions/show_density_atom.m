@@ -3,7 +3,7 @@
 % * It's fancier than plot_density_atom, but slower..
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -19,10 +19,17 @@ function show_density_atom(atom,Box_dim,varargin)
 hold off
 
 if nargin > 2
-   scalefactor=varargin{1};
-else
-   scalefactor=1; 
+    if varargin{1}==0
+        disp('Will not draw any box!')
+    else
+        try
+            Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+        catch
+            disp('Could draw the box!')
+        end
+    end
 end
+
 
 show_atom(atom,Box_dim,'ballstick');
 
@@ -45,10 +52,10 @@ end
 hold on
 
 if numel(unique([atom.type]))==1
-     color = element_color([atom(1).type]);
+    color = element_color([atom(1).type]);
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,'Color',color,'LineWidth',2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'Color',color,'LineWidth',2);
-     plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,'Color',color,'LineWidth',1);
+    plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,'Color',color,'LineWidth',1);
 else
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,'r','LineWidth',2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'b','LineWidth',2);

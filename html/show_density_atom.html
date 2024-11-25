@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>show_density_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="show_density_atom.m"><style type="text/css">
+      -->
+<title>show_density_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="show_density_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,15 +72,64 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>show_density_atom.m</h1><!--introduction--><div><ul><li>This function is used to plot density profiles in the X|Y|Z-direction</li><li>It's fancier than plot_density_atom, but slower..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_density_atom(atom,Box_dim)</li><li>show_density_atom(atom,Box_dim,0.1)</li><li>show_density_atom(atom,Box_dim,0.1,2)</li><li>show_density_atom(atom,Box_dim,0.1,2,[1:10:100])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_density_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>show_density_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function is used to plot density profiles in the X|Y|Z-direction</li>
+<li>It's fancier than plot_density_atom, but slower..</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>show_density_atom(atom,Box_dim)</li>
+<li>show_density_atom(atom,Box_dim,0.1)</li>
+<li>show_density_atom(atom,Box_dim,0.1,2)</li>
+<li>show_density_atom(atom,Box_dim,0.1,2,[1:10:100])</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> show_density_atom(atom,Box_dim,varargin)
 
 hold <span class="string">off</span>
 
 <span class="keyword">if</span> nargin &gt; 2
-   scalefactor=varargin{1};
-<span class="keyword">else</span>
-   scalefactor=1;
+    <span class="keyword">if</span> varargin{1}==0
+        disp(<span class="string">'Will not draw any box!'</span>)
+    <span class="keyword">else</span>
+        <span class="keyword">try</span>
+            Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Could draw the box!'</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
+
 
 show_atom(atom,Box_dim,<span class="string">'ballstick'</span>);
 
@@ -98,10 +152,10 @@ scalehist=1/(0.01*scalehist);
 hold <span class="string">on</span>
 
 <span class="keyword">if</span> numel(unique([atom.type]))==1
-     color = element_color([atom(1).type]);
+    color = element_color([atom(1).type]);
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,<span class="string">'Color'</span>,color,<span class="string">'LineWidth'</span>,2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,<span class="string">'Color'</span>,color,<span class="string">'LineWidth'</span>,2);
-     plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,<span class="string">'Color'</span>,color,<span class="string">'LineWidth'</span>,1);
+    plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,<span class="string">'Color'</span>,color,<span class="string">'LineWidth'</span>,1);
 <span class="keyword">else</span>
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,2);
@@ -112,14 +166,21 @@ axis([-5 ceil(max(z/scalehist+Box_dim(1,1)+1)/10)*10 -5 ceil(max(z/scalehist+Box
 fig = gcf;fig.Color = [1 1 1];
 set(gca,<span class="string">'Color'</span>,[1 1 1]);
 xlabel(<span class="string">'X [&Aring;]'</span>); ylabel(<span class="string">'Y [&Aring;]'</span>); zlabel(<span class="string">'Z [&Aring;]'</span>);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% show_density_atom.m
 % * This function is used to plot density profiles in the X|Y|Z-direction
 % * It's fancier than plot_density_atom, but slower..
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -135,10 +196,17 @@ function show_density_atom(atom,Box_dim,varargin)
 hold off
 
 if nargin > 2
-   scalefactor=varargin{1};
-else
-   scalefactor=1; 
+    if varargin{1}==0
+        disp('Will not draw any box!')
+    else
+        try
+            Simbox = draw_box_atom(Box_dim,[0 0 0.8],2);
+        catch
+            disp('Could draw the box!')
+        end
+    end
 end
+
 
 show_atom(atom,Box_dim,'ballstick');
 
@@ -161,10 +229,10 @@ end
 hold on
 
 if numel(unique([atom.type]))==1
-     color = element_color([atom(1).type]);
+    color = element_color([atom(1).type]);
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,'Color',color,'LineWidth',2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'Color',color,'LineWidth',2);
-     plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,'Color',color,'LineWidth',1);
+    plot3(z/scalehist+Box_dim(1,1)+1,Box_dim(1,2)*ones(numel(z),1),dz,'Color',color,'LineWidth',1);
 else
     plot3(dx,Box_dim(1,2)*ones(numel(x),1),x/scalehist+Box_dim(1,3)+1,'r','LineWidth',2);
     plot3(zeros(numel(y),1),dy,y/scalehist+Box_dim(1,3)+1,'b','LineWidth',2);
@@ -177,4 +245,6 @@ set(gca,'Color',[1 1 1]);
 xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

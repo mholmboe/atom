@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>import_mdp.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="import_mdp.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>import_mdp.m</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">This function imports a mdp file.</a>
+</li>
+<li>
+<a href="#3">Written by MHolmboe</a>
+</li>
+<li>
+<a href="#4">Please report bugs/issues to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></a>
+</li>
+<li>
+<a href="#5">Version</a>
+</li>
+</ul>
+</div>
+<h2 id="1">This function imports a mdp file.</h2>
+<h2 id="3">Written by MHolmboe</h2>
+<h2 id="4">Please report bugs/issues to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</h2>
+<h2 id="5">Version</h2>
+<p>3.00</p>
+<pre class="codeinput">
+<span class="keyword">function</span> mdp = import_mdp(mdp_filename)
+
+inputfile = fopen(mdp_filename, <span class="string">'r'</span>);
+C = textscan(inputfile, <span class="string">'%s'</span>, <span class="string">'Delimiter'</span>, <span class="string">'\n'</span>);
+fclose(inputfile);
+nondatarows1=find(strncmp(C{1},<span class="string">';'</span>,1));
+nondatarows2=find(strncmp(C{1},{<span class="string">''</span>},1));
+C{1,1}([nondatarows1;nondatarows2])=[];
+
+mdp_data=C{1,1};
+
+<span class="keyword">for</span> i=1:size(mdp_data,1)
+    ind_equal=cell2mat(regexp(mdp_data(i),<span class="string">'='</span>));
+    ind_rm=cell2mat(regexp(mdp_data(i),<span class="string">';'</span>));
+    mdp_temp=char(mdp_data(i));
+    mdp_param=mdp_temp(1:ind_equal-1);
+    <span class="keyword">if</span> numel(ind_rm)&gt;0
+        mdp_value=mdp_temp(ind_equal+1:ind_rm(1)-1);
+    <span class="keyword">else</span>
+        mdp_value=mdp_temp(ind_equal+1:size(mdp_temp,2));
+    <span class="keyword">end</span>
+
+    mdp_value=split(mdp_value);
+    mdp_value=mdp_value(~cellfun(<span class="string">'isempty'</span>,mdp_value));
+    num_mdp_value=str2num(num2str(char(mdp_value)));
+    <span class="keyword">if</span> numel(num_mdp_value)&gt;0
+        mdp_value=num_mdp_value;
+    <span class="keyword">else</span>
+        mdp_value=char(mdp_value);
+    <span class="keyword">end</span>
+    field=char(mdp_param);
+    field=strtrim(field);
+    field=strrep(field,<span class="string">'-'</span>,<span class="string">'_'</span>);
+    mdp.(field)=mdp_value;
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% import_mdp.m
+%% This function imports a mdp file.
+%%
+%% Written by MHolmboe
+%% Please report bugs/issues to michael.holmboe@umu.se
+
+%% Version
+% 3.00
+
+function mdp = import_mdp(mdp_filename)
+
+inputfile = fopen(mdp_filename, 'r');
+C = textscan(inputfile, '%s', 'Delimiter', '\n');
+fclose(inputfile);
+nondatarows1=find(strncmp(C{1},';',1));
+nondatarows2=find(strncmp(C{1},{''},1));
+C{1,1}([nondatarows1;nondatarows2])=[];
+
+mdp_data=C{1,1};
+
+for i=1:size(mdp_data,1)
+    ind_equal=cell2mat(regexp(mdp_data(i),'='));
+    ind_rm=cell2mat(regexp(mdp_data(i),';'));
+    mdp_temp=char(mdp_data(i));
+    mdp_param=mdp_temp(1:ind_equal-1);
+    if numel(ind_rm)>0
+        mdp_value=mdp_temp(ind_equal+1:ind_rm(1)-1);
+    else
+        mdp_value=mdp_temp(ind_equal+1:size(mdp_temp,2));
+    end
+
+    mdp_value=split(mdp_value);
+    mdp_value=mdp_value(~cellfun('isempty',mdp_value));
+    num_mdp_value=str2num(num2str(char(mdp_value)));
+    if numel(num_mdp_value)>0
+        mdp_value=num_mdp_value;
+    else
+        mdp_value=char(mdp_value);
+    end
+    field=char(mdp_param);
+    field=strtrim(field);
+    field=strrep(field,'-','_');
+    mdp.(field)=mdp_value;
+end
+
+end
+##### SOURCE END #####
+-->
+</body>
+</html>

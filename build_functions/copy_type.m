@@ -2,7 +2,7 @@
 % * This function copies and translates types in the atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -25,7 +25,7 @@ end
 % Duplicate the atomtype entries into a new In_atom struct
 if nargin == 6
     % Uses the num last entries...
-    num=cell2mat(varargin(1));
+    num=floor(cell2mat(varargin(1)));
     new_atom=atom(ind_atomtype(end-num+1:end));
 else
     % Uses all entries...

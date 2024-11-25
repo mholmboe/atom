@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>The atom script library</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="index.m"><style type="text/css">
+      -->
+<title>The atom script library</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-19">
+<meta name="DC.source" content="index.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,14 +72,122 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>The atom script library</h1><!--introduction--><p>Below is links to all functions, sorted after topic/purpose</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">How-to cite the atom library?</a></li><li><a href="#4">How-to use these documentation pages</a></li><li><a href="#6">Common types of variables</a></li><li><a href="#7">Examples</a></li><li><a href="#8">All available functions</a></li><li><a href="#9">Available structures and pre-equilibrated solvents</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">How-to cite the atom library?</h2><div><ul><li>The atom library has been described in the following paper: atom: A MATLAB PACKAGE FOR MANIPULATION OF MOLECULAR SYSTEMS, Clays and Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y</li></ul></div><h2 id="4">How-to use these documentation pages</h2><p>You can read and browse through these html pages in any browser you want, but you could also use these html files (which are part of the distribution) interactively via MATLAB's own browser by executing the code line by line after highlighting the code (using right-click) and choosing 'Evaluate selection' as illustrated below - or just press 'Shift+F7' as illustrated in the figure below.</p><p><img vspace="5" hspace="5" src="interactive_html.png" alt=""> </p><h2 id="6">Common types of variables</h2><div><ul><li><a href="List_variables.html">List of the main types of variables used by this MATLAB library</a></li></ul></div><h2 id="7">Examples</h2><div><ul><li><a href="Basic_examples.html">Basic_examples</a></li><li><a href="Advanced_examples.html">Advanced_examples</a></li></ul></div><h2 id="8">All available functions</h2><div><ul><li><a href="List_all_functions.html">All functions sorted alphabetically</a></li><li><a href="List_build_functions.html">Functions for building molecular boxes</a></li><li><a href="List_forcefield_functions.html">Topology and forcefield specific functions</a></li><li><a href="List_general_functions.html">General functions</a></li><li><a href="List_export_functions.html">Export related functions</a></li><li><a href="List_import_functions.html">Import related functions</a></li></ul></div><h2 id="9">Available structures and pre-equilibrated solvents</h2><div><ul><li><a href="List_structures.html">List of available structures, solvents and more</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>The atom script library</h1>
+<!--introduction-->
+<p>Below is links to all functions, sorted after topic/purpose</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">How-to cite the atom library?</a>
+</li>
+<li>
+<a href="#4">How-to use these documentation pages</a>
+</li>
+<li>
+<a href="#6">Common types of variables</a>
+</li>
+<li>
+<a href="#7">Examples</a>
+</li>
+<li>
+<a href="#8">All available functions</a>
+</li>
+<li>
+<a href="#9">Available structures and pre-equilibrated solvents</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">How-to cite the atom library?</h2>
+<div>
+<ul>
+<li>The atom library has been described in the following paper: atom: A MATLAB PACKAGE FOR MANIPULATION OF MOLECULAR SYSTEMS, Clays and Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y</li>
+</ul>
+</div>
+<h2 id="4">How-to use these documentation pages</h2>
+<p>You can read and browse through these html pages in any browser you want, but you could also use these html files (which are part of the distribution) interactively via MATLAB's own browser by executing the code line by line after highlighting the code (using right-click) and choosing 'Evaluate selection' as illustrated below - or just press 'Shift+F7' as illustrated in the figure below.</p>
+<p>
+<img vspace="5" hspace="5" src="interactive_html.png" alt=""> </p>
+<h2 id="6">Common types of variables</h2>
+<div>
+<ul>
+<li>
+<a href="List_variables.html">List of the main types of variables used by this MATLAB library</a>
+</li>
+</ul>
+</div>
+<h2 id="7">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="Basic_examples.html">Basic_examples</a>
+</li>
+<li>
+<a href="Advanced_examples.html">Advanced_examples</a>
+</li>
+</ul>
+</div>
+<h2 id="8">All available functions</h2>
+<div>
+<ul>
+<li>
+<a href="List_all_functions.html">All functions sorted alphabetically</a>
+</li>
+<li>
+<a href="List_build_functions.html">Functions for building molecular boxes</a>
+</li>
+<li>
+<a href="List_forcefield_functions.html">Topology and forcefield specific functions</a>
+</li>
+<li>
+<a href="List_general_functions.html">General functions</a>
+</li>
+<li>
+<a href="List_export_functions.html">Export related functions</a>
+</li>
+<li>
+<a href="List_import_functions.html">Import related functions</a>
+</li>
+</ul>
+</div>
+<h2 id="9">Available structures and pre-equilibrated solvents</h2>
+<div>
+<ul>
+<li>
+<a href="List_structures.html">List of available structures, solvents and more</a>
+</li>
+</ul>
+</div>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% The atom script library
 % Below is links to all functions, sorted after topic/purpose
 %
 
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -115,4 +228,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % * <List_structures.html List of available structures, solvents and more>
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

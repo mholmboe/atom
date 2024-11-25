@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>direction_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="direction_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>direction_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to find all angles between the atom1 and atom2 versus a given vector direction_vec, a nx3 unit vector (where n typically is 1). One optional argument like 'reverse' reverses the angle_limit from max to min angle</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150)</li>
+<li>atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150,1)</li>
+<li>atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150,1,'reverse')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,rmaxshort,rmaxlong,angle_limit,varargin)
+</pre>
+<pre class="codeinput">
+<span class="comment">% rmin=0;</span>
+<span class="comment">% rmax=3.5;</span>
+<span class="comment">% min_angle=120;</span>
+<span class="comment">% Box_dim=Box_dim(1,:);</span>
+<span class="comment">% direction_vec=[0 0 1];</span>
+
+<span class="keyword">if</span> nargin &gt; 7 <span class="comment">% was 5, why?</span>
+    skip_internal=cell2mat(varargin(1));
+<span class="keyword">else</span>
+    skip_internal=0;
+<span class="keyword">end</span>
+
+lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
+<span class="keyword">if</span> numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+<span class="keyword">elseif</span> numel(Box_dim)==9
+    <span class="comment">% Box_dim=[lx ly lz 0 0 xy 0 xz yz];</span>
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+<span class="keyword">end</span>
+
+a=1;Angle_index=zeros(1,12);
+<span class="keyword">for</span> i=1:size(atom1,2)
+
+    XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
+
+    <span class="keyword">if</span> sum(strncmpi([atom1.type],<span class="string">'OW'</span>,2))&gt;0 &amp;&amp; sum(strncmpi([atom2.type],<span class="string">'HW'</span>,2))&gt;0 &amp;&amp; skip_internal == 1
+        ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
+        XYZ_data=XYZ_data(ind_sel,:);
+    <span class="keyword">end</span>
+
+    solute_index=atom1(i).index;
+    XYZ_solute=[[atom1(i).x]' [atom1(i).y]' [atom1(i).z]'];
+
+    rx=zeros(size(XYZ_data,1),1);ry=zeros(size(XYZ_data,1),1);rz=zeros(size(XYZ_data,1),1);
+
+    <span class="keyword">if</span> size(Box_dim,2)&gt;3
+        <span class="comment">% Calculate Distance Components for triclic cell with pbc (should work?)</span>
+        rx = XYZ_data(:,1) - XYZ_solute(1);
+        ry = XYZ_data(:,2) - XYZ_solute(2);
+        rz = XYZ_data(:,3) - XYZ_solute(3);
+        <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+        z_gt_ind=find(rz &gt; lz/2);z_lt_ind=find(rz &lt; - lz/2);
+        rz(z_gt_ind) = rz(z_gt_ind) - lz;
+        rz(z_lt_ind) = rz(z_lt_ind) + lz;
+        rx(z_gt_ind) = rx(z_gt_ind) - xz;
+        rx(z_lt_ind) = rx(z_lt_ind) + xz;
+        ry(z_gt_ind) = ry(z_gt_ind) - yz;
+        ry(z_lt_ind) = ry(z_lt_ind) + yz;
+        <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+        y_gt_ind=find(ry &gt; ly/2);y_lt_ind=find(ry &lt; - ly/2);
+        ry(y_gt_ind) = ry(y_gt_ind) - ly;
+        ry(y_lt_ind) = ry(y_lt_ind) + ly;
+        rx(y_gt_ind) = rx(y_gt_ind) - xy;
+        rx(y_lt_ind) = rx(y_lt_ind) + xy;
+        <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+        x_gt_ind=find(rx &gt; lx/2);x_lt_ind=find(rx &lt; - lx/2);
+        rx(x_gt_ind) = rx(x_gt_ind) - lx;
+        rx(x_lt_ind) = rx(x_lt_ind) + lx;
+        <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+    <span class="keyword">else</span>
+        <span class="comment">%Calculate Distance Components for orthogonal cell with pbc</span>
+        rx =  XYZ_data(:,1) - XYZ_solute(1);
+        x_gt_ind=find(rx &gt; lx/2);x_lt_ind=find(rx &lt; - lx/2);
+        rx(x_gt_ind) = rx(x_gt_ind) - lx;
+        rx(x_lt_ind) = rx(x_lt_ind) + lx;
+
+        ry = XYZ_data(:,2) - XYZ_solute(2);
+        y_gt_ind=find(ry &gt; ly/2);y_lt_ind=find(ry &lt; - ly/2);
+        ry(y_gt_ind) = ry(y_gt_ind) - ly;
+        ry(y_lt_ind) = ry(y_lt_ind) + ly;
+
+        rz = XYZ_data(:,3) - XYZ_solute(3);
+        z_gt_ind=find(rz &gt; lz/2);z_lt_ind=find(rz &lt; - lz/2);
+        rz(z_gt_ind) = rz(z_gt_ind) - lz;
+        rz(z_lt_ind) = rz(z_lt_ind) + lz;
+    <span class="keyword">end</span>
+
+    dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
+
+    <span class="comment">% Find points inside circle</span>
+    in=intersect(find(dist&gt;rmaxshort),find(dist&lt;rmaxlong));
+
+    <span class="comment">% in=sort(unique(in));</span>
+
+
+    <span class="comment">% in = in(find(in~=i));</span>
+    neigh.in = in;
+    neigh.dist = [dist(in,1)];
+    neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
+    neigh.r_vec = [rx(in) ry(in) rz(in)];
+
+    neigh_dist=[neigh.dist];
+    neigh_ind=[neigh.in];
+    neigh_vec=[neigh.r_vec];
+
+    neigh_ind(~any(neigh_ind,2),:) = [];
+    neigh_vec(~any(neigh_vec,2),:) = [];
+
+    <span class="keyword">for</span> v=1:size(neigh_ind,1)
+        <span class="keyword">for</span> w=1:size(direction_vec,1) <span class="comment">% From v or from 1?</span>
+            angle=rad2deg(atan2(norm(cross(neigh_vec(v,:),direction_vec(w,:))),dot(neigh_vec(v,:),direction_vec(w,:))));
+            <span class="keyword">if</span> nargin &gt; 7
+                angle_lo=angle_limit;
+                angle_hi=angle;
+            <span class="keyword">else</span>
+                angle_hi=angle_limit;
+                angle_lo=angle;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> angle &gt; 0 &amp;&amp; angle_lo &lt; angle_hi
+                <span class="keyword">if</span> neigh_ind(v,1) &lt; direction_vec(w,1)
+                    Angle_index(a,1)= atom2(neigh_ind(v,1)).index;
+                    Angle_index(a,2)= solute_index;
+                    Angle_index(a,3)= 0; <span class="comment">% atom2(direction_vec(w,1)).index;</span>
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= neigh_vec(v,:);
+                    Angle_index(a,8:10)= direction_vec(w,:);
+                    Angle_index(a,11)= neigh_dist(v);
+                    Angle_index(a,12)= direction_vec(w);
+                    a=a+1;
+                <span class="keyword">else</span>
+                    Angle_index(a,1)= 0; <span class="comment">% atom2(direction_vec(w,1)).index;</span>
+                    Angle_index(a,2)= solute_index;
+                    Angle_index(a,3)= atom2(neigh_ind(v,1)).index;
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= direction_vec(w,:);
+                    Angle_index(a,8:10)= neigh_vec(v,:);
+                    Angle_index(a,11)= direction_vec(w);
+                    Angle_index(a,12)= neigh_dist(v);
+                    a=a+1;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    [Y,I]=sort(Angle_index(:,2));
+    Angle_index=Angle_index(I,:);
+    Angle_index = unique(Angle_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
+    Angle_index(~any(Angle_index,2),:) = [];
+
+    neigh.angle=Angle_index;
+
+    atom1(i).neigh.type=[atom2(neigh.in).type]';
+    atom1(i).neigh.index=[atom2(neigh.in).index]';
+    atom1(i).neigh.dist=neigh.dist;
+    atom1(i).neigh.coords=neigh.coords;
+    atom1(i).neigh.vec=neigh.r_vec;
+    atom1(i).neigh.angle=neigh.angle;
+
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Neigh'</span>,neigh)
+assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index)
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% direction_atom.m
+% * This function tries to find all angles between the  atom1 and atom2 
+% versus a given vector direction_vec, a nx3 unit vector (where n typically 
+% is 1). One optional argument like 'reverse' reverses the angle_limit from 
+% max to min angle
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150)
+% # atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150,1)
+% # atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,1.25,2.25,150,1,'reverse')
+
+function atom1 = direction_atom(atom1,atom2,Box_dim,direction_vec,rmaxshort,rmaxlong,angle_limit,varargin)
+%%
+
+% rmin=0;
+% rmax=3.5;
+% min_angle=120;
+% Box_dim=Box_dim(1,:);
+% direction_vec=[0 0 1];
+
+if nargin > 7 % was 5, why?
+    skip_internal=cell2mat(varargin(1));
+else
+    skip_internal=0;
+end
+
+lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
+if numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+elseif numel(Box_dim)==9
+    % Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+end
+
+a=1;Angle_index=zeros(1,12);
+for i=1:size(atom1,2)
+
+    XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
+    
+    if sum(strncmpi([atom1.type],'OW',2))>0 && sum(strncmpi([atom2.type],'HW',2))>0 && skip_internal == 1
+        ind_sel=~ismember([atom2.index],[atom1(i).index+1 atom1(i).index+2]);
+        XYZ_data=XYZ_data(ind_sel,:);
+    end
+    
+    solute_index=atom1(i).index;
+    XYZ_solute=[[atom1(i).x]' [atom1(i).y]' [atom1(i).z]'];
+    
+    rx=zeros(size(XYZ_data,1),1);ry=zeros(size(XYZ_data,1),1);rz=zeros(size(XYZ_data,1),1);
+    
+    if size(Box_dim,2)>3
+        % Calculate Distance Components for triclic cell with pbc (should work?)
+        rx = XYZ_data(:,1) - XYZ_solute(1);
+        ry = XYZ_data(:,2) - XYZ_solute(2);
+        rz = XYZ_data(:,3) - XYZ_solute(3);
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+        rz(z_gt_ind) = rz(z_gt_ind) - lz;
+        rz(z_lt_ind) = rz(z_lt_ind) + lz;
+        rx(z_gt_ind) = rx(z_gt_ind) - xz;
+        rx(z_lt_ind) = rx(z_lt_ind) + xz;
+        ry(z_gt_ind) = ry(z_gt_ind) - yz;
+        ry(z_lt_ind) = ry(z_lt_ind) + yz;
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+        ry(y_gt_ind) = ry(y_gt_ind) - ly;
+        ry(y_lt_ind) = ry(y_lt_ind) + ly;
+        rx(y_gt_ind) = rx(y_gt_ind) - xy;
+        rx(y_lt_ind) = rx(y_lt_ind) + xy;
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+        rx(x_gt_ind) = rx(x_gt_ind) - lx;
+        rx(x_lt_ind) = rx(x_lt_ind) + lx;
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    else
+        %Calculate Distance Components for orthogonal cell with pbc
+        rx =  XYZ_data(:,1) - XYZ_solute(1);
+        x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+        rx(x_gt_ind) = rx(x_gt_ind) - lx;
+        rx(x_lt_ind) = rx(x_lt_ind) + lx;
+        
+        ry = XYZ_data(:,2) - XYZ_solute(2);
+        y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+        ry(y_gt_ind) = ry(y_gt_ind) - ly;
+        ry(y_lt_ind) = ry(y_lt_ind) + ly;
+        
+        rz = XYZ_data(:,3) - XYZ_solute(3);
+        z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+        rz(z_gt_ind) = rz(z_gt_ind) - lz;
+        rz(z_lt_ind) = rz(z_lt_ind) + lz;
+    end
+    
+    dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
+    
+    % Find points inside circle
+    in=intersect(find(dist>rmaxshort),find(dist<rmaxlong));
+    
+    % in=sort(unique(in));
+    
+    
+    % in = in(find(in~=i));
+    neigh.in = in;
+    neigh.dist = [dist(in,1)];
+    neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
+    neigh.r_vec = [rx(in) ry(in) rz(in)];
+    
+    neigh_dist=[neigh.dist];
+    neigh_ind=[neigh.in];
+    neigh_vec=[neigh.r_vec];
+    
+    neigh_ind(~any(neigh_ind,2),:) = [];
+    neigh_vec(~any(neigh_vec,2),:) = [];
+    
+    for v=1:size(neigh_ind,1)
+        for w=1:size(direction_vec,1) % From v or from 1?
+            angle=rad2deg(atan2(norm(cross(neigh_vec(v,:),direction_vec(w,:))),dot(neigh_vec(v,:),direction_vec(w,:))));
+            if nargin > 7
+                angle_lo=angle_limit;
+                angle_hi=angle;
+            else
+                angle_hi=angle_limit;
+                angle_lo=angle;
+            end
+            if angle > 0 && angle_lo < angle_hi
+                if neigh_ind(v,1) < direction_vec(w,1)
+                    Angle_index(a,1)= atom2(neigh_ind(v,1)).index;
+                    Angle_index(a,2)= solute_index;
+                    Angle_index(a,3)= 0; % atom2(direction_vec(w,1)).index;
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= neigh_vec(v,:);
+                    Angle_index(a,8:10)= direction_vec(w,:);
+                    Angle_index(a,11)= neigh_dist(v);
+                    Angle_index(a,12)= direction_vec(w);
+                    a=a+1;
+                else
+                    Angle_index(a,1)= 0; % atom2(direction_vec(w,1)).index;
+                    Angle_index(a,2)= solute_index;
+                    Angle_index(a,3)= atom2(neigh_ind(v,1)).index;
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= direction_vec(w,:);
+                    Angle_index(a,8:10)= neigh_vec(v,:);
+                    Angle_index(a,11)= direction_vec(w);
+                    Angle_index(a,12)= neigh_dist(v);
+                    a=a+1;
+                end
+            end
+        end
+    end
+    
+    [Y,I]=sort(Angle_index(:,2));
+    Angle_index=Angle_index(I,:);
+    Angle_index = unique(Angle_index,'rows','stable');
+    Angle_index(~any(Angle_index,2),:) = [];
+    
+    neigh.angle=Angle_index;
+    
+    atom1(i).neigh.type=[atom2(neigh.in).type]';
+    atom1(i).neigh.index=[atom2(neigh.in).index]';
+    atom1(i).neigh.dist=neigh.dist;
+    atom1(i).neigh.coords=neigh.coords;
+    atom1(i).neigh.vec=neigh.r_vec;
+    atom1(i).neigh.angle=neigh.angle;
+    
+end
+
+assignin('caller','Neigh',neigh)
+assignin('caller','Angle_index',Angle_index)
+
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -1,8 +1,8 @@
 %% position_molid.m
-% * This function movies a MolID (by it's COM) to a certain position
+% * This function moves a MolID (by it's COM) to a certain position
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -20,8 +20,13 @@ atom = COM_atom(atom,MolID);
 
 ind=ismember([atom.molid],MolID);
 
-x_shift=num2cell([atom(ind).x]-[atom(ind).COM_x]+position_vec(1)); [atom(ind).x]=deal(x_shift{:});
+x_shift=num2cell([atom(ind).x]-[atom(ind).COM_x]+position_vec(1));
+[atom(ind).x]=deal(x_shift{:});
 
-y_shift=num2cell([atom(ind).y]-[atom(ind).COM_y]+position_vec(2)); [atom(ind).y]=deal(y_shift{:});
+y_shift=num2cell([atom(ind).y]-[atom(ind).COM_y]+position_vec(2));
+[atom(ind).y]=deal(y_shift{:});
 
-z_shift=num2cell([atom(ind).z]-[atom(ind).COM_z]+position_vec(3)); [atom(ind).z]=deal(z_shift{:});
+z_shift=num2cell([atom(ind).z]-[atom(ind).COM_z]+position_vec(3));
+[atom(ind).z]=deal(z_shift{:});
+
+end

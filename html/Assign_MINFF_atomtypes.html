@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Example on how to assign MINFF atomtypes to a mineral atom struct</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="Assign_MINFF_atomtypes.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Example on how to assign MINFF atomtypes to a mineral atom struct</h1>
+<!--introduction-->
+<p>See also the <a href="Advanced_examples.html">advanced examples</a>
+</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">First set some convenient matlab settings</a>
+</li>
+<li>
+<a href="#2">Set input and output filenames</a>
+</li>
+<li>
+<a href="#3">Import a unit cell structure and replicate it into a mineral layer</a>
+</li>
+<li>
+<a href="#4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a></a>
+</li>
+<li>
+<a href="#5">Write a MINFF (Holmboe, to be submitted) .pdb file</a>
+</li>
+<li>
+<a href="#6">Assign the modified MINFF atomtypes to the montmorillonite atom struct</a>
+</li>
+<li>
+<a href="#7">Heal and assign the modified MINFF atomtypes to the montmorillonite atom struct</a>
+</li>
+<li>
+<a href="#8">Write the new modified MINFF .pdb file</a>
+</li>
+</ul>
+</div>
+<h2 id="1">First set some convenient matlab settings</h2>
+<pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre>
+<h2 id="2">Set input and output filenames</h2>
+<pre class="codeinput">filename_in=<span class="string">'Pyrophyllite.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+filename_out=<span class="string">'6x4x1_MMT_minff_2004.pdb'</span>; <span class="comment">% default is 'Pyrophyllite.pdb'</span>
+</pre>
+<h2 id="3">Import a unit cell structure and replicate it into a mineral layer</h2>
+<p>Normally, when constructing a mineral particle and assigning the MINFF atomtypes, one usually start of by building the mineral particle from an X-ray determined unit cell structure. In this example we will demonstrate how to generate a montmorillonite layer particle from a pyrophyllite unit cell. Both minerals are so-called 2:1 T-O-T sheet silicate minerals, with the difference between the two isostructural minerals being (as you may know) the fact that montmorillonite carries charge defects due to isomorphic substitution. For montmorillonite this means substitution of Si4+ with Al3+ in the two tetrahedral sheets, or octahedral Al3+ with Mg2+ or Fe2+ in the octahedral sheet of the montmorillonite layer.</p>
+<pre class="codeinput">atom = import_atom(filename_in); <span class="comment">% Imports a pyrophyllite unit cell</span>
+atom = replicate_atom(atom,Box_dim,[6 4 1]); <span class="comment">% Replicate the structure by 6x4x1 into a Pyrophyllite clay layer</span>
+</pre>
+<h2 id="4">Perform isomorphic substitution using <a href="substitute_atom.html">substitute_atom</a>
+</h2>
+<p>
+<a href="substitute_atom.html">substitute_atom</a> was written with centrosymmetric minerals in mind, therfore it works best if the layer is centered at z=0 in the xy-plane. It can handle both substitutions in the octahedral as well as in the tetrahedral sheets. It distributes the substituted sites randomly, except for the fact that one can choose a nearest distance between the substituted sites, which in this example is 5.5 &Aring;ngstr&ouml;m. We do this to avoid oxygen atoms facing two substituted sites at the same time (Google L&ouml;wenstein's rule).</p>
+<pre class="codeinput">atom = substitute_atom(atom,Box_dim,6*4*2/3,<span class="string">'Al'</span>,<span class="string">'Mgo'</span>,5.5) <span class="comment">% Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites</span>
+<span class="comment">% atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions</span>
+</pre>
+<h2 id="5">Write a MINFF (Holmboe, to be submitted) .pdb file</h2>
+<p>
+<img src="Assign_MINFF_atomtypes_eq13552534884744554058.png" alt="$$Z_{O} = 2 - \sum_i \frac{( Z^F_i - Z^p_I )}{CN_i}$$" style="width:116px;height:30px;"></p>
+<p>
+<img src="Assign_MINFF_atomtypes_eq17987972552994005908.png" alt="$Z_{O}$" style="width:13px;height:9px;"> is the partial charge of the oxygen atom, and the summation is taken over all neighbouring cations, where <img src="Assign_MINFF_atomtypes_eq16170518148635324273.png" alt="$Z^F_i$" style="width:14px;height:12px;"> is the formal charge, <img src="Assign_MINFF_atomtypes_eq13846427347604231950.png" alt="$Z^p_I$" style="width:12px;height:12px;"> is the partial charge and <img src="Assign_MINFF_atomtypes_eq11461226491485041589.png" alt="$CN_I$" style="width:21px;height:10px;"> is the coordination number of the cation. Although not explicitly stated/used in the original MINFF publication by Cygan et al 2004, this formula can also be used to calculate the partial charge of the oxygen atomtypes in the original MINFF. Hence one can assume that the partial charge of any new oxygen atomtype calculated in this way is (more or less...) consisted with all the other atoms/charges in MINFF.</p>
+<p>Below is the list of atomtype names from the Cygan, 2004 paper and the ones modified here, having atomtype names that simply make more sense to me. Note that I have also added a few to the Cygan, (Cygan et al 2004) atomtypes, like oahe/oahhe/oshe etc.</p>
+<pre class="codeinput">
+<span class="comment">% MINFF (MHolmboe) = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';</span>
+</pre>
+<h2 id="6">Assign the modified MINFF atomtypes to the montmorillonite atom struct</h2>
+<pre class="codeinput">atom_minff = minff_atom(atom,Box_dim) <span class="comment">% Assign the minff atom types to the atomstruct</span>
+<span class="comment">% atom_minff = minff_atom(atom,Box_dim,'minff','spc',[1 2]) % In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly</span>
+</pre>
+<h2 id="7">Heal and assign the modified MINFF atomtypes to the montmorillonite atom struct</h2>
+<p>In cases were atoms need healing, or in order to protonate edge groups, one can use a slighlt longer command like below. For more info look into the <a href="minff_atom.html">minff_atom</a> function and lines 49-80.</p>
+<pre class="codeinput">atom_minff = minff_atom(atom_minff,Box_dim,<span class="string">'minff'</span>,<span class="string">'spc'</span>,[1:7]) <span class="comment">% Assign the minff atom types to the atomstruct</span>
+</pre>
+<h2 id="8">Write the new modified MINFF .pdb file</h2>
+<pre class="codeinput">write_atom_pdb(atom_minff,Box_dim,strcat(<span class="string">'mod_'</span>,filename_out)); <span class="comment">% Print the clay layer to a .pdb file</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Example on how to assign MINFF atomtypes to a mineral atom struct
+% See also the <Advanced_examples.html advanced examples>
+
+%% First set some convenient matlab settings
+format compact; set(gcf,'Visible','on');
+
+%% Set input and output filenames
+filename_in='Pyrophyllite.pdb'; % default is 'Pyrophyllite.pdb'
+filename_out='6x4x1_MMT_minff_2004.pdb'; % default is 'Pyrophyllite.pdb'
+
+%% Import a unit cell structure and replicate it into a mineral layer
+% Normally, when constructing a mineral particle and assigning the 
+%  MINFF atomtypes, one usually start of by building the mineral particle
+% from an X-ray determined unit cell structure. In this example we will
+% demonstrate how to generate a montmorillonite layer particle from a
+% pyrophyllite unit cell. Both minerals are so-called 2:1 T-O-T sheet 
+% silicate minerals, with the difference between the two isostructural 
+% minerals being (as you may know) the fact that montmorillonite carries 
+% charge defects due to isomorphic substitution. For montmorillonite this 
+% means substitution of Si4+ with Al3+ in the two tetrahedral sheets, or 
+% octahedral Al3+ with Mg2+ or Fe2+ in the octahedral sheet of the 
+% montmorillonite layer.
+
+atom = import_atom(filename_in); % Imports a pyrophyllite unit cell
+atom = replicate_atom(atom,Box_dim,[6 4 1]); % Replicate the structure by 6x4x1 into a Pyrophyllite clay layer
+
+%% Perform isomorphic substitution using <substitute_atom.html substitute_atom>
+% <substitute_atom.html substitute_atom> was written with centrosymmetric
+% minerals in mind, therfore it works best if the layer is centered at z=0 
+% in the xy-plane. It can handle both substitutions in the octahedral as
+% well as in the tetrahedral sheets. It distributes the substituted sites
+% randomly, except for the fact that one can choose a nearest distance
+% between the substituted sites, which in this example is 5.5 Ångström. We
+% do this to avoid oxygen atoms facing two substituted sites at the same
+% time (Google Löwenstein's rule).
+
+atom = substitute_atom(atom,Box_dim,6*4*2/3,'Al','Mgo',5.5) % Perform octahedral (only) substitutions on 2/3's of all Al sites. Here 5.5 is the minimum distance between the substituted Mg2+ sites
+% atom = substitute_atom(atom,Box_dim,14,'Al','Mgo',5.5,2,'Si','Al',5.5) % 14 octahedral substitutions and 2 tetrahedral substitutions
+
+%% Write a  MINFF (Holmboe, to be submitted) .pdb file
+%
+% 
+% $$Z_{O} = 2 - \sum_i \frac{( Z^F_i - Z^p_I )}{CN_i}$$
+% 
+% $Z_{O}$ is the partial charge of the oxygen atom, and the summation is
+% taken over all neighbouring cations, where $Z^F_i$ is the formal charge, 
+% $Z^p_I$ is the partial charge and $CN_I$ is the coordination number of 
+% the cation. Although not explicitly stated/used in the original  MINFF 
+% publication by Cygan et al 2004, this formula can also be used to calculate 
+% the partial charge of the oxygen atomtypes in the original  MINFF. Hence 
+% one can assume that the partial charge of any new oxygen atomtype 
+% calculated in this way is (more or less...) consisted with all the other 
+% atoms/charges in  MINFF. 
+% 
+% Below is the list of atomtype names from the
+% Cygan, 2004 paper and the ones modified here, having atomtype names that 
+% simply make more sense to me. Note that I have also added a few to the 
+% Cygan, (Cygan et al 2004) atomtypes, like oahe/oahhe/oshe etc.
+
+% MINFF (MHolmboe) = {'Hw', 'H','Ow','Oh','O', 'Omg', 'Oalt','Odsub','Ohmg','Oalsi','Oalhh','Oalh','Osih','Si','Al','Alt','Mgo','Mgh','Cao','Cah','Feo','Lio','Li','Na','K','Rb','Cs','Mg','Ca','Sr','Ba','F','Cl','Br','I'}';
+
+%% Assign the modified  MINFF atomtypes to the montmorillonite atom struct
+atom_minff = minff_atom(atom,Box_dim) % Assign the minff atom types to the atomstruct
+% atom_minff = minff_atom(atom,Box_dim,'minff','spc',[1 2]) % In case of 14 octahedral substitutions and 2 tetrahedral substitutions as above, add a final argument [1 2] to iterate over the structure twice the assign the atomtypes correctly
+
+%% Heal and assign the modified  MINFF atomtypes to the montmorillonite atom struct
+% In cases were atoms need healing, or in order to protonate edge groups,
+% one can use a slighlt longer command like below. For more info look into
+% the <minff_atom.html minff_atom> function and lines 49-80.
+atom_minff = minff_atom(atom_minff,Box_dim,'minff','spc',[1:7]) % Assign the minff atom types to the atomstruct
+
+%% Write the new modified  MINFF .pdb file
+write_atom_pdb(atom_minff,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

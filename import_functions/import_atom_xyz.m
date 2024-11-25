@@ -3,7 +3,7 @@
 % * It tries to guess the Box_dim, so watch out!
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

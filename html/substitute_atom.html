@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>substitute_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="substitute_atom.m"><style type="text/css">
+      -->
+<title>substitute_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="substitute_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,50 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>substitute_atom.m</h1><!--introduction--><div><ul><li>This scripts performs isomorphous substitution, by replacing for instance</li><li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li><li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li><li>atom is the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements</li><li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>substitute_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This scripts performs isomorphous substitution, by replacing for instance</li>
+<li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li>
+<li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li>
+<li>atom is the atom struct</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments</li>
+<li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements</li>
+<li>atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">% If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges</span>
 <span class="comment">% clear all;</span>
@@ -325,7 +373,16 @@ O2_atom=[]; <span class="comment">% New addition...</span>
 <span class="keyword">end</span>
 
 composition_atom(atom);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% substitute_atom.m
 % * This scripts performs isomorphous substitution, by replacing for instance
@@ -334,14 +391,14 @@ composition_atom(atom);
 % * atom is the atom struct
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments
-% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements 
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
 %
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
@@ -386,12 +443,12 @@ if nargin > 6
         T2=varargin(3)
     end
     minT2T2_dist=cell2mat(varargin(4))
-    
+
     if ~iscell(T1)
         disp('Converting T1 to cell')
         T1={T1}
     end
-    
+
     if ~iscell(T2)
         disp('Converting T2 to cell')
         T2={T2}
@@ -422,7 +479,7 @@ XYZ_data = [[atom.x]' [atom.y]' [atom.z]'];
 O2_atom=[]; % New addition...
 
 if NumOctSubst>0
-    
+
     O1_atom=atom(ind_O1);
     O1_Index=1:size(O1_atom,2);%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));
     O1_labels=[O1_atom.type];%XYZ_labels(O1_Index);
@@ -430,7 +487,7 @@ if NumOctSubst>0
     Ave_Oct_z=mean(O1_data(:,3));
     rand_O1_Index=O1_Index(randperm(length(O1_Index)));
     O1_dist_matrix = dist_matrix_atom(O1_atom,Box_dim);
-    
+
     i=1; nOctlo=0; nOcthi=0; nOctmid=0; Oct_subst_index=[];%rand_O1_Index(1);
     while (nOctlo+nOcthi+nOctmid)<=NumOctSubst
         ind_O2=find(strcmp([O1_atom.type],O2));
@@ -451,7 +508,7 @@ if NumOctSubst>0
                 [O1_atom(rand_O1_Index(i)).type]=O2;
             end
         end
-        
+
         if (nOctlo+nOcthi+nOctmid) == NumOctSubst
             break
         end
@@ -527,17 +584,17 @@ if NumTetSubst>0
         end
         i=i+1;
     end
-    
+
     XYZ_labels(ind_T1(Tet_subst_index))=T2;
     [atom(ind_T1(Tet_subst_index)).type]=deal(T2);
-    
+
     if nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst
         disp('Second substitution success!!!')
     else
         disp('Second substitution not optimal!!!')
         % pause(3)
     end
-    
+
 end
 
 if abs(shift_z)>0
@@ -556,13 +613,13 @@ if NumTetSubst>0
     T2_distmatrix=dist_matrix_atom(atom_T2,Box_dim);
     disp('Minimum minT2T2_dist is in Å')
     min(T2_distmatrix(2:end,1))
-    
+
     if NumOctSubst>0
         T2O2_distmatrix=dist_matrix_atom(atom_T2,atom_O2,Box_dim);
         disp('Minimum minT2O2_dist is in Å')
         min(T2O2_distmatrix(2:end,1))
     end
-    
+
 end
 
 if NumOctSubst>0
@@ -580,7 +637,7 @@ if NumOctSubst>0
         catch
             disp('No first subst...')
         end
-        
+
     end
 end
 
@@ -597,12 +654,16 @@ if NumTetSubst>0
         catch
             disp('No second subst...')
         end
-        
+
     end
 end
 
 composition_atom(atom);
 
+end
+
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

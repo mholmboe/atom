@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ff_helpfile</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="ff_helpfile.m"><style type="text/css">
+      -->
+<title>ff_helpfile</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="ff_helpfile.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,25 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Constants</a></li><li><a href="#4">Order the records</a></li><li><a href="#5">Order the fields</a></li></ul></div><pre class="codeinput">format <span class="string">long</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#3">Constants</a>
+</li>
+<li>
+<a href="#4">Order the records</a>
+</li>
+<li>
+<a href="#5">Order the fields</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">format <span class="string">long</span>
 
 ffname=<span class="string">'Zhang_monovalent'</span>
 
@@ -75,7 +98,8 @@ watermodels={<span class="string">'tip3p'</span> <span class="string">'opc3'</sp
 
 ff=[];
 <span class="keyword">for</span> n=1:numel(watermodels)
-</pre><pre class="codeinput">    watermodel=char(watermodels(n))
+</pre>
+<pre class="codeinput">    watermodel=char(watermodels(n))
 
     Ions=monovalentIons;
     Rmin=monovalent(:,2*n-1);
@@ -96,7 +120,9 @@ ff=[];
 
     [ff.atnum]=ff_temp.atnum;
     [ff.mass]=ff_temp.mass;
-</pre><h2 id="3">Constants</h2><pre class="codeinput">    eVinJ=1.60217653E-19; <span class="comment">% SI</span>
+</pre>
+<h2 id="3">Constants</h2>
+<pre class="codeinput">    eVinJ=1.60217653E-19; <span class="comment">% SI</span>
     Na=6.022140857E+23;
     kBinJK=1.3806485279E-23;
 
@@ -108,25 +134,32 @@ ff=[];
 
 
     <span class="keyword">for</span> i=1:size(ff,2)
-<span class="comment">%         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);</span>
-         ff(i).radius_nm=ff(i).radius_A/10;
-<span class="comment">%         ff(i).radius_A=ff(i).radius_nm*10;</span>
-         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
-         ff(i).sigma_A=ff(i).sigma_nm*10; <span class="comment">%ff(i).radius_A/2^(1/6);</span>
+         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
+         <span class="comment">% ff(i).radius_nm=ff(i).radius_A/10;</span>
+         ff(i).radius_A=ff(i).radius_nm*10;
+<span class="comment">%         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);</span>
+          ff(i).sigma_A=ff(i).sigma_nm*10; <span class="comment">%ff(i).radius_A/2^(1/6);</span>
 <span class="comment">%</span>
-<span class="comment">%         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;</span>
-         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
-         ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
-         ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
+<span class="comment">%         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;</span>
+          ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
+          ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+<span class="comment">%</span>
+<span class="comment">% ff(i).C12_kJmolnm12=4*ff(i).e_kJmol*(ff(i).sigma_nm)^12;</span>
+<span class="comment">% ff(i).C6_kJmolnm6=4*ff(i).e_kJmol*(ff(i).sigma_nm)^6;</span>
 
-        <span class="keyword">try</span>
-            ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
-        <span class="keyword">catch</span>
 
-        <span class="keyword">end</span>
+
+<span class="comment">%         try</span>
+<span class="comment">%             ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;</span>
+<span class="comment">%         catch</span>
+<span class="comment">%</span>
+<span class="comment">%         end</span>
     <span class="keyword">end</span>
 <span class="comment">%     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')</span>
-</pre><h2 id="4">Order the records</h2><pre class="codeinput">    [atomtypes,atomtypes_order]=sort([ff.type]);
+</pre>
+<h2 id="4">Order the records</h2>
+<pre class="codeinput">    [atomtypes,atomtypes_order]=sort([ff.type]);
     ff_temp=ff;
     <span class="keyword">for</span> i=1:size(ff,2)
         ff_temp(i)=ff(atomtypes_order(i));
@@ -139,7 +172,9 @@ ff=[];
         ff_temp(i)=ff(atnum_order(i));
     <span class="keyword">end</span>
     ff=ff_temp;
-</pre><h2 id="5">Order the fields</h2><pre class="codeinput">    defaultAttributes={<span class="string">'type'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'radius_nm'</span> <span class="string">'radius_A'</span> <span class="string">'sigma_nm'</span> <span class="string">'sigma_A'</span> <span class="string">'e_kJmol'</span> <span class="string">'e_kcalmol'</span> <span class="string">'e_eV'</span> <span class="string">'e_kB'</span> } <span class="comment">% 'C4_kcalmolA' 'C4_kJmolnm' }</span>
+</pre>
+<h2 id="5">Order the fields</h2>
+<pre class="codeinput">    defaultAttributes={<span class="string">'type'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'radius_nm'</span> <span class="string">'radius_A'</span> <span class="string">'sigma_nm'</span> <span class="string">'sigma_A'</span> <span class="string">'e_kJmol'</span> <span class="string">'e_kcalmol'</span> <span class="string">'e_eV'</span> <span class="string">'e_kB'</span> } <span class="comment">% 'C4_kcalmolA' 'C4_kJmolnm' }</span>
     ffAttributes=fieldnames(ff)';
     indDefault=find(ismember(defaultAttributes,ffAttributes));
     defaultAttributes=defaultAttributes(indDefault);
@@ -154,8 +189,17 @@ ff=[];
 <span class="comment">%     end</span>
 
     save(strcat(<span class="string">'ions_'</span>,ffname,<span class="string">'_'</span>,watermodel,<span class="string">'_ff'</span>),<span class="string">'ff'</span>)
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 format long
 
@@ -201,22 +245,27 @@ for n=1:numel(watermodels)
 
     
     for i=1:size(ff,2)
-%         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
-         ff(i).radius_nm=ff(i).radius_A/10;
-%         ff(i).radius_A=ff(i).radius_nm*10;
-         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
-         ff(i).sigma_A=ff(i).sigma_nm*10; %ff(i).radius_A/2^(1/6);
+         ff(i).radius_nm=ff(i).sigma_nm*2^(1/6);
+         % ff(i).radius_nm=ff(i).radius_A/10;
+         ff(i).radius_A=ff(i).radius_nm*10;
+%         ff(i).sigma_nm=ff(i).radius_nm/2^(1/6);
+          ff(i).sigma_A=ff(i).sigma_nm*10; %ff(i).radius_A/2^(1/6);
 %         
-%         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
-         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
-         ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
-         ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+         ff(i).e_kcalmol=ff(i).e_kJmol/4.184;
+%         ff(i).e_kJmol=ff(i).e_kcalmol*4.184;
+          ff(i).e_eV=ff(i).e_kJmol*1000/Na/eVinJ;
+          ff(i).e_kB=ff(i).e_kJmol*1000/Na/kBinJK;
+% 
+% ff(i).C12_kJmolnm12=4*ff(i).e_kJmol*(ff(i).sigma_nm)^12;
+% ff(i).C6_kJmolnm6=4*ff(i).e_kJmol*(ff(i).sigma_nm)^6;
+
+
         
-        try
-            ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
-        catch
-            
-        end
+%         try
+%             ff(i).C4_kJmolnm=ff(i).C4_kcalmolA*4.184/10000;
+%         catch
+%             
+%         end
     end
 %     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')
     %% Order the records
@@ -253,4 +302,6 @@ for n=1:numel(watermodels)
     
 end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

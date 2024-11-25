@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>create_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="create_atom.m"><style type="text/css">
+      -->
+<title>create_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="create_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,96 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>create_atom.m</h1><!--introduction--><div><ul><li>This function creates particles within a certain region defined by <a href="limits">limits</a></li><li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar functions</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Arguments</a></li><li><a href="#5">Dependencies</a></li><li><a href="#6">Examples</a></li><li><a href="#8">Old v2.06</a></li><li><a href="#9">New v2.07</a></li></ul></div><h2 id="1">Similar functions</h2><div><ul><li>insert_atom</li><li>ionize_atom</li><li>solvate_atom</li></ul></div><h2 id="2">Version</h2><p>2.11</p><h2 id="3">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Arguments</h2><div><ul><li>{type} is particle/atomtype</li><li>{resname} is resname</li><li>[limits] is a 1x3 or 1x6 volume variable</li><li>The number nmax is the max number of particles</li><li>Optional scale number (varargin{1}) is a how-many-diameters-between-the-particles-thingy</li></ul></div><h2 id="5">Dependencies</h2><div><ul><li>radius_ion</li><li>add2atom</li><li>replicate_atom</li><li>translate_atom</li><li>merge_atom</li><li>slice_atom</li><li>update_atom</li><li>distance_matrix_atom</li></ul></div><h2 id="6">Examples</h2><div><ol><li>atom = create_atom('Na','Na',[10 20 30],10) % Basic input arguments</li><li>atom = create_atom('Na','Na',[10 20 30],10,2) % here 2 scale factor thats multiplied to each particles radii</li><li>atom = create_atom('Na','Na',[10 20 30],10,[2 2.25]) % here 2.25 (&Aring;) is the min dist to any other particle</li><li>atom = create_atom('Na','Na',[10 20 30],10,2,in_atom) % in_atom any pre-existing atom struct</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = create_atom(type,resname,limits,nmax,varargin)
-</pre><pre class="codeinput"><span class="keyword">if</span> iscell(type)==0;type={type}; <span class="keyword">end</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>create_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function creates particles within a certain region defined by <a href="limits">limits</a>
+</li>
+<li>Can also add particles on a plane by setting Lx|Ly|Lz to 0 or something small</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Similar functions</a>
+</li>
+<li>
+<a href="#2">Version</a>
+</li>
+<li>
+<a href="#3">Contact</a>
+</li>
+<li>
+<a href="#4">Arguments</a>
+</li>
+<li>
+<a href="#5">Dependencies</a>
+</li>
+<li>
+<a href="#6">Examples</a>
+</li>
+<li>
+<a href="#8">Old v2.06</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Similar functions</h2>
+<div>
+<ul>
+<li>insert_atom</li>
+<li>ionize_atom</li>
+<li>solvate_atom</li>
+</ul>
+</div>
+<h2 id="2">Version</h2>
+<p>3.00</p>
+<h2 id="3">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="4">Arguments</h2>
+<div>
+<ul>
+<li>{type} is particle/atomtype</li>
+<li>{resname} is resname</li>
+<li>[limits] is a 1x3 or 1x6 volume variable</li>
+<li>The number nmax is the max number of particles</li>
+<li>Optional scale number (varargin{1}) is a how-many-diameters-between-the-particles-thingy</li>
+</ul>
+</div>
+<h2 id="5">Dependencies</h2>
+<div>
+<ul>
+<li>radius_ion</li>
+<li>add2atom</li>
+<li>replicate_atom</li>
+<li>translate_atom</li>
+<li>merge_atom</li>
+<li>slice_atom</li>
+<li>update_atom</li>
+<li>distance_matrix_atom</li>
+</ul>
+</div>
+<h2 id="6">Examples</h2>
+<div>
+<ol>
+<li>atom = create_atom('Na','Na',[10 20 30],10) % Basic input arguments</li>
+<li>atom = create_atom('Na','Na',[10 20 30],10,2) % here 2 scale factor thats multiplied to each particles radii</li>
+<li>atom = create_atom('Na','Na',[10 20 30],10,[2 2.25]) % here 2.25 (&Aring;) is the min dist to any other particle</li>
+<li>atom = create_atom('Na','Na',[10 20 30],10,2,in_atom) % in_atom any pre-existing atom struct</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = create_atom(type,resname,limits,nmax,varargin)
+</pre>
+<pre class="codeinput">
+<span class="keyword">if</span> iscell(type)==0;type={type}; <span class="keyword">end</span>
 <span class="keyword">if</span> iscell(resname)==0;resname={resname};<span class="keyword">end</span>
 
 radii = abs(radius_ion(type));
@@ -169,7 +262,13 @@ atom(atom_ind)=atom;
 <span class="keyword">if</span> iscellstr({nmax}) == 1
     nmax=size(atom,2);
 <span class="keyword">end</span>
-</pre><h2 id="8">Old v2.06</h2><p>% If not filled up yet, remove the particles that are nearest some other particles % until we have achieved nmax i=1; distmatrix=dist_matrix_atom(atom,Box_dim); distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix while size(atom,2)&gt;nmax+1     [row,col]=find(distmatrix==min(min(distmatrix)));     ind_rm=max([row(1) col(1)]);     if ind_rm&gt;i         i=i+1;     end     atom(row(1))=[];     distmatrix(row(1),:)=[];     distmatrix(:,col(1))=[]; end size(atom,2)</p><h2 id="9">New v2.07</h2><p>Check that no added particles are too close</p><pre class="codeinput">distmatrix=dist_matrix_atom(atom,Box_dim);
+</pre>
+<h2 id="8">Old v2.06</h2>
+<p>% If not filled up yet, remove the particles that are nearest some other particles % until we have achieved nmax i=1; distmatrix=dist_matrix_atom(atom,Box_dim); distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix while size(atom,2)&gt;nmax+1 [row,col]=find(distmatrix==min(min(distmatrix))); ind_rm=max([row(1) col(1)]); if ind_rm&gt;i i=i+1; end atom(row(1))=[]; distmatrix(row(1),:)=[]; distmatrix(:,col(1))=[]; end size(atom,2)</p>
+<pre class="codeinput">
+<span class="comment">% New since v2.07</span>
+<span class="comment">% Check that no added particles are too close</span>
+distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; <span class="comment">% Dummy distance in the distance matrix</span>
 i=1;ind=[];
 <span class="keyword">while</span> i&lt;size(atom,2)+1
@@ -203,7 +302,17 @@ size(atom,2)
 atom=update_atom(atom);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'limits'</span>,limits);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% create_atom.m
 % * This function creates particles within a certain region defined by <limits>
@@ -215,7 +324,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'limits'</spa
 % * solvate_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -365,7 +474,7 @@ end
 % end
 % size(atom,2)
 
-%% New v2.07
+% New since v2.07
 % Check that no added particles are too close
 distmatrix=dist_matrix_atom(atom,Box_dim);
 distmatrix(distmatrix==0)=1000000; % Dummy distance in the distance matrix
@@ -402,8 +511,12 @@ atom=update_atom(atom);
 
 assignin('caller','limits',limits);
 
+end
+
 
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

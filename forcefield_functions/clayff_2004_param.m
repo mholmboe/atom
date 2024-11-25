@@ -3,7 +3,7 @@
 % Joung and Cheatham, 2008 + some others...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -100,7 +100,7 @@ forcefield.clayff(8).e_kcalmol = 0.155400;
 % Ohmg
 forcefield.clayff(9).type =    {'ohs'}; % ohs bridging oxygen w. substitution
 forcefield.clayff(9).mass =    15.99941;
-forcefield.clayff(9).charge =  -1.08090;
+forcefield.clayff(9).charge =  -1.08085;
 forcefield.clayff(9).radius =  3.553200;
 forcefield.clayff(9).e_kcalmol = 0.155400;
 %

@@ -3,7 +3,7 @@
 % and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -47,5 +47,7 @@ atom(ind)=[];
 
 if size(atom,2)>0
     atom=update_atom(atom);
+end
+
 end
 

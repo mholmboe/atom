@@ -6,13 +6,13 @@
 % fuse_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom=remove_occypancy_atom(atom)
+% * atom=remove_occypancy_atom(atom) % Basic input arguments
 %
 function atom=remove_occypancy_atom(atom)
 
@@ -23,3 +23,5 @@ hasDuplicates = size(u,1) < size(XYZ_data,1);
 ixDupRows = setdiff(1:size(XYZ_data,1), I);
 dupRowValues = XYZ_data(ixDupRows,:);
 atom(ixDupRows)=[];
+
+end

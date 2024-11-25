@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>gmx_make_ndx.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="gmx_make_ndx.m"><style type="text/css">
+      -->
+<title>gmx_make_ndx.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="gmx_make_ndx.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,55 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>gmx_make_ndx.m</h1><!--introduction--><div><ul><li>This function can help you print custom gromacs .ndx files, you just have to find a way to find the indexes id you want to print out with the group name {groupname}. The printed index file (default index.ndx) can be appended with new groups. See also <a href="Make_selections.html">Make_selections</a> how to make custom selections and find the corresponding atom indexes, MolID's etc.</li></ul></div><div><ul><li>Example on how to select all molID's of water (having [atom.types], the site names 'Ow') having z &lt; 10, run this:</li></ul></div><p>ind=find(strcmpi([atom.type],'Ow')&amp;[atom.z]&lt;10); % find all Ow atoms with z coordinates &lt; 10</p><p>id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command</p><p>gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>gmx_make_ndx(id,groupname,filename) % Basic input arguments</li><li>gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx</li><li>gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename</li></ol></div><pre class="codeinput"><span class="keyword">function</span> gmx_make_ndx(groupname,id,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>gmx_make_ndx.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function can help you print custom gromacs .ndx files, you just have to find a way to find the indexes id you want to print out with the group name {groupname}. The printed index file (default index.ndx) can be appended with new groups. See also <a href="Make_selections.html">Make_selections</a> how to make custom selections and find the corresponding atom indexes, MolID's etc.</li>
+</ul>
+</div>
+<div>
+<ul>
+<li>Example on how to select all molID's of water (having [atom.types], the site names 'Ow') having z &lt; 10, run this:</li>
+</ul>
+</div>
+<p>ind=find(strcmpi([atom.type],'Ow')&amp;[atom.z]&lt;10); % find all Ow atoms with z coordinates &lt; 10</p>
+<p>id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command</p>
+<p>gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>gmx_make_ndx(id,groupname,filename) % Basic input arguments</li>
+<li>gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx</li>
+<li>gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> gmx_make_ndx(id,groupname,varargin)
 
 <span class="keyword">if</span> nargin==1
     disp(<span class="string">'You did not supply enough input arguments!'</span>)
@@ -92,8 +145,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     filename = strcat(filename,<span class="string">'.ndx'</span>);
 <span class="keyword">end</span>
 
-
-
 <span class="comment">% Format the ind vector to have 15 entries per row</span>
 ext_ind=zeros(1,15*ceil(length(id)/15));
 ext_ind(1:length(id))=id;
@@ -116,26 +167,35 @@ fprintf(fid, <span class="string">'%s %s %s\r\n'</span>,<span class="string">'['
 fprintf(fid, <span class="string">'\r\n'</span>);
 fprintf(fid, <span class="string">'\r\n'</span>);
 fclose(fid);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% gmx_make_ndx.m
 % * This function can help you print custom gromacs .ndx files, you
 % just have to find a way to find the indexes id you want to print out
 % with the group name {groupname}. The printed index file (default
-% index.ndx) can be appended with new groups. See also <Make_selections.html Make_selections> 
+% index.ndx) can be appended with new groups. See also <Make_selections.html Make_selections>
 % how to make custom selections and find the corresponding atom indexes, MolID's etc.
 %
-% * Example on how to select all molID's of water (having [atom.types], 
+% * Example on how to select all molID's of water (having [atom.types],
 % the site names 'Ow') having z < 10, run this:
 %
-% ind=find(strcmpi([atom.type],'Ow')&[atom.z]<10); % find all Ow atoms with z coordinates < 10 
+% ind=find(strcmpi([atom.type],'Ow')&[atom.z]<10); % find all Ow atoms with z coordinates < 10
 %
 % id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command
 %
 % gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -145,7 +205,7 @@ fclose(fid);
 % # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
-function gmx_make_ndx(groupname,id,varargin)
+function gmx_make_ndx(id,groupname,varargin)
 
 if nargin==1
     disp('You did not supply enough input arguments!')
@@ -170,8 +230,6 @@ else
     filename = strcat(filename,'.ndx');
 end
 
-
-
 % Format the ind vector to have 15 entries per row
 ext_ind=zeros(1,15*ceil(length(id)/15));
 ext_ind(1:length(id))=id;
@@ -195,5 +253,8 @@ fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 fclose(fid);
 
+end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

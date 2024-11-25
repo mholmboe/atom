@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>write_xvg</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="write_xvg.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">write_xvg.m</a>
+</li>
+<li>
+<a href="#3">This function allows you to write a xvg file based on a previous file,</a>
+</li>
+<li>
+<a href="#4">in so that the new file has the same header and meta data, hence the</a>
+</li>
+<li>
+<a href="#5">only thing that changes is the actual data. Good for averaging data.</a>
+</li>
+<li>
+<a href="#7">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></a>
+</li>
+<li>
+<a href="#8">Check if .xvg is given in the filename</a>
+</li>
+<li>
+<a href="#9">Open and read the .xvg file</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> write_xvg(xdata,ydata,inputfile,varargin)
+</pre>
+<h2 id="2">write_xvg.m</h2>
+<h2 id="3">This function allows you to write a xvg file based on a previous file,</h2>
+<h2 id="4">in so that the new file has the same header and meta data, hence the</h2>
+<h2 id="5">only thing that changes is the actual data. Good for averaging data.</h2>
+<h2 id="7">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</h2>
+<pre class="codeinput">
+<span class="comment">% Check if filename is cell</span>
+<span class="keyword">if</span> iscell(inputfile)
+    inputfile=char(inputfile);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(xdata,1) &gt; size(xdata,2)
+    xdata=xdata';
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> size(ydata,1) &gt; size(ydata,2)
+    ydata=ydata';
+<span class="keyword">end</span>
+</pre>
+<h2 id="8">Check if .xvg is given in the filename</h2>
+<pre class="codeinput">
+<span class="keyword">if</span> regexp(inputfile,<span class="string">'.xvg'</span>) ~= false
+    inputfile = inputfile;
+<span class="keyword">else</span>
+    inputfile = strcat(inputfile,<span class="string">'.xvg'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 3
+    outputfile=varargin{1};
+
+    <span class="comment">% Check if filename is cell</span>
+    <span class="keyword">if</span> iscell(outputfile)
+        outputfile=char(outputfile);
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> regexp(char(outputfile),<span class="string">'.xvg'</span>) ~= false
+        outputfile=outputfile;
+    <span class="keyword">else</span>
+        outputfile=strcat(outputfile,<span class="string">'.xvg'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    outputfile=regexprep(inputfile,<span class="string">'.xvg'</span>,<span class="string">''</span>);
+    outputfile=strcat(outputfile,<span class="string">'_new.xvg'</span>);
+<span class="keyword">end</span>
+</pre>
+<h2 id="9">Open and read the .xvg file</h2>
+<pre class="codeinput">fid = fopen(inputfile,<span class="string">'r'</span>);
+C = textscan(fid, <span class="string">'%s'</span>, <span class="string">'Delimiter'</span>,<span class="string">'\n'</span>);
+fclose(fid);
+
+nRows = size(C{1,1},1);
+nColumns=size(strsplit(char(C{1,1}(end-1,:))),2);
+
+<span class="comment">% Search a specific string and find all rows containing matches</span>
+xaxis = strfind(C{1}, <span class="string">'@    xaxis  label '</span>);
+xaxislabel_row = find(~cellfun(<span class="string">'isempty'</span>, xaxis));
+xaxislabel=C{1,1}(xaxislabel_row);
+xaxislabel = regexprep(xaxislabel,<span class="string">'@    xaxis  label "'</span>,<span class="string">''</span>);
+xaxislabel = regexprep(xaxislabel,<span class="string">'"'</span>,<span class="string">''</span>);
+
+yaxis = strfind(C{1}, <span class="string">'@    yaxis  label '</span>);
+yaxislabel_row = find(~cellfun(<span class="string">'isempty'</span>, yaxis));
+yaxislabel=C{1,1}(yaxislabel_row);
+yaxislabel = regexprep(yaxislabel,<span class="string">'@    yaxis  label "'</span>,<span class="string">''</span>);
+yaxislabel = regexprep(yaxislabel,<span class="string">'"'</span>,<span class="string">''</span>);
+yaxislabel=strrep(yaxislabel,<span class="string">'\S-'</span>,<span class="string">'-^'</span>);
+yaxislabel=strrep(yaxislabel,<span class="string">'-^'</span>,<span class="string">'^-^'</span>);
+yaxislabel=strrep(yaxislabel,<span class="string">'\S'</span>,<span class="string">'^'</span>);
+yaxislabel=strrep(yaxislabel,<span class="string">'\N'</span>,<span class="string">''</span>);
+
+yaxis_all_legends=[];
+<span class="keyword">for</span> i=1:nColumns-1
+    yaxis = strfind(C{1},strcat(<span class="string">'@ s'</span>,num2str(i-1),<span class="string">' legend '</span>));
+    yaxis_legend_row = find(~cellfun(<span class="string">'isempty'</span>, yaxis));
+    yaxis_legend=C{1,1}(yaxis_legend_row);
+    yaxis_legend=strrep(yaxis_legend,<span class="string">'-'</span>,<span class="string">'_'</span>);
+    yaxis_legend = regexprep(yaxis_legend,strcat(<span class="string">'@ s'</span>,num2str(i-1),<span class="string">' legend '</span>),<span class="string">''</span>);
+    yaxis_all_legends = [yaxis_all_legends strtrim(regexprep(yaxis_legend,<span class="string">'"'</span>,<span class="string">''</span>))];
+<span class="keyword">end</span>
+
+<span class="comment">% Option 1 (the faster way of doing it...)</span>
+D=C;
+nondatarows1 = strfind(C{1}, <span class="string">'#'</span>);
+nondatarows1 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows1));
+nondatarows2 = strfind(C{1}, <span class="string">'@'</span>);
+nondatarows2 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows2));
+nondatarows3 = strfind(C{1}, <span class="string">'&amp;'</span>);
+nondatarows3 = find(~cellfun(<span class="string">'isempty'</span>,nondatarows3));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+D = regexp(D{1,1}, <span class="string">'\s+'</span>, <span class="string">'split'</span>);
+D = vertcat(D{:});
+Data = cellfun(@str2double,D);
+
+<span class="comment">% End option 1</span>
+
+<span class="keyword">try</span>
+    <span class="keyword">for</span> i=1:nColumns
+        <span class="keyword">if</span> i==1
+            assignin(<span class="string">'caller'</span>,<span class="string">'x'</span>,Data(:,i));
+        <span class="keyword">else</span>
+            assignin(<span class="string">'caller'</span>,strcat(<span class="string">'y'</span>,num2str(i-1)),Data(:,i));
+            yaxis_all_legends(i-1)=strtrim(yaxis_all_legends(i-1));
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">' '</span>,<span class="string">'_'</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'.'</span>,<span class="string">''</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'{}'</span>,<span class="string">''</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'\'</span>,<span class="string">''</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'/'</span>,<span class="string">''</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'='</span>,<span class="string">'_'</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">','</span>,<span class="string">'_'</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">'('</span>,<span class="string">'_'</span>);
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),<span class="string">')'</span>,<span class="string">'_'</span>);
+            assignin(<span class="string">'caller'</span>,char(yaxis_all_legends(i-1)),Data(:,i));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">catch</span>
+    disp(<span class="string">'Could not read the column labels, but you'</span>)
+    disp(<span class="string">'still have your data in the variable Data!'</span>)
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Data'</span>,Data);
+assignin(<span class="string">'caller'</span>,<span class="string">'xaxislabel'</span>,xaxislabel);
+assignin(<span class="string">'caller'</span>,<span class="string">'yaxislabel'</span>,yaxislabel);
+assignin(<span class="string">'caller'</span>,<span class="string">'yaxis_all_legends'</span>,yaxis_all_legends);
+row=max([nondatarows1;nondatarows2;nondatarows3])+1;
+
+C{1,1}(row:end)=[];
+<span class="comment">% C{1,1}(row:end)=1;</span>
+
+fid = fopen(outputfile, <span class="string">'wt'</span>);
+[nrows,ncols] = size(C{1,1});
+<span class="keyword">for</span> i = 1:nrows
+    fprintf(fid,<span class="string">'%s\r\n'</span>,char(C{1,1}(i)));
+<span class="keyword">end</span>
+
+A=mat2cell([xdata' ydata'],[max(size(xdata))],[1+min(size(ydata))]);
+<span class="keyword">for</span> i = 1:max(size(xdata))
+    fprintf(fid, <span class="string">'%8.5f %8.5f\r\n'</span>, A{1,1}(i,:));
+<span class="keyword">end</span>
+fclose(fid);
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+function write_xvg(xdata,ydata,inputfile,varargin)
+%% write_xvg.m
+%% This function allows you to write a xvg file based on a previous file,
+%% in so that the new file has the same header and meta data, hence the
+%% only thing that changes is the actual data. Good for averaging data.
+%%
+%% Please report bugs to michael.holmboe@umu.se
+
+% Check if filename is cell
+if iscell(inputfile)
+    inputfile=char(inputfile);
+end
+
+if size(xdata,1) > size(xdata,2)
+    xdata=xdata';
+end
+
+if size(ydata,1) > size(ydata,2)
+    ydata=ydata';
+end
+
+%% Check if .xvg is given in the filename
+if regexp(inputfile,'.xvg') ~= false
+    inputfile = inputfile;
+else
+    inputfile = strcat(inputfile,'.xvg');
+end
+
+if nargin > 3
+    outputfile=varargin{1};
+
+    % Check if filename is cell
+    if iscell(outputfile)
+        outputfile=char(outputfile);
+    end
+
+    if regexp(char(outputfile),'.xvg') ~= false
+        outputfile=outputfile;
+    else
+        outputfile=strcat(outputfile,'.xvg');
+    end
+else
+    outputfile=regexprep(inputfile,'.xvg','');
+    outputfile=strcat(outputfile,'_new.xvg');
+end
+
+%% Open and read the .xvg file
+fid = fopen(inputfile,'r');
+C = textscan(fid, '%s', 'Delimiter','\n');
+fclose(fid);
+
+nRows = size(C{1,1},1);
+nColumns=size(strsplit(char(C{1,1}(end-1,:))),2);
+
+% Search a specific string and find all rows containing matches
+xaxis = strfind(C{1}, '@    xaxis  label ');
+xaxislabel_row = find(~cellfun('isempty', xaxis));
+xaxislabel=C{1,1}(xaxislabel_row);
+xaxislabel = regexprep(xaxislabel,'@    xaxis  label "','');
+xaxislabel = regexprep(xaxislabel,'"','');
+
+yaxis = strfind(C{1}, '@    yaxis  label ');
+yaxislabel_row = find(~cellfun('isempty', yaxis));
+yaxislabel=C{1,1}(yaxislabel_row);
+yaxislabel = regexprep(yaxislabel,'@    yaxis  label "','');
+yaxislabel = regexprep(yaxislabel,'"','');
+yaxislabel=strrep(yaxislabel,'\S-','-^');
+yaxislabel=strrep(yaxislabel,'-^','^-^');
+yaxislabel=strrep(yaxislabel,'\S','^');
+yaxislabel=strrep(yaxislabel,'\N','');
+
+yaxis_all_legends=[];
+for i=1:nColumns-1
+    yaxis = strfind(C{1},strcat('@ s',num2str(i-1),' legend '));
+    yaxis_legend_row = find(~cellfun('isempty', yaxis));
+    yaxis_legend=C{1,1}(yaxis_legend_row);
+    yaxis_legend=strrep(yaxis_legend,'-','_');
+    yaxis_legend = regexprep(yaxis_legend,strcat('@ s',num2str(i-1),' legend '),'');
+    yaxis_all_legends = [yaxis_all_legends strtrim(regexprep(yaxis_legend,'"',''))];
+end
+
+% Option 1 (the faster way of doing it...)
+D=C;
+nondatarows1 = strfind(C{1}, '#');
+nondatarows1 = find(~cellfun('isempty',nondatarows1));
+nondatarows2 = strfind(C{1}, '@');
+nondatarows2 = find(~cellfun('isempty',nondatarows2));
+nondatarows3 = strfind(C{1}, '&');
+nondatarows3 = find(~cellfun('isempty',nondatarows3));
+D{1,1}([nondatarows1;nondatarows2;nondatarows3])=[];
+
+D = regexp(D{1,1}, '\s+', 'split');
+D = vertcat(D{:});
+Data = cellfun(@str2double,D);
+
+% End option 1
+
+try
+    for i=1:nColumns
+        if i==1
+            assignin('caller','x',Data(:,i));
+        else
+            assignin('caller',strcat('y',num2str(i-1)),Data(:,i));
+            yaxis_all_legends(i-1)=strtrim(yaxis_all_legends(i-1));
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),' ','_');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'.','');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'{}','');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'\','');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'/','');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'=','_');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),',','_');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),'(','_');
+            yaxis_all_legends(i-1)=strrep(yaxis_all_legends(i-1),')','_');
+            assignin('caller',char(yaxis_all_legends(i-1)),Data(:,i));
+        end
+    end
+catch
+    disp('Could not read the column labels, but you')
+    disp('still have your data in the variable Data!')
+end
+
+assignin('caller','Data',Data);
+assignin('caller','xaxislabel',xaxislabel);
+assignin('caller','yaxislabel',yaxislabel);
+assignin('caller','yaxis_all_legends',yaxis_all_legends);
+row=max([nondatarows1;nondatarows2;nondatarows3])+1;
+
+C{1,1}(row:end)=[];
+% C{1,1}(row:end)=1;
+
+fid = fopen(outputfile, 'wt');
+[nrows,ncols] = size(C{1,1});
+for i = 1:nrows
+    fprintf(fid,'%s\r\n',char(C{1,1}(i)));
+end
+
+A=mat2cell([xdata' ydata'],[max(size(xdata))],[1+min(size(ydata))]);
+for i = 1:max(size(xdata))
+    fprintf(fid, '%8.5f %8.5f\r\n', A{1,1}(i,:));
+end
+fclose(fid);
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

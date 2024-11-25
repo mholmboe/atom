@@ -12,8 +12,9 @@
 % * <Plot_molecules.html Plot_molecules>
 % * <Solvate_molecules.html Solvate_molecules>
 % * <Manipulate_molecules.html Manipulate_molecules>
-% * <Assign_CLAYFF_atomtypes.html Assingn_CLAYFF_atomtypes>
-% * <Assign_INTERFACE_atomtypes.html Assingn_INTERFACE_atomtypes>
+% * <Assign_MINFF_atomtypes.html Assign_MINFF_atomtypes>
+% * <Assign_CLAYFF_atomtypes.html Assign_CLAYFF_atomtypes>
+% * <Assign_INTERFACE_atomtypes.html Assign_INTERFACE_atomtypes>
 % * <Write_topology_files.html Write_topology_files>
 
 %% Advanced examples

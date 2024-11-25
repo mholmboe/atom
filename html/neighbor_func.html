@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>neighbor_func.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="neighbor_func.m"><style type="text/css">
+      -->
+<title>neighbor_func.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="neighbor_func.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +72,48 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>neighbor_func.m</h1><!--introduction--><div><ul><li>This function scans xyz data and checks who is within a certain radius</li><li>It outputs neighbour index, distance and coordinates of the neighbours  * Triclinic support untested</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.07</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Neigh = neighbor_func([1 4 7 2],XYZ_solute,XYZ_data,Box_dim,2.25) % Basic input arguments</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Neigh = neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>neighbor_func.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function scans xyz data and checks who is within a certain radius</li>
+<li>It outputs neighbour index, distance and coordinates of the neighbours * Triclinic support untested</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Neigh = neighbor_func([1 4 7 2],XYZ_solute,XYZ_data,Box_dim,2.25) % Basic input arguments</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> Neigh = neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)
 
 <span class="comment">% Box_dim=[lx ly lz 0 0 xy 0 xz yz];</span>
-
-rx=zeros(size(XYZ_data,1),1);ry=zeros(size(XYZ_data,1),1);rz=zeros(size(XYZ_data,1),1);
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 <span class="keyword">if</span> numel(Box_dim)==3
@@ -107,12 +149,21 @@ dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% dis
 <span class="comment">% Find points inside circle</span>
 in=intersect(find(dist&gt;0),find(dist&lt;radius));
 <span class="comment">% in=sort(unique(in));</span>
-in = in(find(in~=solute_index));
-Neigh.in = [in(find(in~=solute_index))];
+<span class="comment">% in = in(find(in~=solute_index));</span>
+<span class="comment">% Neigh.in = [in(find(in~=solute_index))];</span>
+in = in(in~=solute_index);
+Neigh.in = in;
 Neigh.dist = [dist(in,1)];
 Neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
 Neigh.r_vec = [rx(in) ry(in) rz(in)];
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% neighbor_func.m
 % * This function scans xyz data and checks who is within a certain radius 
@@ -120,7 +171,7 @@ Neigh.r_vec = [rx(in) ry(in) rz(in)];
 %  * Triclinic support untested
 %
 %% Version
-% 2.07
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -131,8 +182,6 @@ Neigh.r_vec = [rx(in) ry(in) rz(in)];
 function Neigh = neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)
 
 % Box_dim=[lx ly lz 0 0 xy 0 xz yz];
-
-rx=zeros(size(XYZ_data,1),1);ry=zeros(size(XYZ_data,1),1);rz=zeros(size(XYZ_data,1),1);
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if numel(Box_dim)==3
@@ -168,8 +217,10 @@ dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
 % Find points inside circle
 in=intersect(find(dist>0),find(dist<radius));
 % in=sort(unique(in));
-in = in(find(in~=solute_index));
-Neigh.in = [in(find(in~=solute_index))];
+% in = in(find(in~=solute_index));
+% Neigh.in = [in(find(in~=solute_index))];
+in = in(in~=solute_index);
+Neigh.in = in;
 Neigh.dist = [dist(in,1)];
 Neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
 Neigh.r_vec = [rx(in) ry(in) rz(in)];
@@ -177,4 +228,6 @@ Neigh.r_vec = [rx(in) ry(in) rz(in)];
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

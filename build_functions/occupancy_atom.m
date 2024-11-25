@@ -2,7 +2,7 @@
 % * This function finds the occupancy all sites, within a certain rmax.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -14,6 +14,10 @@
 function atom = occupancy_atom(atom,Box_dim,varargin) % ,rmax);
 
 occupancy_atom=atom;
+
+if size(Box_dim,2) == 6
+    Box_dim=Cell2Box_dim(Box_dim); % Box_dim is actually the 1x6 Cell varialbe containing angles instead of tilt factors
+end
 
 dist_matrix=dist_matrix_atom(atom,Box_dim);
 
@@ -36,4 +40,9 @@ while i < size(occupancy_atom,2)+1
     end
 end
 
+assignin('caller','occupancy',[occupancy_atom.occupancy]');
+
 atom=update_atom(occupancy_atom);
+
+end
+

@@ -3,7 +3,7 @@
 % * limits lo and hi in the dim dimension
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -41,5 +41,6 @@ end
 change_ind=sort(setdiff(1:nAtoms,ind));
 atom=atom(change_ind);
 atom=atom_update(atom);
-% %
+
+end
 

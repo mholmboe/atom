@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>bond_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="bond_atom.m"><style type="text/css">
+      -->
+<title>bond_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="bond_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>bond_atom.m</h1><!--introduction--><div><ul><li>This function tries to assign all bonds to a Bond_matrix and a Bond_index variable</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom=bond_atom(atom,Box_dim) % Basic input arguments</li><li>atom=bond_atom(atom,Box_dim,2.25) % Allows setting the max cutoff</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = bond_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>bond_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to assign all bonds to a Bond_matrix and a Bond_index variable</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=bond_atom(atom,Box_dim) % Basic input arguments</li>
+<li>atom=bond_atom(atom,Box_dim,2.25) % Allows setting the max cutoff</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = bond_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> nargin&gt;2
     rmaxlong=varargin{1}; <span class="comment">% Dummy value</span>
@@ -80,6 +124,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">else</span>
     distance_factor=0.65; <span class="comment">% 1.3</span>
 <span class="keyword">end</span>
+<span class="comment">% distance_factor=1.25; % due to ionic radii and not vdw..</span>
 
 XYZ_labels=[atom.type]';
 XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); <span class="comment">% use of single instead of double</span>
@@ -94,7 +139,6 @@ XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); <span class="comment">% use of
 
 Radiiproperties=load(<span class="string">'Revised_Shannon_radii.mat'</span>);
 <span class="comment">% atom=bond_valence_atom(atom,Box_dim,1.25,2.25);</span>
-<span class="comment">% clayff_param(sort(unique([atom.type])),'SPC/E');</span>
 
 disp(<span class="string">'Calculating the distance matrix'</span>)
 <span class="comment">% if size(atom,2)&gt;100000 &amp;&amp; numel(Box_dim)&lt;9</span>
@@ -103,7 +147,7 @@ disp(<span class="string">'Calculating the distance matrix'</span>)
 <span class="comment">%     pause(5)</span>
 <span class="comment">%      dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);</span>
 <span class="comment">% else</span>
-     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
+dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
 <span class="comment">% end</span>
 
 XYZ_radii=zeros(length(XYZ_labels),1);
@@ -115,9 +159,10 @@ Atom_label=sort(unique([atom.type]));
     <span class="keyword">catch</span>
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
     <span class="keyword">end</span>
-    <span class="comment">%     XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';</span>
-    Atom_label(i)
+    <span class="comment">% XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';</span>
+    <span class="comment">% Atom_label(i)</span>
     temp_radii=radius_vdw(Atom_label(i));
+    <span class="comment">%temp_radii=radius_ion(Atom_label(i));</span>
     XYZ_radii(ismember([atom.type],Atom_label(i)))=temp_radii(1);
     XYZ_formalcharge(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
 <span class="keyword">end</span>
@@ -126,9 +171,12 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_radii'</
 assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_formalcharge'</span>,XYZ_formalcharge);
 
 XYZ_radii(XYZ_radii==0)=distance_factor;
+<span class="comment">% XYZ_radii(ismember([atom.type],'H'))=0.25; % Special H radii</span>
 radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
 radius_limit=(radius_matrix+radius_matrix')*distance_factor;
 radius_limit(radius_limit&gt;rmaxlong)=rmaxlong;
+<span class="comment">% indH=strncmp([atom.type],'H',1);</span>
+<span class="comment">% radius_limit(indH,:)=1.25;radius_limit(:,indH)=1.25;</span>
 dist_matrix(dist_matrix&gt;radius_limit)=0;
 
 <span class="keyword">if</span> isfield(atom,<span class="string">'neigh'</span>)
@@ -138,11 +186,14 @@ dist_matrix(dist_matrix&gt;radius_limit)=0;
     atom=rmfield(atom,<span class="string">'bond'</span>);
 <span class="keyword">end</span>
 
-disp(<span class="string">'Looking for neighbours/bonds'</span>)
-Bond_index=[];
-b=1;i=1;
+<span class="comment">% disp('Looking for neighbours/bonds')</span>
+Bond_index=single(zeros(1,3));
+<span class="comment">% Angle_index=single(zeros(1,3));</span>
+a=1;b=1;i=1;
 <span class="keyword">while</span> i&lt;size(atom,2)+1
-    k=0;j=1;
+</pre>
+<pre class="codeinput">    k=0;j=1;
+    Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3); <span class="comment">%%</span>
     bond_ind=find(dist_matrix(:,i)&gt;0);
 
     [atom(i).neigh.dist]=[];
@@ -156,7 +207,7 @@ b=1;i=1;
 
     <span class="keyword">while</span> j &lt;= numel(bond_ind) &amp;&amp; k &lt;= numel(bond_ind) <span class="comment">%&lt;= neigh %atom(i).neigh=[];</span>
         <span class="keyword">if</span> dist_matrix(bond_ind(j),i)&gt;0
-<span class="comment">%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;=0 &amp;&amp; atom(i).molid==atom(bond_ind(j)).molid</span>
+            <span class="comment">%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))&lt;=0 &amp;&amp; atom(i).molid==atom(bond_ind(j)).molid</span>
             <span class="keyword">if</span> atom(i).molid==atom(bond_ind(j)).molid
                 k=k+1;
                 [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
@@ -171,21 +222,70 @@ b=1;i=1;
                     Bond_index(b,1)=min([i bond_ind(j)]);
                     Bond_index(b,2)=max([i bond_ind(j)]);
                     Bond_index(b,3)=[atom(i).bond.dist(k,1)];
-                    b=b+1;
+                    <span class="comment">%                     b=b+1;</span>
+                    <span class="comment">%                 end</span>
+                    Neigh_ind(b,1) = bond_ind(j);<span class="comment">%%</span>
+                    Neigh_vec(b,1:3) = -[atom(i).neigh.r_vec(k,:)]; <span class="comment">%%</span>
+                    b=b+1; <span class="comment">%%</span>
+
                 <span class="keyword">end</span>
+
             <span class="keyword">end</span>
         <span class="keyword">end</span>
         j=j+1;
     <span class="keyword">end</span>
-    <span class="keyword">if</span> mod(i,1000)==1
+</pre>
+<pre class="codeinput">
+<span class="comment">%     Neigh_ind(~any(Neigh_ind,2),:) = [];</span>
+<span class="comment">%     Neigh_vec(~any(Neigh_vec,2),:) = [];</span>
+<span class="comment">%</span>
+<span class="comment">%     for v=1:size(Neigh_ind,1)</span>
+<span class="comment">%         for w=1:size(Neigh_ind,1) % From v or from 1?</span>
+<span class="comment">%             angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));</span>
+<span class="comment">%             if angle &gt; 0 &amp;&amp; angle &lt;= 150 % Do we need this??</span>
+<span class="comment">%                 if v &lt; w</span>
+<span class="comment">%                     Angle_index(a,1)= Neigh_ind(v,1);</span>
+<span class="comment">%                     Angle_index(a,2)= i;</span>
+<span class="comment">%                     Angle_index(a,3)= Neigh_ind(w,1);</span>
+<span class="comment">%                     Angle_index(a,4)= angle;</span>
+<span class="comment">%                     Angle_index(a,5:7)= Neigh_vec(v,:);</span>
+<span class="comment">%                     Angle_index(a,8:10)= Neigh_vec(w,:);</span>
+<span class="comment">%                     a=a+1;</span>
+<span class="comment">%                 else</span>
+<span class="comment">%                     Angle_index(a,1)= Neigh_ind(w,1);</span>
+<span class="comment">%                     Angle_index(a,2)= i;</span>
+<span class="comment">%                     Angle_index(a,3)= Neigh_ind(v,1);</span>
+<span class="comment">%                     Angle_index(a,4)= angle;</span>
+<span class="comment">%                     Angle_index(a,5:7)= Neigh_vec(w,:);</span>
+<span class="comment">%                     Angle_index(a,8:10)= Neigh_vec(v,:);</span>
+<span class="comment">%                     a=a+1;</span>
+<span class="comment">%                 end</span>
+<span class="comment">%             end</span>
+<span class="comment">%         end</span>
+<span class="comment">%     end</span>
+<span class="comment">%</span>
+<span class="comment">%     if ismember(i,Angle_index(:,1:3))</span>
+<span class="comment">%         %                 [C,D]=find(Angle_index(:,1:3)==i);</span>
+<span class="comment">%         [C,D]=find(Angle_index(:,2)==i);</span>
+<span class="comment">%         atom(i).angle.type = 1;</span>
+<span class="comment">%         atom(i).angle.index = Angle_index(C,1:3);</span>
+<span class="comment">%         atom(i).angle.angle = Angle_index(C,4);</span>
+<span class="comment">%         atom(i).angle.vec1 = Angle_index(C,5:7);</span>
+<span class="comment">%         atom(i).angle.vec2 = Angle_index(C,8:10);</span>
+<span class="comment">%     end</span>
+</pre>
+<pre class="codeinput">    <span class="keyword">if</span> mod(i,1000)==1
         <span class="keyword">if</span> i &gt; 1
             i-1
         <span class="keyword">end</span>
     <span class="keyword">end</span>
     i=i+1;
+</pre>
+<pre class="codeinput">
 <span class="keyword">end</span>
 i-1
 
+CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
 <span class="keyword">if</span> length(Bond_index)&gt;0
     [Y,i] = sort(Bond_index(:,1));
     Bond_index = Bond_index(i,:);
@@ -201,9 +301,11 @@ i-1
         <span class="keyword">end</span>
     <span class="keyword">end</span>
     Remove_ind=find(CoordNumber==0);
-    assignin(<span class="string">'caller'</span>,<span class="string">'CoordNumber'</span>,CoordNumber);
-    assignin(<span class="string">'caller'</span>,<span class="string">'Remove_ind'</span>,Remove_ind);
+    <span class="comment">% assignin('caller','Remove_ind',Remove_ind);</span>
+    <span class="comment">% assignin('caller','CoordNumber',CoordNumber);</span>
 <span class="keyword">end</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'Remove_ind'</span>,Remove_ind);
+assignin(<span class="string">'caller'</span>,<span class="string">'CoordNumber'</span>,CoordNumber);
 
 ind=find(tril(dist_matrix)&gt;0);
 r=dist_matrix(ind);
@@ -223,8 +325,24 @@ rm_ind=[rm_ind];
 <span class="keyword">end</span>
 Neigh_index(rm_ind,:)=[];
 
-[atom.type]=atom.fftype;
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,<span class="string">'rows'</span>,<span class="string">'stable'</span>);
+Bond_index(~any(Bond_index,2),:) = [];
 nBonds=size(Bond_index,1);
+
+
+<span class="comment">% [Y,I]=sort(Angle_index(:,2));</span>
+<span class="comment">% Angle_index=Angle_index(I,:);</span>
+<span class="comment">% Angle_index = unique(Angle_index,'rows','stable');</span>
+<span class="comment">% Angle_index(~any(Angle_index,2),:) = [];</span>
+<span class="comment">% nAngles=size(Angle_index,1);</span>
+<span class="comment">% assignin('caller','Angle_index',Angle_index);</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_ind'</span>,Neigh_ind);
+assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_vec'</span>,Neigh_vec);
+
+[atom.type]=atom.fftype;
+atom=order_attributes(atom);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
 assignin(<span class="string">'caller'</span>,<span class="string">'radius_limit'</span>,radius_limit);
@@ -235,14 +353,21 @@ assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'
 assignin(<span class="string">'caller'</span>,<span class="string">'X_dist'</span>,X_dist);
 assignin(<span class="string">'caller'</span>,<span class="string">'Y_dist'</span>,Y_dist);
 assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</span>,Z_dist);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% bond_atom.m
 % * This function tries to assign all bonds to a Bond_matrix and a
 % Bond_index variable
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -264,6 +389,7 @@ if nargin>3
 else
     distance_factor=0.65; % 1.3
 end
+% distance_factor=1.25; % due to ionic radii and not vdw..
 
 XYZ_labels=[atom.type]';
 XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
@@ -278,7 +404,6 @@ end
 
 Radiiproperties=load('Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
-% clayff_param(sort(unique([atom.type])),'SPC/E');
 
 disp('Calculating the distance matrix')
 % if size(atom,2)>100000 && numel(Box_dim)<9
@@ -287,7 +412,7 @@ disp('Calculating the distance matrix')
 %     pause(5)
 %      dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
 % else
-     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
+dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
 % end
 
 XYZ_radii=zeros(length(XYZ_labels),1);
@@ -299,9 +424,10 @@ for i=1:length(Atom_label)
     catch
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),1));
     end
-    %     XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
-    Atom_label(i)
+    % XYZ_radii(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.CrysRadii(ind))';
+    % Atom_label(i)
     temp_radii=radius_vdw(Atom_label(i));
+    %temp_radii=radius_ion(Atom_label(i));
     XYZ_radii(ismember([atom.type],Atom_label(i)))=temp_radii(1);
     XYZ_formalcharge(ismember([atom.type],Atom_label(i)))=median(Radiiproperties.OxState(ind))';
 end
@@ -310,9 +436,12 @@ assignin('caller','XYZ_radii',XYZ_radii);
 assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
 
 XYZ_radii(XYZ_radii==0)=distance_factor;
+% XYZ_radii(ismember([atom.type],'H'))=0.25; % Special H radii
 radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
 radius_limit=(radius_matrix+radius_matrix')*distance_factor;
 radius_limit(radius_limit>rmaxlong)=rmaxlong;
+% indH=strncmp([atom.type],'H',1);
+% radius_limit(indH,:)=1.25;radius_limit(:,indH)=1.25;
 dist_matrix(dist_matrix>radius_limit)=0;
 
 if isfield(atom,'neigh')
@@ -322,13 +451,15 @@ if isfield(atom,'bond')
     atom=rmfield(atom,'bond');
 end
 
-disp('Looking for neighbours/bonds')
-Bond_index=[];
-b=1;i=1;
+% disp('Looking for neighbours/bonds')
+Bond_index=single(zeros(1,3));
+% Angle_index=single(zeros(1,3));
+a=1;b=1;i=1;
 while i<size(atom,2)+1
     k=0;j=1;
+    Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3); %%
     bond_ind=find(dist_matrix(:,i)>0);
-    
+
     [atom(i).neigh.dist]=[];
     [atom(i).neigh.index]=[];
     [atom(i).neigh.type]={};
@@ -337,10 +468,10 @@ while i<size(atom,2)+1
     [atom(i).bond.dist]=[];
     [atom(i).bond.index]=[];
     [atom(i).bond.type]={};
-    
+
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if dist_matrix(bond_ind(j),i)>0
-%             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
+            %             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
             if atom(i).molid==atom(bond_ind(j)).molid
                 k=k+1;
                 [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
@@ -355,12 +486,61 @@ while i<size(atom,2)+1
                     Bond_index(b,1)=min([i bond_ind(j)]);
                     Bond_index(b,2)=max([i bond_ind(j)]);
                     Bond_index(b,3)=[atom(i).bond.dist(k,1)];
-                    b=b+1;
+                    %                     b=b+1;
+                    %                 end
+                    Neigh_ind(b,1) = bond_ind(j);%%
+                    Neigh_vec(b,1:3) = -[atom(i).neigh.r_vec(k,:)]; %%
+                    b=b+1; %%
+
                 end
+
             end
         end
         j=j+1;
     end
+
+    %%
+
+%     Neigh_ind(~any(Neigh_ind,2),:) = [];
+%     Neigh_vec(~any(Neigh_vec,2),:) = [];
+% 
+%     for v=1:size(Neigh_ind,1)
+%         for w=1:size(Neigh_ind,1) % From v or from 1?
+%             angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
+%             if angle > 0 && angle <= 150 % Do we need this??
+%                 if v < w
+%                     Angle_index(a,1)= Neigh_ind(v,1);
+%                     Angle_index(a,2)= i;
+%                     Angle_index(a,3)= Neigh_ind(w,1);
+%                     Angle_index(a,4)= angle;
+%                     Angle_index(a,5:7)= Neigh_vec(v,:);
+%                     Angle_index(a,8:10)= Neigh_vec(w,:);
+%                     a=a+1;
+%                 else
+%                     Angle_index(a,1)= Neigh_ind(w,1);
+%                     Angle_index(a,2)= i;
+%                     Angle_index(a,3)= Neigh_ind(v,1);
+%                     Angle_index(a,4)= angle;
+%                     Angle_index(a,5:7)= Neigh_vec(w,:);
+%                     Angle_index(a,8:10)= Neigh_vec(v,:);
+%                     a=a+1;
+%                 end
+%             end
+%         end
+%     end
+% 
+%     if ismember(i,Angle_index(:,1:3))
+%         %                 [C,D]=find(Angle_index(:,1:3)==i);
+%         [C,D]=find(Angle_index(:,2)==i);
+%         atom(i).angle.type = 1;
+%         atom(i).angle.index = Angle_index(C,1:3);
+%         atom(i).angle.angle = Angle_index(C,4);
+%         atom(i).angle.vec1 = Angle_index(C,5:7);
+%         atom(i).angle.vec2 = Angle_index(C,8:10);
+%     end
+
+    %%
+
     if mod(i,1000)==1
         if i > 1
             i-1
@@ -370,6 +550,7 @@ while i<size(atom,2)+1
 end
 i-1
 
+CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
 if length(Bond_index)>0
     [Y,i] = sort(Bond_index(:,1));
     Bond_index = Bond_index(i,:);
@@ -385,9 +566,11 @@ if length(Bond_index)>0
         end
     end
     Remove_ind=find(CoordNumber==0);
-    assignin('caller','CoordNumber',CoordNumber);
-    assignin('caller','Remove_ind',Remove_ind);
+    % assignin('caller','Remove_ind',Remove_ind);
+    % assignin('caller','CoordNumber',CoordNumber);
 end
+assignin('caller','Remove_ind',Remove_ind);
+assignin('caller','CoordNumber',CoordNumber);
 
 ind=find(tril(dist_matrix)>0);
 r=dist_matrix(ind);
@@ -407,8 +590,24 @@ for i=1:size(Neigh_index,1)
 end
 Neigh_index(rm_ind,:)=[];
 
-[atom.type]=atom.fftype;
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+Bond_index(~any(Bond_index,2),:) = [];
 nBonds=size(Bond_index,1);
+
+
+% [Y,I]=sort(Angle_index(:,2));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
+% Angle_index(~any(Angle_index,2),:) = [];
+% nAngles=size(Angle_index,1);
+% assignin('caller','Angle_index',Angle_index);
+assignin('caller','Neigh_ind',Neigh_ind);
+assignin('caller','Neigh_vec',Neigh_vec);
+
+[atom.type]=atom.fftype;
+atom=order_attributes(atom);
 
 assignin('caller','nBonds',nBonds);
 assignin('caller','radius_limit',radius_limit);
@@ -422,4 +621,6 @@ assignin('caller','Z_dist',Z_dist);
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

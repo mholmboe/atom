@@ -5,7 +5,7 @@
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -87,11 +87,14 @@ if numel(ind) > 0
             Neighbours={'Nan'};
         end
         if numel(H_atom)==0
-            H_atom=atom(1);
+            H_atom = xyz2atom({'H'},[0 0 0],Box_dim,[atom(1).resname],[]);
+            H_atom.molid=atom(end).molid;
+            H_atom.index=1;
         else
             H_atom(size(H_atom,2)+1)=H_atom(end);
         end
-        [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+        [H_atom(end).type]=heal_type;
+        [H_atom(end).fftype]=heal_type;
         H_atom(end).index=size(H_atom,2);
         r_vec=atom(i).neigh.r_vec;
         H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
@@ -107,16 +110,16 @@ if numel(ind) > 0
                 x1=[H_atom(i).x];
                 y1=[H_atom(i).y];
                 z1=[H_atom(i).z];
-                
+
                 H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
                 H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
-                
+
                 [H_atom(i).x]=mean([H_atom(rmind).x]);
                 [H_atom(i).y]=mean([H_atom(rmind).y]);
                 [H_atom(i).z]=mean([H_atom(rmind).z]);
-                
+
                 H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-                
+
                 try
                     rmind_tot=[rmind_tot; rmind(rmind>i)];
                 catch
@@ -131,6 +134,8 @@ end
 disp('Created this many H´s!')
 size(H_atom,2)
 
-if isstruct(H_atom)
+if isfield(H_atom,'element')
     H_atom=rmfield(H_atom,'element');
+end
+
 end

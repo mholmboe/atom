@@ -1,10 +1,10 @@
 %% replace_atom.m
 % * This function replaces a molecule (by its MolID) in an atom struct with
-% a new (single MolID) atom struct by placing the COM of the latter in the 
+% a new (single MolID) atom struct by placing the COM of the latter in the
 % place of the former
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -28,23 +28,29 @@ for i=1:numel(MolID)
         temp_atom=rmfield(temp_atom,'element');
         temp_atom=rmfield(temp_atom,'Mw');
     else
+        temp_atom = new_atom;
         COM=[mean([temp_atom.x]) mean([temp_atom.y]) mean([temp_atom.z])]; % Since COM_atom is a bit slow for large molecules, we do this for big molecules
     end
-    
+
     temp_atom = translate_atom(new_atom,-COM+position,'all');
     [temp_atom.molid]=deal(MolID(i));
-    
+
     ind_prev=find(ismember([prev_atom.molid],MolID(i)));
+    % prev_atom(ind_prev)=[];
+    % prev_atom = update_atom({prev_atom temp_atom});
+
     if MolID(i)==min([prev_atom.molid]) % Put the new molid first
-        prev_atom=[temp_atom prev_atom(max(ind_prev)+1:end)];
+        prev_atom=update_atom({temp_atom prev_atom(max(ind_prev)+1:end)});
     elseif MolID(i)==max([prev_atom.molid]) % Put the new molid last
-        prev_atom=[temp_atom prev_atom(1:min(ind_prev)-1)];
+        prev_atom=update_atom({temp_atom prev_atom(1:min(ind_prev)-1)});
     else % Put the new molid in between somewhere
-        prev_atom=[prev_atom(1:min(ind_prev)-1) temp_atom prev_atom(max(ind_prev)+1:end)];
+        new_atom=update_atom({prev_atom(1:min(ind_prev)-1) temp_atom});
+        prev_atom=update_atom({new_atom prev_atom(max(ind_prev)+1:end)});
     end
 
 end
 
-% Do we need this?
-atom=update_atom(prev_atom);
+atom=prev_atom;
+
+end
 

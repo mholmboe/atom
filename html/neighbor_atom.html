@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>neighbor_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="neighbor_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>neighbor_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function scans the atom1 struct coordinates (containing a single site)</li>
+<li>within a certain radius. It outputs neighbour index, distance and</li>
+<li>coordinates of the neighbours. Triclinic support untested</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>neigh = neighbor_atom(atom1,atom2,Box_dim) % Basic input arguments</li>
+<li>neigh = neighbor_atom(atom1,atom2,Box_dim,2.25) % Set the neighbour cutoff radius manually</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> neigh = neighbor_atom(atom1,atom2,Box_dim,varargin)
+
+<span class="keyword">if</span> nargin &lt; 4
+    radius=2.25;
+<span class="keyword">else</span>
+    radius=varargin{1};
+<span class="keyword">end</span>
+<span class="keyword">if</span> isstruct(atom1)
+    XYZ_solute=single([[atom1.x]' [atom1.y]' [atom1.z]']); <span class="comment">% use of single instead of double</span>
+    XYZ_data=single([[atom2.x]' [atom2.y]' [atom2.z]']); <span class="comment">% use of single instead of double</span>
+<span class="keyword">else</span>
+    XYZ_solute=single(atom1); <span class="comment">% use of single instead of double</span>
+    XYZ_data=single(atom2); <span class="comment">% use of single instead of double</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Box_dim=[lx ly lz 0 0 xy 0 xz yz];</span>
+lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
+<span class="keyword">if</span> numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+<span class="keyword">else</span>
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+<span class="keyword">end</span>
+
+<span class="comment">% Calculate Distance Components %</span>
+rx = XYZ_data(:,1) - XYZ_solute(1);
+ry = XYZ_data(:,2) - XYZ_solute(2);
+rz = XYZ_data(:,3) - XYZ_solute(3);
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+z_gt_ind=find(rz &gt; lz/2);z_lt_ind=find(rz &lt; - lz/2);
+rz(z_gt_ind) = rz(z_gt_ind) - lz;
+rz(z_lt_ind) = rz(z_lt_ind) + lz;
+rx(z_gt_ind) = rx(z_gt_ind) - xz;
+rx(z_lt_ind) = rx(z_lt_ind) + xz;
+ry(z_gt_ind) = ry(z_gt_ind) - yz;
+ry(z_lt_ind) = ry(z_lt_ind) + yz;
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+y_gt_ind=find(ry &gt; ly/2);y_lt_ind=find(ry &lt; - ly/2);
+ry(y_gt_ind) = ry(y_gt_ind) - ly;
+ry(y_lt_ind) = ry(y_lt_ind) + ly;
+rx(y_gt_ind) = rx(y_gt_ind) - xy;
+rx(y_lt_ind) = rx(y_lt_ind) + xy;
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+x_gt_ind=find(rx &gt; lx/2);x_lt_ind=find(rx &lt; - lx/2);
+rx(x_gt_ind) = rx(x_gt_ind) - lx;
+rx(x_lt_ind) = rx(x_lt_ind) + lx;
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
+
+<span class="comment">% solute_index=find(dist==0);</span>
+<span class="comment">% Find points inside circle</span>
+in=intersect(find(dist&gt;0),find(dist&lt;radius));
+neigh.in = in;
+neigh.dist = [dist(in,1)];
+neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
+neigh.r_vec = [rx(in) ry(in) rz(in)];
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% neighbor_atom.m
+% * This function scans the atom1 struct coordinates (containing a single site)
+% * within a certain radius. It outputs neighbour index, distance and
+% * coordinates of the neighbours. Triclinic support untested
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # neigh = neighbor_atom(atom1,atom2,Box_dim) % Basic input arguments
+% # neigh = neighbor_atom(atom1,atom2,Box_dim,2.25) % Set the neighbour cutoff radius manually
+%
+function neigh = neighbor_atom(atom1,atom2,Box_dim,varargin)
+
+if nargin < 4
+    radius=2.25;
+else
+    radius=varargin{1};
+end
+if isstruct(atom1)
+    XYZ_solute=single([[atom1.x]' [atom1.y]' [atom1.z]']); % use of single instead of double
+    XYZ_data=single([[atom2.x]' [atom2.y]' [atom2.z]']); % use of single instead of double
+else
+    XYZ_solute=single(atom1); % use of single instead of double
+    XYZ_data=single(atom2); % use of single instead of double
+end
+
+% Box_dim=[lx ly lz 0 0 xy 0 xz yz];
+lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
+if numel(Box_dim)==3
+    xy=0;xz=0;yz=0;
+else
+    xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
+end
+
+% Calculate Distance Components %
+rx = XYZ_data(:,1) - XYZ_solute(1);
+ry = XYZ_data(:,2) - XYZ_solute(2);
+rz = XYZ_data(:,3) - XYZ_solute(3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+z_gt_ind=find(rz > lz/2);z_lt_ind=find(rz < - lz/2);
+rz(z_gt_ind) = rz(z_gt_ind) - lz;
+rz(z_lt_ind) = rz(z_lt_ind) + lz;
+rx(z_gt_ind) = rx(z_gt_ind) - xz;
+rx(z_lt_ind) = rx(z_lt_ind) + xz;
+ry(z_gt_ind) = ry(z_gt_ind) - yz;
+ry(z_lt_ind) = ry(z_lt_ind) + yz;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+y_gt_ind=find(ry > ly/2);y_lt_ind=find(ry < - ly/2);
+ry(y_gt_ind) = ry(y_gt_ind) - ly;
+ry(y_lt_ind) = ry(y_lt_ind) + ly;
+rx(y_gt_ind) = rx(y_gt_ind) - xy;
+rx(y_lt_ind) = rx(y_lt_ind) + xy;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+x_gt_ind=find(rx > lx/2);x_lt_ind=find(rx < - lx/2);
+rx(x_gt_ind) = rx(x_gt_ind) - lx;
+rx(x_lt_ind) = rx(x_lt_ind) + lx;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
+
+% solute_index=find(dist==0);
+% Find points inside circle
+in=intersect(find(dist>0),find(dist<radius));
+neigh.in = in;
+neigh.dist = [dist(in,1)];
+neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
+neigh.r_vec = [rx(in) ry(in) rz(in)];
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

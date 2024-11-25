@@ -3,13 +3,14 @@
 % rmin, which optionally can be set manually.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom=remove_H2O(atom,Box_dim) % Basic input arguments
+% # atom=remove_H2O(atom,Box_dim,1.05) % Manually setting the rmin, the minimum distance for the H-O bond in water
 
 function [atom,SOL] = remove_H2O(atom,Box_dim,varargin)
 
@@ -25,7 +26,7 @@ temp_atom=element_atom(atom);
 O_ind=find(strncmp([temp_atom.type],{'O'},1));
 H_ind=find(strncmp([temp_atom.type],{'H'},1));
 
-SOL=[];
+SOL=[];SOL_ind=[];
 if numel(O_ind)>0
     rm_ind=[];n=1;molid=1;
     SOL=atom(O_ind(1));
@@ -45,13 +46,15 @@ if numel(O_ind)>0
         end
     end
     numel(SOL)
+    assignin('caller','SOL_ind',SOL_ind);
     if size(SOL,2)>1
         [SOL.resname]=deal({'SOL'});
         SOL
         SOL=update_atom(SOL);
         SOL=bond_atom(SOL,Box_dim,rmin);
         SOL=update_atom(SOL);
-        %     assignin('caller','SOL',SOL);
+%         assignin('caller','SOL',SOL);
+%         assignin('caller','H2O',SOL);
     else
         SOL=[];
     end

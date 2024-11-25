@@ -1,5 +1,5 @@
 %% fit2lattice.m
-% * This is a special script (and not a function) that imports a model 
+% * This is a special script (and not a function) that imports a model
 % * like (PO43-) and tris to fit it into a crystal lattice possibly holding
 % * such sites. Any waters or counter-ions (see lin 39) is reordered and
 % * reintroduced to the final model
@@ -13,7 +13,7 @@ model_filename='1xH3PO4.pdb'
 outfilename='preem.gro'
 resname='PO4';
 
-%% Import and setup reference and model structures, strip away waters and counter-ions.. 
+%% Import and setup reference and model structures, strip away waters and counter-ions..
 model=import_atom(model_filename);
 ref=import_atom(ref_filename);
 
@@ -53,34 +53,35 @@ model=translate_atom(model,-[model(AtomtypeModel_ind(1)).x model(AtomtypeModel_i
 
 %% For every model to be superpositioned over the reference...
 full_model=[];BestAngles=[0 0 0]; BestAngles_all=[];res_all=[];
-for i=1:nRepFactor 
+for i=1:nRepFactor
     close all
     n=1; prev_res=1E23;
-    while sum(prev_res.^2)>0.5 && n < 2000
-         
+    while sum(prev_res.^2)>0.1 && n < 5000
+
         %% Generate random angles between -180 to +180
         angles=[360*rand-180 360*rand-180 360*rand-180];
-        
+
         %% Rotate and move the temporary model structure
         temp_model = rotate_atom(model,Box_dim,angles,AtomtypeModel_ind); % Rotate the temp_model around origo
         temp_model = translate_atom(temp_model,[ref(AtomtypeRef_ind(i)).x ref(AtomtypeRef_ind(i)).y ref(AtomtypeRef_ind(i)).z]); % Translate the temp_model to the i:th position
-        
+
         %% Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure
         d_ref_matrix=dist_matrix_atom(ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),...
             ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
         d_ref_matrix=sort(d_ref_matrix,2);
         d_ref_matrix=reshape(d_ref_matrix,1,[]);
-        
+
         d_model_matrix=dist_matrix_atom(temp_model(unique(temp_model((AtomtypeModel_ind(1))).angle.index(:,1:2:end))),...
             ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
         d_model_matrix=sort(d_model_matrix,2);
         d_model_matrix=reshape(d_model_matrix,1,[]);
-        
+
         %% Calculate the difference
         res=d_ref_matrix-d_model_matrix;
-        
+
         %% Save the best angles
         if sum(res.^2)<sum(prev_res.^2)
+            best_model=temp_model; % New
             prev_res=res;
             BestAngles=[BestAngles;angles];
             hold on
@@ -89,18 +90,18 @@ for i=1:nRepFactor
         end
         n=n+1;
     end
-    
+
     i
     sum(prev_res.^2)
     n
-    
+
     sum(res.^2)
     res_all=[res_all sum(res.^2)];
     BestAngles_all = [BestAngles_all BestAngles(end,:)];
-    
+
     %% Add the temp_model to the the full model
-    full_model = update_atom({full_model temp_model});
-    
+    full_model = update_atom({full_model best_model}); % New
+
 end
 
 %% Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)

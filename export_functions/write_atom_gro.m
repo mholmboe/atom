@@ -1,8 +1,8 @@
 %% write_atom_gro.m
-% * This function writes a gro file.
+% * This function writes a Gromacs .gro file.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -22,7 +22,19 @@ if numel(Box_dim)==1
     Box_dim(1)=Box_dim(1);
     Box_dim(2)=Box_dim(1);
     Box_dim(3)=Box_dim(1);
+elseif numel(Box_dim)==6
+    Box_dim=Cell2Box_dim(Box_dim);
 end
+
+%% Box vectors for the .gro format is (free format, space separated reals), values:
+% v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)
+% the last 6 values may be omitted (they will be set to zero) when all angles are 90
+% GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.
+
+%% Box matrix
+% v1(x) v2(x) v3(x)    v1(x) v2(x) v3(x)
+% v1(y) v2(y) v3(y) == 0     v2(y) v3(y)
+% v1(z) v2(z) v3(z)    0     0     v3(z)
 
 nAtoms=size(atom,2);
 Atom_section=cell(nAtoms,10);

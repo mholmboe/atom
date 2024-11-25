@@ -4,16 +4,15 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_atom('molecule.gro') %
-% # atom = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
-% # atom = import_atom('molecule.gro',[10 5 0],[35.24 24.23 52.23]) %
-% Translates the atom struct by a [x y z] Ångströms and
+% # [atom,Box_dim] = import_atom('molecule.gro') %
+% # [atom,Box_dim] = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
+% # [atom,Box_dim] = import_atom('molecule.gro',[10 5 0],[35.24 24.23write 52.23]) % Translates the atom struct by a [x y z] Ångströms and sets new Box_dim
 
 function atom = import_atom(filename,varargin)
 %%

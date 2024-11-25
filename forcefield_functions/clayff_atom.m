@@ -11,7 +11,7 @@
 % Minerals, Vol. 64, No. 4, 452?471, 2016.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -64,7 +64,7 @@ Add_H=0; % Add H to get neutral edge
 Add_extra_H=0; % Add H to get positive edge As a final step, add extra H's to a Oalhh atoms...nH_extra=16;
 % n=7; % with edge structure
 for assignment_run=heal_iterations
-        
+
     All_Neighbours=[];
     % Heal broken bonds in the structure in steps, start from the center of the particle
     if assignment_run==1
@@ -86,9 +86,9 @@ for assignment_run=heal_iterations
     elseif assignment_run==9
         Add_extra_H=1 % As a final step, add extra H's to a Oalhh atoms...nH_extra=16;
     end
-    
+
     [atom.element]=atom.type;
-    
+
     for i=1:size(atom,2)
         if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
         elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
@@ -96,8 +96,8 @@ for assignment_run=heal_iterations
         elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
         elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
         elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
-        elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'Fs'};
-        elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Lio'};
+        elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};
+        elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};
             %         elseif strncmpi(atom(i).type,{'Mn'},2);atom(i).element={'Mn'};
         elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
         elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
@@ -107,67 +107,144 @@ for assignment_run=heal_iterations
             [atom(i).element]=atom(i).type;
         end
     end
-    
+
     [atom.type]=atom.element;
     [atom.fftype]=atom.element;
-    
+
     XYZ_labels=[atom.type]';
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-    
+
     atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor);
     atom=remove_sametype_bond(atom,Box_dim,Bond_index);
-    
+
     assignin('caller','nBonds',nBonds);
     assignin('caller','radius_limit',radius_limit);
     assignin('caller','Bond_index',Bond_index);
     assignin('caller','Neigh_index',Neigh_index);
     assignin('caller','dist_matrix',dist_matrix);
-    
+
     i=1;nH_extra=0;
     while i <= size(atom,2)
-              
+
         if mod(i,100)==1
             i-1
         end
-        
+
         if strncmpi([atom(i).resname],'SOL',3)==0 && strncmpi([atom(i).resname],'ION',3)==0
-            
-            nNeigh=numel([atom(i).neigh]);
-%             Neigh_ind=zeros(12,1);
-%             Neigh_vec=zeros(12,3);
-%             n=1;neigh=1;
-            
+
+            nNeigh=numel([atom(i).neigh.index]);
+
+            %             Neigh_ind=zeros(12,1);
+            %             Neigh_vec=zeros(12,3);
+            %             n=1;neigh=1;
+
             if nNeigh>0
-                
+
                 Neigh_cell = sort([atom(i).neigh.type]);
                 if length(Neigh_cell) > 0
                     Neighbours=strcat(Neigh_cell{:});
-                    All_Neighbours=[All_Neighbours;strcat(atom(i).type,':',Neighbours)]; % New 2.11
+                    %                     All_Neighbours=[All_Neighbours;{char(atom(i).type) Neighbours}]; % New 2.11
                 else
                     Neighbours={'Nan'};
                 end
-%                 Neigh_ind(~any(Neigh_ind,2),:) = [];
-%                 Neigh_vec(~any(Neigh_vec,2),:) = [];
-                
+                %                 Neigh_ind(~any(Neigh_ind,2),:) = [];
+                %                 Neigh_vec(~any(Neigh_vec,2),:) = [];
+
+                % If the element is Li
+                if strncmpi(atom(i).type,{'Li'},2) % Lio
+
+                    if numel([atom(i).neigh.type]) == 6 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O
+
+                        atom(i).fftype={'Lio'};
+
+                    elseif numel([atom(i).neigh.type]) == 4 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O
+
+                        atom(i).fftype={'Lio'};
+
+                    elseif nNeigh > 6
+                        disp('Lio atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Lio_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
+                        disp('Lio atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Lio_un'};
+
+                    else
+                        Neighbours
+                        %                 atom(i)=[];
+                        %                 disp('removed atom...')
+                        i
+                        %pause(1) %
+                    end
+
+                end
+
+
+                % If the element is Be
+                if strncmpi(atom(i).type,{'Be'},2) % Be
+                    %                     Neigh_cell = sort([atom(i).neigh.type]);
+                    %                     Neighbours=strcat(Neigh_cell{:});
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Be O O O O
+                        atom(i).fftype={'Be'};
+                    elseif nNeigh > 4
+                        disp('Be atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Be_ov'};
+                        atom(i).neigh.dist
+                        atom(i).neigh.index
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh < 4 % == 3
+                        disp('Be atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Be_un'};
+                    else
+                        i
+                        atom(i).type
+                        Neighbours
+                        %                     atom(i)=[];
+                        %                     disp('removed atom...')
+                        %                     i
+                    end
+                    %             else
+                    %                 Neighbours
+                    %                 atom(i)=[];
+                    %                 disp('removed atom...')
+                    %                 i
+                    %             end
+                end
+
                 % If the element is Si
                 if strncmpi(atom(i).type,{'Si'},2) % Si
                     %                     Neigh_cell = sort([atom(i).neigh.type]);
                     %                     Neighbours=strcat(Neigh_cell{:});
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Si O O O O
                         atom(i).fftype={'Si'};
-                    elseif length(nNeigh) > 4
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Si O O O O O O
+                        atom(i).fftype={'Sio'}; % As in Stishovite
+                    elseif nNeigh > 4
                         disp('Si atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Si^'};
+                        atom(i).fftype={'Si_ov'};
                         atom(i).neigh.dist
                         atom(i).neigh.index
-                    elseif length(nNeigh) < 4 % == 3
+
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh < 4 % == 3
                         disp('Si atom under coordinated')
                         i
+                        nNeigh
                         Neighbours
-                        atom(i).fftype={'Si_'};
-
+                        atom(i).fftype={'Si_un'};
                         if Heal_Si == 1
                             atom(size(atom,2)+1)=atom(find(strcmp([atom.type],'O'),1));
                             atom(end).index=size(atom,2);
@@ -191,59 +268,27 @@ for assignment_run=heal_iterations
                     %             end
                 end
 
-                % If the element is Be
-                if strncmpi(atom(i).type,{'Be'},2) % Be
-                    %                     Neigh_cell = sort([atom(i).neigh.type]);
-                    %                     Neighbours=strcat(Neigh_cell{:});
-                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Be O O O O
-                        atom(i).fftype={'Be'};
-                    elseif length(nNeigh) > 4
-                        disp('Be atom over coordinated')
-                        i
-                        Neighbours
-                        atom(i).fftype={'Be^'};
-                        atom(i).neigh.dist
-                        atom(i).neigh.index
-                    elseif length(nNeigh) < 4 % == 3
-                        disp('Be atom under coordinated')
-                        i
-                        Neighbours
-                        atom(i).fftype={'Be_'};
-                    else
-                        i
-                        atom(i).type
-                        Neighbours
-                        %                     atom(i)=[];
-                        %                     disp('removed atom...')
-                        %                     i
-                    end
-                    %             else
-                    %                 Neighbours
-                    %                 atom(i)=[];
-                    %                 disp('removed atom...')
-                    %                 i
-                    %             end
-                end
-                
                 % If the element is Al
                 if strncmpi(atom(i).type,{'Al'},2) % Al
-                    
+
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
                         atom(i).fftype={'Al'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
                         atom(i).fftype={'Ale'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Al O O O O
                         atom(i).fftype={'Alt'};
-                    elseif length(nNeigh) > 6
+                    elseif nNeigh > 6
                         disp('Al atom over coordinated')
                         i
                         Neighbours
                         atom(i).fftype={'Al'};
-                    elseif length(nNeigh) >= 4 && length(nNeigh) < 6
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh >= 4 && nNeigh < 6
                         disp('Al atom under coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Al_'};
+                        atom(i).fftype={'Al_un'};
                         if Heal_Al == 1
                             disp('Healing Al with O!!!')
                             atom(size(atom,2)+1)=atom(find(strncmpi([atom.type],'O',1),1));
@@ -259,8 +304,8 @@ for assignment_run=heal_iterations
                         %                 atom(i)=[];
                         %                 disp('removed atom...')
                         i
-                        
-                        
+
+
                     end
                     %             else
                     %                 Neighbours
@@ -268,38 +313,40 @@ for assignment_run=heal_iterations
                     %                 disp('removed atom...')
                     %                 i
                     %             end
-                    
+
                 end
-                
+
                 % If the element is Mg
                 if strncmpi(atom(i).type,{'Mg'},2) % Mgo
-                    
+
                     if numel([atom(i).neigh.type]) == 6 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
                         if sum(strncmpi([atom.type],'Al',2))<sum(strncmpi([atom.type],'Mg',2)) && ...
-                            2*sum(strncmpi([atom.type],'H',1)) > sum(strncmpi([atom.type],'Mg',2))
+                                2*sum(strncmpi([atom.type],'H',1)) > sum(strncmpi([atom.type],'Mg',2))
                             atom(i).fftype={'Mgh'};
                         else
                             atom(i).fftype={'Mgo'};
                         end
-                        if sum(strncmpi([atom.type],'Al',2))==0
+                        if sum(strncmpi([atom.type],'Al',2))==0 && sum(strncmpi([atom.type],'H',1))>0
                             atom(i).fftype={'Mgh'};
-%                         else
-%                             atom(i).fftype={'Mgo'};
+                            %                         else
+                            %                             atom(i).fftype={'Mgo'};
                         end
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
                         atom(i).fftype={'Mgo'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
                         atom(i).fftype={'Mgh'};
-                    elseif length(nNeigh) > 6
+                    elseif nNeigh > 6
                         disp('Mgo atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Mgo^'};
-                    elseif length(nNeigh) > 4 && length(nNeigh) < 6
+                        atom(i).fftype={'Mgo_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
                         disp('Mgo atom under coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Mgo_'};
+                        atom(i).fftype={'Mgo_un'};
                         if Heal_Mgo == 1
                             atom(size(atom,2)+1)=atom(find(strncmpi([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
@@ -314,51 +361,64 @@ for assignment_run=heal_iterations
                         %                 atom(i)=[];
                         %                 disp('removed atom...')
                         i
-                        %pause
+                        %pause(1) %
                     end
-                    
+
                 end
-                
-                
+
+
                 % If the element is Ca
                 if strncmpi(atom(i).type,{'Ca'},2) % Cao
-                    
+
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Cao O O O O O O
-                        atom(i).fftype={'Cao'};
+                        if sum(strncmpi([atom.type],'H',1))==sum(strncmpi([atom.type],'O',1))
+                            atom(i).fftype={'Cah'};
+                        else
+                            atom(i).fftype={'Cao'};
+                        end
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
                         atom(i).fftype={'Cah'};
                         %                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
                         %                         atom(i).fftype={'Cah'};
-                    elseif length(nNeigh) > 6
+                    elseif sum(strncmp({'F'},[atom(i).neigh.type],1)) == 8
+                        disp('Ca in CaF2 Fluorite?')
+                        atom(i).fftype={'Cah'};
+                        %                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
+                        %                         atom(i).fftype={'Cah'};
+                    elseif nNeigh > 6
                         disp('Ca atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Cao^'};
+                        atom(i).fftype={'Cao_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
                     else
                         Neighbours
                     end
-                    
+
                 end
-                
+
                 % If the element is Mn
                 if strncmpi(atom(i).type,{'Mn'},2) % Fe
-                    
+
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mn O O O O O O
                         atom(i).fftype={'Mn4'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Mn O O O O
                         atom(i).fftype={'Mne'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Mn O O O O
                         atom(i).fftype={'Mnt'};
-                    elseif length(nNeigh) > 6
+                    elseif nNeigh > 6
                         disp('Mn atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Mn^'};
-                    elseif length(nNeigh) > 4 && length(nNeigh) < 6
+                        atom(i).fftype={'Mn_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
                         disp('Mn atom under coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Mn_'};
+                        atom(i).fftype={'Mn_un'};
                         if Heal_Fe == 1
                             atom(size(atom,2)+1)=atom(find(strncmpi([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
@@ -381,7 +441,7 @@ for assignment_run=heal_iterations
                     %                 i
                     %             end
                 end
-                
+
                 % If the element is Fe
                 if strncmpi(atom(i).type,{'Fe'},2) % Fe
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Fe O O O O O O
@@ -394,16 +454,18 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Fee'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Fe O O O O
                         atom(i).fftype={'Fet'};
-                    elseif length(nNeigh) > 6
+                    elseif nNeigh > 6
                         disp('Fe atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Fe^'};
-                    elseif length(nNeigh) > 4 && length(nNeigh) < 6
+                        atom(i).fftype={'Fe_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
                         disp('Fe atom under coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'Fe_'};
+                        atom(i).fftype={'Fe_un'};
                         if Heal_Fe == 1
                             atom(size(atom,2)+1)=atom(find(strncmpi([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
@@ -425,43 +487,77 @@ for assignment_run=heal_iterations
                     %                 disp('removed atom...')
                     %                 i
                     %             end
+                elseif strcmpi(atom(i).type,{'F'}) > 0% Fs
+
+                    if numel([atom(i).neigh.type]) == 3
+
+                        atom(i).fftype={'Fs'};
+
+                    elseif nNeigh == 4
+                        disp('Fs atom as in CaF2 - Fluorite?')
+                        atom(i).fftype={'Fs'};
+
+                    elseif nNeigh > 4
+                        disp('Fso atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fs_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 0 && nNeigh < 3
+                        disp('Fso atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fs_un'};
+
+                    else
+                        Neighbours
+                        %                 atom(i)=[];
+                        %                 disp('removed atom...')
+                        i
+                        %pause(1) %
+                    end
+
                 end
-                
+
                 % If the element is H
                 if strncmp(atom(i).type,{'H'},1) % H
-                    
+
                     if size(Neigh_cell,1) == 1
                         atom(i).fftype={'H'};
-                    elseif length(nNeigh) > 1
+                    elseif nNeigh > 1
                         disp('H atom over coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'H^'};
+                        atom(i).fftype={'H_ov'};
                         atom(i).fftype={'H'};
-                    elseif length(nNeigh) < 1
+                        rm_ind=[rm_ind i];
+                        pause(.1) %
+                    elseif nNeigh < 1
                         disp('H atom under coordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'H_'};
+                        atom(i).fftype={'H_un'};
                         if Heal_H == 1
                             atom(size(atom,2)+1)=atom(find(strncmpi([atom.type],'O',1),1));
                             atom(end).index=size(atom,2);
                             Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.6);
                             NewNeighCoords=num2cell([atom(i).x atom(i).y atom(i).z]+mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
-                        elseif length(nNeigh) < 1
+                        elseif nNeigh < 1
                             Neighbours
                             %                             atom(i)=[];
                             %                             disp('removed atom...')
                             i
-                            pause
+                            pause(0.1) %
                         end
-                        
+
                     end
-                    
+
                 end
-               
-                
+
+
+                % If the element is O
                 % If the element is O
                 if strncmp(atom(i).type,{'O'},1)
                     if strcmp(Neighbours,'AlAlH')
@@ -483,19 +579,19 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'AlMgSi')
                         atom(i).fftype={'Omg'};
                     elseif  strncmp(Neighbours,'AltMgh',6)
-                        atom(i).fftype={'Oalt'};
+                        atom(i).fftype={'Ops'};
                     elseif strcmp(Neighbours,'HSi')
                         atom(i).fftype={'Osih'};
                     elseif strcmp(Neighbours,'AlOmg')
                         atom(i).fftype={'Odsub'};
                     elseif strcmp(Neighbours,'AlAltH')
-                        atom(i).fftype={'Oalt'};
+                        atom(i).fftype={'Ops'};
                     elseif strcmp(Neighbours,'AlAlAlH')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'AlAlAlt')
-                        atom(i).fftype={'Oalt'};
+                        atom(i).fftype={'Ops'};
                     elseif strcmp(Neighbours,'AlAlAl')
-                        atom(i).fftype={'Oalt'};
+                        atom(i).fftype={'Ob'};
                     elseif strncmp(Neighbours,'AlAlAlMg',8)
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'AlAlAlAl')
@@ -503,7 +599,7 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'AlAlAlAlt')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'AltSi')
-                        atom(i).fftype={'Oalt'};
+                        atom(i).fftype={'Obs'};
                     elseif strcmp(Neighbours,'AlSi') % Al-O-H or Al-O-Si
                         if sum(ismember(find(strcmp([atom.fftype],'Alt')),[atom(i).neigh.index])) > 0
                             atom(i).fftype={'Oalt'};
@@ -514,12 +610,26 @@ for assignment_run=heal_iterations
                         %                     atom(i).fftype={'O'};
                     elseif strcmp(Neighbours,'AlAlSiSi')
                         atom(i).fftype={'Oz'};
+                    elseif strcmp(Neighbours,'SiSiSi')
+                        atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'CahCahH')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'CaCaCaH')
                         atom(i).fftype={'Oh'};
-                    elseif strcmp(Neighbours,'AltFeoFeo')
-                        atom(i).fftype={'Oalt'};
+                    elseif strcmp(Neighbours,'AltFeoFeo') || strcmp(Neighbours,'AltFeFe')
+                        atom(i).fftype={'Ops'};
+                    elseif strcmp(Neighbours,'AlAlFeo') || strcmp(Neighbours,'AlAlFe')
+                        atom(i).fftype={'Ob'};
+                    elseif strcmp(Neighbours,'AlFeoH') || strcmp(Neighbours,'AlFeH')
+                        atom(i).fftype={'Oh'};
+                    elseif strcmp(Neighbours,'AlFeoFeo') || strcmp(Neighbours,'AlFeFe')
+                        atom(i).fftype={'Ops'};
+                    elseif strcmp(Neighbours,'AlFeSi') || strcmp(Neighbours,'AlFeoSi')
+                        atom(i).fftype={'Op'};
+                    elseif  strncmp(Neighbours,'FeHMg',5) || strncmp(Neighbours,'FeoHMg',5)
+                        atom(i).fftype={'Ohmg'};
+                    elseif strcmp(Neighbours,'FeMgSi') || strncmp(Neighbours,'FeoMgSi',5) || strncmp(Neighbours,'FeMgoSi',5)
+                        atom(i).fftype={'Omg'};
                     elseif strcmp(Neighbours,'FeFe') || strcmp(Neighbours,'FeoFeo')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'FeFeFe') || strcmp(Neighbours,'FeoFeoFeo')
@@ -527,25 +637,29 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'FeFeFeFe') || strcmp(Neighbours,'FeoFeoFeoFeo')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'FeFeFeFeFeFe') || strcmp(Neighbours,'Fe2Fe2Fe2Fe2Fe2Fe2')
-                        atom(i).fftype={'Ob'};
+                        atom(i).fftype={'Op'};
                     elseif strcmp(Neighbours,'FeFeSi') || strcmp(Neighbours,'FeoFeoSi')
                         atom(i).fftype={'Op'};
+                    elseif strcmp(Neighbours,'FeSi') || strcmp(Neighbours,'FetSi')
+                        atom(i).fftype={'Oalt'};
                     elseif strcmp(Neighbours,'FeFeFeH') || strcmp(Neighbours,'FeoFeoFeoH')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'FeFeH') || strcmp(Neighbours,'FeoFeoH')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'FeH') || strcmp(Neighbours,'FeoH')
                         atom(i).fftype={'Oh'};
-                    elseif strcmp(Neighbours,'FeFe') || strcmp(Neighbours,'FeoFeo')
-                        atom(i).fftype={'Odsub'};
+                        % elseif strcmp(Neighbours,'FeFe') || strcmp(Neighbours,'FeoFeo')
+                        %     atom(i).fftype={'Odsub'};
                     elseif strcmp(Neighbours,'FetFet')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'FetFetH')
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'CaoCaoCaoCaoCaoCao') || strcmp(Neighbours,'CaCaCaCaCaCa')
                         atom(i).fftype={'Ob'};
-                    elseif strcmp(Neighbours,'LioMgMgSi') || strcmp(Neighbours,'LioMgoMgoSi') || strcmp(Neighbours,'LiMgMgSi')
+                    elseif strcmp(Neighbours,'LioMgMgSi') || strcmp(Neighbours,'LioMgoMgoSi') || strcmp(Neighbours,'LiMgMgSi') || strncmp(Neighbours,'LiLiLiLi',8)
                         atom(i).fftype={'Oli'};
+                    elseif strcmp(Neighbours,'HLiMgMg') || strcmp(Neighbours,'HLioMghMgh') || strcmp(Neighbours,'HLiMgoMgo')
+                        atom(i).fftype={'Ohli'};
                     elseif strcmp(Neighbours,'MghMghMghMghMghMgh')
                         atom(i).fftype={'Ob'};
                     elseif strcmp(Neighbours,'MgoMgoMgoMgoMgoMgo') || strcmp(Neighbours,'MgMgMgMgMgMg')
@@ -555,6 +669,8 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'MgMgSi') || strcmp(Neighbours,'FeoFeoSi')
                         atom(i).fftype={'Odsub'};
                     elseif strcmp(Neighbours,'MgMgMgSi') || strcmp(Neighbours,'MgoMgoMgoSi') || strcmp(Neighbours,'MghMghMghSi') || strcmp(Neighbours,'FeoFeoFeoSi')
+                        atom(i).fftype={'Op'};
+                    elseif strncmp(Neighbours,'AlMgMgMg',8) || strncmp(Neighbours,'AlMgoMgoMgo',11) || strcmp(Neighbours,'AlMgoMgoMgo') || strcmp(Neighbours,'AltMgoMgoMgo')
                         atom(i).fftype={'Op'};
                     elseif strcmp(Neighbours,'HMgMgMg') || strcmp(Neighbours,'HMghMghMgh') || strcmp(Neighbours,'FeoFeoFeoH')
                         atom(i).fftype={'Oh'};
@@ -591,12 +707,12 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours,'HH')
                         atom(i).fftype={'Ow'};
                         disp('Water?')
-                    elseif length(nNeigh) > 2
+                    elseif nNeigh > 2
                         disp('O atom overcoordinated')
                         i
                         Neighbours
-                        atom(i).fftype={'O^'};
-                    elseif length(nNeigh) == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg') || strcmp(Neighbours,'Si')
+                        atom(i).fftype={'O_ov'};
+                    elseif nNeigh == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg') || strcmp(Neighbours,'Si')
                         if strcmp(Neighbours,'Si')
                             atom(i).fftype={'Osi'};
                         elseif strncmp(Neighbours,'AlAl',2)
@@ -605,7 +721,7 @@ for assignment_run=heal_iterations
                             disp('O atom undercoordinated')
                             i
                             Neighbours
-                            atom(i).fftype={'O_'};
+                            atom(i).fftype={'O_un'};
                         end
                         if Heal_O == 1 % && assignment_run == 6
                             disp('Adding H to unsaturated O')
@@ -621,15 +737,15 @@ for assignment_run=heal_iterations
                             NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1*Neigh.r_vec(:,3)],1)));
                             [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                         end
-                    elseif length(nNeigh) == 0
+                    elseif nNeigh == 0
                         Neighbours
                         atom(i)
                         atom(i).neigh.dist
                         %                     atom(i)=[];
                         disp('remove O atom...?')
-                        
+
                         rm_ind=[rm_ind i];
-                        pause
+                        pause(1) %
                     end
                     if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 % && assignment_run == 8
                         disp('Adding acidic H to Oalh-->Oalhh')
@@ -638,8 +754,8 @@ for assignment_run=heal_iterations
                         Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.25);
                         NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -1/3*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1/3*Neigh.r_vec(:,3)],1)));
                         [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
-                    end      
-                                  
+                    end
+
                     % Special thingy to add Na on the edge
                     %             if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 ;%&& nH_extra > nH_added;
                     %                 disp('Adding Na!!!')
@@ -662,6 +778,7 @@ for assignment_run=heal_iterations
                         [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
                     end
                 end
+                All_Neighbours=[All_Neighbours;{char(atom(i).type) char(atom(i).fftype) Neighbours}]; % New 2.11
             end
         end
         i=i+1;
@@ -669,6 +786,11 @@ for assignment_run=heal_iterations
     end
 end
 
+if assignment_run>7
+    atom=adjust_H_atom(atom,Box_dim);
+end
+
+Atom_labels=unique([atom.element]);
 temp=element_atom(atom);
 [atom.element]=temp.type;
 
@@ -687,14 +809,26 @@ end
 try
     % If the usual atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel);
-    [C,ia,ic]=unique([atom.type],'first');
+    [C,ia,ic]=unique([atom.type],'last');
     [atom(ia).charge]
     % If new atom types
     atom = charge_atom(atom,Box_dim,ffname,watermodel,'more');
     [C,ia,ic]=unique([atom.type],'first');
     [atom(ia).charge]
+    assignin('caller','Total_charge',Total_charge);
 catch
     disp('Could not set the charge...')
+end
+
+if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.0001
+    disp('Initial total charge!')
+    Total_charge=round(sum([atom.charge]),8)
+    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    %     atom=tweak_charge_atom(atom,'Al');
+    disp('Final total charge, modfying the first atoms charge somewhat!')
+    Total_charge=sum([atom.charge])
+    round(sum(Total_charge),6)
+    assignin('caller','Total_charge',Total_charge);
 end
 
 for i=1:length(unique([atom.type]))
@@ -705,16 +839,64 @@ for i=1:length(unique([atom.type]))
     catch
         disp('Could not finalize:')
         i
-        Atom_label
+        Atom_labels
     end
 end
 
 ffname
 watermodel
 
+atom = order_attributes(atom);
+All_Neighbours=sortrows(All_Neighbours,1);
+All_Neighbours=sortrows(All_Neighbours,3);
+All_Neighbours=sortrows(All_Neighbours,1);
+
+i=1;All_Neighbours(:,4)={1};
+while i<size(All_Neighbours,1)+1
+    if i==1
+        All_Neighbours{i,4}=1;
+    elseif strcmp(All_Neighbours(i,1),All_Neighbours(i-1,1)) && strcmp(All_Neighbours(i,3),All_Neighbours(i-1,3))
+        All_Neighbours{i-1,4}=All_Neighbours{i-1,4}+1;
+        All_Neighbours(i,:)=[];
+        i=i-1;
+    else
+        All_Neighbours{i,4}=1;
+    end
+    i=i+1;
+end
+
+All_Neighbours=[All_Neighbours(:,1) All_Neighbours];
+% All_Neighbours(:,2)=lower(All_Neighbours(:,2));
+i=1;
+while i<size(All_Neighbours,1)+1
+    n=0;
+    if sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+        n=1;
+    else
+        n=0;
+    end
+
+    if i>1 && sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+        n=sum(strcmp(All_Neighbours(i,1),All_Neighbours(1:i,1)));
+    end
+
+    if n>0
+        All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
+    else
+
+    end
+    All_Neighbours(i,6)={unique(round([atom(strcmp([atom.type],All_Neighbours(i,3))).charge],5))};
+    i=i+1;
+end
+
+assignin('caller','atom',atom);
+assignin('caller','Box_dim',Box_dim);
+
+% atom=ff_atom(atom,Box_dim,'clayff',distance_factor,rmaxlong);
+
 % assignin('caller','newatom',atom);
-% assignin('caller','remove_ind',rm_ind);
-assignin('caller','All_Neighbours',unique(All_Neighbours));
+assignin('caller','remove_ind',rm_ind);
+assignin('caller','All_Neighbours',All_Neighbours);
 
 % Atom_label=sort(unique([atom.type]));
 % clayff_param(sort(Atom_label),'SPC/E');

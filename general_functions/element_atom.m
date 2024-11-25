@@ -2,7 +2,7 @@
 % * This function can replace the atomtypes names with the element names
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -28,6 +28,8 @@ if nargin > 3
 end
 
 for i=1:size(atom,2)
+
+    [atom(i).type] = regexprep([atom(i).type],'[\d"]','');
     %     [atom(i).type]=atom(i).type{1}(1:2); % Elements do not have more than two characters;
     if strncmpi(atom(i).type,{'Ag'},2);atom(i).element={'Ag'};
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
@@ -60,7 +62,7 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
     elseif strncmpi(atom(i).type,{'h'},1);atom(i).element={'H'};
     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};
-    elseif strncmpi(atom(i).type,{'OW'},2);atom(i).element={water_O};
+    elseif strncmpi(atom(i).type,{'OW'},2);atom(i).element={'O'}; %{water_O};
     elseif strncmpi(atom(i).type,{'Wa'},2);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'OHH'},3);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={water_O};
@@ -99,6 +101,7 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Sn'},2);atom(i).element={'Sn'};
     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'Sit'},3);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'st'},2);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'s'},1);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'S'},1);atom(i).element={'S'};
@@ -115,7 +118,6 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Y'},1);atom(i).element={'Y'};
     elseif strncmpi(atom(i).type,{'Zr'},2);atom(i).element={'Zr'};
     elseif strncmpi(atom(i).type,{'Zn'},2);atom(i).element={'Zn'};
-        
     else
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         if size([atom(i).type{:}],2)>1

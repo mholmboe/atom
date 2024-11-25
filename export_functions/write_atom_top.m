@@ -12,16 +12,16 @@
 % * found on lines ~140-170, and 175-190 for angles
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
-% # write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
-% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
-% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
+% # write_atom_top(atom,Box_dim,filename) % Basic input arguments
+% # write_atom_top(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
+% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
+% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
 
 function write_atom_top(atom,Box_dim,filename,varargin)
 
@@ -50,7 +50,7 @@ if nargin>5
         disp('Unknown watermodel, will try SPC/E')
         watermodel='SPC/E'
     end
-    
+
     if strcmpi(ffname,'clayff')
         clayff_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
@@ -82,7 +82,7 @@ if nargin>5
         nrexcl=2; % See the gromacs manual
         explicit_bonds = 1;
         explicit_angles = 1;
-        
+
     elseif strcmpi(ffname,'interface15')
         atom = mass_atom(atom);
         nrexcl=2; % See the gromacs manual
@@ -115,19 +115,32 @@ if nargin>5
     end
 else
     disp('Forcefield not stated, will make some assumptions then...')
-    pause(2)
-    ffname='clayff_2004'
-    watermodel='SPC/E'
-    pause(2)
-    atom = mass_atom(atom);
-    element=element_atom(atom);
-    [atom.element]=element.type;
+    ffname='minff';
+    watermodel='OPC3'; % SPC/E, depreceated
+    % minff_param(sort(unique([atom.type])),'OPC3');
     if ~isfield(atom,'charge')
-        atom = charge_atom(atom,Box_dim,ffname,watermodel);
+        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
+    Total_charge=sum([atom.charge])
+    round(Total_charge,5)
+    %         pause
     nrexcl=1; % See the gromacs manual
-    explicit_bonds = 0;
-    explicit_angles = 0;
+    explicit_bonds = 0
+    explicit_angles = 1
+    % disp('Forcefield not stated, will make some assumptions then...')
+    % pause(2)
+    % ffname='clayff_2004'
+    % watermodel='SPC/E'
+    % pause(2)
+    % atom = mass_atom(atom);
+    % element=element_atom(atom);
+    % [atom.element]=element.type;
+    % if ~isfield(atom,'charge')
+    %     atom = charge_atom(atom,Box_dim,ffname,watermodel);
+    % end
+    % nrexcl=1; % See the gromacs manual
+    % explicit_bonds = 0;
+    % explicit_angles = 0;
 end
 
 %% Find atomtype specific indexes
@@ -149,33 +162,33 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 %     %     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Hneighbours)));
 %     %     Bond_index=Bond_index(h_row,:);
 %     %     nBonds=size(Bond_index,1);
-%     
-    %% To only keep bonds to H's, uncomment the next four lines
-    [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
-    Bond_index=Bond_index(H_row,:);
-    nBonds=size(Bond_index,1);
-%     
+%
+%% To only keep bonds to H's, uncomment the next four lines
+[H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
+Bond_index=Bond_index(H_row,:);
+nBonds=size(Bond_index,1);
+%
 %     %     %% To only keep bonds between Osih - H, uncomment the next four lines
 %     %     disp('Keeping only bonds with H')
 %     %     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Osih)));
 %     %     Bond_index=Bond_index(h_row,:);
 %     %     nBonds=size(Bond_index,1);
-%     
+%
 %     %     %% To remove bonds with 'Al'
 %     %     [Al_row,Al_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Al)));
 %     %     Bond_index(Al_row,:)=[];
 %     %     nBonds=size(Bond_index,1);
-%     
+%
 %     %     %% To remove bonds with 'Si'
 %     %     [Si_row,Si_col]=ind2sub(size(Bond_index),find(ismember(Bond_index(:,2),ind_Si)));
 %     %     Bond_index(Si_row,:)=[];
 %     %     nBonds=size(Bond_index,1);
-%     
+%
 %     %    %% To remove bonds larger than certain rmin, uncomment next two lines
 %     %     rm_ind=find(Bond_index(:,3)>1.25);
 %     %     Bond_index(rm_ind,:)=[];
 %     %     nBonds=size(Bond_index,1);
-%     
+%
 % end
 [Y,I]=sort(Bond_index(:,1));
 Bond_index=Bond_index(I,:);
@@ -226,7 +239,9 @@ for i = 1:nAtoms
     else exist('Masses','var');
         Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     end
-    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t ; % 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
+    %     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t ; % 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
+    fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t % 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
+
 end
 
 fprintf(fid, '\r\n');
@@ -243,8 +258,8 @@ while count_b <= size(Bond_index,1)
                 r=0.09290;
                 kb=414216;
             else
-                r=0.1;
-                kb=463700;
+                r=0.09572; % 0.09789;
+                kb=441050; % 463700;
             end
         else
             if strncmpi(ffname,'interface',5)
@@ -258,7 +273,7 @@ while count_b <= size(Bond_index,1)
         % Normal
         Bond_order(count_b,:)= {Bond_index(count_b,1), Bond_index(count_b,2), bondtype, r, kb, ';',strtrim(char([atom(Bond_index(count_b,1)).fftype])), strtrim(char([atom(Bond_index(count_b,2)).fftype]))};
         fprintf(fid, '%-5i\t%-5i\t%-5i\t%-8.4f\t%-8.4f\t%s\t%s-%s\r\n', Bond_order{count_b,:});
-        
+
         % Custom
         %                 Bond_order(count_b,:)= {Bond_index(count_b,1), Bond_index(count_b,2), 10, r*.95, r*1.05, r*1.05+.01 , kb, ';',strtrim(char([atom(Bond_index(count_b,1)).type])), strtrim(char([atom(Bond_index(count_b,2)).type]))};
         %                 fprintf(fid, '%-5i\t%-5i\t%-5i\t%-8.4f\t%-8.4f\t%-8.4f\t%-8.4f\t%s\t%s-%s\r\n', Bond_order{count_b,:});
@@ -294,23 +309,24 @@ while count_a <= length(Angle_index) %nAngles;
         if sum(ismember(Angle_index(count_a,1:3),ind_H))==1
             if sum(ismember(Angle_index(count_a,1:3),ind_Mgo))>0 % Pouvreau,? Jeffery A. Greathouse,? Randall T. Cygan,? and Andrey G. Kalinichev 2017
                 adeg=110;
-                ktheta=50.208;
+                ktheta='50.208';
             elseif sum(ismember(Angle_index(count_a,1:3),ind_Al))>0 % Pouvreau,? Jeffery A. Greathouse,? Randall T. Cygan,? and Andrey G. Kalinichev 2017
                 adeg=110; %
-                ktheta=125.52; %
+                ktheta='125.520'; %
             else % Else orig Clayff, 2004
                 adeg=110; % From most recent CHARMM prm file 116.2;
-                ktheta=251.04; % since 45*4.184*2;% earlier 96.232*10; %
+                ktheta='251.040'; % since 45*4.184*2;% earlier 96.232*10; %
             end
         elseif sum(ismember(Angle_index(count_a,1:3),ind_H))==2  %             && sum(ismember(Angle_index(count_a,1:3),ind_Oh))>0 && sum(ismember(Angle_index(count_a,1:3),ind_Oct))>0
             adeg=109.47; % SPC water
             ktheta=383; % SPC water
         else % Orig Interface 2005
             adeg=Angle_index(count_a,4);
-            ktheta=1422.56;
+            ktheta='KANGLE '; %500.00; % 1422.56;
         end
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
-        fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f %-8.4f %s %s-%s-%s\r\n', Angle_order{count_a,:});
+        % fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f %-8.4f %s %s-%s-%s\r\n', Angle_order{count_a,:});
+        fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f %s %s %s-%s-%s\r\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     else
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
@@ -349,7 +365,7 @@ end
 %         end
 %
 %     end
-% 
+%
 % if strncmpi(ffname,'clayff',5)
 %     fprintf(fid, '#ifdef POSRES_Clayff \r\n');
 %     fprintf(fid, '[ position_restraints ] \r\n');

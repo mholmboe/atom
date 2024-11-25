@@ -1,12 +1,12 @@
 %% gmx_mk_angndx.m
 % * This function helps you print custom gromacs angle .ndx files with
-% triplets indexes. 
-% * atomtype1-3 can either be atom names like 'Al', or an array of indexes 
+% triplets indices.
+% * atomtype1-3 can either be atom names like 'Al', or an array of indexes
 % * like [1:10:960] or [1 2 3 4 5 8].
 % * rmin and rmax can be used to play around with bond lengths.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -86,3 +86,5 @@ for i = 1:size(ext_ind,1)
 end
 fprintf(fid, '\r\n');
 fclose(fid);
+
+end

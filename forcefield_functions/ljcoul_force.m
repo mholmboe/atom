@@ -76,9 +76,9 @@ if nargin>2
         color2=varargin{3};
         color3=varargin{3};
     else
-        color1='b';
-        color2='r';
-        color3='k';
+        color1='b--';
+        color2='r--';
+        color3='k--';
     end
     
     hold on

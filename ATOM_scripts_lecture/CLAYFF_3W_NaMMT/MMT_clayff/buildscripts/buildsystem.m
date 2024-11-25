@@ -48,12 +48,12 @@ System = charge_atom(System,Box_dim,'clayff','spc/e');
 %% Write the system to a .gro structure file
 write_atom_gro(System,Full_Box_dim,filename_out);
 
-write_atom_lmp(System,Full_Box_dim,filename,1.25,1.25,'clayff','spce')
+write_atom_lmp(System,Full_Box_dim,filename_out,1.25,1.25,'clayff','spce')
 
 %% Plot the final structure with plot_atom() or show_atom() or vmd()
-plot_atom(System,Full_Box_dim,.1)
-% show_atom(System,Full_Box_dim)
-% vmd(System,Full_Box_dim) % Use VMD to plot the simulation box
+% show_atom(System,Full_Box_dim,.1)
+% plot_atom(System,Full_Box_dim)
+vmd(System,Full_Box_dim) % Use VMD to plot the simulation box
 
 % write_atom_all(System,Full_Box_dim,'system',1.25,2.25,'clayff','spc/e');
 

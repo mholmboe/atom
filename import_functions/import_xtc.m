@@ -9,7 +9,7 @@
 % dimensions to Box_dim
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -55,7 +55,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function atom = import_xtc(filenameconf,filenamextc,varargin)
+function [atom,traj] = import_xtc(filenameconf,filenamextc,varargin)
+
+traj=[];   
 
 % If you need to set your local Gromacs PATH (but you could also call PATH2GMX)
 % PATH=getenv('PATH');

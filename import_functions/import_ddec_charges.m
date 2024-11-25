@@ -3,7 +3,7 @@
 % chargemol/DDEC6 code. Not tested alot..
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -11,7 +11,7 @@
 %% Examples
 % # atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')
 %
-function atom = import_ddec_charges(varargin)
+function [atom,Box_dim] = import_ddec_charges(varargin)
 
 if nargin>0
     filename=varargin{1};
@@ -117,11 +117,30 @@ for i=1:nAtoms
     atom(i).vx=0;
     atom(i).vy=0;
     atom(i).vz=0;
+    % atom(i).charge=ddec_charge(i);
+end
+
+atom=clayff_atom(atom,Box_dim,'clayff','spce',2,0.6,2.45);
+
+for i=1:nAtoms
     atom(i).charge=ddec_charge(i);
 end
 
-ddec_charge
+ddec_charge;
 
+Atom_labels=unique([atom.type]);
+All_Q=[];
+for i=1:size(Atom_labels,2)
+    ind=ismember([atom.type],Atom_labels(i));
+    Ave_Q=mean([atom(ind).charge]);
+    All_Q=[All_Q; [Atom_labels(i) {Ave_Q}]];
+end
+
+writecell(All_Q,'All_Ave_C6.dat');
+
+assignin('caller','All_C6',All_Q);
+
+nAtoms_init=size(atom,2);Box_dim_init=Box_dim;
 try
     filePattern = fullfile('./', '*sorted.pdb');
     filename = dir(filePattern);
@@ -148,6 +167,11 @@ try
 catch
     
 end
+
+writecell(All_Q,'All_Q.dat');
+
+assignin('caller','All_Q',All_Q);
+
 
 % atom = resname_atom(atom);
 write_atom_pdb(atom(1:nAtoms_init),Box_dim_init,'ddec.pdb')

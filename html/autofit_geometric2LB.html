@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>autofit_geometric2LB</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="autofit_geometric2LB.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Ref c6/c12</a>
+</li>
+<li>
+<a href="#3">Initial guess sig/eps</a>
+</li>
+<li>
+<a href="#4">Initial values</a>
+</li>
+<li>
+<a href="#5">In order to keep parameters around 1..</a>
+</li>
+<li>
+<a href="#6">Set lower/upper bounds</a>
+</li>
+<li>
+<a href="#7">Set Options for Optimization</a>
+</li>
+<li>
+<a href="#8">Run lsqnonlin</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">% clear;</span>
+close <span class="string">all</span>;
+hold <span class="string">on</span>
+format <span class="string">short</span>;
+
+r=.2:.001:1.2; <span class="comment">% nm</span>
+</pre>
+<h2 id="2">Ref c6/c12</h2>
+<pre class="codeinput">q1ref=0;
+q2ref=0;
+c61=2.26195E-03;
+c62=0.0026173456; <span class="comment">% Ow</span>
+c121=1.2769E-06;
+c122=2.634129e-06; <span class="comment">% Ow</span>
+
+<span class="comment">% Ow 0.0026173456  2.634129e-06</span>
+<span class="comment">% OP 2.26195E-03	1.77956E-06</span>
+<span class="comment">% OO 3.59595E-04	1.11082E-07</span>
+<span class="comment">% O  0.002261954    1.2769E-06</span>
+</pre>
+<h2 id="3">Initial guess sig/eps</h2>
+<pre class="codeinput">q1=0;
+q2=0;
+sig1=0.31656;
+sig2=0.31656;
+eps1=0.718772678;
+eps2=0.65017;
+
+[r,lj,coul,data] = ljcoul_C6C12([q1ref,q2ref,c61,c62,c121,c122],r);
+</pre>
+<h2 id="4">Initial values</h2>
+<pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
+delta    = [ 1   1   .1    1     1     1   ];
+
+x0=xinit;
+</pre>
+<h2 id="5">In order to keep parameters around 1..</h2>
+<pre class="codeinput">scalefactors=1./x0;
+scalefactors(scalefactors==0)=1;
+scalefactors(isinf(scalefactors))=1E18;
+x0=scalefactors.*x0;
+</pre>
+<h2 id="6">Set lower/upper bounds</h2>
+<pre class="codeinput">lb       = delta;
+ub       = 1./delta;
+
+ind_neg=find(lb&gt;ub);
+<span class="keyword">if</span> numel(ind_neg)&gt;0
+    temp=lb(ind_neg);
+    lb(ind_neg)=ub(ind_neg);
+    ub(ind_neg)=temp;
+<span class="keyword">end</span>
+</pre>
+<h2 id="7">Set Options for Optimization</h2>
+<pre class="codeinput">objective_func_string=<span class="string">'ljcoul_objective_func(x,data,r,scalefactors)'</span>;
+eval(strcat(<span class="string">'f=@(x)'</span>,objective_func_string,<span class="string">';'</span>));
+options = optimoptions(@lsqnonlin,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'Display'</span>,<span class="string">'iter-detailed'</span>,<span class="string">'MaxFunctionEvaluations'</span>,50000,<span class="string">'MaxIterations'</span>,5000,<span class="string">'Tolfun'</span>,1e-12);
+options.Algorithm = <span class="string">'levenberg-marquardt'</span>; <span class="comment">%'trust-region-reflective';%'levenberg-marquardt'; % or</span>
+options.StepTolerance = 1.000000000000000e-12
+options.FiniteDifferenceType = <span class="string">'central'</span>;
+options.FiniteDifferenceStepSize = eps^(1/3);
+options.CheckGradients = true;
+options.OptimalityTolerance = 1E-18;
+</pre>
+<h2 id="8">Run lsqnonlin</h2>
+<pre class="codeinput">fx=lsqnonlin(f,x0,lb,ub,options);
+
+
+fx=fx./scalefactors
+
+<span class="comment">% copy(fx)</span>
+
+r_plot=.2:.001:1.2;
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
+
+<span class="comment">% norm((fxdata-data_plot)/numel(data_plot))</span>
+<span class="comment">% plot(r_plot,fxdata-data_plot)</span>
+
+<span class="comment">% x0=fx;</span>
+<span class="comment">% eval(strcat('res=',objective_func_string,';'));</span>
+<span class="comment">% disp('Mean abs(residual):');</span>
+<span class="comment">% mean(abs(res))</span>
+
+<span class="comment">% if nargin&gt;5</span>
+<span class="comment">% hold on</span>
+<span class="comment">% plot(r,data,'r');</span>
+<span class="comment">% plot(r,data+res,'g');</span>
+<span class="comment">% plot(r,res,'b');</span>
+<span class="comment">%     xlim([min(r) max(r)]);</span>
+<span class="comment">%     ylim([min(data) max(data)]);</span>
+<span class="comment">% end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+% clear;
+close all;
+hold on
+format short;
+
+r=.2:.001:1.2; % nm
+
+%% Ref c6/c12
+q1ref=0;
+q2ref=0;
+c61=2.26195E-03;
+c62=0.0026173456; % Ow
+c121=1.2769E-06;
+c122=2.634129e-06; % Ow
+
+% Ow 0.0026173456  2.634129e-06
+% OP 2.26195E-03	1.77956E-06
+% OO 3.59595E-04	1.11082E-07
+% O  0.002261954    1.2769E-06
+
+%% Initial guess sig/eps
+q1=0;
+q2=0;
+sig1=0.31656;
+sig2=0.31656;
+eps1=0.718772678;
+eps2=0.65017;
+
+[r,lj,coul,data] = ljcoul_C6C12([q1ref,q2ref,c61,c62,c121,c122],r);
+
+%% Initial values
+xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
+delta    = [ 1   1   .1    1     1     1   ];
+
+x0=xinit;
+%% In order to keep parameters around 1..
+scalefactors=1./x0;
+scalefactors(scalefactors==0)=1;
+scalefactors(isinf(scalefactors))=1E18;
+x0=scalefactors.*x0;
+
+%% Set lower/upper bounds
+lb       = delta;
+ub       = 1./delta;
+
+ind_neg=find(lb>ub);
+if numel(ind_neg)>0
+    temp=lb(ind_neg);
+    lb(ind_neg)=ub(ind_neg);
+    ub(ind_neg)=temp;
+end
+
+%% Set Options for Optimization
+objective_func_string='ljcoul_objective_func(x,data,r,scalefactors)';
+eval(strcat('f=@(x)',objective_func_string,';'));
+options = optimoptions(@lsqnonlin,'Diagnostics','on','Display','iter-detailed','MaxFunctionEvaluations',50000,'MaxIterations',5000,'Tolfun',1e-12);
+options.Algorithm = 'levenberg-marquardt'; %'trust-region-reflective';%'levenberg-marquardt'; % or
+options.StepTolerance = 1.000000000000000e-12
+options.FiniteDifferenceType = 'central';
+options.FiniteDifferenceStepSize = eps^(1/3);
+options.CheckGradients = true;
+options.OptimalityTolerance = 1E-18;
+
+%% Run lsqnonlin
+fx=lsqnonlin(f,x0,lb,ub,options);
+
+
+fx=fx./scalefactors
+
+% copy(fx)
+
+r_plot=.2:.001:1.2;
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
+
+% norm((fxdata-data_plot)/numel(data_plot))
+% plot(r_plot,fxdata-data_plot)
+
+% x0=fx;
+% eval(strcat('res=',objective_func_string,';'));
+% disp('Mean abs(residual):');
+% mean(abs(res))
+
+% if nargin>5
+% hold on
+% plot(r,data,'r');
+% plot(r,data+res,'g');
+% plot(r,res,'b');
+%     xlim([min(r) max(r)]);
+%     ylim([min(data) max(data)]);
+% end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

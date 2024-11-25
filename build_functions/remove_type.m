@@ -1,9 +1,9 @@
 %% remove_type.m
-% * This function removes atomtypes with types as in typescell = 
+% * This function removes atomtypes with types as in typescell =
 % {'OW' 'HW1' 'HW2'}
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -24,3 +24,5 @@ atom=atom(change_ind);
 atom=atom_update(atom);
 
 assignin('caller','rm_ind',rm_ind)
+
+end

@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>charge_opls_go_atom</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="charge_opls_go_atom.m"><style type="text/css">
+      -->
+<title>charge_opls_go_atom</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="charge_opls_go_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,39 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">This is a tailor-made function and likely not relvant for you!!!</a></li><li><a href="#4">charge_opls_go_atom.m - This function tries to smear out the charge at around -OH and epoxides in GO</a></li><li><a href="#5">Based on the corresponding clayff atom function</a></li><li><a href="#6">Use like this to set new charges</a></li><li><a href="#7">Total_charge = charge_clayff_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = charge_opls_go_atom(atom,Box_dim,varargin)
-</pre><h2 id="2">This is a tailor-made function and likely not relvant for you!!!</h2><h2 id="4">charge_opls_go_atom.m - This function tries to smear out the charge at around -OH and epoxides in GO</h2><h2 id="5">Based on the corresponding clayff atom function</h2><h2 id="6">Use like this to set new charges</h2><h2 id="7">Total_charge = charge_clayff_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])</h2><pre class="codeinput">nAtoms=size(atom,2);
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">This is a tailor-made function and likely not relvant for you!!!</a>
+</li>
+<li>
+<a href="#4">charge_opls_go_atom.m - This function tries to smear out the charge at around -OH and epoxides in GO</a>
+</li>
+<li>
+<a href="#5">Based on the corresponding clayff atom function</a>
+</li>
+<li>
+<a href="#6">Use like this to set new charges</a>
+</li>
+<li>
+<a href="#7">Total_charge = charge_clayff_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = charge_opls_go_atom(atom,Box_dim,varargin)
+</pre>
+<h2 id="2">This is a tailor-made function and likely not relvant for you!!!</h2>
+<h2 id="4">charge_opls_go_atom.m - This function tries to smear out the charge at around -OH and epoxides in GO</h2>
+<h2 id="5">Based on the corresponding clayff atom function</h2>
+<h2 id="6">Use like this to set new charges</h2>
+<h2 id="7">Total_charge = charge_clayff_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])</h2>
+<pre class="codeinput">nAtoms=size(atom,2);
 [atom.charge]=deal(0);
 
 <span class="comment">% Atom_label=sort(unique([atom.type]));</span>
@@ -180,7 +216,14 @@ Total_charge=sum([atom.charge])
 
 <span class="comment">% assignin('caller','atom_C',atom_C);</span>
 assignin(<span class="string">'caller'</span>,<span class="string">'Total_charge'</span>,Total_charge);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 function atom = charge_opls_go_atom(atom,Box_dim,varargin)
 %% This is a tailor-made function and likely not relvant for you!!!
@@ -307,4 +350,6 @@ assignin('caller','Total_charge',Total_charge);
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

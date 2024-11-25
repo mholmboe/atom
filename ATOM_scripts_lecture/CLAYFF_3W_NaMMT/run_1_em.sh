@@ -12,6 +12,8 @@ echo "home directory of the gromacs simulations set to $gmx_run"
 ####### ENERGY MINIMIZATION WITH STEEP #########
 ################################################
 
+if [[ ! -e "$sim".gro ]]; then
+
 echo "Starting energy minimization steep"
 
 cd $gmx_run
@@ -93,5 +95,9 @@ if [ -e "$sim".gro ]
 		fi
  
 #rm -f \#*
+
+else
+		echo "EM have already been simulated"
+fi
 
 cd $gmx_run

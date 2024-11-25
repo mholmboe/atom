@@ -24,8 +24,14 @@ end
 filename_out = 'ffnonbonded.itp';
 file_title = 'Gromacs .itp topology file written in MATLAB from parameters in ...ff.mat'; % Header in output file
 
-ff=load(strcat(ffname,'.mat'));
-ff=ff.ff;
+if ~isstruct(ffname)
+    load(strcat(ffname,'.mat'));
+    ff=ff.ff;
+else
+    ff=ffname;
+    ffname='Forcefield parameters';
+end
+
 
 wat=load(strcat('water_models.mat'));
 watff=wat.ff;
@@ -49,18 +55,21 @@ nParam=size(parameters,1);
 
 if numel(Opt_labels)>0
     ff = write_ff(ff,Opt_labels,parameters,'VAR');
-    
+
     for i=1:numel(Opt_labels)
         ind=find(strcmp([ff.type],Opt_labels(i)));
-        atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
-            char([ff(ind).charge]),'A',char([ff(ind).sigma_nm]),char([ff(ind).e_kJmol])};
+
         if  nParam>2*nOpt
-            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9s   % -3s\t% -9s\t% -9s\r\n', atomtypes{i,:});
+            atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
+                char([ff(ind).charge]),'A',char([ff(ind).sigma_nm]),char([ff(ind).e_kJmol])};
+            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9s   % -3s\t% -8s\t% -8s\r\n', atomtypes{i,:});
         else
-            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9.6f   % -3s\t% -9s\t% -9s\r\n', atomtypes{i,:});
+            atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
+                [ff(ind).charge],'A',char([ff(ind).sigma_nm]),char([ff(ind).e_kJmol])};
+            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9.6f   % -3s\t% -8s\t% -8s\r\n', atomtypes{i,:});
         end
     end
-    
+
 end
 
 if numel(FEP_ion)>0
@@ -75,7 +84,7 @@ if numel(FEP_ion)>0
         ind=ind(1);
     end
     ind(2)=ind;
-    
+
     FEP_Atom_labels={'Io' FEP_ion  'Na' 'Cl'};FEP_Atom_labels=unique(FEP_Atom_labels,'stable')
     RestAtom_labels=RestAtom_labels(~ismember(RestAtom_labels,FEP_Atom_labels));
     for a=3:numel(FEP_Atom_labels)
@@ -85,7 +94,7 @@ if numel(FEP_ion)>0
     for i=1:numel(FEP_Atom_labels)
         atomtypes(i,:) = {char(FEP_Atom_labels(i)),[ff(ind(i)).atnum],[ff(ind(i)).mass],...
             [ff(ind(i)).charge],'A',[ff(ind(i)).sigma_nm],[ff(ind(i)).e_kJmol]};
-        fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+        fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n', atomtypes{i,:});
     end
 end
 
@@ -93,15 +102,15 @@ fprintf(fid, '%s\r\n',strcat('; ',ffname));
 for i=1:numel(RestAtom_labels)
     ind=find(strcmp([ff.type],RestAtom_labels(i)));
     atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
-        [ff(ind).charge],'A',[ff(ind).sigma_nm],[ff(ind).e_kJmol]};
-    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+        [ff(ind).charge],'A',round([ff(ind).sigma_nm],6),round([ff(ind).e_kJmol],6)};
+    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n', atomtypes{i,:});
 end
 
 for i=1:numel(WatAtom_labels)
     ind=find(strcmp([watff.type],WatAtom_labels(i)));
     atomtypes(i,:) = {char([watff(ind).type]),[watff(ind).atnum],[watff(ind).mass],...
-        [watff(ind).charge],'A',[watff(ind).sigma_nm],[watff(ind).e_kJmol]};
-    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+        [watff(ind).charge],'A',round([watff(ind).sigma_nm],6),round([watff(ind).e_kJmol],6)};
+    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n', atomtypes{i,:});
 end
 
 fprintf(fid, '\r\n');

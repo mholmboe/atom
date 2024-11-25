@@ -4,7 +4,7 @@
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -99,7 +99,8 @@ elseif nargin == 3
         orto=orto_atom(atom,Box_dim);
         X_data = num2cell([orto.xfrac]' - floor([orto.xfrac]'));
         Y_data = num2cell([orto.yfrac]' - floor([orto.yfrac]'));
-        Z_data = num2cell([orto.zfrac]'); % - floor([orto.zfrac]'));
+        % Z_data = num2cell([orto.zfrac]'); % - floor([orto.zfrac]')); % Why? Removed for v.2.12
+        Z_data = num2cell([orto.zfrac]' - floor([orto.zfrac]'));
         [orto.x]=deal(X_data{:});
         [orto.y]=deal(Y_data{:});
         [orto.z]=deal(Z_data{:});

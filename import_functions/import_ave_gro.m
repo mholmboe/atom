@@ -5,7 +5,7 @@
 % 
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>interface_param.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="interface_param.m"><style type="text/css">
+      -->
+<title>interface_param.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="interface_param.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>interface_param.m</h1><!--introduction--><div><ul><li>This function holds the extended interface ff parameters</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>interface_param(Atom_label)</li><li>interface_param(Atom_label,'tip3p')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> interface_param(Atom_label,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>interface_param.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function holds the extended interface ff parameters</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>interface_param(Atom_label)</li>
+<li>interface_param(Atom_label,'tip3p')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> interface_param(Atom_label,varargin)
 
 <span class="keyword">if</span> nargin &lt; 2
     water_model=<span class="string">'tip3p'</span>;
@@ -165,7 +209,7 @@ forcefield.interface(9).e_kJmol = 0.104600;
 <span class="comment">% Oalh</span>
 forcefield.interface(10).type =    {<span class="string">'Oalh'</span>}; <span class="comment">%</span>
 forcefield.interface(10).mass =    15.99410;
-forcefield.interface(10).charge =  -0.75833; <span class="comment">% Dummy charge</span>
+forcefield.interface(10).charge =  -0.68350; <span class="comment">% Dummy charge</span>
 forcefield.interface(10).radius =  3.50000;
 forcefield.interface(10).e_kJmol = 0.104600;
 <span class="comment">%</span>
@@ -360,6 +404,12 @@ forcefield.interface(39).mass =    15.99941;
 forcefield.interface(39).charge =  -0.3256	;
 forcefield.interface(39).radius =  3.404427393;
 forcefield.interface(39).e_kcalmol = 0.160036571;
+<span class="comment">% Mgh</span>
+forcefield.interface(40).type =    {<span class="string">'Mgh'</span>}; <span class="comment">% mgh</span>
+forcefield.interface(40).mass =    24.305;
+forcefield.interface(40).charge =  1.1000-36/270;<span class="comment">%-0.002574/32;%-8.1250e-05;</span>
+forcefield.interface(40).radius =  4.41000;
+forcefield.interface(40).e_kJmol = 0.20920;
 
 <span class="comment">% Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';</span>
 <span class="comment">% forcefield.interface=forcefield.interface(Forcefield_index);</span>
@@ -487,13 +537,20 @@ assignin(<span class="string">'caller'</span>,<span class="string">'forcefield'<
 <span class="comment">% D=(Dist_matrix-B)&lt;0;</span>
 <span class="comment">% [C1,C2]=sort(Dist_matrix(:,1));</span>
 <span class="comment">% C3=XYZ_labels(C2(:));</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% interface_param.m
 % * This function holds the extended interface ff parameters
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -600,7 +657,7 @@ forcefield.interface(9).e_kJmol = 0.104600;
 % Oalh
 forcefield.interface(10).type =    {'Oalh'}; %
 forcefield.interface(10).mass =    15.99410;
-forcefield.interface(10).charge =  -0.75833; % Dummy charge
+forcefield.interface(10).charge =  -0.68350; % Dummy charge
 forcefield.interface(10).radius =  3.50000;
 forcefield.interface(10).e_kJmol = 0.104600;
 %
@@ -795,6 +852,12 @@ forcefield.interface(39).mass =    15.99941;
 forcefield.interface(39).charge =  -0.3256	;
 forcefield.interface(39).radius =  3.404427393;
 forcefield.interface(39).e_kcalmol = 0.160036571;
+% Mgh
+forcefield.interface(40).type =    {'Mgh'}; % mgh
+forcefield.interface(40).mass =    24.305;
+forcefield.interface(40).charge =  1.1000-36/270;%-0.002574/32;%-8.1250e-05;
+forcefield.interface(40).radius =  4.41000;
+forcefield.interface(40).e_kJmol = 0.20920;
 
 % Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';
 % forcefield.interface=forcefield.interface(Forcefield_index);
@@ -928,4 +991,6 @@ end
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

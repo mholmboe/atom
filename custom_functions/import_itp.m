@@ -136,16 +136,21 @@ try
             clearvars atomtypes
             atoms_cell = regexp(itp.atomtypes,'\s+', 'split');
             atoms_cell = vertcat(atoms_cell{:});
-            atoms_cell = sortrows(atoms_cell,1);
-            atoms_section_labels = {'type' 'name' 'atnum' 'charge' 'ptype' 'v' 'w'};
-            for i=1:min([7 size(atoms_cell,2)])
-                field=char(atoms_section_labels(i));
-                if ismember(atoms_section_labels(i),{'atnum' 'charge' 'v' 'w'})
-                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
-                else
-                    atomtypes.(field)=atoms_cell(:,i);
+            if numel(atoms_cell)>0
+                if sum(strcmp([atoms_cell(1,:)],';'))>0
+                    atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
                 end
-                
+                atoms_cell = sortrows(atoms_cell,1);
+                atoms_section_labels = {'type' 'name' 'atnum' 'charge' 'ptype' 'v' 'w'};
+                for i=1:min([7 size(atoms_cell,2)])
+                    field=char(atoms_section_labels(i));
+                    if ismember(atoms_section_labels(i),{'atnum' 'charge' 'v' 'w'})
+                        atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                    else
+                        atomtypes.(field)=atoms_cell(:,i);
+                    end
+
+                end
             end
             itp.atomtypes=atomtypes;
             for i=1:size(itp.atoms.type,1)
@@ -154,7 +159,7 @@ try
         catch
             clearvars atomtypes
             atoms_cell = regexp(itp.atomtypes,'\s+', 'split');
-            
+
             colmin=100;
             for i=1:size(atoms_cell,1)
                 colmin=min([size(atoms_cell{i},2) colmin]);
@@ -163,16 +168,21 @@ try
                 atoms_cell{i}=atoms_cell{i}(1:colmin);
             end
             atoms_cell = vertcat(atoms_cell{:});
-            atoms_cell = sortrows(atoms_cell,1);
-            atoms_section_labels = {'name' 'atnum' 'mass' 'charge' 'ptype' 'sigma' 'epsilon'};
-            for i=1:min([7 size(atoms_cell,2)])
-                field=char(atoms_section_labels(i));
-                if ismember(atoms_section_labels(i),{'atnum' 'charge' 'sigma' 'epsilon'})
-                    atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
-                else
-                    atomtypes.(field)=atoms_cell(:,i);
+            if numel(atoms_cell)>0
+                if sum(strcmp([atoms_cell(1,:)],';'))>0
+                    atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
                 end
-                
+                atoms_cell = sortrows(atoms_cell,1);
+                atoms_section_labels = {'name' 'atnum' 'mass' 'charge' 'ptype' 'sigma' 'epsilon'};
+                for i=1:min([7 size(atoms_cell,2)])
+                    field=char(atoms_section_labels(i));
+                    if ismember(atoms_section_labels(i),{'atnum' 'charge' 'sigma' 'epsilon'})
+                        atomtypes.(field)=cellfun(@str2double,atoms_cell(:,i));
+                    else
+                        atomtypes.(field)=atoms_cell(:,i);
+                    end
+
+                end
             end
             itp.atomtypes=atomtypes;
             itp.atomtypes.type=itp.atomtypes.name;
@@ -190,26 +200,33 @@ if exist('bonds','var')
     clearvars bonds
     atoms_cell = regexp(itp.bonds,'\s+', 'split');
     atoms_cell = vertcat(atoms_cell{:});
-    atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
-    for i=1:min([5 size(atoms_cell,2)])
-        field=char(atoms_section_labels(i));
-        if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
-            bonds.(field)=cellfun(@str2double,atoms_cell(:,i));
-            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
-        else
-            bonds.(field)=atoms_cell(:,i:end);
-            [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+    if numel(atoms_cell)>0
+        if sum(strcmp([atoms_cell(1,:)],';'))>0
+            atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
         end
-        
+        atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
+        for i=1:min([5 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
+                bonds.(field)=cellfun(@str2double,atoms_cell(:,i));
+                [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+            else
+                bonds.(field)=atoms_cell(:,i:end);
+                [bonds.(field)(isnan(bonds.(field)))]=deal(0);
+            end
+
+        end
     end
-    itp.bonds=bonds;
+    if exist('bonds','var')
+        itp.bonds=bonds;
+    end
 end
 
 %% Parse the [ angles ] section
 if exist('angles','var')
     clearvars angles
     atoms_cell = regexp(itp.angles,'\s+', 'split');
-    
+
     %% To avoid vertcat problems
     mincol=1000;
     for s=1:size(atoms_cell,1)
@@ -221,20 +238,28 @@ if exist('angles','var')
     for s=1:size(atoms_cell,1)
         atoms_cell{s}(1:mincol);
     end
-    
+
     atoms_cell = vertcat(atoms_cell{:});
-    atoms_section_labels = {'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'};
-    for i=1:min([6 size(atoms_cell,2)])
-        field=char(atoms_section_labels(i));
-        if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'})
-            angles.(field)=cellfun(@str2double,atoms_cell(:,i));
-            [angles.(field)(isnan(angles.(field)))]=deal(0);
-        else
-            angles.(field)=atoms_cell(:,i);
-            [angles.(field)(isnan(angles.(field)))]=deal(0);
+    if numel(atoms_cell)>0
+        if sum(strcmp([atoms_cell(1,:)],';'))>0
+            atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
+        end
+
+        atoms_section_labels = {'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'};
+        for i=1:min([6 size(atoms_cell,2)])
+            field=char(atoms_section_labels(i));
+            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct' 'c0' 'c1' 'c2' 'c3'})
+                angles.(field)=cellfun(@str2double,atoms_cell(:,i));
+                [angles.(field)(isnan(angles.(field)))]=deal(0);
+            else
+                angles.(field)=atoms_cell(:,i);
+                [angles.(field)(isnan(angles.(field)))]=deal(0);
+            end
         end
     end
-    itp.angles=angles;
+    if exist('angles','var')
+        itp.angles=angles;
+    end
 end
 
 try
@@ -243,18 +268,27 @@ try
         clearvars pairs
         atoms_cell = regexp(itp.pairs,'\s+', 'split');
         atoms_cell = vertcat(atoms_cell{:});
-        atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
-        for i=1:min([7 size(atoms_cell,2)])
-            field=char(atoms_section_labels(i));
-            if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
-                pairs.(field)=cellfun(@str2double,atoms_cell(:,i));
-                %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
-            else
-                pairs.(field)=atoms_cell(:,i);
-                %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
+        if numel(atoms_cell)>0
+            if sum(strcmp([atoms_cell(1,:)],';'))>0
+                atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
+            end
+
+            atoms_section_labels = {'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'};
+            for i=1:min([7 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'ai' 'aj' 'funct' 'c0' 'c1' 'c2' 'c3'})
+                    pairs.(field)=cellfun(@str2double,atoms_cell(:,i));
+                    %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
+                else
+                    pairs.(field)=atoms_cell(:,i);
+                    %             [pairs.(field)(isnan(pairs.(field)))]=deal(0);
+                end
             end
         end
-        itp.pairs=pairs;
+        if exist('pairs','var')
+            itp.pairs=pairs;
+        end
+
     end
 catch
 end
@@ -265,16 +299,24 @@ try
         clearvars exclusions
         atoms_cell = regexp(itp.exclusions,'\s+', 'split');
         atoms_cell = vertcat(atoms_cell{:});
-        atoms_section_labels = {'ai' 'aj' 'ak' 'funct'};
-        for i=1:min([4 size(atoms_cell,2)])
-            field=char(atoms_section_labels(i));
-            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct'})
-                exclusions.(field)=cellfun(@str2double,atoms_cell(:,i));
-            else
-                exclusions.(field)=atoms_cell(:,i);
+        if numel(atoms_cell)>0
+            if sum(strcmp([atoms_cell(1,:)],';'))>0
+                atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
+            end
+
+            atoms_section_labels = {'ai' 'aj' 'ak' 'funct'};
+            for i=1:min([4 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak' 'funct'})
+                    exclusions.(field)=cellfun(@str2double,atoms_cell(:,i));
+                else
+                    exclusions.(field)=atoms_cell(:,i);
+                end
             end
         end
-        itp.exclusions=exclusions;
+        if exist('exclusions','var')
+            itp.exclusions=exclusions;
+        end
     end
 catch
 end
@@ -285,16 +327,24 @@ try
         clearvars dihedrals
         atoms_cell = regexp(itp.dihedrals,'\s+', 'split');
         atoms_cell = vertcat(atoms_cell{:});
-        atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
-        for i=1:min([11 size(atoms_cell,2)])
-            field=char(atoms_section_labels(i));
-            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
-                dihedrals.(field)=cellfun(@str2double,atoms_cell(:,i));
-            else
-                dihedrals.(field)=char(atoms_cell(:,i));
+        if numel(atoms_cell)>0
+            if sum(strcmp([atoms_cell(1,:)],';'))>0
+                atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
+            end
+
+            atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
+            for i=1:min([11 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
+                    dihedrals.(field)=cellfun(@str2double,atoms_cell(:,i));
+                else
+                    dihedrals.(field)=char(atoms_cell(:,i));
+                end
             end
         end
-        itp.dihedrals=dihedrals;
+        if exist('dihedrals','var')
+            itp.dihedrals=dihedrals;
+        end
     end
 catch
 end
@@ -305,19 +355,49 @@ try
         clearvars impropers
         atoms_cell = regexp(itp.impropers,'\s+', 'split');
         atoms_cell = vertcat(atoms_cell{:});
-        atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
-        for i=1:min([11 size(atoms_cell,2)])
-            field=char(atoms_section_labels(i));
-            if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
-                impropers.(field)=cellfun(@str2double,atoms_cell(:,i));
-            else
-                impropers.(field)=atoms_cell(:,i);
+        if numel(atoms_cell)>0
+            if sum(strcmp([atoms_cell(1,:)],';'))>0
+                atoms_cell = atoms_cell(:,1:find(strcmp([atoms_cell(1,:)],';'))-1);
+            end
+
+            atoms_section_labels = {'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'};
+            for i=1:min([11 size(atoms_cell,2)])
+                field=char(atoms_section_labels(i));
+                if ismember(atoms_section_labels(i),{'ai' 'aj' 'ak'  'al'  'funct' 'c0' 'c1' 'c2' 'c3'  'c4' 'c5'})
+                    impropers.(field)=cellfun(@str2double,atoms_cell(:,i));
+                else
+                    impropers.(field)=atoms_cell(:,i);
+                end
             end
         end
-        itp.impropers=impropers;
+        if exist('impropers','var')
+            itp.impropers=impropers;
+        end
     end
 catch
 end
+
+try
+    %% Parse the [ position_restrains ] section, starting three lines above the first [ position_restraints ] instance
+    if exist('position_restraints','var')
+
+        inputfile = fopen(filename, 'r');
+        PR = textscan(inputfile, '%s', 'Delimiter', '\n');
+        fclose(inputfile);
+
+        section_rows=strfind(PR{1},'position_restraints');
+        section_rows = find(~cellfun('isempty',section_rows));
+        sections=PR{1,1}(section_rows);
+        End_Data=PR{1,1};
+        End_Data=char(End_Data(section_rows(1)-3:size(PR{1,1},1),1));
+        itp.enddata=End_Data;
+
+    end
+catch
+end
+
 % assignin('caller','itp',itp);
+
+end
 
 

@@ -2,7 +2,7 @@
 % * This function duplicates residue with molid MolID
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -22,3 +22,5 @@ atom_top=atom(1:last_molID_ind);
 atom_bottom=atom(last_molID_ind+1:end);
 atom=[atom_top new_atom atom_bottom];
 atom=update_atom(atom);
+
+end

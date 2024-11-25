@@ -5,7 +5,7 @@
 %
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -76,5 +76,7 @@ if nargin>3
     atom=center_atom(atom,Box_dim)
 end
 
-assignin('caller','Box_dim',Box_dim)
+assignin('caller','Box_dim',Box_dim);
+
+end
 

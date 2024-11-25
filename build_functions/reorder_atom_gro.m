@@ -4,7 +4,7 @@
 % * is only one type of molecule in the atom struct.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -17,7 +17,7 @@ function reorder_atom_gro(atom,atomlist,Box_dim,filename_out)
 
 nResidues=max([atom.molid]); % How many residues are we talking about?
 nAtoms=length(atomlist)*nResidues; % How many atoms in total will we output?
-Atom_section=cell(nAtoms,10); 
+Atom_section=cell(nAtoms,10);
 nResidueatoms_prev=sum([atom.molid]==1); % How many atoms per residue did we have initially?
 nResidueatoms_current=length(atomlist); % How many atoms per residue did will we output?
 
@@ -29,4 +29,6 @@ for i=1:nResidues
 end
 
 % Write the new structure to a .gro file
-write_atom_gro(newatom,Box_dim,filename_out)
+write_atom_gro(newatom,Box_dim,filename_out);
+
+end

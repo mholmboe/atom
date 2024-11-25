@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>create_grid_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="create_grid_atom.m"><style type="text/css">
+      -->
+<title>create_grid_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="create_grid_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,38 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>create_grid_atom.m</h1><!--introduction--><div><ul><li>This old function puts ions on a grid plane and adds it to an atom struct.</li><li>Use create_atom() instead.</li><li>Tested 15/04/2017</li><li>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Examples</a></li></ul></div><h2 id="1">Examples</h2><div><ul><li>atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>create_grid_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This old function puts ions on a grid plane and adds it to an atom struct.</li>
+<li>Use create_atom() instead.</li>
+<li>Tested 15/04/2017</li>
+<li>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ul>
+<li>atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
 
 
 <span class="comment">% if length(limits) == 3;</span>
@@ -198,11 +234,20 @@ atom = add2atom(XYZ_labels,XYZ_data,atom_label,[]);
     atom = translate_atom(atom,trans_vec,<span class="string">'all'</span>);
 <span class="keyword">end</span>
 
-disp(<span class="string">'atom grid created!'</span>)
+disp(<span class="string">'atom grid created!'</span>);
 
 <span class="comment">% XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];</span>
 <span class="comment">% XYZ_labels=[atom.type]';</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% create_grid_atom.m
 % * This old function puts ions on a grid plane and adds it to an atom struct. 
@@ -344,14 +389,17 @@ if nargin == 5
     atom = translate_atom(atom,trans_vec,'all');
 end
 
-disp('atom grid created!')
+disp('atom grid created!');
 
 % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 % XYZ_labels=[atom.type]';
 
+end
 
 
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

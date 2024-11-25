@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Box_dim2Cell.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="Box_dim2Cell.m"><style type="text/css">
+      -->
+<title>Box_dim2Cell.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="Box_dim2Cell.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,45 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Box_dim2Cell.m</h1><!--introduction--><div><ul><li>This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6 Cell variable, containing the a, b, c cell values and  the alfa, beta, gamma angle values as used in a typical .pdb file</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Cell=Box_dim2Cell(Box_dim)</li></ol></div><pre class="codeinput"><span class="keyword">function</span> Cell=Box_dim2Cell(Box_dim)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Box_dim2Cell.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6 Cell variable, containing the a, b, c cell values and the alfa, beta, gamma angle values as used in a typical .pdb file</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Cell=Box_dim2Cell(Box_dim)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> Cell=Box_dim2Cell(Box_dim)
 
 <span class="keyword">if</span> length(Box_dim)==9
     Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
@@ -131,7 +174,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% Box_dim2Cell.m
 % * This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6
@@ -140,7 +190,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %
 
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -213,4 +263,6 @@ end
 
 end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

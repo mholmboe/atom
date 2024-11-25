@@ -2,7 +2,7 @@
 % * This function tries to minimize the box size and remove gaps between molecules along x,y,z
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -60,4 +60,6 @@ for repeat=1:10
     Box_dim(3)=Box_dim(3)-z_shift
 end
 
-assignin('caller','Box_dim',Box_dim)
+assignin('caller','Box_dim',Box_dim);
+
+end

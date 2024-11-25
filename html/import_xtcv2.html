@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_xtcv2.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_xtcv2.m"><style type="text/css">
+      -->
+<title>import_xtcv2.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="import_xtcv2.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,50 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>import_xtcv2.m</h1><!--introduction--><div><ul><li>This function imports an xtc trajectory file.</li><li>Does it work?</li><li>This function imports a structure file and a xtc file</li><li>This function relies on Gro2Mat, see</li><li>Gro2mat: a package to efficiently read gromacs output in MATLAB.</li><li>Dien H1, Deane CM, Knapp B.</li><li>Journal of Computational Chemistry</li><li>Volume 35, Issue 20, Version of Record online: 12 JUN 2014</li><li>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Examples</a></li><li><a href="#3">This did not work...</a></li></ul></div><h2 id="1">Examples</h2><div><ul><li>[atom,traj] = import_xtcv2('conf.gro',traj.xtc)</li><li>[atom,traj] = import_xtcv2('conf.pdb',traj.xtc)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = import_xtcv2(filenameconf,filenamextc)
-</pre><pre class="codeinput"><span class="keyword">if</span> regexp(filenameconf,<span class="string">'.gro'</span>) &gt; 1
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>import_xtcv2.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function imports an xtc trajectory file.</li>
+<li>Does it work?</li>
+<li>This function imports a structure file and a xtc file</li>
+<li>This function relies on Gro2Mat, see</li>
+<li>Gro2mat: a package to efficiently read gromacs output in MATLAB.</li>
+<li>Dien H1, Deane CM, Knapp B.</li>
+<li>Journal of Computational Chemistry</li>
+<li>Volume 35, Issue 20, Version of Record online: 12 JUN 2014</li>
+<li>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+<li>
+<a href="#3">This did not work...</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ul>
+<li>[atom,traj] = import_xtcv2('conf.gro',traj.xtc)</li>
+<li>[atom,traj] = import_xtcv2('conf.pdb',traj.xtc)</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = import_xtcv2(filenameconf,filenamextc)
+</pre>
+<pre class="codeinput">
+<span class="keyword">if</span> regexp(filenameconf,<span class="string">'.gro'</span>) &gt; 1
     disp(<span class="string">'Found .gro file, generating a .pdb file'</span>);
     atom=import_atom_gro(filenameconf);
     filenamepdb=<span class="string">'temp.pdb'</span>;
@@ -92,7 +139,9 @@ trj=parseTrj(filenamepdb,filenamextc,0.001);
 toc
 nAtoms=size(trj.coords,1);
 nFrames=size(trj.coords,3);
-</pre><h2 id="3">This did not work...</h2><pre class="codeinput">xcoords=(reshape(trj.coords(:,1,:)*10,nAtoms,nFrames)).';
+</pre>
+<h2 id="3">This did not work...</h2>
+<pre class="codeinput">xcoords=(reshape(trj.coords(:,1,:)*10,nAtoms,nFrames)).';
 ycoords=(reshape(trj.coords(:,2,:)*10,nAtoms,nFrames)).';
 zcoords=(reshape(trj.coords(:,3,:)*10,nAtoms,nFrames)).';
 traj=zeros(size(xcoords,1),size(xcoords,2)*3);
@@ -115,7 +164,14 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</sp
 assignin(<span class="string">'caller'</span>,<span class="string">'traj'</span>,traj)
 assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
 assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% import_xtcv2.m
 % * This function imports an xtc trajectory file.
@@ -186,4 +242,6 @@ assignin('caller','XYZ_labels',XYZ_labels)
 assignin('caller','XYZ_data',XYZ_data)
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

@@ -1,5 +1,6 @@
 % clear;
-close all;
+% close all;
+figure
 hold on
 format short;
 
@@ -11,27 +12,37 @@ r=.1:.001:1.2; % nm
 % sig2=0.3165;
 % eps1=7.7e-6;
 % eps2=0.6504;
-C4=0.05;
+% C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Al' 'Ob'});
 
-[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+% [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
 
-[~, ind_start]=min(abs(Utot));
-rmin=rout(322)
-r=rmin:.001:1.2; % nm
+% A1=41970.1381; % nm
+% A2=41970.1381;
+% B1=29.4118; % kJmol-1
+% B2=29.4118;
+% C1=0; % nm-1
+% C2=0;
+% [r,buck,coul,data] = buckinghamcoul([ q1  q2  A1 A2 B1 B2 C1 C2 ],r);
 
-%[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
+% [~, ind_start]=min(abs(Utot));
+% rmin=rout(322)
+% r=rmin:.001:1.2; % nm
 
-% eps1=.6;
-% eps2=.6;
-% q1=2.1;
-% q2=-1.05;
-C4 = 0.05
+[r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r,1);
+
+q1=1.782;
+q2=-1.188;
+sig1=.1;
+sig2=.317;
+eps1=.6;
+eps2=.6837;
+C4 = 0
 %% Initial values
-xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
-delta    = [ .1   1   .1      1    .1     1   ];
+xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
+delta    = [ 1   1    .1     1   .1    1];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -68,17 +79,18 @@ fx=fx./scalefactors
 
 copy(fx)
 
-r_plot=.1:.001:1.2;
-[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r_plot);
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
-%[r_plot,lj_plot,coul_plot,data_plot] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r);
-norm((fxdata-data_plot)/numel(data_plot))
-plot(r_plot,fxdata-data_plot)
+[fxr,fxlj,fxcoul,fxdata] = ljcoul(fx,r,1,'k');
+% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
 
-% x0=fx;
-% eval(strcat('res=',objective_func_string,';'));
-% disp('Mean abs(residual):');
-% mean(abs(res))
+% [fxr,fxbuck,fxcoul,fxdata] = buckinghamcoul([ q1  q2  A1 A2 B1 B2 C1 C2 ],r_plot);
+% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul(fx,r_plot);
+% norm((fxdata-data_plot)/numel(data_plot))
+% plot(r_plot,fxdata-data_plot)
+
+x=fx;
+eval(strcat('res=',objective_func_string,';'));
+disp('Mean abs(residual):');
+mean(abs(res))
 
 % if nargin>5
 % hold on

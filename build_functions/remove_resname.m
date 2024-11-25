@@ -1,9 +1,9 @@
 %% remove_resname.m
-% * This function removes residue with molid MolID and residue names 
-% resnames 
+% * This function removes residue with molid MolID and residue names
+% resnames
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -14,8 +14,10 @@
 function atom = remove_resname(atom,resnames)
 
 for i=1:size(resnames,2)
-     atom(strcmp([atom.resname],resnames(i)))=[];
+    atom(strcmp([atom.resname],resnames(i)))=[];
 end
 
 atom=atom_update(atom);
 composition_atom(atom);
+
+end

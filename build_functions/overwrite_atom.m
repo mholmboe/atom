@@ -2,7 +2,7 @@
 % * This function overwrites the atom struct information with new information 
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -19,3 +19,5 @@ index=num2cell(1:size(In_atom,2));
 [In_atom.fftype]=deal({atomtype});
 
 Out_atom=In_atom;
+
+end

@@ -4,7 +4,7 @@
 % weight, box volume and density.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -162,7 +162,7 @@ end
 
 %% Set the occupancy of all sites
 occ=1;
-if ~isfield(atom,'occupancy')
+if ~isfield(atom,'occupancy') || sum([atom.occupancy])==0
     occ=1;
     try
         atom = occupancy_atom(atom,Box_dim);
@@ -174,6 +174,7 @@ end
 % disp('Molecular weight in g/mol, Mw:')
 Mw=sum([atom.mass]);
 % disp('Molecular weight in g/mol, considering Mw_occupancy:')
+
 Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
 if nargin>1

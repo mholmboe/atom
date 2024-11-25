@@ -1,9 +1,9 @@
 %% xyz2atom.m
-% * This function can be used to add XYZ data (like from a .xyz structure 
+% * This function can be used to add XYZ data (like from a .xyz structure
 % file) to the atom struct format.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -13,11 +13,13 @@
 % * <XYZ_data_variable.html XYZ_data> is a nx3 matrix holdnig the XYZ-coordinates
 %
 %% Examples
-% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom) % Basic input arguments
+% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim) % Basic input arguments
+% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname) % Add a resname label
+% # atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom) % Append to exisitng atom struct
 %
-function atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,resname,in_atom)
+function atom = xyz2atom(XYZ_labels,XYZ_data,Box_dim,varargin) %resname,in_atom)
 
-nAtoms=length(XYZ_data);
+nAtoms=size(XYZ_data,1);
 
 natom=1; molid=zeros(nAtoms,1);
 if strncmpi(XYZ_labels(1),'Ow',2)
@@ -26,6 +28,21 @@ if strncmpi(XYZ_labels(1),'Ow',2)
     molid(3:3:end)=ceil((natom/3):3:nAtoms)';
 else
     molid=natom:1:nAtoms;
+end
+
+if nargin>3
+    resname=varargin{1};
+    if iscell(resname)
+        resname=char(resname);
+    end
+else
+    resname={'MOL'};
+end
+
+if nargin>4
+    in_atom=varargin{2};
+else
+    in_atom=[];
 end
 
 if isfield(in_atom,'molid')
@@ -100,3 +117,5 @@ assignin('caller','Box_dim',Box_dim)
 assignin('caller','molid',molid)
 
 disp('add2atom done!')
+
+end

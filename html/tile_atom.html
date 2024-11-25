@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>tile_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="tile_atom.m"><style type="text/css">
+      -->
+<title>tile_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="tile_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,58 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>tile_atom.m</h1><!--introduction--><div><ul><li>This function tiles the atom struct similar to replicate atom, but with a translation along some direction. Triclinic version untestd but might work..</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function arguments</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Function arguments</h2><div><ul><li>atom is the normal atom struct</li><li>Box_dim is the normal Box_dim variable</li><li>replicate is a [1x3] row vector indicating the replicating factors in x/y/z or a/b/c directions, resp.</li><li>translate is a [1x3] row vector indicating the translation factors in x/y/z or a/b/c directions, resp.</li></ul></div><h2 id="2">Version</h2><p>2.11</p><h2 id="3">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0]) % Basic input arguments</li><li>atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz') % tiles in the order of the dimensions x-y-z * atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz','addmolid') % Adds an increasingly new MolID to each new tile entry</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = tile_atom(atom,Box_dim,replicate,translate,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tile_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tiles the atom struct similar to replicate atom, but with a translation along some direction. Triclinic version untested but might work..</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Function arguments</a>
+</li>
+<li>
+<a href="#2">Version</a>
+</li>
+<li>
+<a href="#3">Contact</a>
+</li>
+<li>
+<a href="#4">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Function arguments</h2>
+<div>
+<ul>
+<li>atom is the normal atom struct</li>
+<li>Box_dim is the normal Box_dim variable</li>
+<li>replicate is a [1x3] row vector indicating the replicating factors in x/y/z or a/b/c directions, resp.</li>
+<li>translate is a [1x3] row vector indicating the translation factors in x/y/z or a/b/c directions, resp.</li>
+</ul>
+</div>
+<h2 id="2">Version</h2>
+<p>3.00</p>
+<h2 id="3">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="4">Examples</h2>
+<div>
+<ol>
+<li>atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0]) % Basic input arguments</li>
+<li>atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz') % tiles in the order of the dimensions x-y-z * atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz','addmolid') % Adds an increasingly new MolID to each new tile entry</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = tile_atom(atom,Box_dim,replicate,translate,varargin)
 
 <span class="keyword">if</span> numel(replicate)==1
     replicate(1)=replicate(1);
@@ -226,11 +282,20 @@ Box_dim=[Box_dim(1)*replicate(1) Box_dim(2)*replicate(2) Box_dim(3)*replicate(3)
 <span class="keyword">end</span>
 
 assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% tile_atom.m
 % * This function tiles the atom struct similar to replicate atom, but with
-% a translation along some direction. Triclinic version untestd but might work..
+% a translation along some direction. Triclinic version untested but might work..
 %
 %% Function arguments
 % * atom is the normal atom struct
@@ -239,7 +304,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</sp
 % * translate is a [1x3] row vector indicating the translation factors in x/y/z or a/b/c directions, resp.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -288,7 +353,7 @@ else
 end
 
 if size(atom,2)>0
-    
+
     combinedatom_dim=atom;
     molid=[atom(1).molid];
     for j=1:3
@@ -322,7 +387,7 @@ if size(atom,2)>0
             combinedatom_dim=combinedatomx;
             disp('x - dim')
             length(combinedatom_dim)
-            
+
         elseif j == strfind(dim_order,'y')
             if j == 1
                 combinedatomy=atom;
@@ -352,7 +417,7 @@ if size(atom,2)>0
             combinedatom_dim=combinedatomy;
             disp('y - dim')
             length(combinedatom_dim)
-            
+
         elseif j == strfind(dim_order,'z')
             if j == 1
                 combinedatomz=atom;
@@ -384,9 +449,9 @@ if size(atom,2)>0
             length(combinedatom_dim)
         end
     end
-    
+
     atom=combinedatom_dim;
-    
+
 end
 
 Box_dim=[Box_dim(1)*replicate(1) Box_dim(2)*replicate(2) Box_dim(3)*replicate(3)];
@@ -397,17 +462,21 @@ if exist('Box_dim_tric','var')
 end
 
 if size(atom,2)>0
-    
+
     atom=update_atom(atom);
-    
+
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]']; XYZ_labels=[atom.type]';
-    
+
     assignin('caller','XYZ_labels',XYZ_labels);
     assignin('caller','XYZ_data',XYZ_data);
-    
+
 end
 
 assignin('caller','Box_dim',Box_dim);
 
+end
+
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

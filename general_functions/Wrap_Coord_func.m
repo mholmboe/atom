@@ -6,7 +6,7 @@
 % wrap_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -17,7 +17,7 @@
 function XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 %%
 
-if size(Box_dim,2) > 3
+if size(Box_dim,2) > 6
     Lx = Box_dim(1);
     Ly = Box_dim(2);
     Lz = Box_dim(3);
@@ -54,8 +54,14 @@ if size(Box_dim,2) > 3
         end
     end
     
-    
-elseif length(Box_dim) == 3
+elseif size(Box_dim,2) == 6
+    Box_dim(1)=Box_dim(2);
+    Box_dim(2)=Box_dim(4);
+    Box_dim(3)=Box_dim(6);
+    Box_dim=Box_dim(1:3);
+end
+
+if length(Box_dim) == 3
     %     Lx = Box_dim(1);
     %     Ly = Box_dim(2);
     %     Lz = Box_dim(3);

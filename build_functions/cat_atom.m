@@ -1,16 +1,17 @@
 %% cat_atom.m
 % * This is a special script (and not a function) that imports and appends atom structs into a
-% * .gro trajectory file. It is useful for generating trajectories where
-% * water molecules are evaporated during the simulations, since VMD and
-% * other trajectory viewers cannot handle non-constant number of particles
-% * in a trajectory
+% .gro trajectory file. It is useful for generating trajectories where
+% water molecules are evaporated during the simulations, since VMD and
+% other trajectory viewers cannot handle non-constant number of particles
+% in a trajectory
 
-nSim=60;
-atom0=import_atom(strcat('evap_0.gro'));
+filename='evap_'
+nSim=120;
+atom0=import_atom(strcat(filename,'120.gro'));
 traj=zeros(nSim,3*size(atom,2));
 frame=zeros(1,3*size(atom,2));
 All_Box_dim=zeros(nSim,9);
-frames1=[0:nSim];frames2=[];%121:240];
+frames1=[nSim:240];frames2=[];%121:240];
 frames=sort([frames1 frames2]);
 
 % traj=zeros(70,3*size(atom,2));
@@ -27,12 +28,12 @@ for i=[1:numel(frames)]
         else
             n=j;
         end
-      atom=import_atom_gro(strcat('evap_',num2str(n),'.gro'));
+      atom=import_atom_gro(strcat(filename,num2str(n),'.gro'));
       tempnum=3*size(atom,2);
       Xdata=XYZ_data(:,1);
       Ydata=XYZ_data(:,2);
       
-      Zdata=XYZ_data(:,3)-XYZ_data(1,3)+1; % Shift the lattice up a bit..
+      Zdata=XYZ_data(:,3)-XYZ_data(1,3)+4; % Shift the lattice up a bit..
       Zdata(Zdata>Box_dim(3))=Zdata(Zdata>Box_dim(3))-Box_dim(3);
       Zdata(Zdata<0)=Zdata(Zdata<0)+Box_dim(3);
       
@@ -54,4 +55,5 @@ else
     Box_dim=Box_dim;
 end
 
-write_gro_traj(atom0,traj,Box_dim,'3D_all.gro')
+write_gro_traj(atom0,traj,Box_dim,'3D_all.gro');
+

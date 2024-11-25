@@ -2,14 +2,14 @@
 % * This function converts a .gro or .pdb file with spc water to some tip4p
 % water
 % * The coordinate of the new MW center is set to OW coordinates, thus must
-% be properly energy minimized this could easliy be avoided if using an 
+% be properly energy minimized this could easliy be avoided if using an
 % unwrapped structure...
-% * The coordinate of the new MW centers is set to OW coordinates, thus 
-% must be properly energy minimized this could easliy be avoided if using 
+% * The coordinate of the new MW centers is set to OW coordinates, thus
+% must be properly energy minimized this could easliy be avoided if using
 % an unwrapped structure...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -18,7 +18,7 @@
 % * import_atom.m
 % * write_atom_gro.m
 % * update_atom.m
-% 
+%
 %% Examples
 % * tip4p_atom = spce2tip4p('SOL.pdb')
 % * tip4p_atom = spce2tip4p('SOL.gro')
@@ -43,7 +43,7 @@ new_SOL(4:4:end)=SOL_atom(1:3:end); % assign Ow -> Mw
 [new_SOL(4:4:end).fftype]=deal({'MW'}); % rename Ow -> Mw
 
 % Put the new_atom struct back again into the original atom struct
-if SOL_ind(end) == nAtoms; 
+if SOL_ind(end) == nAtoms
     tip4p_atom=[atom(1:SOL_ind(1)-1) new_SOL];
 else
     tip4p_atom=[atom(1:SOL_ind(1)-1) new_SOL atom(SOL_ind(end)+1:nAtoms)];
@@ -53,5 +53,7 @@ end
 tip4p_atom=update_atom(tip4p_atom);
 
 % Write the new .gro file
-write_atom_gro(tip4p_atom,Box_dim,strcat('tip4p_',filename))
+write_atom_gro(tip4p_atom,Box_dim,strcat('tip4p_',filename));
+
+end
 

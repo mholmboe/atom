@@ -2,7 +2,7 @@
 % * For more detailed info, see the Revised Shannon radii...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -90,6 +90,6 @@ for i=1:length(Atom_label)
         radii(i,1)=Radiiproperties.IonicRadii(ind_type);
     end
 end
-Atom_label
-ind_type(1)
+Atom_label;
+ind_type(1);
 Atom_label=[Radiiproperties.Ion(ind_type)];

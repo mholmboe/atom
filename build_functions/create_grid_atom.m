@@ -138,11 +138,12 @@ if nargin == 5
     atom = translate_atom(atom,trans_vec,'all');
 end
 
-disp('atom grid created!')
+disp('atom grid created!');
 
 % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 % XYZ_labels=[atom.type]';
 
+end
 
 
 

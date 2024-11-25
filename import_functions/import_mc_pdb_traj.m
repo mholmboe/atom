@@ -5,7 +5,7 @@
 % nevery frame to import, i.e. a stride value
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -87,8 +87,8 @@ if nargin>3
     write_pdb_traj(atom,traj,Box_dim,filename_out)
 end
 
-assignin('caller','atom',atom);
-assignin('caller','traj',traj);
+% assignin('caller','atom',atom);
+% assignin('caller','traj',traj);
 assignin('caller','nAtoms',size(atom,2));
 assignin('caller','Box_dim',Box_dim);
 assignin('caller','XYZ_labels',XYZ_labels);

@@ -8,7 +8,7 @@
 % default option which will compute the median position instead!
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -18,7 +18,7 @@
 % # write_ave_gro(confstring,'average')
 % # write_ave_gro(confstring,'median')
 
-function write_ave_gro(confstring,varargin)
+function [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(confstring,varargin)
 
 numConf=size(dir(strcat(confstring,'*')),1);
 
@@ -40,6 +40,9 @@ for i=1:numConf
     Box_dim_all(i,:)=Box;
 end
 Box_dim_ave=mean(Box_dim_all);
+Box_dim_std=std(Box_dim_all);
+Cell_ave=Box_dim2Cell(Box_dim_ave);
+Cell_std=Box_dim2Cell(Box_dim_std);
 
 atom_ave=atom_all(1:nAtoms);
 if nargin>1 && strncmpi(varargin{1},'ave',3)
@@ -58,8 +61,7 @@ else
     end
 end
 
-assignin('caller','atom_ave',atom_ave);
-assignin('caller','Box_dim_ave',Box_dim_ave);
+atom_ave=wrap_atom(atom_ave,Box_dim_ave);
 
 write_atom_gro(atom_ave,Box_dim_ave,strcat('ave_',confstring,'.gro'));
 

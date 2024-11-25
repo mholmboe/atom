@@ -1,10 +1,10 @@
 %% bond_angle_dihedral_atom.m
-% * This function tries to find all bonds, angles and the dihedral angles
-% * of the atom struct.
+% * This function tries to find all bonds, angles and the dihedrals of the atom struct.
+% *
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -47,67 +47,92 @@ elseif nargin>4
     atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
 end
 
-Dihedral_index=[];
-if size(Angle_index,1)>1
-    
+Dihedral_index=[];Pairlist=[];
+nDihedrals=size(Dihedral_index,2);
+if size(Bond_index,1)>1
+
     disp('Calculating dihedrals')
-%    Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
-    Ax2=[Angle_index(:,[3 2 1 4 8 9 10 5 6 7]); Angle_index];
-    d=1;
-    for i=1:size(Ax2,1)
-        for j=i:size(Ax2,1)
-            if isequal([Ax2(i,2) Ax2(i,3)],[Ax2(j,1) Ax2(j,2)])
-                A=cross([Ax2(i,5) Ax2(i,6) Ax2(i,7)],[Ax2(i,8) Ax2(i,9) Ax2(i,10)]);
-                B=cross([Ax2(j,5) Ax2(j,6) Ax2(j,7)],[Ax2(j,8) Ax2(j,9) Ax2(j,10)]);
-                normA=sqrt(sum(A.*A,2));
-                normB=sqrt(sum(B.*B,2));
-                theta=rad2deg(acos(dot(A,B)./(normA*normB)));
-                if Ax2(i,2)<Ax2(i,3)
-                    Dihedral_index(d,1:5)=[Ax2(i,1) Ax2(i,2) Ax2(i,3) Ax2(j,3) round(theta,2)];
+
+    % Ensure bond_list is sorted with smaller index first
+    Bond_index(:,1:2) = sort(Bond_index(:,1:2), 2);
+
+    % Get the total number of atoms
+    N_atom = max(Bond_index(:));
+
+    % Initialize adjacency list
+    adjacency_list = cell(N_atom, 1);
+
+    % Build adjacency list from bond information
+    for i = 1:size(Bond_index, 1)
+        atom1 = Bond_index(i, 1);
+        atom2 = Bond_index(i, 2);
+
+        adjacency_list{atom1} = [adjacency_list{atom1}, atom2];
+        adjacency_list{atom2} = [adjacency_list{atom2}, atom1];
+    end
+
+    % Initialize dihedral list
+    Dihedral_index = [];
+
+    % Loop over all bonds to identify dihedrals
+    for i = 1:size(Bond_index, 1)
+        atom2 = Bond_index(i, 1);
+        atom3 = Bond_index(i, 2);
+
+        % Neighbors of atom2 excluding atom3
+        neighbors2 = adjacency_list{atom2};
+        neighbors2(neighbors2 == atom3) = [];
+
+        % Neighbors of atom3 excluding atom2
+        neighbors3 = adjacency_list{atom3};
+        neighbors3(neighbors3 == atom2) = [];
+
+        % Loop over possible atom1 and atom4 to form dihedrals
+        for atom1 = neighbors2
+            for atom4 = neighbors3
+                % Form the dihedral
+                dihedral = [atom1, atom2, atom3, atom4];
+
+                % Enforce a consistent ordering to avoid duplicates
+                % (e.g., atom1 < atom4)
+                if atom1 < atom4
+                    Dihedral_index = [Dihedral_index; dihedral];
                 else
-                    Dihedral_index(d,1:5)=[Ax2(j,3) Ax2(i,3) Ax2(i,2) Ax2(i,1) round(theta,2)];
+                    Dihedral_index = [Dihedral_index; dihedral([4, 3, 2, 1])];
                 end
-                d=d+1;
-            end
-        end
-        if mod(i,1000)==1
-            if i-1>0
-                i-1
             end
         end
     end
-    
+
+    nDihedrals=size(Dihedral_index,2);
+
+    if nDihedrals>0
+        % Remove duplicate dihedrals
+        Dihedral_index = unique(Dihedral_index, 'rows');
+
+        [Y,I]=sort(Dihedral_index(:,3));
+        Dihedral_index=Dihedral_index(I,:);
+        [Y,I]=sort(Dihedral_index(:,2));
+        Dihedral_index=Dihedral_index(I,:);
+
+        Pairlist=Dihedral_index(:,[1 4]);
+        Pairlist=unique(Pairlist, 'rows');
+        Pairlist(ismember(Pairlist, Bond_index(:,1:2), 'rows'),:)=[];
+    else
+        Dihedral_index =[];
+        Pairlist =[];
+    end
+
 end
 
-nDihedrals=size(Dihedral_index,2);
+assignin('caller','dist_matrix',dist_matrix);
+assignin('caller','overlap_index',overlap_index);
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','Angle_index',Angle_index);
+assignin('caller','nBonds',nBonds);
+assignin('caller','nAngles',nAngles);
+assignin('caller','nDihedrals',nDihedrals);
+assignin('caller','Dihedral_index',Dihedral_index);
+assignin('caller','Pairlist',Pairlist);
 
-if nDihedrals>0
-    [Y,I] = sort(Dihedral_index(:,2));
-    Dihedral_index = Dihedral_index(I,:);
-    Dihedral_index = unique(Dihedral_index,'rows','stable');
-    Dihedral_index(~any(Dihedral_index,2),:) = [];
-else
-    Dihedral_index =[];
 end
-
-try
-    assignin('caller','Ax2',Ax2);
-    assignin('caller','dist_matrix',dist_matrix);
-    assignin('caller','overlap_index',overlap_index);
-    assignin('caller','Bond_index',Bond_index);
-    assignin('caller','Angle_index',Angle_index);
-    assignin('caller','Dihedral_index',Dihedral_index);
-    assignin('caller','nBonds',nBonds);
-    assignin('caller','nAngles',nAngles);
-    assignin('caller','nDihedrals',nDihedrals);
-catch
-    assignin('caller','dist_matrix',dist_matrix);
-    assignin('caller','overlap_index',overlap_index);
-    assignin('caller','Bond_index',Bond_index);
-    assignin('caller','Angle_index',Angle_index);
-    assignin('caller','Dihedral_index',Dihedral_index);
-    assignin('caller','nBonds',nBonds);
-    assignin('caller','nAngles',nAngles);
-    assignin('caller','nDihedrals',nDihedrals);
-end
-

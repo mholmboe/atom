@@ -95,6 +95,7 @@ for i = 1:length(data)
         %         compatiblity
         atom(j).type = {strtrim(line(13:17))};
         atom(j).fftype = {strtrim(line(13:17))};
+        atom(j).element = {strtrim(line(77:78))};
         atom(j).index = str2double(line(7:11));
         atom(j).neigh.type = {};
         atom(j).neigh.index = [0;0;0;0;0;0];
@@ -109,7 +110,7 @@ for i = 1:length(data)
         atom(j).vx = NaN;
         atom(j).vy = NaN;
         atom(j).vz = NaN;
-        
+        % atom(j).charge = str2double(line(79:80));
         occupancy(j,1)=str2double(line(55:60));
         tempfactor(j,1)=str2double(line(61:66));
         

@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>autofit_force_ljcoul</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="autofit_force_ljcoul.m"><style type="text/css">
+      -->
+<title>autofit_force_ljcoul</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="autofit_force_ljcoul.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,32 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Initial values</a></li><li><a href="#3">In order to keep parameters around 1..</a></li><li><a href="#4">Set lower/upper bounds</a></li><li><a href="#5">Set Options for Optimization</a></li><li><a href="#6">Run lsqnonlin</a></li></ul></div><pre class="codeinput"><span class="comment">% clear;</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Initial values</a>
+</li>
+<li>
+<a href="#3">In order to keep parameters around 1..</a>
+</li>
+<li>
+<a href="#4">Set lower/upper bounds</a>
+</li>
+<li>
+<a href="#5">Set Options for Optimization</a>
+</li>
+<li>
+<a href="#6">Run lsqnonlin</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">% clear;</span>
 close <span class="string">all</span>;
 hold <span class="string">on</span>
 format <span class="string">compact</span>;
@@ -82,32 +112,40 @@ r=r-(r(2)-r(1))/2;
 <span class="comment">% sig2=0.3165;</span>
 <span class="comment">% eps1=7.7e-6;</span>
 <span class="comment">% eps2=0.6504;</span>
-C4=100/10000;
+<span class="comment">% C4=100/10000;</span>
 
 hold <span class="string">on</span>
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Si'</span> <span class="string">'Ob'</span>});
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Feo'</span> <span class="string">'Ob'</span>});
 
 [~, ind_start]=min(abs(Utot));
 rmin=rout(ind_start+20)
 r=rmin:.001:1.2; <span class="comment">% nm</span>
 r=r-(r(2)-r(1))/2;
 
-<span class="comment">% [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);</span>
-[r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
+ [r,lj,coul,data] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r,1);
+<span class="comment">% [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)</span>
 
-<span class="comment">% eps1=.6;</span>
-<span class="comment">% eps2=.6;</span>
-<span class="comment">% q1=2.1;</span>
-<span class="comment">% q2=-1.05;</span>
-C4 = 0.01
-</pre><h2 id="2">Initial values</h2><pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .5      .5     .5     .5];
+q1=1.782;
+q2=-1.188;
+sig1=.1;
+sig2=.317;
+eps1=.6;
+eps2=.6837;
+<span class="comment">% C4 = 0.01</span>
+</pre>
+<h2 id="2">Initial values</h2>
+<pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
+delta    = [ 1   1    .1     1   .1    1];
 
 x0=xinit;
-</pre><h2 id="3">In order to keep parameters around 1..</h2><pre class="codeinput">scalefactors=1./x0;
+</pre>
+<h2 id="3">In order to keep parameters around 1..</h2>
+<pre class="codeinput">scalefactors=1./x0;
 scalefactors(scalefactors==0)=1;
 x0=scalefactors.*x0;
-</pre><h2 id="4">Set lower/upper bounds</h2><pre class="codeinput">lb       = delta;
+</pre>
+<h2 id="4">Set lower/upper bounds</h2>
+<pre class="codeinput">lb       = delta;
 ub       = 1./delta;
 
 ind_neg=find(lb&gt;ub);
@@ -116,7 +154,9 @@ ind_neg=find(lb&gt;ub);
     lb(ind_neg)=ub(ind_neg);
     ub(ind_neg)=temp;
 <span class="keyword">end</span>
-</pre><h2 id="5">Set Options for Optimization</h2><pre class="codeinput">objective_func_string=<span class="string">'ljcoul_force_objective_func(x,data,r,scalefactors)'</span>;
+</pre>
+<h2 id="5">Set Options for Optimization</h2>
+<pre class="codeinput">objective_func_string=<span class="string">'ljcoul_force_objective_func(x,data,r,scalefactors)'</span>;
 eval(strcat(<span class="string">'f=@(x)'</span>,objective_func_string,<span class="string">';'</span>));
 options = optimoptions(@lsqnonlin,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'Display'</span>,<span class="string">'iter-detailed'</span>,<span class="string">'MaxFunctionEvaluations'</span>,50000,<span class="string">'MaxIterations'</span>,5000,<span class="string">'Tolfun'</span>,1e-12);
 options.Algorithm = <span class="string">'levenberg-marquardt'</span>; <span class="comment">%'trust-region-reflective';%'levenberg-marquardt'; % or</span>
@@ -125,29 +165,32 @@ options.FiniteDifferenceType = <span class="string">'central'</span>;
 options.FiniteDifferenceStepSize = eps^(1/3);
 options.CheckGradients = true;
 options.OptimalityTolerance = 1E-18;
-</pre><h2 id="6">Run lsqnonlin</h2><pre class="codeinput">fx=lsqnonlin(f,x0,lb,ub,options);
+</pre>
+<h2 id="6">Run lsqnonlin</h2>
+<pre class="codeinput">fx=lsqnonlin(f,x0,lb,ub,options);
 
 fx=fx./scalefactors
 
 copy(fx)
 
 r_plot=.12:.001:1.2;
-[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
-
-r_plot(1)=[];
-plot(r_plot,data_plot-fxdata,<span class="string">'k.'</span>)
-plot(r_plot,fxdata-data_plot,<span class="string">'g--'</span>)
-
-[rmin_data,indref]=min(data_plot);
-[rmin,indopt]=min(fxdata);
-
-r_plot(indref)
-r_plot(indopt)
+[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r,1,<span class="string">'k'</span>);
+<span class="comment">% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r_plot);</span>
+<span class="comment">% % [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);</span>
+<span class="comment">%</span>
+<span class="comment">% r_plot(1)=[];</span>
+<span class="comment">% plot(r_plot,data_plot-fxdata,'k.')</span>
+<span class="comment">% plot(r_plot,fxdata-data_plot,'g--')</span>
+<span class="comment">%</span>
+<span class="comment">% [rmin_data,indref]=min(data_plot);</span>
+<span class="comment">% [rmin,indopt]=min(fxdata);</span>
+<span class="comment">%</span>
+<span class="comment">% r_plot(indref)</span>
+<span class="comment">% r_plot(indopt)</span>
 
 <span class="comment">% r(1)=[];</span>
 <span class="comment">% plot(r,data-fxdata)</span>
-<span class="comment">% x0=fx;</span>
+<span class="comment">% x=fx;</span>
 <span class="comment">% eval(strcat('res=',objective_func_string,';'));</span>
 <span class="comment">% disp('Mean abs(residual):');</span>
 <span class="comment">% mean(abs(res))</span>
@@ -160,7 +203,14 @@ r_plot(indopt)
 <span class="comment">%     xlim([min(r) max(r)]);</span>
 <span class="comment">%     ylim([min(data) max(data)]);</span>
 <span class="comment">% end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 % clear;
 close all;
@@ -177,27 +227,29 @@ r=r-(r(2)-r(1))/2;
 % sig2=0.3165;
 % eps1=7.7e-6;
 % eps2=0.6504;
-C4=100/10000;
+% C4=100/10000;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Feo' 'Ob'});
 
 [~, ind_start]=min(abs(Utot));
 rmin=rout(ind_start+20)
 r=rmin:.001:1.2; % nm
 r=r-(r(2)-r(1))/2;
 
-% [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);
-[r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
+ [r,lj,coul,data] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r,1);
+% [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
-% eps1=.6;
-% eps2=.6;
-% q1=2.1;
-% q2=-1.05;
-C4 = 0.01
+q1=1.782;
+q2=-1.188;
+sig1=.1;
+sig2=.317;
+eps1=.6;
+eps2=.6837;
+% C4 = 0.01
 %% Initial values
 xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .5      .5     .5     .5];
+delta    = [ 1   1    .1     1   .1    1];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -236,22 +288,23 @@ fx=fx./scalefactors
 copy(fx)
 
 r_plot=.12:.001:1.2;
-[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
-
-r_plot(1)=[];
-plot(r_plot,data_plot-fxdata,'k.')
-plot(r_plot,fxdata-data_plot,'gREPLACE_WITH_DASH_DASH')
-
-[rmin_data,indref]=min(data_plot);
-[rmin,indopt]=min(fxdata);
-
-r_plot(indref)
-r_plot(indopt)
+[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r,1,'k');
+% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r_plot);
+% % [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+% 
+% r_plot(1)=[];
+% plot(r_plot,data_plot-fxdata,'k.')
+% plot(r_plot,fxdata-data_plot,'gREPLACE_WITH_DASH_DASH')
+% 
+% [rmin_data,indref]=min(data_plot);
+% [rmin,indopt]=min(fxdata);
+% 
+% r_plot(indref)
+% r_plot(indopt)
 
 % r(1)=[];
 % plot(r,data-fxdata)
-% x0=fx;
+% x=fx;
 % eval(strcat('res=',objective_func_string,';'));
 % disp('Mean abs(residual):');
 % mean(abs(res))
@@ -266,4 +319,6 @@ r_plot(indopt)
 % end
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

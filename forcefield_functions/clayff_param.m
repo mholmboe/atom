@@ -2,7 +2,7 @@
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -329,7 +329,7 @@ forcefield.clayff(41).radius =  3.094627867;
 forcefield.clayff(41).e_kcalmol = 0.05580526;
 
 % Oc
-forcefield.clayff(42).type =    {'Oc'}; % ho hydroxyl hydrogen
+forcefield.clayff(42).type =    {'Oc'}; % Organic carbon, from where? CO2?
 forcefield.clayff(42).mass =    15.99941;
 forcefield.clayff(42).charge =  -0.3256	;
 forcefield.clayff(42).radius =  3.404427393;
@@ -445,7 +445,7 @@ forcefield.clayff(57).e_kcalmol = 9.0298E-06;
 % Fe2
 forcefield.clayff(58).type =    {'Fe2'}; % 
 forcefield.clayff(58).mass =    55.845;
-forcefield.clayff(58).charge =  1.0500;
+forcefield.clayff(58).charge =  1.0500; %
 forcefield.clayff(58).radius =  6.24280;
 forcefield.clayff(58).e_kcalmol = 5.02980E-06;
 
@@ -463,13 +463,54 @@ forcefield.clayff(60).charge =  -0.6625; %
 forcefield.clayff(60).radius =  3.553200;
 forcefield.clayff(60).e_kcalmol = 0.155400;
 
-% Fs
-forcefield.clayff(61).type =    {'Fs'}; % structural F,
-forcefield.clayff(61).mass =    18.9984;
-forcefield.clayff(61).charge =  -0.525; %
-forcefield.clayff(61).radius =  4.514;
-forcefield.clayff(61).e_kcalmol = 0.0074005;
+% Ohms
+forcefield.clayff(61).type =    {'Ohms'}; % edge oxygen in trioctahedral clays with edges
+forcefield.clayff(61).mass =    15.999410;
+forcefield.clayff(61).charge =  -0.7917; %
+forcefield.clayff(61).radius =  3.553200;
+forcefield.clayff(61).e_kcalmol = 0.155400;
 
+% Ohms
+forcefield.clayff(62).type =    {'Omms'}; % edge oxygen in trioctahedral clays with edges
+forcefield.clayff(62).mass =    15.999410;
+forcefield.clayff(62).charge =  -1.208333; %
+forcefield.clayff(62).radius =  3.553200;
+forcefield.clayff(62).e_kcalmol = 0.155400;
+
+% Ohms
+forcefield.clayff(63).type =    {'Ops'}; % Apical oxygen with tetrahedral substitution such as Alt
+forcefield.clayff(63).mass =    15.999410;
+forcefield.clayff(63).charge =  -1.1687; %
+forcefield.clayff(63).radius =  3.553200;
+forcefield.clayff(63).e_kcalmol = 0.155400;
+
+% Obs
+forcefield.clayff(64).type =    {'Obs'}; % Basal oxygen with tetrahedral substitution such as Alt
+forcefield.clayff(64).mass =    15.999410;
+forcefield.clayff(64).charge =  -1.1687; %
+forcefield.clayff(64).radius =  3.553200;
+forcefield.clayff(64).e_kcalmol = 0.155400;
+
+% Fs
+forcefield.clayff(65).type =    {'Fs'}; % structural F,
+forcefield.clayff(65).mass =    18.9984;
+forcefield.clayff(65).charge =  -0.525; %
+forcefield.clayff(65).radius =  4.514;
+forcefield.clayff(65).e_kcalmol = 0.0074005;
+
+% Sit
+forcefield.clayff(66).type =    {'Sit'}; % structural F,
+forcefield.clayff(66).mass =    28.08538;
+forcefield.clayff(66).charge =  2.1000;
+forcefield.clayff(66).radius =  3.70640;
+forcefield.clayff(66).e_kcalmol = 1.8405E-06;
+
+% Sio
+forcefield.clayff(67).type =    {'Sio'}; % structural F,
+forcefield.clayff(67).mass =    28.08538;
+forcefield.clayff(67).charge =  2.2000;
+forcefield.clayff(67).radius =  3.70640;
+forcefield.clayff(67).e_kcalmol = 1.8405E-06;
 
 
 for i=1:size(forcefield.clayff,2)

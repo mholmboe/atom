@@ -2,7 +2,7 @@
 % * This function translates the resname by a vector
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -34,18 +34,20 @@ end
 
 if size(trans_vec,1)==1
     x_shift=num2cell([atom(ind_resname).x]+trans_vec(1)); [atom(ind_resname).x]=deal(x_shift{:});
-    
+
     y_shift=num2cell([atom(ind_resname).y]+trans_vec(2)); [atom(ind_resname).y]=deal(y_shift{:});
-    
+
     z_shift=num2cell([atom(ind_resname).z]+trans_vec(3)); [atom(ind_resname).z]=deal(z_shift{:});
 else
     x_shift=num2cell([atom(ind_resname).x]+trans_vec(:,1)');[atom(ind_resname).x]=deal(x_shift{:});
-    
+
     y_shift=num2cell([atom(ind_resname).y]+trans_vec(:,2)'); [atom(ind_resname).y]=deal(y_shift{:});
-    
-    z_shift=num2cell([atom(ind_resname).z]+trans_vec(:,3)'); [atom(ind_resname).z]=deal(z_shift{:});    
+
+    z_shift=num2cell([atom(ind_resname).z]+trans_vec(:,3)'); [atom(ind_resname).z]=deal(z_shift{:});
 end
 
 % assignin('caller','atom',atom);
 assignin('caller','XYZ_data',[[atom.x]' [atom.y]' [atom.z]']);
 assignin('caller','XYZ_labels',[atom.type]');
+
+end

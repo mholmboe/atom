@@ -5,7 +5,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -46,7 +46,7 @@ nAtoms=size(atom,2);
 % max_long_dist=2.3;
 
 XYZ_labels=[atom.type]';
-XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double 
+XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']); % use of single instead of double
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if length(Box_dim) > 3
@@ -56,18 +56,18 @@ else
 end
 
 close_count=1;
-Bond_index=single(zeros(4*size(XYZ_data,1),3)); % use of single instead of double 
-Angle_index=single(zeros(4*size(XYZ_data,1),4)); % use of single instead of double 
-dist_matrix=single(zeros(nAtoms,nAtoms)); % use of single instead of double 
+Bond_index=single(zeros(4*size(XYZ_data,1),3)); % use of single instead of double
+Angle_index=single(zeros(4*size(XYZ_data,1),4)); % use of single instead of double
+dist_matrix=single(zeros(nAtoms,nAtoms)); % use of single instead of double
 % dist_matrix = dist_matrix_atom(atom,Box_dim); % Do this if you want to calc dist_matrix_atom first
 b=1;a=1; overlap_index=[];
 for i = 1:size(XYZ_data,1)
-    
+
     %     disp('Setting max_neigh_distance to... ')
     %     max_neigh_distance = max_long_dist %2.25; % Set large max_neigh_distance so that we can find Si-O-H and Al-OH2 bonds %max_long_dist;%2.3
     %     disp('If you have problems, change back to 2.25 on line 43 in bond_angle_atom()')
     %     max_neigh_distance = max_long_dist; % Change to 2.25 if adding edge bonds
-    
+
     if strcmpi(strtrim(XYZ_labels(i)),'Oalhh') || strcmp(strtrim(XYZ_labels(i)),'Osih')
         if rmaxlong < 2.25
             max_neigh_distance = 2.25;
@@ -78,13 +78,13 @@ for i = 1:size(XYZ_data,1)
         max_neigh_distance = rmaxlong;
     end
     %                 disp('Looking for M-O-H bonds')
-    
+
     if length(Box_dim)>3
         %Calculate Distance Components for triclic cell
         rz = XYZ_data(i,3) - XYZ_data(:,3);
         ry = XYZ_data(i,2) - XYZ_data(:,2);
         rx = XYZ_data(i,1) - XYZ_data(:,1);
-        
+
         z_gt_ind=find(rz > lz/2); z_lt_ind=find(rz < - lz/2);
         rz(z_gt_ind) = rz(z_gt_ind) - lz;
         rz(z_lt_ind) = rz(z_lt_ind) + lz;
@@ -92,41 +92,41 @@ for i = 1:size(XYZ_data,1)
         rx(z_lt_ind) = rx(z_lt_ind) + xz;
         ry(z_gt_ind) = ry(z_gt_ind) - yz;
         ry(z_lt_ind) = ry(z_lt_ind) + yz;
-        
+
         y_gt_ind=find(ry > ly/2); y_lt_ind=find(ry < - ly/2);
         ry(y_gt_ind) = ry(y_gt_ind) - ly;
         ry(y_lt_ind) = ry(y_lt_ind) + ly;
         rx(y_gt_ind) = rx(y_gt_ind) - xy;
         rx(y_lt_ind) = rx(y_lt_ind) + xy;
-        
+
         x_gt_ind=find(rx > lx/2); x_lt_ind=find(rx < - lx/2);
         rx(x_gt_ind) = rx(x_gt_ind) - lx;
         rx(x_lt_ind) = rx(x_lt_ind) + lx;
     else
         %Calculate Distance Components for ortogonal cell
-        
+
         rz = XYZ_data(i,3) - XYZ_data(:,3);
         z_gt_ind=find(rz > lz/2); z_lt_ind=find(rz < - lz/2);
         rz(z_gt_ind) = rz(z_gt_ind) - lz;
         rz(z_lt_ind) = rz(z_lt_ind) + lz;
-        
+
         ry = XYZ_data(i,2) - XYZ_data(:,2);
         y_gt_ind=find(ry > ly/2); y_lt_ind=find(ry < - ly/2);
         ry(y_gt_ind) = ry(y_gt_ind) - ly;
         ry(y_lt_ind) = ry(y_lt_ind) + ly;
-        
+
         rx = XYZ_data(i,1) - XYZ_data(:,1);
         x_gt_ind=find(rx > lx/2); x_lt_ind=find(rx < - lx/2);
         rx(x_gt_ind) = rx(x_gt_ind) - lx;
         rx(x_lt_ind) = rx(x_lt_ind) + lx;
-        
+
     end
-    
+
     r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
     bond_in=intersect(find(r > 0), find(r < max_neigh_distance));
     dist_matrix(:,i)=r;
-    
-    
+
+
     % Else if we already called dist_matrix_atom...
     %     r = dist_matrix(:,i);
     %     rx= X_dist(:,i);
@@ -134,8 +134,8 @@ for i = 1:size(XYZ_data,1)
     %     rz= Z_dist(:,i);
     %     bond_in=intersect(find(r > 0), find(r < max_neigh_distance));
     %
-    
-    
+
+
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     for j=1:length(bond_in)
@@ -155,7 +155,7 @@ for i = 1:size(XYZ_data,1)
             else
                 max_distance = rmaxlong;
             end
-            
+
             if r(bond_in(j)) < 0.6
                 disp('Atoms too close!!!')
                 r(bond_in(j))
@@ -217,16 +217,16 @@ for i = 1:size(XYZ_data,1)
                     end
                 end
             end
-            
+
         end % test
-        
+
         Neigh_ind(~any(Neigh_ind,2),:) = [];
         Neigh_vec(~any(Neigh_vec,2),:) = [];
-        
+
         for v=1:size(Neigh_ind,1)
             for w=1:size(Neigh_ind,1) % From v or from 1?
                 angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-                if angle > 0 && angle <= 150 % Do we need this??
+                if angle > 0 && angle <= 180 % Do we need this??
                     if v < w
                         Angle_index(a,1)= Neigh_ind(v,1);
                         Angle_index(a,2)= i;
@@ -254,11 +254,15 @@ for i = 1:size(XYZ_data,1)
         end
     end
 end
-
+i
 
 [Y,I]=sort(Bond_index(:,1));
 Bond_index=Bond_index(I,:);
 Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,1));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
 
 [Y,I]=sort(Angle_index(:,2));
 Angle_index=Angle_index(I,:);
@@ -280,7 +284,7 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
     % Set a cutoff vector
     rmax=repmat(max_neigh_distance,nAtoms,1);
     % Reduce the cutoff vector for H - X
-    rmax(strncmpi(strtrim(XYZ_labels),'H',1))=1.25;
+    rmax(strncmpi(strtrim(XYZ_labels),'H',1))=rmaxshort; %1.25;
     for i=1:size(atom,2)
         Neigh_ind=intersect(find(dist_matrix(:,i)>0),find(dist_matrix(:,i)<rmax(i)));%radius_ion([atom.type])));
         Neigh_dist=dist_matrix(Neigh_ind,i);
@@ -296,7 +300,7 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
         atom(i).angle.angle = [];
         atom(i).angle.vec1 = [];
         atom(i).angle.vec2 = [];
-        
+
         if ismember(i,Bond_index(:,1:2))
             [A,B]=find(Bond_index(:,1:2)==i);
             atom(i).bond.type = 1;
@@ -318,9 +322,10 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             end
         end
     end
-    
+    i
+
     %%%%%%%%%%
-    
+
     Atom_labels=unique([atom.type]);
     for i=1:length(Atom_labels)
         label_ind=find(strcmpi([atom.type],Atom_labels(i)));
@@ -335,14 +340,14 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
                 Tot_neighindex=[Tot_neighindex; [atom(j).neigh.index]];
                 Tot_coords=[Tot_coords; [atom(j).neigh.coords]];
             end
-            
+
             if numel([atom(j).bond])>0
                 Tot_bondindex=[Tot_bondindex; [atom(j).bond.index]];
                 Tot_bonds=[Tot_bonds; [atom(j).bond.dist]];
             end
             if numel([atom(j).angle])>0
                 Tot_angleindex=[Tot_angleindex; [atom(j).angle.index]];
-                Tot_angles=[Tot_angles; [atom(j).angle.angle]];
+                Tot_angles=[Tot_angles; [atom(j).angle.angle] CN_temp*ones(numel([atom(j).angle.angle]),1)]; %
             end
         end
         try
@@ -365,7 +370,44 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             assignin('base',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
         end
     end
+
+    try
+        for i=1:size(Bond_index,1)
+            Bondstruct(i).types=strcat(atom(Bond_index(i,1)).type,atom(Bond_index(i,2)).type);
+            Bondstruct(i).dist=Bond_index(i,3);
+        end
+        Bondtypes=unique([Bondstruct.types]);
+
+        for i=1:size(Bondtypes,2)
+            ind=strcmp([Bondstruct.types],Bondtypes(i));
+            Ave_Bonds(i).types=Bondtypes(i);
+            Ave_Bonds(i).dist=mean([Bondstruct(ind).dist]);
+            Ave_Bonds(i).dist_std=std([Bondstruct(ind).dist]);
+        end
+
+        for i=1:size(Angle_index,1)
+            Anglestruct(i).types=strcat(atom(Angle_index(i,1)).type,atom(Angle_index(i,2)).type,atom(Angle_index(i,3)).type);
+            Anglestruct(i).angle=Angle_index(i,4);
+        end
+        Angletypes=unique([Anglestruct.types]);
+
+        for i=1:size(Angletypes,2)
+            ind=strcmp([Anglestruct.types],Angletypes(i));
+            Ave_Angles(i).types=Angletypes(i);
+            Ave_Angles(i).angle=mean([Anglestruct(ind).angle]);
+            Ave_Angles(i).angle_std=std([Anglestruct(ind).angle]);
+        end
+
+        assignin('caller','Ave_Bonds',Ave_Bonds);
+        assignin('caller','Ave_Angles',Ave_Angles);
+
+    catch
+        disp('Could not calculate average bonds and/or angles')
+    end
+
 end
+
+atom=order_attributes(atom);
 
 try
     assignin('caller','dist_matrix',dist_matrix);

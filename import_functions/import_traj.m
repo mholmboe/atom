@@ -4,18 +4,18 @@
 % * stride and other thingies.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_traj('conf.gro','traj.xtc')
-% # atom = import_traj('conf.pdb','traj.trr')
-% # atom = import_traj('conf.gro','traj.dcd')
-% # atom = import_traj('traj.pdb')
-% # atom = import_traj('traj.xyz')
-% # atom = import_traj('traj.gro')
+% # [atom,traj] = import_traj('conf.gro','traj.xtc')
+% # [atom,traj] = import_traj('conf.pdb','traj.trr')
+% # [atom,traj] = import_traj('conf.gro','traj.dcd')
+% # [atom,traj] = import_traj('traj.pdb')
+% # [atom,traj] = import_traj('traj.xyz')
+% # [atom,traj] = import_traj('traj.gro')
 %
 function [atom,traj] = import_traj(filename,varargin)
 
@@ -36,7 +36,7 @@ if regexp(filenametraj,'.xtc') > 1
     disp('This function imports a structure file and a xtc file')
     disp('and relies on the mxdrfile by Jon Kapla')
     disp('http://kaplajon.github.io/mxdrfile/')
-    atom = import_xtc(filenameconf,filenametraj,stride);
+    [atom,traj] = import_xtc(filenameconf,filenametraj,stride);
     
     %     disp('Alternatively, use the Gro2Mat package with the function:')
     %     disp('import_xtcv2(filenameconf,filenametraj)')
@@ -54,7 +54,11 @@ elseif regexp(filenametraj,'.trr') > 1
     disp('This function imports a structure file and a trr file')
     disp('and relies on the mxdrfile by Jon Kapla')
     disp('http://kaplajon.github.io/mxdrfile/')
-    atom = import_trr(filenameconf,filenametraj,stride);
+    [atom,traj,vtraj,ftraj] = import_trr(filenameconf,filenametraj,stride);
+    
+    assignin('caller','traj',traj);
+    assignin('caller','vtraj',vtraj);
+    assignin('caller','ftraj',ftraj);
     
     % disp('Alternatively, use Evans readGmx2Matlab and trr2matlab functions')
     % disp('See http://se.mathworks.com/matlabcentral/fileexchange/33312-convert-gromacs-v-4-5-trajectory-files-into-matlab-matrix')
@@ -93,8 +97,8 @@ if ~exist('atom','var')
     atom = import_atom(filenameconf);
 end
 
-assignin('caller','atom',atom)
-assignin('caller','traj',traj);
+% assignin('caller','atom',atom)
+% assignin('caller','traj',traj);
 assignin('caller','Box_dim',Box_dim)
 assignin('caller','XYZ_labels',XYZ_labels);
 assignin('caller','XYZ_data',XYZ_data);

@@ -1,0 +1,647 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ff_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="ff_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ff_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to assign all atoms according to some custom force field</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#6">Set fftype names with numbers</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=ff_atom(atom,Box_dim)</li>
+<li>atom=ff_atom(atom,Box_dim,ff)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom=ff_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">format <span class="string">compact</span>;
+
+rmaxlong=2.45;
+<span class="keyword">if</span> nargin&gt;3
+    rmaxlong=varargin{2};
+<span class="keyword">end</span>
+
+temp_atom=atom;
+
+atom=element_atom(atom);
+[atom.element]=atom.type;
+[atom.fftype]=atom.element;
+
+XYZ_labels=[atom.type]';
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+atom=cn_atom(atom,Box_dim,rmaxlong);
+
+nBonds=size(Bond_index,1);
+assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
+assignin(<span class="string">'caller'</span>,<span class="string">'radius_limit'</span>,radius_limit);
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_index'</span>,Neigh_index);
+assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
+
+All_Neighbours=[];All_types=struct;
+Heal_O=0;
+i=1;
+<span class="keyword">while</span> i &lt;= size(atom,2)
+    <span class="keyword">if</span> mod(i,100)==1
+        i-1
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> strncmpi([atom(i).resname],<span class="string">'SOL'</span>,3)==0 &amp;&amp; strncmpi([atom(i).resname],<span class="string">'ION'</span>,3)==0
+        nNeigh=numel([atom(i).neigh]);
+        <span class="keyword">if</span> nNeigh&gt;0
+            Neigh_cell = sort([atom(i).neigh.type]);
+            <span class="keyword">if</span> length(Neigh_cell) &gt; 0
+                Neighbours=strcat(Neigh_cell{:});
+                Neighboursx1=cellfun(@(x) x(1),Neigh_cell,<span class="string">'un'</span>,0);
+                Neighboursx1=lower(strcat(Neighboursx1{:}));
+                All_Neighbours=[All_Neighbours;{char(atom(i).type) Neighbours Neighboursx1 } i]; <span class="comment">%</span>
+            <span class="keyword">else</span>
+                Neighbours={<span class="string">'Nan'</span>};
+                Neighboursx1={<span class="string">'Nan'</span>};
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    i=i+1;
+    <span class="comment">% [atom.type]=atom.fftype;</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> Heal_O&gt;0
+    atom=adjust_H_atom(atom,Box_dim);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(All_Neighbours)&gt;0
+</pre>
+<pre class="codeinput">    All_Neighbours=sortrows(All_Neighbours,1);
+    All_Neighbours=sortrows(All_Neighbours,2);
+    All_Neighbours=sortrows(All_Neighbours,1);
+
+    i=1;
+    <span class="comment">% All_Neighbours(:,5)=All_Neighbours(:,4);</span>
+    All_Neighbours(:,5)={1};
+    <span class="keyword">while</span> i&lt;size(All_Neighbours,1)+1
+        <span class="keyword">if</span> i==1
+            All_Neighbours{i,5}=1;
+        <span class="keyword">elseif</span> strcmp(All_Neighbours(i,1),All_Neighbours(i-1,1)) &amp;&amp; strcmp(All_Neighbours(i,2),All_Neighbours(i-1,2))
+            All_Neighbours{i-1,5}=All_Neighbours{i-1,5}+1;
+            All_Neighbours{i-1,4}=[All_Neighbours{i-1,4} All_Neighbours{i,4}];
+            All_Neighbours(i,:)=[];
+            i=i-1;
+        <span class="keyword">else</span>
+            All_Neighbours{i,5}=1;
+        <span class="keyword">end</span>
+        i=i+1;
+    <span class="keyword">end</span>
+</pre>
+<h2 id="6">Set fftype names with numbers</h2>
+<pre class="codeinput">    All_Neighbours=[All_Neighbours All_Neighbours(:,1)];
+    <span class="comment">% All_Neighbours(:,2)=lower(All_Neighbours(:,2));</span>
+    i=1;
+    <span class="keyword">while</span> i&lt;size(All_Neighbours,1)+1
+        n=0;
+        <span class="keyword">if</span> sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) &gt; 1
+            n=1;
+        <span class="keyword">else</span>
+            n=0;
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> i&gt;1 &amp;&amp; sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) &gt; 1
+            n=sum(strcmp(All_Neighbours(i,1),All_Neighbours(1:i,1)));
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> n&gt;0
+            All_Neighbours{i,6}=strcat(All_Neighbours{i,6},num2str(n));
+        <span class="keyword">else</span>
+
+        <span class="keyword">end</span>
+
+        i=i+1;
+    <span class="keyword">end</span>
+
+    All_Neighbours=[All_Neighbours All_Neighbours(:,1) ];
+    <span class="comment">% All_Neighbours(:,1)=regexprep(All_Neighbours(:,1),'\d+$','');</span>
+
+    <span class="keyword">for</span> i=1:size(All_Neighbours,1)
+        ind=All_Neighbours{i,4};
+        <span class="keyword">if</span> ~ismember(All_Neighbours{i,1},{<span class="string">'OW'</span> <span class="string">'Ow'</span> <span class="string">'HW1'</span> <span class="string">'HW2'</span> <span class="string">'HW'</span> <span class="string">'Hw'</span>})
+            <span class="keyword">if</span> ismember(All_Neighbours{i,1},{<span class="string">'O'</span> <span class="string">'H'</span>})
+                <span class="keyword">for</span> j=1:size(ind,2)
+                    <span class="keyword">if</span> strncmp(All_Neighbours{i,1},<span class="string">'H'</span>,1)
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==1
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'s'</span>,All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==2
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'b'</span>,All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==3
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'p'</span>,All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==4
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'p'</span>,All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==5
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'e'</span>,All_Neighbours{i,3});
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==6
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'o'</span>,All_Neighbours{i,3});
+                    <span class="keyword">end</span>
+                    <span class="comment">% else</span>
+                    <span class="comment">%     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours(i,3));</span>
+                <span class="keyword">end</span>
+            <span class="keyword">else</span>
+                <span class="keyword">for</span> j=1:size(ind,2)
+                    <span class="keyword">if</span> length(All_Neighbours{i,3})==1
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'d'</span>);
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==2
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'b'</span>);
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==3
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'p'</span>);
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==4
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'t'</span>);
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==5
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'e'</span>);
+                    <span class="keyword">elseif</span> length(All_Neighbours{i,3})==6
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),<span class="string">'o'</span>);
+                    <span class="keyword">else</span>
+                        [atom(ind(j)).fftype]=All_Neighbours(i,1);
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    All_Neighbours=[All_Neighbours All_Neighbours(:,1)];
+    <span class="keyword">for</span> i=1:size(All_Neighbours,1)
+        ind=All_Neighbours{i,4};
+        All_Neighbours{i,7}=temp_atom(ind(1)).type;
+        All_Neighbours{i,8}=atom(ind(1)).fftype;
+    <span class="keyword">end</span>
+
+
+    <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+        atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span>  <span class="string">'Alo'</span>  <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Fe3e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},<span class="keyword">...</span>
+                                            [1.782  1.782 1.782 1.985 2.48  1.14  1.14   1.14 0.7   0.86666 1.45  1    1    1   1.562 1.74  1.635 1.66  1.52  1.884 1.884 1.884 2.413 0.86  0.4]);
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
+        <span class="keyword">for</span> i=1:size(All_Neighbours,1)
+            ind=All_Neighbours{i,4};
+            All_Neighbours(i,9)={unique(round([atom(ind).charge],8))};
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> isfield(atom,<span class="string">'cn'</span>)
+        <span class="keyword">for</span> i=1:size(All_Neighbours,1)
+            ind=All_Neighbours{i,4};
+            All_Neighbours(i,10)={unique([atom(ind).cn])};
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+
+    <span class="comment">% atom = number_type(atom,0);</span>
+    <span class="comment">% ff=load(strcat(ffname,'_ff.mat'));</span>
+    <span class="comment">% ff=ff.ff;</span>
+    <span class="comment">% [ff.resname]=deal({'MIN'});</span>
+    <span class="comment">% ff=resname_atom(ff);</span>
+    <span class="comment">% ff(ismember([ff.resname],{'ION' 'SOL'}))=[];</span>
+    <span class="comment">%</span>
+    <span class="comment">% for i=1:size(ff,2)</span>
+    <span class="comment">%     [ff(i).type]=lower([ff(i).type]);</span>
+    <span class="comment">% end</span>
+    <span class="comment">% ff=ff(ismember([ff.type],unique(All_Neighbours(:,1))));</span>
+
+    <span class="comment">% % i=1;</span>
+    <span class="comment">% % while i&lt;size(ff,2)+1</span>
+    <span class="comment">% %     ind=find(strncmpi([atom.type],[ff(i).type],2));</span>
+    <span class="comment">% %     if numel(ind)==0</span>
+    <span class="comment">% %         ind=find(strncmpi([atom.type],[ff(i).type],1));</span>
+    <span class="comment">% %     end</span>
+    <span class="comment">% %     if numel(ind)&gt;0</span>
+    <span class="comment">% %         for j=1:size(ind,2)</span>
+    <span class="comment">% %             [atom(ind(j)).charge]=[ff(i).charge];</span>
+    <span class="comment">% %             [atom(ind(j)).e_kJmol]=[ff(i).e_kJmol];</span>
+    <span class="comment">% %             [atom(ind(j)).sigma_nm]=[ff(i).sigma_nm];</span>
+    <span class="comment">% %         end</span>
+    <span class="comment">% %         i=i+1;</span>
+    <span class="comment">% %     else</span>
+    <span class="comment">% %         ff(i)=[];</span>
+    <span class="comment">% %     end</span>
+    <span class="comment">% % end</span>
+    <span class="comment">%</span>
+    <span class="comment">% assignin('caller','ff',ff);</span>
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+
+[atom.type]=atom.fftype;
+
+<span class="keyword">for</span> i=1:length(unique([atom.type]))
+    new_Atom_label=sort(unique([atom.type]));
+    <span class="keyword">try</span>
+        ind=ismember([atom.type],new_Atom_label(i));
+        assignin(<span class="string">'caller'</span>,strcat(char(new_Atom_label(i)),<span class="string">'_atom'</span>),atom(ind));
+    <span class="keyword">catch</span>
+        disp(<span class="string">'Could not finalize:'</span>)
+        i
+        new_Atom_label
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:size(All_Neighbours,1)
+    All_types(i).type=All_Neighbours{i,7};
+    All_types(i).typenum=All_Neighbours(i,6);
+    All_types(i).element=All_Neighbours(i,1);
+    All_types(i).neighbours=All_Neighbours(i,2);
+    All_types(i).neigh=All_Neighbours(i,3);
+    All_types(i).index=All_Neighbours{i,4};
+    All_types(i).number=All_Neighbours{i,5};
+    All_types(i).type2=All_Neighbours{i,8};
+    All_types(i).charge=All_Neighbours{i,9};
+    All_types(i).cn=All_Neighbours{i,10};
+<span class="keyword">end</span>
+
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+
+assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbours'</span>,All_Neighbours);
+assignin(<span class="string">'caller'</span>,<span class="string">'All_types'</span>,All_types);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels);
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data);
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ff_atom.m
+% * This function tries to assign all atoms according to some custom force field
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=ff_atom(atom,Box_dim)
+% # atom=ff_atom(atom,Box_dim,ff)
+
+
+function atom=ff_atom(atom,Box_dim,varargin)
+%%
+format compact;
+
+rmaxlong=2.45;
+if nargin>3
+    rmaxlong=varargin{2};
+end
+
+temp_atom=atom;
+
+atom=element_atom(atom);
+[atom.element]=atom.type;
+[atom.fftype]=atom.element;
+
+XYZ_labels=[atom.type]';
+XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+atom=cn_atom(atom,Box_dim,rmaxlong);
+
+nBonds=size(Bond_index,1);
+assignin('caller','nBonds',nBonds);
+assignin('caller','radius_limit',radius_limit);
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','Neigh_index',Neigh_index);
+assignin('caller','dist_matrix',dist_matrix);
+
+All_Neighbours=[];All_types=struct;
+Heal_O=0;
+i=1;
+while i <= size(atom,2)
+    if mod(i,100)==1
+        i-1
+    end
+
+    if strncmpi([atom(i).resname],'SOL',3)==0 && strncmpi([atom(i).resname],'ION',3)==0
+        nNeigh=numel([atom(i).neigh]);
+        if nNeigh>0
+            Neigh_cell = sort([atom(i).neigh.type]);
+            if length(Neigh_cell) > 0
+                Neighbours=strcat(Neigh_cell{:});
+                Neighboursx1=cellfun(@(x) x(1),Neigh_cell,'un',0);
+                Neighboursx1=lower(strcat(Neighboursx1{:}));
+                All_Neighbours=[All_Neighbours;{char(atom(i).type) Neighbours Neighboursx1 } i]; %
+            else
+                Neighbours={'Nan'};
+                Neighboursx1={'Nan'};
+            end
+        end
+    end
+    i=i+1;
+    % [atom.type]=atom.fftype;
+end
+
+if Heal_O>0
+    atom=adjust_H_atom(atom,Box_dim);
+end
+
+if numel(All_Neighbours)>0
+
+    All_Neighbours=sortrows(All_Neighbours,1);
+    All_Neighbours=sortrows(All_Neighbours,2);
+    All_Neighbours=sortrows(All_Neighbours,1);
+
+    i=1;
+    % All_Neighbours(:,5)=All_Neighbours(:,4);
+    All_Neighbours(:,5)={1};
+    while i<size(All_Neighbours,1)+1
+        if i==1
+            All_Neighbours{i,5}=1;
+        elseif strcmp(All_Neighbours(i,1),All_Neighbours(i-1,1)) && strcmp(All_Neighbours(i,2),All_Neighbours(i-1,2))
+            All_Neighbours{i-1,5}=All_Neighbours{i-1,5}+1;
+            All_Neighbours{i-1,4}=[All_Neighbours{i-1,4} All_Neighbours{i,4}];
+            All_Neighbours(i,:)=[];
+            i=i-1;
+        else
+            All_Neighbours{i,5}=1;
+        end
+        i=i+1;
+    end
+
+    %% Set fftype names with numbers
+    All_Neighbours=[All_Neighbours All_Neighbours(:,1)];
+    % All_Neighbours(:,2)=lower(All_Neighbours(:,2));
+    i=1;
+    while i<size(All_Neighbours,1)+1
+        n=0;
+        if sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+            n=1;
+        else
+            n=0;
+        end
+
+        if i>1 && sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+            n=sum(strcmp(All_Neighbours(i,1),All_Neighbours(1:i,1)));
+        end
+
+        if n>0
+            All_Neighbours{i,6}=strcat(All_Neighbours{i,6},num2str(n));
+        else
+
+        end
+
+        i=i+1;
+    end
+
+    All_Neighbours=[All_Neighbours All_Neighbours(:,1) ];
+    % All_Neighbours(:,1)=regexprep(All_Neighbours(:,1),'\d+$','');
+
+    for i=1:size(All_Neighbours,1)
+        ind=All_Neighbours{i,4};
+        if ~ismember(All_Neighbours{i,1},{'OW' 'Ow' 'HW1' 'HW2' 'HW' 'Hw'})
+            if ismember(All_Neighbours{i,1},{'O' 'H'})
+                for j=1:size(ind,2)
+                    if strncmp(All_Neighbours{i,1},'H',1)
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==1
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'s',All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==2
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'b',All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==3
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==4
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==5
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'e',All_Neighbours{i,3});
+                    elseif length(All_Neighbours{i,3})==6
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'o',All_Neighbours{i,3});
+                    end
+                    % else
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours(i,3));
+                end
+            else
+                for j=1:size(ind,2)
+                    if length(All_Neighbours{i,3})==1
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'d');
+                    elseif length(All_Neighbours{i,3})==2
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'b');
+                    elseif length(All_Neighbours{i,3})==3
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p');
+                    elseif length(All_Neighbours{i,3})==4
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'t');
+                    elseif length(All_Neighbours{i,3})==5
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'e');
+                    elseif length(All_Neighbours{i,3})==6
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'o');
+                    else
+                        [atom(ind(j)).fftype]=All_Neighbours(i,1);
+                    end
+                end
+            end
+        end
+    end
+
+    All_Neighbours=[All_Neighbours All_Neighbours(:,1)];
+    for i=1:size(All_Neighbours,1)
+        ind=All_Neighbours{i,4};
+        All_Neighbours{i,7}=temp_atom(ind(1)).type;
+        All_Neighbours{i,8}=atom(ind(1)).fftype;
+    end
+
+
+    if ~isfield(atom,'charge')
+        atom=charge_minff_atom(atom,Box_dim,{'Al'  'Alo'  'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},...
+                                            [1.782  1.782 1.782 1.985 2.48  1.14  1.14   1.14 0.7   0.86666 1.45  1    1    1   1.562 1.74  1.635 1.66  1.52  1.884 1.884 1.884 2.413 0.86  0.4]);
+    end
+
+    if isfield(atom,'charge')
+        for i=1:size(All_Neighbours,1)
+            ind=All_Neighbours{i,4};
+            All_Neighbours(i,9)={unique(round([atom(ind).charge],8))};
+        end
+    end
+
+    if isfield(atom,'cn')
+        for i=1:size(All_Neighbours,1)
+            ind=All_Neighbours{i,4};
+            All_Neighbours(i,10)={unique([atom(ind).cn])};
+        end
+    end
+
+
+    % atom = number_type(atom,0);
+    % ff=load(strcat(ffname,'_ff.mat'));
+    % ff=ff.ff;
+    % [ff.resname]=deal({'MIN'});
+    % ff=resname_atom(ff);
+    % ff(ismember([ff.resname],{'ION' 'SOL'}))=[];
+    %
+    % for i=1:size(ff,2)
+    %     [ff(i).type]=lower([ff(i).type]);
+    % end
+    % ff=ff(ismember([ff.type],unique(All_Neighbours(:,1))));
+
+    % % i=1;
+    % % while i<size(ff,2)+1
+    % %     ind=find(strncmpi([atom.type],[ff(i).type],2));
+    % %     if numel(ind)==0
+    % %         ind=find(strncmpi([atom.type],[ff(i).type],1));
+    % %     end
+    % %     if numel(ind)>0
+    % %         for j=1:size(ind,2)
+    % %             [atom(ind(j)).charge]=[ff(i).charge];
+    % %             [atom(ind(j)).e_kJmol]=[ff(i).e_kJmol];
+    % %             [atom(ind(j)).sigma_nm]=[ff(i).sigma_nm];
+    % %         end
+    % %         i=i+1;
+    % %     else
+    % %         ff(i)=[];
+    % %     end
+    % % end
+    %
+    % assignin('caller','ff',ff);
+
+end
+
+[atom.type]=atom.fftype;
+
+for i=1:length(unique([atom.type]))
+    new_Atom_label=sort(unique([atom.type]));
+    try
+        ind=ismember([atom.type],new_Atom_label(i));
+        assignin('caller',strcat(char(new_Atom_label(i)),'_atom'),atom(ind));
+    catch
+        disp('Could not finalize:')
+        i
+        new_Atom_label
+    end
+end
+
+for i=1:size(All_Neighbours,1)
+    All_types(i).type=All_Neighbours{i,7};
+    All_types(i).typenum=All_Neighbours(i,6);
+    All_types(i).element=All_Neighbours(i,1);
+    All_types(i).neighbours=All_Neighbours(i,2);
+    All_types(i).neigh=All_Neighbours(i,3);
+    All_types(i).index=All_Neighbours{i,4};
+    All_types(i).number=All_Neighbours{i,5};
+    All_types(i).type2=All_Neighbours{i,8};
+    All_types(i).charge=All_Neighbours{i,9};
+    All_types(i).cn=All_Neighbours{i,10};
+end
+
+
+assignin('caller','Bond_index',Bond_index);
+
+assignin('caller','All_Neighbours',All_Neighbours);
+assignin('caller','All_types',All_types);
+assignin('caller','XYZ_labels',XYZ_labels);
+assignin('caller','XYZ_data',XYZ_data);
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

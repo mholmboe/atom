@@ -17,7 +17,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -26,6 +26,8 @@
 % # [twotheta,intensity] = xrd_atom(filename)
 % # [twotheta,intensity] = xrd_atom(atom,Box_dim)
 % # [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3]) % If your system has been replicated as 6x4x3
+% # [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[0 0 1]) % Selected Miller indices
+% # [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[],0) % Do not plot
 %
 function [exp_twotheta,intensity] = xrd_atom(varargin)
 
@@ -33,15 +35,16 @@ function [exp_twotheta,intensity] = xrd_atom(varargin)
 % num_hkl=72; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
 lambda=1.54187; % Ångstrom
 anglestep=0.02; % The incremental twotheta angle step
-exp_twotheta=4:anglestep:80; % The twotheta range of interest
+exp_twotheta=2:anglestep:60; % The twotheta range of interest
 B_all=2; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian peak shape vs. a gaussian peak shape
-neutral_atoms=0;
+neutral_atoms=0; % Use structure factors for neutral atoms
+hkl_max=0; % 0 for inifinite, Set > 0 to choose max h,k,l index limit. A speed-up thing.
 
 %% Set FWHM
-FWHM_00l=.25; % Specify the full width at half maximum of your choice
-FWHM_hk0=.25; % Specify the full width at half maximum of your choice
-FWHM_hkl=.25; % Specify the full width at half maximum of your choice
+FWHM_00l=1; % Specify the full width at half maximum of your choice
+FWHM_hk0=.5; % Specify the full width at half maximum of your choice
+FWHM_hkl=.5; % Specify the full width at half maximum of your choice
 
 %% Various settings
 mode=0; % Activate sigma_star, DIV, surface roughness as in Moore&Reynolds, 1997
@@ -60,12 +63,12 @@ L_type='normal'; % 'normal'; % Lorent polarization type, else 'Reynolds';
 S1=2.3;S2=2.3; % Primary and secondary Soller slit , in deg
 
 if mode==0
-monochromator=0;
-monochromator_angle=26.6;
+    monochromator=0;
+    monochromator_angle=26.6;
 end
 
 %% Enter the degree (number greater than or equal to 0) and direction of preferential orientation
-pref=0;
+pref=1;
 preferred_h=1;
 preferred_k=1;
 preferred_l=1;
@@ -90,7 +93,7 @@ end
 if nargin>2
     rep_factors=varargin{3};
 else
-    pause(2)
+    % pause(2)
     rep_factors=[1 1 1];
 end
 
@@ -142,19 +145,27 @@ end
 % lmax=max([num_hkl rep_factors(3)*num_hkl]);
 
 Cell=Box_dim2Cell(Box_dim);
-hmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(1)));
-kmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(2)));
-lmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(3)));
-
-%% Set the occupancy of all sites
-if ~isfield(atom,'occupancy')
-    try
-        atom = occupancy_atom(atom,Box_dim);
-    catch
-        [atom.occupancy]=deal(1);
-    end
+if hkl_max>0
+    hmax=hkl_max;
+    kmax=hkl_max;
+    lmax=hkl_max;
+else
+    hmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(1)));
+    kmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(2)));
+    lmax=ceil(exp_twotheta(end)/Bragg(lambda,'distance',Cell(3)));
 end
-
+%% Set the occupancy of all sites
+if size(atom,2)<1000
+    if ~isfield(atom,'occupancy')
+        try
+            atom = occupancy_atom(atom,Box_dim);
+        catch
+            [atom.occupancy]=deal(1);
+        end
+    end
+else
+    [atom.occupancy]=deal(1);
+end
 occupancy=[atom.occupancy]';
 
 
@@ -241,7 +252,8 @@ end
 if numel(selected_indexes)>0
     selected_ind=[];
     for i=1:size(selected_indexes,1)
-        [row,col]=ismember(selected_indexes(i,:),hkl_selected,'rows');
+        % [row,col]=ismember(selected_indexes(i,:),hkl_selected,'rows');
+        [~,col]=ismember(selected_indexes(i,:),hkl_selected,'rows');
         if col>0
             selected_ind=[selected_ind col];
         end
@@ -295,20 +307,22 @@ one_over_dhkl=real(one_over_dhkl);
 %      assignin('caller','one_over_dhkl1',one_over_dhkl);
 %% Order the hkl after decreasing d-spacings and increasing two_theta
 d_hkl=1./one_over_dhkl;
-twotheta_rad=2.*asin(one_over_dhkl*lambda/2);
+% twotheta_rad=2.*asin(one_over_dhkl*lambda/2);
+two_theta_disc=real(2.*asind(one_over_dhkl*lambda/2));
 [d_hkl,hkl_order]=sort(d_hkl,'descend');
-twotheta_rad=twotheta_rad(hkl_order);
+% twotheta_rad=twotheta_rad(hkl_order);
+two_theta_disc=two_theta_disc(hkl_order);
 hkl=hkl(hkl_order,:);
 h=h(hkl_order);
 k=k(hkl_order);
 l=l(hkl_order);
 
 %% Calculate the corresponding discrete twotheta in degrees
-two_theta_disc=real(180*twotheta_rad/pi);
+% two_theta_disc=real(180*twotheta_rad/pi);
 
 %% Calculate the structure factor for each reflection
 Atom_labels=unique(atom_type);
-structure_factor=0;
+F_hkl=0;
 m=1;
 disp('--------------')
 while m<numel(Atom_labels)+1
@@ -316,17 +330,19 @@ while m<numel(Atom_labels)+1
     if neutral_atoms==1
         Atom_labels(m)=strcat(Atom_labels(m),'0');
     end
-    scattering_factor = atomic_scattering_factors(Atom_labels(m),lambda,two_theta_disc,Bvalue(ind(1)));
+    f_n = atomic_scattering_factors(Atom_labels(m),lambda,two_theta_disc,Bvalue(ind(1)));
     numatoms=sum([atom(ind).occupancy])
     disp('--------------')
-    assignin('caller',strcat(char(Atom_labels(m)),'_f')',scattering_factor);
+    assignin('caller',strcat(char(Atom_labels(m)),'_f')',f_n);
     assignin('caller',strcat(char(Atom_labels(m)),'_Atomtype')',Atomtype);
     assignin('caller',strcat(char(Atom_labels(m)),'_nElectrons')',nElectrons);
+
     n=1;
     while n<numel(ind)+1
-        structure_factor=structure_factor+scattering_factor.*occupancy(ind(n)).*exp(2*pi*1i.*(h*x(ind(n))+k*y(ind(n))+l*z(ind(n))));
+        F_hkl=F_hkl+f_n.*occupancy(ind(n)).*exp(2*pi*1i.*(h*x(ind(n))+k*y(ind(n))+l*z(ind(n))));
         n=n+1;
     end
+
     m=m+1;
 end
 
@@ -342,7 +358,7 @@ end
 % end
 
 %% Square each term in the structure factor vector by its complex conjugate
-F_squared=structure_factor.*conj(structure_factor);
+F_squared=F_hkl.*conj(F_hkl);
 
 if sum(abs(rep_factors-[1 1 1]))>0
     hkl=hkl./rep_factors;
@@ -357,7 +373,7 @@ if theta_pref_orient>pi/2
     theta_pref_orient=pi-theta_pref_orient;
 end
 F_squared=F_squared.*exp(pref*cos(2*theta_pref_orient));
-twotheta=real(180*twotheta_rad/pi);
+twotheta=two_theta_disc; % 20230831 real(180*twotheta_rad/pi);
 
 %% Construct the calculated pxrd pattern by adding a lorentzian fraction to a gaussian fraction
 if Lorentzian_factor<1
@@ -375,7 +391,7 @@ if Lorentzian_factor<1
         end
         %         temp_FWHM=temp_FWHM*(1+2*sin(twotheta(n)*pi/180));
         %         temp_FWHM=FWHM_hkl;
-        
+
         c_g=temp_FWHM/(2*(2*log(2))^0.5);
         temp_gauss=F_squared(n).*exp(-(exp_twotheta-twotheta(n)).^2/(2*c_g^2));
         gauss_component=gauss_component+temp_gauss;
@@ -428,7 +444,7 @@ if mode==1
     S_bar=((S1/2)^2+(S2/2)^2)^.5;
     Q=S_bar./(2*2^0.5*sin(exp_twotheta/2*pi()/180)*sigma_star);
     PSI=erf(Q)*(2*pi())^.5/(2*sigma_star*S_bar)-2*sin(exp_twotheta/2*pi()/180)/S_bar^2.*(1-exp(-Q.^2));
-    
+
     %% Lorentz * Polarization factors
     Lorentz=(1+cos(exp_twotheta*pi()/180).^2);
     SingXtalLorentz=sin(exp_twotheta/2*pi()/180);
@@ -437,7 +453,7 @@ if mode==1
     else
         LP=Lorentz./SingXtalLorentz.*PSI;
     end
-    
+
     if RNDPWD == 1
         LP_random = Lorentz./(sin(exp_twotheta/2*pi()/180)) * 1./sin(exp_twotheta*pi()/180);
         LP=LP_random;
@@ -449,17 +465,18 @@ if mode==1
 else
     if monochromator==0
         %     intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(8*sin(exp_twotheta/2*pi/180/2).^2.*cos(exp_twotheta/2*pi/180));
-        intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(cos(exp_twotheta/2*pi/180).*sin(exp_twotheta/2*pi/180).^2);
+        %     intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(cos(exp_twotheta/2*pi/180).*sin(exp_twotheta/2*pi/180).^2);
+        intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)./(2*sin(exp_twotheta/2*pi/180).*sin(exp_twotheta*pi/180));
     else
         intensity=SR.*DIV.*intensity.*(1+cos(exp_twotheta*pi/180).^2)*(cos(monochromator_angle*pi/180).^2)./(cos(exp_twotheta/2*pi/180).*sin(exp_twotheta/2*pi/180).^2);
     end
     intensity=real(intensity/max(intensity));
-    
+
     %     intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
 end
 
 assignin('caller','F_squared',F_squared)
-assignin('caller','twotheta_rad',twotheta_rad)
+% assignin('caller','twotheta_rad',twotheta_rad)
 assignin('caller','twotheta_disc',two_theta_disc)
 assignin('caller','intensity',intensity)
 assignin('caller','twotheta',exp_twotheta)
@@ -469,68 +486,74 @@ assignin('caller','l',l);
 assignin('caller','hkl',hkl);
 assignin('caller','d_hkl',d_hkl);
 
-dlmwrite('xrd.dat',[exp_twotheta' 100*intensity'],'delimiter','\t','precision',5)
+% dlmwrite('xrd.dat',[round(exp_twotheta',5) 100*intensity'],'delimiter','\t','precision',5);
 
-%% Plot the results
-hold on;
-%plot(exp_twotheta,intensity,'Color',[0 0 0],'LineWidth',1);
-plot(exp_twotheta,intensity,'LineWidth',1);
-% plot(exp_twotheta,intensity+(rand(2,length(intensity))-.5)/500,'k');
+writematrix(num2str([exp_twotheta' 100*intensity'],'%.5f '),'xrd.dat','Delimiter','tab');
 
-[peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.05*max(intensity));
-if numel(peaks_int)<10
-    [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.01*max(intensity));
-end
-if numel(peaks_int)<10
-    [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.001*max(intensity));
-end
+if nargin<5
 
-assignin('caller','peaks_int',peaks_int)
-assignin('caller','locs_twotheta',locs_twotheta)
+    %% Plot the results
+    hold on;
+    %plot(exp_twotheta,intensity,'Color',[0 0 0],'LineWidth',1);
+    plot(exp_twotheta,intensity,'LineWidth',1);
+    % plot(exp_twotheta,intensity+(rand(2,length(intensity))-.5)/500,'k');
 
-intensity_disc=interp1(exp_twotheta,intensity,two_theta_disc);
-[peaks_Intensity,ind_Intensity]=maxk(intensity_disc./max(intensity_disc),20*numel(peaks_int));
-two_theta_disc_Intensity_max=two_theta_disc(ind_Intensity);
-hkl_max_Intensity=hkl(ind_Intensity,:);
-
-[peaks_Fsq,ind_Fsq]=maxk(F_squared./max(F_squared),20*numel(peaks_int));
-two_theta_disc_Fsq_max=two_theta_disc(ind_Fsq);
-hkl_max_Fsq=hkl(ind_Fsq,:);
-
-%% Miller indexes wrt the peak prominence
-hkl_ind=[];
-hkl_abs=abs(hkl);
-hkl_abs_sorted=sort(hkl_abs,2,'descend');
-assignin('caller','hkl_abs_sorted',hkl_abs_sorted);
-for i=1:numel(locs_twotheta)
-    [diff, ind] = min(abs(two_theta_disc_Intensity_max-locs_twotheta(i)));
-    if diff<1
-        
-        Miller_index=num2str(abs(hkl_max_Intensity(ind,:)));
-        Miller_seq=abs(hkl_max_Intensity(ind,:));
-        seq=sort(abs(Miller_seq),2,'descend');
-        multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
-        text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.06,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
-        if size(atom,2)<100
-            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.12,num2str(multiplicity),'FontSize',14);
-        end
-        hkl_ind=[hkl_ind i];
-        
+    [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.05*max(intensity));
+    if numel(peaks_int)<10
+        [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.01*max(intensity));
     end
-end
-stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
-stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
-stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
+    if numel(peaks_int)<10
+        [peaks_int,locs_twotheta]=findpeaks(intensity,exp_twotheta,'MinPeakProminence',.001*max(intensity));
+    end
 
-xlim([0 max(exp_twotheta)]);
-try
-    ylim([-.1 max(intensity)*1.15])
-catch
-end
+    assignin('caller','peaks_int',peaks_int)
+    assignin('caller','locs_twotheta',locs_twotheta)
 
-set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22);% ,'Xtick',exp_twotheta(1):10:exp_twotheta(end));%,'Xtick',...
-xlabel('Two-theta','FontSize',24);
-ylabel('Norm. intensity','FontSize',24);
+    intensity_disc=interp1(exp_twotheta,intensity,two_theta_disc);
+    [peaks_Intensity,ind_Intensity]=maxk(intensity_disc./max(intensity_disc),20*numel(peaks_int));
+    two_theta_disc_Intensity_max=two_theta_disc(ind_Intensity);
+    hkl_max_Intensity=hkl(ind_Intensity,:);
+
+    [peaks_Fsq,ind_Fsq]=maxk(F_squared./max(F_squared),20*numel(peaks_int));
+    two_theta_disc_Fsq_max=two_theta_disc(ind_Fsq);
+    hkl_max_Fsq=hkl(ind_Fsq,:);
+
+    %% Miller indexes wrt the peak prominence
+    hkl_ind=[];
+    hkl_abs=abs(hkl);
+    hkl_abs_sorted=sort(hkl_abs,2,'descend');
+    assignin('caller','hkl_abs_sorted',hkl_abs_sorted);
+    for i=1:numel(locs_twotheta)
+        [diff, ind] = min(abs(two_theta_disc_Intensity_max-locs_twotheta(i)));
+        if diff<1
+
+            Miller_index=num2str(abs(hkl_max_Intensity(ind,:)));
+            Miller_seq=abs(hkl_max_Intensity(ind,:));
+            seq=sort(abs(Miller_seq),2,'descend');
+            multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
+            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.06,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
+            if size(atom,2)<100
+                text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.12,num2str(multiplicity),'FontSize',14);
+            end
+            hkl_ind=[hkl_ind i];
+
+        end
+    end
+    stem(locs_twotheta(hkl_ind),peaks_int(hkl_ind),'Color','black','MarkerEdgeColor','none');
+    stem(locs_twotheta(hkl_ind),-0.03*ones(numel(locs_twotheta(hkl_ind))),'Color','black','MarkerEdgeColor','none');
+    stem(two_theta_disc_Intensity_max,-0.03*ones(numel(two_theta_disc_Intensity_max)),'Color','black','MarkerEdgeColor','none');
+
+    xlim([0 max(exp_twotheta)]);
+    try
+        ylim([-.1 max(intensity)*1.15])
+    catch
+    end
+
+    set(gca,'LineWidth',2,'FontName', 'Arial','FontSize',22);% ,'Xtick',exp_twotheta(1):10:exp_twotheta(end));%,'Xtick',...
+    xlabel('Two-theta','FontSize',24);
+    ylabel('Norm. intensity','FontSize',24);
+
+end
 
 % figure
 % hold on;

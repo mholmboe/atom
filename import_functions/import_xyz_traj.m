@@ -2,16 +2,16 @@
 % * This function imports a .xyz trajectory
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_xyz_traj('traj.xyz')
-% # atom = import_xyz_traj('traj.xyz',1000,10)
+% # [atom,traj] = import_xyz_traj('traj.xyz')
+% # [atom,traj] = import_xyz_traj('traj.xyz',1000,10)
 
-function atom = import_xyz_traj(filename,varargin)
+function [atom,traj] = import_xyz_traj(filename,varargin)
 %%
 
 fileID = fopen(filename,'r');
@@ -51,7 +51,7 @@ else
         Frames=1:nFrames;
     end
 end
-Frames
+Frames;
 traj=zeros(length(Frames),nAtoms*3);
 Box_dim=zeros(length(Frames),3);
 Comments={};
@@ -75,10 +75,10 @@ if strcmp(Boxinfo,'no')
         traj(t,2:3:end)=[dataArray{:,3}];
         traj(t,3:3:end)=[dataArray{:,4}];
         
-        % Extra stuff - will print a .xyf for every frame. Note you could set the Box_dim
+        % Extra stuff - will print a .xyz for every frame. Note you could set the Box_dim
         XYZ_labels = dataArray{:,1};
         XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
-        write_xyz(XYZ_labels,XYZ_data,[],strcat('out_',num2str(t),'.xyz'),Comments(t,1));
+        % write_xyz(XYZ_labels,XYZ_data,[],strcat('out_',num2str(t),'.xyz'),Comments(t,1));
         
         if t==1
             XYZ_labels = dataArray{:,1};
@@ -174,8 +174,8 @@ end
 
 atom = resname_atom(atom);
 
-assignin('caller','atom',atom);
-assignin('caller','traj',traj);
+% assignin('caller','atom',atom);
+% assignin('caller','traj',traj);
 assignin('caller','nAtoms',nAtoms);
 assignin('caller','Box_dim',Box_dim);
 assignin('caller','XYZ_labels',XYZ_labels);

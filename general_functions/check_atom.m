@@ -5,7 +5,7 @@
 % * This function might be outdated...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -22,11 +22,11 @@ atom=wrap_atom(atom,Box_dim);
 composition_atom(atom);
 Box_dim(1:end)
 composition
-bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
+atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
 Atom_labels=unique([atom.type]);
 
 assignin('caller','composition',composition);
-assignin('caller','Dist_matrix',Dist_matrix)
+assignin('caller','Dist_matrix',dist_matrix)
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
 assignin('caller','nBonds',nBonds);

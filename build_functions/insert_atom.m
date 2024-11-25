@@ -11,14 +11,14 @@
 % create_atom.m
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol) % Basic input arguments
-% * atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom)
+% * atom = insert_atom(atom,limits,[10 20 30],r,maxsol,solute_atom) % To make sure there is no atomic overlapp with any solute atoms
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,[1 4],0.3)
 
@@ -65,7 +65,7 @@ else
     all_atom=[];
 end
 
-while (size(all_atom,2) < nmax*nAtoms_in) || n < 1000
+while (size(all_atom,2) <= nmax*nAtoms_in) || n < 1000
     
     %     size(all_atom,2)
     %     nmax*nAtoms_in
@@ -159,6 +159,8 @@ if nmax==0
     end
 end
 assignin('caller','limits',limits);
+
+end
 
 
 

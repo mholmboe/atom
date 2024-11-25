@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>hbond_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="hbond_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>hbond_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to calculate the number of hydrogen bonds</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Filter Hw with certain z coordinate</a>
+</li>
+<li>
+<a href="#7">This is the slow step...</a>
+</li>
+<li>
+<a href="#8">Put together the Angle_index matrix</a>
+</li>
+<li>
+<a href="#9">Check the D-H--A angles</a>
+</li>
+<li>
+<a href="#10">Check the D--A distances</a>
+</li>
+<li>
+<a href="#11">Cut out the cutout's</a>
+</li>
+<li>
+<a href="#12">Collect the donor Hbonds</a>
+</li>
+<li>
+<a href="#13">Collect the acceptor Hbonds</a>
+</li>
+<li>
+<a href="#14">Write a pdb without the CONECT section</a>
+</li>
+<li>
+<a href="#15">Print the CONECT section with th HB bonds separately</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=hbond_atom(atom,Box_dim) % Basic input arguments</li>
+<li>atom=hbond_atom(atom,Box_dim,hb_dist) % Sets the X-H-X distance</li>
+<li>atom=hbond_atom(atom,Box_dim,hb_dist,hbangle) % Sets the X-H-X angle</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom=hbond_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">format <span class="string">short</span>
+outfilename=<span class="string">'hbond_conf.pdb'</span>;
+hb_dist=3.5; <span class="comment">% &Aring;</span>
+hb_angle=30; <span class="comment">% max allowed deg between H-D---A</span>
+DAgroup=<span class="string">'O'</span>; <span class="comment">% Only one Donor/acceptor group at the moment, otherwise add indexes to ind1 (which must contain indexes of both the D's and A's)</span>
+DHgroup=<span class="string">'H'</span>; <span class="comment">% The donor-H's atomtypes, like 'HW'</span>
+
+ind1=find(strncmpi([atom.type],DHgroup,1)); <span class="comment">% indexes of the acceptors</span>
+ind2=find(strncmpi([atom.type],DAgroup,1)); <span class="comment">% indexes of the donor-H's</span>
+ind2=unique(sort([ind2 find(strncmpi([atom.type],<span class="string">'Oh'</span>,2))])); <span class="comment">% indexes of the donor-H's]</span>
+
+dist_step=0.1;
+angle_step=1;
+<span class="comment">% bins_HBD=zeros(1,size(atom,2));</span>
+bins_DIST=zeros(1,length(0:dist_step:hb_dist)-1);
+bins_ANGLE=zeros(1,length(0:angle_step:hb_angle)-1);
+
+atom1=atom(ind1); <span class="comment">% Extract the solute atomtype</span>
+atom2=atom(ind2); <span class="comment">% Extract the ligands atomtypes</span>
+
+filter=[];
+<span class="keyword">if</span> nargin&gt;2
+    filter=varargin{1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(filter)&gt;0
+    <span class="comment">% 'Filter' the structure here, with respect to donor-H's...</span>
+    <span class="comment">% Select Hw close to ind1 atoms</span>
+    dist_matrix = dist_matrixes_atom(atom1,atom2,Box_dim);
+    sel_ind_matrix=dist_matrix &lt; hb_dist;
+    sel_ind=find(sum(sel_ind_matrix)&gt;0);
+    sel_ind=intersect(1:3:size(atom2,2),sel_ind);
+    sel_ind=sort([sel_ind sel_ind+1 sel_ind+2]);
+    <span class="comment">% % Invert the selection</span>
+    <span class="comment">% sel_ind=setdiff(1:size(atom2,2),sel_ind);</span>
+    atom2=atom2(sel_ind);
+<span class="keyword">end</span>
+
+Zslice=[];
+<span class="keyword">if</span> nargin&gt;3
+    Zslice=varargin{2};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(Zslice)&gt;1
+</pre>
+<h2 id="5">Filter Hw with certain z coordinate</h2>
+<pre class="codeinput">    atom2=atom2([atom.z]&gt;min(Zslice)&amp;[atom.z]&lt;=max(Zslice));
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<h2 id="7">This is the slow step...</h2>
+<pre class="codeinput">temp_atom = bond_angle_type(atom1,atom2,Box_dim,0.8,hb_dist-1,120,0,<span class="string">'min_angle'</span>);
+</pre>
+<h2 id="8">Put together the Angle_index matrix</h2>
+<pre class="codeinput">Angle_index=cell2mat(arrayfun(@(x) x.neigh.angle, temp_atom(1:end),<span class="string">'UniformOutput'</span>,0)');
+temp_Angle_index=Angle_index;
+ind_reverse=find(Angle_index(:,5)&gt;1.2);
+temp_Angle_index(ind_reverse,[1 3 5:12])=Angle_index(ind_reverse,[3 1 6 5 10 11 12 7 8 9]);
+Angle_index=temp_Angle_index;
+</pre>
+<h2 id="9">Check the D-H--A angles</h2>
+<pre class="codeinput">HDA_angle=cell2mat(arrayfun(@(x) rad2deg(atan2(norm(cross([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)])),<span class="keyword">...</span>
+    dot([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)]))), 1:size(Angle_index,1),<span class="string">'UniformOutput'</span>,0)');
+HDA_angle_ind=find(HDA_angle&lt;hb_angle);
+</pre>
+<h2 id="10">Check the D--A distances</h2>
+<pre class="codeinput">DA_dist=cell2mat(arrayfun(@(x) pdist2(Angle_index(x,7:9),Angle_index(x,10:12)), 1:size(Angle_index,1),<span class="string">'UniformOutput'</span>,0)');
+DA_dist_ind=find(DA_dist&lt;hb_dist);
+HDA_ind=intersect(HDA_angle_ind,DA_dist_ind);
+</pre>
+<h2 id="11">Cut out the cutout's</h2>
+<pre class="codeinput">Angle_index=Angle_index(HDA_ind,:);
+</pre>
+<h2 id="12">Collect the donor Hbonds</h2>
+<pre class="codeinput">bins_HBD(1,:)=histcounts(sort([Angle_index(:,1)]),size(atom,2))';
+bins_DIST=histcounts(Angle_index(:,5),0:dist_step:hb_dist)';
+bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
+
+HBD.HB1=find(bins_HBD(1,:)==1);
+HBD.HB2=find(bins_HBD(1,:)==2);
+HBD.HB3=find(bins_HBD(1,:)==3);
+HBD.HB4=find(bins_HBD(1,:)==4);
+HBD.HB5=find(bins_HBD(1,:)==5);
+nHD_bonds(1)=(1*length([HBD.HB1])+2*length([HBD.HB2])+3*length([HBD.HB3])<span class="keyword">...</span>
+    +4*length([HBD.HB4])+5*length([HBD.HB5]))/size(atom2,2);
+disp(<span class="string">'Total number of Donator H-bonds'</span>);
+nHD_bonds(end)
+</pre>
+<h2 id="13">Collect the acceptor Hbonds</h2>
+<pre class="codeinput">bins_HBA(1,:)=histcounts(sort([Angle_index(:,3)]),size(atom,2))';
+bins_DIST=histcounts(Angle_index(:,6),0:dist_step:hb_dist)';
+bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
+
+HBA.HB1=find(bins_HBA(1,:)==1);
+HBA.HB2=find(bins_HBA(1,:)==2);
+HBA.HB3=find(bins_HBA(1,:)==3);
+HBA.HB4=find(bins_HBA(1,:)==4);
+HBA.HB5=find(bins_HBA(1,:)==5);
+nHA_bonds(1)=(1*length([HBA.HB1])+2*length([HBA.HB2])+3*length([HBA.HB3])<span class="keyword">...</span>
+    +4*length([HBA.HB4])+5*length([HBA.HB5]))/size(atom2,2);
+disp(<span class="string">'Total number of Acceptor H-bonds'</span>);
+nHA_bonds(end)
+
+disp(<span class="string">'Total number of H-bonds'</span>);
+nHD_bonds(end)+nHA_bonds(end)
+
+
+<span class="comment">% % % Another way of counting the number of HB's</span>
+<span class="comment">% % nH_bondsv2=size(Angle_index,1)*2/size(atom1,2)</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'bins_HB'</span>,bins_HBD);
+assignin(<span class="string">'caller'</span>,<span class="string">'bins_DIST'</span>,bins_DIST);
+assignin(<span class="string">'caller'</span>,<span class="string">'bins_ANGLE'</span>,bins_ANGLE);
+assignin(<span class="string">'caller'</span>,<span class="string">'HB'</span>,HBD);
+<span class="comment">% assignin('caller','Bond_index',Bond_index);</span>
+assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'</span>,Angle_index);
+
+<span class="comment">% Print PDB and CONECT files, showing the HB's</span>
+</pre>
+<h2 id="14">Write a pdb without the CONECT section</h2>
+<pre class="codeinput">write_atom_pdb(atom,Box_dim,outfilename)
+</pre>
+<h2 id="15">Print the CONECT section with th HB bonds separately</h2>
+<pre class="codeinput">HB_Bond_index=[Angle_index(find(Angle_index(:,5)&gt;1.2),1:2) Angle_index(find(Angle_index(:,5)&gt;1.2),end); Angle_index(find(Angle_index(:,6)&gt;1.2),2:3) Angle_index(find(Angle_index(:,6)&gt;1.2),end)];
+HB_Bond_index=sortrows(HB_Bond_index,1);
+
+nAtoms=size(atom,2);
+Bond_index=HB_Bond_index(:,1:2);
+B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
+b1=sortrows(B);
+
+fid = fopen(outfilename, <span class="string">'a+'</span>);
+<span class="keyword">for</span> i=1:max(b1(:,1))
+    ind=find(b1(:,1)==i);
+    b2=b1(ind,2);
+    fprintf(fid,<span class="string">'CONECT%5i%5i%5i%5i%5i%5i%5i'</span>,[i;b2]);
+    fprintf(fid,<span class="string">'\r\n'</span>);
+<span class="keyword">end</span>
+
+fprintf(fid,<span class="string">'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n'</span>,[0    0    0    0    0    0    0    0 nAtoms    0 i    0]);
+fprintf(fid,<span class="string">'END'</span>);
+fclose(fid);
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% hbond_atom.m
+% * This function tries to calculate the number of hydrogen bonds
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=hbond_atom(atom,Box_dim) % Basic input arguments
+% # atom=hbond_atom(atom,Box_dim,hb_dist) % Sets the X-H-X distance
+% # atom=hbond_atom(atom,Box_dim,hb_dist,hbangle) % Sets the X-H-X angle
+
+function atom=hbond_atom(atom,Box_dim,varargin)
+
+format short
+outfilename='hbond_conf.pdb';
+hb_dist=3.5; % Å
+hb_angle=30; % max allowed deg between H-DREPLACE_WITH_DASH_DASH-A
+DAgroup='O'; % Only one Donor/acceptor group at the moment, otherwise add indexes to ind1 (which must contain indexes of both the D's and A's)
+DHgroup='H'; % The donor-H's atomtypes, like 'HW'
+
+ind1=find(strncmpi([atom.type],DHgroup,1)); % indexes of the acceptors
+ind2=find(strncmpi([atom.type],DAgroup,1)); % indexes of the donor-H's
+ind2=unique(sort([ind2 find(strncmpi([atom.type],'Oh',2))])); % indexes of the donor-H's]
+
+dist_step=0.1;
+angle_step=1;
+% bins_HBD=zeros(1,size(atom,2));
+bins_DIST=zeros(1,length(0:dist_step:hb_dist)-1);
+bins_ANGLE=zeros(1,length(0:angle_step:hb_angle)-1);
+
+atom1=atom(ind1); % Extract the solute atomtype
+atom2=atom(ind2); % Extract the ligands atomtypes
+
+filter=[];
+if nargin>2
+    filter=varargin{1};
+end
+
+if numel(filter)>0
+    % 'Filter' the structure here, with respect to donor-H's...
+    % Select Hw close to ind1 atoms
+    dist_matrix = dist_matrixes_atom(atom1,atom2,Box_dim);
+    sel_ind_matrix=dist_matrix < hb_dist;
+    sel_ind=find(sum(sel_ind_matrix)>0);
+    sel_ind=intersect(1:3:size(atom2,2),sel_ind);
+    sel_ind=sort([sel_ind sel_ind+1 sel_ind+2]);
+    % % Invert the selection
+    % sel_ind=setdiff(1:size(atom2,2),sel_ind);
+    atom2=atom2(sel_ind);
+end
+
+Zslice=[];
+if nargin>3
+    Zslice=varargin{2};
+end
+
+if numel(Zslice)>1
+    %% Filter Hw with certain z coordinate
+    atom2=atom2([atom.z]>min(Zslice)&[atom.z]<=max(Zslice));
+end
+
+
+%% This is the slow step...
+temp_atom = bond_angle_type(atom1,atom2,Box_dim,0.8,hb_dist-1,120,0,'min_angle');
+
+%% Put together the Angle_index matrix
+Angle_index=cell2mat(arrayfun(@(x) x.neigh.angle, temp_atom(1:end),'UniformOutput',0)');
+temp_Angle_index=Angle_index;
+ind_reverse=find(Angle_index(:,5)>1.2);
+temp_Angle_index(ind_reverse,[1 3 5:12])=Angle_index(ind_reverse,[3 1 6 5 10 11 12 7 8 9]);
+Angle_index=temp_Angle_index;
+
+%% Check the D-HREPLACE_WITH_DASH_DASHA angles
+HDA_angle=cell2mat(arrayfun(@(x) rad2deg(atan2(norm(cross([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)])),...
+    dot([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)]))), 1:size(Angle_index,1),'UniformOutput',0)');
+HDA_angle_ind=find(HDA_angle<hb_angle);
+
+%% Check the DREPLACE_WITH_DASH_DASHA distances
+DA_dist=cell2mat(arrayfun(@(x) pdist2(Angle_index(x,7:9),Angle_index(x,10:12)), 1:size(Angle_index,1),'UniformOutput',0)');
+DA_dist_ind=find(DA_dist<hb_dist);
+HDA_ind=intersect(HDA_angle_ind,DA_dist_ind);
+
+%% Cut out the cutout's
+Angle_index=Angle_index(HDA_ind,:);
+
+%% Collect the donor Hbonds
+bins_HBD(1,:)=histcounts(sort([Angle_index(:,1)]),size(atom,2))';
+bins_DIST=histcounts(Angle_index(:,5),0:dist_step:hb_dist)';
+bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
+
+HBD.HB1=find(bins_HBD(1,:)==1);
+HBD.HB2=find(bins_HBD(1,:)==2);
+HBD.HB3=find(bins_HBD(1,:)==3);
+HBD.HB4=find(bins_HBD(1,:)==4);
+HBD.HB5=find(bins_HBD(1,:)==5);
+nHD_bonds(1)=(1*length([HBD.HB1])+2*length([HBD.HB2])+3*length([HBD.HB3])...
+    +4*length([HBD.HB4])+5*length([HBD.HB5]))/size(atom2,2);
+disp('Total number of Donator H-bonds');
+nHD_bonds(end)
+
+%% Collect the acceptor Hbonds
+bins_HBA(1,:)=histcounts(sort([Angle_index(:,3)]),size(atom,2))';
+bins_DIST=histcounts(Angle_index(:,6),0:dist_step:hb_dist)';
+bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
+
+HBA.HB1=find(bins_HBA(1,:)==1);
+HBA.HB2=find(bins_HBA(1,:)==2);
+HBA.HB3=find(bins_HBA(1,:)==3);
+HBA.HB4=find(bins_HBA(1,:)==4);
+HBA.HB5=find(bins_HBA(1,:)==5);
+nHA_bonds(1)=(1*length([HBA.HB1])+2*length([HBA.HB2])+3*length([HBA.HB3])...
+    +4*length([HBA.HB4])+5*length([HBA.HB5]))/size(atom2,2);
+disp('Total number of Acceptor H-bonds');
+nHA_bonds(end)
+
+disp('Total number of H-bonds');
+nHD_bonds(end)+nHA_bonds(end)
+
+
+% % % Another way of counting the number of HB's
+% % nH_bondsv2=size(Angle_index,1)*2/size(atom1,2)
+
+assignin('caller','bins_HB',bins_HBD);
+assignin('caller','bins_DIST',bins_DIST);
+assignin('caller','bins_ANGLE',bins_ANGLE);
+assignin('caller','HB',HBD);
+% assignin('caller','Bond_index',Bond_index);
+assignin('caller','Angle_index',Angle_index);
+
+% Print PDB and CONECT files, showing the HB's
+%% Write a pdb without the CONECT section
+write_atom_pdb(atom,Box_dim,outfilename)
+
+%% Print the CONECT section with th HB bonds separately
+HB_Bond_index=[Angle_index(find(Angle_index(:,5)>1.2),1:2) Angle_index(find(Angle_index(:,5)>1.2),end); Angle_index(find(Angle_index(:,6)>1.2),2:3) Angle_index(find(Angle_index(:,6)>1.2),end)];
+HB_Bond_index=sortrows(HB_Bond_index,1);
+
+nAtoms=size(atom,2);
+Bond_index=HB_Bond_index(:,1:2);
+B=[Bond_index(:,1:2); Bond_index(:,2) Bond_index(:,1)];
+b1=sortrows(B);
+
+fid = fopen(outfilename, 'a+');
+for i=1:max(b1(:,1))
+    ind=find(b1(:,1)==i);
+    b2=b1(ind,2);
+    fprintf(fid,'CONECT%5i%5i%5i%5i%5i%5i%5i',[i;b2]);
+    fprintf(fid,'\r\n');
+end
+
+fprintf(fid,'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n',[0    0    0    0    0    0    0    0 nAtoms    0 i    0]);
+fprintf(fid,'END');
+fclose(fid);
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

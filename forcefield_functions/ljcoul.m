@@ -74,14 +74,45 @@ Utot=lj+coul;
 
 hold on
 
-plotmin=1000*(round(min(Utot*1.5)/1000));
-if plotmin>=0
-    plotmin=10000;
+% plotmin=1000*(round(min(Utot*1.5)/1000));
+% if plotmin>=0
+%     plotmin=10000;
+% end
+% plot(r,lj,'b.');
+% plot(r,coul,'r.');
+% plot(r,Utot,'k.');
+% xlabel('r [nm]');
+% ylabel('U [kJ/mol]');
+% xlim([0,1.2]);
+% ylim(sort([-plotmin plotmin]))
+
+if nargin>2
+    %% Plot the Total energy, electrostatic contribution, and the LJ
+    
+    if nargin>3
+        color1=varargin{3};
+        color2=varargin{3};
+        color3=varargin{3};
+    else
+        color1='b--';
+        color2='r--';
+        color3='k--';
+    end
+    
+    hold on
+    plotmin=1000*(round(min(Utot*1.5)/1000));
+    if plotmin>=0
+        plotmin=10000;
+    end
+    
+    
+    plot(r(1:end),lj,color1,'LineWidth',1);
+    plot(r(1:end),coul,color2,'LineWidth',1);
+    plot(r(1:end),Utot,color3,'LineWidth',1);
+    
+    xlabel('r [nm]');
+    ylabel('U [kJ/mol]');
+    xlim([0,1.2]);
+    ylim(sort([-plotmin plotmin]))
+    
 end
-plot(r,lj,'b');
-plot(r,coul,'r');
-plot(r,Utot,'k');
-xlabel('r [nm]');
-ylabel('U [kJ/mol]');
-xlim([0,1.2]);
-ylim(sort([-plotmin plotmin]))

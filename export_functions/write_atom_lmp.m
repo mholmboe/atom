@@ -5,7 +5,7 @@
 %
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -41,8 +41,8 @@ else
 end
 
 if nargin > 3
-    short_r=cell2mat(varargin(1));
-    long_r=cell2mat(varargin(2));
+    short_r=varargin{1};
+    long_r=varargin{2};
 else
     short_r=1.25;
     long_r=1.25; % long=short since clayff
@@ -201,7 +201,7 @@ for i = 1:size(Boxsizestring,1) % Im not sure what this code is doing
     fprintf(fid, '%-s %-s %-s %-s\n', Boxsizestring{i,:});
 end
 %%
-% fprintf(fid, '\n');
+fprintf(fid, '\n');
 fprintf(fid, 'Masses \n');
 fprintf(fid, '\n');
 

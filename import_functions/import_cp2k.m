@@ -3,7 +3,7 @@
 % uses.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -11,7 +11,7 @@
 %% Examples
 % #  atom = import_cp2k(filename)
 %
-function atom = import_cp2k(varargin)
+function [atom,Box_dim] = import_cp2k(varargin)
 
 if nargin>0
     filename=varargin{1};
@@ -105,15 +105,19 @@ else
     prop=analyze_atom(atom,Box_dim);
 end
 
-atom=bond_angle_atom(atom,Box_dim);
+atom=bond_angle_atom(atom,Box_dim,1.25,2.45,'more');
+% atom=bond_angle_atom(atom,Box_dim);
 
+assignin('caller','prop',prop);
 assignin('caller','CellMatrix',CellData);
 assignin('caller','Cell',Cell);
-assignin('caller','Box_dim',Box_dim);
+% assignin('caller','Box_dim',Box_dim);
 assignin('caller','XYZ_labels',XYZ_labels);
 assignin('caller','XYZ_data',XYZ_data);
 assignin('caller','Angle_index',Angle_index);
 assignin('caller','Bond_index',Bond_index);
+assignin('caller','Ave_Angles',Ave_Angles);
+assignin('caller','Ave_Bonds',Ave_Bonds);
 
 assignin('caller','Tot_valence',Tot_valence);
 assignin('caller','Tot_valence_oxstate',Tot_valence_oxstate);

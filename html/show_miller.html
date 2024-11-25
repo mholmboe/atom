@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>show_miller.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="show_miller.m"><style type="text/css">
+      -->
+<title>show_miller.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="show_miller.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,68 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>show_miller.m</h1><!--introduction--><div><ul><li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li><li>This function is inspired by miller.m, written by Lucas Ennes:</li><li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the unit cell parameters</a></li><li><a href="#7">Set the unit cell parameters</a></li><li><a href="#9">Converting to radians</a></li><li><a href="#10">Determine the two theta values for each h,k,l</a></li><li><a href="#12">Set the plane</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li><li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li><li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li><li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li></ol></div><pre class="codeinput"><span class="keyword">function</span> show_miller(h,k,l,varargin)
-</pre><pre class="codeinput"><span class="keyword">if</span> nargin==3
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>show_miller.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li>
+<li>This function is inspired by miller.m, written by Lucas Ennes:</li>
+<li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Set the unit cell parameters</a>
+</li>
+<li>
+<a href="#7">Set the unit cell parameters</a>
+</li>
+<li>
+<a href="#9">Converting to radians</a>
+</li>
+<li>
+<a href="#10">Determine the two theta values for each h,k,l</a>
+</li>
+<li>
+<a href="#12">Set the plane</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li>
+<li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li>
+<li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li>
+<li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> show_miller(h,k,l,varargin)
+</pre>
+<pre class="codeinput">
+<span class="keyword">if</span> nargin==3
     Box_dim=[1 1 1];
     color=<span class="string">'b'</span>;
 <span class="keyword">elseif</span> nargin==4
@@ -89,8 +154,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Box_dim(2)=Box_dim(1);
     Box_dim(3)=Box_dim(2);
 <span class="keyword">end</span>
-</pre><h2 id="5">Set the unit cell parameters</h2><pre class="codeinput"><span class="keyword">if</span> size(Box_dim,2) == 9
-</pre><pre class="codeinput">    lx=Box_dim(1);
+</pre>
+<h2 id="5">Set the unit cell parameters</h2>
+<pre class="codeinput">
+<span class="keyword">if</span> size(Box_dim,2) == 9
+</pre>
+<pre class="codeinput">    lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
     xy=Box_dim(6);
@@ -102,7 +171,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
-</pre><h2 id="7">Set the unit cell parameters</h2><pre class="codeinput"><span class="keyword">elseif</span> size(Box_dim,2) == 6
+</pre>
+<h2 id="7">Set the unit cell parameters</h2>
+<pre class="codeinput">
+<span class="keyword">elseif</span> size(Box_dim,2) == 6
     a = Box_dim(1);
     b = Box_dim(2);
     c = Box_dim(3);
@@ -134,10 +206,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     beta=90;
     gamma=90;
 <span class="keyword">end</span>
-</pre><h2 id="9">Converting to radians</h2><pre class="codeinput">alfa_rad=alfa*pi/180;
+</pre>
+<h2 id="9">Converting to radians</h2>
+<pre class="codeinput">alfa_rad=alfa*pi/180;
 beta_rad=beta*pi/180;
 gamma_rad=gamma*pi/180;
-</pre><h2 id="10">Determine the two theta values for each h,k,l</h2><pre class="codeinput">Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
+</pre>
+<h2 id="10">Determine the two theta values for each h,k,l</h2>
+<pre class="codeinput">Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
 recip_d_hkl=1/Volume.*<span class="keyword">...</span>
     (h.^2*b^2*c^2*sin(alfa_rad)^2+<span class="keyword">...</span>
     k.^2*a^2*c^2*sin(beta_rad)^2+<span class="keyword">...</span>
@@ -148,10 +224,14 @@ recip_d_hkl=1/Volume.*<span class="keyword">...</span>
 recip_d_hkl=real(recip_d_hkl);
 
 d_hkl=1./recip_d_hkl;
-</pre><pre class="codeinput">H=[];
+</pre>
+<pre class="codeinput">H=[];
 K=[];
 L=[];
-</pre><h2 id="12">Set the plane</h2><pre class="codeinput"><span class="keyword">if</span> h ~= 0 &amp;&amp; k ~= 0 &amp;&amp; l ~= 0
+</pre>
+<h2 id="12">Set the plane</h2>
+<pre class="codeinput">
+<span class="keyword">if</span> h ~= 0 &amp;&amp; k ~= 0 &amp;&amp; l ~= 0
 
     <span class="comment">% Triangular plane</span>
     h = 1 / h;    k = 1 / k;    l = 1 / l;
@@ -360,8 +440,17 @@ assignin(<span class="string">'caller'</span>,<span class="string">'L'</span>,L)
     patch(H(i,:),K(i,:),L(i,:),color,<span class="string">'FaceAlpha'</span>,alpha)
 <span class="keyword">end</span>
 view(3)
+</pre>
+<pre class="codeinput">
 <span class="comment">% xlim([0 1]);ylim([0 1]);zlim([0 1])</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %%  show_miller.m
 % * This function draws up the h,k,l Miller plane within the Box_dim/Cell
@@ -369,7 +458,7 @@ view(3)
 % * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
 
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -689,4 +778,6 @@ view(3)
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

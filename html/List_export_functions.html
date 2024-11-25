@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>List of export functions</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="List_export_functions.m"><style type="text/css">
+      -->
+<title>List of export functions</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="List_export_functions.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,44 +72,195 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>List of export functions</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Export of structure/toplogy files</a></li><li><a href="#4">Export of trajectory files</a></li><li><a href="#5">Version</a></li><li><a href="#6">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Export of structure/toplogy files</h2><div><ol><li><a href="write_atom_all.html">write_atom_all(atom,Box_dim,filename_out,varargin)</a> % This function tries to write various files for you. Works best for systems designed for Clayff...</li><li><a href="write_atom_cif.html">write_atom_cif(atom,Box_dim,filename_out)</a> %&nbsp;This function writes a basic .cif file from the atom struct</li><li><a href="write_atom_gro.html">write_atom_gro(atom,Box_dim,filename_out)</a> % This function writes a gro file. Does it also write velocities?</li><li><a href="write_atom_itp.html">write_atom_itp(atom,Box_dim,filename_out,varargin)</a> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p</li><li><a href="write_atom_lmp.html">write_atom_lmp(atom,Box_dim,filename_out,varargin)</a> % This script creates and prints a lammps data file (.lj). Works best for Clayff systems</li><li><a href="write_atom_mol2.html">write_atom_mol2(atom,Bond_index,Box_dim,filename_out)</a> %&nbsp;This function writes a .mol2 file from the atom struct</li><li><a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)</a> % This custom made script creates and prints a gromacs .itp file for&nbsp;</li><li><a href="write_atom_pdb.html">write_atom_pdb(atom,Box_dim,filename_out)</a> %&nbsp;This function writes an .pdb file from the atom struct using Gromacs</li><li><a href="write_atom_pqr.html">write_atom_pqr(atom,Box_dim,filename_out,varargin)</a> % This function writes an .pqr file from the atom struct</li><li><a href="write_atom_psf.html">write_atom_psf(atom,Box_dim,filename_out,varargin)</a> % This function writes an .psf file from the atom struct</li><li><a href="write_atom_xyz.html">write_atom_xyz(atom,Box_dim,filename_out)</a> %&nbsp;This function writes an XYZ file from the atom struct</li><li><a href="write_atom.html">write_atom(atom,Box_dim,filename_out,varargin)</a> % This function writes the below listed file types depending on the filename and passed variables, ie either a .gro|.pdb|.xyz|.itp and so on</li></ol></div><h2 id="4">Export of trajectory files</h2><div><ol><li><a href="write_gro_traj.html">write_gro_traj(atom,traj,Box_dim,filename_out)</a> %&nbsp;This function writes a .gro trajectory&nbsp;</li><li><a href="write_atom_multiple_gro.html">write_atom_multiple_gro(atom,traj,filename_out)</a> % % * This function writes a .gro trajectory I think this function works...</li><li><a href="write_pdb_traj.html">write_pdb_traj(atom,traj,Box_dim,filename_out)</a> %&nbsp;This function writes a .pdb trajectory&nbsp;</li><li><a href="write_xyz_traj.html">write_xyz_traj(atom,traj,Box_dim,filename_out)</a> %&nbsp;This function writes a .xyz trajectory&nbsp;</li></ol></div><pre class="codeinput"><span class="comment">%</span>
-</pre><h2 id="5">Version</h2><p>2.11</p><h2 id="6">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>List of export functions</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Export of structure/topology files</a>
+</li>
+<li>
+<a href="#4">Export of trajectory files</a>
+</li>
+<li>
+<a href="#5">Export of other formats and data</a>
+</li>
+<li>
+<a href="#6">Miscellaneous</a>
+</li>
+<li>
+<a href="#7">Version</a>
+</li>
+<li>
+<a href="#8">Contact</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Export of structure/topology files</h2>
+<div>
+<ol>
+<li>
+<a href="write_atom_all.html">write_atom_all(atom,Box_dim,filename_out,varargin)</a> % Write various file types for the atom struct, best suited for Clayff systems.</li>
+<li>
+<a href="write_atom_cif.html">write_atom_cif(atom,Box_dim,filename_out)</a> % Write a basic .cif file from the atom struct.</li>
+<li>
+<a href="write_atom_gro.html">write_atom_gro(atom,Box_dim,filename_out)</a> % Write a .gro file from the atom struct, optionally including velocities.</li>
+<li>
+<a href="write_atom_itp.html">write_atom_itp(atom,Box_dim,filename_out,varargin)</a> % Create and print a Gromacs .itp file, best for Clayff or interface force fields.</li>
+<li>
+<a href="write_atom_lmp.html">write_atom_lmp(atom,Box_dim,filename_out,varargin)</a> % Create and print a LAMMPS data file (.lj), suited for Clayff systems.</li>
+<li>
+<a href="write_atom_mol2.html">write_atom_mol2(atom,Bond_index,Box_dim,filename_out)</a> % Write a .mol2 file from the atom struct.</li>
+<li>
+<a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)</a> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.</li>
+<li>
+<a href="write_atom_pdb.html">write_atom_pdb(atom,Box_dim,filename_out)</a> % Write a .pdb file from the atom struct using Gromacs.</li>
+<li>
+<a href="write_atom_pqr.html">write_atom_pqr(atom,Box_dim,filename_out,varargin)</a> % Write a .pqr file from the atom struct.</li>
+<li>
+<a href="write_atom_psf.html">write_atom_psf(atom,Box_dim,filename_out,varargin)</a> % Write a .psf file from the atom struct.</li>
+<li>
+<a href="write_atom_xyz.html">write_atom_xyz(atom,Box_dim,filename_out)</a> % Write an XYZ file from the atom struct.</li>
+<li>
+<a href="write_atom.html">write_atom(atom,Box_dim,filename_out,varargin)</a> % Write different file types (.gro, .pdb, .xyz, .itp, etc.) based on filename and parameters.</li>
+<li>
+<a href="write_atom_sdf.html">write_atom_sdf(atom,Box_dim,filename_out)</a> % Write an SDF file from the atom struct.</li>
+<li>
+<a href="write_atom_dodecahedron_gro.html">write_atom_dodecahedron_gro(atom,Box_dim,filename_out)</a> % Write a .gro file using a dodecahedron-shaped simulation box.</li>
+<li>
+<a href="write_atom_top.html">write_atom_top(atom,Box_dim,filename_out)</a> % Write a topology file (.top) from the atom struct.</li>
+<li>
+<a href="CONECT_atom.html">CONECT_atom(atom,Box_dim,filename_out)</a> % Write CONECT records for a PDB file.</li>
+</ol>
+</div>
+<h2 id="4">Export of trajectory files</h2>
+<div>
+<ol>
+<li>
+<a href="write_gro_traj.html">write_gro_traj(atom,traj,Box_dim,filename_out)</a> % Write a .gro trajectory file.</li>
+<li>
+<a href="write_atom_multiple_gro.html">write_atom_multiple_gro(atom,traj,filename_out)</a> % Write multiple .gro files for trajectory output.</li>
+<li>
+<a href="write_pdb_traj.html">write_pdb_traj(atom,traj,Box_dim,filename_out)</a> % Write a .pdb trajectory file.</li>
+<li>
+<a href="write_xyz_traj.html">write_xyz_traj(atom,traj,Box_dim,filename_out)</a> % Write a .xyz trajectory file.</li>
+<li>
+<a href="write_ave_gro.html">write_ave_gro(atom,traj,Box_dim,filename_out)</a> % Write an average structure from a .gro trajectory.</li>
+<li>
+<a href="write_ave_pdb.html">write_ave_pdb(atom,traj,Box_dim,filename_out)</a> % Write an average structure from a .pdb trajectory.</li>
+</ol>
+</div>
+<h2 id="5">Export of other formats and data</h2>
+<div>
+<ol>
+<li>
+<a href="export_ndx.html">export_ndx(atom,Box_dim,filename_out)</a> % Export an index file (.ndx) from the atom struct.</li>
+<li>
+<a href="write_xvg.html">write_xvg(filename, data)</a> % Export data in Gromacs .xvg format.</li>
+<li>
+<a href="write_tabulated_potentials.html">write_tabulated_potentials(filename, data)</a> % Write tabulated potential files.</li>
+<li>
+<a href="write_ff.html">write_ff(atom,filename_out)</a> % Write force field parameters.</li>
+<li>
+<a href="write_ffnonbonded.html">write_ffnonbonded(atom,filename_out)</a> % Write non-bonded force field parameters.</li>
+<li>
+<a href="write_ffnonbonded_C6C12.html">write_ffnonbonded_C6C12(atom,filename_out)</a> % Write non-bonded parameters (C6, C12) for a force field.</li>
+</ol>
+</div>
+<h2 id="6">Miscellaneous</h2>
+<div>
+<ol>
+<li>
+<a href="replace_string.html">replace_string(filename_in,filename_out,old_string,new_string)</a> % Replace strings in files.</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="comment">%</span>
+</pre>
+<h2 id="7">Version</h2>
+<p>3.00</p>
+<h2 id="8">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% List of export functions
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
-%% Export of structure/toplogy files
-% # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...
-% # <write_atom_cif.html write_atom_cif(atom,Box_dim,filename_out)> % This function writes a basic .cif file from the atom struct
-% # <write_atom_gro.html write_atom_gro(atom,Box_dim,filename_out)> % This function writes a gro file. Does it also write velocities?
-% # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p
-% # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % This script creates and prints a lammps data file (.lj). Works best for Clayff systems
-% # <write_atom_mol2.html write_atom_mol2(atom,Bond_index,Box_dim,filename_out)> % This function writes a .mol2 file from the atom struct
-% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % This custom made script creates and prints a gromacs .itp file for 
-% # <write_atom_pdb.html write_atom_pdb(atom,Box_dim,filename_out)> % This function writes an .pdb file from the atom struct using Gromacs
-% # <write_atom_pqr.html write_atom_pqr(atom,Box_dim,filename_out,varargin)> % This function writes an .pqr file from the atom struct
-% # <write_atom_psf.html write_atom_psf(atom,Box_dim,filename_out,varargin)> % This function writes an .psf file from the atom struct
-% # <write_atom_xyz.html write_atom_xyz(atom,Box_dim,filename_out)> % This function writes an XYZ file from the atom struct
-% # <write_atom.html write_atom(atom,Box_dim,filename_out,varargin)> % This function writes the below listed file types depending on the filename and passed variables, ie either a .gro|.pdb|.xyz|.itp and so on
+%% Export of structure/topology files
+% # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % Write various file types for the atom struct, best suited for Clayff systems.
+% # <write_atom_cif.html write_atom_cif(atom,Box_dim,filename_out)> % Write a basic .cif file from the atom struct.
+% # <write_atom_gro.html write_atom_gro(atom,Box_dim,filename_out)> % Write a .gro file from the atom struct, optionally including velocities.
+% # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file, best for Clayff or interface force fields.
+% # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % Create and print a LAMMPS data file (.lj), suited for Clayff systems.
+% # <write_atom_mol2.html write_atom_mol2(atom,Bond_index,Box_dim,filename_out)> % Write a .mol2 file from the atom struct.
+% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.
+% # <write_atom_pdb.html write_atom_pdb(atom,Box_dim,filename_out)> % Write a .pdb file from the atom struct using Gromacs.
+% # <write_atom_pqr.html write_atom_pqr(atom,Box_dim,filename_out,varargin)> % Write a .pqr file from the atom struct.
+% # <write_atom_psf.html write_atom_psf(atom,Box_dim,filename_out,varargin)> % Write a .psf file from the atom struct.
+% # <write_atom_xyz.html write_atom_xyz(atom,Box_dim,filename_out)> % Write an XYZ file from the atom struct.
+% # <write_atom.html write_atom(atom,Box_dim,filename_out,varargin)> % Write different file types (.gro, .pdb, .xyz, .itp, etc.) based on filename and parameters.
+% # <write_atom_sdf.html write_atom_sdf(atom,Box_dim,filename_out)> % Write an SDF file from the atom struct.
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro(atom,Box_dim,filename_out)> % Write a .gro file using a dodecahedron-shaped simulation box.
+% # <write_atom_top.html write_atom_top(atom,Box_dim,filename_out)> % Write a topology file (.top) from the atom struct.
+% # <CONECT_atom.html CONECT_atom(atom,Box_dim,filename_out)> % Write CONECT records for a PDB file.
 
 %% Export of trajectory files
-% # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % This function writes a .gro trajectory 
-% # <write_atom_multiple_gro.html write_atom_multiple_gro(atom,traj,filename_out)> % % * This function writes a .gro trajectory I think this function works...
-% # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % This function writes a .pdb trajectory 
-% # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % This function writes a .xyz trajectory 
+% # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % Write a .gro trajectory file.
+% # <write_atom_multiple_gro.html write_atom_multiple_gro(atom,traj,filename_out)> % Write multiple .gro files for trajectory output.
+% # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % Write a .pdb trajectory file.
+% # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % Write a .xyz trajectory file.
+% # <write_ave_gro.html write_ave_gro(atom,traj,Box_dim,filename_out)> % Write an average structure from a .gro trajectory.
+% # <write_ave_pdb.html write_ave_pdb(atom,traj,Box_dim,filename_out)> % Write an average structure from a .pdb trajectory.
+
+%% Export of other formats and data
+% # <export_ndx.html export_ndx(atom,Box_dim,filename_out)> % Export an index file (.ndx) from the atom struct.
+% # <write_xvg.html write_xvg(filename, data)> % Export data in Gromacs .xvg format.
+% # <write_tabulated_potentials.html write_tabulated_potentials(filename, data)> % Write tabulated potential files.
+% # <write_ff.html write_ff(atom,filename_out)> % Write force field parameters.
+% # <write_ffnonbonded.html write_ffnonbonded(atom,filename_out)> % Write non-bonded force field parameters.
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12(atom,filename_out)> % Write non-bonded parameters (C6, C12) for a force field.
+
+%% Miscellaneous
+% # <replace_string.html replace_string(filename_in,filename_out,old_string,new_string)> % Replace strings in files.
 
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
-
+%
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

@@ -8,7 +8,7 @@
 % * replicate is a [1x3] row vector indicating the replicating factors in x/y/z or a/b/c directions, resp.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -35,6 +35,7 @@ end
 
 if length(Box_dim)==9
     Box_dim_tric=Box_dim;
+    Cell_tric=Box_dim2Cell(Box_dim_tric);
     atom = orto_atom(atom,Box_dim_tric);
 end
 
@@ -51,7 +52,7 @@ else
 end
 
 if size(atom,2)>0
-    
+
     combinedatom_dim=atom;
     molid=[atom(1).molid];
     for j=1:3
@@ -83,7 +84,7 @@ if size(atom,2)>0
             combinedatom_dim=combinedatomx;
             disp('x - dim')
             length(combinedatom_dim)
-            
+
         elseif j == strfind(dim_order,'y')
             if j == 1
                 combinedatomy=atom;
@@ -111,7 +112,7 @@ if size(atom,2)>0
             combinedatom_dim=combinedatomy;
             disp('y - dim')
             length(combinedatom_dim)
-            
+
         elseif j == strfind(dim_order,'z')
             if j == 1
                 combinedatomz=atom;
@@ -141,20 +142,23 @@ if size(atom,2)>0
             length(combinedatom_dim)
         end
     end
-    
+
     atom=combinedatom_dim;
-    
+
 end
 
 Box_dim=[Box_dim(1)*replicate(1) Box_dim(2)*replicate(2) Box_dim(3)*replicate(3)];
 
 if exist('Box_dim_tric','var')
-    atom = triclinic_atom(atom,Box_dim,[replicate(1)*Box_dim_tric(6) replicate(3)*Box_dim_tric(8) replicate(2)*Box_dim_tric(9)],'tiltfactors');
+    %    atom = triclinic_atom(atom,Box_dim,[replicate(1)*Box_dim_tric(6) replicate(3)*Box_dim_tric(8) replicate(2)*Box_dim_tric(9)],'tiltfactors');
+    atom = triclinic_atom(atom,Box_dim,Cell_tric(4:6),'angle');
     Box_dim=triclinic_Box_dim;
 end
 
+Cell=Box_dim2Cell(Box_dim);
 
 assignin('caller','Box_dim',Box_dim);
+assignin('caller','Cell',Cell);
 
 % combinedatomx=atom;
 % for i=1:replicate(1);
@@ -191,13 +195,15 @@ assignin('caller','Box_dim',Box_dim);
 % atom=combinedatomz;
 
 if size(atom,2)>0
-    
+
     atom=update_atom(atom);
-    
+
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]']; XYZ_labels=[atom.type]';
-    
+
     assignin('caller','XYZ_labels',XYZ_labels);
     assignin('caller','XYZ_data',XYZ_data);
-    
+
+end
+
 end
 

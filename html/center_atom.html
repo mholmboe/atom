@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>center_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="center_atom.m"><style type="text/css">
+      -->
+<title>center_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="center_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,47 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>center_atom.m</h1><!--introduction--><div><ul><li>This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim</li><li>atom is the atom struct</li><li>Box_dim is the box dimension vector</li><li>resname is the Resnames ofthe atoms ou want to move, can be 'all'</li><li>dim is a string containing for example x, xy, xyz</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><div><ul><li>atom = center_atom(atom,Box_dim) % Basic input arguments</li><li>atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na</li><li>atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>center_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim</li>
+<li>atom is the atom struct</li>
+<li>Box_dim is the box dimension vector</li>
+<li>resname is the Resnames ofthe atoms ou want to move, can be 'all'</li>
+<li>dim is a string containing for example x, xy, xyz</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<div>
+<ul>
+<li>atom = center_atom(atom,Box_dim) % Basic input arguments</li>
+<li>atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na</li>
+<li>atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
 disp(<span class="string">'Centering'</span>)
 
 nAtoms=size(atom,2);
@@ -85,9 +130,7 @@ nAtoms=size(atom,2);
 
 tric_Box_dim=Box_dim;
 <span class="keyword">if</span> numel(Box_dim)==1
-    Box_dim(2)=Box_dim;
-    Box_dim(3)=Box_dim(2);
-    Box_dim(1)=Box_dim(2);
+    Box_dim=[Box_dim Box_dim Box_dim];
 <span class="keyword">else</span>
     <span class="keyword">if</span> size(tric_Box_dim(1,:),2)&gt;3
         atom=orto_atom(atom,Box_dim);
@@ -143,7 +186,16 @@ tric_Box_dim=Box_dim;
 assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim);
 assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,[[atom.x]' [atom.y]' [atom.z]']);
 assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,[atom.type]');
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% center_atom.m
 % * This function centers the atom with respect to the resname molecule. newBox_dim could be a new or old Box_dim
@@ -153,7 +205,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'<
 % * dim is a string containing for example x, xy, xyz
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -180,9 +232,7 @@ end
 
 tric_Box_dim=Box_dim;
 if numel(Box_dim)==1
-    Box_dim(2)=Box_dim;
-    Box_dim(3)=Box_dim(2);
-    Box_dim(1)=Box_dim(2);
+    Box_dim=[Box_dim Box_dim Box_dim];
 else
     if size(tric_Box_dim(1,:),2)>3
         atom=orto_atom(atom,Box_dim);
@@ -226,7 +276,7 @@ if size(tric_Box_dim(1,:),2)>3
     xy=tric_Box_dim(6); xz=tric_Box_dim(8); yz=tric_Box_dim(9);
     atom=triclinic_atom(atom,Box_dim,[xy xz yz],'tilt');
     Box_dim=tric_Box_dim;
-    
+
     if sum(abs(triclinic_Box_dim-tric_Box_dim))>0.01
         disp('Canged box dimensions between initial and temp triclinic cell')
         triclinic_Box_dim
@@ -239,5 +289,9 @@ assignin('caller','Box_dim',Box_dim);
 assignin('caller','XYZ_data',[[atom.x]' [atom.y]' [atom.z]']);
 assignin('caller','XYZ_labels',[atom.type]');
 
+end
+
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

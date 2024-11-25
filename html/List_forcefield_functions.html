@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>List of topology functions</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="List_forcefield_functions.m"><style type="text/css">
+      -->
+<title>List of topology functions</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="List_forcefield_functions.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,65 +72,376 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>List of topology functions</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Custom toplogy tools</a></li><li><a href="#4">Clayff, with atomtypes by MHolmboe</a></li><li><a href="#5">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</a></li><li><a href="#6">Graphene oxide modeled with OPLS/aa stuff</a></li><li><a href="#7">Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</a></li><li><a href="#8">Version</a></li><li><a href="#9">Contact</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Custom toplogy tools</h2><h2 id="4">Clayff, with atomtypes by MHolmboe</h2><div><ol><li><a href="charge_atom.html">charge_atom(atom,Box_dim,ffname,watermodel,varargin)</a> %&nbsp;This function tries to charge the atom accorind to clayff or interface ff</li><li><a href="charge_clayff_2004_atom.html">charge_clayff_2004_atom(atom,Box_dim,varargin)</a> % Sets the charge for the original Clayff atomtypes for the original Clayff ff from the Cygan et al., 2004 paper</li><li><a href="charge_clayff_atom.html">charge_clayff_atom(atom,Box_dim,varargin)</a> % Sets the charge for Clayff atomtypes&nbsp;</li><li><a href="charge_opls_go_atom.html">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Sets the charge for some specific OPLS atomtypes</li><li><a href="check_clayff_2004_charge.html">check_clayff_2004_charge(atom)</a> %&nbsp;check_clayff_2004_charge.m - This checks the charge of the original Clayff atomtypes by Mholmboe</li><li><a href="check_clayff_charge.html">check_clayff_charge(atom)</a> %&nbsp;check_clayff_charge.m - This checks the charge of the Clayff atomtypes by Mholmboe</li><li><a href="check_clayff_H2Odens.html">check_clayff_H2Odens(atom,Box_dim)</a> %&nbsp;Check the approx. water density for a clayff system</li><li><a href="check_H2Odens.html">check_H2Odens(atom,Box_dim)</a> % Computes the water density</li><li><a href="clayff_2004_atom.html">clayff_2004_atom(atom,Box_dim,varargin)</a> % Assigns the original Clayff atom types by Cygan et al., 2004. Can also 'heal' edges&nbsp;</li><li><a href="clayff_2004_param.html">clayff_2004_param(Atom_label,varargin)</a> % Holds the ion and the original Clayff atomtype parameters</li><li><a href="clayff_atom.html">clayff_atom(atom,Box_dim,varargin)</a> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges&nbsp;</li><li><a href="clayff_param.html">clayff_param(Atom_label,varargin)</a> % Holds the ion and Clayff atomtype parameters</li><li><a href="clayff210_atom.html">clayffmod_atom(atom,Box_dim,varargin)</a> % Assigns the modififed Clayff atom types. Can also 'heal' edges&nbsp;</li><li><a href="clayff211_atom.html">clayffmod_atom(atom,Box_dim,varargin)</a> % New faster version. Assigns the modififed Clayff atom types. Can also 'heal' edges&nbsp;</li><li><a href="tweak_charge_atom.html">tweak_charge_atom(atom)</a> % This function tries to tweak the charge of the atom struct in case of rounding errors</li></ol></div><h2 id="5">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</h2><div><ol><li><a href="charge_atom.html">charge_atom(atom,Box_dim,ffname,watermodel,varargin)</a> %&nbsp;This function tries to charge the atom accorind to clayff or interface ff</li><li><a href="interface_atom.html">interface_atom(atom,Box_dim,varargin)</a> % This function tries to assign all atoms according to the interface atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li><a href="interface_param.html">interface_param(Atom_label,water_model)</a> %&nbsp; This holds the extended INTERFACE ff parameters</li><li><a href="interface15_atom.html">interface15_atom(atom,Box_dim,varargin)</a> % This function tries to assign all atoms according to the interface1.5 atom types (with modified atom names by MHolmboe), with some modifications for edges...</li><li><a href="interface15_param.html">interface15_param(Atom_label,water_model)</a> %&nbsp; This holds the extended INTERFACE1.5 ff parameters</li><li><a href="charge_interface_atom.html">charge_interface_atom(atom,Box_dim,varargin)</a> % Sets the charge for Interface atomtypes&nbsp;</li><li><a href="charge_interface15_atom.html">charge_interface15_atom(atom,Box_dim,varargin)</a> % Sets the charge for Interface 1.5 atomtypes</li><li><a href="check_interface_charge.html">check_interface_charge(atom)</a> %&nbsp; This checks the charge of the INTERFACE atomtypes by Mholmboe</li><li><a href="check_interface15_charge.html">check_interface15_charge(atom)</a> %&nbsp; This checks the charge of the INTERFACE 1.5 atomtypes by Mholmboe</li><li><a href="tweak_charge_atom.html">tweak_charge_atom(atom)</a> % This function tries to tweak the charge of the atom struct in case of rounding errors</li></ol></div><h2 id="6">Graphene oxide modeled with OPLS/aa stuff</h2><div><ol><li><a href="opls_go_atom.html">opls_go_atom(atom,Box_dim,rmin,rlarge)</a> % This function tries to smear out the charge at around -OH and epoxides in GO</li><li><a href="oplsaa_go_param.html">oplsaa_go_param(Atom_label,water_model)</a> % This custom function holds the extended oplsaa_aa ff for graphite oxide</li><li><a href="charge_opls_go_atom.html">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Sets the charge for some specific OPLS atomtypes</li></ol></div><h2 id="7">Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</h2><div><ol><li><a href="write_atom_all.html">write_atom_all(atom,Box_dim,filename_out,varargin)</a> % This function tries to write various files for you. Works best for systems designed for Clayff...</li><li><a href="write_atom_itp.html">write_atom_itp(atom,Box_dim,filename_out,varargin)</a> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p</li><li><a href="write_atom_lmp.html">write_atom_lmp(atom,Box_dim,filename_out,varargin)</a> % This script creates and prints a lammps data file (.lj). Works best for Clayff(_2004) systems</li><li><a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)</a> % This custom made script creates and prints a gromacs .itp file for&nbsp;</li><li><a href="write_atom_psf.html">write_atom_psf(atom,Box_dim,filename_out,varargin)</a> % This function writes an .psf file from the atom struct</li></ol></div><pre class="codeinput"><span class="comment">%</span>
-</pre><h2 id="8">Version</h2><p>2.11</p><h2 id="9">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>List of topology functions</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Custom topology tools</a>
+</li>
+<li>
+<a href="#4">minff, with atomtypes by MHolmboe</a>
+</li>
+<li>
+<a href="#5">Clayff, with atomtypes by MHolmboe</a>
+</li>
+<li>
+<a href="#6">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</a>
+</li>
+<li>
+<a href="#7">Graphene oxide modeled with OPLS/aa</a>
+</li>
+<li>
+<a href="#8">Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</a>
+</li>
+<li>
+<a href="#9">Bonded and Nonbonded Parameters</a>
+</li>
+<li>
+<a href="#10">Lennard-Jones and Coulomb Potentials</a>
+</li>
+<li>
+<a href="#11">Objective Functions and Force Calculations</a>
+</li>
+<li>
+<a href="#12">Automated Fitting Tools</a>
+</li>
+<li>
+<a href="#13">Miscellaneous</a>
+</li>
+<li>
+<a href="#14">Version</a>
+</li>
+<li>
+<a href="#15">Contact</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Custom topology tools</h2>
+<h2 id="4">minff, with atomtypes by MHolmboe</h2>
+<div>
+<ol>
+<li>
+<a href="minff_atom.html">minff_atom(atom,Box_dim,varargin)</a> % Assign minff atom types with edge healing.</li>
+<li>
+<a href="charge_minff_atom.html">charge_minf_atom(atom,Box_dim,varargin)</a> % Set the charge for MINFF atom types.</li>
+</ol>
+</div>
+<h2 id="5">Clayff, with atomtypes by MHolmboe</h2>
+<div>
+<ol>
+<li>
+<a href="charge_atom.html">charge_atom(atom,Box_dim,ffname,watermodel,varargin)</a> % Charge the atom according to Clayff or Interface force fields.</li>
+<li>
+<a href="charge_clayff_2004_atom.html">charge_clayff_2004_atom(atom,Box_dim,varargin)</a> % Set the charge for the original Clayff atom types from the Cygan et al., 2004 paper.</li>
+<li>
+<a href="charge_clayff_atom.html">charge_clayff_atom(atom,Box_dim,varargin)</a> % Set the charge for Clayff atom types.</li>
+<li>
+<a href="charge_opls_go_atom.html">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Set the charge for specific OPLS atom types.</li>
+<li>
+<a href="check_clayff_2004_charge.html">check_clayff_2004_charge(atom)</a> % Check the charge of the original Clayff atom types.</li>
+<li>
+<a href="check_clayff_charge.html">check_clayff_charge(atom)</a> % Check the charge of the Clayff atom types.</li>
+<li>
+<a href="check_clayff_H2Odens.html">check_clayff_H2Odens(atom,Box_dim)</a> % Check the approximate water density for a Clayff system.</li>
+<li>
+<a href="check_H2Odens.html">check_H2Odens(atom,Box_dim)</a> % Compute the water density.</li>
+<li>
+<a href="clayff_2004_atom.html">clayff_2004_atom(atom,Box_dim,varargin)</a> % Assign the original Clayff atom types by Cygan et al., 2004, with edge healing.</li>
+<li>
+<a href="clayff_2004_param.html">clayff_2004_param(Atom_label,varargin)</a> % Hold ion and Clayff atom type parameters for the original Clayff force field.</li>
+<li>
+<a href="clayff_atom.html">clayff_atom(atom,Box_dim,varargin)</a> % Assign Clayff atom types with edge healing.</li>
+<li>
+<a href="clayff_param.html">clayff_param(Atom_label,varargin)</a> % Hold ion and Clayff atom type parameters.</li>
+<li>
+<a href="clayff210_atom.html">clayff210_atom(atom,Box_dim,varargin)</a> % Assign modified Clayff atom types, with edge healing.</li>
+<li>
+<a href="clayff211_atom.html">clayff211_atom(atom,Box_dim,varargin)</a> % Assign modified Clayff atom types (faster version), with edge healing.</li>
+<li>
+<a href="tweak_charge_atom.html">tweak_charge_atom(atom)</a> % Tweak the charge of the atom struct to correct rounding errors.</li>
+</ol>
+</div>
+<h2 id="6">INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe</h2>
+<div>
+<ol>
+<li>
+<a href="charge_atom.html">charge_atom(atom,Box_dim,ffname,watermodel,varargin)</a> % Charge the atom according to Clayff or Interface force fields.</li>
+<li>
+<a href="interface_atom.html">interface_atom(atom,Box_dim,varargin)</a> % Assign atoms according to the Interface atom types, with modifications for edges.</li>
+<li>
+<a href="interface_param.html">interface_param(Atom_label,water_model)</a> % Hold extended INTERFACE force field parameters.</li>
+<li>
+<a href="interface15_atom.html">interface15_atom(atom,Box_dim,varargin)</a> % Assign atoms according to the Interface 1.5 atom types, with modifications for edges.</li>
+<li>
+<a href="interface15_param.html">interface15_param(Atom_label,water_model)</a> % Hold extended INTERFACE 1.5 force field parameters.</li>
+<li>
+<a href="charge_interface_atom.html">charge_interface_atom(atom,Box_dim,varargin)</a> % Set the charge for Interface atom types.</li>
+<li>
+<a href="charge_interface15_atom.html">charge_interface15_atom(atom,Box_dim,varargin)</a> % Set the charge for Interface 1.5 atom types.</li>
+<li>
+<a href="check_interface_charge.html">check_interface_charge(atom)</a> % Check the charge of the INTERFACE atom types.</li>
+<li>
+<a href="check_interface15_charge.html">check_interface15_charge(atom)</a> % Check the charge of the INTERFACE 1.5 atom types.</li>
+<li>
+<a href="interface15_silica_atom.html">interface15_silica_atom(atom,Box_dim,varargin)</a> % Assign atom types for the Interface 1.5 force field, specific to silica.</li>
+<li>
+<a href="tweak_charge_atom.html">tweak_charge_atom(atom)</a> % Tweak the charge of the atom struct to correct rounding errors.</li>
+</ol>
+</div>
+<h2 id="7">Graphene oxide modeled with OPLS/aa</h2>
+<div>
+<ol>
+<li>
+<a href="opls_go_atom.html">opls_go_atom(atom,Box_dim,rmin,rlarge)</a> % Smear out the charge around -OH and epoxide groups in graphene oxide.</li>
+<li>
+<a href="oplsaa_go_param.html">oplsaa_go_param(Atom_label,water_model)</a> % Hold the extended OPLS-AA force field parameters for graphite oxide.</li>
+<li>
+<a href="charge_opls_go_atom.html">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Set the charge for specific OPLS atom types.</li>
+</ol>
+</div>
+<h2 id="8">Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</h2>
+<div>
+<ol>
+<li>
+<a href="write_atom_itp.html">write_atom_itp(atom,Box_dim,filename_out,varargin)</a> % Create and print a Gromacs .itp file for Clayff or Interface force fields.</li>
+<li>
+<a href="write_atom_lmp.html">write_atom_lmp(atom,Box_dim,filename_out,varargin)</a> % Create and print a LAMMPS data file (.lj) for Clayff systems.</li>
+<li>
+<a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)</a> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.</li>
+</ol>
+</div>
+<h2 id="9">Bonded and Nonbonded Parameters</h2>
+<div>
+<ol>
+<li>
+<a href="bonded_parameters.html">bonded_parameters(atom,varargin)</a> % Define bonded parameters for atoms.</li>
+<li>
+<a href="nonbonded_parameters.html">nonbonded_parameters(atom,varargin)</a> % Define nonbonded parameters for atoms.</li>
+<li>
+<a href="nonbonded_ff.html">nonbonded_ff(atom,varargin)</a> % Defines nonbonded forcefield parameters.</li>
+</ol>
+</div>
+<h2 id="10">Lennard-Jones and Coulomb Potentials</h2>
+<div>
+<ol>
+<li>
+<a href="buckinghamcoul.html">buckinghamcoul(atom,Box_dim,varargin)</a> % Calculates interactions using the Buckingham potential and Coulombic forces.</li>
+<li>
+<a href="ljcoul_12_6.html">ljcoul_12_6(atom,Box_dim,varargin)</a> % Handles Lennard-Jones 12-6 potential along with Coulombic interactions.</li>
+<li>
+<a href="ljcoul_C12C6C4.html">ljcoul_C12C6C4(atom,Box_dim,varargin)</a> % Lennard-Jones and Coulomb potential with C12, C6, C4 terms.</li>
+<li>
+<a href="ljcoul_C12C6.html">ljcoul_C12C6(atom,Box_dim,varargin)</a> % Lennard-Jones and Coulomb potential with C12, C6 terms.</li>
+<li>
+<a href="ljcoul.html">ljcoul(atom,Box_dim,varargin)</a> % General Lennard-Jones and Coulomb interaction function.</li>
+<li>
+<a href="ljcoul_2x2x.html">ljcoul_2x2x(atom,Box_dim,varargin)</a> % Lennard-Jones and Coulomb potential with 2x factors.</li>
+<li>
+<a href="ljcoul_2x.html">ljcoul_2x(atom,Box_dim,varargin)</a> % Variation of Lennard-Jones Coulomb with 2x factors.</li>
+</ol>
+</div>
+<h2 id="11">Objective Functions and Force Calculations</h2>
+<div>
+<ol>
+<li>
+<a href="buckinghamcoul_objective_func.html">buckinghamcoul_objective_func(atom,Box_dim,varargin)</a> % Objective function for fitting Buckingham and Coulomb potentials.</li>
+<li>
+<a href="ljcoul_objective_func.html">ljcoul_objective_func(atom,Box_dim,varargin)</a> % Objective function for Lennard-Jones and Coulomb potentials.</li>
+<li>
+<a href="ljcoul_2x_objective_func.html">ljcoul_2x_objective_func(atom,Box_dim,varargin)</a> % Objective function for 2x Lennard-Jones and Coulomb potentials.</li>
+<li>
+<a href="ljcoul_force.html">ljcoul_force(atom,Box_dim,varargin)</a> % Computes forces based on Lennard-Jones and Coulomb potentials.</li>
+<li>
+<a href="ljcoul_2x_force.html">ljcoul_2x_force(atom,Box_dim,varargin)</a> % Force calculation involving 2x Lennard-Jones and Coulomb potentials.</li>
+<li>
+<a href="ljcoul_force_C12C6C4.html">ljcoul_force_C12C6C4(atom,Box_dim,varargin)</a> % Force calculation for Lennard-Jones potential with C12, C6, C4 terms.</li>
+<li>
+<a href="ljcoul_force_objective_func.html">ljcoul_force_objective_func(atom,Box_dim,varargin)</a> % Objective function for force calculations with Lennard-Jones and Coulomb potentials.</li>
+</ol>
+</div>
+<h2 id="12">Automated Fitting Tools</h2>
+<div>
+<ol>
+<li>
+<a href="autofit_C6C8C10xljcoul.html">autofit_C6C8C10xljcoul(atom,Box_dim,varargin)</a> % Automated fitting for Lennard-Jones Coulombic parameters with C6, C8, C10 terms.</li>
+<li>
+<a href="autofit_2xljcoul_func.html">autofit_2xljcoul_func(atom,Box_dim,varargin)</a> % Function for automatic fitting of 2x Lennard-Jones and Coulomb parameters.</li>
+<li>
+<a href="autofit_2xljcoul_batch.html">autofit_2xljcoul_batch(atom,Box_dim,varargin)</a> % Batch fitting for 2x Lennard-Jones and Coulomb potentials.</li>
+<li>
+<a href="autofit_2xljcoul.html">autofit_2xljcoul(atom,Box_dim,varargin)</a> % Automated fitting of 2x Lennard-Jones and Coulomb parameters.</li>
+<li>
+<a href="autofit_geometric2LB.html">autofit_geometric2LB(atom,Box_dim,varargin)</a> % Automated geometric fitting for Lennard-Jones potential with Born-Mayer interactions.</li>
+<li>
+<a href="autofit_buckcoul.html">autofit_buckcoul(atom,Box_dim,varargin)</a> % Automated fitting for Buckingham and Coulomb potentials.</li>
+<li>
+<a href="autofit_force_2xljcoul.html">autofit_force_2xljcoul(atom,Box_dim,varargin)</a> % Automated fitting of force parameters for 2x Lennard-Jones and Coulomb interactions.</li>
+<li>
+<a href="autofit_ljcoul.html">autofit_ljcoul(atom,Box_dim,varargin)</a> % Automated fitting for Lennard-Jones and Coulombic interactions.</li>
+</ol>
+</div>
+<h2 id="13">Miscellaneous</h2>
+<div>
+<ol>
+<li>
+<a href="print_top.html">print_top(atom,Box_dim,varargin)</a> % Prints or generates topology-related data.</li>
+<li>
+<a href="import_ff_table.html">import_ff_table(filename,varargin)</a> % Imports forcefield parameter tables.</li>
+<li>
+<a href="change_top.html">change_top(atom,Box_dim,varargin)</a> % Modifies the topology file or its parameters.</li>
+<li>
+<a href="mass_atom_clayff.html">mass_atom_clayff(atom)</a> % Defines or calculates masses for Clayff atoms.</li>
+<li>
+<a href="harmonic_bond.html">harmonic_bond(atom,Box_dim,varargin)</a> % Defines or computes harmonic bond forces or parameters.</li>
+<li>
+<a href="smear_charge.html">smear_charge(atom,Box_dim,varargin)</a> % Distributes charge across atoms, possibly using charge smearing techniques.</li>
+<li>
+<a href="check_interface_charge.html">check_interface_charge(atom)</a> % Checks charges for INTERFACE atom types.</li>
+<li>
+<a href="check_interface15_charge.html">check_interface15_charge(atom)</a> % Checks charges for INTERFACE 1.5 atom types.</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="comment">%</span>
+</pre>
+<h2 id="14">Version</h2>
+<p>3.00</p>
+<h2 id="15">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% List of topology functions
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
-%% Custom toplogy tools
+%% Custom topology tools
+
+%% minff, with atomtypes by MHolmboe
+% # <minff_atom.html minff_atom(atom,Box_dim,varargin)> % Assign minff atom types with edge healing.
+% # <charge_minff_atom.html charge_minf_atom(atom,Box_dim,varargin)> % Set the charge for MINFF atom types.
+
 %% Clayff, with atomtypes by MHolmboe
-% # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % This function tries to charge the atom accorind to clayff or interface ff
-% # <charge_clayff_2004_atom.html charge_clayff_2004_atom(atom,Box_dim,varargin)> % Sets the charge for the original Clayff atomtypes for the original Clayff ff from the Cygan et al., 2004 paper
-% # <charge_clayff_atom.html charge_clayff_atom(atom,Box_dim,varargin)> % Sets the charge for Clayff atomtypes 
-% # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Sets the charge for some specific OPLS atomtypes
-% # <check_clayff_2004_charge.html check_clayff_2004_charge(atom)> % check_clayff_2004_charge.m - This checks the charge of the original Clayff atomtypes by Mholmboe
-% # <check_clayff_charge.html check_clayff_charge(atom)> % check_clayff_charge.m - This checks the charge of the Clayff atomtypes by Mholmboe
-% # <check_clayff_H2Odens.html check_clayff_H2Odens(atom,Box_dim)> % Check the approx. water density for a clayff system
-% # <check_H2Odens.html check_H2Odens(atom,Box_dim)> % Computes the water density
-% # <clayff_2004_atom.html clayff_2004_atom(atom,Box_dim,varargin)> % Assigns the original Clayff atom types by Cygan et al., 2004. Can also 'heal' edges 
-% # <clayff_2004_param.html clayff_2004_param(Atom_label,varargin)> % Holds the ion and the original Clayff atomtype parameters
-% # <clayff_atom.html clayff_atom(atom,Box_dim,varargin)> % Assigns the Clayff atom types by MHolmboe. Can also 'heal' edges 
-% # <clayff_param.html clayff_param(Atom_label,varargin)> % Holds the ion and Clayff atomtype parameters
-% # <clayff210_atom.html clayffmod_atom(atom,Box_dim,varargin)> % Assigns the modififed Clayff atom types. Can also 'heal' edges 
-% # <clayff211_atom.html clayffmod_atom(atom,Box_dim,varargin)> % New faster version. Assigns the modififed Clayff atom types. Can also 'heal' edges 
-% # <tweak_charge_atom.html tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
+% # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % Charge the atom according to Clayff or Interface force fields.
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom(atom,Box_dim,varargin)> % Set the charge for the original Clayff atom types from the Cygan et al., 2004 paper.
+% # <charge_clayff_atom.html charge_clayff_atom(atom,Box_dim,varargin)> % Set the charge for Clayff atom types.
+% # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Set the charge for specific OPLS atom types.
+% # <check_clayff_2004_charge.html check_clayff_2004_charge(atom)> % Check the charge of the original Clayff atom types.
+% # <check_clayff_charge.html check_clayff_charge(atom)> % Check the charge of the Clayff atom types.
+% # <check_clayff_H2Odens.html check_clayff_H2Odens(atom,Box_dim)> % Check the approximate water density for a Clayff system.
+% # <check_H2Odens.html check_H2Odens(atom,Box_dim)> % Compute the water density.
+% # <clayff_2004_atom.html clayff_2004_atom(atom,Box_dim,varargin)> % Assign the original Clayff atom types by Cygan et al., 2004, with edge healing.
+% # <clayff_2004_param.html clayff_2004_param(Atom_label,varargin)> % Hold ion and Clayff atom type parameters for the original Clayff force field.
+% # <clayff_atom.html clayff_atom(atom,Box_dim,varargin)> % Assign Clayff atom types with edge healing.
+% # <clayff_param.html clayff_param(Atom_label,varargin)> % Hold ion and Clayff atom type parameters.
+% # <clayff210_atom.html clayff210_atom(atom,Box_dim,varargin)> % Assign modified Clayff atom types, with edge healing.
+% # <clayff211_atom.html clayff211_atom(atom,Box_dim,varargin)> % Assign modified Clayff atom types (faster version), with edge healing.
+% # <tweak_charge_atom.html tweak_charge_atom(atom)> % Tweak the charge of the atom struct to correct rounding errors.
 
 %% INTERFACE from Heinz 2005, 2013, with atomtypes by MHolmboe
-% # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % This function tries to charge the atom accorind to clayff or interface ff
-% # <interface_atom.html interface_atom(atom,Box_dim,varargin)> % This function tries to assign all atoms according to the interface atom types (with modified atom names by MHolmboe), with some modifications for edges...
-% # <interface_param.html interface_param(Atom_label,water_model)> %  This holds the extended INTERFACE ff parameters
-% # <interface15_atom.html interface15_atom(atom,Box_dim,varargin)> % This function tries to assign all atoms according to the interface1.5 atom types (with modified atom names by MHolmboe), with some modifications for edges...
-% # <interface15_param.html interface15_param(Atom_label,water_model)> %  This holds the extended INTERFACE1.5 ff parameters
-% # <charge_interface_atom.html charge_interface_atom(atom,Box_dim,varargin)> % Sets the charge for Interface atomtypes 
-% # <charge_interface15_atom.html charge_interface15_atom(atom,Box_dim,varargin)> % Sets the charge for Interface 1.5 atomtypes
-% # <check_interface_charge.html check_interface_charge(atom)> %  This checks the charge of the INTERFACE atomtypes by Mholmboe
-% # <check_interface15_charge.html check_interface15_charge(atom)> %  This checks the charge of the INTERFACE 1.5 atomtypes by Mholmboe
-% # <tweak_charge_atom.html tweak_charge_atom(atom)> % This function tries to tweak the charge of the atom struct in case of rounding errors
+% # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % Charge the atom according to Clayff or Interface force fields.
+% # <interface_atom.html interface_atom(atom,Box_dim,varargin)> % Assign atoms according to the Interface atom types, with modifications for edges.
+% # <interface_param.html interface_param(Atom_label,water_model)> % Hold extended INTERFACE force field parameters.
+% # <interface15_atom.html interface15_atom(atom,Box_dim,varargin)> % Assign atoms according to the Interface 1.5 atom types, with modifications for edges.
+% # <interface15_param.html interface15_param(Atom_label,water_model)> % Hold extended INTERFACE 1.5 force field parameters.
+% # <charge_interface_atom.html charge_interface_atom(atom,Box_dim,varargin)> % Set the charge for Interface atom types.
+% # <charge_interface15_atom.html charge_interface15_atom(atom,Box_dim,varargin)> % Set the charge for Interface 1.5 atom types.
+% # <check_interface_charge.html check_interface_charge(atom)> % Check the charge of the INTERFACE atom types.
+% # <check_interface15_charge.html check_interface15_charge(atom)> % Check the charge of the INTERFACE 1.5 atom types.
+% # <interface15_silica_atom.html interface15_silica_atom(atom,Box_dim,varargin)> % Assign atom types for the Interface 1.5 force field, specific to silica.
+% # <tweak_charge_atom.html tweak_charge_atom(atom)> % Tweak the charge of the atom struct to correct rounding errors.
 
-%% Graphene oxide modeled with OPLS/aa stuff
-% # <opls_go_atom.html opls_go_atom(atom,Box_dim,rmin,rlarge)> % This function tries to smear out the charge at around -OH and epoxides in GO
-% # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % This custom function holds the extended oplsaa_aa ff for graphite oxide
-% # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Sets the charge for some specific OPLS atomtypes
+%% Graphene oxide modeled with OPLS/aa
+% # <opls_go_atom.html opls_go_atom(atom,Box_dim,rmin,rlarge)> % Smear out the charge around -OH and epoxide groups in graphene oxide.
+% # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % Hold the extended OPLS-AA force field parameters for graphite oxide.
+% # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Set the charge for specific OPLS atom types.
 
-%% Writing of topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)
-% # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % This function tries to write various files for you. Works best for systems designed for Clayff...
-% # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % This script creates and prints a gromacs .itp file. Works best for clayff or interface ff with spc, spce or tip3p
-% # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % This script creates and prints a lammps data file (.lj). Works best for Clayff(_2004) systems
-% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % This custom made script creates and prints a gromacs .itp file for 
-% # <write_atom_psf.html write_atom_psf(atom,Box_dim,filename_out,varargin)> % This function writes an .psf file from the atom struct
+%% Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)
+% # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for Clayff or Interface force fields.
+% # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % Create and print a LAMMPS data file (.lj) for Clayff systems.
+% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.
+
+%% Bonded and Nonbonded Parameters
+% # <bonded_parameters.html bonded_parameters(atom,varargin)> % Define bonded parameters for atoms.
+% # <nonbonded_parameters.html nonbonded_parameters(atom,varargin)> % Define nonbonded parameters for atoms.
+% # <nonbonded_ff.html nonbonded_ff(atom,varargin)> % Defines nonbonded forcefield parameters.
+
+%% Lennard-Jones and Coulomb Potentials
+% # <buckinghamcoul.html buckinghamcoul(atom,Box_dim,varargin)> % Calculates interactions using the Buckingham potential and Coulombic forces.
+% # <ljcoul_12_6.html ljcoul_12_6(atom,Box_dim,varargin)> % Handles Lennard-Jones 12-6 potential along with Coulombic interactions.
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4(atom,Box_dim,varargin)> % Lennard-Jones and Coulomb potential with C12, C6, C4 terms.
+% # <ljcoul_C12C6.html ljcoul_C12C6(atom,Box_dim,varargin)> % Lennard-Jones and Coulomb potential with C12, C6 terms.
+% # <ljcoul.html ljcoul(atom,Box_dim,varargin)> % General Lennard-Jones and Coulomb interaction function.
+% # <ljcoul_2x2x.html ljcoul_2x2x(atom,Box_dim,varargin)> % Lennard-Jones and Coulomb potential with 2x factors.
+% # <ljcoul_2x.html ljcoul_2x(atom,Box_dim,varargin)> % Variation of Lennard-Jones Coulomb with 2x factors.
+
+%% Objective Functions and Force Calculations
+% # <buckinghamcoul_objective_func.html buckinghamcoul_objective_func(atom,Box_dim,varargin)> % Objective function for fitting Buckingham and Coulomb potentials.
+% # <ljcoul_objective_func.html ljcoul_objective_func(atom,Box_dim,varargin)> % Objective function for Lennard-Jones and Coulomb potentials.
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func(atom,Box_dim,varargin)> % Objective function for 2x Lennard-Jones and Coulomb potentials.
+% # <ljcoul_force.html ljcoul_force(atom,Box_dim,varargin)> % Computes forces based on Lennard-Jones and Coulomb potentials.
+% # <ljcoul_2x_force.html ljcoul_2x_force(atom,Box_dim,varargin)> % Force calculation involving 2x Lennard-Jones and Coulomb potentials.
+% # <ljcoul_force_C12C6C4.html ljcoul_force_C12C6C4(atom,Box_dim,varargin)> % Force calculation for Lennard-Jones potential with C12, C6, C4 terms.
+% # <ljcoul_force_objective_func.html ljcoul_force_objective_func(atom,Box_dim,varargin)> % Objective function for force calculations with Lennard-Jones and Coulomb potentials.
+
+%% Automated Fitting Tools
+% # <autofit_C6C8C10xljcoul.html autofit_C6C8C10xljcoul(atom,Box_dim,varargin)> % Automated fitting for Lennard-Jones Coulombic parameters with C6, C8, C10 terms.
+% # <autofit_2xljcoul_func.html autofit_2xljcoul_func(atom,Box_dim,varargin)> % Function for automatic fitting of 2x Lennard-Jones and Coulomb parameters.
+% # <autofit_2xljcoul_batch.html autofit_2xljcoul_batch(atom,Box_dim,varargin)> % Batch fitting for 2x Lennard-Jones and Coulomb potentials.
+% # <autofit_2xljcoul.html autofit_2xljcoul(atom,Box_dim,varargin)> % Automated fitting of 2x Lennard-Jones and Coulomb parameters.
+% # <autofit_geometric2LB.html autofit_geometric2LB(atom,Box_dim,varargin)> % Automated geometric fitting for Lennard-Jones potential with Born-Mayer interactions.
+% # <autofit_buckcoul.html autofit_buckcoul(atom,Box_dim,varargin)> % Automated fitting for Buckingham and Coulomb potentials.
+% # <autofit_force_2xljcoul.html autofit_force_2xljcoul(atom,Box_dim,varargin)> % Automated fitting of force parameters for 2x Lennard-Jones and Coulomb interactions.
+% # <autofit_ljcoul.html autofit_ljcoul(atom,Box_dim,varargin)> % Automated fitting for Lennard-Jones and Coulombic interactions.
+
+%% Miscellaneous
+% # <print_top.html print_top(atom,Box_dim,varargin)> % Prints or generates topology-related data.
+% # <import_ff_table.html import_ff_table(filename,varargin)> % Imports forcefield parameter tables.
+% # <change_top.html change_top(atom,Box_dim,varargin)> % Modifies the topology file or its parameters.
+% # <mass_atom_clayff.html mass_atom_clayff(atom)> % Defines or calculates masses for Clayff atoms.
+% # <harmonic_bond.html harmonic_bond(atom,Box_dim,varargin)> % Defines or computes harmonic bond forces or parameters.
+% # <smear_charge.html smear_charge(atom,Box_dim,varargin)> % Distributes charge across atoms, possibly using charge smearing techniques.
+% # <check_interface_charge.html check_interface_charge(atom)> % Checks charges for INTERFACE atom types.
+% # <check_interface15_charge.html check_interface15_charge(atom)> % Checks charges for INTERFACE 1.5 atom types.
 
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
+%
+
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

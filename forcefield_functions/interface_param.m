@@ -2,7 +2,7 @@
 % * This function holds the extended interface ff parameters
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -109,7 +109,7 @@ forcefield.interface(9).e_kJmol = 0.104600;
 % Oalh
 forcefield.interface(10).type =    {'Oalh'}; %
 forcefield.interface(10).mass =    15.99410;
-forcefield.interface(10).charge =  -0.75833; % Dummy charge
+forcefield.interface(10).charge =  -0.68350; % Dummy charge
 forcefield.interface(10).radius =  3.50000;
 forcefield.interface(10).e_kJmol = 0.104600;
 %
@@ -304,6 +304,12 @@ forcefield.interface(39).mass =    15.99941;
 forcefield.interface(39).charge =  -0.3256	;
 forcefield.interface(39).radius =  3.404427393;
 forcefield.interface(39).e_kcalmol = 0.160036571;
+% Mgh
+forcefield.interface(40).type =    {'Mgh'}; % mgh
+forcefield.interface(40).mass =    24.305;
+forcefield.interface(40).charge =  1.1000-36/270;%-0.002574/32;%-8.1250e-05;
+forcefield.interface(40).radius =  4.41000;
+forcefield.interface(40).e_kJmol = 0.20920;
 
 % Forcefield_index=find(ismember([forcefield.interface.type],Atom_label))';
 % forcefield.interface=forcefield.interface(Forcefield_index);

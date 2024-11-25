@@ -1,15 +1,15 @@
 %% add2atom.m
-% This function appends so-called XYZ atomtype labels and XYZ data to an existing 
+% This function appends so-called XYZ atomtype labels and XYZ data to an existing
 % atom struct
-% 
+%
 % * XYZ_labels is a nAtoms x 1 (cell) vector of atomtype names
 % * XYZ_data is a nAtoms x 3 data matrix holding the x,y,z coordinates
 % * resname is the optional Resname you choose
-% * in_atom is the optional (requires resname) existing atom struct for which 
+% * in_atom is the optional (requires resname) existing atom struct for which
 % the XYZ data should be appended to
-% 
+%
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -17,7 +17,7 @@
 %% Examples
 % # atom = add2atom(XYZ_labels,XYZ_data) % Basic input arguments
 % # atom = add2atom(XYZ_labels,XYZ_data,'MOL') % Will set the residue name to MOL
-% # atom = add2atom(XYZ_labels,XYZ_data,'LAC',in_atom) % Will set the residue name to LAC and the MolID to whatever comes after the MolID in in_atom
+% # atom = add2atom(XYZ_labels,XYZ_data,'MOL',in_atom) % Will set the residue name to MOL and the MolID to whatever comes after the MolID in in_atom
 %
 function atom = add2atom(XYZ_labels,XYZ_data,varargin)
 
@@ -102,9 +102,11 @@ end
 if sum(size(unique(XYZ_labels),1)) > 3
     [atom.resname]=deal({resname});
 end
+
 atom=[in_atom atom];
 assignin('caller','XYZ_data',[[atom.x]' [atom.y]' [atom.z]']);
 assignin('caller','XYZ_labels',[atom.type]');
-assignin('caller','nAtoms',nAtoms)
-assignin('caller','MolID',MolID)
-disp('add2atom done!')
+assignin('caller','nAtoms',nAtoms);
+assignin('caller','MolID',MolID);
+
+end

@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>element_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="element_atom.m"><style type="text/css">
+      -->
+<title>element_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="element_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>element_atom.m</h1><!--introduction--><div><ul><li>This function can replace the atomtypes names with the element names</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = element_atom(atom)</li><li>atom = element_atom(atom,'Ow','Hw')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = element_atom(atom,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>element_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function can replace the atomtypes names with the element names</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = element_atom(atom)</li>
+<li>atom = element_atom(atom,'Ow','Hw')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = element_atom(atom,varargin)
 
 [atom.fftype]=atom.type;
 
@@ -84,6 +128,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">end</span>
 
 <span class="keyword">for</span> i=1:size(atom,2)
+
+    [atom(i).type] = regexprep([atom(i).type],<span class="string">'[\d"]'</span>,<span class="string">''</span>);
     <span class="comment">%     [atom(i).type]=atom(i).type{1}(1:2); % Elements do not have more than two characters;</span>
     <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Ag'</span>},2);atom(i).element={<span class="string">'Ag'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};
@@ -116,7 +162,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'h'</span>},1);atom(i).element={<span class="string">'H'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'I'</span>},1);atom(i).element={<span class="string">'I'</span>};
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'OW'</span>},2);atom(i).element={water_O};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'OW'</span>},2);atom(i).element={<span class="string">'O'</span>}; <span class="comment">%{water_O};</span>
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Wa'</span>},2);atom(i).element={water_O};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'OHH'</span>},3);atom(i).element={water_O};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ow'</span>},2);atom(i).element={water_O};
@@ -155,6 +201,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Sn'</span>},2);atom(i).element={<span class="string">'Sn'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SY'</span>},2);atom(i).element={<span class="string">'Si'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'SC'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Sit'</span>},3);atom(i).element={<span class="string">'Si'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'st'</span>},2);atom(i).element={<span class="string">'Si'</span>};
     <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'s'</span>},1);atom(i).element={<span class="string">'Si'</span>};
     <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'S'</span>},1);atom(i).element={<span class="string">'S'</span>};
@@ -171,7 +218,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Y'</span>},1);atom(i).element={<span class="string">'Y'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Zr'</span>},2);atom(i).element={<span class="string">'Zr'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Zn'</span>},2);atom(i).element={<span class="string">'Zn'</span>};
-
     <span class="keyword">else</span>
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         <span class="keyword">if</span> size([atom(i).type{:}],2)&gt;1
@@ -183,13 +229,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">end</span>
 
 [atom.type]=atom.element;
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% element_atom.m
 % * This function can replace the atomtypes names with the element names
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -215,6 +268,8 @@ if nargin > 3
 end
 
 for i=1:size(atom,2)
+
+    [atom(i).type] = regexprep([atom(i).type],'[\d"]','');
     %     [atom(i).type]=atom(i).type{1}(1:2); % Elements do not have more than two characters;
     if strncmpi(atom(i).type,{'Ag'},2);atom(i).element={'Ag'};
     elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
@@ -247,7 +302,7 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
     elseif strncmpi(atom(i).type,{'h'},1);atom(i).element={'H'};
     elseif strncmpi(atom(i).type,{'I'},1);atom(i).element={'I'};
-    elseif strncmpi(atom(i).type,{'OW'},2);atom(i).element={water_O};
+    elseif strncmpi(atom(i).type,{'OW'},2);atom(i).element={'O'}; %{water_O};
     elseif strncmpi(atom(i).type,{'Wa'},2);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'OHH'},3);atom(i).element={water_O};
     elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={water_O};
@@ -286,6 +341,7 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Sn'},2);atom(i).element={'Sn'};
     elseif strncmpi(atom(i).type,{'SY'},2);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'Sit'},3);atom(i).element={'Si'};
     elseif strncmpi(atom(i).type,{'st'},2);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'s'},1);atom(i).element={'Si'};
     elseif strncmp(atom(i).type,{'S'},1);atom(i).element={'S'};
@@ -302,7 +358,6 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Y'},1);atom(i).element={'Y'};
     elseif strncmpi(atom(i).type,{'Zr'},2);atom(i).element={'Zr'};
     elseif strncmpi(atom(i).type,{'Zn'},2);atom(i).element={'Zn'};
-        
     else
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         if size([atom(i).type{:}],2)>1
@@ -316,4 +371,6 @@ end
 [atom.type]=atom.element;
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

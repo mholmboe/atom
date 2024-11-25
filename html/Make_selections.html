@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Examples demonstrating how to make selections of filter the atom struct</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="Make_selections.m"><style type="text/css">
+      -->
+<title>Examples demonstrating how to make selections of filter the atom struct</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="Make_selections.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +72,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Examples demonstrating how to make selections of filter the atom struct</h1><!--introduction--><p>(For a full list of functions that select/filter the <a href="atom_variable.html">atom</a> struct, go to <a href="List_build_functions.html">List_build_functions</a> or the <a href="List_general_functions.html">List_general_functions</a>)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First set some convenient matlab settings</a></li><li><a href="#2">Pick filenames to import and export</a></li><li><a href="#3">Import some molecule</a></li><li><a href="#4">Different types of string based selections</a></li><li><a href="#5">Different types of selections based on numeric values</a></li></ul></div><h2 id="1">First set some convenient matlab settings</h2><pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
-</pre><h2 id="2">Pick filenames to import and export</h2><p>Set some filenames</p><pre class="codeinput">filename_in=<span class="string">'Pyrophyllite.pdb'</span>; <span class="comment">% default example is 'Pyrophyllite.pdb'</span>
-</pre><h2 id="3">Import some molecule</h2><pre class="codeinput">atom=import_atom(filename_in);
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Examples demonstrating how to make selections of filter the atom struct</h1>
+<!--introduction-->
+<p>(For a full list of functions that select/filter the <a href="atom_variable.html">atom</a> struct, go to <a href="List_build_functions.html">List_build_functions</a> or the <a href="List_general_functions.html">List_general_functions</a>)</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">First set some convenient matlab settings</a>
+</li>
+<li>
+<a href="#2">Pick filenames to import and export</a>
+</li>
+<li>
+<a href="#3">Import some molecule</a>
+</li>
+<li>
+<a href="#4">Different types of string based selections</a>
+</li>
+<li>
+<a href="#5">Different types of selections based on numeric values</a>
+</li>
+</ul>
+</div>
+<h2 id="1">First set some convenient matlab settings</h2>
+<pre class="codeinput">format <span class="string">compact</span>; set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+</pre>
+<h2 id="2">Pick filenames to import and export</h2>
+<p>Set some filenames</p>
+<pre class="codeinput">filename_in=<span class="string">'Pyrophyllite.pdb'</span>; <span class="comment">% default example is 'Pyrophyllite.pdb'</span>
+</pre>
+<h2 id="3">Import some molecule</h2>
+<pre class="codeinput">atom=import_atom(filename_in);
 atom=replicate_atom(atom,Box_dim,[4 4 4]) <span class="comment">% Replicate the molecule just to get a bigger system</span>
-</pre><h2 id="4">Different types of string based selections</h2><p>The following selection commands can be applied both to the fields .type and .resname. In these examples we first create some index variable ind, and then use this ind variable to extract all the matching atoms.</p><pre class="codeinput"><span class="comment">% Select atoms in the atom struct matching certain atomtypes using Matlabs</span>
+</pre>
+<h2 id="4">Different types of string based selections</h2>
+<p>The following selection commands can be applied both to the fields .type and .resname. In these examples we first create some index variable ind, and then use this ind variable to extract all the matching atoms.</p>
+<pre class="codeinput">
+<span class="comment">% Select atoms in the atom struct matching certain atomtypes using Matlabs</span>
 <span class="comment">% ismember() function.</span>
 ind1 = ismember([atom.type],[{<span class="string">'Al'</span> <span class="string">'Si'</span> <span class="string">'H'</span>}]) <span class="comment">% gives a binary (1/0) logical array</span>
 atom1 = atom(ind1) <span class="comment">% This creates a new atom1 struct with the filtered/selected atomtypes</span>
@@ -89,7 +132,11 @@ atom3 = atom(ind3)
 <span class="comment">% Compare ind1, ind2 and ind3. Are they similar or different? What is the</span>
 <span class="comment">% difference between ismember(), strcmp(), strncmpi()? Could we have used</span>
 <span class="comment">% any other Matlab functions to do the same thing?</span>
-</pre><h2 id="5">Different types of selections based on numeric values</h2><p>In these examples we skip the generation of index variables used above, just because we can...</p><pre class="codeinput"><span class="comment">% Select atoms based on some coordinate values</span>
+</pre>
+<h2 id="5">Different types of selections based on numeric values</h2>
+<p>In these examples we skip the generation of index variables used above, just because we can...</p>
+<pre class="codeinput">
+<span class="comment">% Select atoms based on some coordinate values</span>
 pos_z_atom = atom([atom.z]&gt;0) <span class="comment">% finds all atoms with a positve z-coordinate</span>
 <span class="comment">% or try this</span>
 specific_z_atom = atom([atom.z]&gt;1|[atom.z]&lt;-1) <span class="comment">% Note the | character</span>
@@ -98,7 +145,14 @@ specific_z_atom = atom([atom.z]&gt;1|[atom.z]&lt;-1) <span class="comment">% Not
 first100_atom = atom(1:100) <span class="comment">% finds the first 100 atoms in the atom struct</span>
 first100_atom = atom([atom.index]&lt;101) <span class="comment">% also finds the first 100 atoms in the atom struct</span>
 molecule3_atom = atom([atom.molid]==3) <span class="comment">% finds the atoms in the 3rd molecule (having .molid = 3)</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% Examples demonstrating how to make selections of filter the atom struct
 % (For a full list of functions that select/filter the 
@@ -156,4 +210,6 @@ first100_atom = atom([atom.index]<101) % also finds the first 100 atoms in the a
 molecule3_atom = atom([atom.molid]==3) % finds the atoms in the 3rd molecule (having .molid = 3)
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

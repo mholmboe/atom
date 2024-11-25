@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>G2_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="G2_atom.m"><style type="text/css">
+      -->
+<title>G2_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="G2_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,57 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>G2_atom.m</h1><!--introduction--><div><ul><li>This function calculates the continuous G2 factor fromthe cos and sin</li><li>terms and also saves a struct variable for G2_calc_func()</li><li>You might want to edit the atomtype names below to fit your needs...</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#6">Set the Debye-Waller factor</a></li><li><a href="#7">Collect the structural data</a></li><li><a href="#9">Clear up structure</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)</li><li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)</li></ul></div><pre class="codeinput"><span class="keyword">function</span> [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>G2_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function calculates the continuous G2 factor fromthe cos and sin</li>
+<li>terms and also saves a struct variable for G2_calc_func()</li>
+<li>You might want to edit the atomtype names below to fit your needs...</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#6">Set the Debye-Waller factor</a>
+</li>
+<li>
+<a href="#7">Collect the structural data</a>
+</li>
+<li>
+<a href="#9">Clear up structure</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ul>
+<li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)</li>
+<li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 format <span class="string">compact</span>;
 
@@ -97,7 +152,8 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 <span class="comment">% [atom(ind_Feo).type]=deal({'Feo'});</span>
 
 <span class="keyword">for</span> push=1:1
-</pre><pre class="codeinput">    scale_water=1;
+</pre>
+<pre class="codeinput">    scale_water=1;
     nUC=1;<span class="comment">%6*4*3;</span>
     dim=<span class="string">'z'</span>;
     stride=1;
@@ -203,7 +259,8 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
     Element_count=0;
 
     <span class="keyword">for</span> h=1:length(Atom_label)
-</pre><pre class="codeinput">        Element_ave_sum=0;
+</pre>
+<pre class="codeinput">        Element_ave_sum=0;
         Element_count=Element_count+1;
         ind_atom=3*find(strcmpi([atom.type],Atom_label(h)))'-dim_column;
         disp(<span class="string">'Atom_label'</span>)
@@ -220,7 +277,9 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
         Element_density = smooth((Element_density+flipud(Element_density))/2,11);
 
         DW=0;
-</pre><h2 id="6">Set the Debye-Waller factor</h2><pre class="codeinput">        <span class="keyword">if</span> ismember(Atom_label(h),{<span class="string">'Si'</span>,<span class="string">'Al'</span>,<span class="string">'Alt'</span>,<span class="string">'Mgo'</span>,<span class="string">'Mg'</span>,<span class="string">'H'</span>,<span class="string">'Hc'</span>,<span class="string">'Fe'</span>,<span class="string">'Feo'</span>})
+</pre>
+<h2 id="6">Set the Debye-Waller factor</h2>
+<pre class="codeinput">        <span class="keyword">if</span> ismember(Atom_label(h),{<span class="string">'Si'</span>,<span class="string">'Al'</span>,<span class="string">'Alt'</span>,<span class="string">'Mgo'</span>,<span class="string">'Mg'</span>,<span class="string">'H'</span>,<span class="string">'Hc'</span>,<span class="string">'Fe'</span>,<span class="string">'Feo'</span>})
             DW=1.5
         <span class="keyword">elseif</span> ismember(Atom_label(h),{<span class="string">'Li'</span>,<span class="string">'Na'</span>,<span class="string">'K'</span>,<span class="string">'Cs'</span>,<span class="string">'Mg'</span>,<span class="string">'Ca'</span>,<span class="string">'Sr'</span>,<span class="string">'Ba'</span>})
             DW=2
@@ -302,14 +361,19 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
         <span class="comment">%             stem(Distance(1:length(Element_density)),circshift(Element_density,[0 0]),'Marker','none')</span>
         <span class="comment">%             plot(Distance(1:length(Element_density)),circshift(Element_density,[ceil(d001/2/step) 0]))</span>
         <span class="comment">%             stem(Distance(1:length(Element_density_disc)),circshift(Element_density_disc,[ceil(d001/2/step) 0]),'Marker','none')</span>
-</pre><h2 id="7">Collect the structural data</h2><pre class="codeinput">        structure(h).type=Atom_label(h);
+</pre>
+<h2 id="7">Collect the structural data</h2>
+<pre class="codeinput">        structure(h).type=Atom_label(h);
         structure(h).d001=d001;
         structure(h).P=single(Element_density)';<span class="comment">%UC(h).P;;%single(UC(h).P);</span>
         structure(h).e=nElectrons;
         structure(h).Z=Distance_symm(1:length(Element_density));<span class="comment">%(find(Element_density));;%Distance_symm(find(Element_density));</span>
         structure(h).B=DW;
-</pre><pre class="codeinput">    <span class="keyword">end</span>
-</pre><h2 id="9">Clear up structure</h2><pre class="codeinput">    k=1;i=1;
+</pre>
+<pre class="codeinput">    <span class="keyword">end</span>
+</pre>
+<h2 id="9">Clear up structure</h2>
+<pre class="codeinput">    k=1;i=1;
     newstructure=structure;
     <span class="keyword">while</span> i &lt; size(structure,2)+1
         <span class="keyword">for</span> j=1:numel([structure(i).P])
@@ -346,8 +410,17 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
     plot(Distance(1:length(Total_density)),circshift(Total_density,[0 0]))
     <span class="comment">%     plot(Distance_symm(1:length(Total_density)),circshift(Total_Electron_density,[0 0]))</span>
     <span class="comment">%     xlabel('2Theta','FontSize',Fontsize); ylabel('a.u.','FontSize',Fontsize);</span>
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% G2_atom.m
 % * This function calculates the continuous G2 factor fromthe cos and sin
@@ -355,7 +428,7 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 % * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -657,4 +730,6 @@ end
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

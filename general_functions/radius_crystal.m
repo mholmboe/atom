@@ -2,14 +2,16 @@
 % * For more detailed info, see the Revised Shannon radii...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # radii = radius_crystal({'O'})
-% # radii = radius_crystal('O')
+% # radii = radius_crystal('O') % Element name
+% # radii = radius_crystal('O',-2) % Element name, Charge
+% # radii = radius_crystal('O',-2,2) % Element name, Charge, CN
+
 
 function radii = radius_crystal(Atom_label,varargin)
 

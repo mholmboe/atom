@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>import_ff_table</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="import_ff_table.m"><style type="text/css">
+      -->
+<title>import_ff_table</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="import_ff_table.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,53 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Merz 2014</a></li><li><a href="#3">Merz 2014</a></li><li><a href="#4">Merz 2014</a></li><li><a href="#5">Merz 2020</a></li><li><a href="#7">Merz 2020</a></li><li><a href="#8">Merz 2020</a></li><li><a href="#9">Merz 2020</a></li><li><a href="#11">Merz 2015</a></li><li><a href="#12">Merz 2015</a></li><li><a href="#13">Merz 2015</a></li><li><a href="#14">Merz 2015</a></li></ul></div><pre class="codeinput">format <span class="string">compact</span>
-</pre><h2 id="2">Merz 2014</h2><p>HFE</p><pre class="codeinput">clear
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Merz 2014</a>
+</li>
+<li>
+<a href="#3">Merz 2014</a>
+</li>
+<li>
+<a href="#4">Merz 2014</a>
+</li>
+<li>
+<a href="#5">Merz 2020</a>
+</li>
+<li>
+<a href="#7">Merz 2020</a>
+</li>
+<li>
+<a href="#8">Merz 2020</a>
+</li>
+<li>
+<a href="#9">Merz 2020</a>
+</li>
+<li>
+<a href="#11">Merz 2015</a>
+</li>
+<li>
+<a href="#12">Merz 2015</a>
+</li>
+<li>
+<a href="#13">Merz 2015</a>
+</li>
+<li>
+<a href="#14">Merz 2015</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">format <span class="string">compact</span>
+</pre>
+<h2 id="2">Merz 2014</h2>
+<p>HFE</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=P(1,1:2:end)
 R2min_tip3p=cell2mat(P(1,2:2:end))
@@ -81,7 +131,10 @@ R2min_tip4pew=cell2mat(P(5,1:2:end))
 eps_tip4pew=cell2mat(P(5,2:2:end))
 
 save(<span class="string">'Merz_polyvalent_HFE_2014'</span>)
-</pre><h2 id="3">Merz 2014</h2><p>IOD</p><pre class="codeinput">clear
+</pre>
+<h2 id="3">Merz 2014</h2>
+<p>IOD</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=P(1,1:2:end)
 R2min_tip3p=cell2mat(P(1,2:2:end))
@@ -94,7 +147,10 @@ R2min_tip4pew=cell2mat(P(4,:))
 eps_tip4pew=cell2mat(P(5,:))
 
 save(<span class="string">'Merz_polyvalent_IOD_2014'</span>)
-</pre><h2 id="4">Merz 2014</h2><p>12-6-4</p><pre class="codeinput">clear
+</pre>
+<h2 id="4">Merz 2014</h2>
+<p>12-6-4</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=P(1,1:2:48)
 R2min_tip3p=cell2mat(P(1,2:2:end))
@@ -110,7 +166,10 @@ eps_tip4pew=cell2mat(P(5,2:3:end))
 C4_tip4pew=cell2mat(P(5,3:3:end))
 
 save(<span class="string">'Merz_polyvalent_12-6-4_2014'</span>)
-</pre><h2 id="5">Merz 2020</h2><p>HFE</p><pre class="codeinput">clear
+</pre>
+<h2 id="5">Merz 2020</h2>
+<p>HFE</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=[P(1,1:2:22) P(2,1:2:18) P(3,1:2:8)]
 R2min_OPC3=cell2mat([P(1,2:2:22) P(2,2:2:18) P(3,2:2:8)])
@@ -126,7 +185,10 @@ R2min_tip4p_fb=cell2mat(P(7,1:2:end))
 eps_tip4p_fb=cell2mat(P(7,2:2:end))
 
 save(<span class="string">'Merz_Divalent_HFE_2020'</span>)
-</pre><h2 id="7">Merz 2020</h2><p>IOD</p><pre class="codeinput">clear
+</pre>
+<h2 id="7">Merz 2020</h2>
+<p>IOD</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=[P(1,1:2:16) P(2,1:2:12) P(3,1:2:4)]
 R2min_OPC3=cell2mat([P(1,2:2:16) P(2,2:2:12) P(3,2:2:4)])
@@ -142,7 +204,10 @@ R2min_tip4p_fb=cell2mat(P(7,1:2:end))
 eps_tip4p_fb=cell2mat(P(7,2:2:end))
 
 save(<span class="string">'Merz_Divalent_IOD_2020'</span>)
-</pre><h2 id="8">Merz 2020</h2><p>CM</p><pre class="codeinput">clear
+</pre>
+<h2 id="8">Merz 2020</h2>
+<p>CM</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=[P(1,1:2:22) P(2,1:2:18) P(3,1:2:8)]
 R2min_OPC3=cell2mat([P(1,2:2:22) P(2,2:2:18) P(3,2:2:8)])
@@ -158,7 +223,10 @@ R2min_tip4p_fb=cell2mat(P(7,1:2:end))
 eps_tip4p_fb=cell2mat(P(7,2:2:end))
 
 save(<span class="string">'Merz_Divalent_CM_2020'</span>)
-</pre><h2 id="9">Merz 2020</h2><p>12-6-4</p><pre class="codeinput">clear
+</pre>
+<h2 id="9">Merz 2020</h2>
+<p>12-6-4</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=[P(1,1:7:56) P(2,1:7:28) P(4,1:13:52)]
 R2min_OPC3=cell2mat([P(1,2:7:56) P(2,2:7:28) P(4,2:13:52)])
@@ -178,7 +246,10 @@ eps_tip4p_fb=cell2mat([P(3,5:6:end) P(4,12:13:52)])
 C4_tip4p_fb=cell2mat([P(3,6:6:end) P(4,13:13:52)])
 
 save(<span class="string">'Merz_Divalent_12-6-4_2020'</span>)
-</pre><h2 id="11">Merz 2015</h2><p>HFE</p><pre class="codeinput">clear
+</pre>
+<h2 id="11">Merz 2015</h2>
+<p>HFE</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=P(1,1:2:end)
 R2min_tip3p=cell2mat(P(1,2:2:end))
@@ -191,7 +262,10 @@ R2min_tip4pew=cell2mat(P(5,1:2:end))
 eps_tip4pew=cell2mat(P(5,2:2:end))
 
 save(<span class="string">'Merz_Monovalent_HFE_2015'</span>)
-</pre><h2 id="12">Merz 2015</h2><p>IOD</p><pre class="codeinput">clear
+</pre>
+<h2 id="12">Merz 2015</h2>
+<p>IOD</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons=[P(1,1:2:16) P(2,1:2:12) P(3,1:2:4)]
 R2min_OPC3=cell2mat([P(1,2:2:16) P(2,2:2:12) P(3,2:2:4)])
@@ -207,14 +281,20 @@ R2min_tip4p_fb=cell2mat(P(7,1:2:end))
 eps_tip4p_fb=cell2mat(P(7,2:2:end))
 
 save(<span class="string">'Merz_Monovalent_IOD_2015'</span>)
-</pre><h2 id="13">Merz 2015</h2><p>IOD</p><pre class="codeinput">clear
+</pre>
+<h2 id="13">Merz 2015</h2>
+<p>IOD</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons_all=[P(1:16,1)]
 R2min_all=cell2mat([P(17,1:16)])
 eps_all=cell2mat(P(18,1:16))
 
 save(<span class="string">'Merz_Monovalent_IOD_2015'</span>)
-</pre><h2 id="14">Merz 2015</h2><p>12-6-4</p><pre class="codeinput">clear
+</pre>
+<h2 id="14">Merz 2015</h2>
+<p>12-6-4</p>
+<pre class="codeinput">clear
 P={};
 PolyvalentIons_all=[P(1:16,1)]
 
@@ -231,7 +311,14 @@ eps_tip4pew=cell2mat(P(20,2:3:end))
 C4_tip4pew=cell2mat(P(20,3:3:end))
 
 save(<span class="string">'Merz_Monovalent_12-6-4_2015'</span>)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 format compact
 
@@ -435,4 +522,6 @@ save('Merz_Monovalent_12-6-4_2015')
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

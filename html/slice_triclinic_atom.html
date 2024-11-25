@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>slice_triclinic_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="slice_triclinic_atom.m"><style type="text/css">
+      -->
+<title>slice_triclinic_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="slice_triclinic_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>slice_triclinic_atom.m</h1><!--introduction--><div><ul><li>This function slices the atoms into the triclinic box</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom = slice_triclinic_atom(atom,Box_dim) % Basic input arguments</li><li>atom = slice_triclinic_atom(atom,Box_dim,'xy') % Will only slice along the xy dimensions</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = slice_triclinic_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>slice_triclinic_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function slices the atoms into the triclinic box</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = slice_triclinic_atom(atom,Box_dim) % Basic input arguments</li>
+<li>atom = slice_triclinic_atom(atom,Box_dim,'xy') % Will only slice along the xy dimensions</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = slice_triclinic_atom(atom,Box_dim,varargin)
 <span class="comment">% Which one is fastest? Ortogonal or triclinic?</span>
 
 <span class="keyword">if</span> nargin==2
@@ -126,13 +170,22 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">end</span>
 
 <span class="comment">%assignin('caller','atom',atom);</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% slice_triclinic_atom.m
 % * This function slices the atoms into the triclinic box
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -146,48 +199,48 @@ function atom = slice_triclinic_atom(atom,Box_dim,varargin)
 
 if nargin==2
     disp('will try to slice the triclinic Box_dim!!!')
-    
+
     if size(Box_dim(1,:),2)>3
         xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
     else
         xy=0;xz=0;yz=0;
     end
     orto=orto_atom(atom,Box_dim);
-    
+
     indxlo=find([orto.xfrac]<0);
     indxhi=find([orto.xfrac]>1);
-    
+
     indylo=find([orto.yfrac]<0);
     indyhi=find([orto.yfrac]>1);
-    
+
     indzlo=find([orto.zfrac]<0);
     indzhi=find([orto.zfrac]>1);
-    
+
     ind = unique([indxlo indxhi indylo indyhi indzlo indzhi]);
     orto(ind)=[];
     orto=update_atom(orto);
     atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
-    
+
 elseif nargin == 3
-    
+
     disp('will try to slice the triclinic Box_dim along xy!!!')
     xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
     orto=orto_atom(atom,Box_dim);
-    
+
     indxlo=find([orto.xfrac]<0);
     indxhi=find([orto.xfrac]>1);
-    
+
     indylo=find([orto.yfrac]<0);
     indyhi=find([orto.yfrac]>1);
-    
+
     indzlo=find([orto.zfrac]<0);
     indzhi=find([orto.zfrac]>1);
-    
+
     ind = unique([indxlo indxhi indylo indyhi]); % indzlo indzhi]);
     orto(ind)=[];
     orto=update_atom(orto);
     atom = triclinic_atom(orto,orto_Box_dim,[xy xz yz],'tilt');
-    
+
 end
 
 try
@@ -200,5 +253,9 @@ catch
 end
 
 %assignin('caller','atom',atom);
+
+end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

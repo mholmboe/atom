@@ -13,27 +13,29 @@ r=r-(r(2)-r(1))/2;
 % sig2=0.3165;
 % eps1=7.7e-6;
 % eps2=0.6504;
-C4=100/10000;
+% C4=100/10000;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Si' 'Ob'});
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Feo' 'Ob'});
 
 [~, ind_start]=min(abs(Utot));
 rmin=rout(ind_start+20)
 r=rmin:.001:1.2; % nm
 r=r-(r(2)-r(1))/2;
 
-% [r,lj,coul,data] = ljcoul_force(q1,q2,sig1,sig2,eps1,eps2,r);
-[r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
+ [r,lj,coul,data] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r,1);
+% [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
-% eps1=.6;
-% eps2=.6;
-% q1=2.1;
-% q2=-1.05;
-C4 = 0.01
+q1=1.782;
+q2=-1.188;
+sig1=.1;
+sig2=.317;
+eps1=.6;
+eps2=.6837;
+% C4 = 0.01
 %% Initial values
 xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .5      .5     .5     .5];
+delta    = [ 1   1    .1     1   .1    1];
 
 x0=xinit;
 %% In order to keep parameters around 1..
@@ -72,22 +74,23 @@ fx=fx./scalefactors
 copy(fx)
 
 r_plot=.12:.001:1.2;
-[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r_plot);
-[r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
-
-r_plot(1)=[];
-plot(r_plot,data_plot-fxdata,'k.')
-plot(r_plot,fxdata-data_plot,'g--')
-
-[rmin_data,indref]=min(data_plot);
-[rmin,indopt]=min(fxdata);
-
-r_plot(indref)
-r_plot(indopt)
+[fxr,fxlj,fxcoul,fxdata] = ljcoul_force(fx,r,1,'k');
+% [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r_plot);
+% % [r_plot,lj_plot,coul_plot,data_plot] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r_plot);
+% 
+% r_plot(1)=[];
+% plot(r_plot,data_plot-fxdata,'k.')
+% plot(r_plot,fxdata-data_plot,'g--')
+% 
+% [rmin_data,indref]=min(data_plot);
+% [rmin,indopt]=min(fxdata);
+% 
+% r_plot(indref)
+% r_plot(indopt)
 
 % r(1)=[];
 % plot(r,data-fxdata)
-% x0=fx;
+% x=fx;
 % eval(strcat('res=',objective_func_string,';'));
 % disp('Mean abs(residual):');
 % mean(abs(res))

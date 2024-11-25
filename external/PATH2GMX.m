@@ -4,7 +4,7 @@
 % in "'PATH'"
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -15,11 +15,10 @@
 
 function PATH2GMX = PATH2GMX(varargin)
 
-PATH2GMX ='/usr/local/gromacs-2021/bin'; % Note, this is a version compiled wth mpi
+PATH2GMX ='/usr/local/gromacs-2023.3/bin'; % Note, this is a version compiled wth mpi
 
 if nargin>0
     
-    % Does this work for the 'base' ?
     PATH=getenv('PATH');
     if regexp(PATH,strcat(':',PATH2GMX))
         PATH=strrep(PATH,strcat(':',PATH2GMX),'');

@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>extract_vz_from_trr</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="extract_vz_from_trr.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">This function tries to extract the z component of the velocieties</a>
+</li>
+<li>
+<a href="#3">in a Gromacs .trr file, using libxdrfile from gmx. Hacked by MHolmboe</a>
+</li>
+<li>
+<a href="#4">This file is part of mxdrfile.</a>
+</li>
+<li>
+<a href="#6">Copyright &copy; 2014 Jon Kapla. All Rights Reserved.</a>
+</li>
+<li>
+<a href="#8">Redistribution and use in source and binary forms, with or without</a>
+</li>
+<li>
+<a href="#9">modification, are permitted provided that the following conditions are</a>
+</li>
+<li>
+<a href="#10">met:</a>
+</li>
+<li>
+<a href="#12">1. Redistributions of source code must retain the above copyright</a>
+</li>
+<li>
+<a href="#13">notice,this list of conditions and the following disclaimer.</a>
+</li>
+<li>
+<a href="#15">2. Redistributions in binary form must reproduce the above copyright</a>
+</li>
+<li>
+<a href="#16">notice, this list of conditions and the following disclaimer in the</a>
+</li>
+<li>
+<a href="#17">documentation and/or other materials provided with the distribution.</a>
+</li>
+<li>
+<a href="#19">3. The name of the author may not be used to endorse or promote products</a>
+</li>
+<li>
+<a href="#20">derived from this software without specific prior written permission.</a>
+</li>
+<li>
+<a href="#22">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"</a>
+</li>
+<li>
+<a href="#23">AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</a>
+</li>
+<li>
+<a href="#24">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</a>
+</li>
+<li>
+<a href="#25">PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY</a>
+</li>
+<li>
+<a href="#26">DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</a>
+</li>
+<li>
+<a href="#27">(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</a>
+</li>
+<li>
+<a href="#28">SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</a>
+</li>
+<li>
+<a href="#29">HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</a>
+</li>
+<li>
+<a href="#30">STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN</a>
+</li>
+<li>
+<a href="#31">ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</a>
+</li>
+<li>
+<a href="#32">POSSIBILITY OF SUCH DAMAGE.</a>
+</li>
+<li>
+<a href="#33">This scripts imports a gromacs trajectory and rotates by the angles alfa, beta, gamma</a>
+</li>
+<li>
+<a href="#34">If you want to add any gromacs commands, remember to set the Gromacs path</a>
+</li>
+<li>
+<a href="#35">(here '/usr/local/gromacs-2016.2/bin') for bash within Matlab right:</a>
+</li>
+<li>
+<a href="#36">&gt;&gt;PATH = getenv('PATH')</a>
+</li>
+<li>
+<a href="#37">&gt;&gt;setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin'])</a>
+</li>
+<li>
+<a href="#38">then you could try</a>
+</li>
+<li>
+<a href="#39">system('gmx editconf -h')</a>
+</li>
+<li>
+<a href="#41">Do something with the coordinates</a>
+</li>
+<li>
+<a href="#42">Write newcoords to a new trr file</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre>
+<h2 id="2">This function tries to extract the z component of the velocieties</h2>
+<h2 id="3">in a Gromacs .trr file, using libxdrfile from gmx. Hacked by MHolmboe</h2>
+<pre class="codeinput">
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre>
+<h2 id="4">This file is part of mxdrfile.</h2>
+<h2 id="6">Copyright &copy; 2014 Jon Kapla. All Rights Reserved.</h2>
+<h2 id="8">Redistribution and use in source and binary forms, with or without</h2>
+<h2 id="9">modification, are permitted provided that the following conditions are</h2>
+<h2 id="10">met:</h2>
+<h2 id="12">1. Redistributions of source code must retain the above copyright</h2>
+<h2 id="13">notice,this list of conditions and the following disclaimer.</h2>
+<h2 id="15">2. Redistributions in binary form must reproduce the above copyright</h2>
+<h2 id="16">notice, this list of conditions and the following disclaimer in the</h2>
+<h2 id="17">documentation and/or other materials provided with the distribution.</h2>
+<h2 id="19">3. The name of the author may not be used to endorse or promote products</h2>
+<h2 id="20">derived from this software without specific prior written permission.</h2>
+<h2 id="22">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"</h2>
+<h2 id="23">AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</h2>
+<h2 id="24">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</h2>
+<h2 id="25">PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY</h2>
+<h2 id="26">DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</h2>
+<h2 id="27">(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</h2>
+<h2 id="28">SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</h2>
+<h2 id="29">HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</h2>
+<h2 id="30">STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN</h2>
+<h2 id="31">ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</h2>
+<h2 id="32">POSSIBILITY OF SUCH DAMAGE.</h2>
+<pre class="codeinput">
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre>
+<h2 id="33">This scripts imports a gromacs trajectory and rotates by the angles alfa, beta, gamma</h2>
+<h2 id="34">If you want to add any gromacs commands, remember to set the Gromacs path</h2>
+<h2 id="35">(here '/usr/local/gromacs-2016.2/bin') for bash within Matlab right:</h2>
+<h2 id="36">&gt;&gt;PATH = getenv('PATH')</h2>
+<h2 id="37">&gt;&gt;setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin'])</h2>
+<h2 id="38">then you could try</h2>
+<h2 id="39">system('gmx editconf -h')</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> extract_vz_from_trr(trajname,outtrajname,varargin)
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+loadmxdrfile
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="keyword">if</span> nargin&lt;3
+    stride=1;
+<span class="keyword">else</span>
+    stride=varargin{1};
+<span class="keyword">end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+[~,rTraj]=inittraj(trajname,<span class="string">'r'</span>);
+[~,wTraj]=inittraj(outtrajname,<span class="string">'w'</span>);
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+[pathstr,name,ext] = fileparts(trajname);
+<span class="keyword">if</span>(strcmp(ext,<span class="string">'.trr'</span>))
+    frame=0;
+    <span class="keyword">while</span> true <span class="comment">% Frameloop</span>
+        [rstatus,traj]=read_trr(rTraj);
+        <span class="keyword">if</span>(not(rstatus))
+            frame=frame+1;
+            <span class="comment">%                 disp('Frame'),disp(frame)</span>
+        <span class="keyword">else</span>
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> ~mod(frame,stride) <span class="comment">% Test of stride</span>
+</pre>
+<pre class="codeinput">            <span class="comment">%             if ~mod(frame,stride) % Test of stride</span>
+            <span class="keyword">if</span> ~mod(frame,100*stride)
+                disp(<span class="string">'Frame'</span>),disp(frame)
+            <span class="keyword">end</span>
+</pre>
+<h2 id="41">Do something with the coordinates</h2>
+<pre>           V_data(:,1)=traj.v.value(1,:)';
+           V_data(:,2)=traj.v.value(2,:)';</pre>
+<pre class="codeinput">            V_data(:,3)=traj.v.value(3,:)';
+
+            traj.v.value(1,:)=zeros(1,size(V_data(:,3),1));
+            traj.v.value(2,:)=zeros(1,size(V_data(:,3),1));
+            traj.v.value(3,:)=V_data(:,3)';
+</pre>
+<h2 id="42">Write newcoords to a new trr file</h2>
+<pre class="codeinput">            wstatus=write_trr(wTraj, traj);
+</pre>
+<pre class="codeinput">        <span class="keyword">end</span> <span class="comment">% end of test of stride</span>
+    <span class="keyword">end</span>
+    [status,rTraj]=closetraj(rTraj);
+    [status,wTraj]=closetraj(wTraj);
+
+<span class="keyword">else</span>
+    disp(<span class="string">'Could not find .trr file!!!'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This function tries to extract the z component of the velocieties
+%% in a Gromacs .trr file, using libxdrfile from gmx. Hacked by MHolmboe
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This file is part of mxdrfile.
+%%
+%% Copyright © 2014 Jon Kapla. All Rights Reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions are
+%% met:
+%%
+%% 1. Redistributions of source code must retain the above copyright
+%%    notice,this list of conditions and the following disclaimer.
+%%
+%% 2. Redistributions in binary form must reproduce the above copyright
+%%    notice, this list of conditions and the following disclaimer in the
+%%    documentation and/or other materials provided with the distribution.
+%%
+%% 3. The name of the author may not be used to endorse or promote products
+%%    derived from this software without specific prior written permission.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"
+%% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+%% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+%% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+%% DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+%% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+%% SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+%% HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+%% STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This scripts imports a gromacs trajectory and rotates by the angles alfa, beta, gamma
+
+%% If you want to add any gromacs commands, remember to set the Gromacs path
+%% (here '/usr/local/gromacs-2016.2/bin') for bash within Matlab right:
+%% >>PATH = getenv('PATH')
+%% >>setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin'])
+%% then you could try
+%% system('gmx editconf -h')
+
+function extract_vz_from_trr(trajname,outtrajname,varargin)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+loadmxdrfile
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if nargin<3
+    stride=1;
+else
+    stride=varargin{1};
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[~,rTraj]=inittraj(trajname,'r');
+[~,wTraj]=inittraj(outtrajname,'w');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+[pathstr,name,ext] = fileparts(trajname);
+if(strcmp(ext,'.trr'))
+    frame=0;
+    while true % Frameloop
+        [rstatus,traj]=read_trr(rTraj);
+        if(not(rstatus))
+            frame=frame+1;
+            %                 disp('Frame'),disp(frame)
+        else
+            break
+        end
+
+        if ~mod(frame,stride) % Test of stride
+            %             if ~mod(frame,stride) % Test of stride
+            if ~mod(frame,100*stride)
+                disp('Frame'),disp(frame)
+            end
+            %% Do something with the coordinates
+            %             V_data(:,1)=traj.v.value(1,:)';
+            %             V_data(:,2)=traj.v.value(2,:)';
+            V_data(:,3)=traj.v.value(3,:)';
+
+            traj.v.value(1,:)=zeros(1,size(V_data(:,3),1));
+            traj.v.value(2,:)=zeros(1,size(V_data(:,3),1));
+            traj.v.value(3,:)=V_data(:,3)';
+
+            %% Write newcoords to a new trr file
+            wstatus=write_trr(wTraj, traj);
+
+        end % end of test of stride
+    end
+    [status,rTraj]=closetraj(rTraj);
+    [status,wTraj]=closetraj(wTraj);
+
+else
+    disp('Could not find .trr file!!!')
+end
+
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

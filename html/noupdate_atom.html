@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>noupdate_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="noupdate_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>noupdate_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function updates atom index but not the the molid index in the atom struct</li>
+<li>Multiple atom structs can be also concatenated by using this format atom = update_atom({atom1 atom2 atom3})</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = noupdate_atom(atom) % Basic input arguments</li>
+<li>atom = noupdate_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = noupdate_atom(atom,varargin)
+
+<span class="keyword">if</span> iscell(atom)
+
+    <span class="comment">% In case first struct is empty</span>
+    <span class="keyword">if</span> size(atom,2)&gt;1 &amp;&amp; size(atom{1},2)==0 <span class="comment">% Was 1?</span>
+        <span class="keyword">for</span> i=2:size(atom,2)
+            newatom{i-1}=atom{i};
+        <span class="keyword">end</span>
+        atom=newatom;
+    <span class="keyword">end</span>
+
+    size_ind=zeros(size(atom,2),1);
+    <span class="keyword">for</span> i=1:size(atom,2)
+        <span class="keyword">if</span> size(atom{i},2)&gt;0
+            size_ind(i)=1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    keepfieldnames=fieldnames(atom{1}); <span class="comment">% Orig line</span>
+    <span class="keyword">if</span> size(atom,2) &gt; 1
+        <span class="keyword">for</span> i=1:size(atom,2)
+            <span class="keyword">if</span> numel(atom{i})
+                keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="keyword">for</span> i=1:size(atom,2)
+            <span class="keyword">if</span> numel(atom{i})
+                rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
+                <span class="keyword">for</span> j=1:numel(rmfieldnames)
+                    atom{i}=rmfield(atom{i},rmfieldnames(j));
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    atom=atom(logical(size_ind));
+    atom_Tot=atom{1}; <span class="comment">% Orig line</span>
+    <span class="keyword">if</span> size(atom,2) &gt; 1
+        <span class="keyword">for</span> i=2:size(atom,2)
+            atom_temp=atom{i};
+            <span class="keyword">if</span> size(atom_temp,2)&gt;0
+                <span class="keyword">if</span> numel(unique([atom_temp.molid]))==1
+                    molid=num2cell(([atom_temp.molid]+[atom_Tot(end).molid]));
+                    [atom_temp.molid]=deal(molid{:});
+                <span class="keyword">elseif</span> numel(unique([atom_temp.molid]))==size(atom_temp,2)
+                    molid=num2cell(([1:size(atom_temp,2)]+[atom_Tot(end).molid]));
+                    [atom_temp.molid]=deal(molid{:});
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            atom_Tot=[atom_Tot atom_temp];
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    atom=atom_Tot;
+<span class="keyword">end</span>
+
+nAtoms=size(atom,2);
+
+atom=order_attributes(atom); <span class="comment">% Order all attributes</span>
+
+<span class="comment">% assignin('base','atom1',atom);</span>
+
+<span class="comment">% atom = resname_atom(atom);</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</span>,nAtoms);
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% noupdate_atom.m
+% * This function updates atom index but not the the molid index in the 
+% atom struct
+% * Multiple atom structs can be also concatenated by using this format
+% atom = update_atom({atom1 atom2 atom3})
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = noupdate_atom(atom) % Basic input arguments
+% # atom = noupdate_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively
+%
+function atom = noupdate_atom(atom,varargin)
+
+if iscell(atom)
+    
+    % In case first struct is empty
+    if size(atom,2)>1 && size(atom{1},2)==0 % Was 1?
+        for i=2:size(atom,2)
+            newatom{i-1}=atom{i};
+        end
+        atom=newatom;
+    end
+    
+    size_ind=zeros(size(atom,2),1);
+    for i=1:size(atom,2)
+        if size(atom{i},2)>0
+            size_ind(i)=1;
+        end
+    end
+    
+    keepfieldnames=fieldnames(atom{1}); % Orig line
+    if size(atom,2) > 1
+        for i=1:size(atom,2)
+            if numel(atom{i})
+                keepfieldnames=intersect(keepfieldnames,fieldnames(atom{i}));
+            end
+        end
+        for i=1:size(atom,2)
+            if numel(atom{i})
+                rmfieldnames=setdiff(fieldnames(atom{i}),keepfieldnames);
+                for j=1:numel(rmfieldnames)
+                    atom{i}=rmfield(atom{i},rmfieldnames(j));
+                end
+            end
+        end
+    end
+    
+    atom=atom(logical(size_ind));
+    atom_Tot=atom{1}; % Orig line
+    if size(atom,2) > 1
+        for i=2:size(atom,2)
+            atom_temp=atom{i};
+            if size(atom_temp,2)>0
+                if numel(unique([atom_temp.molid]))==1
+                    molid=num2cell(([atom_temp.molid]+[atom_Tot(end).molid]));
+                    [atom_temp.molid]=deal(molid{:});
+                elseif numel(unique([atom_temp.molid]))==size(atom_temp,2)
+                    molid=num2cell(([1:size(atom_temp,2)]+[atom_Tot(end).molid]));
+                    [atom_temp.molid]=deal(molid{:});
+                end
+            end
+            atom_Tot=[atom_Tot atom_temp];
+        end
+    end
+    atom=atom_Tot;
+end
+
+nAtoms=size(atom,2);
+
+atom=order_attributes(atom); % Order all attributes
+
+% assignin('base','atom1',atom);
+
+% atom = resname_atom(atom);
+
+assignin('caller','nAtoms',nAtoms);
+
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

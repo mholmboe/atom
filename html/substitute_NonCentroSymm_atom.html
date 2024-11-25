@@ -1,0 +1,643 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>substitute_NonCentroSymm_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="substitute_NonCentroSymm_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>substitute_NonCentroSymm_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This scripts performs isomorphous substitution, by replacing for instance</li>
+<li>some O1-&gt;O2 atomtypes and/or optionally T1-&gt;T2 atomtypes</li>
+<li>varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)</li>
+<li>atom is the atom struct. This is the non-centrosymmetric version.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments</li>
+<li>atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements</li>
+<li>atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z&gt;-2.5 and z&lt;12.5 in the z-direction (3).</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = substitute_NonCentroSymm_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges</span>
+<span class="comment">% clear all;</span>
+<span class="comment">% UCinX = 6;                      % Number of Unit cells in x direction</span>
+<span class="comment">% UCinY = 4;                      % Number of Unit cells in y direction</span>
+<span class="comment">% UCinZ = 1;                      % Number of Unit cells in z direction. This must be 1 (I think)</span>
+<span class="comment">% % %% Some suggested settings</span>
+<span class="comment">% NumOctSubst=16;                 % How many octahedral substituitions do you want,</span>
+<span class="comment">% NumTetSubst=4;                  % How many tetrahedral substituitions do you want</span>
+<span class="comment">% O1={'Al'}; O2={'Mgo'};  % Mgo   % O1 will get replaced by O2 NumOctSubst times</span>
+<span class="comment">% T1={'Si'}; T2={'Alt'};  % Alt   % T1 will get replaced by T2 NumTetSubst times</span>
+<span class="comment">% minO2O2_dist=5.5;               % Minimum O2/O2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+<span class="comment">% minT2T2_dist=5.5;               % Minimum T2/T2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+
+shift_z=0;
+<span class="keyword">if</span> (sum([atom.z])/size(atom,2)) &gt; 1
+    shift_z=sum([atom.z])/size(atom,2); <span class="comment">% Average z-position</span>
+    atom=translate_atom(atom,[0 0 -shift_z]) <span class="comment">% Make the atom struct centrosymmetrish around z=0</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~iscell(O1)
+    disp(<span class="string">'Converting O1 to cell'</span>)
+    O1={O1};
+<span class="keyword">end</span>
+<span class="keyword">if</span> ~iscell(O2)
+    disp(<span class="string">'Converting O2 to cell'</span>)
+    O2={O2};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 6
+    NumTetSubst=cell2mat(varargin(1));
+    <span class="keyword">if</span> iscell(varargin(2))&gt;0
+        <span class="comment">%         T1=varargin{2}(:)</span>
+        <span class="comment">%         T2=varargin{3}(:)</span>
+        T1=varargin{2}
+        T2=varargin{3}
+    <span class="keyword">else</span>
+        T1=varargin(2)
+        T2=varargin(3)
+    <span class="keyword">end</span>
+    minT2T2_dist=cell2mat(varargin(4))
+
+    <span class="keyword">if</span> ~iscell(T1)
+        disp(<span class="string">'Converting T1 to cell'</span>)
+        T1={T1}
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ~iscell(T2)
+        disp(<span class="string">'Converting T2 to cell'</span>)
+        T2={T2}
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    NumTetSubst=0;
+    T1=O1; T2=O2;  <span class="comment">% Alt   % T1 will get replaced by T2 NumTetSubst times</span>
+    minT2T2_dist=5.5;      <span class="comment">% Minimum T2/T2 substitutions distance in &Aring;, you may decrease it to 4.5 if you add alot of charge</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 10
+    <span class="comment">% Limits for the isosubstitution sites, can be useful to exclude regions for substitutions</span>
+    lolimit=varargin{5};<span class="comment">% 35; % Arbitrary low number</span>
+    hilimit=varargin{6};<span class="comment">% 85;  % Arbitrary high number</span>
+    dimension=varargin{7};    <span class="comment">% meaning == 1=x, 2=y, 3=z</span>
+<span class="keyword">else</span>
+    <span class="comment">% Limits for the isosubstitution sites, can be useful to exclude regions for substitutions</span>
+    lolimit=-1000000000;<span class="comment">% 35; % Arbitrary low number</span>
+    hilimit=100000000;<span class="comment">% 85;  % Arbitrary high number</span>
+    dimension=3;    <span class="comment">% meaning == 1=x, 2=y, 3=z</span>
+<span class="keyword">end</span>
+<span class="comment">% Total n of substitutions</span>
+NumTotalSubst=NumOctSubst+NumTetSubst;
+
+ind_O1=sort([find(strcmp([atom.type],O1)) find(strcmp([atom.type],O2))]);
+XYZ_labels=[atom.type]';
+XYZ_data = [[atom.x]' [atom.y]' [atom.z]'];
+O2_atom=[]; <span class="comment">% New addition...</span>
+
+<span class="keyword">if</span> NumOctSubst&gt;0
+
+    O1_atom=atom(ind_O1);
+    O1_Index=1:size(O1_atom,2);<span class="comment">%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));</span>
+    O1_labels=[O1_atom.type];<span class="comment">%XYZ_labels(O1_Index);</span>
+    O1_data=[[O1_atom.x]' [O1_atom.y]' [O1_atom.z]']; <span class="comment">%XYZ_data(O1_Index,1:3);</span>
+    Ave_Oct_z=mean(O1_data(:,3));
+    rand_O1_Index=O1_Index(randperm(length(O1_Index)));
+    O1_dist_matrix = dist_matrix_atom(O1_atom,Box_dim);
+
+    i=1; nSubSite=0; Oct_subst_index=[];<span class="comment">%rand_O1_Index(1);</span>
+    <span class="keyword">while</span> nSubSite&lt;=NumOctSubst
+        ind_O2=find(strcmp([O1_atom.type],O2));
+        O=intersect(ind_O2,find(O1_dist_matrix(rand_O1_Index(i),:)&lt;minO2O2_dist));
+        <span class="keyword">if</span> length(O)&lt;1 &amp;&amp; nSubSite&lt;NumOctSubst &amp;&amp; lolimit&lt;O1_data(rand_O1_Index(i),dimension) &amp;&amp; hilimit&gt;O1_data(rand_O1_Index(i),dimension)
+            <span class="comment">%             O1_data(rand_O1_Index(i),2);</span>
+            <span class="keyword">if</span> nSubSite &lt; NumOctSubst
+                Oct_subst_index=[Oct_subst_index; rand_O1_Index(i)];
+                nSubSite=nSubSite+1;
+                [O1_atom(rand_O1_Index(i)).type]=O2;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> nSubSite == NumOctSubst
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> i == length(O1_data)
+            disp(<span class="string">'Stopped the loop'</span>)
+            <span class="comment">%             sort(rand_O1_Index(1:i))</span>
+            nSubSite
+            <span class="comment">% pause(3)</span>
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+        i=i+1;
+    <span class="keyword">end</span>
+    XYZ_labels(ind_O1(Oct_subst_index))=O2;
+    [atom(ind_O1(Oct_subst_index)).type]=deal(O2);
+    O2_atom=atom((ind_O1(Oct_subst_index)));
+<span class="keyword">end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="keyword">if</span> NumTetSubst&gt;0
+
+    ind_T1=find(strcmp([atom.type],T1));
+    ind_O2=find(strcmp([atom.type],O2));
+    T1_atom=atom(ind_T1);
+    assignin(<span class="string">'caller'</span>,<span class="string">'ind_T1'</span>,ind_T1);
+    assignin(<span class="string">'caller'</span>,<span class="string">'T1_atom'</span>,T1_atom);
+    T1O2_atom=[T1_atom O2_atom];
+    T1_Index=1:size(T1_atom,2);<span class="comment">%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));</span>
+    T1_labels=[T1_atom.type];
+    T1_data=[[T1_atom.x]' [T1_atom.y]' [T1_atom.z]']; <span class="comment">%XYZ_data(O1_Index,1:3);</span>
+    Ave_Tet_z=mean(T1_data(:,3));
+    rand_T1_Index=T1_Index(randperm(length(T1_Index)));
+    T1_dist_matrix = dist_matrix_atom(T1_atom,Box_dim);
+    <span class="keyword">if</span>  NumOctSubst&gt;0
+        T1O2_dist_matrix = dist_matrix_atom(T1_atom,O2_atom,Box_dim);<span class="comment">% dist_matrixes_atom(T1_atom,O2_atom,Box_dim);</span>
+    <span class="keyword">else</span>
+        T1O2_dist_matrix=[];
+        Oct_subst_index=[];
+    <span class="keyword">end</span>
+    i=2; nTetlo=0; nTethi=0; All_subst_index=Oct_subst_index; Tet_subst_index=[];<span class="comment">%(1)= rand_T1_Index(1);</span>
+    <span class="keyword">while</span> (nTetlo+nTethi)&lt;=NumTetSubst
+        ind_T2=find(strcmp([T1_atom.type],T2));
+        ind_T2=find(strcmp([T1_atom.type],T2));
+        T=intersect(ind_T2,find(T1_dist_matrix(rand_T1_Index(i),:)&lt;minT2T2_dist));
+        <span class="keyword">if</span> numel(T1O2_dist_matrix)&gt;1
+            TO=T1O2_dist_matrix(rand_T1_Index(i),:);
+            TO=TO(TO&lt;minT2T2_dist);
+        <span class="keyword">else</span>
+            TO=[];
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> length(T)&lt;1 &amp;&amp; length(TO)&lt;1 &amp;&amp;  nTetlo &lt; NumTetSubst &amp;&amp; lolimit &lt; T1_data(rand_T1_Index(i),dimension) &amp;&amp; hilimit &gt; T1_data(rand_T1_Index(i),dimension)
+            <span class="keyword">if</span> nTetlo &lt; NumTetSubst/2 &amp;&amp; ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100&lt;=Ave_Tet_z
+                All_subst_index=[All_subst_index; rand_T1_Index(i)];
+                Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
+                nTetlo=nTetlo+1;
+                [T1_atom(rand_T1_Index(i)).type]=T2;
+            <span class="keyword">elseif</span> nTethi &lt; NumTetSubst/2 &amp;&amp; ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100&gt;=Ave_Tet_z
+                All_subst_index=[All_subst_index; rand_T1_Index(i)];
+                Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
+                nTethi=nTethi+1;
+                [T1_atom(rand_T1_Index(i)).type]=T2;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> (nTetlo+nTethi) == NumTetSubst
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> i == length(T1_data)
+            disp(<span class="string">'Stopped the loop'</span>)
+            <span class="comment">% pause(3)</span>
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+        i=i+1;
+    <span class="keyword">end</span>
+
+    XYZ_labels(ind_T1(Tet_subst_index))=T2;
+    [atom(ind_T1(Tet_subst_index)).type]=deal(T2);
+
+    <span class="keyword">if</span> nTetlo==nTethi &amp;&amp; (nTetlo+nTethi) == NumTetSubst
+        disp(<span class="string">'Second substitution success!!!'</span>)
+    <span class="keyword">else</span>
+        disp(<span class="string">'Second substitution not optimal!!!'</span>)
+        <span class="comment">% pause(3)</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> abs(shift_z)&gt;0
+    atom=translate_atom(atom,[0 0 shift_z]) <span class="comment">% Shift the atom structs z-coordinates back to the original</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> NumOctSubst&gt;0
+
+    atom_O2=atom(find(strcmpi([atom.type],O2)));
+    O2_distmatrix=dist_matrix_atom(atom_O2,Box_dim);
+    disp(<span class="string">'Minimum O2O2_dist is in &Aring;'</span>)
+    min(O2_distmatrix(2:end,1))
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> NumTetSubst&gt;0
+    atom_T2=atom(sort([find(strcmpi([atom.type],T2)) find(strcmpi([atom.type],O2))]));
+    T2_distmatrix=dist_matrix_atom(atom_T2,Box_dim);
+    disp(<span class="string">'Minimum minT2T2_dist is in &Aring;'</span>)
+    min(T2_distmatrix(2:end,1))
+
+    <span class="keyword">if</span> NumOctSubst&gt;0
+        T2O2_distmatrix=dist_matrix_atom(atom_T2,atom_O2,Box_dim);
+        disp(<span class="string">'Minimum minT2O2_dist is in &Aring;'</span>)
+        min(T2O2_distmatrix(2:end,1))
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> NumOctSubst&gt;0
+    <span class="keyword">if</span> nSubSite == NumOctSubst
+        disp(<span class="string">'First substitution success!!!'</span>)
+    <span class="keyword">else</span>
+        disp(<span class="string">'First substitution not optimal!!!'</span>)
+        <span class="keyword">try</span>
+            nSubSite
+            assignin(<span class="string">'caller'</span>,<span class="string">'nSubSite'</span>,nSubSite)
+        <span class="keyword">catch</span>
+            disp(<span class="string">'No first subst...'</span>)
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'nSubSite'</span>,nSubSite)
+
+<span class="keyword">if</span> NumTetSubst&gt;0
+    <span class="keyword">if</span> (nTetlo==nTethi &amp;&amp; (nTetlo+nTethi) == NumTetSubst)
+        disp(<span class="string">'Second substitution success!!!'</span>)
+    <span class="keyword">else</span>
+        disp(<span class="string">'Second substitution not optimal!!!'</span>)
+        <span class="keyword">try</span>
+            assignin(<span class="string">'caller'</span>,<span class="string">'nTetlo'</span>,nTetlo)
+            assignin(<span class="string">'caller'</span>,<span class="string">'nTethi'</span>,nTethi)
+        <span class="keyword">catch</span>
+            disp(<span class="string">'No second subst...'</span>)
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+composition_atom(atom);
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% substitute_NonCentroSymm_atom.m
+% * This scripts performs isomorphous substitution, by replacing for instance
+% * some O1->O2 atomtypes and/or optionally T1->T2 atomtypes
+% * varargin should be something like ,NumTetrahedralSubst,T1,T2,minT2T2_dist)
+% * atom is the atom struct. This is the non-centrosymmetric version.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments
+% # atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements
+% # atom = substitute_NonCentroSymm_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
+%
+function atom = substitute_NonCentroSymm_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges
+% clear all;
+% UCinX = 6;                      % Number of Unit cells in x direction
+% UCinY = 4;                      % Number of Unit cells in y direction
+% UCinZ = 1;                      % Number of Unit cells in z direction. This must be 1 (I think)
+% % %% Some suggested settings
+% NumOctSubst=16;                 % How many octahedral substituitions do you want,
+% NumTetSubst=4;                  % How many tetrahedral substituitions do you want
+% O1={'Al'}; O2={'Mgo'};  % Mgo   % O1 will get replaced by O2 NumOctSubst times
+% T1={'Si'}; T2={'Alt'};  % Alt   % T1 will get replaced by T2 NumTetSubst times
+% minO2O2_dist=5.5;               % Minimum O2/O2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+% minT2T2_dist=5.5;               % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+
+shift_z=0;
+if (sum([atom.z])/size(atom,2)) > 1
+    shift_z=sum([atom.z])/size(atom,2); % Average z-position
+    atom=translate_atom(atom,[0 0 -shift_z]) % Make the atom struct centrosymmetrish around z=0
+end
+
+if ~iscell(O1)
+    disp('Converting O1 to cell')
+    O1={O1};
+end
+if ~iscell(O2)
+    disp('Converting O2 to cell')
+    O2={O2};
+end
+
+if nargin > 6
+    NumTetSubst=cell2mat(varargin(1));
+    if iscell(varargin(2))>0
+        %         T1=varargin{2}(:)
+        %         T2=varargin{3}(:)
+        T1=varargin{2}
+        T2=varargin{3}
+    else
+        T1=varargin(2)
+        T2=varargin(3)
+    end
+    minT2T2_dist=cell2mat(varargin(4))
+
+    if ~iscell(T1)
+        disp('Converting T1 to cell')
+        T1={T1}
+    end
+
+    if ~iscell(T2)
+        disp('Converting T2 to cell')
+        T2={T2}
+    end
+else
+    NumTetSubst=0;
+    T1=O1; T2=O2;  % Alt   % T1 will get replaced by T2 NumTetSubst times
+    minT2T2_dist=5.5;      % Minimum T2/T2 substitutions distance in Å, you may decrease it to 4.5 if you add alot of charge
+end
+
+if nargin > 10
+    % Limits for the isosubstitution sites, can be useful to exclude regions for substitutions
+    lolimit=varargin{5};% 35; % Arbitrary low number
+    hilimit=varargin{6};% 85;  % Arbitrary high number
+    dimension=varargin{7};    % meaning == 1=x, 2=y, 3=z
+else
+    % Limits for the isosubstitution sites, can be useful to exclude regions for substitutions
+    lolimit=-1000000000;% 35; % Arbitrary low number
+    hilimit=100000000;% 85;  % Arbitrary high number
+    dimension=3;    % meaning == 1=x, 2=y, 3=z
+end
+% Total n of substitutions
+NumTotalSubst=NumOctSubst+NumTetSubst;
+
+ind_O1=sort([find(strcmp([atom.type],O1)) find(strcmp([atom.type],O2))]);
+XYZ_labels=[atom.type]';
+XYZ_data = [[atom.x]' [atom.y]' [atom.z]'];
+O2_atom=[]; % New addition...
+
+if NumOctSubst>0
+
+    O1_atom=atom(ind_O1);
+    O1_Index=1:size(O1_atom,2);%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));
+    O1_labels=[O1_atom.type];%XYZ_labels(O1_Index);
+    O1_data=[[O1_atom.x]' [O1_atom.y]' [O1_atom.z]']; %XYZ_data(O1_Index,1:3);
+    Ave_Oct_z=mean(O1_data(:,3));
+    rand_O1_Index=O1_Index(randperm(length(O1_Index)));
+    O1_dist_matrix = dist_matrix_atom(O1_atom,Box_dim);
+
+    i=1; nSubSite=0; Oct_subst_index=[];%rand_O1_Index(1);
+    while nSubSite<=NumOctSubst
+        ind_O2=find(strcmp([O1_atom.type],O2));
+        O=intersect(ind_O2,find(O1_dist_matrix(rand_O1_Index(i),:)<minO2O2_dist));
+        if length(O)<1 && nSubSite<NumOctSubst && lolimit<O1_data(rand_O1_Index(i),dimension) && hilimit>O1_data(rand_O1_Index(i),dimension)
+            %             O1_data(rand_O1_Index(i),2);
+            if nSubSite < NumOctSubst
+                Oct_subst_index=[Oct_subst_index; rand_O1_Index(i)];
+                nSubSite=nSubSite+1;
+                [O1_atom(rand_O1_Index(i)).type]=O2;
+            end
+        end
+
+        if nSubSite == NumOctSubst
+            break
+        end
+        if i == length(O1_data)
+            disp('Stopped the loop')
+            %             sort(rand_O1_Index(1:i))
+            nSubSite
+            % pause(3)
+            break
+        end
+        i=i+1;
+    end
+    XYZ_labels(ind_O1(Oct_subst_index))=O2;
+    [atom(ind_O1(Oct_subst_index)).type]=deal(O2);
+    O2_atom=atom((ind_O1(Oct_subst_index)));
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if NumTetSubst>0
+
+    ind_T1=find(strcmp([atom.type],T1));
+    ind_O2=find(strcmp([atom.type],O2));
+    T1_atom=atom(ind_T1);
+    assignin('caller','ind_T1',ind_T1);
+    assignin('caller','T1_atom',T1_atom);
+    T1O2_atom=[T1_atom O2_atom];
+    T1_Index=1:size(T1_atom,2);%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));
+    T1_labels=[T1_atom.type];
+    T1_data=[[T1_atom.x]' [T1_atom.y]' [T1_atom.z]']; %XYZ_data(O1_Index,1:3);
+    Ave_Tet_z=mean(T1_data(:,3));
+    rand_T1_Index=T1_Index(randperm(length(T1_Index)));
+    T1_dist_matrix = dist_matrix_atom(T1_atom,Box_dim);
+    if  NumOctSubst>0
+        T1O2_dist_matrix = dist_matrix_atom(T1_atom,O2_atom,Box_dim);% dist_matrixes_atom(T1_atom,O2_atom,Box_dim);
+    else
+        T1O2_dist_matrix=[];
+        Oct_subst_index=[];
+    end
+    i=2; nTetlo=0; nTethi=0; All_subst_index=Oct_subst_index; Tet_subst_index=[];%(1)= rand_T1_Index(1);
+    while (nTetlo+nTethi)<=NumTetSubst
+        ind_T2=find(strcmp([T1_atom.type],T2));
+        ind_T2=find(strcmp([T1_atom.type],T2));
+        T=intersect(ind_T2,find(T1_dist_matrix(rand_T1_Index(i),:)<minT2T2_dist));
+        if numel(T1O2_dist_matrix)>1
+            TO=T1O2_dist_matrix(rand_T1_Index(i),:);
+            TO=TO(TO<minT2T2_dist);
+        else
+            TO=[];
+        end
+        if length(T)<1 && length(TO)<1 &&  nTetlo < NumTetSubst && lolimit < T1_data(rand_T1_Index(i),dimension) && hilimit > T1_data(rand_T1_Index(i),dimension)
+            if nTetlo < NumTetSubst/2 && ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100<=Ave_Tet_z
+                All_subst_index=[All_subst_index; rand_T1_Index(i)];
+                Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
+                nTetlo=nTetlo+1;
+                [T1_atom(rand_T1_Index(i)).type]=T2;
+            elseif nTethi < NumTetSubst/2 && ceil(XYZ_data(ind_T1(rand_T1_Index(i)),3)*100)/100>=Ave_Tet_z
+                All_subst_index=[All_subst_index; rand_T1_Index(i)];
+                Tet_subst_index=[Tet_subst_index; rand_T1_Index(i)];
+                nTethi=nTethi+1;
+                [T1_atom(rand_T1_Index(i)).type]=T2;
+            end
+        end
+        if (nTetlo+nTethi) == NumTetSubst
+            break
+        end
+        if i == length(T1_data)
+            disp('Stopped the loop')
+            % pause(3)
+            break
+        end
+        i=i+1;
+    end
+
+    XYZ_labels(ind_T1(Tet_subst_index))=T2;
+    [atom(ind_T1(Tet_subst_index)).type]=deal(T2);
+
+    if nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst
+        disp('Second substitution success!!!')
+    else
+        disp('Second substitution not optimal!!!')
+        % pause(3)
+    end
+
+end
+
+if abs(shift_z)>0
+    atom=translate_atom(atom,[0 0 shift_z]) % Shift the atom structs z-coordinates back to the original
+end
+
+if NumOctSubst>0
+
+    atom_O2=atom(find(strcmpi([atom.type],O2)));
+    O2_distmatrix=dist_matrix_atom(atom_O2,Box_dim);
+    disp('Minimum O2O2_dist is in Å')
+    min(O2_distmatrix(2:end,1))
+end
+
+if NumTetSubst>0
+    atom_T2=atom(sort([find(strcmpi([atom.type],T2)) find(strcmpi([atom.type],O2))]));
+    T2_distmatrix=dist_matrix_atom(atom_T2,Box_dim);
+    disp('Minimum minT2T2_dist is in Å')
+    min(T2_distmatrix(2:end,1))
+
+    if NumOctSubst>0
+        T2O2_distmatrix=dist_matrix_atom(atom_T2,atom_O2,Box_dim);
+        disp('Minimum minT2O2_dist is in Å')
+        min(T2O2_distmatrix(2:end,1))
+    end
+
+end
+
+if NumOctSubst>0
+    if nSubSite == NumOctSubst
+        disp('First substitution success!!!')
+    else
+        disp('First substitution not optimal!!!')
+        try
+            nSubSite
+            assignin('caller','nSubSite',nSubSite)
+        catch
+            disp('No first subst...')
+        end
+
+    end
+end
+
+assignin('caller','nSubSite',nSubSite)
+
+if NumTetSubst>0
+    if (nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst)
+        disp('Second substitution success!!!')
+    else
+        disp('Second substitution not optimal!!!')
+        try
+            assignin('caller','nTetlo',nTetlo)
+            assignin('caller','nTethi',nTethi)
+        catch
+            disp('No second subst...')
+        end
+
+    end
+end
+
+composition_atom(atom);
+
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

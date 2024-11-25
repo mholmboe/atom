@@ -12,7 +12,7 @@
 % protonate_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -63,7 +63,7 @@ if nargin==6
             CN_M_ind=find(CN_M==CN);
             ind_M=intersect(Ion_M_ind,CN_M_ind);
             crysradii_M=CrysRadii(ind_M);
-            
+
             Ion_O_ind=find(strcmp(Ion,'O'));
             if CN_M==1
                 CN_M=2;
@@ -127,11 +127,11 @@ while i < size(healed_atom,2)
 
         healed_atom(rmind) = translate_atom(healed_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
         healed_atom(rmind) = wrap_atom(healed_atom(rmind),Box_dim);
-        
+
         [healed_atom(i).x]=mean([healed_atom(rmind).x]);
         [healed_atom(i).y]=mean([healed_atom(rmind).y]);
         [healed_atom(i).z]=mean([healed_atom(rmind).z]);
-        
+
         healed_atom(rmind) = translate_atom(healed_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
@@ -146,13 +146,15 @@ if isstruct(healed_atom)
         end
     catch
     end
-    
-%     try
-%         if isfield(healed_atom,'xfrac')
-%             healed_atom=rmfield(healed_atom,'xfrac');
-%             healed_atom=rmfield(healed_atom,'yfrac');
-%             healed_atom=rmfield(healed_atom,'zfrac');
-%         end
-%     catch
-%     end
+
+    %     try
+    %         if isfield(healed_atom,'xfrac')
+    %             healed_atom=rmfield(healed_atom,'xfrac');
+    %             healed_atom=rmfield(healed_atom,'yfrac');
+    %             healed_atom=rmfield(healed_atom,'zfrac');
+    %         end
+    %     catch
+    %     end
+end
+
 end

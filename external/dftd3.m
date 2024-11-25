@@ -4,7 +4,7 @@
 % in "'PATH'"
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -16,10 +16,10 @@ function dftd3(varargin)
 
 if nargin>0
 
-    eval(char(strcat({'!/Users/miho0052/opt/anaconda3/bin/dftd3'},{' '},varargin{1})))
+    eval(char(strcat({'!/Users/miho0052/opt/miniconda3/bin/s-dftd3'},{' '},varargin{1})))
     
 else
     
-    eval('!/Users/miho0052/opt/anaconda3/bin/dftd3 -h')
+    eval('!/Users/miho0052/opt/miniconda3/bin/s-dftd3')
     
 end

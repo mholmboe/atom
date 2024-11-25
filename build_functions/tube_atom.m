@@ -1,15 +1,15 @@
 %% tube_atom.m
-% * This quirky function can be used to create a nano-tube or nano-roll of the 
-% coordinates from an atom struct. It works best if the the input atom struct 
-% consists of one centered unit cell (to keep the number of atoms down). 
+% * This quirky function can be used to create a nano-tube or nano-roll of the
+% coordinates from an atom struct. It works best if the the input atom struct
+% consists of one centered unit cell (to keep the number of atoms down).
 % You can always the replicate_atom() function later to build the entire roll/tube.
 % * See needed variables/parameters below on line 22-27 and 37 to play around with.
 % For non-centrosymmetric layers, chosing +R or -R on line 45 allow you to
-% choose the type of inner-surface atoms. The spiral_vector and Rshift on 
+% choose the type of inner-surface atoms. The spiral_vector and Rshift on
 % 37 can be used to skew the spiral in the x and/or the y direction/s.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -34,6 +34,7 @@ elseif Dim==3
     L=Box_dim(3);
 end
 
+i=2
 spiral_vector = [0   0   Rshift*(Rshift/(Rshift+i/AngularRange/2))] % [0 0 0] makes a tube, anything else creates a spiral roll perpendicular to [x y z]
 R = L*nUC/(2*pi) % Target inner radii
 Cf = 2*pi*R % Target inner circumference, not used
@@ -51,23 +52,23 @@ prev_temp=atom;AngleList(1)=0;DeltaList(1)=0;
 for i=1:nUCreal
     A=0;delta=0;angle=0;MajorAtomicOverlap=0;
     while abs(A-L)>(UCaccuracy*L)
-        
+
         if A-L > UCaccuracy*L
             angle=(i-1)*AngularRange/nUCreal-delta;
         elseif A-L < UCaccuracy*L
             angle=(i-1)*AngularRange/nUCreal+delta;
         end
-        
+
         if angle<AngleList(end)
             angle=AngleList(end);
         end
-        
+
         %         if angle>AngularRange
         %             disp('angle larger than the AngularRange')
         %             [angle AngularRange]
         %
         %         end
-        
+
         if Dim==1
             trans_temp = spiral_atom(atom,Box_dim,[angle 0 0],i*spiral_vector);
         elseif Dim==2
@@ -77,26 +78,26 @@ for i=1:nUCreal
             pause
             %             trans_temp = spiral_atom(atom,Box_dim,[0 0 angle],i*[0 0 Rshift]);
         end
-        
+
         D=dist_matrix_noPBC_atom(trans_temp,prev_temp);
         A=mean(diag(D));
         delta=delta+deltaaccuracy;
-        
+
     end
-    
+
     angle
-    
+
     DeltaList(i)=delta;
     AngleList(i)=angle;
     System=update_atom({System trans_temp});
     prev_temp=trans_temp;
-    
+
     %     if mod(i,10)==1
     %         if i > 1
     %             i-1
     %         end
     %     end
-    
+
 end
 
 if Rshift==0
@@ -120,4 +121,6 @@ disp('.')
 disp('.')
 disp('Note that this function offers no error-checking in terms of overlapping atoms')
 disp('..no clever math can be found here..')
+
+end
 

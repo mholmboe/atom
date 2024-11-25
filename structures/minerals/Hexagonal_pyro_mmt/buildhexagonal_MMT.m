@@ -2,7 +2,7 @@ clear all;
 format compact;
 %% Import_the hexagonal Pyrophyllite structure, cutted and sliced in Avogadro for instance
 %%
-filename='hex_n1570_5nm_pyro_clayff.gro';
+filename='hex_n1276_4nm_pyro.pdb';
 oldresname='pyro'; % New resname
 newresname='MMT'; % New resname
 import_atom(filename);
@@ -17,7 +17,12 @@ fb_atom = find_bonded_atom(atom,Box_dim,ind_Oalhhh,'Al');
 NumOctSubst=2*ceil(floor(2/3*size(atom,2)/40)/2);
 atom1 = substitute_atom(atom,Box_dim,NumOctSubst,'Al','Mgo',5);
 [atom1(type2_ind).type]=deal({'Al'}); % Rename DAl atoms back to Al
-atom1=clayff211_atom(atom1,Box_dim,'clayff','spc');
+atom1=clayff_atom(atom1,Box_dim,'clayff','spc');
+atomwithWat=atom1;
+% 
+% atom1(~[1574  21    1652])=[];
+atomnoWat=clayff_atom(atom1,Box_dim,'clayff','spc');
+
 % vmd(atom1,Box_dim)
 %% Write the gromacs itp file
 %%

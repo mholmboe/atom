@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>heal_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="heal_atom.m"><style type="text/css">
+      -->
+<title>heal_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="heal_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,56 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>heal_atom.m</h1><!--introduction--><div><ul><li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li><li>Note that you first need to find which sites that should be healed, using for instance the bond_valende_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Similar</a></li><li><a href="#2">Version</a></li><li><a href="#3">Contact</a></li><li><a href="#4">Examples</a></li></ul></div><h2 id="1">Similar</h2><p>fuse_atom protonate_atom</p><h2 id="2">Version</h2><p>2.11</p><h2 id="3">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="4">Examples</h2><div><ol><li>healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])</li><li>healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He')</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)</li><li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')</li></ol></div><pre class="codeinput"><span class="keyword">function</span> healed_atom = heal_atom(atom,Box_dim,ind,varargin) <span class="comment">% optional varargs == rmaxlong,heal_type,r|'Shannon');</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>heal_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function heals sites in the atom struct given by the index vector ind, by adding a certain atomtype to a new atom struct called healed_atom. It does so by placing the new atom type opposite to the mean position of all neighbours within rcut [&Aring;] of the healed site.</li>
+<li>Note that you first need to find which sites that should be healed, using for instance the bond_valende_atom function, and then decide with what atomtypes the unsaturated sites should be healed with.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Similar</a>
+</li>
+<li>
+<a href="#2">Version</a>
+</li>
+<li>
+<a href="#3">Contact</a>
+</li>
+<li>
+<a href="#4">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Similar</h2>
+<p>fuse_atom protonate_atom</p>
+<h2 id="2">Version</h2>
+<p>3.00</p>
+<h2 id="3">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="4">Examples</h2>
+<div>
+<ol>
+<li>healed_atom = heal_atom(atom,Box_dim,[6 16 26 36])</li>
+<li>healed_atom = heal_atom(atom,Box_dim,[6:10:960],3)</li>
+<li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],3,'He')</li>
+<li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He')</li>
+<li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)</li>
+<li>healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> healed_atom = heal_atom(atom,Box_dim,ind,varargin) <span class="comment">% optional varargs == rmaxlong,heal_type,r|'Shannon');</span>
 
 <span class="keyword">if</span> nargin==2
     disp(<span class="string">'You must supply an index vector indicating which sites that should be healed'</span>);
@@ -189,16 +243,25 @@ healed_atom(rmind_tot)=[];
     <span class="keyword">catch</span>
     <span class="keyword">end</span>
 
-<span class="comment">%     try</span>
-<span class="comment">%         if isfield(healed_atom,'xfrac')</span>
-<span class="comment">%             healed_atom=rmfield(healed_atom,'xfrac');</span>
-<span class="comment">%             healed_atom=rmfield(healed_atom,'yfrac');</span>
-<span class="comment">%             healed_atom=rmfield(healed_atom,'zfrac');</span>
-<span class="comment">%         end</span>
-<span class="comment">%     catch</span>
-<span class="comment">%     end</span>
+    <span class="comment">%     try</span>
+    <span class="comment">%         if isfield(healed_atom,'xfrac')</span>
+    <span class="comment">%             healed_atom=rmfield(healed_atom,'xfrac');</span>
+    <span class="comment">%             healed_atom=rmfield(healed_atom,'yfrac');</span>
+    <span class="comment">%             healed_atom=rmfield(healed_atom,'zfrac');</span>
+    <span class="comment">%         end</span>
+    <span class="comment">%     catch</span>
+    <span class="comment">%     end</span>
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% heal_atom.m
 % * This function heals sites in the atom struct given by the index
@@ -214,7 +277,7 @@ healed_atom(rmind_tot)=[];
 % protonate_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -265,7 +328,7 @@ if nargin==6
             CN_M_ind=find(CN_M==CN);
             ind_M=intersect(Ion_M_ind,CN_M_ind);
             crysradii_M=CrysRadii(ind_M);
-            
+
             Ion_O_ind=find(strcmp(Ion,'O'));
             if CN_M==1
                 CN_M=2;
@@ -329,11 +392,11 @@ while i < size(healed_atom,2)
 
         healed_atom(rmind) = translate_atom(healed_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
         healed_atom(rmind) = wrap_atom(healed_atom(rmind),Box_dim);
-        
+
         [healed_atom(i).x]=mean([healed_atom(rmind).x]);
         [healed_atom(i).y]=mean([healed_atom(rmind).y]);
         [healed_atom(i).z]=mean([healed_atom(rmind).z]);
-        
+
         healed_atom(rmind) = translate_atom(healed_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind>i)];
     end
@@ -348,16 +411,19 @@ if isstruct(healed_atom)
         end
     catch
     end
-    
-%     try
-%         if isfield(healed_atom,'xfrac')
-%             healed_atom=rmfield(healed_atom,'xfrac');
-%             healed_atom=rmfield(healed_atom,'yfrac');
-%             healed_atom=rmfield(healed_atom,'zfrac');
-%         end
-%     catch
-%     end
+
+    %     try
+    %         if isfield(healed_atom,'xfrac')
+    %             healed_atom=rmfield(healed_atom,'xfrac');
+    %             healed_atom=rmfield(healed_atom,'yfrac');
+    %             healed_atom=rmfield(healed_atom,'zfrac');
+    %         end
+    %     catch
+    %     end
 end
 
+end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

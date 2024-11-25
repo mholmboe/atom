@@ -2,7 +2,7 @@
 % * The atom struct, the main variable in the atom MATLAB library.
 %
 %% Version
-% 2.11
+% 3.00
 %
 
 %% Introduction to the atom struct
@@ -11,8 +11,8 @@
 % attributes like atomtype names, moleculeID's, atomID's, coordinates
 % and more as indexed fields in the atom struct. A brief list of the atom 
 % struct fields are listed below.
-% Normally all strings are cell strings and all numeric variables are
-% double-precision floating-points. Unassigned values are set to 'NaN' or 0
+% Normally all strings are cell strings and all numeric variables are in
+% single-precision. Unassigned values are set to 'NaN' or 0
 % . *_atom_* is the default variable name for the atom struct, however 
 % any string name (not starting with a numeric value) would also work, like 
 % *_DNA_*, *_Ions_* or *_Water_* etc.
@@ -97,6 +97,7 @@
 
 %% Try this: 
 atom=import_atom('Ethanol.pdb') % Will also output the Box_dim variable and some other stuff, see the variable explorer
+atom=bond_atom(atom,Box_dim) % Analyze and find the bonds between all atoms in the atom struct, having the same MolID, ie belonging to the same molecule.
 atom=center_atom(atom,Box_dim) % Center the coordinates, i.e. [atom.x|.y|.z]
 show_atom(atom,Box_dim,.1,1) % Plot the atom with the Box_dim
 

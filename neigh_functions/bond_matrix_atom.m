@@ -2,7 +2,7 @@
 % * This function tries to assign all bonds to a bond_matrix
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -26,7 +26,7 @@ Radiiproperties=load('Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
 % clayff_param(sort(unique([atom.type])),'SPC/E');
 
-if size(atom,2)>5000
+if size(atom,2)>10000
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25);
 else
     dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,2.25);

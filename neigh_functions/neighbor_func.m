@@ -4,7 +4,7 @@
 %  * Triclinic support untested
 %
 %% Version
-% 2.07
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -15,8 +15,6 @@
 function Neigh = neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)
 
 % Box_dim=[lx ly lz 0 0 xy 0 xz yz];
-
-rx=zeros(size(XYZ_data,1),1);ry=zeros(size(XYZ_data,1),1);rz=zeros(size(XYZ_data,1),1);
 
 lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 if numel(Box_dim)==3
@@ -52,8 +50,10 @@ dist = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
 % Find points inside circle
 in=intersect(find(dist>0),find(dist<radius));
 % in=sort(unique(in));
-in = in(find(in~=solute_index));
-Neigh.in = [in(find(in~=solute_index))];
+% in = in(find(in~=solute_index));
+% Neigh.in = [in(find(in~=solute_index))];
+in = in(in~=solute_index);
+Neigh.in = in;
 Neigh.dist = [dist(in,1)];
 Neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
 Neigh.r_vec = [rx(in) ry(in) rz(in)];

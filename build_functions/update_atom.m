@@ -5,7 +5,7 @@
 % atom = update_atom({atom1 atom2 atom3})
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -104,4 +104,6 @@ if nargin>1
 end
 
 assignin('caller','nAtoms',nAtoms);
+
+end
 

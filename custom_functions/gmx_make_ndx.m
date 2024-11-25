@@ -2,20 +2,20 @@
 % * This function can help you print custom gromacs .ndx files, you
 % just have to find a way to find the indexes id you want to print out
 % with the group name {groupname}. The printed index file (default
-% index.ndx) can be appended with new groups. See also <Make_selections.html Make_selections> 
+% index.ndx) can be appended with new groups. See also <Make_selections.html Make_selections>
 % how to make custom selections and find the corresponding atom indexes, MolID's etc.
 %
-% * Example on how to select all molID's of water (having [atom.types], 
+% * Example on how to select all molID's of water (having [atom.types],
 % the site names 'Ow') having z < 10, run this:
 %
-% ind=find(strcmpi([atom.type],'Ow')&[atom.z]<10); % find all Ow atoms with z coordinates < 10 
+% ind=find(strcmpi([atom.type],'Ow')&[atom.z]<10); % find all Ow atoms with z coordinates < 10
 %
 % id=[atom(ind).molid]; % get the molID's of the Ow atoms from the previous command
 %
 % gmx_make_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -25,7 +25,7 @@
 % # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
-function gmx_make_ndx(groupname,id,varargin)
+function gmx_make_ndx(id,groupname,varargin)
 
 if nargin==1
     disp('You did not supply enough input arguments!')
@@ -50,8 +50,6 @@ else
     filename = strcat(filename,'.ndx');
 end
 
-
-
 % Format the ind vector to have 15 entries per row
 ext_ind=zeros(1,15*ceil(length(id)/15));
 ext_ind(1:length(id))=id;
@@ -74,3 +72,5 @@ end
 fprintf(fid, '\r\n');
 fprintf(fid, '\r\n');
 fclose(fid);
+
+end

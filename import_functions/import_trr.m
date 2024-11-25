@@ -9,7 +9,7 @@
 % dimensions to Box_dim
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -59,7 +59,11 @@
 % * atom = import_trr('conf.gro',traj.trr)
 % * atom = import_trr('conf.pdb',traj.trr,10)
 
-function atom = import_trr(filenameconf,filenametrr,varargin)
+function [atom,traj,vtraj,ftraj] = import_trr(filenameconf,filenametrr,varargin)
+
+traj=[];   
+vtraj=[];
+ftraj=[];
 
 % If you need to set your local Gromacs PATH (but you could also call PATH2GMX)
 % PATH=getenv('PATH');
@@ -92,7 +96,7 @@ end
 if nargin>3
     MaxFrames=varargin{2};
 else
-    MaxFrames=10000;
+    MaxFrames=20000;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

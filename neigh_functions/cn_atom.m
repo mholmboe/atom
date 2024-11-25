@@ -6,7 +6,7 @@
 %
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -23,21 +23,32 @@ else
     rmaxlong=2.25;
 end
 
-if size(atom,2)>100000 && numel(Box_dim)<9
-    disp('Will use the cell list method')
-    disp('Does not work for triclinic systems...')
-    pause(5)
-    dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
-else
-    atom=bond_atom(atom,Box_dim,rmaxlong);
-end
+% if size(atom,2)>100000 && numel(Box_dim)<9
+%     disp('Will use the cell list method')
+%     disp('Does not work for triclinic systems...')
+%     pause(5)
+%     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
+% else
+     atom=bond_atom(atom,Box_dim,rmaxlong);
+% end
 
 CN=num2cell(CoordNumber);
 [atom.cn]=CN{:};
 
-assignin('caller','Bond_index',Bond_index);
-assignin('caller','CoordNumber',CoordNumber);
-assignin('caller','Remove_ind',Remove_ind);
+try
+    assignin('caller','nBonds',nBonds);
+    assignin('caller','radius_limit',radius_limit);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Neigh_index',Neigh_index);
+    % assignin('caller','bond_matrix',dist_matrix);
+    assignin('caller','dist_matrix',dist_matrix);
+    assignin('caller','CoordNumber',CoordNumber);
+    assignin('caller','Remove_ind',Remove_ind);
+catch
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','CoordNumber',CoordNumber);
+    assignin('caller','Remove_ind',Remove_ind);
+end
 
 if nargin>3
     minCN=0;

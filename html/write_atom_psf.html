@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>write_atom_psf.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="write_atom_psf.m"><style type="text/css">
+      -->
+<title>write_atom_psf.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="write_atom_psf.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,54 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>write_atom_psf.m</h1><!--introduction--><div><ul><li>This function writes an .psf file from the atom struct</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Find atomtype specific indexes</a></li><li><a href="#6">To only keep bonds to H's, uncomment the next three lines</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>write_atom_psf(atom,Box_dim,filename_out) % Basic input arguments</li><li>write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce') % Specifying the rmaxshort and rmaxlong cutoff's and forcefield to use</li></ol></div><pre class="codeinput"><span class="keyword">function</span> write_atom_psf(atom,Box_dim,filename,varargin)
-</pre><pre class="codeinput">format <span class="string">long</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>write_atom_psf.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function writes an .psf file from the atom struct</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Find atomtype specific indexes</a>
+</li>
+<li>
+<a href="#6">To only keep bonds to H's, uncomment the next three lines</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>write_atom_psf(atom,Box_dim,filename_out) % Basic input arguments</li>
+<li>write_atom_psf(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce') % Specifying the rmaxshort and rmaxlong cutoff's and forcefield to use</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> write_atom_psf(atom,Box_dim,filename,varargin)
+</pre>
+<pre class="codeinput">format <span class="string">long</span>
 nAtoms=size(atom,2);
 
 <span class="keyword">if</span> regexp(filename,<span class="string">'.psf'</span>) ~= false
@@ -175,7 +226,9 @@ Atom_label = unique([atom.type]);
     explicit_bonds = 0;
     explicit_angles = 0;
 <span class="keyword">end</span>
-</pre><h2 id="5">Find atomtype specific indexes</h2><pre class="codeinput">ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],<span class="string">'h'</span>)));
+</pre>
+<h2 id="5">Find atomtype specific indexes</h2>
+<pre class="codeinput">ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],<span class="string">'h'</span>)));
 ind_H=find(strncmpi([atom.type],{<span class="string">'H'</span>},1));
 ind_O=find(strncmpi([atom.type],{<span class="string">'O'</span>},1));
 ind_Osih=find(strncmpi([atom.type],{<span class="string">'Osih'</span>},4));
@@ -193,7 +246,9 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 <span class="comment">%     %     Bond_index=Bond_index(h_row,:);</span>
 <span class="comment">%     %     nBonds=size(Bond_index,1);</span>
 <span class="comment">%</span>
-</pre><h2 id="6">To only keep bonds to H's, uncomment the next three lines</h2><pre class="codeinput">[H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
+</pre>
+<h2 id="6">To only keep bonds to H's, uncomment the next three lines</h2>
+<pre class="codeinput">[H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
 Bond_index=Bond_index(H_row,:);
 nBonds=size(Bond_index,1);
 <span class="comment">%</span>
@@ -401,13 +456,20 @@ fprintf(fid, <span class="string">'\n'</span>);
 fclose(fid);
 
 assignin(<span class="string">'caller'</span>,<span class="string">'itp_atom'</span>,atom);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% write_atom_psf.m
 % * This function writes an .psf file from the atom struct
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -758,4 +820,6 @@ assignin('caller','itp_atom',atom);
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

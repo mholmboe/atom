@@ -4,7 +4,7 @@
 % in "'PATH'"
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -15,9 +15,7 @@
 function python(varargin)
 
 if nargin>0
-    
     eval(char(strcat({'!/Users/miho0052/opt/miniconda3/bin/python'},{' '},varargin{1})))
-    
 else
     
     eval(char(strcat({'!/Users/miho0052/opt/miniconda3/bin/python'})))

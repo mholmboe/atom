@@ -6,7 +6,7 @@
 % installed and the PATH2VMD() function set up accordingly
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

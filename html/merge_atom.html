@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>merge_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="merge_atom.m"><style type="text/css">
+      -->
+<title>merge_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="merge_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>merge_atom.m</h1><!--introduction--><div><ul><li>This function returns the atom2 struct with atoms in the atom2 struct with a distance rmin [1x1 or 1x2] away from the atoms in the atom1 struct.</li><li>There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting rmin(2) to a smaller value than rmin(1).</li><li>You must decide if atom1w should be wrapped or not before running this function</li><li>Do not wrap atomw1 here, do it before calling this function since Box1 does not always equal the full Box_dim, but rather a region in the full Box_dim</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)</li><li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,rmin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>merge_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function returns the atom2 struct with atoms in the atom2 struct with a distance rmin [1x1 or 1x2] away from the atoms in the atom1 struct.</li>
+<li>There is also a possibility to use a twin-range cutoff approach (suitable for OH2), by setting rmin(2) to a smaller value than rmin(1).</li>
+<li>You must decide if atom1w should be wrapped or not before running this function</li>
+<li>Do not wrap atomw1 here, do it before calling this function since Box1 does not always equal the full Box_dim, but rather a region in the full Box_dim</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)</li>
+<li>atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,rmin)
 
 <span class="comment">% if max([atom1.x])&gt;Box1(1)</span>
 <span class="comment">%     disp('Box1 smaller that Box_dim in x direction, perhaps using unwrapped atom1?')</span>
@@ -151,7 +198,8 @@ indvec=zeros(1,nAtoms2);
     dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
     clear <span class="string">X*dist</span> <span class="string">Y*dist</span> <span class="string">Z*dist</span>;
 <span class="keyword">elseif</span> size(atom2w,2)&gt;0
-</pre><pre class="codeinput">    <span class="comment">% To do them all at once</span>
+</pre>
+<pre class="codeinput">    <span class="comment">% To do them all at once</span>
     <span class="comment">%disp('Single distance matrix')</span>
     size([atom1w.x]');
     size([atom2w.x]');
@@ -164,9 +212,12 @@ indvec=zeros(1,nAtoms2);
         Y_dist(Y_dist&gt;Box1(2)/2)=Y_dist(Y_dist&gt;Box1(2)/2)-Box1(2);
         Z_dist(Z_dist&gt;Box1(3)/2)=Z_dist(Z_dist&gt;Box1(3)/2)-Box1(3);
     <span class="keyword">end</span>
-</pre><pre class="codeinput">    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
+</pre>
+<pre class="codeinput">    dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
     clear <span class="string">X*dist</span> <span class="string">Y*dist</span> <span class="string">Z*dist</span>;
-</pre><pre class="codeinput"><span class="keyword">else</span>
+</pre>
+<pre class="codeinput">
+<span class="keyword">else</span>
     disp(<span class="string">'atom2w is empty'</span>)
 <span class="keyword">end</span>
 
@@ -222,7 +273,16 @@ indvec=zeros(1,nAtoms2);
 
 <span class="keyword">end</span>
 <span class="comment">% vmd([atom1w atom2w],Box1)</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% merge_atom.m
 % * This function returns the atom2 struct with atoms in the atom2 struct
@@ -236,7 +296,7 @@ indvec=zeros(1,nAtoms2);
 % full Box_dim
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -293,7 +353,7 @@ if size(atom2w,2)>20000
     size(atom1w);
     size(atom2w);
     dist_matrix = dist_matrix_atom(atom1,varargin)
-    
+
     X1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).x]',[atom2w(1:floor(nAtoms2/2)).x]');
     Y1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).y]',[atom2w(1:floor(nAtoms2/2)).y]');
     Z1_dist=pdist2([atom1w(1:floor(nAtoms1/2)).z]',[atom2w(1:floor(nAtoms2/2)).z]');
@@ -306,7 +366,7 @@ if size(atom2w,2)>20000
     X4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).x]',[atom2w(floor((nAtoms2)/2)+1:end).x]');
     Y4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).y]',[atom2w(floor((nAtoms2)/2)+1:end).y]');
     Z4_dist=pdist2([atom1w(floor((nAtoms1)/2)+1:end).z]',[atom2w(floor((nAtoms2)/2)+1:end).z]');
-    
+
     if regional_solvation==0
         X1_dist(X1_dist>Box1(1)/2)=X1_dist(X1_dist>Box1(1)/2)-Box1(1);
         Y1_dist(Y1_dist>Box1(2)/2)=Y1_dist(Y1_dist>Box1(2)/2)-Box1(2);
@@ -321,11 +381,11 @@ if size(atom2w,2)>20000
         Y4_dist(Y4_dist>Box1(2)/2)=Y4_dist(Y4_dist>Box1(2)/2)-Box1(2);
         Z4_dist(Z4_dist>Box1(3)/2)=Z4_dist(Z4_dist>Box1(3)/2)-Box1(3);
     end
-    
+
     X_dist=[X1_dist X2_dist;X3_dist X4_dist];
     Y_dist=[Y1_dist Y2_dist;Y3_dist Y4_dist];
     Z_dist=[Z1_dist Z2_dist;Z3_dist Z4_dist];
-    
+
     dist_matrix=(X_dist.^2+Y_dist.^2+Z_dist.^2).^.5;
     clear X*dist Y*dist Z*dist;
 elseif size(atom2w,2)>0
@@ -336,8 +396,8 @@ elseif size(atom2w,2)>0
     X_dist=pdist2([atom1w.x]',[atom2w.x]');
     Y_dist=pdist2([atom1w.y]',[atom2w.y]');
     Z_dist=pdist2([atom1w.z]',[atom2w.z]');
-    
-    if regional_solvation==0     
+
+    if regional_solvation==0
         X_dist(X_dist>Box1(1)/2)=X_dist(X_dist>Box1(1)/2)-Box1(1);
         Y_dist(Y_dist>Box1(2)/2)=Y_dist(Y_dist>Box1(2)/2)-Box1(2);
         Z_dist(Z_dist>Box1(3)/2)=Z_dist(Z_dist>Box1(3)/2)-Box1(3);
@@ -363,7 +423,7 @@ if exist('dist_matrix','var')
         rsmall=rmin(1);
         rlarge=rmin(2);
     end
-    
+
     for i=1:size(dist_matrix,2)
         if strncmpi([atom2w(i).type],minAtom,1)
             if any((dist_matrix(:,i)-rsmall)<0)
@@ -375,13 +435,13 @@ if exist('dist_matrix','var')
             end
         end
     end
-    
+
     clear dist_matrix;
-    
+
     removed_molid=unique([atom2w(find(indvec)).molid]);
     removed_molid_index=[atom2w(ismember([atom2w.molid],removed_molid)).index];
     removed_index=find(indvec);
-    
+
     pre_size=size(atom2w,2);
     if strcmpi(type,'molid')
         atom2w(ismember([atom2w.molid],removed_molid))=[];
@@ -389,22 +449,26 @@ if exist('dist_matrix','var')
         atom2w(removed_index)=[];
     end
     post_size=size(atom2w,2);
-    
+
     %     vmd([atom1w atom2w],Box1)
-    
+
     % disp('Removed this many atoms')
     % pre_size-post_size
-    
+
     assignin('caller','removed_molid',removed_molid);
     assignin('caller','removed_molid_index',removed_molid_index);
     assignin('caller','removed_index',removed_index);
-    
+
 end
 % vmd([atom1w atom2w],Box1)
+
+end
 
 
 
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

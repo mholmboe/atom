@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Set the cluster specific gromacs command here:
-gmx_mdrun="gmx mdrun"
 gmx_grompp="gmx grompp"
+gmx_mdrun="gmx mdrun"
+
 
 
 ### Run energy minimization

@@ -5,14 +5,14 @@
 % * atom is the atom struct
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5) % Basic input arguments
-% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements 
+% # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
 %
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
@@ -57,12 +57,12 @@ if nargin > 6
         T2=varargin(3)
     end
     minT2T2_dist=cell2mat(varargin(4))
-    
+
     if ~iscell(T1)
         disp('Converting T1 to cell')
         T1={T1}
     end
-    
+
     if ~iscell(T2)
         disp('Converting T2 to cell')
         T2={T2}
@@ -93,7 +93,7 @@ XYZ_data = [[atom.x]' [atom.y]' [atom.z]'];
 O2_atom=[]; % New addition...
 
 if NumOctSubst>0
-    
+
     O1_atom=atom(ind_O1);
     O1_Index=1:size(O1_atom,2);%find(strcmpi(O1,strtrim(XYZ_labels(:,1))));
     O1_labels=[O1_atom.type];%XYZ_labels(O1_Index);
@@ -101,7 +101,7 @@ if NumOctSubst>0
     Ave_Oct_z=mean(O1_data(:,3));
     rand_O1_Index=O1_Index(randperm(length(O1_Index)));
     O1_dist_matrix = dist_matrix_atom(O1_atom,Box_dim);
-    
+
     i=1; nOctlo=0; nOcthi=0; nOctmid=0; Oct_subst_index=[];%rand_O1_Index(1);
     while (nOctlo+nOcthi+nOctmid)<=NumOctSubst
         ind_O2=find(strcmp([O1_atom.type],O2));
@@ -122,7 +122,7 @@ if NumOctSubst>0
                 [O1_atom(rand_O1_Index(i)).type]=O2;
             end
         end
-        
+
         if (nOctlo+nOcthi+nOctmid) == NumOctSubst
             break
         end
@@ -198,17 +198,17 @@ if NumTetSubst>0
         end
         i=i+1;
     end
-    
+
     XYZ_labels(ind_T1(Tet_subst_index))=T2;
     [atom(ind_T1(Tet_subst_index)).type]=deal(T2);
-    
+
     if nTetlo==nTethi && (nTetlo+nTethi) == NumTetSubst
         disp('Second substitution success!!!')
     else
         disp('Second substitution not optimal!!!')
         % pause(3)
     end
-    
+
 end
 
 if abs(shift_z)>0
@@ -227,13 +227,13 @@ if NumTetSubst>0
     T2_distmatrix=dist_matrix_atom(atom_T2,Box_dim);
     disp('Minimum minT2T2_dist is in Å')
     min(T2_distmatrix(2:end,1))
-    
+
     if NumOctSubst>0
         T2O2_distmatrix=dist_matrix_atom(atom_T2,atom_O2,Box_dim);
         disp('Minimum minT2O2_dist is in Å')
         min(T2O2_distmatrix(2:end,1))
     end
-    
+
 end
 
 if NumOctSubst>0
@@ -251,7 +251,7 @@ if NumOctSubst>0
         catch
             disp('No first subst...')
         end
-        
+
     end
 end
 
@@ -268,9 +268,11 @@ if NumTetSubst>0
         catch
             disp('No second subst...')
         end
-        
+
     end
 end
 
 composition_atom(atom);
+
+end
 

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>dispcoul_C6C8C10</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="dispcoul_C6C8C10.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<pre class="codeinput">
+<span class="keyword">function</span> [r,dispersion,coul,Utot] = dispcoul_C6C8C10(param,varargin)
+
+C61=0;
+C62=0;
+C81=0;
+C82=0;
+C101=0;
+C102=0;
+Q1=0;
+Q2=0;
+
+<span class="keyword">if</span> nargin&gt;1
+    ind=varargin{1};
+    param=param(:,ind);
+<span class="keyword">end</span>
+
+[nParams,nElements]=size(param);
+
+<span class="keyword">if</span> nElements&gt;2
+    disp(<span class="string">'This function works best for only two elements'</span>);
+    pause(1)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nParams==4
+<span class="comment">%     C6=param(1,:);</span>
+<span class="comment">%     C8=param(2,:);</span>
+<span class="comment">%     C10=param(3,:);</span>
+
+    C61=param(1,1);
+    C62=param(1,2);
+    C81=param(2,1);
+    C82=param(2,2);
+    C101=param(3,1);
+    C102=param(3,2);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(find(param(end,:)&lt;0))&gt;0
+    Q=param(end,:);
+    <span class="keyword">if</span> nParams&gt;1
+<span class="comment">%         C6=param(1,:);</span>
+        C61=param(1,1);
+        C62=param(1,2);
+    <span class="keyword">else</span>
+        disp(<span class="string">'Dispersion terms are missing!!!'</span>)
+        pause
+    <span class="keyword">end</span>
+    Q1=param(end,1);
+    Q2=param(end,2);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 2
+    r=varargin{2};
+<span class="keyword">else</span>
+    <span class="comment">%     r=1:length(data);</span>
+    r=.01:.001:1.2; <span class="comment">% nm</span>
+<span class="keyword">end</span>
+
+C6_mix=(C61*C62)^.5
+C8_mix=(C81*C82)^.5;
+C10_mix=(C101*C102)^.5;
+
+dispersionC6=-C6_mix./r.^6;
+dispersionC8=-C8_mix./r.^8;
+dispersionC10=-C10_mix./r.^10;
+dispersion=-C6_mix./r.^6-C8_mix./r.^8-C10_mix./r.^10;
+coul=(1.60217646E-19)^2*6.022E+23*Q1*Q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+<span class="comment">% end</span>
+
+Utot=dispersion+coul;
+
+hold <span class="string">on</span>
+
+plotmin=1000*(round(min(Utot*1.5)/1000));
+<span class="keyword">if</span> plotmin&gt;=0
+    plotmin=10000;
+<span class="keyword">end</span>
+plot(r,dispersionC6,<span class="string">'r-'</span>);
+plot(r,dispersionC8,<span class="string">'g-'</span>);
+plot(r,dispersionC10,<span class="string">'b-'</span>);
+plot(r,dispersion,<span class="string">'b--'</span>);
+plot(r,coul,<span class="string">'r--'</span>);
+plot(r,Utot,<span class="string">'k--'</span>);
+xlabel(<span class="string">'r [nm]'</span>);
+ylabel(<span class="string">'U [kJ/mol]'</span>);
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+function [r,dispersion,coul,Utot] = dispcoul_C6C8C10(param,varargin)
+
+C61=0;
+C62=0;
+C81=0;
+C82=0;
+C101=0;
+C102=0;
+Q1=0;
+Q2=0;
+
+if nargin>1
+    ind=varargin{1};
+    param=param(:,ind);
+end
+
+[nParams,nElements]=size(param);
+
+if nElements>2
+    disp('This function works best for only two elements');
+    pause(1)
+end
+
+if nParams==4
+%     C6=param(1,:);
+%     C8=param(2,:);
+%     C10=param(3,:);
+
+    C61=param(1,1);
+    C62=param(1,2);
+    C81=param(2,1);
+    C82=param(2,2);
+    C101=param(3,1);
+    C102=param(3,2);
+end
+
+if numel(find(param(end,:)<0))>0
+    Q=param(end,:);
+    if nParams>1
+%         C6=param(1,:);
+        C61=param(1,1);
+        C62=param(1,2);
+    else
+        disp('Dispersion terms are missing!!!')
+        pause
+    end
+    Q1=param(end,1);
+    Q2=param(end,2);
+end
+
+if nargin > 2
+    r=varargin{2};
+else
+    %     r=1:length(data);
+    r=.01:.001:1.2; % nm
+end
+
+C6_mix=(C61*C62)^.5
+C8_mix=(C81*C82)^.5;
+C10_mix=(C101*C102)^.5;
+
+dispersionC6=-C6_mix./r.^6;
+dispersionC8=-C8_mix./r.^8;
+dispersionC10=-C10_mix./r.^10;
+dispersion=-C6_mix./r.^6-C8_mix./r.^8-C10_mix./r.^10;
+coul=(1.60217646E-19)^2*6.022E+23*Q1*Q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
+
+% end
+
+Utot=dispersion+coul;
+
+hold on
+
+plotmin=1000*(round(min(Utot*1.5)/1000));
+if plotmin>=0
+    plotmin=10000;
+end
+plot(r,dispersionC6,'r-');
+plot(r,dispersionC8,'g-');
+plot(r,dispersionC10,'b-');
+plot(r,dispersion,'bREPLACE_WITH_DASH_DASH');
+plot(r,coul,'rREPLACE_WITH_DASH_DASH');
+plot(r,Utot,'kREPLACE_WITH_DASH_DASH');
+xlabel('r [nm]');
+ylabel('U [kJ/mol]');
+xlim([0,1.2]);
+ylim(sort([-plotmin plotmin]))
+
+##### SOURCE END #####
+-->
+</body>
+</html>

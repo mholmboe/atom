@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>import_atom_poscar.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="import_atom_poscar.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>import_atom_poscar.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function imports an .poscar file into the atom struct</li>
+<li>It tries to guess the Box_dim, so watch out!</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Open the text file.</a>
+</li>
+<li>
+<a href="#6">Close the text file.</a>
+</li>
+<li>
+<a href="#7">Box vectors for the .gro format is (free format, space separated reals), values:</a>
+</li>
+<li>
+<a href="#8">Box matrix</a>
+</li>
+<li>
+<a href="#9">Close the text file.</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = import_atom_poscar('POSCAR')</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = import_atom_poscar(filename)
+</pre>
+<pre class="codeinput">
+<span class="keyword">if</span> regexp(filename,<span class="string">'POSCAR'</span>) ~= false
+    filename = filename;
+<span class="keyword">else</span>
+
+    filename = strcat(filename,<span class="string">'.poscar'</span>);
+<span class="keyword">end</span>
+</pre>
+<h2 id="5">Open the text file.</h2>
+<pre class="codeinput">FID = fopen(filename,<span class="string">'r'</span>);
+
+All_data = textscan(FID, <span class="string">'%s'</span>, <span class="string">'delimiter'</span>, <span class="string">'\n'</span>, <span class="string">'whitespace'</span>, <span class="string">''</span>);
+</pre>
+<h2 id="6">Close the text file.</h2>
+<pre class="codeinput">fclose(FID);
+
+DataRow = strfind(All_data{1}, <span class="string">'Cartesian'</span>);
+startRow = find(~cellfun(<span class="string">'isempty'</span>, DataRow), 1,<span class="string">'first'</span>)+1;
+numElements=startRow-7;
+
+fileID = fopen(filename,<span class="string">'r'</span>);
+<span class="comment">% fileID = fopen(filename,'r');</span>
+filename_in = {fgets(fileID)};
+Repfactor = {fgets(fileID)};
+Boxline1 = {fgets(fileID)};
+Boxline2 = {fgets(fileID)};
+Boxline3 = {fgets(fileID)};
+Box_string1=strsplit(char(Boxline1));
+Box_string2=strsplit(char(Boxline2));
+Box_string3=strsplit(char(Boxline3));
+Box_vec1 = str2double(Box_string1);
+Box_vec2 = str2double(Box_string2);
+Box_vec3 = str2double(Box_string3);
+Box_vec1=Box_vec1(~isnan(Box_vec1));
+Box_vec2=Box_vec2(~isnan(Box_vec2));
+Box_vec3=Box_vec3(~isnan(Box_vec3));
+
+Box_matrix=[Box_vec1;Box_vec2;Box_vec3]';
+</pre>
+<h2 id="7">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
+<p>v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y) the last 6 values may be omitted (they will be set to zero) when all angles are 90 GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.</p>
+<h2 id="8">Box matrix</h2>
+<p>v1(x) v2(x) v3(x) v1(x) v2(x) v3(x) v1(y) v2(y) v3(y) == 0 v2(y) v3(y) v1(z) v2(z) v3(z) 0 0 v3(z)</p>
+<pre class="codeinput">Box_dim=[Box_matrix(1,1) Box_matrix(2,2) Box_matrix(3,3) 0 0 Box_matrix(1,2) 0 Box_matrix(1,3) Box_matrix(2,3)]
+Cell=Box_dim2Cell(Box_dim)
+
+Elements=[];
+<span class="keyword">for</span> i=1:numElements
+    Elements{i} = {fgets(fileID)};
+    <span class="keyword">if</span> i==1
+        ElementTypes=strsplit(char(strtrim(Elements{i})));
+    <span class="keyword">else</span>
+        ElementNumbers=str2double(strsplit(char(strtrim(Elements{i}))));
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre>
+<h2 id="9">Close the text file.</h2>
+<pre class="codeinput">fclose(fileID);
+
+filetempID = fopen(filename,<span class="string">'r'</span>);
+<span class="keyword">for</span> i=1:startRow-1
+    temp = {fgets(filetempID)};
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:sum(ElementNumbers)
+    line = fgetl(filetempID);
+    XYZ_string=str2double(strsplit((line)));
+    XYZ_string=XYZ_string(~isnan(XYZ_string));
+    X(i) = XYZ_string(1);
+    Y(i) = XYZ_string(2);
+    Z(i) = XYZ_string(3);
+<span class="keyword">end</span>
+fclose(filetempID);
+
+XYZ_data=[X' Y' Z'];
+
+XYZ_labels=[];
+<span class="keyword">for</span> i=1:numel(ElementTypes)
+    XYZ_labels=[XYZ_labels; repmat(ElementTypes(i),ElementNumbers(i),1)];
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:size(XYZ_data,1)
+    atom(i).resname={<span class="string">'MOL'</span>};
+    atom(i).molid=1;
+    atom(i).type        = XYZ_labels(i,1);
+    atom(i).fftype  = XYZ_labels(i,1);
+    atom(i).charge      = 0;
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x = XYZ_data(i,1);
+    atom(i).y = XYZ_data(i,2);
+    atom(i).z = XYZ_data(i,3);
+    atom(i).vx=0;
+    atom(i).vy=0;
+    atom(i).vz=0;
+<span class="keyword">end</span>
+
+atom=element_atom(atom);
+
+assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'</span>,XYZ_labels)
+assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</span>,XYZ_data)
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% import_atom_poscar.m
+% * This function imports an .poscar file into the atom struct
+% * It tries to guess the Box_dim, so watch out!
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom = import_atom_poscar('POSCAR')
+%
+function atom = import_atom_poscar(filename)
+
+if regexp(filename,'POSCAR') ~= false
+    filename = filename;
+else
+
+    filename = strcat(filename,'.poscar');
+end
+
+
+%% Open the text file.
+FID = fopen(filename,'r');
+
+All_data = textscan(FID, '%s', 'delimiter', '\n', 'whitespace', '');
+
+%% Close the text file.
+fclose(FID);
+
+DataRow = strfind(All_data{1}, 'Cartesian');
+startRow = find(~cellfun('isempty', DataRow), 1,'first')+1;
+numElements=startRow-7;
+
+fileID = fopen(filename,'r');
+% fileID = fopen(filename,'r');
+filename_in = {fgets(fileID)};
+Repfactor = {fgets(fileID)};
+Boxline1 = {fgets(fileID)};
+Boxline2 = {fgets(fileID)};
+Boxline3 = {fgets(fileID)};
+Box_string1=strsplit(char(Boxline1));
+Box_string2=strsplit(char(Boxline2));
+Box_string3=strsplit(char(Boxline3));
+Box_vec1 = str2double(Box_string1);
+Box_vec2 = str2double(Box_string2);
+Box_vec3 = str2double(Box_string3);
+Box_vec1=Box_vec1(~isnan(Box_vec1));
+Box_vec2=Box_vec2(~isnan(Box_vec2));
+Box_vec3=Box_vec3(~isnan(Box_vec3));
+
+Box_matrix=[Box_vec1;Box_vec2;Box_vec3]';
+
+%% Box vectors for the .gro format is (free format, space separated reals), values:
+% v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)
+% the last 6 values may be omitted (they will be set to zero) when all angles are 90
+% GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.
+
+%% Box matrix
+% v1(x) v2(x) v3(x)    v1(x) v2(x) v3(x)
+% v1(y) v2(y) v3(y) == 0     v2(y) v3(y)
+% v1(z) v2(z) v3(z)    0     0     v3(z)
+
+Box_dim=[Box_matrix(1,1) Box_matrix(2,2) Box_matrix(3,3) 0 0 Box_matrix(1,2) 0 Box_matrix(1,3) Box_matrix(2,3)]
+Cell=Box_dim2Cell(Box_dim)
+
+Elements=[];
+for i=1:numElements
+    Elements{i} = {fgets(fileID)};
+    if i==1
+        ElementTypes=strsplit(char(strtrim(Elements{i})));
+    else
+        ElementNumbers=str2double(strsplit(char(strtrim(Elements{i}))));
+    end
+
+end
+
+%% Close the text file.
+fclose(fileID);
+
+filetempID = fopen(filename,'r');
+for i=1:startRow-1
+    temp = {fgets(filetempID)};
+end
+
+for i=1:sum(ElementNumbers)
+    line = fgetl(filetempID);
+    XYZ_string=str2double(strsplit((line)));
+    XYZ_string=XYZ_string(~isnan(XYZ_string));
+    X(i) = XYZ_string(1);
+    Y(i) = XYZ_string(2);
+    Z(i) = XYZ_string(3);
+end
+fclose(filetempID);
+
+XYZ_data=[X' Y' Z'];
+
+XYZ_labels=[];
+for i=1:numel(ElementTypes)
+    XYZ_labels=[XYZ_labels; repmat(ElementTypes(i),ElementNumbers(i),1)];
+end
+
+for i=1:size(XYZ_data,1)
+    atom(i).resname={'MOL'};
+    atom(i).molid=1;
+    atom(i).type        = XYZ_labels(i,1);
+    atom(i).fftype  = XYZ_labels(i,1);
+    atom(i).charge      = 0;
+    atom(i).index=mod(i,100000);
+    atom(i).neigh.type  = {};
+    atom(i).neigh.index  = zeros(6,1);
+    atom(i).neigh.dist  = zeros(6,1);
+    atom(i).bond.type  = zeros(6,1);
+    atom(i).bond.index  = zeros(6,1);
+    atom(i).angle.type  = zeros(6,1);
+    atom(i).angle.index  = zeros(6,1);
+    atom(i).x = XYZ_data(i,1);
+    atom(i).y = XYZ_data(i,2);
+    atom(i).z = XYZ_data(i,3);
+    atom(i).vx=0;
+    atom(i).vy=0;
+    atom(i).vz=0;
+end
+
+atom=element_atom(atom);
+
+assignin('caller','Box_dim',Box_dim)
+assignin('caller','XYZ_labels',XYZ_labels)
+assignin('caller','XYZ_data',XYZ_data)
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

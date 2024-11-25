@@ -2,7 +2,7 @@
 % * This function imports a .pdb trajectory
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -12,7 +12,7 @@
 % # atom = import_pdb_traj(filename,maxFrames)
 % # atom = import_pdb_traj(filename,maxFrames,stride)
 %
-function atom = import_pdb_traj(filename,varargin)
+function [atom,traj] = import_pdb_traj(filename,varargin)
 
 inputfile = fopen(filename, 'r');
 C = textscan(inputfile, '%s', 'Delimiter', '\n');
@@ -194,8 +194,8 @@ end
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 XYZ_labels=[atom.type]';
 
-assignin('caller','atom',atom);
-assignin('caller','traj',traj);
+% assignin('caller','atom',atom);
+% assignin('caller','traj',traj);
 assignin('caller','nAtoms',max(nAtoms));
 assignin('caller','Box_dim',Box_dim);
 assignin('caller','XYZ_labels',XYZ_labels);

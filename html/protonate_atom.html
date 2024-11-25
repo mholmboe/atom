@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>protonate_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="protonate_atom.m"><style type="text/css">
+      -->
+<title>protonate_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="protonate_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>protonate_atom.m</h1><!--introduction--><div><ul><li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded</li><li>Hatom = protonate_atom(atom,Box_dim,ind) % Protonates all sites with index ind</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.25 &Aring;ngstr&ouml;m</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li><li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</li></ol></div><pre class="codeinput"><span class="keyword">function</span> H_atom = protonate_atom(atom,Box_dim,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>protonate_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Hatom = protonate_atom(atom,Box_dim) % Protonating all O's that are only single bonded</li>
+<li>Hatom = protonate_atom(atom,Box_dim,ind) % Protonates all sites with index ind</li>
+<li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong) % rcut can be used to change the default cutoff 2.25 &Aring;ngstr&ouml;m</li>
+<li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li>
+<li>Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> H_atom = protonate_atom(atom,Box_dim,varargin)
 
 <span class="keyword">if</span> numel(Box_dim)==1
     Box_dim(1)=Box_dim(1);
@@ -137,11 +184,14 @@ disp(<span class="string">'Guessing this many H&acute;s!'</span>)
             Neighbours={<span class="string">'Nan'</span>};
         <span class="keyword">end</span>
         <span class="keyword">if</span> numel(H_atom)==0
-            H_atom=atom(1);
+            H_atom = xyz2atom({<span class="string">'H'</span>},[0 0 0],Box_dim,[atom(1).resname],[]);
+            H_atom.molid=atom(end).molid;
+            H_atom.index=1;
         <span class="keyword">else</span>
             H_atom(size(H_atom,2)+1)=H_atom(end);
         <span class="keyword">end</span>
-        [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+        [H_atom(end).type]=heal_type;
+        [H_atom(end).fftype]=heal_type;
         H_atom(end).index=size(H_atom,2);
         r_vec=atom(i).neigh.r_vec;
         H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
@@ -181,10 +231,19 @@ disp(<span class="string">'Guessing this many H&acute;s!'</span>)
 disp(<span class="string">'Created this many H&acute;s!'</span>)
 size(H_atom,2)
 
-<span class="keyword">if</span> isstruct(H_atom)
+<span class="keyword">if</span> isfield(H_atom,<span class="string">'element'</span>)
     H_atom=rmfield(H_atom,<span class="string">'element'</span>);
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% protonate_atom.m
 % * This function protonates the sites in the atom struct given by the
@@ -193,7 +252,7 @@ size(H_atom,2)
 % Ångström of the site to be protonated
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -275,11 +334,14 @@ if numel(ind) > 0
             Neighbours={'Nan'};
         end
         if numel(H_atom)==0
-            H_atom=atom(1);
+            H_atom = xyz2atom({'H'},[0 0 0],Box_dim,[atom(1).resname],[]);
+            H_atom.molid=atom(end).molid;
+            H_atom.index=1;
         else
             H_atom(size(H_atom,2)+1)=H_atom(end);
         end
-        [H_atom(end).type]=heal_type;[H_atom(end).fftype]=heal_type;
+        [H_atom(end).type]=heal_type;
+        [H_atom(end).fftype]=heal_type;
         H_atom(end).index=size(H_atom,2);
         r_vec=atom(i).neigh.r_vec;
         H_coords=num2cell([atom(i).x atom(i).y (atom(i).z)]-0.9572*mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)/norm(mean([r_vec(:,1) r_vec(:,2) r_vec(:,3)],1)));
@@ -295,16 +357,16 @@ if numel(ind) > 0
                 x1=[H_atom(i).x];
                 y1=[H_atom(i).y];
                 z1=[H_atom(i).z];
-                
+
                 H_atom(rmind) = translate_atom(H_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
                 H_atom(rmind) = wrap_atom(H_atom(rmind),Box_dim);
-                
+
                 [H_atom(i).x]=mean([H_atom(rmind).x]);
                 [H_atom(i).y]=mean([H_atom(rmind).y]);
                 [H_atom(i).z]=mean([H_atom(rmind).z]);
-                
+
                 H_atom(rmind) = translate_atom(H_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-                
+
                 try
                     rmind_tot=[rmind_tot; rmind(rmind>i)];
                 catch
@@ -319,9 +381,12 @@ end
 disp('Created this many H´s!')
 size(H_atom,2)
 
-if isstruct(H_atom)
+if isfield(H_atom,'element')
     H_atom=rmfield(H_atom,'element');
 end
 
+end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

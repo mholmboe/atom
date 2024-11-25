@@ -30,17 +30,17 @@
 % insert_atom
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = ionize_atom('Na','Na',[10 20 30],10) % Basic input arguments
-% # atom = ionize_atom('Na','Na',[10 20 30],10,2) % Nearest distance will be 2 * ionic radii
-% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom) % Random placement
-% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
-% # atom = ionize_atom('Na','Na',[10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range
+% # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10) % Basic input arguments
+% # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2) % Nearest distance will be 2 * ionic radii
+% # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2,in_atom) % Random placement
+% # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
+% # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range
 %
 function atom = ionize_atom(type,resname,limits,nmax,varargin)
 
@@ -221,7 +221,7 @@ if nargin>6
     while i<size(atom,2)+1 %>nmax+1
         if strncmpi(varargin{3},'surface',1)
             dist=min(distmatrix(i,:));
-            distratio(i)=exp(2*dist/D)/rand(1);
+            distratio(i)=exp(2*dist/D)/rand(1)
         else % if strncmpi(varargin{3},'bulk')
             dist=min(distmatrix(i,:));
             distratio(i)=exp(-dist/(D*2))/rand(1);
@@ -275,6 +275,8 @@ atom=update_atom(atom);
 
 assignin('caller','limits',limits);
 assignin('caller','distratio',sorted_distratio);
+
+end
 
 
 

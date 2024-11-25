@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="write_ffnonbonded_C6C12.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol</h1>
+<pre class="codeinput">
+<span class="keyword">function</span> ff = write_ffnonbonded_C6C12(ffname,varargin)
+
+<span class="keyword">if</span> nargin&gt;1
+    Opt_labels=varargin{1};
+    parameters=varargin{2};
+<span class="keyword">else</span>
+    Opt_labels=[];
+    parameters=[];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;3
+    FEP_ion=varargin{3};
+<span class="keyword">else</span>
+    FEP_ion=[];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin&gt;4
+    FEP_charge=varargin{4};
+<span class="keyword">else</span>
+    FEP_charge=[];
+<span class="keyword">end</span>
+
+filename_out = <span class="string">'ffnonbonded.itp'</span>;
+file_title = <span class="string">'Gromacs .itp topology file written in MATLAB from parameters in ...ff.mat'</span>; <span class="comment">% Header in output file</span>
+
+ff=load(strcat(ffname,<span class="string">'.mat'</span>));
+ff=ff.ff;
+
+wat=load(strcat(<span class="string">'water_models.mat'</span>));
+watff=wat.ff;
+
+AllAtom_labels=[ff.type];
+RestAtom_labels=AllAtom_labels;
+<span class="keyword">if</span> numel(Opt_labels)&gt;0
+    RestAtom_labels=AllAtom_labels(~ismember(AllAtom_labels,Opt_labels));
+<span class="keyword">end</span>
+WatAtom_labels=[watff.type];
+
+fid = fopen(filename_out, <span class="string">'wt'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; Created in Matlab by reading the all atomypes (from a ff.mat file) and their associated parameters'</span>);
+fprintf(fid, <span class="string">'%s % s\r\n'</span>,<span class="string">';'</span>,file_title);
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ atomtypes ]'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; name  number  mass  charge  ptype  C6      C12 ;'</span>);
+
+nOpt=size(Opt_labels,2);
+nParam=size(parameters,1);
+
+<span class="keyword">if</span> numel(Opt_labels)&gt;0
+    ff = write_ff(ff,Opt_labels,parameters,<span class="string">'VAR'</span>);
+
+    <span class="keyword">for</span> i=1:numel(Opt_labels)
+        ind=find(strcmp([ff.type],Opt_labels(i)));
+        atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],<span class="keyword">...</span>
+            char([ff(ind).charge]),<span class="string">'A'</span>,char([ff(ind).C6_kJmolnm6]),char([ff(ind).C12_kJmolnm12])};
+        <span class="keyword">if</span>  nParam&gt;2*nOpt
+            fprintf(fid, <span class="string">'%-12s % 3i\t% 9.5f\t% 9s   % -3s\t% -9s\t% -9s\r\n'</span>, atomtypes{i,:});
+        <span class="keyword">else</span>
+            fprintf(fid, <span class="string">'%-12s % 3i\t% 9.5f\t% 9.6f   % -3s\t% -9s\t% -9s\r\n'</span>, atomtypes{i,:});
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> numel(FEP_ion)&gt;0
+    ind=find(strncmpi([ff.type],FEP_ion,2));
+    <span class="keyword">if</span> numel(ind)==0
+        ind=find(strncmpi([ff.type],FEP_ion,1));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> numel(ind)&gt;1 &amp;&amp; sum(ismember([ff(ind).charge],FEP_charge))&gt;0
+        ind=ind(abs([ff(ind).charge])==FEP_charge); <span class="comment">% Ag+, Ag2+...</span>
+    <span class="keyword">else</span>
+        ind=ind(1);
+    <span class="keyword">end</span>
+    ind(2)=ind;
+
+    FEP_Atom_labels={<span class="string">'Io'</span> FEP_ion  <span class="string">'Na'</span> <span class="string">'Cl'</span>};FEP_Atom_labels=unique(FEP_Atom_labels,<span class="string">'stable'</span>)
+    RestAtom_labels=RestAtom_labels(~ismember(RestAtom_labels,FEP_Atom_labels));
+    <span class="keyword">for</span> a=3:numel(FEP_Atom_labels)
+        ind(a)=find(strncmpi([ff.type],FEP_Atom_labels{a},2));
+    <span class="keyword">end</span>
+    fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; Current FEP ion (always named Io). Remember to also set its charge/s correctly in ions.itp'</span>);
+    <span class="keyword">for</span> i=1:numel(FEP_Atom_labels)
+        atomtypes(i,:) = {char(FEP_Atom_labels(i)),[ff(ind(i)).atnum],[ff(ind(i)).mass],<span class="keyword">...</span>
+            [ff(ind(i)).charge],<span class="string">'A'</span>,[ff(ind(i)).C6_kJmolnm6],[ff(ind(i)).C12_kJmolnm12]};
+        fprintf(fid, <span class="string">'%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n'</span>, atomtypes{i,:});
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'%s\r\n'</span>,strcat(<span class="string">'; '</span>,ffname));
+<span class="keyword">for</span> i=1:numel(RestAtom_labels)
+    ind=find(strcmp([ff.type],RestAtom_labels(i)));
+    atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],<span class="keyword">...</span>
+        [ff(ind).charge],<span class="string">'A'</span>,[ff(ind).C6_kJmolnm6],[ff(ind).C12_kJmolnm12]};
+    fprintf(fid, <span class="string">'%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n'</span>, atomtypes{i,:});
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:numel(WatAtom_labels)
+    ind=find(strcmp([watff.type],WatAtom_labels(i)));
+    atomtypes(i,:) = {char([watff(ind).type]),[watff(ind).atnum],[watff(ind).mass],<span class="keyword">...</span>
+        [watff(ind).charge],<span class="string">'A'</span>,[watff(ind).C6_kJmolnm6],[watff(ind).C12_kJmolnm12]};
+    fprintf(fid, <span class="string">'%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n'</span>, atomtypes{i,:});
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ nonbonded_params ]'</span>);
+fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">';	i	j	func	c6	c12'</span>);
+
+ff
+
+i=1;atomtypes={};
+<span class="keyword">while</span> i &lt; size(ff,2)+1
+
+    j=i+1;
+    <span class="keyword">while</span> j &lt; size(ff,2)+1
+        <span class="comment">%         C6_mixed=ff(i).C6_kJmolnm6*ff(j).C6_kJmolnm6; % Geometric mean</span>
+        sigma_mix=(ff(i).sigma_nm+ff(j).sigma_nm)/2; <span class="comment">% Arithmetric mean</span>
+        eps_mix=(ff(i).e_kJmol*ff(j).e_kJmol)^.5; <span class="comment">% % Geometric mean</span>
+        C6_mixed=4*eps_mix*sigma_mix^6;
+
+        C12_mixed=0; <span class="comment">%ff(i).C12_kJmolnm12*ff(j).C12_kJmolnm12; % Geometric mean</span>
+        atomtypes(i,:) = {char([ff(i).type]),char([ff(j).type]),1,C6_mixed,C12_mixed};
+        fprintf(fid, <span class="string">'%-12s %-12s %3i\t%-12.9g\t%-12.9g\r\n'</span>, atomtypes{i,:});
+        j=j+1;
+    <span class="keyword">end</span>
+
+    i=i+1;
+<span class="keyword">end</span>
+
+fprintf(fid, <span class="string">'\r\n'</span>);
+
+fclose(fid);
+
+disp(<span class="string">'ffnonbonded.itp structure file written'</span>)
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol
+function ff = write_ffnonbonded_C6C12(ffname,varargin)
+
+if nargin>1
+    Opt_labels=varargin{1};
+    parameters=varargin{2};
+else
+    Opt_labels=[];
+    parameters=[];
+end
+
+if nargin>3
+    FEP_ion=varargin{3};
+else
+    FEP_ion=[];
+end
+
+if nargin>4
+    FEP_charge=varargin{4};
+else
+    FEP_charge=[];
+end
+
+filename_out = 'ffnonbonded.itp';
+file_title = 'Gromacs .itp topology file written in MATLAB from parameters in ...ff.mat'; % Header in output file
+
+ff=load(strcat(ffname,'.mat'));
+ff=ff.ff;
+
+wat=load(strcat('water_models.mat'));
+watff=wat.ff;
+
+AllAtom_labels=[ff.type];
+RestAtom_labels=AllAtom_labels;
+if numel(Opt_labels)>0
+    RestAtom_labels=AllAtom_labels(~ismember(AllAtom_labels,Opt_labels));
+end
+WatAtom_labels=[watff.type];
+
+fid = fopen(filename_out, 'wt');
+fprintf(fid, '%s\r\n','; Created in Matlab by reading the all atomypes (from a ff.mat file) and their associated parameters');
+fprintf(fid, '%s % s\r\n',';',file_title);
+fprintf(fid, '\r\n');
+fprintf(fid, '%s\r\n','[ atomtypes ]');
+fprintf(fid, '%s\r\n','; name  number  mass  charge  ptype  C6      C12 ;');
+
+nOpt=size(Opt_labels,2);
+nParam=size(parameters,1);
+
+if numel(Opt_labels)>0
+    ff = write_ff(ff,Opt_labels,parameters,'VAR');
+    
+    for i=1:numel(Opt_labels)
+        ind=find(strcmp([ff.type],Opt_labels(i)));
+        atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
+            char([ff(ind).charge]),'A',char([ff(ind).C6_kJmolnm6]),char([ff(ind).C12_kJmolnm12])};
+        if  nParam>2*nOpt
+            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9s   % -3s\t% -9s\t% -9s\r\n', atomtypes{i,:});
+        else
+            fprintf(fid, '%-12s % 3i\t% 9.5f\t% 9.6f   % -3s\t% -9s\t% -9s\r\n', atomtypes{i,:});
+        end
+    end
+    
+end
+
+if numel(FEP_ion)>0
+    ind=find(strncmpi([ff.type],FEP_ion,2));
+    if numel(ind)==0
+        ind=find(strncmpi([ff.type],FEP_ion,1));
+    end
+    
+    if numel(ind)>1 && sum(ismember([ff(ind).charge],FEP_charge))>0
+        ind=ind(abs([ff(ind).charge])==FEP_charge); % Ag+, Ag2+...
+    else
+        ind=ind(1);
+    end
+    ind(2)=ind;
+    
+    FEP_Atom_labels={'Io' FEP_ion  'Na' 'Cl'};FEP_Atom_labels=unique(FEP_Atom_labels,'stable')
+    RestAtom_labels=RestAtom_labels(~ismember(RestAtom_labels,FEP_Atom_labels));
+    for a=3:numel(FEP_Atom_labels)
+        ind(a)=find(strncmpi([ff.type],FEP_Atom_labels{a},2));
+    end
+    fprintf(fid, '%s\r\n','; Current FEP ion (always named Io). Remember to also set its charge/s correctly in ions.itp');
+    for i=1:numel(FEP_Atom_labels)
+        atomtypes(i,:) = {char(FEP_Atom_labels(i)),[ff(ind(i)).atnum],[ff(ind(i)).mass],...
+            [ff(ind(i)).charge],'A',[ff(ind(i)).C6_kJmolnm6],[ff(ind(i)).C12_kJmolnm12]};
+        fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+        
+    end
+end
+
+fprintf(fid, '%s\r\n',strcat('; ',ffname));
+for i=1:numel(RestAtom_labels)
+    ind=find(strcmp([ff.type],RestAtom_labels(i)));
+    atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
+        [ff(ind).charge],'A',[ff(ind).C6_kJmolnm6],[ff(ind).C12_kJmolnm12]};
+    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+end
+
+for i=1:numel(WatAtom_labels)
+    ind=find(strcmp([watff.type],WatAtom_labels(i)));
+    atomtypes(i,:) = {char([watff(ind).type]),[watff(ind).atnum],[watff(ind).mass],...
+        [watff(ind).charge],'A',[watff(ind).C6_kJmolnm6],[watff(ind).C12_kJmolnm12]};
+    fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -12.9g\t% -12.9g\r\n', atomtypes{i,:});
+end
+
+fprintf(fid, '\r\n');
+fprintf(fid, '%s\r\n','[ nonbonded_params ]');
+fprintf(fid, '%s\r\n',';	i	j	func	c6	c12');
+
+ff
+
+i=1;atomtypes={};
+while i < size(ff,2)+1
+    
+    j=i+1;
+    while j < size(ff,2)+1
+        %         C6_mixed=ff(i).C6_kJmolnm6*ff(j).C6_kJmolnm6; % Geometric mean
+        sigma_mix=(ff(i).sigma_nm+ff(j).sigma_nm)/2; % Arithmetric mean
+        eps_mix=(ff(i).e_kJmol*ff(j).e_kJmol)^.5; % % Geometric mean
+        C6_mixed=4*eps_mix*sigma_mix^6;
+        
+        C12_mixed=0; %ff(i).C12_kJmolnm12*ff(j).C12_kJmolnm12; % Geometric mean
+        atomtypes(i,:) = {char([ff(i).type]),char([ff(j).type]),1,C6_mixed,C12_mixed};
+        fprintf(fid, '%-12s %-12s %3i\t%-12.9g\t%-12.9g\r\n', atomtypes{i,:});
+        j=j+1;
+    end
+    
+    i=i+1;
+end
+
+fprintf(fid, '\r\n');
+
+fclose(fid);
+
+disp('ffnonbonded.itp structure file written')
+
+##### SOURCE END #####
+-->
+</body>
+</html>

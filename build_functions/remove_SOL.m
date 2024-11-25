@@ -4,7 +4,7 @@
 % * Untested for quite some time
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -53,4 +53,5 @@ ind=ind(1:nrmSOL);
 change_ind=sort(setdiff(1:nAtoms,ind));
 atom=atom(change_ind);
 atom=update_atom(atom);
-% %
+
+end

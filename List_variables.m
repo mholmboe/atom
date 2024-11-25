@@ -1,7 +1,7 @@
 %% List of the main variables
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -18,3 +18,10 @@
 % # <rmaxslong_variable.html rmaxlong> % Maximum non-H-related bond/neighbor radius
 % # <XYZ_data_variable.html XYZ_data> % A nx3 matrix holdnig the XYZ-coordinates
 % # <XYZ_labels_variable.html XYZ_labels> % A cell list om atom types
+
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

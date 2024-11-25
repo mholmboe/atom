@@ -12,7 +12,7 @@
 % * Data set bvparm2016.cif: 2016 version, (posted 2016-11-03)
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

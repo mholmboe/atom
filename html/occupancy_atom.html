@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>occupancy_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="occupancy_atom.m"><style type="text/css">
+      -->
+<title>occupancy_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="occupancy_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,9 +72,52 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>occupancy_atom.m</h1><!--introduction--><div><ul><li>This function finds the occupancy all sites, within a certain rmax.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ul><li>atom = occupancy_atom(atom,Box_dim) % Basic input arguments</li><li>atom = occupancy_atom(atom,Box_dim,0.85) % Sets rmax to custom value</li></ul></div><pre class="codeinput"><span class="keyword">function</span> atom = occupancy_atom(atom,Box_dim,varargin) <span class="comment">% ,rmax);</span>
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>occupancy_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function finds the occupancy all sites, within a certain rmax.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ul>
+<li>atom = occupancy_atom(atom,Box_dim) % Basic input arguments</li>
+<li>atom = occupancy_atom(atom,Box_dim,0.85) % Sets rmax to custom value</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = occupancy_atom(atom,Box_dim,varargin) <span class="comment">% ,rmax);</span>
 
 occupancy_atom=atom;
+
+<span class="keyword">if</span> size(Box_dim,2) == 6
+    Box_dim=Cell2Box_dim(Box_dim); <span class="comment">% Box_dim is actually the 1x6 Cell varialbe containing angles instead of tilt factors</span>
+<span class="keyword">end</span>
 
 dist_matrix=dist_matrix_atom(atom,Box_dim);
 
@@ -92,14 +140,25 @@ i=1;
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+assignin(<span class="string">'caller'</span>,<span class="string">'occupancy'</span>,[occupancy_atom.occupancy]');
+
 atom=update_atom(occupancy_atom);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% occupancy_atom.m
 % * This function finds the occupancy all sites, within a certain rmax.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -111,6 +170,10 @@ atom=update_atom(occupancy_atom);
 function atom = occupancy_atom(atom,Box_dim,varargin) % ,rmax);
 
 occupancy_atom=atom;
+
+if size(Box_dim,2) == 6
+    Box_dim=Cell2Box_dim(Box_dim); % Box_dim is actually the 1x6 Cell varialbe containing angles instead of tilt factors
+end
 
 dist_matrix=dist_matrix_atom(atom,Box_dim);
 
@@ -133,7 +196,14 @@ while i < size(occupancy_atom,2)+1
     end
 end
 
+assignin('caller','occupancy',[occupancy_atom.occupancy]');
+
 atom=update_atom(occupancy_atom);
 
+end
+
+
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

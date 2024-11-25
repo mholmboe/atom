@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>addvsites_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="addvsites_atom.m"><style type="text/css">
+      -->
+<title>addvsites_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="addvsites_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +72,47 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>addvsites_atom.m</h1><!--introduction--><div><ul><li>This function generates virtual (ghost ) sites on top of real particle sites. Make sure to pass on the full atom struct in the function call.</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>new_atom=addvsites_atom(atom,'Na','NaV') % Basic input arguments, Real atomtype, virtual atomtype, virtual residue name</li><li>new_atom=addvsites_atom(atom,'Na','NaV',[0 0 10]) % Translates the copied sites</li><li>new_atom=addvsites_atom(atom,'Na','NaV'[0 0 10],10) % Translates and copies only 10 sites</li></ol></div><pre class="codeinput"><span class="keyword">function</span> atom = addvsites_atom(atom,atomtype,new_atomtype,varargin)
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>addvsites_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function generates virtual (ghost ) sites on top of real particle sites. Make sure to pass on the full atom struct in the function call.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>new_atom=addvsites_atom(atom,'Na','NaV') % Basic input arguments, Real atomtype, virtual atomtype, virtual residue name</li>
+<li>new_atom=addvsites_atom(atom,'Na','NaV',[0 0 10]) % Translates the copied sites</li>
+<li>new_atom=addvsites_atom(atom,'Na','NaV'[0 0 10],10) % Translates and copies only 10 sites</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom = addvsites_atom(atom,atomtype,new_atomtype,varargin)
 
 <span class="comment">% Find all original atomtypes to replace</span>
 ind_atomtype=find(strcmpi([atom.type],atomtype));
@@ -107,14 +152,21 @@ atom=[atom virtual_atom];
 atom=update_atom(atom(ind));
 
 <span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% addvsites_atom.m
 % * This function generates virtual (ghost ) sites on top of real particle
 % sites. Make sure to pass on the full atom struct in the function call.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -165,4 +217,6 @@ atom=update_atom(atom(ind));
 
 end
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

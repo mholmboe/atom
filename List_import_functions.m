@@ -1,33 +1,57 @@
 %% List of import functions
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
 %% Import of data files
-% # <import_xvg.html import_xvg(filename)> % This function imports a Gromacs .xvg file
+% # <import_xvg.html import_xvg(filename)> % Import a Gromacs .xvg file.
+% # <import_gmx_energy.html import_gmx_energy(filename)> % Import a Gromacs energy file.
+% # <import_bar.html import_bar(filename)> % Import a BAR file.
+% # <import_dat.html import_dat(filename)> % Import a .dat file.
+% # <import_red_charges.html import_red_charges(filename)> % Import reduced charges from a file.
+% # <import_ddec_charges.html import_ddec_charges(filename)> % Import DDEC charges from a file.
 
 %% Import of structure files
-% # <import_atom_car.html import_atom_car(filename,varargin)> % This function imports .car files from Hendrik Heinz INTERFACE ff distribution, and then tries to write out a Gromacs molecular topology file (.itp) and a new .pdb file
-% # <import_atom_gro.html import_atom_gro(filename)> % This function imports .gro files into the atom struct
-% # <import_atom_multiple_gro.html import_atom_multiple_gro(filename,nFrames)> % This function import multiple .gro files
-% # <import_atom_pdb.html import_atom_pdb(filename)> % This function imports .pdb files into the atom struct
-% # <import_atom_xyz.html import_atom_xyz(filename)> % This imports an .xyz file into the atom struct
-% # <import_atom.html import_atom(filename)> % import_atom.m - This imports a .xyz/.gro/.pdb file and puts the data in a structure variable called atom
-% # <import_xyz.html import_xyz(filename)> % This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...
+% # <import_atom_car.html import_atom_car(filename,varargin)> % Import .car files from Hendrik Heinz INTERFACE force field distribution, then write out a Gromacs molecular topology file (.itp) and a new .pdb file.
+% # <import_atom_gro.html import_atom_gro(filename)> % Import .gro files into the atom struct.
+% # <import_atom_gro_fscanf.html import_atom_gro_fscanf(filename)> % Import .gro files using fscanf (alternative method).
+% # <import_atom_gro_octave.html import_atom_gro_octave(filename)> % Import .gro files using Octave-compatible code.
+% # <import_atom_mol2.html import_atom_mol2(filename)> % Import .mol2 files into the atom struct.
+% # <import_atom_pdb.html import_atom_pdb(filename)> % Import .pdb files into the atom struct.
+% # <import_atom_pqr.html import_atom_pqr(filename)> % Import .pqr files into the atom struct.
+% # <import_atom_xyz.html import_atom_xyz(filename)> % Import an .xyz file into the atom struct.
+% # <import_atom_poscar.html import_atom_poscar(filename)> % Import a VASP POSCAR file into the atom struct.
+% # <import_atom.html import_atom(filename)> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.
+% # <import_xyz.html import_xyz(filename)> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.
 
-%% Import of trajectory files (these functions may depend other third party functions...)
-% # <import_gro_traj.html import_gro_traj(filename,varargin)> % This function imports an strcture and an .gro trajectory file
-% # <import_atom_multiple_gro.html import_atom_multiple_gro(filename,nFrames)> % This function import multiple .gro files
-% # <import_mc_pdb_traj.html import_mc_pdb_traj(filename,varargin)> % This function imports an structure and an .pdb trajectory file, and can handle changing number of particles
-% # <import_pdb_traj.html import_pdb_traj(filename,varargin)> % This function imports an strcture and an .pdb trajectory file.
-% # <import_traj.html import_traj(filenameconf,filenametraj)> % This function imports an strcture and an dcd, trr, xtc, xyz or gro  trajectory file.
-% # <import_trr.html import_trr(filenameconf,filenametraj)> % This function imports an structure and an trr  trajectory file
-% # <import_trrv2.html import_trrv2(filenameconf,filenametraj)> % This function imports an structure and an trr  trajectory file
-% # <import_xtc.html import_xtc(filenameconf,filenamextc)> % import_atom_xtc.m - This imports a structure file and a xtc file
-% # <import_xtcv2.html import_xtcv2(filenameconf,filenamextc)> % import_atom_xtc.m - This imports a structure file and a xtc file
-% # <import_xyz_traj.html import_xyz_traj(filenametraj)> % import_xyz_traj.m - This imports an strcture and an .xyz trajectory file.
+%% Import of trajectory files
+% # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
+% # <import_xyz_traj.html import_xyz_traj(filenametraj)> % Import a structure and an .xyz trajectory file.
+% # <import_mc_pdb_traj.html import_mc_pdb_traj(filename,varargin)> % Import a structure and a .pdb trajectory file, handling changing numbers of particles.
+% # <import_pdb_traj.html import_pdb_traj(filename,varargin)> % Import a structure and a .pdb trajectory file.
+% # <import_traj.html import_traj(filenameconf,filenametraj)> % Import a structure and a .dcd, .trr, .xtc, .xyz, or .gro trajectory file.
+% # <import_trr.html import_trr(filenameconf,filenametraj)> % Import a structure and a .trr trajectory file.
+% # <import_trrv2.html import_trrv2(filenameconf,filenametraj)> % Import a structure and a .trr trajectory file (version 2).
+% # <import_xtc.html import_xtc(filenameconf,filenamextc)> % Import a structure and an .xtc file.
+% # <import_xtcv2.html import_xtcv2(filenameconf,filenamextc)> % Import a structure and an .xtc file (version 2).
 
+%% Miscellaneous
+% # <import_ave_gro.html import_ave_gro(filename)> % Import an averaged structure from a .gro trajectory.
+% # <import_mclf.html import_mclf(filename)> % Import a multi-configurational London force (MCLF) file.
+% # <import_mclf_C6.html import_mclf_C6(filename)> % Import MCLF C6 dispersion parameters.
+% # <import_mclf_C8.html import_mclf_C8(filename)> % Import MCLF C8 dispersion parameters.
+% # <import_mclf_C10.html import_mclf_C10(filename)> % Import MCLF C10 dispersion parameters.
+% # <import_mclf_dispersion.html import_mclf_dispersion(filename)> % Import dispersion parameters for MCLF.
+% # <import_cp2k.html import_cp2k(filename)> % Import a CP2K output file.
+% # <import_cp2k_resp.html import_cp2k_resp(filename)> % Import RESP charges from CP2K.
+
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

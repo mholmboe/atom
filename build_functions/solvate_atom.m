@@ -27,7 +27,7 @@
 % * cell_list_distance_matrix
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -255,3 +255,5 @@ size(SOL,2)/atomsperSOL
 
 assignin('caller','SOL',SOL);
 assignin('caller','limits',limits);
+
+end

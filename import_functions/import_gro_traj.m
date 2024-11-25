@@ -2,17 +2,17 @@
 % * This function imports a .gro trajectory
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = import_gro_traj(filename)
-% # atom = import_gro_traj(filename,maxFrames)
-% # atom = import_gro_traj(filename,maxFrames,stride)
+% # [atom,traj] = import_gro_traj(filename)
+% # [atom,traj] = import_gro_traj(filename,maxFrames)
+% # [atom,traj] = import_gro_traj(filename,maxFrames,stride)
 %
-function atom = import_gro_traj(filename,varargin)
+function [atom,traj] = import_gro_traj(filename,varargin)
 
 % Get the number of atoms and frames
 fileID = fopen(filename,'r');
@@ -25,6 +25,7 @@ fclose(fileID);
 
 disp('Try this if nFrames gives you problems')
 disp('nFrames=(size(LineEnd{1,1},1)-1)/(nAtoms+2)-1;')
+
 nFrames=(size(LineEnd{1,1},1)-1)/(nAtoms+2);
 
 % Set the number of frames to a lower value, or use stride
@@ -123,8 +124,8 @@ for t=1:length(Frames)
         end
         
     end
-    if mod(i,10)==0
-        i
+    if mod(t,100)==0
+        t
     end
 end
 
@@ -137,8 +138,8 @@ fclose(fileID);
 atom = resname_atom(atom);
 
 assignin('caller','MolID',MolID);
-assignin('caller','atom',atom);
-assignin('caller','traj',traj);
+% assignin('caller','atom',atom);
+% assignin('caller','traj',traj);
 assignin('caller','velo',velo);
 assignin('caller','nAtoms',nAtoms);
 assignin('caller','Box_dim',Box_dim);

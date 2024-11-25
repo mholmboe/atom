@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>density_atom.m</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-05"><meta name="DC.source" content="density_atom.m"><style type="text/css">
+      -->
+<title>density_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="density_atom.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +72,56 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>density_atom.m</h1><!--introduction--><div><ul><li>This function is used to calculate density profiles along X|Y|Z. It will also try to calc. the electron density profile from the an halfly-oxidized/ionic lattice using the X-ray scattering factors from atomic_scattering_factors(). This means its not exacly the same thing as the electron density, rather the electron density 'seen' by X-rays from an 'ionic lattice'. If the atom struct has a field/attribute atom.charge, this function also calculates the charge density, the electric field (symmetrized) and the electrostatic potential.</li></ul></div><p>Be(a)ware of the units...</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Version</a></li><li><a href="#2">Contact</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Set the occupancy of all sites</a></li></ul></div><h2 id="1">Version</h2><p>2.11</p><h2 id="2">Contact</h2><p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></p><h2 id="3">Examples</h2><div><ol><li>[Bins,Element_density] = density_atom(atom,Box_dim)</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05)</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z')</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',2.3) % sigma [&gt;0] value for Gaussian smoothing</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]</li><li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc</li></ol></div><pre class="codeinput"><span class="keyword">function</span> [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
-</pre><pre class="codeinput">Fontsize=18;
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>density_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function is used to calculate density profiles along X|Y|Z. It will also try to calc. the electron density profile from the an halfly-oxidized/ionic lattice using the X-ray scattering factors from atomic_scattering_factors(). This means its not exacly the same thing as the electron density, rather the electron density 'seen' by X-rays from an 'ionic lattice'. If the atom struct has a field/attribute atom.charge, this function also calculates the charge density, the electric field (symmetrized) and the electrostatic potential.</li>
+</ul>
+</div>
+<p>Be(a)ware of the units...</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#5">Set the occupancy of all sites</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim)</li>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05)</li>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z')</li>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',2.3) % sigma [&gt;0] value for Gaussian smoothing</li>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]</li>
+<li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">Fontsize=18;
 q=1.602176634E-19; <span class="comment">% 1 charge eq is q Coloumb (C)</span>
 epsilon_null = 8.854187817E-12; <span class="comment">% A2&middot;s4&middot;kg-1&middot;m-3</span>
 epsilon=1; <span class="comment">% Dielectric constant</span>
@@ -126,7 +179,9 @@ DistanceMax=Distance(end);
 Bins = (0:ds:Distance(end)+ds)';
 nBins = numel(Bins);
 assignin(<span class="string">'base'</span>,<span class="string">'Distance'</span>,Bins);
-</pre><h2 id="5">Set the occupancy of all sites</h2><pre class="codeinput">occ=1;
+</pre>
+<h2 id="5">Set the occupancy of all sites</h2>
+<pre class="codeinput">occ=1;
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>)
     occ=1;
     <span class="keyword">try</span>
@@ -302,13 +357,22 @@ xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'Fo
     plot(Distance(1:length(Total_Density)),circshift(Total_EPot_SI,[0 0]))
     xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'FontSize'</span>,Fontsize); ylabel(<span class="string">'Electrostatic potential [V]'</span>,<span class="string">'FontSize'</span>,Fontsize);
 <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">
 <span class="comment">% if strcmpi(Unit,'conc')</span>
 <span class="comment">% else</span>
 <span class="comment">%     xlabel('Distance [&Aring;]','FontSize',Fontsize); ylabel('Num','FontSize',Fontsize);</span>
 <span class="comment">% end</span>
 
 <span class="comment">% save(strcat('density_profs_',filename))</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% density_atom.m
 % * This function is used to calculate density profiles along X|Y|Z. It
@@ -324,7 +388,7 @@ xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'Fo
 % Be(a)ware of the units...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -584,4 +648,6 @@ end
 
 
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>

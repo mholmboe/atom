@@ -21,9 +21,11 @@ end
 
 
 %% Combination rules from Gromacs documentation
-A_mix=(A1*A2)^.5;
-B_mix=2/(1/B1+1/B2);
-C_mix=(C1*C2)^.5;
+A_mix=(A1*A2)^.5
+B_mix=2/(1/B1+1/B2)
+C_mix=(C1*C2)^.5
+
+pause
 
 buck=A_mix * exp(-B_mix * r) - C_mix./r.^6;
 coul=(1.60217646E-19)^2*6.022E+23*q1*q2./(r*1E-9)*1/(4*3.14159*8.85E-12)/1000;
@@ -36,9 +38,9 @@ plotmin=1000*(round(min(Utot*1.5)/1000));
 if plotmin>=0
     plotmin=10000;
 end
-plot(r,buck,'b.');
-plot(r,coul,'r.');
-plot(r,Utot,'k.');
+plot(r,buck,'b--');
+plot(r,coul,'r--');
+plot(r,Utot,'k--');
 % xlabel('r [nm]');
 % ylabel('U [kJ/mol]');
 % xlim([0,1.2]);

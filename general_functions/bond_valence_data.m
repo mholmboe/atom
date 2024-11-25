@@ -8,7 +8,7 @@
 % * Box_dim is the box dimension vector
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -100,15 +100,26 @@ if numel(ind)==0
 end
 
 % Ignore these H-O entries
-ind(ind==636)=[];
-ind(ind==637)=[];
-ind(ind==638)=[];
-ind(ind==639)=[];
-ind(ind==640)=[];
-
-ind(ind==642)=[];
-ind(ind==643)=[];
 ind(ind==644)=[];
+ind(ind==643)=[];
+ind(ind==642)=[];
+ind(ind==640)=[];
+ind(ind==639)=[];
+ind(ind==638)=[];
+ind(ind==637)=[];
+ind(ind==636)=[];
+
+% Ion_1(ind)
+% Valence_1(ind)
+% 
+% Ion_2(ind)
+% Valence_2(ind)
+% 
+% Ignore these Ti-O entries
+% ind(ind==1664)=[];
+% ind(ind==1666)=[];
+
+% ind
 
 if numel(ind)==0
     disp('Could not find any matching pair...')

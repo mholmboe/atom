@@ -4,7 +4,7 @@
 % * You might want to edit the atomtype names below to fit your needs...
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

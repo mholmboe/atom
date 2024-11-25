@@ -4,7 +4,7 @@
 % * Likely best used interactively... se below
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -29,11 +29,11 @@ ind(ind<2)=0;ind(ind>0)=1;
 ind=find(ind==1);
 
 % a 7-9 | a 27-29
-% 
+%
 % name 13 low_Ob
-% 
+%
 % a 17-19 | a 37-39
-% 
+%
 % name 14 hi_Ob
 
 % filename='npt.ndx';
@@ -59,12 +59,14 @@ for i = 1:size(ext_ind,1)
     row=ext_ind(i,:);
     row(row==0)=[];
     if max(row)<1000
-    fprintf(fid, '%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n', row);
+        fprintf(fid, '%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i%4i\r\n', row);
     elseif max(row)<10000
-    fprintf(fid, '%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n', row);
+        fprintf(fid, '%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n', row);
     elseif max(row)<100000
-    fprintf(fid, '%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n', row);
+        fprintf(fid, '%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i%6i\r\n', row);
     end
 end
 fprintf(fid, '\r\n');
 fclose(fid);
+
+end

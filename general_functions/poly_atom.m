@@ -3,7 +3,7 @@
 % * function
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -23,12 +23,14 @@ else
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,'H',1))=[];
     polytype(strncmpi(polytype,'O',1))=[];
+    polytype(strncmpi(polytype,'Cl',2))=[];
 end
 
 if isnumeric(polytype)
     polytype=unique([atom.type]);
     polytype(strncmpi(polytype,'H',1))=[];
     polytype(strncmpi(polytype,'O',1))=[];
+    polytype(strncmpi(polytype,'Cl',2))=[];
 end
 
 polytype_ind=find(ismember([atom.type],polytype));
@@ -80,15 +82,15 @@ assignin('caller','color',color)
 %    Box_dim=varargin{1};
 
 if numel(Box_dim)>0
-    
+
     if numel(Box_dim)==1
         Box_dim(1)=Box_dim(1);
         Box_dim(2)=Box_dim(1);
         Box_dim(3)=Box_dim(1);
     end
-    
+
     atom = bond_atom(atom,Box_dim,rmaxlong,.6);
-    
+
     if max([atom.molid])<max([atom.index])
         i=1;
         while numel(Bond_index)==0 && i < 10
@@ -96,7 +98,7 @@ if numel(Box_dim)>0
             i=i+1;
         end
     end
-    
+
 end
 
 % Sets plot limits for the data
@@ -141,22 +143,22 @@ xlabel('X [Å]'); ylabel('Y [Å]'); zlabel('Z [Å]');
 view([0,0]);
 
 for ip=1:numel(polytype_ind)
-    
+
     i=polytype_ind(ip);
-    
+
     color_temp = color(i,:);
-    
+
     if numel(atom(i).neigh.index)>0
-        
+
         r_vec = [[atom(i).neigh.r_vec(:,1)] [atom(i).neigh.r_vec(:,2)] [atom(i).neigh.r_vec(:,3)]];
-        
+
         dist=[];
         for j=1:size(r_vec,1)
             dist(j,:)=([ (r_vec(j,1)-r_vec(:,1)).^2 + (r_vec(j,2)-r_vec(:,2)).^2 + ([r_vec(j,3)-r_vec(:,3)]).^2] ).^.5;
         end
-        
+
         dist(dist>1.5*rmaxlong)=0;
-        
+
         PolyInd=[];n=0;
         for ik=1:size(r_vec,1)
             for il=ik+1:size(r_vec,1)
@@ -168,14 +170,17 @@ for ip=1:numel(polytype_ind)
                 end
             end
         end
-        
+
         poly_color=color_temp.^.5;
         poly_color_edge=color_temp./5;
         patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
             'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
-            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
+            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1.25);
+            %     patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+            % 'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
+            % 'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
     end
-    
+
     if mod(i,1000)==1 || i==size(atom,2)
         if i > 1
             i-1
@@ -183,7 +188,6 @@ for ip=1:numel(polytype_ind)
         end
     end
 end
-
 
 if nargin>4
     if varargin{3}>0

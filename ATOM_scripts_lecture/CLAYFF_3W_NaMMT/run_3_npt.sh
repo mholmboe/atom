@@ -92,8 +92,9 @@ tau_t           = 1 ; 1		        ; time constant, in ps
 ref_t           = 298 ;298        	; reference temperature, one for each group, in K
 
 ; Pressure coupling is on
-pcoupl			= Berendsen             ; Parrinello-Rahman		; Pressure coupling on in NPT
-pcoupltype		= anisotropic	        ; keeps same pressure in x/y directions, separate in z
+pcoupl			= Berendsen             ; C-rescale ; Parrinello-Rahman		; Pressure coupling on in NPT
+pcoupltype		= anisotropic	        ; Independent pressures in x/y/z directions
+nstpcouple      = 20					; default -1 == 100
 tau-p			= 2                     ; time constant, in ps
 ref-p			= 1.0 1.0 1.0 0.0 0.0 0.0	        ; reference pressure, in bar
 compressibility = 4.5E-5 4.5E-5 4.5E-5 0 0 0   ; isothermal compressibility of water, bar^-1
@@ -114,7 +115,7 @@ EOF
 ########### VOLUME EQUILIBRATION  ##############
 ################################################
 
-$gmx_grompp -f ./"$sim".mdp -c pre"$sim".gro -r pre"$sim".gro -p $gmx_run/$moldir/topol.top -n $gmx_run/$moldir/index.ndx -o "$sim".tpr -pp -maxwarn 1
+$gmx_grompp -f ./"$sim".mdp -c pre"$sim".gro -r pre"$sim".gro -p $gmx_run/$moldir/topol.top -n $gmx_run/$moldir/index.ndx -o "$sim".tpr -pp -po -maxwarn 1
 
 $gmx_mdrun -v -deffnm "$sim"
 

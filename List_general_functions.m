@@ -1,84 +1,106 @@
 %% List of general functions
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
 %% Convert water functions
-% # <spc2tip4p.html spc2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
-% # <spc2tip5p.html spc2tip5p(filename)> % This function converts a .gro or .pdb file with spc water to some tip5p water
-% # <spce2tip4p.html spce2tip4p(filename)> % This function converts a .gro or .pdb file with spc water to some tip4p water
-% # <tip3p2tip4p.html tip3p2tip4p(filename)> % This function converts a .gro file with spc water to some tip4p water
+% # <spc2tip4p.html spc2tip4p(filename)> % Convert a .gro or .pdb file with spc water to tip4p water.
+% # <spc2tip5p.html spc2tip5p(filename)> % Convert a .gro or .pdb file with spc water to tip5p water.
+% # <spce2tip4p.html spce2tip4p(filename)> % Convert a .gro or .pdb file with spce water to tip4p water.
+% # <tip3p2tip4p.html tip3p2tip4p(filename)> % Convert a .gro file with tip3p water to tip4p water.
 
 %% Various distance and bond functions
-% # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist,varargin)> % This function tries to find all bonds and angles of the atom struct 'more' is an optional varargin argument
-% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom(atom,Box_dim,varargin)> % This function tries to find all bonds, angles and dihedrals of the atom struct. Rmaxshort and Rmaxlong as well as 'more' is an optional varargin argument
-% # <bond_angle_type.html bond_angle_type(atom1,atom2,Box_dim,rmin,rmax,angle_limit,varargin)> % This tries to find all bonds and angles of the atom types
-% # <bond_valence_atom.html bond_valence_atom(atom,Box_dim,varargin)> % This function tries to calculate the bond valence values according to the bond valence method
-% # <bond_valence_data.html bond_valence_data(ion1,ion2,R,varargin)> % This function fetches the data and matches it to the passed atom types used to calculate the bond valence values according to http://www.iucr.org/resources/data/datasets/bond-valence-parameters
-% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga
-% # <dist_matrix_atom.html dist_matrix_atom(atom,Box_dim)> % This calculates the distance matrix from the atom struct
-% # <neigh_atom.html neigh_atom(atom,Box_dim,rmax,varargin)> % This function checks which neighbors each atom has and ouputs their info
-% # <neighbor_func.html neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)> % This function scans xyz data and checks who is within a certain radius. It outputs neighbour index,
-% # <radius_atom.html radius_atom(atom,ffname,watermodel)> % This function fetches the ion radius from clayff or interface or interface2015 ff's and
-% # <radius_ion.html radius_ion(Atom_label)> % This function fetches the ionic radius, originally taken from the link below
-% # <radius_vdw.html radius_vdw(Atom_label)> % This function fetches the rdw radius, originally taken from below from 'A cartography of the van der Waals territories' Santiago Alvarez doi:10.1039/c3dt50599e
-% # <rdf_atom.html rdf_atom(atom,Box_dim,varargin)> % This function calculates the radial distributtion function and the coordination number. Can also do Gaussion smoothing.
-% # <xrd_atom.html xrd_atom(varargin)> % This function calculates theoretical XRD patterns from a .pdb|.gro file or from an atom struct and Box_dim.
+% # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist,varargin)> % Find all bonds and angles of the atom struct. 'More' is an optional argument.
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom(atom,Box_dim,varargin)> % Find all bonds, angles, and dihedrals of the atom struct. Optional arguments include Rmaxshort and Rmaxlong.
+% # <bond_angle_type.html bond_angle_type(atom1,atom2,Box_dim,rmin,rmax,angle_limit,varargin)> % Find all bonds and angles of the atom types.
+% # <bond_valence_atom.html bond_valence_atom(atom,Box_dim,varargin)> % Calculate bond valence values using the bond valence method.
+% # <bond_valence_data.html bond_valence_data(ion1,ion2,R,varargin)> % Fetch data to calculate bond valence values for specified atom types.
+% # <dist_matrix_atom.html dist_matrix_atom(atom,Box_dim)> % Calculate the distance matrix from the atom struct.
+% # <neigh_atom.html neigh_atom(atom,Box_dim,rmax,varargin)> % Check neighbors for each atom and output their information.
+% # <neighbor_func.html neighbor_func(solute_index,XYZ_solute,XYZ_data,Box_dim,radius)> % Scan xyz data and check neighbors within a specified radius.
+% # <radius_atom.html radius_atom(atom,ffname,watermodel)> % Fetch the ion radius from Clayff, Interface, or Interface2015 force fields.
+% # <radius_ion.html radius_ion(Atom_label)> % Fetch the ionic radius.
+% # <radius_vdw.html radius_vdw(Atom_label)> % Fetch the van der Waals radius.
+% # <rdf_atom.html rdf_atom(atom,Box_dim,varargin)> % Calculate the radial distribution function and coordination number.
+% # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
 
 %% Other general functions
-% # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % This function appends so-called XYZ atomtype labels and XYZ data to an existing atom struct
-% # <analyze_atom.html analyze_atom(atom,Box_dim)> % This function fetches various preperties of the atoms in the atom struct, using for instance the bond valence method and for instance the radii originally taken from below	Revised effective ionic radii and systematic studies of interatomic distances in halides and chalcogenides. R. D. Shannon Acta Cryst. (1976) A32, 751-767.
-% # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % This function retrieves the atomic scattering factor vs 2theta using the 11 coeff parameters from Waasmaier Kirfel, 1995
-% # <ave_atom.html ave_atom(atom)> % This function calculates the mean of the atom coordinates
-% # <Box_dim2Cell.html Box_dim2Cell(Box_dim)> % * This function transforms the 1x3 or the 1x9 Box_dim variable to the 1x6 Cell variable
-% # <cat_atom.html cat_atom.m> % This is a special script (and not a function) that imports and appends atom structs into a .gro trajectory file, useful to make a trajectory with varying number of particles
-% # <Cell2Box_dim.html Cell2Box_dim(Cell)> % ** This function transforms the 1x6 Cell variable containing the a, b, c cell values and  the alfa, beta, gamma angle values as used in a typical .pdb file, into a 1x3 or the 1x9  Box_dim variable  
-% # <COM_atom.html COM_atom(atom,MolID)> % This function calculates the COM for certain elements
-% # <COM_func.html COM_func(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)> % This calculates the center of mass for water. Slow due to pbc...
-% # <COM_molid.html COM_molid(atom,MolID)> % This function calculates the COM for certain elements
-% # <COM_SOL.html COM_SOL(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)> % Computes the COM of SPC water?
-% # <composition_atom.html composition_atom(atom)> % This function looks at the composition of the atom struct
-% # <density_atom.html density_atom(atom,Box_dim)> % This function calculates concentration and electron density profiles. If the atom struct contains the field charge. the charge density, electric field and electrostatic potential is also calculated. 
-% # <dipoles_atom.html dipoles_atom(Elements,Box_dim)> % This function calculates the dipole vector of water. Similar to the COM_func
-% # <draw_box_atom.html draw_box_atom(Box_dim,LineColor,LineThickness)> % Draws a box
-% # <element_atom.html element_atom(atom,varargin)>  % Converts atomtypes to element types. This function replaces the atomtypes names with the element names
-% # <element_color.html element_color(Atom_label)> % This function assigns a certain color to each element. Estethic improvements are welcome...
-% # <frac2atom.html frac2atom(atom,Box_dim,angleparam,angletype)> % This function transforms fractional coordinates to cartesian
-% # <frame2atom.html frame2atom(atom,traj,frame,Box_dim,varargin)> % This function extracts a frame to the trajectory matrix
-% # <G2_atom.html G2_atom(atom,Box_dim)> % This function calculates the continuous G2 factor fromthe cos and sin terms and also saves a struct variable for G2_calc_func(). You might wnat to edit the atomtype names below to fit your needs...
-% # <hist_atom.html hist_atom(atom,s)> % This function is used to calculate density profiles in the X|Y|Z-direction
-% # <histz_atom.html histz_atom(atom,s)> % This function is used to calculate density profiles in the Z-direction
-% # <median_atom.html median_atom(atom)> % This function calculates the median position of the atom struct
-% # <neutralize_atom.html neutralize_atom(atom)> % This function appends a 0 to all atomtype names and will also set the  charge (if the field charge exist) to zero (0).
-% # <orto_atom.html orto_atom(atom,Box_dim)> % This transforms a triclinic atom struct to an orthogonal atom struct. Box_dim must look like [lx ly lz 0 0 xy 0 xz yz]
-% # <PATH2GMX.html PATH2<gmx()> % The Gromacs path on your computer
-% # <PATH2VMD.html PATH2VMD()> % The VMD path on your computer
-% # <place_atom.html place_atom(atom,position)> % This function places the atom struct according to the position vector called position, trying to use the COM of the molecule
-% # <plot_density_atom.html plot_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
-% # <plot_atom.html plot_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D. Its very simplistic with no cool features
-% # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % This function calculates the reduced mass.
-% # <show_density_atom.html show_density_atom(atom,Box_dim,varargin)> % This function draws the atom struct in 3D adjoined by some density profiles
-% # <show_atom.html show_atom(atom,varargin)> % This function draws the atom struct in 3D. Its a bit fancier that plot_atom()
-% # <show_arrow.html show_arrow(p1,p2,varargin)> % * plot a 3D arrow as patch object (cylinder+cone). This function was adapted from mArrow3.m
-% # <show_axis.html show_axis(varargin)> % * This function draws the axis in a plot
-% # <show_box.html show_box(Box_dim)> % * This function draws the simulation box
-% # <show_miller.html show_miller(Box_dim)> % * This function draws the hkl Miller planes of the Box_dim/Cell variables
-% # <triclinic_atom.html triclinic_atom(atom,Box_dim,angleparam,angletype)> %  triclinic_atom.m - This transforms an orthogonal atom struct to a triclinic with the angles alfa, beta, gamma or tilt factors xy, xz, yz
-% # <update_atom.html update_atom(atom)> % This function updates the molid index and the atoms index in the atom struct
-% # <vmd.html vmd(atom,Box_dim)> % This function plots the atom struct
+% # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
+% # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.
+% # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % Retrieve atomic scattering factors vs. 2theta.
+% # <ave_atom.html ave_atom(atom)> % Calculate the mean of the atom coordinates.
+% # <Box_dim2Cell.html Box_dim2Cell(Box_dim)> % Transform the Box_dim variable to the Cell variable.
+% # <Cell2Box_dim.html Cell2Box_dim(Cell)> % Transform the Cell variable into the Box_dim variable.
+% # <COM_atom.html COM_atom(atom,MolID)> % Calculate the center of mass (COM) for specified elements.
+% # <COM_molid.html COM_molid(atom,MolID)> % Calculate the COM for specific elements.
+% # <COM_SOL.html COM_SOL(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)> % Compute the COM of SPC water.
+% # <composition_atom.html composition_atom(atom)> % Analyze the composition of the atom struct.
+% # <density_atom.html density_atom(atom,Box_dim)> % Calculate concentration, electron density profiles, and charge density.
+% # <density_atom_fast.html density_atom_fast(atom,Box_dim)> % A faster version of the density_atom function.
+% # <draw_box_atom.html draw_box_atom(Box_dim,LineColor,LineThickness)> % Draw a box to visualize dimensions.
+% # <element_atom.html element_atom(atom,varargin)> % Convert atom type names to element names.
+% # <element_color.html element_color(Atom_label)> % Assign a specific color to each element.
+% # <frac2atom.html frac2atom(atom,Box_dim,angleparam,angletype)> % Transform fractional coordinates to Cartesian coordinates.
+% # <frame2atom.html frame2atom(atom,traj,frame,Box_dim,varargin)> % Extract a frame to the trajectory matrix.
+% # <G2_atom.html G2_atom(atom,Box_dim)> % Calculate the continuous G2 factor.
+% # <hist_atom.html hist_atom(atom,s)> % Calculate density profiles in the X, Y, or Z direction.
+% # <histz_atom.html histz_atom(atom,s)> % Calculate density profiles in the Z direction.
+% # <molecule_atom.html molecule_atom(atom,varargin)> % Set molecule ID, residue name, and element names of the atom struct.
+% # <median_atom.html median_atom(atom)> % Calculate the median position of the atom struct.
+% # <neutralize_atom.html neutralize_atom(atom)> % Set the charge of all atom types to zero.
+% # <orto_atom.html orto_atom(atom,Box_dim)> % Transform a triclinic atom struct to an orthogonal one.
+% # <place_atom.html place_atom(atom,position)> % Place the atom struct at a specified position.
+% # <plot_density_atom.html plot_density_atom(atom,Box_dim,varargin)> % Draw the atom struct in 3D along with density profiles.
+% # <plot_atom.html plot_atom(atom,Box_dim,varargin)> % Draw the atom struct in 3D.
+% # <plot_xvg.html plot_xvg(filename)> % Plot .xvg files, typically used in GROMACS simulations.
+% # <properties_atom.html properties_atom(atom)> % Analyze properties of the atom struct.
+% # <reduced_mass.html reduced_mass(Atom_label1,varargin)> % Calculate the reduced mass.
+% # <show_atom.html show_atom(atom,varargin)> % Draw the atom struct in 3D with additional features.
+% # <show_arrow.html show_arrow(p1,p2,varargin)> % Plot a 3D arrow as a patch object.
+% # <show_axis.html show_axis(varargin)> % Draw the axis in a plot.
+% # <show_box.html show_box(Box_dim)> % Draw the simulation box.
+% # <show_Hbonds_atom.html show_Hbonds_atom(atom)> % Display or calculate hydrogen bonds in the atom struct.
+% # <show_miller.html show_miller(Box_dim)> % Draw the Miller planes of the Box_dim/Cell variables.
+% # <show_density_atom.html show_density_atom(atom)> % Display density of atoms.
+% # <triclinic_atom.html triclinic_atom(atom,Box_dim,angleparam,angletype)> % Transform an orthogonal atom struct to a triclinic one.
+% # <update_atom.html update_atom(atom)> % Update molecule and atom indices in the atom struct.
+% # <vmd.html vmd(atom,Box_dim)> % Plot the atom struct using VMD.
+% # <closest_atom.html closest_atom(atom,Box_dim,ref_atom)> % Find the closest atom to the reference atom.
+% # <insert_atom.html insert_atom(atom,new_atom,position)> % Insert a new atom at the specified position.
+% # <remove_duplicate_atom.html remove_duplicate_atom(atom)> % Remove duplicate atoms from the atom struct.
+% # <sort_atom.html sort_atom(atom,Box_dim,varargin)> % Sort the atom struct based on specified properties.
+% # <split_atom.html split_atom(atom,Box_dim,varargin)> % Split the atom struct into separate parts based on criteria.
+% # <translate_atom.html translate_atom(atom,trans_vec)> % Translate the atom struct by a specified vector.
+% # <rotate_atom.html rotate_atom(atom,rotation_matrix)> % Rotate the atom struct by a specified matrix.
+% # <spiral_atom.html spiral_atom(atom,Box_dim,varargin)> % Create or modify spiral structures in the atom struct.
+% # <round_atom.html round_atom(atom)> % Round atom positions or coordinates.
+% # <mass_atom.html mass_atom(atom)> % Calculate or define mass for atoms.
+% # <radius_crystal.html radius_crystal(Atom_label)> % Fetch or calculate ionic radii for crystal structures.
+% # <sigma_vdw.html sigma_vdw(Atom_label)> % Compute sigma values for van der Waals interactions.
+% # <Bragg.html Bragg(varargin)> % Calculate Bragg peaks for crystallographic or XRD data.
+% # <unreplicate_atom.html unreplicate_atom(atom)> % Remove replicated atoms from the structure.
 
 %% Keep/remove functions
-% # <keep_atom.html keep_atom(atom,resname)> % keep_atom.m - This removes all but resname
-% # <keep_resname.html keep_resname(atom,resnames)> % keep_resname.m - This removes all but the resnames
-% # <remove_molid.html remove_molid(atom,MolID)> %  remove_molid.m - This removes residue with molid MolID = [1 2 3 .....]
-% # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % This function removes all succeding particles in the atom struct that has identical coordinates to a preceding particle
-% # <remove_residues.html remove_residues(atom,resnames,lo,hi,dim)> % This function section is used to remove residues in the simulation box between limits lo and hi
-% # <remove_resname.html remove_resname(atom,resnames)> % This function removes residue with molid MolID, resnames = {'SOL' 'Protein'}
-% # <remove_SOL.html remove_SOL(atom,atomname,lo,hi,dim)> %  This section is used to remove residues in the simulation box between limits lo and hi
-% # <remove_type.html remove_type(atom,typescell)> % This function removes atomtypes with types as in typescell = {'OW' 'HW1' 'HW2'}
+% # <keep_atom.html keep_atom(atom,resname)> % Keep only specified residue names in the atom struct.
+% # <keep_resname.html keep_resname(atom,resnames)> % Keep only specified residue names.
+% # <remove_molid.html remove_molid(atom,MolID)> % Remove residues with specified molecule IDs.
+% # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % Remove particles with identical coordinates to preceding ones.
+% # <remove_residues.html remove_residues(atom,resnames,lo,hi,dim)> % Remove residues within specified limits.
+% # <remove_resname.html remove_resname(atom,resnames)> % Remove residues by name.
+% # <remove_SOL.html remove_SOL(atom,atomname,lo,hi,dim)> % Remove solvent residues within specified limits.
+% # <remove_type.html remove_type(atom,typescell)> % Remove specified atom types.
 
+%% Lattice fitting functions
+% # <fit2lattice_atom.html fit2lattice_atom(atom,Box_dim)> % Fit atoms to a lattice.
+% # <fit2lattice_atom_v2.html fit2lattice_atom_v2(atom,Box
 
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se

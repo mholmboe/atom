@@ -1,8 +1,9 @@
 %% slice_atom.m
-% * This function checks if the coordinates is within the specified limits, and if not sets the x,y,z to nan,nan,nan.
+% * This function checks if the coordinates is within the specified limits, 
+% and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 2.11
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -13,7 +14,7 @@
 %
 function atom = slice_atom(atom,limits,varargin)
 
-if size(limits,2)==3
+if numel(limits)==3
     limits(4)=limits(1);
     limits(5)=limits(2);
     limits(6)=limits(3);
@@ -43,4 +44,6 @@ end
 atom(ind)=[];
 
 atom=update_atom(atom);
+
+end
 
