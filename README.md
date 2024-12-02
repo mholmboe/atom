@@ -170,4 +170,4 @@ Plus many other functions... see the HTML documentation.
 ### Contact:
 Any issues/concerns/bugs or suggestions for improvements/contributions, etc., email me.
 **Michael Holmboe**  
-michael.holmboe@umu.se
+michael.holmboe[at]umu.se
