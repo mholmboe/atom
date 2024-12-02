@@ -28,12 +28,9 @@ For any issues, bugs, or feature requests, please contact:
   - [Miscellaneous Export Functions](#miscellaneous-export-functions)
 - [Neighbor/Distance Functions](#neighbordistance-functions)
 - [Specific Atom Struct Functions](#specific-atom-struct-functions)
-- [Add/Create/Replicate/Overwrite Atoms](#addcreatereplicateoverwrite-atoms)
-- [Slice Out a Region of the Box](#slice-out-a-region-of-the-box)
 - [Translate or Rotate Functions](#translate-or-rotate-functions)
 - [Make Triclinic/Orthogonal Box](#make-triclinicorthogonal-box)
 - [Wrap/Unwrap Functions](#wrapunwrap-functions)
-- [Keep/Remove Functions](#keeprm-functions)
 - [List of Available Solvents](#list-of-available-solvents)
 - [Conversion Functions](#conversion-functions)
 - [Custom Topology Tools](#custom-topology-tools)
@@ -42,25 +39,22 @@ For any issues, bugs, or feature requests, please contact:
   - [MINFF](#minff-with-atomtypes-by-mholmboe)
   - [CLAYFF](#clayff-with-atomtypes-by-mholmboe)
 - [Writing Topology Files](#writing-topology-files)
-- [Bonded and Nonbonded Parameters](#bonded-and-nonbonded-parameters)
 - [Lennard-Jones and Coulomb Potentials](#lennard-jones-and-coulomb-potentials)
-- [Objective Functions and Force Calculations](#objective-functions-and-force-calculations)
-- [Automated Fitting Tools](#automated-fitting-tools)
 
 ---
 
 ## Main Types of Variables
 
-- **[Atom_label](Atom_label_variable.html)**: `1xn cell array`
-- **[atom](atom_variable.html)**: The main MATLAB struct variable
-- **[Box_dim](Box_dim_variable.html)**: `1x3` or `1x9` array holding the box size parameters
-- **[Cell](Cell_variable.html)**: `1x6` array containing a, b, c cell values and alpha, beta, gamma angles (as in a typical `.pdb` file)
-- **[distance_factor](distance_factor_variable.html)**: Variable for finding nearest neighbors or bonds based on different atom types' VDW radii
-- **[limits](limits_variable.html)**: `1x6` array defining a volumetric region
-- **[rmaxshort](rmaxshort_variable.html)**: Maximum H-related bond radius
-- **[rmaxlong](rmaxslong_variable.html)**: Maximum non-H-related bond/neighbor radius
-- **[XYZ_data](XYZ_data_variable.html)**: `nx3` matrix holding XYZ coordinates
-- **[XYZ_labels](XYZ_labels_variable.html)**: Cell list of atom types
+- **[Atom_label](variables/Atom_label_variable.m)**: `1xn cell array`
+- **[atom](variables/atom_variable.m)**: The main MATLAB struct variable
+- **[Box_dim](variables/Box_dim_variable.m)**: `1x3` or `1x9` array holding the box size parameters
+- **[Cell](variables/Cell_variable.m)**: `1x6` array containing a, b, c cell values and alpha, beta, gamma angles (as in a typical `.pdb` file)
+- **[distance_factor](variables/distance_factor_variable.m)**: Variable for finding nearest neighbors or bonds based on different atom types' VDW radii
+- **[limits](variables/limits_variable.m)**: `1x6` array defining a volumetric region
+- **[rmaxshort](variables/rmaxshort_variable.m)**: Maximum H-related bond radius
+- **[rmaxlong](variables/rmaxslong_variable.m)**: Maximum non-H-related bond/neighbor radius
+- **[XYZ_data](variables/XYZ_data_variable.m)**: `nx3` matrix holding XYZ coordinates
+- **[XYZ_labels](variables/XYZ_labels_variable.m)**: Cell list of atom types
 
 ---
 
@@ -297,7 +291,7 @@ For any issues, bugs, or feature requests, please contact:
 - **[bond_valence_data](general_functions/bond_valence_data.m)**: `bond_valence_data(ion1, ion2, R, varargin)`  
   Fetch data to calculate bond valence values for specified atom types.
 
-- **[cell_list_dist_matrix_atom](cell_list_dist_matrix_atom.html)**: `cell_list_dist_matrix_atom(atom, Box_dim, varargin)`  
+- **[cell_list_dist_matrix_atom](cell_list_dist_matrix_atom.m)**: `cell_list_dist_matrix_atom(atom, Box_dim, varargin)`  
   Calculate the distance matrix from the atom struct using a cell list algorithm.
 
 - **[closest_atom](build_functions/closest_atom.m)**: `closest_atom(atom1, atom2, Box_dim)`  
@@ -744,19 +738,6 @@ Note that the support for the INTERFACE forcefield by the atom MATLAB functions 
 
 - **[write_atom_oplsaa_go_itp](export_functions/write_atom_oplsaa_go_itp.m)**: `write_atom_oplsaa_go_itp(atom, Box_dim, filename_out, varargin)`  
   Create and print a GROMACS `.itp` file for OPLS-AA or GO systems.
-
----
-
-## Bonded and Nonbonded Parameters
-
-- **[bonded_parameters](bonded_parameters.html)**: `bonded_parameters(atom, varargin)`  
-  Define bonded parameters for atoms.
-
-- **[nonbonded_parameters](nonbonded_parameters.html)**: `nonbonded_parameters(atom, varargin)`  
-  Define nonbonded parameters for atoms.
-
-- **[nonbonded_ff](forcefield_functions/nonbonded_ff.m)**: `nonbonded_ff(atom, varargin)`  
-  Define nonbonded force field parameters.
 
 ---
 
