@@ -10,6 +10,9 @@ Download the whole function library from the:
 - [Matlab File Exchange](https://se.mathworks.com/matlabcentral/fileexchange/59622-atom)
 - [GitHub](https://github.com/mholmboe/atom)
 
+For a comprehensive list of the different functions, look here
+- [List all functions by topic](List_all_functions.md)
+
 See also the link to the:
 - [HTML documentation](http://moleculargeo.chem.umu.se/wp-content/uploads/file-manager/atom/Documentation/)
 
