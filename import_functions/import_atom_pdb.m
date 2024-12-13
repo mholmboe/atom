@@ -95,7 +95,6 @@ for i = 1:length(data)
         %         compatiblity
         atom(j).type = {strtrim(line(13:17))};
         atom(j).fftype = {strtrim(line(13:17))};
-        atom(j).element = {strtrim(line(77:78))};
         atom(j).index = str2double(line(7:11));
         atom(j).neigh.type = {};
         atom(j).neigh.index = [0;0;0;0;0;0];
@@ -113,7 +112,11 @@ for i = 1:length(data)
         % atom(j).charge = str2double(line(79:80));
         occupancy(j,1)=str2double(line(55:60));
         tempfactor(j,1)=str2double(line(61:66));
-        
+        try % Try this, in case this column exists
+            atom(j).element = {strtrim(line(77:78))};
+        catch
+
+        end
         atom(j).occupancy=occupancy(j,1);
         atom(j).B=tempfactor(j,1);
     end
