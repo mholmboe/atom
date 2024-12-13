@@ -289,6 +289,10 @@ for assignment_run=heal_iterations
                         elseif strcmpi(model_database,'SILICA')
                             atom(i).fftype={'HOY'};
                             atom(i).type={'H'};
+                        elseif strcmpi(model_database,'PHOSPHATE')
+                            atom(i).fftype={'IHOP'};
+                            atom(i).type={'H'};
+                            disp('Use interface15_phosphate_atom() function instead...')
                         end
                     elseif length(Neigh_ind) > 1
                         disp('H atom over coordinated')

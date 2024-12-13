@@ -432,6 +432,55 @@ forcefield.interface15(43).charge =  -0.3256	;
 forcefield.interface15(43).radius =  3.404427393;
 forcefield.interface15(43).e_kcalmol = 0.160036571;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if strcmpi(model_database,'PHOSPHATE')
+    disp('Model database is PHOSPHATE')
+
+    % Accurate Force Field Parameters and pH Resolved Surface Models for
+    % Hydroxyapatite to Understand Structure, Mechanics, Hydration, and
+    % Biological Interfaces, 2016 by Tzu-Jen Lin and Hendrik Heinz
+    %
+    % Ca in PHOSPHATE
+    forcefield.interface15(44).type =    {'ICA_H'}; % st tetrahedral silicon
+    forcefield.interface15(44).mass =    40.0800;
+    forcefield.interface15(44).charge =  1.5000; % 0.725 when dehydrated
+    forcefield.interface15(44).radius =  3.3*2^(1/6); % Conversion from sigma
+    forcefield.interface15(44).e_kJmol = 0.54392;
+
+    % P in PHOSPHATE
+    forcefield.interface15(45).type =    {'IPAP'}; % st tetrahedral silicon
+    forcefield.interface15(45).mass =    30.9738;
+    forcefield.interface15(45).charge =  1.000; % when dehydrated and bonded to OC25
+    forcefield.interface15(45).radius =  4.3*2^(1/6); % Conversion from sigma
+    forcefield.interface15(45).e_kJmol = 1.17152;
+
+    % Op in PHOSPHATE
+    forcefield.interface15(46).type =    {'IOAP1'}; %
+    forcefield.interface15(46).mass =    15.99410;
+    forcefield.interface15(46).charge =  -0.8000;
+    forcefield.interface15(46).radius =  3.4*2^(1/6); % Conversion from sigma
+    forcefield.interface15(46).e_kJmol = 0.29288;
+
+    % Oph in PHOSPHATE
+    forcefield.interface15(47).type =    {'IOAP2'}; %
+    forcefield.interface15(47).mass =    15.99410;
+    forcefield.interface15(47).charge =  -1.100; % -0.9 when dehydrated
+    forcefield.interface15(47).radius =  3.4*2^(1/6); % Conversion from sigma
+    forcefield.interface15(47).e_kJmol = 0.33472;
+
+    % H in PHOSPHATE
+    forcefield.interface15(48).type =    {'IHOP'}; %
+    forcefield.interface15(48).mass =    1.0080;
+    forcefield.interface15(48).charge =  0.2000; % -0.9 dehydrated as SiO-
+    forcefield.interface15(48).radius =  0.0001*2^(1/6); % Conversion from sigma
+    forcefield.interface15(48).e_kJmol = 0.0000;
+
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 % Forcefield_index=find(ismember([forcefield.interface15.type],Atom_label))';
 % forcefield.interface15=forcefield.interface15(Forcefield_index);
@@ -449,12 +498,12 @@ for i = 1:length(Atom_label)
     if strncmpi(Atom_label(i),'Hw',2)
         Atom_label(i)={'Hw'};
     end
-    
+
     ind=find(strcmpi([forcefield.interface15.type],Atom_label(i)))';
     if numel(ind)==0
         ind=find(strcmpi([forcefield.interface15.type],'Du'))';
     end
-    
+
     ind=find(strcmpi([forcefield.interface15.type],Atom_label(i)))';
     ff.interface15(i).fftype =  [forcefield.interface15(ind).type];
     ff.interface15(i).masses =  [forcefield.interface15(ind).mass];
