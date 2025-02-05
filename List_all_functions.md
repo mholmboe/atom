@@ -60,6 +60,14 @@ For any issues, bugs, or feature requests, please contact:
 
 ## Import Functions
 
+<<<<<<< HEAD
+=======
+### Import of Topology Files
+
+- **[import_itp](import_functions/import_itp.m)**: `import_itp(filename)`  
+  Import a GROMACS `.itp` topology file.
+
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 ### Import of Data Files
 
 - **[import_xvg](import_functions/import_xvg.m)**: `import_xvg(filename)`  
@@ -223,6 +231,13 @@ For any issues, bugs, or feature requests, please contact:
 
 - **[CONECT_atom](export_functions/CONECT_atom.m)**: `CONECT_atom(atom, Box_dim, filename_out)`  
   Write CONECT records for a PDB file.
+<<<<<<< HEAD
+=======
+  
+- **[write_itp](custom_functions/write_itp.m)**: `write_itp(itp,varargin)`  
+  Write a Gromacs molecular topology file (`.itp`) from a itp struct.
+
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 
 ### Export of Trajectory Files
 
@@ -293,6 +308,12 @@ For any issues, bugs, or feature requests, please contact:
 
 - **[cell_list_dist_matrix_atom](cell_list_dist_matrix_atom.m)**: `cell_list_dist_matrix_atom(atom, Box_dim, varargin)`  
   Calculate the distance matrix from the atom struct using a cell list algorithm.
+<<<<<<< HEAD
+=======
+  
+- **[cell_list_dist_matrix_atom1atom2](cell_list_dist_matrix_atom1atom2.m)**: `cell_list_dist_matrix_atom1atom2(atom, Box_dim, varargin)`  
+  Calculate the distance matrix from two atom structs called atom1 and atom2 using a cell list algorithm.
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 
 - **[closest_atom](build_functions/closest_atom.m)**: `closest_atom(atom1, atom2, Box_dim)`  
   Return the `atom1` struct with the `nMolId's` in `atom1` closest to the `atom2` struct.
@@ -776,4 +797,8 @@ Note that the support for the INTERFACE forcefield by the atom MATLAB functions 
 
 - **License**: This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+<<<<<<< HEAD
 ---
+=======
+---
+>>>>>>> ae77844 (Updated 5 Feb 2025)

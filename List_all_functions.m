@@ -48,7 +48,8 @@
 % # <buckinghamcoul.html buckinghamcoul(atom,Box_dim,varargin)> % Calculates interactions using the Buckingham potential and Coulombic forces.
 % # <buckinghamcoul_objective_func.html buckinghamcoul_objective_func(atom,Box_dim,varargin)> % Objective function for fitting Buckingham and Coulomb potentials.
 % # <cat_atom.html cat_atom(atom_1,atom_2)> % Concatenate two atom structs.
-% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga.
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm.
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2(atom,Box_dim,varargin)> % This function calculates the distance matrix from two structs called atom1 and atom2, using a cell list algorithm.
 % # <center_atom.html center_atom(atom,Box_dim,resname,dim)> % Center the atom with respect to the resname molecule.
 % # <change_top.html change_top(atom,Box_dim,varargin)> % Modifies the topology file or its parameters.
 % # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % Charge the atom according to Clayff or Interface force fields.
@@ -121,6 +122,7 @@
 % # <import_ff_table.html import_ff_table(filename,varargin)> % Imports forcefield parameter tables.
 % # <import_gmx_energy.html import_gmx_energy(filename)> % Import a Gromacs energy file.
 % # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
+% # <import_itp.html import_itp(filename)> % Import a Gromacs .itp topology file
 % # <import_mc_pdb_traj.html import_mc_pdb_traj(filename,varargin)> % Import a structure and a .pdb trajectory file, handling changing numbers of particles.
 % # <import_mclf.html import_mclf(filename)> % Import a multi-configurational London force (MCLF) file.
 % # <import_mclf_C10.html import_mclf_C10(filename)> % Import MCLF C10 dispersion parameters.
@@ -275,6 +277,7 @@
 % # <write_ffnonbonded.html write_ffnonbonded(atom,filename_out)> % Write non-bonded force field parameters.
 % # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12(atom,filename_out)> % Write non-bonded parameters (C6, C12) for a force field.
 % # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % Write a .gro trajectory file.
+% # <write_itp.html write_itp(itp,filename)> % Exports a Gromacs .itp topology file from a itp struct 
 % # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % Write a .pdb trajectory file.
 % # <write_tabulated_potentials.html write_tabulated_potentials(filename, data)> % Write tabulated potential files.
 % # <write_xvg.html write_xvg(filename, data)> % Export data in Gromacs .xvg format.

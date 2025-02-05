@@ -7,6 +7,9 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 
+%% Import of topology files
+% # <import_itp.html import_itp(filename)> % Import a Gromacs .itp topology file
+
 %% Import of data files
 % # <import_xvg.html import_xvg(filename)> % Import a Gromacs .xvg file.
 % # <import_gmx_energy.html import_gmx_energy(filename)> % Import a Gromacs energy file.

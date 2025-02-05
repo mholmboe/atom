@@ -48,10 +48,11 @@
 % # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % Hold the extended OPLS-AA force field parameters for graphite oxide.
 % # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Set the charge for specific OPLS atom types.
 
-%% Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)
+%% Writing topology files for Lammps (MINFF/CLAYFF) and Gromacs (MINFF/CLAYFF/INTERFACE)
 % # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for Clayff or Interface force fields.
 % # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % Create and print a LAMMPS data file (.lj) for Clayff systems.
 % # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.
+% # <write_itp.html write_itp(itp,filename)> % Exports a Gromacs .itp topology file from a itp struct 
 
 %% Bonded and Nonbonded Parameters
 % # <bonded_parameters.html bonded_parameters(atom,varargin)> % Define bonded parameters for atoms.
