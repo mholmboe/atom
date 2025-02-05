@@ -47,7 +47,7 @@ Utot=lj+coul;
 
 hold on
 
-plotmin=1000*(round(min(Utot*1.5)/1000));
+plotmin=1000*(round2dec(min(Utot*1.5)/1000));
 if plotmin>=0
     plotmin=1000;
 end

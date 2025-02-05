@@ -17,7 +17,7 @@
 
 function atom = recalc_bond_atom(atom,Box_dim,varargin)
 
-% rmaxlong=2.25; % May be reset below
+rmaxlong=2.25; % May be reset below
 
 XYZ_labels=[atom.type]';
 XYZ_data=single([[atom.x]' [atom.y]' [atom.z]']);
@@ -65,7 +65,7 @@ if nargin>2
     nBonds=size(Bond_index,1);
     assignin('caller','Bond_index',Bond_index);
     assignin('caller','nBonds',nBonds);
-    
+
     if nargin>3
         if size(Angle_index,2)>1
             disp('Re-calculating the Angle_index')
@@ -84,7 +84,7 @@ if nargin>2
     else
         Angle_index=[0 0 0 0];
     end
-    
+
     if nargin>4
         if size(Dihedral_index,2)>1
             disp('Re-calculating the Dihedral_index')
@@ -99,9 +99,9 @@ if nargin>2
                         normB=sqrt(sum(B.*B,2));
                         theta=rad2deg(acos(dot(A,B)./(normA*normB)));
                         if Ax2(i,2)<Ax2(i,3)
-                            Dihedral_index(d,1:5)=[Ax2(i,1) Ax2(i,2) Ax2(i,3) Ax2(j,3) round(theta,2)];
+                            Dihedral_index(d,1:5)=[Ax2(i,1) Ax2(i,2) Ax2(i,3) Ax2(j,3) round2dec(theta,2)];
                         else
-                            Dihedral_index(d,1:5)=[Ax2(j,3) Ax2(i,3) Ax2(i,2) Ax2(i,1) round(theta,2)];
+                            Dihedral_index(d,1:5)=[Ax2(j,3) Ax2(i,3) Ax2(i,2) Ax2(i,1) round2dec(theta,2)];
                         end
                         d=d+1;
                     end
@@ -112,11 +112,11 @@ if nargin>2
                     end
                 end
             end
-            
+
         end
-        
+
         nDihedrals=size(Dihedral_index,2);
-        
+
         if nDihedrals>0
             [Y,I] = sort(Dihedral_index(:,2));
             Dihedral_index = Dihedral_index(I,:);
@@ -144,7 +144,7 @@ while i<size(atom,2)+1
     k=1;j=1;
     ind=Bx2(:,1)==i;
     neigh_ind=Bx2(ind,2);
-    
+
     [atom(i).neigh.dist] = [];
     [atom(i).neigh.index] = [];
     [atom(i).neigh.type] = {};
@@ -158,7 +158,7 @@ while i<size(atom,2)+1
     [atom(i).angle.angle] = [];
     [atom(i).angle.vec1] = [];
     [atom(i).angle.vec2] = [];
-    
+
     while j <= numel(neigh_ind) && k <= numel(neigh_ind) %<= neigh %atom(i).neigh=[];
         if atom(i).molid==atom(neigh_ind(j)).molid
             [atom(i).neigh.dist(k,1)]=dist_matrix(neigh_ind(j),i);
@@ -193,6 +193,91 @@ while i<size(atom,2)+1
 end
 i-1
 
+%% New addition v3.00
+
+CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
+if length(Bond_index)>0
+    [Y,i] = sort(Bond_index(:,1));
+    Bond_index = Bond_index(i,:);
+    Bond_index = unique(Bond_index,'rows','stable');
+    try
+        CoordNumber=arrayfun(@(x) numel(x.neigh.index),atom);
+    catch
+        CoordNumber=zeros(1,size(atom,2));
+        for i=1:size(atom,2)
+            i
+            [atom(i).neigh.index]
+            CoordNumber(i)=numel([atom(i).neigh.index]);
+        end
+    end
+    Remove_ind=find(CoordNumber==0);
+    % assignin('caller','Remove_ind',Remove_ind);
+    % assignin('caller','CoordNumber',CoordNumber);
+end
+assignin('caller','Remove_ind',Remove_ind);
+assignin('caller','CoordNumber',CoordNumber);
+
+ind=find(tril(dist_matrix)>0);
+r=dist_matrix(ind);
+[i,j] = ind2sub(size(dist_matrix),ind);
+
+Neigh_index = [j i r];
+[Y,i] = sort(Neigh_index(:,1));
+Neigh_index = Neigh_index(i,:);
+Neigh_index = unique(Neigh_index,'rows','stable');
+rm_ind=find(Neigh_index(:,3)>rmaxlong);
+
+Neigh_index(unique([rm_ind]),:) = [];
+
+% Old since v2.13, but too slow in Octave
+% rm_ind=[rm_ind];
+% for i=1:size(Neigh_index,1)
+%     if [atom(Neigh_index(i,1)).molid]~=[atom(Neigh_index(i,2)).molid]
+%         rm_ind=[rm_ind; i];
+%     end
+% end
+% Neigh_index(rm_ind,:)=[];
+
+% Extract molid for the first and second columns of Neigh_index
+molid1 = [atom(Neigh_index(:,1)).molid];
+molid2 = [atom(Neigh_index(:,2)).molid];
+
+% Find rows where molid values differ
+rm_ind2 = molid1 ~= molid2;
+
+% Remove rows in one step
+Neigh_index(unique([rm_ind2]),:) = [];
+
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+Bond_index(~any(Bond_index,2),:) = [];
+nBonds=size(Bond_index,1);
+
+% [Y,I]=sort(Angle_index(:,2));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
+% Angle_index(~any(Angle_index,2),:) = [];
+% nAngles=size(Angle_index,1);
+% assignin('caller','Angle_index',Angle_index);
+% assignin('caller','Neigh_ind',Neigh_ind);
+% assignin('caller','Neigh_vec',Neigh_vec);
+
+[atom.type]=atom.fftype;
+atom=order_attributes(atom);
+
+assignin('caller','nBonds',nBonds);
+% assignin('caller','radius_limit',radius_limit);
+assignin('caller','Bond_index',Bond_index);
+assignin('caller','Neigh_index',Neigh_index);
+% assignin('caller','bond_matrix',dist_matrix);
+assignin('caller','dist_matrix',dist_matrix);
+assignin('caller','X_dist',X_dist);
+assignin('caller','Y_dist',Y_dist);
+assignin('caller','Z_dist',Z_dist);
+
+%% End New addition v3.00
+
 if nargin>6
     Atom_labels=unique([atom.type]);
     for i=1:length(Atom_labels)
@@ -206,7 +291,7 @@ if nargin>6
                 Tot_neighindex=[Tot_neighindex; [atom(j).neigh.index]];
                 Tot_coords=[Tot_coords; [atom(j).neigh.coords]];
             end
-            
+
             if numel([atom(j).bond])>0
                 Tot_bondindex=[Tot_bondindex; [atom(j).bond.index]];
                 Tot_bonds=[Tot_bonds; [atom(j).bond.dist]];
@@ -222,7 +307,7 @@ if nargin>6
             assignin('caller',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('caller',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
             assignin('caller',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
-            
+
             assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist)]);
             assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);

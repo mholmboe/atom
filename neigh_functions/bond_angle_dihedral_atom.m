@@ -39,7 +39,7 @@ if nargin<=4
         rmaxshort=varargin{2};
         rmaxlong=varargin{3};
     end
-    atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong);
+    atom=bond_atom(atom,Box_dim,rmaxlong);
 elseif nargin>4
     Box_dim=varargin{1};
     rmaxshort=varargin{2};
@@ -47,11 +47,11 @@ elseif nargin>4
     atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong,'more');
 end
 
-Dihedral_index=[];Pairlist=[];
+Dihedral_index=[];Pairlist=[];Improper_dihedral_index = [];
 nDihedrals=size(Dihedral_index,2);
 if size(Bond_index,1)>1
 
-    disp('Calculating dihedrals')
+    disp('Calculating dihedrals and a pairlist')
 
     % Ensure bond_list is sorted with smaller index first
     Bond_index(:,1:2) = sort(Bond_index(:,1:2), 2);
@@ -123,16 +123,104 @@ if size(Bond_index,1)>1
         Pairlist =[];
     end
 
+    if size(Dihedral_index,1)>1
+        %    Ax2=[[Angle_index(:,3) Angle_index(:,2) Angle_index(:,1) Angle_index(:,4) Angle_index(:,8:10) Angle_index(:,5:7)]; Angle_index];
+        Ax2=[Angle_index(:,[3 2 1 4 8 9 10 5 6 7]); Angle_index];
+        d=1;
+        for i=1:size(Ax2,1)
+            for j=i:size(Ax2,1)
+                if isequal([Ax2(i,2) Ax2(i,3)],[Ax2(j,1) Ax2(j,2)])
+                    A=cross([Ax2(i,5) Ax2(i,6) Ax2(i,7)],[Ax2(i,8) Ax2(i,9) Ax2(i,10)]);
+                    B=cross([Ax2(j,5) Ax2(j,6) Ax2(j,7)],[Ax2(j,8) Ax2(j,9) Ax2(j,10)]);
+                    normA=sqrt(sum(A.*A,2));
+                    normB=sqrt(sum(B.*B,2));
+                    theta=rad2deg(acos(dot(A,B)./(normA*normB)));
+                    if Ax2(i,2)<Ax2(i,3)
+                        Dihedral_index(d,1:5)=real([Ax2(i,1) Ax2(i,2) Ax2(i,3) Ax2(j,3) round2dec(theta,2)]);
+                    else
+                        Dihedral_index(d,1:5)=real([Ax2(j,3) Ax2(i,3) Ax2(i,2) Ax2(i,1) round2dec(theta,2)]);
+                    end
+                    d=d+1;
+                end
+            end
+        end
+    end
+
+    disp('Calculating improper dihedrals with planarity check...');
+
+    % Define a threshold for planarity.
+    % If abs(planarity) is close to 1 within this tolerance, we treat it as planar.
+    planarityThreshold = 1e-1;
+    indH=find(strncmp([atom.type],'H',1));
+    % adjacency_list_noH=adjacency_list;
+    % % for i = 1:size(adjacency_list_noH,1)
+    % %     adjacency_list_noH{i}(ismember(adjacency_list_noH{i}, indH)) = [];
+    % % end
+
+    % Loop over all atoms to find those with exactly three neighbors
+    for central_atom = 1:size(adjacency_list, 1)
+
+        ind3=find(ismember(Angle_index(:,2),central_atom));
+
+        if numel(ind3) == 3 && sum(ismember(atom(central_atom).type,{'CG2O1', 'CG2O3'})) > 0
+
+            % --------------------------------------------------------------
+            % 1) Extract coordinates of the central atom and its neighbors
+            % --------------------------------------------------------------
+            pos_vec=[Angle_index(ind3(1),5:7);...
+                Angle_index(ind3(1),8:10);...
+                Angle_index(ind3(2),5:7);...
+                Angle_index(ind3(2),8:10);...
+                Angle_index(ind3(3),5:7);...
+                Angle_index(ind3(3),8:10)];
+            pos_vec=unique(pos_vec,'rows');
+
+            vec1=pos_vec(1,:);
+            vec2=pos_vec(2,:);
+            vec3=pos_vec(3,:);
+
+            % --------------------------------------------------------------
+            % 2) Compute normals to check planarity
+            % --------------------------------------------------------------
+            normal1 = cross(vec1, vec2);
+            normal2 = cross(vec1, vec3);
+
+            % Guard against very small normals to avoid division by zero
+            if norm(normal1) < 1e-12 || norm(normal2) < 1e-12
+                continue;  % Degenerate or collinear vectors; skip
+            end
+
+            % Planarity measure = cos(angle) between the two normals
+            planarity = dot(normal1, normal2) / (norm(normal1) * norm(normal2));
+
+            % If near ±1, the four atoms (center + 3 neighbors) are planar
+            if abs(abs(planarity) - 1) < planarityThreshold
+                dihedralRow = [central_atom, unique([Angle_index(ind3,[1 3])])'];
+                Improper_dihedral_index = [Improper_dihedral_index; dihedralRow];
+            end
+         end
+    end
+
+
+    % Remove any duplicates and sort the final improper dihedral list
+    if ~isempty(Improper_dihedral_index)
+        Improper_dihedral_index = unique(Improper_dihedral_index, 'rows');
+        Improper_dihedral_index = sortrows(Improper_dihedral_index);
+    end
+
+    nImpropers=size(Improper_dihedral_index,2);
 end
 
 assignin('caller','dist_matrix',dist_matrix);
-assignin('caller','overlap_index',overlap_index);
+%assignin('caller','overlap_index',overlap_index);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
 assignin('caller','nBonds',nBonds);
 assignin('caller','nAngles',nAngles);
 assignin('caller','nDihedrals',nDihedrals);
+assignin('caller','nImpropers',nImpropers);
 assignin('caller','Dihedral_index',Dihedral_index);
+assignin('caller','Improper_dihedral_index',Improper_dihedral_index);
 assignin('caller','Pairlist',Pairlist);
 
 end

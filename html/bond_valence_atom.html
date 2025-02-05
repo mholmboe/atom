@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>bond_valence_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="bond_valence_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -187,7 +187,7 @@ atom=element_atom(atom);
         <span class="keyword">try</span>
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); <span class="comment">% Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance</span>
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); <span class="comment">% Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance</span>
         <span class="keyword">catch</span>
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -224,7 +224,7 @@ atom=element_atom(atom);
         <span class="keyword">try</span>
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); <span class="comment">% Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance</span>
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); <span class="comment">% Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance</span>
         <span class="keyword">catch</span>
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -255,14 +255,14 @@ Atom_labels=unique([atom.type]);
 <span class="keyword">end</span>
 
 
-A=round([atom.valence]);
+A=round2dec([atom.valence]);
 B=[atom.valence];
 C(1:2:2*numel(A))=A;
 C(2:2:2*numel(A))=B;
 <span class="comment">% C;</span>
 
 <span class="comment">% disp('    Mean   |  Median  |  std ')</span>
-<span class="comment">% [mean([atom.valence]-round([atom.valence])) median([atom.valence]-round([atom.valence])) std([atom.valence]-round([atom.valence]))]</span>
+<span class="comment">% [mean([atom.valence]-round2dec([atom.valence])) median([atom.valence]-round2dec([atom.valence])) std([atom.valence]-round2dec([atom.valence]))]</span>
 </pre>
 <p class="footer">
 <br>
@@ -358,7 +358,7 @@ if numel(valence_ion1)==size(atom,2)
         try
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
         catch
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -395,7 +395,7 @@ else
         try
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance
         catch
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -426,14 +426,14 @@ for i=1:length(Atom_labels)
 end
 
 
-A=round([atom.valence]);
+A=round2dec([atom.valence]);
 B=[atom.valence];
 C(1:2:2*numel(A))=A;
 C(2:2:2*numel(A))=B;
 % C;
 
 % disp('    Mean   |  Median  |  std ')
-% [mean([atom.valence]-round([atom.valence])) median([atom.valence]-round([atom.valence])) std([atom.valence]-round([atom.valence]))]
+% [mean([atom.valence]-round2dec([atom.valence])) median([atom.valence]-round2dec([atom.valence])) std([atom.valence]-round2dec([atom.valence]))]
 
 
 ##### SOURCE END #####

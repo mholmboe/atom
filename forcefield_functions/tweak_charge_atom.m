@@ -20,7 +20,7 @@ disp('Total charge before tweaking')
 Total_charge=sum([atom.charge])
 
 for i=1:size(atom,2)
-    atom(i).charge=round(atom(i).charge,6);
+    atom(i).charge=round2dec(atom(i).charge,6);
 end
 
 if nargin>1
@@ -30,15 +30,15 @@ if nargin>1
     disp('Tweaking the charge for the atomtype')
     Atom_labels
     qtot=sum([atom.charge]);
-    delta_q=sum([atom.charge]);%-round(sum([atom.charge]));
+    delta_q=sum([atom.charge]);%-round2dec(sum([atom.charge]));
     charge=num2cell([atom(ind).charge]-delta_q/nAtoms);
     [atom(ind).charge]=deal(charge{:});
     Total_charge=sum([atom.charge])
 else
-    if abs(round(sum([atom.charge]))-sum([atom.charge])) > 0.00001 && abs(round(sum([atom.charge]))-sum([atom.charge])) < 0.5
+    if abs(round2dec(sum([atom.charge]))-sum([atom.charge])) > 0.00001 && abs(round2dec(sum([atom.charge]))-sum([atom.charge])) < 0.5
         disp('Tweaking the charge')
         qtot=sum([atom.charge]);
-        delta_q=sum([atom.charge])-round(sum([atom.charge]));
+        delta_q=sum([atom.charge])-round2dec(sum([atom.charge]));
         if abs(delta_q) < 0.05
             [atom(1).charge]=atom(1).charge-delta_q;
         else
@@ -50,16 +50,16 @@ else
 end
 
 for i=1:size(atom,2)
-    atom(i).charge=round(atom(i).charge,6);
+    atom(i).charge=round2dec(atom(i).charge,6);
 end
 
-final_delta_q=sum([atom.charge])-round(sum([atom.charge]));
+final_delta_q=sum([atom.charge])-round2dec(sum([atom.charge]));
 
 if abs(final_delta_q) < 0.05
     [atom(1).charge]=atom(1).charge-final_delta_q;
 end
 
-round(unique([atom.charge]),8)
+round2dec(unique([atom.charge]),8)
 
 disp('Total charge after tweaking')
 Total_charge=sum([atom.charge])

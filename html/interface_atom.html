@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>interface_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="interface_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -598,14 +598,14 @@ ind_edgeH=intersect(col,ind_H);
     disp(<span class="string">'Could not set the charge...'</span>)
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> abs(round(sum([atom.charge])) - sum([atom.charge]))&gt;0.00001
+<span class="keyword">if</span> abs(round2dec(sum([atom.charge])) - sum([atom.charge]))&gt;0.00001
     disp(<span class="string">'Initial total charge!'</span>)
     Total_charge=sum([atom.charge])
-    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    [atom(1).charge]=atom(1).charge+(round2dec(sum([atom.charge])) - sum([atom.charge]));
     <span class="comment">%     atom=tweak_charge_atom(atom,'Al');</span>
     disp(<span class="string">'Final total charge, modfying the first atoms charge somewhat!'</span>)
     Total_charge=sum([atom.charge])
-    round(sum(Total_charge),6)
+    round2dec(sum(Total_charge),6)
     assignin(<span class="string">'caller'</span>,<span class="string">'Total_charge'</span>,Total_charge);
 <span class="keyword">end</span>
 
@@ -1125,14 +1125,14 @@ catch
     disp('Could not set the charge...')
 end
 
-if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.00001
+if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.00001
     disp('Initial total charge!')
     Total_charge=sum([atom.charge])
-    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    [atom(1).charge]=atom(1).charge+(round2dec(sum([atom.charge])) - sum([atom.charge]));
     %     atom=tweak_charge_atom(atom,'Al');
     disp('Final total charge, modfying the first atoms charge somewhat!')
     Total_charge=sum([atom.charge])
-    round(sum(Total_charge),6)
+    round2dec(sum(Total_charge),6)
     assignin('caller','Total_charge',Total_charge);
 end
 

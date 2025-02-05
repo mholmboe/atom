@@ -14,7 +14,7 @@
 % # [atom,Box_dim] = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
 % # [atom,Box_dim] = import_atom('molecule.gro',[10 5 0],[35.24 24.23write 52.23]) % Translates the atom struct by a [x y z] Ångströms and sets new Box_dim
 
-function atom = import_atom(filename,varargin)
+function [atom,Box_dim] = import_atom(filename,varargin)
 %%
 
 if iscell(filename)
@@ -83,7 +83,7 @@ elseif regexp(filename,'.mol2') > 1
     
 elseif regexp(filename,'.xyz') > 1
     disp('Found .xyz file');
-    atom=import_atom_xyz(filename);
+    [atom,Box_dim]=import_atom_xyz(filename);
     %Box_dim = [(max([atom.x])-min([atom.x]))*1.0001 (max([atom.y])-min([atom.y]))*1.0001 (max([atom.z])-min([atom.z]))*1.0001];
     filenamegro='temp.gro';
     write_atom_gro(atom,Box_dim,filenamegro)

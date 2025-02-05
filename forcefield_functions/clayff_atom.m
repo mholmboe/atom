@@ -820,14 +820,14 @@ catch
     disp('Could not set the charge...')
 end
 
-if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.0001
+if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')
-    Total_charge=round(sum([atom.charge]),8)
-    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    Total_charge=round2dec(sum([atom.charge]),8)
+    [atom(1).charge]=atom(1).charge+(round2dec(sum([atom.charge])) - sum([atom.charge]));
     %     atom=tweak_charge_atom(atom,'Al');
     disp('Final total charge, modfying the first atoms charge somewhat!')
     Total_charge=sum([atom.charge])
-    round(sum(Total_charge),6)
+    round2dec(sum(Total_charge),6)
     assignin('caller','Total_charge',Total_charge);
 end
 
@@ -885,7 +885,7 @@ while i<size(All_Neighbours,1)+1
     else
 
     end
-    All_Neighbours(i,6)={unique(round([atom(strcmp([atom.type],All_Neighbours(i,3))).charge],5))};
+    All_Neighbours(i,6)={unique(round2dec([atom(strcmp([atom.type],All_Neighbours(i,3))).charge],5))};
     i=i+1;
 end
 

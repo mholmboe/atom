@@ -84,7 +84,7 @@ if numel(valence_ion1)==size(atom,2)
         try
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond minus the actual bond distance
         catch
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -121,7 +121,7 @@ else
         try
             atom(i).valence=sum(atom(i).bv(:));
             size(atom(i).neigh.type,1);
-            atom(i).Rdiff=bvalue*log(atom(i).valence/round([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance
+            atom(i).Rdiff=bvalue*log(atom(i).valence/round2dec([atom(i).valence])); % Rdiff calc the average valence and from R0 - R i.e. the ideal bond distance minus the actual bond distance
         catch
             atom(i).valence=0;
             atom(i).Rdiff=0;
@@ -152,12 +152,12 @@ for i=1:length(Atom_labels)
 end
 
 
-A=round([atom.valence]);
+A=round2dec([atom.valence]);
 B=[atom.valence];
 C(1:2:2*numel(A))=A;
 C(2:2:2*numel(A))=B;
 % C;
 
 % disp('    Mean   |  Median  |  std ')
-% [mean([atom.valence]-round([atom.valence])) median([atom.valence]-round([atom.valence])) std([atom.valence]-round([atom.valence]))]
+% [mean([atom.valence]-round2dec([atom.valence])) median([atom.valence]-round2dec([atom.valence])) std([atom.valence]-round2dec([atom.valence]))]
 

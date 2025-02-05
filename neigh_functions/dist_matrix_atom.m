@@ -14,7 +14,7 @@
 % # dist_matrix = dist_matrix_atom(atom1,Box_dim) % Basic input arguments
 % # dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % Calculates the distance matrix between sites in atom1 and in atom2
 %
-function dist_matrix = dist_matrix_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
+function [dist_matrix,X_dist,Y_dist,Z_dist] = dist_matrix_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
 
 format compact;
 
@@ -54,28 +54,28 @@ if size(Box_dim,2)==3
         x_gt_ind=find(rx > lx/2); x_lt_ind=find(rx < - lx/2);
         rx(x_gt_ind) = rx(x_gt_ind) - lx;
         rx(x_lt_ind) = rx(x_lt_ind) + lx;
-        
+
         ry = XYZ1(i,2) - XYZ2(:,2);
         y_gt_ind=find(ry > ly/2); y_lt_ind=find(ry < - ly/2);
         ry(y_gt_ind) = ry(y_gt_ind) - ly;
         ry(y_lt_ind) = ry(y_lt_ind) + ly;
-        
+
         rz = XYZ1(i,3) - XYZ2(:,3);
         z_gt_ind=find(rz > lz/2); z_lt_ind=find(rz < - lz/2);
         rz(z_gt_ind) = rz(z_gt_ind) - lz;
         rz(z_lt_ind) = rz(z_lt_ind) + lz;
-        
+
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
         dist_matrix(:,i)=r;
         X_dist(:,i)=rx;
         Y_dist(:,i)=ry;
         Z_dist(:,i)=rz;
-        
-        if mod(i,1000)==1
-            if i > 1
-                i-1
-            end
-        end
+
+        % if mod(i,1000)==1
+        %     if i > 1
+        %         i-1
+        %     end
+        % end
         i=i+1;
     end
 else % if cell is triclinic, and this part is not actually tested yet...
@@ -108,12 +108,12 @@ else % if cell is triclinic, and this part is not actually tested yet...
         X_dist(:,i)=rx;
         Y_dist(:,i)=ry;
         Z_dist(:,i)=rz;
-        
-        if mod(i,1000)==1
-            if i > 1
-                i-1
-            end
-        end
+
+        % if mod(i,1000)==1
+        %     if i > 1
+        %         i-1
+        %     end
+        % end
         i=i+1;
     end
 end
@@ -121,15 +121,10 @@ i-1;
 
 % New transposed output
 dist_matrix=dist_matrix';
-try
-    assignin('caller','X_dist',(X_dist)');
-    assignin('caller','Y_dist',(Y_dist)');
-    assignin('caller','Z_dist',(Z_dist)');
-    assignin('caller','analyzed_Box_dim',Box_dim);
-catch
-    assignin('base','X_dist',(X_dist)');
-    assignin('base','Y_dist',(Y_dist)');
-    assignin('base','Z_dist',(Z_dist)');
-    assignin('base','analyzed_Box_dim',Box_dim);
+assignin('caller','analyzed_Box_dim',Box_dim);
+assignin('caller','X_dist',(X_dist)');
+assignin('caller','Y_dist',(Y_dist)');
+assignin('caller','Z_dist',(Z_dist)');
+
 end
 

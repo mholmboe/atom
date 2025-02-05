@@ -3,7 +3,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.05
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -13,7 +13,7 @@
 % # atom = import_atom('molecule.pdb',[10 5 2])
 % # atom = import_atom('molecule.pdb',[10 5 0],[35.24 24.23 52.23])
 %
-function atom = import_atom_pdb(filename,varargin)
+function [atom,Box_dim] = import_atom_pdb(filename,varargin)
 
 if regexp(filename,'.pdb') ~= false
     filename = filename;

@@ -56,7 +56,7 @@ else
     Valences=[element.valence];
     modOxstate=0;
     indO=find(strncmp([element.type],'O',1));
-    modOxstate=sum(Valences(indO)-round(Valences(indO)))/numel(Valences(indO));
+    modOxstate=sum(Valences(indO)-round2dec(Valences(indO)))/numel(Valences(indO));
 end
 
 element=mass_atom(element,Box_dim);
@@ -70,7 +70,7 @@ for i=1:size(element,2)
         Ion_ind=find(strncmpi([element(i).type],Ion,1));
     end
     CN_ind=find(numel(element(i).neigh.index)==CN);
-    Ox_ind=find(round(element(i).valence-modOxstate)==OxState);
+    Ox_ind=find(round2dec(element(i).valence-modOxstate)==OxState);
     CN_ind=intersect(Ion_ind,CN_ind);
     Ox_ind=intersect(Ion_ind,Ox_ind);
     ind=intersect(Ox_ind,CN_ind);

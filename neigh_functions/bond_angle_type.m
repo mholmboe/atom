@@ -104,7 +104,7 @@ for i=1:size(atom1,2)
     neigh.in = in;
     neigh.dist = [dist(in,1)];
     neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
-    neigh.r_vec = [rx(in) ry(in) rz(in)];
+    neigh.r_vec = -[rx(in) ry(in) rz(in)];
 
     neigh_dist=[neigh.dist];
     neigh_ind=[neigh.in];

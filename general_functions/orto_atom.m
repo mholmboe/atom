@@ -120,12 +120,12 @@ if size(atom,2)>0
     for i=1:size(atom,2)
         XYZ_data_frac(i,:)=ToFrac*[XYZ_data(i,1) XYZ_data(i,2) XYZ_data(i,3)]';
         XYZ_data_orto(i,:)=[lx ly lz].*XYZ_data_frac(i,:);
-        atom(i).x=round(XYZ_data_orto(i,1),4);
-        atom(i).y=round(XYZ_data_orto(i,2),4);
-        atom(i).z=round(XYZ_data_orto(i,3),4);
-        atom(i).xfrac=round(XYZ_data_frac(i,1),4);
-        atom(i).yfrac=round(XYZ_data_frac(i,2),4);
-        atom(i).zfrac=round(XYZ_data_frac(i,3),4);
+        atom(i).x=round2dec(XYZ_data_orto(i,1),4);
+        atom(i).y=round2dec(XYZ_data_orto(i,2),4);
+        atom(i).z=round2dec(XYZ_data_orto(i,3),4);
+        atom(i).xfrac=round2dec(XYZ_data_frac(i,1),4);
+        atom(i).yfrac=round2dec(XYZ_data_frac(i,2),4);
+        atom(i).zfrac=round2dec(XYZ_data_frac(i,3),4);
     end
 
 end

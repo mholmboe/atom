@@ -104,7 +104,7 @@ Total_charge=sum([atom.charge])
 if nargin>4;
     disp('Tweaking the charges of all atoms with charge >= +0.1')
     qtot=sum([atom.charge]);
-    delta_q=sum([atom.charge])-0;%round(sum([atom.charge]));
+    delta_q=sum([atom.charge])-0;%round2dec(sum([atom.charge]));
     ind_high_charge=find([atom([atom.charge]>+0.1).index]);
     nhigh_charge=length(ind_high_charge);
     charge_C=num2cell([atom(ind_high_charge).charge]-delta_q/nhigh_charge); [atom(ind_high_charge).charge]=deal(charge_C{:});

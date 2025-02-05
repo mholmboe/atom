@@ -29,8 +29,15 @@ end
 %     pause(5)
 %     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong,rmaxlong,'more');
 % else
-     atom=bond_atom(atom,Box_dim,rmaxlong);
+
 % end
+
+if nargin<4
+    atom=bond_atom(atom,Box_dim,rmaxlong);
+else
+    Bond_index=varargin{2};
+    atom=recalc_bond_atom(atom,Box_dim,Bond_index);
+end
 
 CN=num2cell(CoordNumber);
 [atom.cn]=CN{:};
@@ -48,6 +55,7 @@ catch
     assignin('caller','Bond_index',Bond_index);
     assignin('caller','CoordNumber',CoordNumber);
     assignin('caller','Remove_ind',Remove_ind);
+    assignin('caller','dist_matrix',dist_matrix);
 end
 
 if nargin>3
@@ -67,7 +75,7 @@ if nargin>3
             %             end
         end
     end
-    
+
 end
 
 atom = order_attributes(atom);

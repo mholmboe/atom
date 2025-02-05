@@ -1,7 +1,7 @@
 %% charge_minff_atom.m
-% * This function tries to smear out the charge at isomorphic substitutions 
+% * This function tries to smear out the charge at isomorphic substitutions
 % * sites according to minff
-% 
+%
 % * atom is the atom struct
 % * Box_dim is the box dimension vector
 %
@@ -33,7 +33,7 @@ if nargin>2
     Ox_ind=find(strncmpi([atom.type],'O',1)); % setdiff(1:nAtoms,Met_ind);
     Fs_ind=find(strncmpi([atom.type],'Fs',2)); % setdiff(1:nAtoms,Met_ind);
 
-    atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more');
+    atom=bond_angle_atom(atom,Box_dim,1.25,2.25);%,'more');
     %atom = bond_atom(atom,Box_dim,2.45,0.6);
 
     if numel(Ox_ind) >= size(Bond_index,1)
@@ -124,7 +124,7 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge])
-if round(Total_charge)~=sum(Total_charge)
+if round2dec(Total_charge)~=sum(Total_charge)
     disp('Run tweak_charge_atom() to get an integer charge of the struct')
 end
 

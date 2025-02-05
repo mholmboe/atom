@@ -679,14 +679,14 @@ end
 
 atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 
-if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.0001
+if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')
-    Total_charge=round(sum([atom.charge]),8)
-    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    Total_charge=round2dec(sum([atom.charge]),8)
+    [atom(1).charge]=atom(1).charge+(round2dec(sum([atom.charge])) - sum([atom.charge]));
     %     atom=tweak_charge_atom(atom,'Al');
     disp('Final total charge, modfying the first atoms charge somewhat!')
     Total_charge=sum([atom.charge])
-    round(sum(Total_charge),6)
+    round2dec(sum(Total_charge),6)
 end
 
 for i=1:length(unique([atom.type]))
@@ -739,8 +739,9 @@ while i<size(All_Neighbours,1)+1
         All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
     else
 
-    end
-    All_Neighbours(i,6)={unique(round([atom(strcmp([atom.type],All_Neighbours(i,3))).charge],5))};
+end
+All_Neighbours(i,3)
+    All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
     i=i+1;
 end
 

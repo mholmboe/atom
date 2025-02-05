@@ -53,7 +53,7 @@ for i = 1:size(XYZ_data,1)
     fprintf(fid, '%-i\t%-i\t%-i\t%-8.6f\t%-f\t%-f\t%-f\r\n', Atoms_data{i,:});
 end
 
-Total_charge = sum(round(cell2mat(Atoms_data(:,4))*1e6)/1e6)
+Total_charge = sum(round2dec(cell2mat(Atoms_data(:,4))*1e6)/1e6)
 
 Atom_prop = {atomID(1:end-1), molID(1:end-1), Atom_label_ID(:,1), Charge(1,:), XYZ_data(i,1),XYZ_data(i,2), XYZ_data(i,3)};
 

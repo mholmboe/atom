@@ -14,6 +14,7 @@
 % # atom = check_atom(atom,Box_dim,1.25,2.25)
 %
 function atom = check_atom(atom,Box_dim,rmaxshort,rmaxlong)
+
 nAtoms=size(atom,2);
 
 atom=wrap_atom(atom,Box_dim);

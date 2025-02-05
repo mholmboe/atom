@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>find_bonds_angles_atom.m</title>
+<title>list_bonds_angles_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="list_bonds_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,7 +76,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h1>find_bonds_angles_atom.m</h1>
+<h1>list_bonds_angles_atom.m</h1>
 <!--introduction-->
 <div>
 <ul>
@@ -109,6 +109,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim)</li>
 <li>[Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index)</li>
 <li>[Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)</li>
+<li>[Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -121,11 +122,12 @@ Bond_data=[];Angle_data=[];
         rmaxlong=varargin{2};
     <span class="keyword">else</span>
         rmaxshort=1.25;
-        rmaxlong=2.25;
+        rmaxlong=2.45;
     <span class="keyword">end</span>
     atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong);
     Bond_data = map_bonded(atom,Bond_index(:,1:3));
     Angle_data = map_bonded(atom,Angle_index(:,1:4));
+    <span class="comment">% Dihedral_data = map_bonded(atom,Dihedral_index(:,1:5));</span>
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin&gt;2
@@ -177,7 +179,7 @@ M_labels=Atom_labels(~ismember(Atom_labels,A_labels));
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 
-<span class="keyword">elseif</span> size(index,2)&gt;3
+<span class="keyword">elseif</span> size(index,2)==4
 
     <span class="comment">% Iterate over each row in the bonds matrix</span>
     <span class="keyword">for</span> i = 1:size(index, 1)
@@ -209,6 +211,40 @@ M_labels=Atom_labels(~ismember(Atom_labels,A_labels));
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 
+<span class="keyword">elseif</span> size(index,2)==5
+
+    <span class="comment">% % Iterate over each row in the bonds matrix</span>
+    <span class="comment">% for i = 1:size(index, 1)</span>
+    <span class="comment">%     % Get atom indices</span>
+    <span class="comment">%     atom1 = index(i,1);</span>
+    <span class="comment">%     atom2 = index(i,2);</span>
+    <span class="comment">%     atom3 = index(i,3);</span>
+    <span class="comment">%     atom3 = index(i,4);</span>
+    <span class="comment">%</span>
+    <span class="comment">%     % Get corresponding atom types</span>
+    <span class="comment">%     atomType1 = string(atom(atom1).type);</span>
+    <span class="comment">%     atomType2 = string(atom(atom2).type);</span>
+    <span class="comment">%     atomType3 = string(atom(atom3).type);</span>
+    <span class="comment">%     atomType4 = string(atom(atom4).type);</span>
+    <span class="comment">%</span>
+    <span class="comment">%     % Sort atom types alphabetically to avoid duplicate pairs</span>
+    <span class="comment">%     if atomType1 &lt; atomType4</span>
+    <span class="comment">%         pairKey = atomType1 + atomType2 + atomType3 + atomType4;</span>
+    <span class="comment">%     else</span>
+    <span class="comment">%         pairKey = atomType4 + atomType3 + atomType2 + atomType1;</span>
+    <span class="comment">%     end</span>
+    <span class="comment">%</span>
+    <span class="comment">%     % Get bond distance</span>
+    <span class="comment">%     Val = index(i, 5);</span>
+    <span class="comment">%</span>
+    <span class="comment">%     % Store bond distance in the map</span>
+    <span class="comment">%     if isKey(Map, pairKey)</span>
+    <span class="comment">%         Map(pairKey) = [Map(pairKey), Val];</span>
+    <span class="comment">%     else</span>
+    <span class="comment">%         Map(pairKey) = Val;</span>
+    <span class="comment">%     end</span>
+    <span class="comment">% end</span>
+
 <span class="keyword">end</span>
 
 <span class="comment">% Prepare output matrix to store the results</span>
@@ -236,7 +272,7 @@ i = 1;
 </div>
 <!--
 ##### SOURCE BEGIN #####
-%% find_bonds_angles_atom.m
+%% list_bonds_angles_atom.m
 % * This function tries to find all bonds and angles between the  atomtypes
 %
 %% Version
@@ -249,6 +285,7 @@ i = 1;
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim)
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index)
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)
+% # [Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)
 
 function [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim,varargin)
 
@@ -259,11 +296,12 @@ if numel(Box_dim)>0
         rmaxlong=varargin{2};
     else
         rmaxshort=1.25;
-        rmaxlong=2.25;
+        rmaxlong=2.45;
     end
     atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong);
     Bond_data = map_bonded(atom,Bond_index(:,1:3));
     Angle_data = map_bonded(atom,Angle_index(:,1:4));
+    % Dihedral_data = map_bonded(atom,Dihedral_index(:,1:5));
 end
 
 if nargin>2
@@ -315,7 +353,7 @@ if size(index,2)==3
         end
     end
 
-elseif size(index,2)>3
+elseif size(index,2)==4
 
     % Iterate over each row in the bonds matrix
     for i = 1:size(index, 1)
@@ -346,6 +384,40 @@ elseif size(index,2)>3
             Map(pairKey) = Val;
         end
     end
+
+elseif size(index,2)==5
+
+    % % Iterate over each row in the bonds matrix
+    % for i = 1:size(index, 1)
+    %     % Get atom indices
+    %     atom1 = index(i,1);
+    %     atom2 = index(i,2);
+    %     atom3 = index(i,3);
+    %     atom3 = index(i,4);
+    % 
+    %     % Get corresponding atom types
+    %     atomType1 = string(atom(atom1).type);
+    %     atomType2 = string(atom(atom2).type);
+    %     atomType3 = string(atom(atom3).type);
+    %     atomType4 = string(atom(atom4).type);
+    % 
+    %     % Sort atom types alphabetically to avoid duplicate pairs
+    %     if atomType1 < atomType4
+    %         pairKey = atomType1 + atomType2 + atomType3 + atomType4;
+    %     else
+    %         pairKey = atomType4 + atomType3 + atomType2 + atomType1;
+    %     end
+    % 
+    %     % Get bond distance
+    %     Val = index(i, 5);
+    % 
+    %     % Store bond distance in the map
+    %     if isKey(Map, pairKey)
+    %         Map(pairKey) = [Map(pairKey), Val];
+    %     else
+    %         Map(pairKey) = Val;
+    %     end
+    % end
 
 end
 

@@ -57,7 +57,7 @@ if nargin>5
             atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
         end
         Total_charge=sum([atom.charge])
-        round(Total_charge,5)
+        round2dec(Total_charge,5)
         %         pause
         nrexcl=1; % See the gromacs manual
         explicit_bonds = 0;
@@ -68,7 +68,7 @@ if nargin>5
             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
         end
         Total_charge=sum([atom.charge])
-        round(Total_charge,5)
+        round2dec(Total_charge,5)
         %         pause
         nrexcl=1; % See the gromacs manual
         explicit_bonds = 0;
@@ -122,7 +122,7 @@ else
         atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
     Total_charge=sum([atom.charge])
-    round(Total_charge,5)
+    round2dec(Total_charge,5)
     %         pause
     nrexcl=1; % See the gromacs manual
     explicit_bonds = 0
@@ -235,9 +235,9 @@ for i = 1:nAtoms
         Atom_label_ID(i,1)=find(ismember(Atom_label,[atom(i).type])==1);
     end
     if isfield(atom,'mass')
-        Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6),[atom(i).mass]};
+        Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round2dec([atom(i).charge],6),[atom(i).mass]};
     else exist('Masses','var');
-        Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
+        Atoms_data(i,:) = {i, char([atom(i).type]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round2dec([atom(i).charge],6), Masses(Atom_label_ID(i,1))};
     end
     %     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t ; % 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t % 8.6f\t% 8.6f\r\n', Atoms_data{i,:});
@@ -324,12 +324,12 @@ while count_a <= length(Angle_index) %nAngles;
             adeg=Angle_index(count_a,4);
             ktheta='KANGLE '; %500.00; % 1422.56;
         end
-        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
+        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
         % fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f %-8.4f %s %s-%s-%s\r\n', Angle_order{count_a,:});
         fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f %s %s %s-%s-%s\r\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     else
-        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
+        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round2dec(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
         fprintf(fid, '%-5i %-5i %-5i %-5i %s %-6.2f %s-%s-%s\r\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     end
@@ -345,7 +345,7 @@ end
 
 if exist('Total_charge','var')
     disp('Total charge for the .itp file was')
-    round(Total_charge,5)
+    round2dec(Total_charge,5)
 end
 
 % Defining [ exclusions ]

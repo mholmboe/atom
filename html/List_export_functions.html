@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of export functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="List_export_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -147,6 +147,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="write_atom_top.html">write_atom_top(atom,Box_dim,filename_out)</a> % Write a topology file (.top) from the atom struct.</li>
 <li>
+<a href="write_itp.html">write_itp(itp,filename_out)</a> % Write a molecular topology file (.itp) from an itp struct.</li>
+<li>
 <a href="CONECT_atom.html">CONECT_atom(atom,Box_dim,filename_out)</a> % Write CONECT records for a PDB file.</li>
 </ol>
 </div>
@@ -232,6 +234,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <write_atom_sdf.html write_atom_sdf(atom,Box_dim,filename_out)> % Write an SDF file from the atom struct.
 % # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro(atom,Box_dim,filename_out)> % Write a .gro file using a dodecahedron-shaped simulation box.
 % # <write_atom_top.html write_atom_top(atom,Box_dim,filename_out)> % Write a topology file (.top) from the atom struct.
+% # <write_itp.html write_itp(itp,filename_out)> % Write a molecular topology file (.itp) from an itp struct.
 % # <CONECT_atom.html CONECT_atom(atom,Box_dim,filename_out)> % Write CONECT records for a PDB file.
 
 %% Export of trajectory files

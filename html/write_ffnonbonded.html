@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="write_ffnonbonded.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -181,14 +181,14 @@ fprintf(fid, <span class="string">'%s\r\n'</span>,strcat(<span class="string">';
 <span class="keyword">for</span> i=1:numel(RestAtom_labels)
     ind=find(strcmp([ff.type],RestAtom_labels(i)));
     atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],<span class="keyword">...</span>
-        [ff(ind).charge],<span class="string">'A'</span>,round([ff(ind).sigma_nm],6),round([ff(ind).e_kJmol],6)};
+        [ff(ind).charge],<span class="string">'A'</span>,round2dec([ff(ind).sigma_nm],6),round2dec([ff(ind).e_kJmol],6)};
     fprintf(fid, <span class="string">'%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n'</span>, atomtypes{i,:});
 <span class="keyword">end</span>
 
 <span class="keyword">for</span> i=1:numel(WatAtom_labels)
     ind=find(strcmp([watff.type],WatAtom_labels(i)));
     atomtypes(i,:) = {char([watff(ind).type]),[watff(ind).atnum],[watff(ind).mass],<span class="keyword">...</span>
-        [watff(ind).charge],<span class="string">'A'</span>,round([watff(ind).sigma_nm],6),round([watff(ind).e_kJmol],6)};
+        [watff(ind).charge],<span class="string">'A'</span>,round2dec([watff(ind).sigma_nm],6),round2dec([watff(ind).e_kJmol],6)};
     fprintf(fid, <span class="string">'%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n'</span>, atomtypes{i,:});
 <span class="keyword">end</span>
 
@@ -310,14 +310,14 @@ fprintf(fid, '%s\r\n',strcat('; ',ffname));
 for i=1:numel(RestAtom_labels)
     ind=find(strcmp([ff.type],RestAtom_labels(i)));
     atomtypes(i,:) = {char([ff(ind).type]),[ff(ind).atnum],[ff(ind).mass],...
-        [ff(ind).charge],'A',round([ff(ind).sigma_nm],6),round([ff(ind).e_kJmol],6)};
+        [ff(ind).charge],'A',round2dec([ff(ind).sigma_nm],6),round2dec([ff(ind).e_kJmol],6)};
     fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n', atomtypes{i,:});
 end
 
 for i=1:numel(WatAtom_labels)
     ind=find(strcmp([watff.type],WatAtom_labels(i)));
     atomtypes(i,:) = {char([watff(ind).type]),[watff(ind).atnum],[watff(ind).mass],...
-        [watff(ind).charge],'A',round([watff(ind).sigma_nm],6),round([watff(ind).e_kJmol],6)};
+        [watff(ind).charge],'A',round2dec([watff(ind).sigma_nm],6),round2dec([watff(ind).e_kJmol],6)};
     fprintf(fid, '%-12s % 3i\t% -9.5f\t% 9.6f   % -3s\t% -8.6e\t% -8.6e\r\n', atomtypes{i,:});
 end
 

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>composition_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="composition_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -138,7 +138,7 @@ composition.Atom_numbers=Atom_numbers
 <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
     composition.Atom_ave_charge=Atom_charge
     disp(<span class="string">'Sum of all charges'</span>)
-    round([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
+    round2dec([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
 <span class="keyword">end</span>
 
 Atom_types=[Atom_types;num2cell(Atom_numbers)];
@@ -194,7 +194,7 @@ composition.Atom_numbers=Atom_numbers
 if isfield(atom,'charge')
     composition.Atom_ave_charge=Atom_charge
     disp('Sum of all charges')
-    round([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
+    round2dec([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
 end
 
 Atom_types=[Atom_types;num2cell(Atom_numbers)];

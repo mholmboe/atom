@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="import_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -113,7 +113,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </ol>
 </div>
 <pre class="codeinput">
-<span class="keyword">function</span> atom = import_atom(filename,varargin)
+<span class="keyword">function</span> [atom,Box_dim] = import_atom(filename,varargin)
 </pre>
 <pre class="codeinput">
 <span class="keyword">if</span> iscell(filename)
@@ -182,7 +182,7 @@ Box_dim = [0 0 0];
 
 <span class="keyword">elseif</span> regexp(filename,<span class="string">'.xyz'</span>) &gt; 1
     disp(<span class="string">'Found .xyz file'</span>);
-    atom=import_atom_xyz(filename);
+    [atom,Box_dim]=import_atom_xyz(filename);
     <span class="comment">%Box_dim = [(max([atom.x])-min([atom.x]))*1.0001 (max([atom.y])-min([atom.y]))*1.0001 (max([atom.z])-min([atom.z]))*1.0001];</span>
     filenamegro=<span class="string">'temp.gro'</span>;
     write_atom_gro(atom,Box_dim,filenamegro)
@@ -266,7 +266,7 @@ delete(<span class="string">'./#*'</span>); delete(<span class="string">'./temp*
 % # [atom,Box_dim] = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
 % # [atom,Box_dim] = import_atom('molecule.gro',[10 5 0],[35.24 24.23write 52.23]) % Translates the atom struct by a [x y z] Ångströms and sets new Box_dim
 
-function atom = import_atom(filename,varargin)
+function [atom,Box_dim] = import_atom(filename,varargin)
 %%
 
 if iscell(filename)
@@ -335,7 +335,7 @@ elseif regexp(filename,'.mol2') > 1
     
 elseif regexp(filename,'.xyz') > 1
     disp('Found .xyz file');
-    atom=import_atom_xyz(filename);
+    [atom,Box_dim]=import_atom_xyz(filename);
     %Box_dim = [(max([atom.x])-min([atom.x]))*1.0001 (max([atom.y])-min([atom.y]))*1.0001 (max([atom.z])-min([atom.z]))*1.0001];
     filenamegro='temp.gro';
     write_atom_gro(atom,Box_dim,filenamegro)

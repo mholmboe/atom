@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_pdb.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="write_atom_pdb.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -254,9 +254,9 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Cell'</span>
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};atom(i).formalcharge=1;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Li'</span>},2);atom(i).element={<span class="string">'Li'</span>};atom(i).formalcharge=2;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'K'</span>},1);atom(i).element={<span class="string">'K'</span>};atom(i).formalcharge=1;
-    <span class="keyword">elseif</span> strcmpi(atom(i).type,{<span class="string">'N'</span>});atom(i).element={<span class="string">'N'</span>};atom(i).formalcharge=0;
-    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ni'</span>},2);atom(i).element={<span class="string">'Ni'</span>};atom(i).formalcharge=2;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Na'</span>},2);atom(i).element={<span class="string">'Na'</span>};atom(i).formalcharge=1;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ni'</span>},2);atom(i).element={<span class="string">'Ni'</span>};atom(i).formalcharge=2;
+    <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'N'</span>},1);atom(i).element={<span class="string">'N'</span>};atom(i).formalcharge=0;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Co'</span>},2);atom(i).element={<span class="string">'Co'</span>};atom(i).formalcharge=2;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Cr'</span>},2);atom(i).element={<span class="string">'Cr'</span>};atom(i).formalcharge=3;
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Cs'</span>},2);atom(i).element={<span class="string">'Cs'</span>};atom(i).formalcharge=1;
@@ -314,7 +314,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Cell'</span>
         maxrlong
 
         <span class="comment">%     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);</span>
-        atom=bond_atom(atom,Box_dim,maxrlong);
+        atom=bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
         <span class="comment">%     assignin('caller','Dist_matrix',Dist_matrix);</span>
         assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
         <span class="comment">%     assignin('caller','Angle_index',Angle_index);</span>
@@ -346,7 +346,7 @@ disp(<span class="string">'.pdb structure file written'</span>)
 </pre>
 <pre class="codeinput">
 <span class="comment">%</span>
-<span class="comment">% assignin('caller','Bond_index',Bond_index);</span>
+<span class="comment">% assignin('caller','CONECT_Bond_index',Bond_index);</span>
 <span class="comment">% assignin('caller','Angle_index',Angle_index);</span>
 </pre>
 <p class="footer">
@@ -509,9 +509,9 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
-    elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;
-    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'N'},1);atom(i).element={'N'};atom(i).formalcharge=0;
     elseif strncmpi(atom(i).type,{'Co'},2);atom(i).element={'Co'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Cr'},2);atom(i).element={'Cr'};atom(i).formalcharge=3;
     elseif strncmpi(atom(i).type,{'Cs'},2);atom(i).element={'Cs'};atom(i).formalcharge=1;
@@ -569,7 +569,7 @@ if nargin>3
         maxrlong
 
         %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-        atom=bond_atom(atom,Box_dim,maxrlong);
+        atom=bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
         %     assignin('caller','Dist_matrix',Dist_matrix);
         assignin('caller','Bond_index',Bond_index);
         %     assignin('caller','Angle_index',Angle_index);
@@ -599,7 +599,7 @@ end
 fclose(fid);
 disp('.pdb structure file written')
 %
-% assignin('caller','Bond_index',Bond_index);
+% assignin('caller','CONECT_Bond_index',Bond_index);
 % assignin('caller','Angle_index',Angle_index);
 
 

@@ -79,7 +79,7 @@ for c=1:count
             assignin('caller','Dihedral_index',Dihedral_index);
         end
     end
-    
+
 end
 
 atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong);

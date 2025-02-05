@@ -1,0 +1,659 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>cell_list_dist_matrix_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-02-05">
+<meta name="DC.source" content="cell_list_dist_matrix_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>cell_list_dist_matrix_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function calculates the distance matrix from the atom struct for a triclinic box and PBC using a cell-list approach. Additionally, it returns a full NxN distance matrix and three NxN displacement matrices for pairs within the cutoff.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>[dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim) % Basic input arguments</li>
+<li>[dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's</li>
+<li>[dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 &Aring;</li>
+<li>[dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,varargin)
+
+<span class="comment">% Parse input &amp; setup</span>
+<span class="keyword">if</span> nargin==2
+    rmaxlong = 2.45;
+<span class="keyword">elseif</span> nargin==3
+    rmaxlong = varargin{1};
+<span class="keyword">elseif</span> nargin==4
+    rmaxshort = varargin{1};
+    rmaxlong = varargin{2};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin==5
+    rAtomType=varargin{3};
+<span class="keyword">else</span>
+    rAtomType=<span class="string">'H'</span>;
+<span class="keyword">end</span>
+
+<span class="comment">% Possibly convert Box_dim into [a,b,c,alpha,beta,gamma] form</span>
+<span class="keyword">if</span> numel(Box_dim)==9
+    Cell = Box_dim2Cell(Box_dim);
+<span class="keyword">elseif</span> numel(Box_dim)==6
+    Cell = Box_dim;
+<span class="keyword">elseif</span> numel(Box_dim)==3
+    Cell = Box_dim;   <span class="comment">% Orthogonal box with angles=90</span>
+<span class="keyword">end</span>
+
+a = Cell(1);
+b = Cell(2);
+c = Cell(3);
+
+<span class="comment">% For orthogonal, angles = 90</span>
+<span class="keyword">if</span> numel(Cell)==3
+    alpha_rad = deg2rad(90);
+    beta_rad  = deg2rad(90);
+    gamma_rad = deg2rad(90);
+<span class="keyword">else</span>
+    alpha_rad = deg2rad(Cell(4));
+    beta_rad  = deg2rad(Cell(5));
+    gamma_rad = deg2rad(Cell(6));
+<span class="keyword">end</span>
+
+<span class="comment">% Number of atoms</span>
+N = numel(atom);
+
+<span class="comment">% Extract coordinates into Nx3 matrix</span>
+coords = [[atom.x]' [atom.y]' [atom.z]'];
+
+<span class="comment">% Construct triclinic box matrix H</span>
+ax = a;
+bx = b*cos(gamma_rad);
+by = b*sin(gamma_rad);
+cx = c*cos(beta_rad);
+cy = c*(cos(alpha_rad) - cos(beta_rad)*cos(gamma_rad)) / sin(gamma_rad);
+cz = sqrt( c^2 - cx^2 - cy^2 );
+
+H = [ax bx cx;
+    0  by cy;
+    0   0  cz];
+Hinv = inv(H);
+
+<span class="comment">% Build the cell list</span>
+<span class="comment">%   (Pick a cell size that ensures neighbors can be found)</span>
+<span class="keyword">if</span> exist(<span class="string">'rmaxlong'</span>,<span class="string">'var'</span>)
+    cellSize = 2*rmaxlong;
+<span class="keyword">else</span>
+    cellSize = 5;  <span class="comment">% fallback</span>
+<span class="keyword">end</span>
+
+boxCart = H * [1; 1; 1]; <span class="comment">% bounding box corner</span>
+boundingBoxSize = [max(abs([ax bx cx])), <span class="keyword">...</span>
+    max(abs([0  by cy])), <span class="keyword">...</span>
+    max(abs([0   0  cz]))];
+nCells = max(floor(boundingBoxSize / cellSize), 1);
+
+<span class="comment">% Convert coords -&gt; fractional</span>
+fracCoords = (Hinv * coords')';
+fracCoords = fracCoords - floor(fracCoords);  <span class="comment">% keep in [0,1)</span>
+
+<span class="comment">% Compute which cell each atom belongs to</span>
+cellIndex = floor(fracCoords .* nCells);
+<span class="comment">% fix boundaries</span>
+outOfBound = (cellIndex(:,1) &gt;= nCells(1));
+cellIndex(outOfBound,1) = nCells(1) - 1;
+outOfBound = (cellIndex(:,2) &gt;= nCells(2));
+cellIndex(outOfBound,2) = nCells(2) - 1;
+outOfBound = (cellIndex(:,3) &gt;= nCells(3));
+cellIndex(outOfBound,3) = nCells(3) - 1;
+
+<span class="comment">% Convert (ix,iy,iz) -&gt; single linear index</span>
+cellLinIdx = sub2ind(nCells, <span class="keyword">...</span>
+    cellIndex(:,1)+1, <span class="keyword">...</span>
+    cellIndex(:,2)+1, <span class="keyword">...</span>
+    cellIndex(:,3)+1);
+numCells = prod(nCells);
+cellList = cell(numCells,1);
+
+<span class="keyword">for</span> iAtom = 1:N
+    cIdx = cellLinIdx(iAtom);
+    cellList{cIdx} = [cellList{cIdx}, iAtom];
+<span class="keyword">end</span>
+
+<span class="comment">% Identify neighbor cells (27 total with PBC)</span>
+neighborOffsets = -1:1;
+neighborIndices = zeros(27,3);
+count = 0;
+<span class="keyword">for</span> ix = neighborOffsets
+    <span class="keyword">for</span> iy = neighborOffsets
+        <span class="keyword">for</span> iz = neighborOffsets
+            count = count + 1;
+            neighborIndices(count,:) = [ix, iy, iz];
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Loop over cells/neighbors &amp; compute distances</span>
+bond_list = [];
+dist_list = [];
+
+<span class="comment">% Initialize NxN output matrices</span>
+<span class="comment">% (Set them to 0 for now; distances for i=j or outside cutoff remain 0)</span>
+dist_matrix = zeros(N, N);
+X_dist   = zeros(N, N);
+Y_dist   = zeros(N, N);
+Z_dist   = zeros(N, N);
+
+<span class="keyword">for</span> cID = 1:numCells
+    atomListC = cellList{cID};
+    <span class="keyword">if</span> isempty(atomListC), <span class="keyword">continue</span>; <span class="keyword">end</span>
+
+    [cx, cy, cz] = ind2sub(nCells, cID);
+
+    <span class="keyword">for</span> nIdx = 1:size(neighborIndices,1)
+</pre>
+<pre class="codeinput">        dxIdx = neighborIndices(nIdx,1);
+        dyIdx = neighborIndices(nIdx,2);
+        dzIdx = neighborIndices(nIdx,3);
+
+        nx = mod(cx-1+dxIdx, nCells(1)) + 1;
+        ny = mod(cy-1+dyIdx, nCells(2)) + 1;
+        nz = mod(cz-1+dzIdx, nCells(3)) + 1;
+
+        neighborCellLin = sub2ind(nCells, nx, ny, nz);
+        atomListN = cellList{neighborCellLin};
+        <span class="keyword">if</span> isempty(atomListN), <span class="keyword">continue</span>; <span class="keyword">end</span>
+
+        <span class="comment">% Avoid double-counting</span>
+        <span class="keyword">if</span> (neighborCellLin &lt; cID)
+            <span class="keyword">continue</span>;
+        <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">        <span class="keyword">if</span> exist(<span class="string">'rmaxshort'</span>,<span class="string">'var'</span>)
+</pre>
+<pre class="codeinput">            <span class="comment">% Compute pairwise distances iAtom &lt;-&gt; jAtom</span>
+            <span class="keyword">for</span> i = 1:length(atomListC)
+                iAtom = atomListC(i);
+                <span class="keyword">for</span> j = 1:length(atomListN)
+                    jAtom = atomListN(j);
+
+                    <span class="comment">% If in the same cell, only do jAtom&gt;iAtom</span>
+                    <span class="keyword">if</span> (neighborCellLin == cID &amp;&amp; jAtom &lt;= iAtom)
+                        <span class="keyword">continue</span>;
+                    <span class="keyword">end</span>
+
+                    <span class="comment">% Check hydrogen vs. non-hydrogen</span>
+                    isH_i = strcmp(atom(iAtom).type,rAtomType);
+                    isH_j = strcmp(atom(jAtom).type,rAtomType);
+
+                    <span class="keyword">if</span> isH_i || isH_j
+                        localCutoff = rmaxshort; <span class="comment">% short cutoff for hydrogen</span>
+                    <span class="keyword">else</span>
+                        localCutoff = rmaxlong;  <span class="comment">% default cutoff</span>
+                    <span class="keyword">end</span>
+
+                    <span class="comment">% Minimum-image in fractional space</span>
+                    diffFrac = (Hinv*(coords(jAtom,:)' - coords(iAtom,:)'))';
+                    diffFrac = diffFrac - round2dec(diffFrac);  <span class="comment">% wrap to [-0.5,0.5)</span>
+
+                    <span class="comment">% Convert back to Cartesian</span>
+                    dVec = (H * diffFrac')';
+                    d = norm(dVec);
+
+                    <span class="keyword">if</span> d &lt;= localCutoff <span class="comment">%cutoff</span>
+                        <span class="comment">% store pair &amp; distance</span>
+                        bond_list = [bond_list; iAtom, jAtom];
+                        dist_list = [dist_list; d];
+
+                        <span class="comment">% fill NxN distance matrix</span>
+                        dist_matrix(iAtom, jAtom) = d;
+                        dist_matrix(jAtom, iAtom) = d;  <span class="comment">% symmetric</span>
+
+                        <span class="comment">% fill NxN displacement matrices</span>
+                        X_dist(iAtom, jAtom) = dVec(1);
+                        X_dist(jAtom, iAtom) = -dVec(1);
+
+                        Y_dist(iAtom, jAtom) = dVec(2);
+                        Y_dist(jAtom, iAtom) = -dVec(2);
+
+                        Z_dist(iAtom, jAtom) = dVec(3);
+                        Z_dist(jAtom, iAtom) = -dVec(3);
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">        <span class="keyword">else</span>
+            <span class="comment">% Compute pairwise distances iAtom &lt;-&gt; jAtom</span>
+            <span class="keyword">for</span> i = 1:length(atomListC)
+                iAtom = atomListC(i);
+                <span class="keyword">for</span> j = 1:length(atomListN)
+                    jAtom = atomListN(j);
+
+                    <span class="comment">% If in the same cell, only do jAtom&gt;iAtom</span>
+                    <span class="keyword">if</span> (neighborCellLin == cID &amp;&amp; jAtom &lt;= iAtom)
+                        <span class="keyword">continue</span>;
+                    <span class="keyword">end</span>
+
+                    <span class="comment">% Minimum-image in fractional space</span>
+                    diffFrac = (Hinv*(coords(jAtom,:)' - coords(iAtom,:)'))';
+                    diffFrac = diffFrac - round2dec(diffFrac);  <span class="comment">% wrap to [-0.5,0.5)</span>
+
+                    <span class="comment">% Convert back to Cartesian</span>
+                    dVec = (H * diffFrac')';
+                    d = norm(dVec);
+
+                    <span class="keyword">if</span> d &lt;= rmaxlong
+                        <span class="comment">% store pair &amp; distance</span>
+                        bond_list = [bond_list; iAtom, jAtom];
+                        dist_list = [dist_list; d];
+
+                        <span class="comment">% fill NxN distance matrix</span>
+                        dist_matrix(iAtom, jAtom) = d;
+                        dist_matrix(jAtom, iAtom) = d;  <span class="comment">% symmetric</span>
+
+                        <span class="comment">% fill NxN displacement matrices</span>
+                        X_dist(iAtom, jAtom) = dVec(1);
+                        X_dist(jAtom, iAtom) = -dVec(1);
+
+                        Y_dist(iAtom, jAtom) = dVec(2);
+                        Y_dist(jAtom, iAtom) = -dVec(2);
+
+                        Z_dist(iAtom, jAtom) = dVec(3);
+                        Z_dist(jAtom, iAtom) = -dVec(3);
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'pair'</span>,bond_list);
+assignin(<span class="string">'caller'</span>,<span class="string">'dist'</span>,dist_list);
+assignin(<span class="string">'caller'</span>,<span class="string">'X_dist'</span>,(X_dist)');
+assignin(<span class="string">'caller'</span>,<span class="string">'Y_dist'</span>,(Y_dist)');
+assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</span>,(Z_dist)');
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% cell_list_dist_matrix_atom.m
+% * This function calculates the distance matrix from the atom struct for
+% a triclinic box and PBC using a cell-list approach. Additionally, it 
+% returns a full NxN distance matrix and three NxN displacement matrices 
+% for pairs within the cutoff.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim) % Basic input arguments
+% # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25) % Setting the max distance for bonds with H's
+% # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 Å
+% # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles
+
+function [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,varargin)
+
+% Parse input & setup
+if nargin==2
+    rmaxlong = 2.45;
+elseif nargin==3
+    rmaxlong = varargin{1};
+elseif nargin==4
+    rmaxshort = varargin{1};
+    rmaxlong = varargin{2};
+end
+
+if nargin==5
+    rAtomType=varargin{3};
+else
+    rAtomType='H';
+end
+
+% Possibly convert Box_dim into [a,b,c,alpha,beta,gamma] form
+if numel(Box_dim)==9
+    Cell = Box_dim2Cell(Box_dim);
+elseif numel(Box_dim)==6
+    Cell = Box_dim;
+elseif numel(Box_dim)==3
+    Cell = Box_dim;   % Orthogonal box with angles=90
+end
+
+a = Cell(1);
+b = Cell(2);
+c = Cell(3);
+
+% For orthogonal, angles = 90
+if numel(Cell)==3
+    alpha_rad = deg2rad(90);
+    beta_rad  = deg2rad(90);
+    gamma_rad = deg2rad(90);
+else
+    alpha_rad = deg2rad(Cell(4));
+    beta_rad  = deg2rad(Cell(5));
+    gamma_rad = deg2rad(Cell(6));
+end
+
+% Number of atoms
+N = numel(atom);
+
+% Extract coordinates into Nx3 matrix
+coords = [[atom.x]' [atom.y]' [atom.z]'];
+
+% Construct triclinic box matrix H
+ax = a;
+bx = b*cos(gamma_rad);
+by = b*sin(gamma_rad);
+cx = c*cos(beta_rad);
+cy = c*(cos(alpha_rad) - cos(beta_rad)*cos(gamma_rad)) / sin(gamma_rad);
+cz = sqrt( c^2 - cx^2 - cy^2 );
+
+H = [ax bx cx;
+    0  by cy;
+    0   0  cz];
+Hinv = inv(H);
+
+% Build the cell list
+%   (Pick a cell size that ensures neighbors can be found)
+if exist('rmaxlong','var')
+    cellSize = 2*rmaxlong;
+else
+    cellSize = 5;  % fallback
+end
+
+boxCart = H * [1; 1; 1]; % bounding box corner
+boundingBoxSize = [max(abs([ax bx cx])), ...
+    max(abs([0  by cy])), ...
+    max(abs([0   0  cz]))];
+nCells = max(floor(boundingBoxSize / cellSize), 1);
+
+% Convert coords -> fractional
+fracCoords = (Hinv * coords')';
+fracCoords = fracCoords - floor(fracCoords);  % keep in [0,1)
+
+% Compute which cell each atom belongs to
+cellIndex = floor(fracCoords .* nCells);
+% fix boundaries
+outOfBound = (cellIndex(:,1) >= nCells(1));
+cellIndex(outOfBound,1) = nCells(1) - 1;
+outOfBound = (cellIndex(:,2) >= nCells(2));
+cellIndex(outOfBound,2) = nCells(2) - 1;
+outOfBound = (cellIndex(:,3) >= nCells(3));
+cellIndex(outOfBound,3) = nCells(3) - 1;
+
+% Convert (ix,iy,iz) -> single linear index
+cellLinIdx = sub2ind(nCells, ...
+    cellIndex(:,1)+1, ...
+    cellIndex(:,2)+1, ...
+    cellIndex(:,3)+1);
+numCells = prod(nCells);
+cellList = cell(numCells,1);
+
+for iAtom = 1:N
+    cIdx = cellLinIdx(iAtom);
+    cellList{cIdx} = [cellList{cIdx}, iAtom];
+end
+
+% Identify neighbor cells (27 total with PBC)
+neighborOffsets = -1:1;
+neighborIndices = zeros(27,3);
+count = 0;
+for ix = neighborOffsets
+    for iy = neighborOffsets
+        for iz = neighborOffsets
+            count = count + 1;
+            neighborIndices(count,:) = [ix, iy, iz];
+        end
+    end
+end
+
+% Loop over cells/neighbors & compute distances
+bond_list = [];
+dist_list = [];
+
+% Initialize NxN output matrices
+% (Set them to 0 for now; distances for i=j or outside cutoff remain 0)
+dist_matrix = zeros(N, N);
+X_dist   = zeros(N, N);
+Y_dist   = zeros(N, N);
+Z_dist   = zeros(N, N);
+
+for cID = 1:numCells
+    atomListC = cellList{cID};
+    if isempty(atomListC), continue; end
+
+    [cx, cy, cz] = ind2sub(nCells, cID);
+
+    for nIdx = 1:size(neighborIndices,1)
+        dxIdx = neighborIndices(nIdx,1);
+        dyIdx = neighborIndices(nIdx,2);
+        dzIdx = neighborIndices(nIdx,3);
+
+        nx = mod(cx-1+dxIdx, nCells(1)) + 1;
+        ny = mod(cy-1+dyIdx, nCells(2)) + 1;
+        nz = mod(cz-1+dzIdx, nCells(3)) + 1;
+
+        neighborCellLin = sub2ind(nCells, nx, ny, nz);
+        atomListN = cellList{neighborCellLin};
+        if isempty(atomListN), continue; end
+
+        % Avoid double-counting
+        if (neighborCellLin < cID)
+            continue;
+        end
+
+        %%
+        if exist('rmaxshort','var')
+            % Compute pairwise distances iAtom <-> jAtom
+            for i = 1:length(atomListC)
+                iAtom = atomListC(i);
+                for j = 1:length(atomListN)
+                    jAtom = atomListN(j);
+
+                    % If in the same cell, only do jAtom>iAtom
+                    if (neighborCellLin == cID && jAtom <= iAtom)
+                        continue;
+                    end
+
+                    % Check hydrogen vs. non-hydrogen
+                    isH_i = strcmp(atom(iAtom).type,rAtomType);
+                    isH_j = strcmp(atom(jAtom).type,rAtomType);
+
+                    if isH_i || isH_j
+                        localCutoff = rmaxshort; % short cutoff for hydrogen
+                    else
+                        localCutoff = rmaxlong;  % default cutoff
+                    end
+
+                    % Minimum-image in fractional space
+                    diffFrac = (Hinv*(coords(jAtom,:)' - coords(iAtom,:)'))';
+                    diffFrac = diffFrac - round2dec(diffFrac);  % wrap to [-0.5,0.5)
+
+                    % Convert back to Cartesian
+                    dVec = (H * diffFrac')';
+                    d = norm(dVec);
+
+                    if d <= localCutoff %cutoff
+                        % store pair & distance
+                        bond_list = [bond_list; iAtom, jAtom];
+                        dist_list = [dist_list; d];
+
+                        % fill NxN distance matrix
+                        dist_matrix(iAtom, jAtom) = d;
+                        dist_matrix(jAtom, iAtom) = d;  % symmetric
+
+                        % fill NxN displacement matrices
+                        X_dist(iAtom, jAtom) = dVec(1);
+                        X_dist(jAtom, iAtom) = -dVec(1);
+
+                        Y_dist(iAtom, jAtom) = dVec(2);
+                        Y_dist(jAtom, iAtom) = -dVec(2);
+
+                        Z_dist(iAtom, jAtom) = dVec(3);
+                        Z_dist(jAtom, iAtom) = -dVec(3);
+                    end
+                end
+            end
+            %%
+        else
+            % Compute pairwise distances iAtom <-> jAtom
+            for i = 1:length(atomListC)
+                iAtom = atomListC(i);
+                for j = 1:length(atomListN)
+                    jAtom = atomListN(j);
+
+                    % If in the same cell, only do jAtom>iAtom
+                    if (neighborCellLin == cID && jAtom <= iAtom)
+                        continue;
+                    end
+
+                    % Minimum-image in fractional space
+                    diffFrac = (Hinv*(coords(jAtom,:)' - coords(iAtom,:)'))';
+                    diffFrac = diffFrac - round2dec(diffFrac);  % wrap to [-0.5,0.5)
+
+                    % Convert back to Cartesian
+                    dVec = (H * diffFrac')';
+                    d = norm(dVec);
+
+                    if d <= rmaxlong
+                        % store pair & distance
+                        bond_list = [bond_list; iAtom, jAtom];
+                        dist_list = [dist_list; d];
+
+                        % fill NxN distance matrix
+                        dist_matrix(iAtom, jAtom) = d;
+                        dist_matrix(jAtom, iAtom) = d;  % symmetric
+
+                        % fill NxN displacement matrices
+                        X_dist(iAtom, jAtom) = dVec(1);
+                        X_dist(jAtom, iAtom) = -dVec(1);
+
+                        Y_dist(iAtom, jAtom) = dVec(2);
+                        Y_dist(jAtom, iAtom) = -dVec(2);
+
+                        Z_dist(iAtom, jAtom) = dVec(3);
+                        Z_dist(jAtom, iAtom) = -dVec(3);
+                    end
+                end
+            end
+        end
+    end
+end
+
+assignin('caller','pair',bond_list);
+assignin('caller','dist',dist_list);
+assignin('caller','X_dist',(X_dist)');
+assignin('caller','Y_dist',(Y_dist)');
+assignin('caller','Z_dist',(Z_dist)');
+
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -31,7 +31,7 @@ else
     scale_charge=1;
 end
 
-natoms=size(itp.atoms.nr,1);
+% natoms=size(itp.atoms.nr,1);
 
 if regexp(filename,'.itp') ~= false
     filename = filename;
@@ -51,12 +51,118 @@ fid = fopen(filename, 'wt');
 fprintf(fid, '%s % s\r\n',';','Modifed itp file written by MHolmboe (michael.holmboe@umu.se)');
 fprintf(fid, '\r\n');
 
-
 if exist('atomtypes','var')
     fprintf(fid, '%s\r\n','[ atomtypes ]');
     fprintf(fid, '%s\r\n','; name   bond_type  mass     charge   ptype   sigma        epsilon   ;');
-    for i = 1:size(itp.atomtypes.type,1)
-        fprintf(fid, '%5s %5s       %8.5f  %8.5f %5s    %8.5e  %8.5e\r\n',char(itp.atomtypes.type(i)),char(itp.atomtypes.name(i)),itp.atomtypes.atnum(i),scale_charge*itp.atomtypes.charge(i),char(itp.atomtypes.ptype(i)),scale_sigma*itp.atomtypes.v(i),scale_epsilon*itp.atomtypes.w(i));
+    if isfield(itp.atomtypes,'v')
+        for i = 1:size(itp.atomtypes.type,1)
+            fprintf(fid, '%-6s   %3s   %10.5f  %10.5f  %5s   %10.6e  %10.6e\r\n',char(itp.atomtypes.type(i)),itp.atomtypes.atnum(i),scale_charge*itp.atomtypes.charge(i),char(itp.atomtypes.ptype(i)),scale_sigma*itp.atomtypes.v(i),scale_epsilon*itp.atomtypes.w(i));
+        end
+    else
+        for i = 1:size(itp.atomtypes.type,1)
+            fprintf(fid, '%-6s   %3i   %10.5f  %10.5f  %5s   %10.6e  %10.6e\r\n',char(itp.atomtypes.type(i)),itp.atomtypes.atnum(i),itp.atomtypes.mass(i),scale_charge*itp.atomtypes.charge(i),char(itp.atomtypes.ptype(i)),scale_sigma*itp.atomtypes.sigma(i),scale_epsilon*itp.atomtypes.epsilon(i));
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('pairtypes','var')
+    fprintf(fid, '[ pairtypes ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj   funct    c0     c1');
+    if numel(itp.pairtypes)>0
+        for i = 1:size(itp.pairtypes.ai,1)
+            if numel(fieldnames(itp.pairtypes))==5 && ~isnan(itp.pairtypes.c1(i))
+                Bond_order(i,:)= {char(itp.pairtypes.ai(i)),char(itp.pairtypes.aj(i)),itp.pairtypes.funct(i),itp.pairtypes.c0(i),itp.pairtypes.c1(i)};
+                fprintf(fid, '%-6s   %-6s  %3i    %10.6e  %10.6e\r\n', Bond_order{i,:});
+            end
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('bondtypes','var')
+    fprintf(fid, '[ bondtypes ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj funct       c0        c1        c2         c3');
+    if numel(itp.bondtypes)>0
+        for i = 1:size(itp.bondtypes.ai,1)
+            if numel(fieldnames(itp.bondtypes))==4 && ~isnan(itp.bondtypes.c0(i))
+                Bond_order(i,:)= {char(itp.bondtypes.ai(i)),char(itp.bondtypes.aj(i)),itp.bondtypes.funct(i),itp.bondtypes.c0(i)};
+                fprintf(fid, '%-6s   %-6s  %5i %10.5f\r\n', Bond_order{i,:});
+            elseif numel(fieldnames(itp.bondtypes))==5 && ~isnan(itp.bondtypes.c1(i))
+                Bond_order(i,:)= {char(itp.bondtypes.ai(i)),char(itp.bondtypes.aj(i)),itp.bondtypes.funct(i),itp.bondtypes.c0(i),itp.bondtypes.c1(i)};
+                fprintf(fid, '%-6s   %-6s  %5i %10.5f  %10.2f\r\n', Bond_order{i,:});
+            elseif numel(fieldnames(itp.bondtypes))==6 && ~isnan(itp.bondtypes.c2(i))
+                Bond_order(i,:)= {char(itp.bondtypes.ai(i)),char(itp.bondtypes.aj(i)),itp.bondtypes.funct(i),itp.bondtypes.c0(i),itp.bondtypes.c1(i),itp.bondtypes.c2(i)};
+                fprintf(fid, '%-6s   %-6s  %5i %10.5f  %10.5f  %10.2f\r\n', Bond_order{i,:});
+            elseif numel(fieldnames(itp.bondtypes))==7 && ~isnan(itp.bondtypes.c3(i))
+                Bond_order(i,:)= {char(itp.bondtypes.ai(i)),char(itp.bondtypes.aj(i)),itp.bondtypes.funct(i),itp.bondtypes.c0(i),itp.bondtypes.c1(i),itp.bondtypes.c2(i),itp.bondtypes.c3(i)};
+                fprintf(fid, '%-6s   %-6s  %5i %10.5f  %10.5f  %10.5f  %10.2f\r\n', Bond_order{i,:});
+            end
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('angletypes','var')
+    fprintf(fid, '[ angletypes ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak   funct       c0        c1        c2         c3');
+    if numel(itp.angletypes)>0
+        for i = 1:size(itp.angletypes.ai,1)
+            if numel(fieldnames(itp.angletypes))==5 && ~isnan(itp.angletypes.c0(i))
+                Angle_order(i,:)= {char(itp.angletypes.ai(i)),char(itp.angletypes.aj(i)),char(itp.angletypes.ak(i)),itp.angletypes.funct(i),itp.angletypes.c0(i)};
+                fprintf(fid, '%-6s   %-6s   %-6s   %3i  %10.5f\r\n', Angle_order{i,:});
+            elseif numel(fieldnames(itp.angletypes))==6 && ~isnan(itp.angletypes.c1(i))
+                Angle_order(i,:)= {char(itp.angletypes.ai(i)),char(itp.angletypes.aj(i)),char(itp.angletypes.ak(i)),itp.angletypes.funct(i),itp.angletypes.c0(i),itp.angletypes.c1(i)};
+                fprintf(fid, '%-6s   %-6s   %-6s   %3i  %10.5f %10.2f\r\n', Angle_order{i,:});
+            elseif numel(fieldnames(itp.angletypes))==7 && ~isnan(itp.angletypes.c2(i))
+                Angle_order(i,:)= {char(itp.angletypes.ai(i)),char(itp.angletypes.aj(i)),char(itp.angletypes.ak(i)),itp.angletypes.funct(i),itp.angletypes.c0(i),itp.angletypes.c1(i),itp.angletypes.c2(i)};
+                fprintf(fid, '%-6s   %-6s   %-6s   %3i  %10.5f  %10.5f %10.2f\r\n', Angle_order{i,:});
+            elseif numel(fieldnames(itp.angletypes))==8 && ~isnan(itp.angletypes.c3(i))
+                Angle_order(i,:)= {char(itp.angletypes.ai(i)),char(itp.angletypes.aj(i)),char(itp.angletypes.ak(i)),itp.angletypes.funct(i),itp.angletypes.c0(i),itp.angletypes.c1(i),itp.angletypes.c2(i),itp.angletypes.c3(i)};
+                fprintf(fid, '%-6s   %-6s   %-6s   %3i  %10.5f  %10.5f  %10.5f %10.2f\r\n', Angle_order{i,:});
+            end
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('dihedraltypes','var')
+    fprintf(fid, '[ dihedraltypes ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak    al funct            c0            c1            c2  ');
+    if numel(itp.dihedraltypes)>0
+        for i = 1:size(itp.dihedraltypes.ai,1)
+            if numel(fieldnames(itp.dihedraltypes))==8
+                if isfield(itp.dihedraltypes,'c0') && ~isnan(itp.dihedraltypes.c0(i))
+                    Dihedral_order(i,:)= {char(itp.dihedraltypes.ai(i)),char(itp.dihedraltypes.aj(i)),char(itp.dihedraltypes.ak(i)),char(itp.dihedraltypes.al(i)),itp.dihedraltypes.funct(i),itp.dihedraltypes.c0(i),itp.dihedraltypes.c1(i),itp.dihedraltypes.c2(i)};
+                    fprintf(fid, '%6s   %6s   %6s   %6s %3i   %10.5f   %10.5f   %3i\r\n', Dihedral_order{i,:});
+                else
+                    disp('Did not write all dihedral params, need to edit a new section for that...')
+                end
+            end
+        end
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('dihedraltypes2','var')
+    fprintf(fid, '[ dihedraltypes ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj    ak    al funct            c0            c1  ');
+    if numel(itp.dihedraltypes2)>0
+        for i = 1:size(itp.dihedraltypes2.ai,1)
+            if numel(fieldnames(itp.dihedraltypes2))==7
+                if isfield(itp.dihedraltypes2,'c0') && ~isnan(itp.dihedraltypes2.c0(i))
+                    Dihedral2_order(i,:)= {char(itp.dihedraltypes2.ai(i)),char(itp.dihedraltypes2.aj(i)),char(itp.dihedraltypes2.ak(i)),char(itp.dihedraltypes2.al(i)),itp.dihedraltypes2.funct(i),itp.dihedraltypes2.c0(i),itp.dihedraltypes2.c1(i)};
+                    fprintf(fid, '%6s   %6s   %6s   %6s %3i   %10.5f   %10.5f\r\n', Dihedral2_order{i,:});
+                else
+                    disp('Did not write all dihedral params, need to edit a new section for that...')
+                end
+            end
+        end
     end
 end
 
@@ -68,14 +174,39 @@ if exist('moleculetype','var')
     fprintf(fid, '%s       %d\r\n',char(itp.moleculetype.moleculetype),str2double(itp.moleculetype.nrexcl));
     fprintf(fid, '\r\n');
 end
-fprintf(fid, '%s\r\n','[ atoms ]');
-fprintf(fid, '%s\r\n',';    nr       type resnr residue  atom   cgnr     charge       mass     ; comment');
 
-ChargeSumColumn=round(cumsum(itp.atoms.charge),5);
 if exist('atoms','var')
+    fprintf(fid, '%s\r\n','[ atoms ]');
+    fprintf(fid, '%s\r\n',';    nr       type resnr residue  atom   cgnr     charge       mass     ; comment');
+    ChargeSumColumn=round2dec(cumsum(itp.atoms.charge),5);
     for i = 1:size(itp.atoms.nr,1)
         atoms_section(i,:) = {itp.atoms.nr(i), char(atoms.type(i)),itp.atoms.resnr(i),char(itp.atoms.residue(i)),char(itp.atoms.atom(i)),itp.atoms.nr(i), scale_charge*itp.atoms.charge(i),itp.atoms.mass(i), '; qtot ', scale_charge*ChargeSumColumn(i)};
         fprintf(fid, '%6i%11s%9i%5s%7s%7i\t%8.5f\t%8.4f\t%5s\t%8.5f\r\n',atoms_section{i,:});
+    end
+end
+
+fprintf(fid, '\r\n');
+
+if exist('pairs','var')
+    fprintf(fid, '[ pairs ] \r\n');
+    fprintf(fid, '%s\r\n',';  ai    aj funct            c0            c1            c2            c3');
+    if numel(itp.pairs)>0
+        for i = 1:size(itp.pairs.ai,1)
+            if numel(fieldnames(itp.pairs))<5
+                if isfield(itp.pairs,'c0')% ~isnan(itp.pairs.c0(i))
+                    Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),itp.pairs.c0(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                    fprintf(fid, '%5i %5i %5i %12.2e %s %s %s\r\n', Pair_order{i,:});
+                else
+                    Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                    fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Pair_order{i,:});
+                end
+            elseif isnan(itp.pairs.c0(i))
+                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
+                fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Pair_order{i,:});
+            else
+                disp('Did not write all pair params, need to edit a new section for that...')
+            end
+        end
     end
 end
 
@@ -114,6 +245,7 @@ end
 
 fprintf(fid, '\r\n');
 
+
 if exist('angles','var')
     fprintf(fid, '[ angles ] \r\n');
     fprintf(fid, '%s\r\n',';  ai    aj    ak  funct      c0           c1         c2         c3');
@@ -134,31 +266,6 @@ if exist('angles','var')
                 end
             else
                 disp('Did not write all angle params, need to edit a new section for that...')
-            end
-        end
-    end
-end
-
-fprintf(fid, '\r\n');
-
-if exist('pairs','var')
-    fprintf(fid, '[ pairs ] \r\n');
-    fprintf(fid, '%s\r\n',';  ai    aj funct            c0            c1            c2            c3');
-    if numel(itp.pairs)>0
-        for i = 1:size(itp.pairs.ai,1)
-            if numel(fieldnames(itp.pairs))<5
-                if ~isnan(itp.pairs.c0(i))
-                    Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),itp.pairs.c0(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
-                    fprintf(fid, '%5i %5i %5i %12.2e %s %s %s\r\n', Pair_order{i,:});
-                else
-                    Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
-                    fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Pair_order{i,:});
-                end
-            elseif isnan(itp.pairs.c0(i))
-                Pair_order(i,:)= {itp.pairs.ai(i),itp.pairs.aj(i),itp.pairs.funct(i),';',char(itp.atoms.atom(itp.pairs.ai(i)==itp.atoms.nr)),char(itp.atoms.atom(itp.pairs.aj(i)==itp.atoms.nr))};
-                fprintf(fid, '%5i %5i %5i %s %s %s\r\n', Pair_order{i,:});
-            else
-                disp('Did not write all pair params, need to edit a new section for that...')
             end
         end
     end

@@ -1,0 +1,22 @@
+; All settings are in the itp files!!!
+[ bondtypes ]
+;i      j	func    b0	kb ; Recalculated from Heinz 2005
+Oh      H		1   	0.09290	414216
+Ohmg    H		1   	0.09290	414216
+Oalh    H		1   	0.09290	414216
+Oalhh   H		1   	0.09290	414216
+Osih    H		1   	0.09290	414216
+Al		Oalh    1   	0.203 	359824
+Si		Osih	1   	0.173 	359824
+
+[ angletypes ]
+;i      j       k	func	th0	cth  ; Recalculated from Heinz 2005
+;M       O       M   1   expl    1422.5600
+Al      Oh      H	1	109.47	96.232
+Al      Ohmg	H	1	109.47	96.232
+Mgo     Oh      H	1	109.47	96.232
+Mgo     Ohmg	H	1	109.47	96.232
+; edge?
+H       Oalhh   H	1	109.47	383 ; from SPC
+Al      Oalh    H	1	109.47	383 ; from SPC
+Si      Osih    H	1	109.47	383 ; from SPC

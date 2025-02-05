@@ -21,23 +21,23 @@ else
 end
 
 if nargin>3 % will only round the fractional coordinates
-    x_coord=num2cell(round([atom.xfrac],precision)); [atom.xfrac]=deal(x_coord{:});
+    x_coord=num2cell(round2dec([atom.xfrac],precision)); [atom.xfrac]=deal(x_coord{:});
     
-    y_coord=num2cell(round([atom.yfrac],precision)); [atom.yfrac]=deal(y_coord{:});
+    y_coord=num2cell(round2dec([atom.yfrac],precision)); [atom.yfrac]=deal(y_coord{:});
     
-    z_coord=num2cell(round([atom.zfrac],precision)); [atom.zfrac]=deal(z_coord{:});
+    z_coord=num2cell(round2dec([atom.zfrac],precision)); [atom.zfrac]=deal(z_coord{:});
 else
-    x_coord=num2cell(round([atom.x],precision)); [atom.x]=deal(x_coord{:});
+    x_coord=num2cell(round2dec([atom.x],precision)); [atom.x]=deal(x_coord{:});
     
-    y_coord=num2cell(round([atom.y],precision)); [atom.y]=deal(y_coord{:});
+    y_coord=num2cell(round2dec([atom.y],precision)); [atom.y]=deal(y_coord{:});
     
-    z_coord=num2cell(round([atom.z],precision)); [atom.z]=deal(z_coord{:});
+    z_coord=num2cell(round2dec([atom.z],precision)); [atom.z]=deal(z_coord{:});
     try
-        x_coord=num2cell(round([atom.xfrac],precision)); [atom.xfrac]=deal(x_coord{:});
+        x_coord=num2cell(round2dec([atom.xfrac],precision)); [atom.xfrac]=deal(x_coord{:});
         
-        y_coord=num2cell(round([atom.yfrac],precision)); [atom.yfrac]=deal(y_coord{:});
+        y_coord=num2cell(round2dec([atom.yfrac],precision)); [atom.yfrac]=deal(y_coord{:});
         
-        z_coord=num2cell(round([atom.zfrac],precision)); [atom.zfrac]=deal(z_coord{:});
+        z_coord=num2cell(round2dec([atom.zfrac],precision)); [atom.zfrac]=deal(z_coord{:});
     catch
         disp('Found no fractional coordinates to round...')
     end

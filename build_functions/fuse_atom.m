@@ -49,7 +49,7 @@ while i < size(fused_atom,2)
     % end
     i=i+1;
 end
-i-1
+i
 
 assignin('caller','rm_ind',rmind_tot);
 assignin('caller','rm_atom',atom(rmind_tot));

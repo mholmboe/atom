@@ -30,6 +30,7 @@ end
 fprintf(fid,'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\r\n',[0    0    0    0    0    0    0    0 nAtoms    0 i    0]);
 fprintf(fid,'END');
 
+assignin('caller',"CONCECT_Bond_index",Bond_index)
 fclose(fid);
 
 % % % COLUMNS         DATA TYPE        FIELD           DEFINITION

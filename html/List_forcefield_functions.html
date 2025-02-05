@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of topology functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="List_forcefield_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -104,7 +104,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#7">Graphene oxide modeled with OPLS/aa</a>
 </li>
 <li>
-<a href="#8">Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</a>
+<a href="#8">Writing topology files for Lammps (MINFF/CLAYFF) and Gromacs (MINFF/CLAYFF/INTERFACE)</a>
 </li>
 <li>
 <a href="#9">Bonded and Nonbonded Parameters</a>
@@ -217,7 +217,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="charge_opls_go_atom.html">charge_opls_go_atom(atom,Box_dim,varargin)</a> % Set the charge for specific OPLS atom types.</li>
 </ol>
 </div>
-<h2 id="8">Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)</h2>
+<h2 id="8">Writing topology files for Lammps (MINFF/CLAYFF) and Gromacs (MINFF/CLAYFF/INTERFACE)</h2>
 <div>
 <ol>
 <li>
@@ -226,6 +226,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="write_atom_lmp.html">write_atom_lmp(atom,Box_dim,filename_out,varargin)</a> % Create and print a LAMMPS data file (.lj) for Clayff systems.</li>
 <li>
 <a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)</a> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.</li>
+<li>
+<a href="write_itp.html">write_itp(itp,filename)</a> % Exports a Gromacs .itp topology file from a itp struct</li>
 </ol>
 </div>
 <h2 id="9">Bonded and Nonbonded Parameters</h2>
@@ -385,10 +387,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % Hold the extended OPLS-AA force field parameters for graphite oxide.
 % # <charge_opls_go_atom.html charge_opls_go_atom(atom,Box_dim,varargin)> % Set the charge for specific OPLS atom types.
 
-%% Writing topology files for Lammps (Clayff) and Gromacs (Clayff/INTERFACE)
+%% Writing topology files for Lammps (MINFF/CLAYFF) and Gromacs (MINFF/CLAYFF/INTERFACE)
 % # <write_atom_itp.html write_atom_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for Clayff or Interface force fields.
 % # <write_atom_lmp.html write_atom_lmp(atom,Box_dim,filename_out,varargin)> % Create and print a LAMMPS data file (.lj) for Clayff systems.
 % # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp(atom,Box_dim,filename_out,varargin)> % Create and print a Gromacs .itp file for OPLS-AA or GO systems.
+% # <write_itp.html write_itp(itp,filename)> % Exports a Gromacs .itp topology file from a itp struct 
 
 %% Bonded and Nonbonded Parameters
 % # <bonded_parameters.html bonded_parameters(atom,varargin)> % Define bonded parameters for atoms.

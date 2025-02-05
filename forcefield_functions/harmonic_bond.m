@@ -20,7 +20,7 @@ r=dist(1)-.5:.0005:dist(1)+.5;
 Ubond=kb*(r-dist(1)).^2;
 
 hold on
-plotmin=1000*(round(min(Ubond*1.5)/1000));
+plotmin=1000*(round2dec(min(Ubond*1.5)/1000));
 if plotmin>=0
     plotmin=10000;
 end

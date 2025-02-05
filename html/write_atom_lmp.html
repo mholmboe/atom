@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_lmp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="write_atom_lmp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -80,7 +80,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <!--introduction-->
 <div>
 <ul>
-<li>This script creates and prints a lammps data file (.lj). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li>
+<li>This script creates and prints a lammps data file (.data). Works best for Clayff systems, defining the ffname 'clayff' and watermodel 'spce'. Nevertheless, this new version should be able to handle bonds|angles|dihedrals</li>
 </ul>
 </div>
 <!--/introduction-->
@@ -127,15 +127,15 @@ prev_dihedral_types=0;
 prev_mol_index=0;
 
 precision = 7; <span class="comment">% num2str(X,precision)</span>
-ind_HW=strncmpi([atom.type],<span class="string">'Ow'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Ow'</span>});
+ind_OW=strncmpi([atom.type],<span class="string">'Ow'</span>,2);[atom(ind_OW).type]=deal({<span class="string">'Ow'</span>});
 ind_HW=strncmpi([atom.type],<span class="string">'Hw'</span>,2);[atom(ind_HW).type]=deal({<span class="string">'Hw'</span>});
 Atom_labels=sort(unique([atom.type]));
 natom_labels=size(Atom_labels,2);
 
-<span class="keyword">if</span> regexp(filename,<span class="string">'.lj'</span>) ~= false
+<span class="keyword">if</span> regexp(filename,<span class="string">'.data'</span>) ~= false
     filename = filename;
 <span class="keyword">else</span>
-    filename = strcat(filename,<span class="string">'.lj'</span>);
+    filename = strcat(filename,<span class="string">'.data'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin &gt; 3
@@ -143,45 +143,141 @@ natom_labels=size(Atom_labels,2);
     long_r=varargin{2};
 <span class="keyword">else</span>
     short_r=1.25;
-    long_r=1.25; <span class="comment">% long=short since clayff</span>
+    long_r=2.45; <span class="comment">% long=short since clayff</span>
 <span class="keyword">end</span>
 
+<span class="comment">% if nargin&gt;5</span>
+<span class="comment">%     ffname=varargin(3);</span>
+<span class="comment">%     if nargin&gt;6</span>
+<span class="comment">%         watermodel=varargin(4)</span>
+<span class="comment">%     else</span>
+<span class="comment">%         disp('Unknown watermodel, will try SPC/E')</span>
+<span class="comment">%         watermodel='SPC/E';</span>
+<span class="comment">%     end</span>
+<span class="comment">%     if strcmpi(ffname,'clayff_2004')</span>
+<span class="comment">%         clayff_2004_param(sort(unique([atom.type])),watermodel);</span>
+<span class="comment">%         if ~isfield(atom,'charge')</span>
+<span class="comment">%             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');</span>
+<span class="comment">%         end</span>
+<span class="comment">%         Total_charge=sum([atom.charge])</span>
+<span class="comment">%         round2dec(Total_charge,5)</span>
+<span class="comment">%     elseif strncmpi(ffname,'clayff',5)</span>
+<span class="comment">%         clayff_param(sort(unique([atom.type])),watermodel);</span>
+<span class="comment">%         atom = charge_atom(atom,Box_dim,'clayff',watermodel,'more');</span>
+<span class="comment">%         Total_charge</span>
+<span class="comment">%         round2dec(Total_charge,5)</span>
+<span class="comment">%     end</span>
+<span class="comment">% else</span>
+<span class="comment">%     %     disp('Unknown forcefield, will try clayff')</span>
+<span class="comment">%     %     clayff_param(sort(unique([atom.type])),'spc/e');</span>
+<span class="comment">%     %     atom = charge_atom(atom,Box_dim,'clayff','spc/e');</span>
+<span class="comment">%     %     Total_charge</span>
+<span class="comment">%     disp('Forcefield not stated, will make some assumptions then...')</span>
+<span class="comment">%     pause(2)</span>
+<span class="comment">%     ffname='clayff_2004'</span>
+<span class="comment">%     watermodel='SPC/E'</span>
+<span class="comment">%     clayff_2004_param(sort(unique([atom.type])),watermodel);</span>
+<span class="comment">%     if ~isfield(atom,'charge')</span>
+<span class="comment">%         atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');</span>
+<span class="comment">%     end</span>
+<span class="comment">%     Total_charge=sum([atom.charge])</span>
+<span class="comment">%     round2dec(Total_charge,5)</span>
+<span class="comment">% end</span>
+
 <span class="keyword">if</span> nargin&gt;5
-    ffname=varargin(3);
+    ffname=varargin{3}
     <span class="keyword">if</span> nargin&gt;6
-        watermodel=varargin(4)
+        watermodel=varargin{4}
     <span class="keyword">else</span>
         disp(<span class="string">'Unknown watermodel, will try SPC/E'</span>)
-        watermodel=<span class="string">'SPC/E'</span>;
+        watermodel=<span class="string">'SPC/E'</span>
     <span class="keyword">end</span>
-    <span class="keyword">if</span> strcmpi(ffname,<span class="string">'clayff_2004'</span>)
+
+    <span class="keyword">if</span> strcmpi(ffname,<span class="string">'minff'</span>)
+        atom = mass_atom(atom);
+        Total_charge=sum([atom.charge])
+        round2dec(Total_charge,5)
+        <span class="comment">%         pause</span>
+        nrexcl=1; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 0
+        explicit_angles = 1
+        watermodel=<span class="string">'OPC3'</span>; <span class="comment">% SPC/E, depreceated</span>
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'clayff'</span>)
+        clayff_param(sort(unique([atom.type])),watermodel);
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+            atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'adjust'</span>);
+        <span class="keyword">end</span>
+        Total_charge=sum([atom.charge])
+        round2dec(Total_charge,5)
+        <span class="comment">%         pause</span>
+        nrexcl=1; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 0
+        explicit_angles = 1
+    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff_2004'</span>,5)
         clayff_2004_param(sort(unique([atom.type])),watermodel);
         <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
             atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
         <span class="keyword">end</span>
         Total_charge=sum([atom.charge])
-        round(Total_charge,5)
-    <span class="keyword">elseif</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
-        clayff_param(sort(unique([atom.type])),watermodel);
-        atom = charge_atom(atom,Box_dim,<span class="string">'clayff'</span>,watermodel,<span class="string">'more'</span>);
+        round2dec(Total_charge,5)
+        <span class="comment">%         pause</span>
+        nrexcl=1; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 0
+        explicit_angles = 1
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface'</span>)
+        interface_param(sort(unique([atom.type])),watermodel);
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+            atom = charge_atom(atom,Box_dim,<span class="string">'interface'</span>,watermodel,<span class="string">'adjust'</span>);
+        <span class="keyword">end</span>
+        Total_charge=sum([atom.charge])
+        nrexcl=3; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 1;
+        explicit_angles = 1;
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface15'</span>)
+        atom = mass_atom(atom);
+        nrexcl=3; <span class="comment">% See the gromacs manual</span>
+        <span class="comment">%         interface15_param(sort(unique([atom.type])),watermodel);</span>
+        <span class="comment">%         atom = charge_atom(atom,Box_dim,'interface15',watermodel,'adjust');</span>
+        <span class="keyword">if</span> nargin &gt; 7
+            model_database=varargin{5}
+        <span class="keyword">else</span>
+            model_database=<span class="string">'CLAY_MINERALS'</span>
+        <span class="keyword">end</span>
+        atom = check_interface15_charge(atom,model_database);
         Total_charge
-        round(Total_charge,5)
+        nrexcl=2; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 0 <span class="comment">% 0 currently does not work, because no default bond types</span>
+        explicit_angles = 0<span class="comment">% 0 currently does not work, because no default angle types</span>
+    <span class="keyword">elseif</span> strcmpi(ffname,<span class="string">'interface_car'</span>)
+        <span class="comment">% Experimental!!!</span>
+        atom = mass_atom(atom);
+        nrexcl=3; <span class="comment">% See the gromacs manual</span>
+        explicit_bonds = 1
+        explicit_angles = 1
+        <span class="comment">%     elseif strcmpi(ffname,'oplsaa_go');</span>
+        <span class="comment">%         % This is not for you...</span>
+        <span class="comment">%         oplsaa_go_param(sort(unique([atom.type])),watermodel);</span>
+        <span class="comment">%         atom = charge_opls_go_atom(atom,Box_dim,{'H' 'Oe' 'Oh'},[0.418 -0.4 -0.683])</span>
+        <span class="comment">%         Total_charge</span>
+        <span class="comment">%         nrexcl=3; % See the gromacs manual</span>
+        <span class="comment">%         explicit_bonds = 0;</span>
+        <span class="comment">%         explicit_angles = 0;</span>
     <span class="keyword">end</span>
 <span class="keyword">else</span>
-    <span class="comment">%     disp('Unknown forcefield, will try clayff')</span>
-    <span class="comment">%     clayff_param(sort(unique([atom.type])),'spc/e');</span>
-    <span class="comment">%     atom = charge_atom(atom,Box_dim,'clayff','spc/e');</span>
-    <span class="comment">%     Total_charge</span>
     disp(<span class="string">'Forcefield not stated, will make some assumptions then...'</span>)
-    pause(2)
-    ffname=<span class="string">'clayff_2004'</span>
-    watermodel=<span class="string">'SPC/E'</span>
-    clayff_2004_param(sort(unique([atom.type])),watermodel);
+    ffname=<span class="string">'minff'</span>;
+    watermodel=<span class="string">'OPC3'</span>; <span class="comment">% SPC/E, depreceated</span>
+    <span class="comment">% minff_param(sort(unique([atom.type])),'OPC3');</span>
+    atom = mass_atom(atom);
     <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
-        atom = charge_atom(atom,Box_dim,<span class="string">'clayff_2004'</span>,watermodel,<span class="string">'adjust'</span>);
+        atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Fe3e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     <span class="keyword">end</span>
     Total_charge=sum([atom.charge])
-    round(Total_charge,5)
+    round2dec(Total_charge,5)
+    <span class="comment">%         pause</span>
+    nrexcl=1; <span class="comment">% See the gromacs manual</span>
+    explicit_bonds = 0
+    explicit_angles = 1
 <span class="keyword">end</span>
 
 <span class="comment">% Scan the xyz data and look for O-H bonds and angles</span>
@@ -263,7 +359,7 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
 
 <span class="comment">% Some settings needed in order to print a proper lammps in file %%</span>
 
-<span class="comment">% Start printing the lammps .lj file</span>
+<span class="comment">% Start printing the lammps .data file</span>
 fid = fopen(filename, <span class="string">'wt'</span>);
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
@@ -302,27 +398,27 @@ fprintf(fid, <span class="string">'\n'</span>);
 fprintf(fid, <span class="string">'Masses \n'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
 
-<span class="comment">% if isfield(atom,'mass')</span>
-<span class="comment">%     for i =1:natom_labels</span>
-<span class="comment">%         masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};</span>
-<span class="comment">%         fprintf(fid, '%i %-s %s %s\n', masses{i,:});</span>
-<span class="comment">%     end</span>
-<span class="comment">% else exist('Masses','var');</span>
+<span class="keyword">if</span> isfield(atom,<span class="string">'mass'</span>)
+    <span class="keyword">for</span> i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), <span class="string">'#'</span>, Atom_labels{i}};
+        fprintf(fid, <span class="string">'%i %-s %s %s\n'</span>, masses{i,:});
+    <span class="keyword">end</span>
+<span class="keyword">elseif</span> exist(<span class="string">'Masses'</span>,<span class="string">'var'</span>)
     <span class="keyword">for</span> i =1:natom_labels
         masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), <span class="string">'#'</span>, Atom_labels{i}};
         fprintf(fid, <span class="string">'%i %-s %s %s\n'</span>, masses{i,:});
     <span class="keyword">end</span>
-<span class="comment">% end</span>
+<span class="keyword">end</span>
 
 fprintf(fid, <span class="string">'\n'</span>);
 </pre>
 <pre class="codeinput">fprintf(fid, <span class="string">'Pair Coeffs \n'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
 
-<span class="keyword">for</span> i =1:natom_labels
-    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), <span class="string">'#'</span>, Atom_labels{i}};
-    fprintf(fid, <span class="string">'%i %E %f %s %s\n'</span>, paircoeffs{i,:});
-<span class="keyword">end</span>
+<span class="comment">% for i =1:natom_labels</span>
+<span class="comment">%     paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_labels{i}};</span>
+<span class="comment">%     fprintf(fid, '%i %E %f %s %s\n', paircoeffs{i,:});</span>
+<span class="comment">% end</span>
 fprintf(fid, <span class="string">'\n'</span>);
 <span class="comment">%</span>
 fprintf(fid, <span class="string">'Atoms \n'</span>);
@@ -332,8 +428,8 @@ fprintf(fid, <span class="string">'\n'</span>);
     <span class="keyword">if</span> sum(ismember(Atom_labels,[atom(i).type])) &gt; 0
         Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     <span class="keyword">end</span>
-    Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
-    fprintf(fid, <span class="string">'\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\n'</span>, Atoms_data{i,:});
+    Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z],<span class="string">'#'</span>,char(atom(i).type)};
+    fprintf(fid, <span class="string">'\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f  %-s  %-s\n'</span>, Atoms_data{i,:});
 <span class="keyword">end</span>
 </pre>
 <pre class="codeinput">fprintf(fid, <span class="string">'\n'</span>);
@@ -392,7 +488,7 @@ fclose(fid);
 <!--
 ##### SOURCE BEGIN #####
 %% write_atom_lmp.m
-% * This script creates and prints a lammps data file (.lj). Works best for
+% * This script creates and prints a lammps data file (.data). Works best for
 % Clayff systems, defining the ffname 'clayff' and watermodel 'spce'.
 % Nevertheless, this new version should be able to handle bonds|angles|dihedrals
 %
@@ -422,15 +518,15 @@ prev_dihedral_types=0;
 prev_mol_index=0;
 
 precision = 7; % num2str(X,precision)
-ind_HW=strncmpi([atom.type],'Ow',2);[atom(ind_HW).type]=deal({'Ow'});
+ind_OW=strncmpi([atom.type],'Ow',2);[atom(ind_OW).type]=deal({'Ow'});
 ind_HW=strncmpi([atom.type],'Hw',2);[atom(ind_HW).type]=deal({'Hw'});
 Atom_labels=sort(unique([atom.type]));
 natom_labels=size(Atom_labels,2);
 
-if regexp(filename,'.lj') ~= false
+if regexp(filename,'.data') ~= false
     filename = filename;
 else
-    filename = strcat(filename,'.lj');
+    filename = strcat(filename,'.data');
 end
 
 if nargin > 3
@@ -438,45 +534,141 @@ if nargin > 3
     long_r=varargin{2};
 else
     short_r=1.25;
-    long_r=1.25; % long=short since clayff
+    long_r=2.45; % long=short since clayff
 end
 
+% if nargin>5
+%     ffname=varargin(3);
+%     if nargin>6
+%         watermodel=varargin(4)
+%     else
+%         disp('Unknown watermodel, will try SPC/E')
+%         watermodel='SPC/E';
+%     end
+%     if strcmpi(ffname,'clayff_2004')
+%         clayff_2004_param(sort(unique([atom.type])),watermodel);
+%         if ~isfield(atom,'charge')
+%             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
+%         end
+%         Total_charge=sum([atom.charge])
+%         round2dec(Total_charge,5)
+%     elseif strncmpi(ffname,'clayff',5)
+%         clayff_param(sort(unique([atom.type])),watermodel);
+%         atom = charge_atom(atom,Box_dim,'clayff',watermodel,'more');
+%         Total_charge
+%         round2dec(Total_charge,5)
+%     end
+% else
+%     %     disp('Unknown forcefield, will try clayff')
+%     %     clayff_param(sort(unique([atom.type])),'spc/e');
+%     %     atom = charge_atom(atom,Box_dim,'clayff','spc/e');
+%     %     Total_charge
+%     disp('Forcefield not stated, will make some assumptions then...')
+%     pause(2)
+%     ffname='clayff_2004'
+%     watermodel='SPC/E'
+%     clayff_2004_param(sort(unique([atom.type])),watermodel);
+%     if ~isfield(atom,'charge')
+%         atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
+%     end
+%     Total_charge=sum([atom.charge])
+%     round2dec(Total_charge,5)
+% end
+
 if nargin>5
-    ffname=varargin(3);
+    ffname=varargin{3}
     if nargin>6
-        watermodel=varargin(4)
+        watermodel=varargin{4}
     else
         disp('Unknown watermodel, will try SPC/E')
-        watermodel='SPC/E';
+        watermodel='SPC/E'
     end
-    if strcmpi(ffname,'clayff_2004')
+
+    if strcmpi(ffname,'minff')
+        atom = mass_atom(atom);
+        Total_charge=sum([atom.charge])
+        round2dec(Total_charge,5)
+        %         pause
+        nrexcl=1; % See the gromacs manual
+        explicit_bonds = 0
+        explicit_angles = 1
+        watermodel='OPC3'; % SPC/E, depreceated
+    elseif strcmpi(ffname,'clayff')
+        clayff_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'clayff',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+        round2dec(Total_charge,5)
+        %         pause
+        nrexcl=1; % See the gromacs manual
+        explicit_bonds = 0
+        explicit_angles = 1
+    elseif strncmpi(ffname,'clayff_2004',5)
         clayff_2004_param(sort(unique([atom.type])),watermodel);
         if ~isfield(atom,'charge')
             atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
         end
         Total_charge=sum([atom.charge])
-        round(Total_charge,5)
-    elseif strncmpi(ffname,'clayff',5)
-        clayff_param(sort(unique([atom.type])),watermodel);
-        atom = charge_atom(atom,Box_dim,'clayff',watermodel,'more');
+        round2dec(Total_charge,5)
+        %         pause
+        nrexcl=1; % See the gromacs manual
+        explicit_bonds = 0
+        explicit_angles = 1
+    elseif strcmpi(ffname,'interface')
+        interface_param(sort(unique([atom.type])),watermodel);
+        if ~isfield(atom,'charge')
+            atom = charge_atom(atom,Box_dim,'interface',watermodel,'adjust');
+        end
+        Total_charge=sum([atom.charge])
+        nrexcl=3; % See the gromacs manual
+        explicit_bonds = 1;
+        explicit_angles = 1;
+    elseif strcmpi(ffname,'interface15')
+        atom = mass_atom(atom);
+        nrexcl=3; % See the gromacs manual
+        %         interface15_param(sort(unique([atom.type])),watermodel);
+        %         atom = charge_atom(atom,Box_dim,'interface15',watermodel,'adjust');
+        if nargin > 7
+            model_database=varargin{5}
+        else
+            model_database='CLAY_MINERALS'
+        end
+        atom = check_interface15_charge(atom,model_database);
         Total_charge
-        round(Total_charge,5)
+        nrexcl=2; % See the gromacs manual
+        explicit_bonds = 0 % 0 currently does not work, because no default bond types
+        explicit_angles = 0% 0 currently does not work, because no default angle types
+    elseif strcmpi(ffname,'interface_car')
+        % Experimental!!!
+        atom = mass_atom(atom);
+        nrexcl=3; % See the gromacs manual
+        explicit_bonds = 1
+        explicit_angles = 1
+        %     elseif strcmpi(ffname,'oplsaa_go');
+        %         % This is not for you...
+        %         oplsaa_go_param(sort(unique([atom.type])),watermodel);
+        %         atom = charge_opls_go_atom(atom,Box_dim,{'H' 'Oe' 'Oh'},[0.418 -0.4 -0.683])
+        %         Total_charge
+        %         nrexcl=3; % See the gromacs manual
+        %         explicit_bonds = 0;
+        %         explicit_angles = 0;
     end
 else
-    %     disp('Unknown forcefield, will try clayff')
-    %     clayff_param(sort(unique([atom.type])),'spc/e');
-    %     atom = charge_atom(atom,Box_dim,'clayff','spc/e');
-    %     Total_charge
     disp('Forcefield not stated, will make some assumptions then...')
-    pause(2)
-    ffname='clayff_2004'
-    watermodel='SPC/E'
-    clayff_2004_param(sort(unique([atom.type])),watermodel);
+    ffname='minff';
+    watermodel='OPC3'; % SPC/E, depreceated
+    % minff_param(sort(unique([atom.type])),'OPC3');
+    atom = mass_atom(atom);
     if ~isfield(atom,'charge')
-        atom = charge_atom(atom,Box_dim,'clayff_2004',watermodel,'adjust');
+        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
     Total_charge=sum([atom.charge])
-    round(Total_charge,5)
+    round2dec(Total_charge,5)
+    %         pause
+    nrexcl=1; % See the gromacs manual
+    explicit_bonds = 0
+    explicit_angles = 1
 end
 
 % Scan the xyz data and look for O-H bonds and angles
@@ -489,7 +681,7 @@ nAtoms=size(atom,2)
 nBonds
 nAngles
 nDihedrals
- 
+
 if nBonds>0
     % Calculate the bond_types
     bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
@@ -558,7 +750,7 @@ end
 
 % Some settings needed in order to print a proper lammps in file %%
 
-% Start printing the lammps .lj file
+% Start printing the lammps .data file
 fid = fopen(filename, 'wt');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -598,17 +790,17 @@ fprintf(fid, '\n');
 fprintf(fid, 'Masses \n');
 fprintf(fid, '\n');
 
-% if isfield(atom,'mass')
-%     for i =1:natom_labels
-%         masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};
-%         fprintf(fid, '%i %-s %s %s\n', masses{i,:});
-%     end
-% else exist('Masses','var');
+if isfield(atom,'mass')
+    for i =1:natom_labels
+        masses(i,:) = {i+prev_atom_types, num2str([atom(i).mass],precision), '#', Atom_labels{i}};
+        fprintf(fid, '%i %-s %s %s\n', masses{i,:});
+    end
+elseif exist('Masses','var')
     for i =1:natom_labels
         masses(i,:) = {i+prev_atom_types, num2str(Masses(i),precision), '#', Atom_labels{i}};
         fprintf(fid, '%i %-s %s %s\n', masses{i,:});
     end
-% end
+end
 
 fprintf(fid, '\n');
 %%
@@ -616,10 +808,10 @@ fprintf(fid, '\n');
 fprintf(fid, 'Pair Coeffs \n');
 fprintf(fid, '\n');
 
-for i =1:natom_labels
-    paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_labels{i}};
-    fprintf(fid, '%i %E %f %s %s\n', paircoeffs{i,:});
-end
+% for i =1:natom_labels
+%     paircoeffs(i,:) = {i, Epsilon(i)*kcalmol_to_eV, Sigma(i), '#', Atom_labels{i}};
+%     fprintf(fid, '%i %E %f %s %s\n', paircoeffs{i,:});
+% end
 fprintf(fid, '\n');
 %
 fprintf(fid, 'Atoms \n');
@@ -629,8 +821,8 @@ for i = 1:nAtoms
     if sum(ismember(Atom_labels,[atom(i).type])) > 0
         Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     end
-    Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z]};
-    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f\n', Atoms_data{i,:});
+    Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z],'#',char(atom(i).type)};
+    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f  %-s  %-s\n', Atoms_data{i,:});
 end
 
 %%

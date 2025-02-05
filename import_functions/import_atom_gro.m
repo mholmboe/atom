@@ -13,137 +13,114 @@
 % # atom = import_atom_gro('molecule.gro',[10 5 2])
 % # atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
-function [atom,Box_dim] = import_atom_gro(filename,varargin)
-tic
 
-if regexp(filename,'.gro') ~= false
-    filename = filename;
-else
-    filename = strcat(filename,'.gro');
-end
+function [atom, Box_dim] = import_atom_gro(filename, varargin)
 
-% Get the number of atoms and Box_dim
-fileID = fopen(filename,'r');
-Line1 = {fgets(fileID)};
-Line2 = {fgets(fileID)};
-Title=strsplit(char(Line1));
-nAtoms=str2double(Line2);
-Box_string = textscan(fileID, '%s',1,'delimiter', '\n','HeaderLines', nAtoms);
-Box_dim=str2double(strsplit(char(Box_string{1,1})))*10;
-fclose(fileID);
+fileID = fopen(filename, 'r');
 
-%% Box vectors for the .gro format is (free format, space separated reals), values:
-% v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)
-% the last 6 values may be omitted (they will be set to zero) when all angles are 90
-% GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.
+% Read header lines (Title and nAtoms)
+fgetl(fileID); % Skip Title line
+Line2 = fgetl(fileID); % Read the number of atoms
+nAtoms = str2double(Line2);
 
-%% Box matrix
-% v1(x) v2(x) v3(x)    v1(x) v2(x) v3(x)
-% v1(y) v2(y) v3(y) == 0     v2(y) v3(y)
-% v1(z) v2(z) v3(z)    0     0     v3(z)
+% Preallocate arrays for atom attributes
+MolID = zeros(nAtoms, 1);
+Resname = cell(nAtoms, 1);
+AtomType = cell(nAtoms, 1);
+X_coord = zeros(nAtoms, 1);
+Y_coord = zeros(nAtoms, 1);
+Z_coord = zeros(nAtoms, 1);
+VeloX = NaN(nAtoms, 1);  % Default NaN for velocities if missing
+VeloY = NaN(nAtoms, 1);
+VeloZ = NaN(nAtoms, 1);
 
+% Initialize atom structure fields
+atom = struct('molid', {}, 'resname', {}, 'type', {}, 'fftype', {}, 'index', [], ...
+    'neigh', struct('type', {{}}, 'index', zeros(6, 1), 'dist', zeros(6, 1)), ...
+    'bond', struct('type', zeros(6, 1), 'index', zeros(6, 1)), ...
+    'angle', struct('type', zeros(6, 1), 'index', zeros(6, 1)), ...
+    'x', [], 'y', [], 'z', [], 'vx', [], 'vy', [], 'vz', []);
 
-% Read columns of data as strings:
-formatSpec = '%5s%5s%5s%5.0f%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f%[^\n\r]';
+nmol = 1; first_in = zeros(nAtoms, 1); last_in = zeros(nAtoms, 1);
+for i = 1:nAtoms
+    line = fgetl(fileID);
 
-% Open the text file.
-fileID = fopen(filename,'r');
-dataArray = textscan(fileID, formatSpec, nAtoms, 'Delimiter', '', 'WhiteSpace', '', 'EmptyValue' ,NaN,'HeaderLines', 2, 'ReturnOnError', false);
-fclose(fileID);
+    % Parse the current line using string indexing and convert to appropriate types
+    MolID(i) = str2double(line(1:5));
+    Resname{i} = strtrim(line(6:10));
+    AtomType{i} = strtrim(line(11:15));
+    X_coord(i) = 10 * str2double(line(21:28));
+    Y_coord(i) = 10 * str2double(line(29:36));
+    Z_coord(i) = 10 * str2double(line(37:44));
 
-% AtomID ResName
-nAtoms=size(dataArray{:,5}(:),1);
-MolID = str2double((dataArray{:,1})); % Converts to double
-Resname = strtrim(dataArray{:,2});
-Atomtype = strtrim(dataArray{:,3});
-ind=find(dataArray{:,4}(:)>99999);
-dataArray{1,4}(ind)=dataArray{1,4}(ind)-100000;
-AtomID = dataArray{:,4}; % Converts to double
-X_coord = dataArray{:,5}*10;
-Y_coord = dataArray{:,6}*10;
-Z_coord = dataArray{:,7}*10;
-X_velo = dataArray{:,8}*10;
-Y_velo = dataArray{:,9}*10;
-Z_velo = dataArray{:,10}*10;
-
-% Preallocate the atom struct attributes/fields
-atom(1).molid=[];
-atom(1).resname={};
-atom(1).type={};
-atom(1).fftype={};
-atom(1).index=[];
-atom(1).neigh.type  = {};
-atom(1).neigh.index  = [0;0;0;0;0;0];
-atom(1).neigh.dist  = [0;0;0;0;0;0];
-atom(1).bond.type  = [0;0;0;0;0;0];
-atom(1).bond.index  = [0;0;0;0;0;0];
-atom(1).angle.type  = [0;0;0;0;0;0];
-atom(1).angle.index  = [0;0;0;0;0;0];
-atom(1).x=[];
-atom(1).y=[];
-atom(1).z=[];
-atom(1).vx=[];
-atom(1).vy=[];
-atom(1).vz=[];
-atom=repmat(atom,1,nAtoms);
-
-nmol=1;first_in=[1];last_in=[];
-for i=1:nAtoms
-    if i > 1 && MolID(i) ~= MolID(i-1)
-        nmol=nmol+1;
-        atom(i).molid=nmol;
-        first_in(atom(i).molid,1)=i;last_in(atom(i).molid-1,1)=i-1;
-    elseif i > 1
-        atom(i).molid=atom(i-1).molid;
-    elseif i == 1
-        atom(i).molid=1;
+    % Check if velocity is available, otherwise assign NaN
+    if numel(line) > 45
+        VeloX(i) = str2double(line(45:52));
+        VeloY(i) = str2double(line(53:60));
+        VeloZ(i) = str2double(line(61:68));
     end
-    atom(i).resname=Resname(i);
-    atom(i).type=Atomtype(i);
-    atom(i).fftype=Atomtype(i);
-    atom(i).index=mod(i,100000);
-    atom(i).neigh.type  = {};
-    atom(i).neigh.index  = [0;0;0;0;0;0];
-    atom(i).neigh.dist  = [0;0;0;0;0;0];
-    atom(i).bond.type  = [0;0;0;0;0;0];
-    atom(i).bond.index  = [0;0;0;0;0;0];
-    atom(i).angle.type  = [0;0;0;0;0;0];
-    atom(i).angle.index  = [0;0;0;0;0;0];
-    atom(i).x=X_coord(i);
-    atom(i).y=Y_coord(i);
-    atom(i).z=Z_coord(i);
-    %     atom(i).fx=X_coord(i)/Box_dim(1);
-    %     atom(i).fy=Y_coord(i)/Box_dim(2);
-    %     atom(i).fz=Z_coord(i)/Box_dim(3);
-    atom(i).vx=X_velo(i);
-    atom(i).vy=Y_velo(i);
-    atom(i).vz=Z_velo(i);
+
+    % Assign molecule ID and structure
+    if i > 1 && MolID(i) ~= MolID(i - 1)
+        nmol = nmol + 1;
+        atom(i).molid = nmol;
+        first_in(nmol) = i;
+        last_in(nmol - 1) = i - 1;
+    else
+        atom(i).molid = nmol;
+    end
+
+    % Update atom struct with parsed data
+    atom(i).resname = Resname(i);
+    atom(i).type = AtomType(i);
+    atom(i).fftype = AtomType(i);  % Assuming fftype is the same as type
+    atom(i).index = mod(i, 100000);
+    atom(i).neigh.index = [0;0;0;0;0;0];
+    atom(i).neigh.dist = [0;0;0;0;0;0];
+    atom(i).bond.type = [0;0;0;0;0;0];
+    atom(i).bond.index = [0;0;0;0;0;0];
+    atom(i).angle.type = [0;0;0;0;0;0];
+    atom(i).angle.index = [0;0;0;0;0;0];
+    atom(i).x = X_coord(i);
+    atom(i).y = Y_coord(i);
+    atom(i).z = Z_coord(i);
+    atom(i).vx = VeloX(i);
+    atom(i).vy = VeloY(i);
+    atom(i).vz = VeloZ(i);
 end
-last_in(atom(end).molid,1)=nAtoms;
+last_in(nmol) = nAtoms;  % Handle the last molecule
 
-if nargin==2
-    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+Box_string = fgetl(fileID);
+fclose(fileID);
+
+Box_dim = str2double(strsplit(char(Box_string))) * 10;
+Box_dim(isnan(Box_dim)) = [];  % Clean up NaN values
+
+% If optional translation or centering is specified, apply it
+if nargin >= 2
+    atom = translate_atom(atom, varargin{1} + [0 0 -median([atom.z])], 'all');
 end
 
-if nargin==3
-    atom = center_atom(atom,cell2mat(varargin(2)),'all','xyz');
-    atom = translate_atom(atom,cell2mat(varargin(1))+[0 0 -median([atom.z])],'all');
+if nargin >= 3
+    atom = center_atom(atom, varargin{2}, 'all', 'xyz');
+    atom = translate_atom(atom, varargin{1} + [0 0 -median([atom.z])], 'all');
 end
 
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
-XYZ_labels=[atom.type]';
+% Prepare XYZ data and labels for output
+XYZ_data = [[atom.x]' [atom.y]' [atom.z]'];
+XYZ_labels = {atom.type}';
 
-Cell=Box_dim2Cell(Box_dim);
+Cell = Box_dim2Cell(Box_dim);
 
-% atom = resname_atom(atom);
-assignin('caller','XYZ_labels',XYZ_labels)
-assignin('caller','XYZ_data',XYZ_data)
-assignin('caller','atom',atom)
-assignin('caller','nAtoms',nAtoms)
-assignin('caller','Box_dim',Box_dim)
-assignin('caller','Cell',Cell)
+% Assign variables to the caller workspace
+assignin('caller', 'XYZ_labels', XYZ_labels);
+assignin('caller', 'XYZ_data', XYZ_data);
+assignin('caller', 'atom', atom);
+assignin('caller', 'nAtoms', nAtoms);
+assignin('caller', 'Box_dim', Box_dim);
+assignin('caller', 'Cell', Cell);
 assignin('caller','MolID',MolID)
 
-disp('.gro file imported')
-toc
+disp('.gro file imported');
 
+end

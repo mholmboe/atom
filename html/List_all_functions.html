@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Complete list of all atom functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="List_all_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -188,7 +188,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="cat_atom.html">cat_atom(atom_1,atom_2)</a> % Concatenate two atom structs.</li>
 <li>
-<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom(atom,Box_dim,varargin)</a> % This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga.</li>
+<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom(atom,Box_dim,varargin)</a> % This function calculates the distance matrix from the atom struct, using a cell list algorithm.</li>
+<li>
+<a href="cell_list_dist_matrix_atom1atom2.html">cell_list_dist_matrix_atom1atom2(atom,Box_dim,varargin)</a> % This function calculates the distance matrix from two structs called atom1 and atom2, using a cell list algorithm.</li>
 <li>
 <a href="center_atom.html">center_atom(atom,Box_dim,resname,dim)</a> % Center the atom with respect to the resname molecule.</li>
 <li>
@@ -332,6 +334,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_gmx_energy.html">import_gmx_energy(filename)</a> % Import a Gromacs energy file.</li>
 <li>
 <a href="import_gro_traj.html">import_gro_traj(filename,varargin)</a> % Import a structure and a .gro trajectory file.</li>
+<li>
+<a href="import_itp.html">import_itp(filename)</a> % Import a Gromacs .itp topology file</li>
 <li>
 <a href="import_mc_pdb_traj.html">import_mc_pdb_traj(filename,varargin)</a> % Import a structure and a .pdb trajectory file, handling changing numbers of particles.</li>
 <li>
@@ -641,6 +645,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="write_gro_traj.html">write_gro_traj(atom,traj,Box_dim,filename_out)</a> % Write a .gro trajectory file.</li>
 <li>
+<a href="write_itp.html">write_itp(itp,filename)</a> % Exports a Gromacs .itp topology file from a itp struct</li>
+<li>
 <a href="write_pdb_traj.html">write_pdb_traj(atom,traj,Box_dim,filename_out)</a> % Write a .pdb trajectory file.</li>
 <li>
 <a href="write_tabulated_potentials.html">write_tabulated_potentials(filename, data)</a> % Write tabulated potential files.</li>
@@ -715,7 +721,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <buckinghamcoul.html buckinghamcoul(atom,Box_dim,varargin)> % Calculates interactions using the Buckingham potential and Coulombic forces.
 % # <buckinghamcoul_objective_func.html buckinghamcoul_objective_func(atom,Box_dim,varargin)> % Objective function for fitting Buckingham and Coulomb potentials.
 % # <cat_atom.html cat_atom(atom_1,atom_2)> % Concatenate two atom structs.
-% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm adapted from the Matlab MDtoolbox by Yasuhiro Matsunaga.
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom(atom,Box_dim,varargin)> % This function calculates the distance matrix from the atom struct, using a cell list algorithm.
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2(atom,Box_dim,varargin)> % This function calculates the distance matrix from two structs called atom1 and atom2, using a cell list algorithm.
 % # <center_atom.html center_atom(atom,Box_dim,resname,dim)> % Center the atom with respect to the resname molecule.
 % # <change_top.html change_top(atom,Box_dim,varargin)> % Modifies the topology file or its parameters.
 % # <charge_atom.html charge_atom(atom,Box_dim,ffname,watermodel,varargin)> % Charge the atom according to Clayff or Interface force fields.
@@ -788,6 +795,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <import_ff_table.html import_ff_table(filename,varargin)> % Imports forcefield parameter tables.
 % # <import_gmx_energy.html import_gmx_energy(filename)> % Import a Gromacs energy file.
 % # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
+% # <import_itp.html import_itp(filename)> % Import a Gromacs .itp topology file
 % # <import_mc_pdb_traj.html import_mc_pdb_traj(filename,varargin)> % Import a structure and a .pdb trajectory file, handling changing numbers of particles.
 % # <import_mclf.html import_mclf(filename)> % Import a multi-configurational London force (MCLF) file.
 % # <import_mclf_C10.html import_mclf_C10(filename)> % Import MCLF C10 dispersion parameters.
@@ -942,6 +950,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <write_ffnonbonded.html write_ffnonbonded(atom,filename_out)> % Write non-bonded force field parameters.
 % # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12(atom,filename_out)> % Write non-bonded parameters (C6, C12) for a force field.
 % # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % Write a .gro trajectory file.
+% # <write_itp.html write_itp(itp,filename)> % Exports a Gromacs .itp topology file from a itp struct 
 % # <write_pdb_traj.html write_pdb_traj(atom,traj,Box_dim,filename_out)> % Write a .pdb trajectory file.
 % # <write_tabulated_potentials.html write_tabulated_potentials(filename, data)> % Write tabulated potential files.
 % # <write_xvg.html write_xvg(filename, data)> % Export data in Gromacs .xvg format.

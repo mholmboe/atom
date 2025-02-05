@@ -38,10 +38,10 @@ try
     beta=CRYST1_data(:,5);
     gamma=CRYST1_data(:,6);
     lx = a;
-    xy = b.*cos(deg2rad(gamma));xy=round(xy,4);
+    xy = b.*cos(deg2rad(gamma));xy=round2dec(xy,4);
     ly = (b.^2-xy.^2).^.5;
-    xz = c.*cos(deg2rad(beta));xz=round(xz,4);
-    yz = (b.*c.*cos(deg2rad(alfa))-xy.*xz)./ly;yz=round(yz,4);
+    xz = c.*cos(deg2rad(beta));xz=round2dec(xz,4);
+    yz = (b.*c.*cos(deg2rad(alfa))-xy.*xz)./ly;yz=round2dec(yz,4);
     lz = (c.^2-xz.^2-yz.^2).^0.5;
     
     Box_dim=[lx ly lz zeros(numel(lx),1) zeros(numel(lx),1) xy zeros(numel(lx),1) xz yz];

@@ -38,7 +38,7 @@ composition.Atom_numbers=Atom_numbers
 if isfield(atom,'charge')
     composition.Atom_ave_charge=Atom_charge
     disp('Sum of all charges')
-    round([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
+    round2dec([sum([composition.Atom_ave_charge].*[composition.Atom_numbers])     sum([atom.charge])],7)
 end
 
 Atom_types=[Atom_types;num2cell(Atom_numbers)];

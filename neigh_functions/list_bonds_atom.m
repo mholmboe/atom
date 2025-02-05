@@ -1,4 +1,4 @@
-%% find_bonds_angles_atom.m
+%% list_bonds_angles_atom.m
 % * This function tries to find all bonds and angles between the  atomtypes
 %
 %% Version
@@ -11,6 +11,7 @@
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim)
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index)
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)
+% # [Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)
 
 function [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim,varargin)
 
@@ -21,11 +22,12 @@ if numel(Box_dim)>0
         rmaxlong=varargin{2};
     else
         rmaxshort=1.25;
-        rmaxlong=2.25;
+        rmaxlong=2.45;
     end
     atom=bond_angle_atom(atom,Box_dim,rmaxshort,rmaxlong);
     Bond_data = map_bonded(atom,Bond_index(:,1:3));
     Angle_data = map_bonded(atom,Angle_index(:,1:4));
+    % Dihedral_data = map_bonded(atom,Dihedral_index(:,1:5));
 end
 
 if nargin>2
@@ -77,7 +79,7 @@ if size(index,2)==3
         end
     end
 
-elseif size(index,2)>3
+elseif size(index,2)==4
 
     % Iterate over each row in the bonds matrix
     for i = 1:size(index, 1)
@@ -108,6 +110,40 @@ elseif size(index,2)>3
             Map(pairKey) = Val;
         end
     end
+
+elseif size(index,2)==5
+
+    % % Iterate over each row in the bonds matrix
+    % for i = 1:size(index, 1)
+    %     % Get atom indices
+    %     atom1 = index(i,1);
+    %     atom2 = index(i,2);
+    %     atom3 = index(i,3);
+    %     atom3 = index(i,4);
+    % 
+    %     % Get corresponding atom types
+    %     atomType1 = string(atom(atom1).type);
+    %     atomType2 = string(atom(atom2).type);
+    %     atomType3 = string(atom(atom3).type);
+    %     atomType4 = string(atom(atom4).type);
+    % 
+    %     % Sort atom types alphabetically to avoid duplicate pairs
+    %     if atomType1 < atomType4
+    %         pairKey = atomType1 + atomType2 + atomType3 + atomType4;
+    %     else
+    %         pairKey = atomType4 + atomType3 + atomType2 + atomType1;
+    %     end
+    % 
+    %     % Get bond distance
+    %     Val = index(i, 5);
+    % 
+    %     % Store bond distance in the map
+    %     if isKey(Map, pairKey)
+    %         Map(pairKey) = [Map(pairKey), Val];
+    %     else
+    %         Map(pairKey) = Val;
+    %     end
+    % end
 
 end
 

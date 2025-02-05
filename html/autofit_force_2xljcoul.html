@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>autofit_force_2xljcoul</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="autofit_force_2xljcoul.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -221,7 +221,7 @@ eval(strcat(<span class="string">'res='</span>,objective_func_string,<span class
 disp(<span class="string">'Mean abs(residual):'</span>);
 mean(abs(res))
 
-plotmin=1000*(round(min(data_plot*1.5)/1000));
+plotmin=1000*(round2dec(min(data_plot*1.5)/1000));
 <span class="keyword">if</span> plotmin&gt;=0
     plotmin=1000;
 <span class="keyword">end</span>
@@ -359,7 +359,7 @@ eval(strcat('res=',objective_func_string,';'));
 disp('Mean abs(residual):');
 mean(abs(res))
 
-plotmin=1000*(round(min(data_plot*1.5)/1000));
+plotmin=1000*(round2dec(min(data_plot*1.5)/1000));
 if plotmin>=0
     plotmin=1000;
 end

@@ -1,0 +1,1237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>minff_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-02-05">
+<meta name="DC.source" content="minff_atom_mini.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>minff_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function tries to assign all atoms according to the MINFF atom types. The variables distance_factor and rmaxlong are related to the neighbour/bond cutoff radius for each atomtype</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom=minff_atom(atom,Box_dim)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> atom=minff_atom_mini(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">format <span class="string">compact</span>;
+
+distance_factor=0.6;
+rmaxlong=2.45;
+
+atom=element_atom(atom);
+
+<span class="comment">% Initialize some variables</span>
+rm_ind=[];
+<span class="keyword">for</span> assignment_run=1:2
+
+    All_Neighbours=[];
+    [atom.element]=atom.type;
+
+    <span class="keyword">for</span> i=1:size(atom,2)
+        <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Si'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+        <span class="keyword">elseif</span> strncmp(atom(i).type,{<span class="string">'SC'</span>},2);atom(i).element={<span class="string">'Si'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ale'</span>},3);atom(i).element={<span class="string">'Ale'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Alt'</span>},3);atom(i).element={<span class="string">'Alt'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2);atom(i).element={<span class="string">'Al'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2);atom(i).element={<span class="string">'Mg'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fee'</span>},3);atom(i).element={<span class="string">'Fee'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fet'</span>},3);atom(i).element={<span class="string">'Fet'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2);atom(i).element={<span class="string">'Fe'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'F'</span>},1);atom(i).element={<span class="string">'F'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Li'</span>},2);atom(i).element={<span class="string">'Li'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Ow'</span>},2);atom(i).element={<span class="string">'Ow'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Hw'</span>},2);atom(i).element={<span class="string">'Hw'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'O'</span>},1);atom(i).element={<span class="string">'O'</span>};
+        <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'H'</span>},1);atom(i).element={<span class="string">'H'</span>};
+        <span class="keyword">else</span>
+            [atom(i).element]=atom(i).type;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    [atom.type]=atom.element;
+    [atom.fftype]=atom.element;
+
+    XYZ_labels=[atom.type]';
+    XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor); <span class="comment">% Genereates the variable below</span>
+    assignin(<span class="string">'caller'</span>,<span class="string">'nBonds'</span>,nBonds);
+    assignin(<span class="string">'caller'</span>,<span class="string">'radius_limit'</span>,radius_limit);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Bond_index'</span>,Bond_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'Neigh_index'</span>,Neigh_index);
+    assignin(<span class="string">'caller'</span>,<span class="string">'dist_matrix'</span>,dist_matrix);
+
+    i=1;
+    <span class="keyword">while</span> i &lt;= size(atom,2)
+
+            nNeigh=numel([atom(i).neigh.index]);
+
+            <span class="keyword">if</span> nNeigh&gt;0
+
+                Neigh_cell = sort([atom(i).neigh.type]);
+                <span class="keyword">if</span> length(Neigh_cell) &gt; 0
+                    Neighbours=strcat(Neigh_cell{:});
+                <span class="keyword">else</span>
+                    Neighbours={<span class="string">'Nan'</span>};
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is Li</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Li'</span>},2) <span class="comment">% Lio</span>
+
+                    <span class="keyword">if</span> numel([atom(i).neigh.type]) == 6 <span class="comment">%% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O</span>
+
+                        atom(i).fftype={<span class="string">'Lio'</span>};
+
+                    <span class="keyword">elseif</span> numel([atom(i).neigh.type]) == 4 <span class="comment">%% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O</span>
+
+                        atom(i).fftype={<span class="string">'Lio'</span>};
+
+                    <span class="keyword">elseif</span> nNeigh &gt; 6
+                        disp(<span class="string">'Lio atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Lio_ov'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 4 &amp;&amp; nNeigh &lt; 6
+                        disp(<span class="string">'Lio atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Lio_un'</span>};
+
+                    <span class="keyword">else</span>
+                        Neighbours
+                        i
+                    <span class="keyword">end</span>
+
+                <span class="keyword">end</span>
+
+
+                <span class="comment">% If the element is Si</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Si'</span>},2) <span class="comment">% Si</span>
+                    <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4 <span class="comment">% Si O O O O</span>
+                        atom(i).fftype={<span class="string">'Sit'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 3 <span class="comment">% Si O O O</span>
+                        atom(i).fftype={<span class="string">'Site'</span>}; <span class="comment">% As in Stishovite</span>
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Si O O O O O O</span>
+                        atom(i).fftype={<span class="string">'Sio'</span>}; <span class="comment">% As in Stishovite</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 4
+                        disp(<span class="string">'Si atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Si_ov'</span>};
+                        atom(i).neigh.dist
+                        atom(i).neigh.index
+
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &lt; 4 <span class="comment">% == 3</span>
+                        disp(<span class="string">'Si atom under coordinated'</span>)
+                        i
+                        nNeigh
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Si_un'</span>};
+                    <span class="keyword">else</span>
+                        i
+                        Neighbours
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is Al</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2) <span class="comment">% Al</span>
+
+                    <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Al O O O O O O</span>
+                        atom(i).fftype={<span class="string">'Al'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 5 <span class="comment">% Al O O O O</span>
+                        i
+                        atom(i).fftype={<span class="string">'Ale'</span>}
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4 <span class="comment">% Al O O O O</span>
+                        atom(i).fftype={<span class="string">'Alt'</span>};
+                    <span class="keyword">elseif</span> nNeigh &gt; 6
+                        disp(<span class="string">'Al atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Al'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &gt;= 4 &amp;&amp; nNeigh &lt; 6
+                        disp(<span class="string">'Al atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Al_un'</span>};
+                    <span class="keyword">else</span>
+                        i
+                        Neighbours
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is Mg</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Mg'</span>},2) <span class="comment">% Mgo</span>
+
+                    <span class="keyword">if</span> numel([atom(i).neigh.type]) == 6 <span class="comment">%% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O</span>
+                        <span class="keyword">if</span> sum(strncmpi([atom.type],<span class="string">'Mg'</span>,2))&gt;sum(strncmpi([atom.type],<span class="string">'Si'</span>,2))
+                            atom(i).fftype={<span class="string">'Mgo'</span>}; <span class="comment">% Ex Fosterite</span>
+                            <span class="keyword">if</span> sum(strncmpi([atom.type],<span class="string">'Mg'</span>,2))&lt;sum(strncmpi([atom.type],<span class="string">'H'</span>,1))
+                                atom(i).fftype={<span class="string">'Mgh'</span>}; <span class="comment">% Ex. Brucite</span>
+                            <span class="keyword">end</span>
+                        <span class="keyword">elseif</span> sum(strncmpi([atom.type],<span class="string">'Mg'</span>,2))&lt;sum(strncmpi([atom.type],<span class="string">'Si'</span>,2))
+                            atom(i).fftype={<span class="string">'Mgh'</span>}; <span class="comment">% Talc, Hectorite</span>
+                            <span class="keyword">if</span> sum(strncmpi([atom.type],<span class="string">'Al'</span>,2))&gt;sum(strncmpi([atom.type],<span class="string">'Mg'</span>,2))
+                                atom(i).fftype={<span class="string">'Mgo'</span>}; <span class="comment">% Mica, smectite</span>
+                            <span class="keyword">end</span>
+                        <span class="keyword">end</span>
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 5
+                        atom(i).fftype={<span class="string">'Mge'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4
+                        atom(i).fftype={<span class="string">'Mgo'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 2
+                        atom(i).fftype={<span class="string">'Mgh'</span>};
+                    <span class="keyword">elseif</span> nNeigh &gt; 6
+                        disp(<span class="string">'Mgo atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Mgo_ov'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 4 &amp;&amp; nNeigh &lt; 6
+                        disp(<span class="string">'Mgo atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Mgo_un'</span>};
+                        atom(i).fftype={<span class="string">'Mgo'</span>};
+                    <span class="keyword">else</span>
+                        Neighbours
+                        i
+                    <span class="keyword">end</span>
+
+                <span class="keyword">end</span>
+
+
+                <span class="comment">% If the element is Ca</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Ca'</span>},2) <span class="comment">% Cao</span>
+
+                    <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Cao O O O O O O</span>
+                        atom(i).fftype={<span class="string">'Cao'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4
+                        atom(i).fftype={<span class="string">'Cah'</span>};
+                        <span class="comment">%                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2</span>
+                        <span class="comment">%                         atom(i).fftype={'Cah'};</span>
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'F'</span>},[atom(i).neigh.type],1)) == 8
+                        disp(<span class="string">'Ca in CaF2 Fluorite?'</span>)
+                        atom(i).fftype={<span class="string">'Cah'</span>};
+                        <span class="comment">%                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2</span>
+                        <span class="comment">%                         atom(i).fftype={'Cah'};</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 6
+                        disp(<span class="string">'Ca atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Cao_ov'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">else</span>
+                        Neighbours
+                    <span class="keyword">end</span>
+
+                <span class="keyword">end</span>
+
+
+                <span class="comment">% If the element is Fe</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2) <span class="comment">% Fe</span>
+                    <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Fe O O O O O O</span>
+                        <span class="keyword">if</span> sum([atom(i).neigh.dist])&lt;12.7
+                            atom(i).fftype={<span class="string">'Feo'</span>};
+                        <span class="keyword">else</span>
+                            atom(i).fftype={<span class="string">'Fe2'</span>};
+                        <span class="keyword">end</span>
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 5 <span class="comment">% Fe O O O O</span>
+                        atom(i).fftype={<span class="string">'Fee'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4 <span class="comment">% Fe O O O O</span>
+                        <span class="keyword">if</span> sum([atom(i).neigh.dist])&lt;7.5
+                            atom(i).fftype={<span class="string">'Fet'</span>};
+                        <span class="keyword">else</span>
+                            atom(i).fftype={<span class="string">'Fe2'</span>};
+                        <span class="keyword">end</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 6
+                        disp(<span class="string">'Fe atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Fe_ov'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 4 &amp;&amp; nNeigh &lt; 6
+                        disp(<span class="string">'Fe atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Fe_un'</span>};
+                    <span class="keyword">else</span>
+                        Neighbours
+                        i
+                    <span class="keyword">end</span>
+
+                <span class="keyword">elseif</span> strcmpi(atom(i).type,{<span class="string">'F'</span>}) &gt; 0<span class="comment">% Fs</span>
+
+                    <span class="keyword">if</span> numel([atom(i).neigh.type]) == 3
+
+                        atom(i).fftype={<span class="string">'Fs'</span>};
+
+                    <span class="keyword">elseif</span> nNeigh == 4
+                        disp(<span class="string">'Fs atom as in CaF2 - Fluorite?'</span>)
+                        atom(i).fftype={<span class="string">'Fs'</span>};
+
+                    <span class="keyword">elseif</span> nNeigh &gt; 4
+                        disp(<span class="string">'Fso atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Fs_ov'</span>};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &gt; 0 &amp;&amp; nNeigh &lt; 3
+                        disp(<span class="string">'Fso atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Fs_un'</span>};
+
+                    <span class="keyword">else</span>
+                        Neighbours
+                        i
+                    <span class="keyword">end</span>
+
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is Ti</span>
+                <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Ti'</span>},2) <span class="comment">% Ti</span>
+                    <span class="comment">%                     Neigh_cell = sort([atom(i).neigh.type]);</span>
+                    <span class="comment">%                     Neighbours=strcat(Neigh_cell{:});</span>
+                    <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4 <span class="comment">% Ti O O O O</span>
+                        atom(i).fftype={<span class="string">'Tit'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Ti O O O O</span>
+                        atom(i).fftype={<span class="string">'Tio'</span>};
+                    <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) &gt; 6 <span class="comment">% Ti O O O O</span>
+                        disp(<span class="string">'Ti atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Ti_ov'</span>};
+                        atom(i).neigh.dist
+                        atom(i).neigh.index
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &lt; 4 <span class="comment">% == 3</span>
+                        disp(<span class="string">'Ti atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'Ti_un'</span>};
+                    <span class="keyword">else</span>
+                        i
+                        Neighbours
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is H</span>
+                <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'H'</span>},1) <span class="comment">% H</span>
+
+                    <span class="keyword">if</span> size(Neigh_cell,1) == 1
+                        atom(i).fftype={<span class="string">'H'</span>};
+                    <span class="keyword">elseif</span> nNeigh &gt; 1
+                        disp(<span class="string">'H atom over coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'H_ov'</span>};
+                        atom(i).fftype={<span class="string">'H'</span>};
+                        rm_ind=[rm_ind i];
+                        pause(.1) <span class="comment">%</span>
+                    <span class="keyword">elseif</span> nNeigh &lt; 1
+                        disp(<span class="string">'H atom under coordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'H_un'</span>};
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="comment">% If the element is O</span>
+                <span class="keyword">if</span> strncmp(atom(i).type,{<span class="string">'O'</span>},1)
+                    <span class="keyword">if</span> strcmp(Neighbours, <span class="string">'AlAlAl'</span>) || strcmp(Neighbours, <span class="string">'AlAlAlAl'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlAlAlt'</span>)
+                        atom(i).fftype = {<span class="string">'Obt'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlAlH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlAlt'</span>) || strcmp(Neighbours, <span class="string">'AlAlt'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlFe'</span>) || strcmp(Neighbours, <span class="string">'AlAlFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlSi'</span>)
+                        atom(i).fftype = {<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAlSiSi'</span>)
+                        atom(i).fftype = {<span class="string">'Oz'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAleH'</span>) || strcmp(Neighbours, <span class="string">'AleH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAleSi'</span>) || strcmp(Neighbours, <span class="string">'AleSi'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAltH'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeFe'</span>) || strcmp(Neighbours, <span class="string">'AlFeoFeo'</span>) || strcmp(Neighbours, <span class="string">'AltFeFe'</span>) || strcmp(Neighbours, <span class="string">'AltFeoFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeH'</span>) || strcmp(Neighbours, <span class="string">'AlFeoH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeSi'</span>) || strcmp(Neighbours, <span class="string">'AlFeoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFet'</span>) || strcmp(Neighbours, <span class="string">'AlAlFet'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlH'</span>)
+                        atom(i).fftype = {<span class="string">'Oalh'</span>}; <span class="comment">% Al-O-H or Al-O-Si</span>
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlHH'</span>)
+                        atom(i).fftype = {<span class="string">'Oalhh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlHSi'</span>)
+                        atom(i).fftype = {<span class="string">'Oahs'</span>}; <span class="comment">% Al-OH-Si for acidic edge</span>
+                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'AlHMg'</span>, 5)
+                        atom(i).fftype = {<span class="string">'Ohmg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlMgSi'</span>) || strcmp(Neighbours, <span class="string">'AlMgoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Omg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlOmg'</span>)
+                        atom(i).fftype = {<span class="string">'Odsub'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AltH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'AltMgh'</span>, 6) || strcmp(Neighbours, <span class="string">'AltMgoMgoMgo'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AltSi'</span>)
+                        atom(i).fftype = {<span class="string">'Obs'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'CaCaCaCaCaCa'</span>) || strcmp(Neighbours, <span class="string">'CaoCaoCaoCaoCaoCao'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'CaCaCaH'</span>) || strcmp(Neighbours, <span class="string">'CahCahCahH'</span>) || strcmp(Neighbours, <span class="string">'CaoCaoCaoH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'Fe2Fe2Fe2Fe2Fe2Fe2'</span>) || strcmp(Neighbours, <span class="string">'FeFeFeFeFeFe'</span>)
+                        atom(i).fftype = {<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFe'</span>) || strcmp(Neighbours, <span class="string">'FeoFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeFe'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeFet'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoFet'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeFeFet'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoFeoFet'</span>)
+                        atom(i).fftype = {<span class="string">'Obt'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeFeFe'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoFeoFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeFeH'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoFeoH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeH'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeFeSi'</span>) || strcmp(Neighbours, <span class="string">'FeoFeoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeH'</span>) || strcmp(Neighbours, <span class="string">'FeoH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'FeHMg'</span>, 5) || strncmp(Neighbours, <span class="string">'FeoHMg'</span>, 5)
+                        atom(i).fftype = {<span class="string">'Ohmg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeMgSi'</span>) || strncmp(Neighbours, <span class="string">'FeMgoSi'</span>, 5) || strncmp(Neighbours, <span class="string">'FeoMgSi'</span>, 5)
+                        atom(i).fftype = {<span class="string">'Omg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FeSi'</span>) || strcmp(Neighbours, <span class="string">'FeoSi'</span>) || strcmp(Neighbours, <span class="string">'FetSi'</span>)
+                        atom(i).fftype = {<span class="string">'Oalt'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'FetFet'</span>) || strcmp(Neighbours, <span class="string">'FetFetH'</span>) || strcmp(Neighbours, <span class="string">'FetH'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HLiMgMg'</span>) || strcmp(Neighbours, <span class="string">'HLiMgoMgo'</span>) || strcmp(Neighbours, <span class="string">'HLioMghMgh'</span>)
+                        atom(i).fftype = {<span class="string">'Ohli'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HHMg'</span>) || strcmp(Neighbours, <span class="string">'HHMgh'</span>) || strncmp(Neighbours, <span class="string">'HHMgo'</span>, 5)
+                        atom(i).fftype = {<span class="string">'Omhh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HMg'</span>) || strcmp(Neighbours, <span class="string">'HMgh'</span>)
+                        atom(i).fftype = {<span class="string">'Ome'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HMgMg'</span>) || strcmp(Neighbours, <span class="string">'HMghMgh'</span>)
+                        atom(i).fftype = {<span class="string">'Ohmg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HMgMgMg'</span>) || strcmp(Neighbours, <span class="string">'HMghMghMgh'</span>)
+                        atom(i).fftype = {<span class="string">'Oh'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'HSi'</span>)
+                        atom(i).fftype = {<span class="string">'Osih'</span>};
+                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'LiLiLiLi'</span>, 8)
+                        atom(i).fftype = {<span class="string">'Oli'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'LiMgMgSi'</span>) || strcmp(Neighbours, <span class="string">'LioMgMgSi'</span>) || strcmp(Neighbours, <span class="string">'LioMgoMgoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Oli'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'MgMgMgMgMgMg'</span>) || strcmp(Neighbours, <span class="string">'MghMghMghMghMghMgh'</span>) || strcmp(Neighbours, <span class="string">'MgoMgoMgoMgoMgoMgo'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'MgMgMgSi'</span>) || strcmp(Neighbours, <span class="string">'MghMghMghSi'</span>) || strcmp(Neighbours, <span class="string">'MgoMgoMgoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Op'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'MgMgSi'</span>) || strcmp(Neighbours, <span class="string">'MgoMgoSi'</span>)
+                        atom(i).fftype = {<span class="string">'Odsub'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'MgSi'</span>)
+                        atom(i).fftype = {<span class="string">'Omg'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'SiSi'</span>) || strcmp(Neighbours, <span class="string">'SiSiSi'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'TiTiTi'</span>) || strcmp(Neighbours, <span class="string">'TioTioTio'</span>)
+                        atom(i).fftype = {<span class="string">'Ob'</span>};
+                        <span class="comment">% Handle special case for 'AlSi' with nested conditions</span>
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlSi'</span>)
+                        <span class="keyword">if</span> sum(ismember(find(strcmp([atom.fftype], <span class="string">'Alt'</span>)), [atom(i).neigh.index])) &gt; 0
+                            atom(i).fftype = {<span class="string">'Oalt'</span>};
+                        <span class="keyword">else</span>
+                            atom(i).fftype = {<span class="string">'Oalsi'</span>}; <span class="comment">% Special zeolite case</span>
+                        <span class="keyword">end</span> <span class="comment">%% END on new statement</span>
+                    <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'HH'</span>)
+                        atom(i).fftype={<span class="string">'Ow'</span>};
+                        disp(<span class="string">'Water?'</span>)
+                    <span class="keyword">elseif</span> nNeigh &gt; 2
+                        disp(<span class="string">'O atom overcoordinated'</span>)
+                        i
+                        Neighbours
+                        atom(i).fftype={<span class="string">'O_ov'</span>};
+                    <span class="keyword">elseif</span> nNeigh == 1 || strcmp(Neighbours,<span class="string">'AlAl'</span>) || strcmp(Neighbours,<span class="string">'AlMg'</span>) || strcmp(Neighbours,<span class="string">'Si'</span>)
+                        <span class="keyword">if</span> strcmp(Neighbours,<span class="string">'Si'</span>)
+                            atom(i).fftype={<span class="string">'Osi'</span>};
+                        <span class="keyword">elseif</span> strncmp(Neighbours,<span class="string">'AlAl'</span>,2)
+                            atom(i).fftype={<span class="string">'Oal'</span>};
+                        <span class="keyword">else</span>
+                            disp(<span class="string">'O atom undercoordinated'</span>)
+                            i
+                            Neighbours
+                            atom(i).fftype={<span class="string">'O_un'</span>};
+                        <span class="keyword">end</span>
+                    <span class="keyword">elseif</span> nNeigh == 0
+                        Neighbours
+                        atom(i)
+                        atom(i).neigh.dist
+                        <span class="comment">%                     atom(i)=[];</span>
+                        disp(<span class="string">'remove O atom...?'</span>)
+
+                        rm_ind=[rm_ind i];
+                        pause(1) <span class="comment">%</span>
+                    <span class="keyword">end</span>
+
+                    <span class="keyword">if</span> strcmp(atom(i).fftype,<span class="string">'Oalh'</span>) &amp;&amp; Add_H == 1 <span class="comment">% &amp;&amp; assignment_run == 8</span>
+                        disp(<span class="string">'Adding acidic H to Oalh--&gt;Oalhh'</span>)
+                        atom(size(atom,2)+1)=atom(find(strncmp([atom.type],<span class="string">'H'</span>,1),1));
+                        atom(end).index=size(atom,2);
+                        Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.25);
+                        NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -1/3*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1/3*Neigh.r_vec(:,3)],1)));
+                        [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+                All_Neighbours=[All_Neighbours;{char(atom(i).type) char(atom(i).fftype) Neighbours}]; <span class="comment">% New 2.11</span>
+            <span class="keyword">end</span>
+        i=i+1;
+        [atom.type]=atom.fftype;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+Atom_labels=unique([atom.element]);
+temp=element_atom(atom);
+[atom.element]=temp.type;
+
+All_Neighbours=sortrows(All_Neighbours,1);
+All_Neighbours=sortrows(All_Neighbours,3);
+All_Neighbours=sortrows(All_Neighbours,1);
+
+i=1;All_Neighbours(:,4)={1};
+<span class="keyword">while</span> i&lt;size(All_Neighbours,1)+1
+    <span class="keyword">if</span> i==1
+        All_Neighbours{i,4}=1;
+    <span class="keyword">elseif</span> strcmp(All_Neighbours(i,1),All_Neighbours(i-1,1)) &amp;&amp; strcmp(All_Neighbours(i,3),All_Neighbours(i-1,3))
+        All_Neighbours{i-1,4}=All_Neighbours{i-1,4}+1;
+        All_Neighbours(i,:)=[];
+        i=i-1;
+    <span class="keyword">else</span>
+        All_Neighbours{i,4}=1;
+    <span class="keyword">end</span>
+    i=i+1;
+<span class="keyword">end</span>
+
+All_Neighbours=[All_Neighbours(:,1) All_Neighbours];
+i=1;
+<span class="keyword">while</span> i&lt;size(All_Neighbours,1)+1
+    n=0;
+    <span class="keyword">if</span> sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) &gt; 1
+        n=1;
+    <span class="keyword">else</span>
+        n=0;
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> i&gt;1 &amp;&amp; sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) &gt; 1
+        n=sum(strcmp(All_Neighbours(i,1),All_Neighbours(1:i,1)));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> n&gt;0
+        All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
+    <span class="keyword">else</span>
+
+<span class="keyword">end</span>
+All_Neighbours(i,3)
+    All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
+    i=i+1;
+<span class="keyword">end</span>
+
+assignin(<span class="string">'caller'</span>,<span class="string">'remove_ind'</span>,rm_ind);
+assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbours'</span>,All_Neighbours);
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% minff_atom.m
+% * This function tries to assign all atoms according to the MINFF atom
+% types. The variables distance_factor and rmaxlong are related to the
+% neighbour/bond cutoff radius for each atomtype
+%
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # atom=minff_atom(atom,Box_dim)
+
+function atom=minff_atom_mini(atom,Box_dim,varargin)
+%%
+format compact;
+
+distance_factor=0.6;
+rmaxlong=2.45;
+
+atom=element_atom(atom);
+
+% Initialize some variables
+rm_ind=[];
+for assignment_run=1:2
+
+    All_Neighbours=[];
+    [atom.element]=atom.type;
+
+    for i=1:size(atom,2)
+        if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+        elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+        elseif strncmpi(atom(i).type,{'Ale'},3);atom(i).element={'Ale'};
+        elseif strncmpi(atom(i).type,{'Alt'},3);atom(i).element={'Alt'};
+        elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+        elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
+        elseif strncmpi(atom(i).type,{'Fee'},3);atom(i).element={'Fee'};
+        elseif strncmpi(atom(i).type,{'Fet'},3);atom(i).element={'Fet'};
+        elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+        elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};
+        elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};
+        elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
+        elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
+        elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
+        elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
+        else
+            [atom(i).element]=atom(i).type;
+        end
+    end
+
+    [atom.type]=atom.element;
+    [atom.fftype]=atom.element;
+
+    XYZ_labels=[atom.type]';
+    XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+    atom=bond_atom(atom,Box_dim,rmaxlong,distance_factor); % Genereates the variable below
+    assignin('caller','nBonds',nBonds);
+    assignin('caller','radius_limit',radius_limit);
+    assignin('caller','Bond_index',Bond_index);
+    assignin('caller','Neigh_index',Neigh_index);
+    assignin('caller','dist_matrix',dist_matrix);
+
+    i=1;
+    while i <= size(atom,2)
+
+            nNeigh=numel([atom(i).neigh.index]);
+
+            if nNeigh>0
+
+                Neigh_cell = sort([atom(i).neigh.type]);
+                if length(Neigh_cell) > 0
+                    Neighbours=strcat(Neigh_cell{:});
+                else
+                    Neighbours={'Nan'};
+                end
+
+                % If the element is Li
+                if strncmpi(atom(i).type,{'Li'},2) % Lio
+
+                    if numel([atom(i).neigh.type]) == 6 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O
+
+                        atom(i).fftype={'Lio'};
+
+                    elseif numel([atom(i).neigh.type]) == 4 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Lio O O O O O O
+
+                        atom(i).fftype={'Lio'};
+
+                    elseif nNeigh > 6
+                        disp('Lio atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Lio_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
+                        disp('Lio atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Lio_un'};
+
+                    else
+                        Neighbours
+                        i
+                    end
+
+                end
+
+
+                % If the element is Si
+                if strncmpi(atom(i).type,{'Si'},2) % Si
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Si O O O O
+                        atom(i).fftype={'Sit'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 3 % Si O O O
+                        atom(i).fftype={'Site'}; % As in Stishovite
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Si O O O O O O
+                        atom(i).fftype={'Sio'}; % As in Stishovite
+                    elseif nNeigh > 4
+                        disp('Si atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Si_ov'};
+                        atom(i).neigh.dist
+                        atom(i).neigh.index
+
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh < 4 % == 3
+                        disp('Si atom under coordinated')
+                        i
+                        nNeigh
+                        Neighbours
+                        atom(i).fftype={'Si_un'};
+                    else
+                        i
+                        Neighbours
+                    end
+                end
+
+                % If the element is Al
+                if strncmpi(atom(i).type,{'Al'},2) % Al
+
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
+                        atom(i).fftype={'Al'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
+                        i
+                        atom(i).fftype={'Ale'}
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Al O O O O
+                        atom(i).fftype={'Alt'};
+                    elseif nNeigh > 6
+                        disp('Al atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Al'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh >= 4 && nNeigh < 6
+                        disp('Al atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Al_un'};
+                    else
+                        i
+                        Neighbours
+                    end
+                end
+
+                % If the element is Mg
+                if strncmpi(atom(i).type,{'Mg'},2) % Mgo
+
+                    if numel([atom(i).neigh.type]) == 6 %% sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Mgo O O O O O O
+                        if sum(strncmpi([atom.type],'Mg',2))>sum(strncmpi([atom.type],'Si',2))
+                            atom(i).fftype={'Mgo'}; % Ex Fosterite
+                            if sum(strncmpi([atom.type],'Mg',2))<sum(strncmpi([atom.type],'H',1))
+                                atom(i).fftype={'Mgh'}; % Ex. Brucite
+                            end
+                        elseif sum(strncmpi([atom.type],'Mg',2))<sum(strncmpi([atom.type],'Si',2))
+                            atom(i).fftype={'Mgh'}; % Talc, Hectorite
+                            if sum(strncmpi([atom.type],'Al',2))>sum(strncmpi([atom.type],'Mg',2))
+                                atom(i).fftype={'Mgo'}; % Mica, smectite
+                            end
+                        end
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5
+                        atom(i).fftype={'Mge'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
+                        atom(i).fftype={'Mgo'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
+                        atom(i).fftype={'Mgh'};
+                    elseif nNeigh > 6
+                        disp('Mgo atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Mgo_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
+                        disp('Mgo atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Mgo_un'};
+                        atom(i).fftype={'Mgo'};
+                    else
+                        Neighbours
+                        i
+                    end
+
+                end
+
+
+                % If the element is Ca
+                if strncmpi(atom(i).type,{'Ca'},2) % Cao
+
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Cao O O O O O O
+                        atom(i).fftype={'Cao'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
+                        atom(i).fftype={'Cah'};
+                        %                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
+                        %                         atom(i).fftype={'Cah'};
+                    elseif sum(strncmp({'F'},[atom(i).neigh.type],1)) == 8
+                        disp('Ca in CaF2 Fluorite?')
+                        atom(i).fftype={'Cah'};
+                        %                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
+                        %                         atom(i).fftype={'Cah'};
+                    elseif nNeigh > 6
+                        disp('Ca atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Cao_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    else
+                        Neighbours
+                    end
+
+                end
+
+
+                % If the element is Fe
+                if strncmpi(atom(i).type,{'Fe'},2) % Fe
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Fe O O O O O O
+                        if sum([atom(i).neigh.dist])<12.7
+                            atom(i).fftype={'Feo'};
+                        else
+                            atom(i).fftype={'Fe2'};
+                        end
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Fe O O O O
+                        atom(i).fftype={'Fee'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Fe O O O O
+                        if sum([atom(i).neigh.dist])<7.5
+                            atom(i).fftype={'Fet'};
+                        else
+                            atom(i).fftype={'Fe2'};
+                        end
+                    elseif nNeigh > 6
+                        disp('Fe atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fe_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 4 && nNeigh < 6
+                        disp('Fe atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fe_un'};
+                    else
+                        Neighbours
+                        i
+                    end
+
+                elseif strcmpi(atom(i).type,{'F'}) > 0% Fs
+
+                    if numel([atom(i).neigh.type]) == 3
+
+                        atom(i).fftype={'Fs'};
+
+                    elseif nNeigh == 4
+                        disp('Fs atom as in CaF2 - Fluorite?')
+                        atom(i).fftype={'Fs'};
+
+                    elseif nNeigh > 4
+                        disp('Fso atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fs_ov'};
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh > 0 && nNeigh < 3
+                        disp('Fso atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Fs_un'};
+
+                    else
+                        Neighbours
+                        i
+                    end
+
+                end
+
+                % If the element is Ti
+                if strncmpi(atom(i).type,{'Ti'},2) % Ti
+                    %                     Neigh_cell = sort([atom(i).neigh.type]);
+                    %                     Neighbours=strcat(Neigh_cell{:});
+                    if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Ti O O O O
+                        atom(i).fftype={'Tit'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Ti O O O O
+                        atom(i).fftype={'Tio'};
+                    elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) > 6 % Ti O O O O
+                        disp('Ti atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Ti_ov'};
+                        atom(i).neigh.dist
+                        atom(i).neigh.index
+                        rm_ind=[rm_ind max(atom(i).neigh.index)];
+                        pause(1) %
+                    elseif nNeigh < 4 % == 3
+                        disp('Ti atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'Ti_un'};
+                    else
+                        i
+                        Neighbours
+                    end
+                end
+
+                % If the element is H
+                if strncmp(atom(i).type,{'H'},1) % H
+
+                    if size(Neigh_cell,1) == 1
+                        atom(i).fftype={'H'};
+                    elseif nNeigh > 1
+                        disp('H atom over coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'H_ov'};
+                        atom(i).fftype={'H'};
+                        rm_ind=[rm_ind i];
+                        pause(.1) %
+                    elseif nNeigh < 1
+                        disp('H atom under coordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'H_un'};
+                    end
+                end
+
+                % If the element is O
+                if strncmp(atom(i).type,{'O'},1)
+                    if strcmp(Neighbours, 'AlAlAl') || strcmp(Neighbours, 'AlAlAlAl')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'AlAlAlAlt')
+                        atom(i).fftype = {'Obt'};
+                    elseif strcmp(Neighbours, 'AlAlAlH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'AlAlAlt') || strcmp(Neighbours, 'AlAlt')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlAlFe') || strcmp(Neighbours, 'AlAlFeo')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'AlAlH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'AlAlSi')
+                        atom(i).fftype = {'Op'};
+                    elseif strcmp(Neighbours, 'AlAlSiSi')
+                        atom(i).fftype = {'Oz'};
+                    elseif strcmp(Neighbours, 'AlAleH') || strcmp(Neighbours, 'AleH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'AlAleSi') || strcmp(Neighbours, 'AleSi')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'AlAltH')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeFe') || strcmp(Neighbours, 'AlFeoFeo') || strcmp(Neighbours, 'AltFeFe') || strcmp(Neighbours, 'AltFeoFeo')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeH') || strcmp(Neighbours, 'AlFeoH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'AlFeSi') || strcmp(Neighbours, 'AlFeoSi')
+                        atom(i).fftype = {'Op'};
+                    elseif strcmp(Neighbours, 'AlFet') || strcmp(Neighbours, 'AlAlFet')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlH')
+                        atom(i).fftype = {'Oalh'}; % Al-O-H or Al-O-Si
+                    elseif strcmp(Neighbours, 'AlHH')
+                        atom(i).fftype = {'Oalhh'};
+                    elseif strcmp(Neighbours, 'AlHSi')
+                        atom(i).fftype = {'Oahs'}; % Al-OH-Si for acidic edge
+                    elseif strncmp(Neighbours, 'AlHMg', 5)
+                        atom(i).fftype = {'Ohmg'};
+                    elseif strcmp(Neighbours, 'AlMgSi') || strcmp(Neighbours, 'AlMgoSi')
+                        atom(i).fftype = {'Omg'};
+                    elseif strcmp(Neighbours, 'AlOmg')
+                        atom(i).fftype = {'Odsub'};
+                    elseif strcmp(Neighbours, 'AltH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strncmp(Neighbours, 'AltMgh', 6) || strcmp(Neighbours, 'AltMgoMgoMgo')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AltSi')
+                        atom(i).fftype = {'Obs'};
+                    elseif strcmp(Neighbours, 'CaCaCaCaCaCa') || strcmp(Neighbours, 'CaoCaoCaoCaoCaoCao')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'CaCaCaH') || strcmp(Neighbours, 'CahCahCahH') || strcmp(Neighbours, 'CaoCaoCaoH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'Fe2Fe2Fe2Fe2Fe2Fe2') || strcmp(Neighbours, 'FeFeFeFeFeFe')
+                        atom(i).fftype = {'Op'};
+                    elseif strcmp(Neighbours, 'FeFe') || strcmp(Neighbours, 'FeoFeo')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'FeFeFe') || strcmp(Neighbours, 'FeoFeoFeo')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'FeFeFet') || strcmp(Neighbours, 'FeoFeoFet')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'FeFeFeFet') || strcmp(Neighbours, 'FeoFeoFeoFet')
+                        atom(i).fftype = {'Obt'};
+                    elseif strcmp(Neighbours, 'FeFeFeFe') || strcmp(Neighbours, 'FeoFeoFeoFeo')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'FeFeFeH') || strcmp(Neighbours, 'FeoFeoFeoH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'FeFeH') || strcmp(Neighbours, 'FeoFeoH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'FeFeSi') || strcmp(Neighbours, 'FeoFeoSi')
+                        atom(i).fftype = {'Op'};
+                    elseif strcmp(Neighbours, 'FeH') || strcmp(Neighbours, 'FeoH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strncmp(Neighbours, 'FeHMg', 5) || strncmp(Neighbours, 'FeoHMg', 5)
+                        atom(i).fftype = {'Ohmg'};
+                    elseif strcmp(Neighbours, 'FeMgSi') || strncmp(Neighbours, 'FeMgoSi', 5) || strncmp(Neighbours, 'FeoMgSi', 5)
+                        atom(i).fftype = {'Omg'};
+                    elseif strcmp(Neighbours, 'FeSi') || strcmp(Neighbours, 'FeoSi') || strcmp(Neighbours, 'FetSi')
+                        atom(i).fftype = {'Oalt'};
+                    elseif strcmp(Neighbours, 'FetFet') || strcmp(Neighbours, 'FetFetH') || strcmp(Neighbours, 'FetH')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'HLiMgMg') || strcmp(Neighbours, 'HLiMgoMgo') || strcmp(Neighbours, 'HLioMghMgh')
+                        atom(i).fftype = {'Ohli'};
+                    elseif strcmp(Neighbours, 'HHMg') || strcmp(Neighbours, 'HHMgh') || strncmp(Neighbours, 'HHMgo', 5)
+                        atom(i).fftype = {'Omhh'};
+                    elseif strcmp(Neighbours, 'HMg') || strcmp(Neighbours, 'HMgh')
+                        atom(i).fftype = {'Ome'};
+                    elseif strcmp(Neighbours, 'HMgMg') || strcmp(Neighbours, 'HMghMgh')
+                        atom(i).fftype = {'Ohmg'};
+                    elseif strcmp(Neighbours, 'HMgMgMg') || strcmp(Neighbours, 'HMghMghMgh')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'HSi')
+                        atom(i).fftype = {'Osih'};
+                    elseif strncmp(Neighbours, 'LiLiLiLi', 8)
+                        atom(i).fftype = {'Oli'};
+                    elseif strcmp(Neighbours, 'LiMgMgSi') || strcmp(Neighbours, 'LioMgMgSi') || strcmp(Neighbours, 'LioMgoMgoSi')
+                        atom(i).fftype = {'Oli'};
+                    elseif strcmp(Neighbours, 'MgMgMgMgMgMg') || strcmp(Neighbours, 'MghMghMghMghMghMgh') || strcmp(Neighbours, 'MgoMgoMgoMgoMgoMgo')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'MgMgMgSi') || strcmp(Neighbours, 'MghMghMghSi') || strcmp(Neighbours, 'MgoMgoMgoSi')
+                        atom(i).fftype = {'Op'};
+                    elseif strcmp(Neighbours, 'MgMgSi') || strcmp(Neighbours, 'MgoMgoSi')
+                        atom(i).fftype = {'Odsub'};
+                    elseif strcmp(Neighbours, 'MgSi')
+                        atom(i).fftype = {'Omg'};
+                    elseif strcmp(Neighbours, 'SiSi') || strcmp(Neighbours, 'SiSiSi')
+                        atom(i).fftype = {'Ob'};
+                    elseif strcmp(Neighbours, 'TiTiTi') || strcmp(Neighbours, 'TioTioTio')
+                        atom(i).fftype = {'Ob'};
+                        % Handle special case for 'AlSi' with nested conditions
+                    elseif strcmp(Neighbours, 'AlSi')
+                        if sum(ismember(find(strcmp([atom.fftype], 'Alt')), [atom(i).neigh.index])) > 0
+                            atom(i).fftype = {'Oalt'};
+                        else
+                            atom(i).fftype = {'Oalsi'}; % Special zeolite case
+                        end %% END on new statement
+                    elseif strcmp(Neighbours,'HH')
+                        atom(i).fftype={'Ow'};
+                        disp('Water?')
+                    elseif nNeigh > 2
+                        disp('O atom overcoordinated')
+                        i
+                        Neighbours
+                        atom(i).fftype={'O_ov'};
+                    elseif nNeigh == 1 || strcmp(Neighbours,'AlAl') || strcmp(Neighbours,'AlMg') || strcmp(Neighbours,'Si')
+                        if strcmp(Neighbours,'Si')
+                            atom(i).fftype={'Osi'};
+                        elseif strncmp(Neighbours,'AlAl',2)
+                            atom(i).fftype={'Oal'};
+                        else
+                            disp('O atom undercoordinated')
+                            i
+                            Neighbours
+                            atom(i).fftype={'O_un'};
+                        end
+                    elseif nNeigh == 0
+                        Neighbours
+                        atom(i)
+                        atom(i).neigh.dist
+                        %                     atom(i)=[];
+                        disp('remove O atom...?')
+
+                        rm_ind=[rm_ind i];
+                        pause(1) %
+                    end
+
+                    if strcmp(atom(i).fftype,'Oalh') && Add_H == 1 % && assignment_run == 8
+                        disp('Adding acidic H to OalhREPLACE_WITH_DASH_DASH>Oalhh')
+                        atom(size(atom,2)+1)=atom(find(strncmp([atom.type],'H',1),1));
+                        atom(end).index=size(atom,2);
+                        Neigh = neighbor_func(i,[[atom(i).x]' [atom(i).y]' [atom(i).z]'],[[atom.x]' [atom.y]' [atom.z]'],Box_dim,2.25);
+                        NewNeighCoords=num2cell([atom(i).x atom(i).y (atom(i).z)]-1*mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) -1/3*Neigh.r_vec(:,3)],1)/norm(mean([Neigh.r_vec(:,1) Neigh.r_vec(:,2) 1/3*Neigh.r_vec(:,3)],1)));
+                        [atom(end).x atom(end).y atom(end).z]=deal(NewNeighCoords{:});
+                    end
+                end
+                All_Neighbours=[All_Neighbours;{char(atom(i).type) char(atom(i).fftype) Neighbours}]; % New 2.11
+            end
+        i=i+1;
+        [atom.type]=atom.fftype;
+    end
+end
+
+Atom_labels=unique([atom.element]);
+temp=element_atom(atom);
+[atom.element]=temp.type;
+
+All_Neighbours=sortrows(All_Neighbours,1);
+All_Neighbours=sortrows(All_Neighbours,3);
+All_Neighbours=sortrows(All_Neighbours,1);
+
+i=1;All_Neighbours(:,4)={1};
+while i<size(All_Neighbours,1)+1
+    if i==1
+        All_Neighbours{i,4}=1;
+    elseif strcmp(All_Neighbours(i,1),All_Neighbours(i-1,1)) && strcmp(All_Neighbours(i,3),All_Neighbours(i-1,3))
+        All_Neighbours{i-1,4}=All_Neighbours{i-1,4}+1;
+        All_Neighbours(i,:)=[];
+        i=i-1;
+    else
+        All_Neighbours{i,4}=1;
+    end
+    i=i+1;
+end
+
+All_Neighbours=[All_Neighbours(:,1) All_Neighbours];
+i=1;
+while i<size(All_Neighbours,1)+1
+    n=0;
+    if sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+        n=1;
+    else
+        n=0;
+    end
+
+    if i>1 && sum(strcmp(All_Neighbours(i,1),All_Neighbours(:,1))) > 1
+        n=sum(strcmp(All_Neighbours(i,1),All_Neighbours(1:i,1)));
+    end
+
+    if n>0
+        All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
+    else
+
+end
+All_Neighbours(i,3)
+    All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
+    i=i+1;
+end
+
+assignin('caller','remove_ind',rm_ind);
+assignin('caller','All_Neighbours',All_Neighbours);
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

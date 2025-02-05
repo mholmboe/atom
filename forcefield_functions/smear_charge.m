@@ -153,7 +153,7 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge])
-if round(Total_charge)~=sum(Total_charge)
+if round2dec(Total_charge)~=sum(Total_charge)
     disp('Run tweak_charge_atom() to get an integer charge of the struct')
 end
 

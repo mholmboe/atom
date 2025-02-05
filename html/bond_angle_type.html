@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>bond_angle_type.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="bond_angle_type.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -202,7 +202,7 @@ a=1;Angle_index=zeros(1,12);
     neigh.in = in;
     neigh.dist = [dist(in,1)];
     neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
-    neigh.r_vec = [rx(in) ry(in) rz(in)];
+    neigh.r_vec = -[rx(in) ry(in) rz(in)];
 
     neigh_dist=[neigh.dist];
     neigh_ind=[neigh.in];
@@ -382,7 +382,7 @@ for i=1:size(atom1,2)
     neigh.in = in;
     neigh.dist = [dist(in,1)];
     neigh.coords = [XYZ_data(in,1) XYZ_data(in,2) XYZ_data(in,3)];
-    neigh.r_vec = [rx(in) ry(in) rz(in)];
+    neigh.r_vec = -[rx(in) ry(in) rz(in)];
 
     neigh_dist=[neigh.dist];
     neigh_ind=[neigh.in];

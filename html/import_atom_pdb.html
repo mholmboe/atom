@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_atom_pdb.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="import_atom_pdb.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -100,7 +100,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </ul>
 </div>
 <h2 id="1">Version</h2>
-<p>2.05</p>
+<p>3.00</p>
 <h2 id="2">Contact</h2>
 <p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
 </p>
@@ -113,7 +113,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </ol>
 </div>
 <pre class="codeinput">
-<span class="keyword">function</span> atom = import_atom_pdb(filename,varargin)
+<span class="keyword">function</span> [atom,Box_dim] = import_atom_pdb(filename,varargin)
 
 <span class="keyword">if</span> regexp(filename,<span class="string">'.pdb'</span>) ~= false
     filename = filename;
@@ -195,7 +195,6 @@ j = 0;atom=[];
         <span class="comment">%         compatiblity</span>
         atom(j).type = {strtrim(line(13:17))};
         atom(j).fftype = {strtrim(line(13:17))};
-        atom(j).element = {strtrim(line(77:78))};
         atom(j).index = str2double(line(7:11));
         atom(j).neigh.type = {};
         atom(j).neigh.index = [0;0;0;0;0;0];
@@ -213,7 +212,11 @@ j = 0;atom=[];
         <span class="comment">% atom(j).charge = str2double(line(79:80));</span>
         occupancy(j,1)=str2double(line(55:60));
         tempfactor(j,1)=str2double(line(61:66));
+        <span class="keyword">try</span> <span class="comment">% Try this, in case this column exists</span>
+            atom(j).element = {strtrim(line(77:78))};
+        <span class="keyword">catch</span>
 
+        <span class="keyword">end</span>
         atom(j).occupancy=occupancy(j,1);
         atom(j).B=tempfactor(j,1);
     <span class="keyword">end</span>
@@ -259,7 +262,7 @@ disp(<span class="string">'.pdb file imported'</span>)
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 2.05
+% 3.00
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
@@ -269,7 +272,7 @@ disp(<span class="string">'.pdb file imported'</span>)
 % # atom = import_atom('molecule.pdb',[10 5 2])
 % # atom = import_atom('molecule.pdb',[10 5 0],[35.24 24.23 52.23])
 %
-function atom = import_atom_pdb(filename,varargin)
+function [atom,Box_dim] = import_atom_pdb(filename,varargin)
 
 if regexp(filename,'.pdb') ~= false
     filename = filename;
@@ -351,7 +354,6 @@ for i = 1:length(data)
         %         compatiblity
         atom(j).type = {strtrim(line(13:17))};
         atom(j).fftype = {strtrim(line(13:17))};
-        atom(j).element = {strtrim(line(77:78))};
         atom(j).index = str2double(line(7:11));
         atom(j).neigh.type = {};
         atom(j).neigh.index = [0;0;0;0;0;0];
@@ -369,7 +371,11 @@ for i = 1:length(data)
         % atom(j).charge = str2double(line(79:80));
         occupancy(j,1)=str2double(line(55:60));
         tempfactor(j,1)=str2double(line(61:66));
-        
+        try % Try this, in case this column exists
+            atom(j).element = {strtrim(line(77:78))};
+        catch
+
+        end
         atom(j).occupancy=occupancy(j,1);
         atom(j).B=tempfactor(j,1);
     end

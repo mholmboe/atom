@@ -11,8 +11,11 @@
 %% Examples
 % # atom=bond_atom(atom,Box_dim) % Basic input arguments
 % # atom=bond_atom(atom,Box_dim,2.25) % Allows setting the max cutoff
+% # atom=bond_atom(atom,Box_dim,Bond_index) % Uses an exisitng Bond_index
 %
 function atom = bond_atom(atom,Box_dim,varargin)
+
+rmaxshort=1.18;
 
 if nargin>2
     rmaxlong=varargin{1}; % Dummy value
@@ -38,18 +41,13 @@ end
 
 [atom.type]=atom.element;
 
-Radiiproperties=load('Revised_Shannon_radii.mat');
-% atom=bond_valence_atom(atom,Box_dim,1.25,2.25);
+Radiiproperties=load('general_functions/Revised_Shannon_radii.mat');
+% atom=bond_valence_atom(atom,Box_dim,rmaxshort,2.25);
 
-disp('Calculating the distance matrix')
-% if size(atom,2)>100000 && numel(Box_dim)<9
-%     disp('Will use the cell list method')
-%     disp('Does not work for triclinic systems...')
-%     pause(5)
-%      dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-% else
-dist_matrix = dist_matrix_atom(atom,Box_dim,1.25,rmaxlong);
-% end
+disp('Calculating the distance matrix with cell lists')
+% dist_matrix = dist_matrix_atom(atom,Box_dim); % To calculate a full distance matrix
+[dist_matrix,bond_list, dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,rmaxshort,rmaxlong);
+
 
 XYZ_radii=zeros(length(XYZ_labels),1);
 XYZ_formalcharge=zeros(length(XYZ_labels),1);
@@ -72,12 +70,12 @@ assignin('caller','XYZ_radii',XYZ_radii);
 assignin('caller','XYZ_formalcharge',XYZ_formalcharge);
 
 XYZ_radii(XYZ_radii==0)=distance_factor;
-% XYZ_radii(ismember([atom.type],'H'))=0.25; % Special H radii
+XYZ_radii(ismember([atom.type],'H'))=0.3; % Special H radii
 radius_matrix=repmat(XYZ_radii,1,length(XYZ_radii));
 radius_limit=(radius_matrix+radius_matrix')*distance_factor;
+indH=strncmp([atom.type],'H',1);
+% radius_limit(indH,:)=rmaxshort;radius_limit(:,indH)=rmaxshort;
 radius_limit(radius_limit>rmaxlong)=rmaxlong;
-% indH=strncmp([atom.type],'H',1);
-% radius_limit(indH,:)=1.25;radius_limit(:,indH)=1.25;
 dist_matrix(dist_matrix>radius_limit)=0;
 
 if isfield(atom,'neigh')
@@ -89,7 +87,7 @@ end
 
 % disp('Looking for neighbours/bonds')
 Bond_index=single(zeros(1,3));
-% Angle_index=single(zeros(1,3));
+Angle_index=single(zeros(1,3));
 a=1;b=1;i=1;
 while i<size(atom,2)+1
     k=0;j=1;
@@ -137,54 +135,56 @@ while i<size(atom,2)+1
 
     %%
 
-%     Neigh_ind(~any(Neigh_ind,2),:) = [];
-%     Neigh_vec(~any(Neigh_vec,2),:) = [];
-% 
-%     for v=1:size(Neigh_ind,1)
-%         for w=1:size(Neigh_ind,1) % From v or from 1?
-%             angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
-%             if angle > 0 && angle <= 150 % Do we need this??
-%                 if v < w
-%                     Angle_index(a,1)= Neigh_ind(v,1);
-%                     Angle_index(a,2)= i;
-%                     Angle_index(a,3)= Neigh_ind(w,1);
-%                     Angle_index(a,4)= angle;
-%                     Angle_index(a,5:7)= Neigh_vec(v,:);
-%                     Angle_index(a,8:10)= Neigh_vec(w,:);
-%                     a=a+1;
-%                 else
-%                     Angle_index(a,1)= Neigh_ind(w,1);
-%                     Angle_index(a,2)= i;
-%                     Angle_index(a,3)= Neigh_ind(v,1);
-%                     Angle_index(a,4)= angle;
-%                     Angle_index(a,5:7)= Neigh_vec(w,:);
-%                     Angle_index(a,8:10)= Neigh_vec(v,:);
-%                     a=a+1;
-%                 end
-%             end
-%         end
-%     end
-% 
-%     if ismember(i,Angle_index(:,1:3))
-%         %                 [C,D]=find(Angle_index(:,1:3)==i);
-%         [C,D]=find(Angle_index(:,2)==i);
-%         atom(i).angle.type = 1;
-%         atom(i).angle.index = Angle_index(C,1:3);
-%         atom(i).angle.angle = Angle_index(C,4);
-%         atom(i).angle.vec1 = Angle_index(C,5:7);
-%         atom(i).angle.vec2 = Angle_index(C,8:10);
-%     end
+    Neigh_ind(~any(Neigh_ind,2),:) = [];
+    Neigh_vec(~any(Neigh_vec,2),:) = [];
+    for v=1:size(Neigh_ind,1)
+        for w=1:size(Neigh_ind,1) % From v or from 1?
+            angle=rad2deg(atan2(norm(cross(Neigh_vec(v,:),Neigh_vec(w,:))),dot(Neigh_vec(v,:),Neigh_vec(w,:))));
+            if angle > 0 && angle <= 180 % Do we need this??
+                if v < w
+                    Angle_index(a,1)= Neigh_ind(v,1);
+                    Angle_index(a,2)= i;
+                    Angle_index(a,3)= Neigh_ind(w,1);
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= Neigh_vec(v,:);
+                    Angle_index(a,8:10)= Neigh_vec(w,:);
+                    a=a+1;
+                else
+                    Angle_index(a,1)= Neigh_ind(w,1);
+                    Angle_index(a,2)= i;
+                    Angle_index(a,3)= Neigh_ind(v,1);
+                    Angle_index(a,4)= angle;
+                    Angle_index(a,5:7)= Neigh_vec(w,:);
+                    Angle_index(a,8:10)= Neigh_vec(v,:);
+                    a=a+1;
+                end
+            end
+        end
+    end
+
+    if ~isempty(Angle_index)
+        if ismember(i,Angle_index(:,1:3))
+            %                 [C,D]=find(Angle_index(:,1:3)==i);
+            [C,D]=find(Angle_index(:,2)==i);
+            atom(i).angle.type = 1;
+            atom(i).angle.index = Angle_index(C,1:3);
+            atom(i).angle.angle = Angle_index(C,4);
+            atom(i).angle.vec1 = Angle_index(C,5:7);
+            atom(i).angle.vec2 = Angle_index(C,8:10);
+        end
+    end
+
 
     %%
 
-    if mod(i,1000)==1
-        if i > 1
-            i-1
-        end
-    end
+    % if mod(i,1000)==1
+    %     if i > 1
+    %         i-1
+    %     end
+    % end
     i=i+1;
 end
-i-1
+% i-1
 
 CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
 if length(Bond_index)>0
@@ -232,13 +232,16 @@ Bond_index = unique(Bond_index,'rows','stable');
 Bond_index(~any(Bond_index,2),:) = [];
 nBonds=size(Bond_index,1);
 
+nAngles=0;
+if ~isempty(Angle_index)
+    [Y,I]=sort(Angle_index(:,2));
+    Angle_index=Angle_index(I,:);
+    Angle_index = unique(Angle_index,'rows','stable');
+    Angle_index(~any(Angle_index,2),:) = [];
+    nAngles=size(Angle_index,1);
+    assignin('caller','Angle_index',Angle_index);
+end
 
-% [Y,I]=sort(Angle_index(:,2));
-% Angle_index=Angle_index(I,:);
-% Angle_index = unique(Angle_index,'rows','stable');
-% Angle_index(~any(Angle_index,2),:) = [];
-% nAngles=size(Angle_index,1);
-% assignin('caller','Angle_index',Angle_index);
 assignin('caller','Neigh_ind',Neigh_ind);
 assignin('caller','Neigh_vec',Neigh_vec);
 
@@ -246,6 +249,8 @@ assignin('caller','Neigh_vec',Neigh_vec);
 atom=order_attributes(atom);
 
 assignin('caller','nBonds',nBonds);
+assignin('caller','nAngles',nAngles);
+assignin('caller','radius_matrix',radius_matrix);
 assignin('caller','radius_limit',radius_limit);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Neigh_index',Neigh_index);

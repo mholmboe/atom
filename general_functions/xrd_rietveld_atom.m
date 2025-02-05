@@ -526,7 +526,7 @@ assignin('caller','l',l);
 assignin('caller','hkl',hkl);
 assignin('caller','d_hkl',d_hkl);
 
-% dlmwrite('xrd.dat',[round(exp_twotheta',5) 100*intensity'],'delimiter','\t','precision',5);
+% dlmwrite('xrd.dat',[round2dec(exp_twotheta',5) 100*intensity'],'delimiter','\t','precision',5);
 
 writematrix(num2str([exp_twotheta' 100*intensity'],'%.5f '),'xrd.dat','Delimiter','tab');
 

@@ -17,8 +17,12 @@ function atom=ff_atom(atom,Box_dim,varargin)
 format compact;
 
 rmaxlong=2.45;
+if nargin>2
+    rmaxlong=varargin{1};
+end
+
 if nargin>3
-    rmaxlong=varargin{2};
+    Bond_index=varargin{2};
 end
 
 temp_atom=atom;
@@ -30,14 +34,24 @@ atom=element_atom(atom);
 XYZ_labels=[atom.type]';
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
 
-atom=cn_atom(atom,Box_dim,rmaxlong);
+if exist('Bond_index','var')
+    atom=cn_atom(atom,Box_dim,rmaxlong,Bond_index);
+else
+    atom=cn_atom(atom,Box_dim,rmaxlong);
+end
 
 nBonds=size(Bond_index,1);
 assignin('caller','nBonds',nBonds);
-assignin('caller','radius_limit',radius_limit);
+
 assignin('caller','Bond_index',Bond_index);
-assignin('caller','Neigh_index',Neigh_index);
 assignin('caller','dist_matrix',dist_matrix);
+
+try
+    assignin('caller','Neigh_index',Neigh_index);
+    assignin('caller','radius_limit',radius_limit);
+catch
+    disp('Could not assign Neigh_index or radius_limit')
+end
 
 All_Neighbours=[];All_types=struct;
 Heal_O=0;
@@ -127,7 +141,7 @@ if numel(All_Neighbours)>0
             if ismember(All_Neighbours{i,1},{'O' 'H'})
                 for j=1:size(ind,2)
                     if strncmp(All_Neighbours{i,1},'H',1)
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3})
                     elseif length(All_Neighbours{i,3})==1
                         [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'s',All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==2
@@ -176,13 +190,13 @@ if numel(All_Neighbours)>0
 
     if ~isfield(atom,'charge')
         atom=charge_minff_atom(atom,Box_dim,{'Al'  'Alo'  'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},...
-                                            [1.782  1.782 1.782 1.985 2.48  1.14  1.14   1.14 0.7   0.86666 1.45  1    1    1   1.562 1.74  1.635 1.66  1.52  1.884 1.884 1.884 2.413 0.86  0.4]);
+            [1.782  1.782 1.782 1.985 2.48  1.14  1.14   1.14 0.7   0.86666 1.45  1    1    1   1.562 1.74  1.635 1.66  1.52  1.884 1.884 1.884 2.413 0.86  0.4]);
     end
 
     if isfield(atom,'charge')
         for i=1:size(All_Neighbours,1)
             ind=All_Neighbours{i,4};
-            All_Neighbours(i,9)={unique(round([atom(ind).charge],8))};
+            All_Neighbours(i,9)={unique(round2dec([atom(ind).charge],8))};
         end
     end
 

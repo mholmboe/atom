@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of import functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-11-25">
+<meta name="DC.date" content="2025-02-05">
 <meta name="DC.source" content="List_import_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -89,22 +89,25 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#2">Contact</a>
 </li>
 <li>
-<a href="#3">Import of data files</a>
+<a href="#3">Import of topology files</a>
 </li>
 <li>
-<a href="#4">Import of structure files</a>
+<a href="#4">Import of data files</a>
 </li>
 <li>
-<a href="#5">Import of trajectory files</a>
+<a href="#5">Import of structure files</a>
 </li>
 <li>
-<a href="#6">Miscellaneous</a>
+<a href="#6">Import of trajectory files</a>
 </li>
 <li>
-<a href="#7">Version</a>
+<a href="#7">Miscellaneous</a>
 </li>
 <li>
-<a href="#8">Contact</a>
+<a href="#8">Version</a>
+</li>
+<li>
+<a href="#9">Contact</a>
 </li>
 </ul>
 </div>
@@ -113,7 +116,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="2">Contact</h2>
 <p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
 </p>
-<h2 id="3">Import of data files</h2>
+<h2 id="3">Import of topology files</h2>
+<div>
+<ol>
+<li>
+<a href="import_itp.html">import_itp(filename)</a> % Import a Gromacs .itp topology file</li>
+</ol>
+</div>
+<h2 id="4">Import of data files</h2>
 <div>
 <ol>
 <li>
@@ -130,7 +140,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_ddec_charges.html">import_ddec_charges(filename)</a> % Import DDEC charges from a file.</li>
 </ol>
 </div>
-<h2 id="4">Import of structure files</h2>
+<h2 id="5">Import of structure files</h2>
 <div>
 <ol>
 <li>
@@ -157,7 +167,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_xyz.html">import_xyz(filename)</a> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.</li>
 </ol>
 </div>
-<h2 id="5">Import of trajectory files</h2>
+<h2 id="6">Import of trajectory files</h2>
 <div>
 <ol>
 <li>
@@ -180,7 +190,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_xtcv2.html">import_xtcv2(filenameconf,filenamextc)</a> % Import a structure and an .xtc file (version 2).</li>
 </ol>
 </div>
-<h2 id="6">Miscellaneous</h2>
+<h2 id="7">Miscellaneous</h2>
 <div>
 <ol>
 <li>
@@ -204,9 +214,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <pre class="codeinput">
 <span class="comment">%</span>
 </pre>
-<h2 id="7">Version</h2>
+<h2 id="8">Version</h2>
 <p>3.00</p>
-<h2 id="8">Contact</h2>
+<h2 id="9">Contact</h2>
 <p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
 </p>
 <p class="footer">
@@ -225,6 +235,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
 %
+
+%% Import of topology files
+% # <import_itp.html import_itp(filename)> % Import a Gromacs .itp topology file
 
 %% Import of data files
 % # <import_xvg.html import_xvg(filename)> % Import a Gromacs .xvg file.

@@ -11,7 +11,7 @@
 %% Examples
 % # atom = import_atom_xyz('molecule.xyz')
 %
-function atom = import_atom_xyz(filename)
+function [atom,Box_dim] = import_atom_xyz(filename)
 
 if regexp(filename,'.xyz') ~= false
     filename = filename;
@@ -42,13 +42,17 @@ Box_string=strsplit(char(line2));
 %% Close the text file.
 fclose(fileID);
 
+XYZ_labels = cell(nAtoms,1);   % pre-allocate as a cell array
 filetempID = fopen(filename,'r');
 line1 = {fgets(filetempID)};
 line2 = {fgets(filetempID)};
 for i=1:nAtoms
     line = fgetl(filetempID);
-    XYZ_string=strsplit((line));
-    XYZ_labels(i,1) = XYZ_string(1);
+    XYZ_string = strsplit(line);
+    
+    % Use curly braces to access the contents of the first token
+    XYZ_labels{i,1} = XYZ_string{1};
+    
     X(i) = XYZ_string(2);
     Y(i) = XYZ_string(3);
     Z(i) = XYZ_string(4);
@@ -56,11 +60,6 @@ end
 fclose(filetempID);
 
 XYZ_data=[str2double(X)' str2double(Y)' str2double(Z)'];
-
-% size(XYZ_labels)
-% size(XYZ_data)
-% XYZ_labels = dataArray{:, 1};
-% XYZ_data = [dataArray{:,2} dataArray{:,3} dataArray{:,4}];
 
 for i=1:nAtoms
     atom(i).resname={'MOL'};

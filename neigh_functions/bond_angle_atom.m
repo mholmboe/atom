@@ -1,6 +1,7 @@
 %% bond_angle_atom.m
 % * This function tries to find all bonds and angles of the atom struct
-% * One optional argument like 'more' will give more bond info
+% * One optional argument like 'more' will give more bond info.
+% * Line 142 can turn on/off bonds between same types of atoms
 % * atom is the atom struct
 % * Box_dim is the box dimension vector
 %
@@ -135,11 +136,10 @@ for i = 1:size(XYZ_data,1)
     %     bond_in=intersect(find(r > 0), find(r < max_neigh_distance));
     %
 
-
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     for j=1:length(bond_in)
-        if [atom(i).molid]==[atom(bond_in(j)).molid] && (strncmpi([atom(i).type],[atom(bond_in(j)).type],1) == 0)
+        if [atom(i).molid]==[atom(bond_in(j)).molid] % && (strcmp(atom(i).type, atom(bond_in(j)).type)==0) % This checks for bonds between equal element types
             % Original, uncomment this section
             % max_distance = max_short_dist;
             % Only test
@@ -176,6 +176,7 @@ for i = 1:size(XYZ_data,1)
                 close_count=close_count+1;
                 overlap_index=[overlap_index; {i bond_in(j) r(bond_in(j)) XYZ_labels(i) XYZ_labels(bond_in(j)) XYZ_data(i,:) XYZ_data(bond_in(j),:)}];
             end
+            
             if r(bond_in(j)) > max_distance/3 && r(bond_in(j)) < max_distance %strncmpi(XYZ_labels(i),strtrim(XYZ_labels(j)),1) == 0;
                 if strncmpi(strtrim(XYZ_labels(i)),{'OW'},2)% || strncmpi(strtrim(XYZ_labels(bond_in(j))),{'OW'},2); % < bond_in(j) && ismember(XYZ_labels(i),{'Ow','Hw','OW','HW','HW1','HW2'}) > 0;
                     if bond_in(j) > i && bond_in(j) < i+3 %strncmpi(strtrim(XYZ_labels(i)),{'Ow'},2) && bond_in(j) > i && bond_in(j) < i+3;
@@ -200,7 +201,7 @@ for i = 1:size(XYZ_data,1)
                     b=b+1;
                     if r(bond_in(j)) < max_distance % This should always be true right?
                         Neigh_ind(n,1)= bond_in(j);
-                        Neigh_vec(n,1:3) = [rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
+                        Neigh_vec(n,1:3) = -[rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
                         n=n+1;
                     end
                 elseif ~strncmpi(strtrim(XYZ_labels(i)),{'OW'},2) || ~strncmpi(strtrim(XYZ_labels(i)),{'HW'},2)
@@ -212,7 +213,7 @@ for i = 1:size(XYZ_data,1)
                     end
                     if r(bond_in(j)) < max_distance % This should always be true right?
                         Neigh_ind(n,1)= bond_in(j);
-                        Neigh_vec(n,1:3) = [rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
+                        Neigh_vec(n,1:3) = -[rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
                         n=n+1;
                     end
                 end
@@ -256,17 +257,17 @@ for i = 1:size(XYZ_data,1)
 end
 i
 
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,1));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
+% [Y,I]=sort(Bond_index(:,1));
+% Bond_index=Bond_index(I,:);
+% Bond_index = unique(Bond_index,'rows','stable');
+% 
+% [Y,I]=sort(Angle_index(:,1));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
+% 
+% [Y,I]=sort(Angle_index(:,2));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
 
 overlap_index=overlap_index(1:size(overlap_index,1)/2,:);
 % [Y,I]=sort(cell2mat(overlap_index(:,2)));
@@ -351,19 +352,19 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             end
         end
         try
-            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin('caller',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index,2) num2cell(Tot_neighindex,2) Tot_type num2cell(Tot_dist,2) num2cell(Tot_CN,2)]);
             assignin('caller',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('caller',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('caller',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
             assignin('caller',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
 
-            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index,2) num2cell(Tot_neighindex,2) Tot_type num2cell(Tot_dist,2) num2cell(Tot_CN,2)]);
             assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
             assignin('base',strcat(char(Atom_labels(i)),'_atom')',atom(ismember([atom.type],Atom_labels(i))));
         catch
-            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index) num2cell(Tot_neighindex) Tot_type num2cell(Tot_dist) num2cell(Tot_CN)]);
+            assignin('base',strcat(char(Atom_labels(i)),'_dist')',[num2cell(Tot_index,2) num2cell(Tot_neighindex,2) Tot_type num2cell(Tot_dist,2) num2cell(Tot_CN,2)]);
             assignin('base',strcat(char(Atom_labels(i)),'_coords')',[[atom(Tot_neighindex).x]' [atom(Tot_neighindex).y]' [atom(Tot_neighindex).z]']);
             assignin('base',strcat(char(Atom_labels(i)),'_bonds')',[Tot_bondindex Tot_bonds]);
             assignin('base',strcat(char(Atom_labels(i)),'_angles')',[Tot_angleindex Tot_angles]);
@@ -406,6 +407,22 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
     end
 
 end
+
+[Y,I]=sort(Bond_index(:,2));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,1));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,2));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
 
 atom=order_attributes(atom);
 

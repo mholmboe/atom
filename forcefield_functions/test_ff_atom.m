@@ -182,7 +182,7 @@ if numel(All_Neighbours)>0
     if isfield(atom,'charge')
         for i=1:size(All_Neighbours,1)
             ind=All_Neighbours{i,4};
-            All_Neighbours(i,9)={unique(round([atom(ind).charge],8))};
+            All_Neighbours(i,9)={unique(round2dec([atom(ind).charge],8))};
         end
     end
 

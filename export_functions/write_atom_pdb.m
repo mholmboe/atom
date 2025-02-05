@@ -150,9 +150,9 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};atom(i).formalcharge=1;
     elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'K'},1);atom(i).element={'K'};atom(i).formalcharge=1;
-    elseif strcmpi(atom(i).type,{'N'});atom(i).element={'N'};atom(i).formalcharge=0;
-    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Na'},2);atom(i).element={'Na'};atom(i).formalcharge=1;
+    elseif strncmpi(atom(i).type,{'Ni'},2);atom(i).element={'Ni'};atom(i).formalcharge=2;
+    elseif strncmpi(atom(i).type,{'N'},1);atom(i).element={'N'};atom(i).formalcharge=0;
     elseif strncmpi(atom(i).type,{'Co'},2);atom(i).element={'Co'};atom(i).formalcharge=2;
     elseif strncmpi(atom(i).type,{'Cr'},2);atom(i).element={'Cr'};atom(i).formalcharge=3;
     elseif strncmpi(atom(i).type,{'Cs'},2);atom(i).element={'Cs'};atom(i).formalcharge=1;
@@ -210,7 +210,7 @@ if nargin>3
         maxrlong
 
         %     atom=bond_angle_atom(atom,Box_dim,short_r,long_r);
-        atom=bond_atom(atom,Box_dim,maxrlong);
+        atom=bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
         %     assignin('caller','Dist_matrix',Dist_matrix);
         assignin('caller','Bond_index',Bond_index);
         %     assignin('caller','Angle_index',Angle_index);
@@ -240,7 +240,7 @@ end
 fclose(fid);
 disp('.pdb structure file written')
 %
-% assignin('caller','Bond_index',Bond_index);
+% assignin('caller','CONECT_Bond_index',Bond_index);
 % assignin('caller','Angle_index',Angle_index);
 
 

@@ -45,7 +45,7 @@ if strcmpi(ffname,'clayff')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        round(Charge,5)
+        round2dec(Charge,5)
         try
             atom=charge_clayff_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -87,7 +87,7 @@ elseif strcmpi(ffname,'clayff_2004')
         no_adjust_ind=ismember(Atom_label,no_adjust_labels);
         no_adjust_ind
         Atom_label
-        round(Charge,5)
+        round2dec(Charge,5)
         try
             atom=charge_clayff_2004_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
         catch
@@ -136,7 +136,7 @@ elseif strcmpi(ffname,'interface')
         Atom_label
         no_adjust_ind
         no_adjust_labels
-        round(Charge,5)
+        round2dec(Charge,5)
         atom = charge_interface_atom(atom,Box_dim,Atom_label(no_adjust_ind),Charge(no_adjust_ind));
     else
         atom=check_interface_charge(atom);
@@ -182,8 +182,8 @@ end
 
 disp('Total charge')
 Total_charge=sum([atom.charge]);
-round(sum(Total_charge),5)
-if round(Total_charge)~=sum(Total_charge) 
+round2dec(sum(Total_charge),5)
+if round2dec(Total_charge)~=sum(Total_charge) 
    disp('Run tweak_charge_atom() to get an integer charge of the struct')
 end
 

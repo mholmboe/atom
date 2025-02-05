@@ -63,7 +63,7 @@ Ftot=lj+coul;
 
 hold on
 
-plotmin=1000*(round(min(Ftot*1.5)/1000));
+plotmin=1000*(round2dec(min(Ftot*1.5)/1000));
 if plotmin>=0
     plotmin=10000;
 end
@@ -82,7 +82,7 @@ if nargin>2
     end
     
     hold on
-    plotmin=1000*(round(min(Ftot*1.5)/1000));
+    plotmin=1000*(round2dec(min(Ftot*1.5)/1000));
     if plotmin>=0
         plotmin=10000;
     end

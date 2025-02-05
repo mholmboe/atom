@@ -50,7 +50,7 @@ end
 
 for i = 1:nAtoms
     Atom_section(1:4) = [atom(i).type, atom(i).x, atom(i).y, atom(i).z];
-    fprintf(fid, '%-5s%10.5f%10.5f%10.5f\r\n', Atom_section{1:4});
+    fprintf(fid, '%-10s%10.5f%10.5f%10.5f\r\n', Atom_section{1:4});
 end
 
 fprintf(fid, '\r\n');

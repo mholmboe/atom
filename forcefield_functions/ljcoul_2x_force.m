@@ -42,7 +42,7 @@ coul=coul1+coul2;
 
 hold on
 
-plotmin=1000*(round(min(Ftot*1.5)/1000));
+plotmin=1000*(round2dec(min(Ftot*1.5)/1000));
 if plotmin>=0
     plotmin=10000;
 end

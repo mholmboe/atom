@@ -66,7 +66,11 @@ if ~isfield(atom,'charge')
     atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 end
 Total_charge=sum([atom.charge])
+<<<<<<< HEAD
 round(Total_charge,5)
+=======
+round2dec(Total_charge,6)
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 %         pause
 nrexcl=1; % See the gromacs manual
 explicit_bonds = 0
@@ -180,7 +184,11 @@ for i = 1:nAtoms
     end
 
     if isfield(atom,'mass')
+<<<<<<< HEAD
         Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round([atom(i).charge],6),[atom(i).mass]};
+=======
+        Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, round2dec([atom(i).charge],6),[atom(i).mass]};
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
     fprintf(fid, '%-4i%6s%8i%8s%8s%8i\t% 8.6f\t% 8.6f\n', Atoms_data{i,:});
 end
@@ -266,11 +274,19 @@ while count_a <= length(Angle_index) %nAngles;
             ktheta=KANGLE;
 
         end
+<<<<<<< HEAD
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
         fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f   %s %s %s-%s-%s\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     else
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
+=======
+        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
+        fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f   %s %s %s-%s-%s\n', Angle_order{count_a,:});
+        count_a = count_a + 1;
+    else
+        Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round2dec(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
+>>>>>>> ae77844 (Updated 5 Feb 2025)
         fprintf(fid, '%-5i %-5i %-5i %-5i %s %-6.2f %s-%s-%s\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     end
@@ -286,7 +302,11 @@ end
 
 if exist('Total_charge','var')
     disp('Total charge for the .itp file was')
+<<<<<<< HEAD
     round(Total_charge,5)
+=======
+    round2dec(Total_charge,6)
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 end
 
 % Defining [ exclusions ]
@@ -316,8 +336,12 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Oct)
         pos_res(i,:) = {num2str(i), '1', '100', '100', '10000'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
 end
 fprintf(fid, '#endif \n');
@@ -331,8 +355,12 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Oct)
         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '0'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
 end
 fprintf(fid, '#endif \n');
@@ -348,8 +376,12 @@ if strncmpi(ffname,'minff',5)
     fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
     for i = 1:nAtoms
         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
     fprintf(fid, '#endif \n');
 end
@@ -362,8 +394,12 @@ fprintf(fid, '[ position_restraints ] \n');
 fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+<<<<<<< HEAD
     fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
     fprintf(fid, '\n');
+=======
+    fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
 end
 fprintf(fid, '#endif \n');
 
@@ -376,8 +412,12 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if strncmpi([atom(i).type],'H',1)==0
         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
 end
 fprintf(fid, '#endif \n');
@@ -391,8 +431,12 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if strncmpi([atom(i).type],'H',1)==0
         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
     end
 end
 fprintf(fid, '#endif \n');
@@ -407,8 +451,12 @@ for i = 1:nAtoms
     if strncmpi([atom(i).type],'H',1)==0
         %         if strcmp([atom(i).type],'Al') > 0 || strcmp([atom(i).type],'Mgo') > 0
         pos_res(i,:) = {num2str(i), '1', '1000', '1000','0'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
         %         end
     end
 end
@@ -423,7 +471,11 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Al)
         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
         fprintf(fid, '\n');
     end
 end
@@ -438,7 +490,11 @@ fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if ismember(i,ind_Oct)
         pos_res(i,:) = {num2str(i), '1', '1000', '100', '1000'};
+<<<<<<< HEAD
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+=======
+        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s\n', pos_res{i,:});
+>>>>>>> ae77844 (Updated 5 Feb 2025)
         fprintf(fid, '\n');
     end
 end

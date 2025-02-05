@@ -495,14 +495,14 @@ catch
     disp('Could not set the charge...')
 end
 
-if abs(round(sum([atom.charge])) - sum([atom.charge]))>0.00001
+if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.00001
     disp('Initial total charge!')
     Total_charge=sum([atom.charge])
-    [atom(1).charge]=atom(1).charge+(round(sum([atom.charge])) - sum([atom.charge]));
+    [atom(1).charge]=atom(1).charge+(round2dec(sum([atom.charge])) - sum([atom.charge]));
     %     atom=tweak_charge_atom(atom,'Al');
     disp('Final total charge, modfying the first atoms charge somewhat!')
     Total_charge=sum([atom.charge])
-    round(sum(Total_charge),6)
+    round2dec(sum(Total_charge),6)
     assignin('caller','Total_charge',Total_charge);
 end
 
