@@ -1,7 +1,7 @@
 
 # Atomistic Topology Operations in MATLAB
 
-MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations.
+MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations. Now also compatible with recent versions of [**OCTAVE**](https://octave.org), a free alternative to [**MATLAB**](www.mathworks.com). 
 
 ## Overview
 The purpose of the atom scripts and functions is to automate and enable the construction and analysis of complex and anisotropic, multicomponent molecular systems, and generate topological information with bonds, angles, and (optionally) dihedrals.
@@ -15,6 +15,12 @@ For a comprehensive list of the different functions, look here
 
 See also the link to the:
 - [HTML documentation](http://moleculargeo.chem.umu.se/wp-content/uploads/file-manager/atom/Documentation/)
+
+## Installation
+Just download the [**atom Toolbox**](github.com/mholmboe/atom) and put it in the MATLAB (or OCTAVE) path.
+
+### Prerequisites
+- [**MATLAB**](www.mathworks.com) or [**OCTAVE**](https://octave.org)
 
 ---
 
