@@ -67,6 +67,7 @@ if nargin>5
         % if ~isfield(atom,'charge')
         % atom=charge_clayff_atom(atom,Box_dim,{'Al' 'Alt' 'Fe2' 'Feo' 'Fee' 'Fet' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Sit' 'Sio' 'H'},[1.782 1.782 0.64 1.14 1.14 1.14 1 1 1 1.562 1.562 1.884 1.884 0.4]);
         % end
+        atom = mass_atom(atom);
         Total_charge=sum([atom.charge])
         round2dec(Total_charge,5)
         %         pause
@@ -140,6 +141,7 @@ else
     ffname='minff';
     watermodel='OPC3'; % SPC/E, depreceated
     % minff_param(sort(unique([atom.type])),'OPC3');
+    atom = mass_atom(atom);
     if ~isfield(atom,'charge')
         atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
@@ -318,7 +320,7 @@ try
         unique(Bond_order(:,end-1:end))
     end
 catch
-    disp('No bonds?')
+    disp('Found no bonds')
 end
 
 %% To include a generic 1-4 pairlist
@@ -399,7 +401,7 @@ fprintf(fid, '\n');
 
 if numel(Angle_order)>0
     assignin('caller','Angle_order',Angle_order);
-    disp('These atom types has angles')
+    disp('Found angles between..')
     unique(Angle_order(:,end-2:end))
 end
 
