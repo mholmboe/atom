@@ -139,7 +139,7 @@ for i = 1:size(XYZ_data,1)
     n=1;
     Neigh_ind=zeros(12,1);Neigh_vec=zeros(12,3);
     for j=1:length(bond_in)
-        if [atom(i).molid]==[atom(bond_in(j)).molid] % && (strcmp(atom(i).type, atom(bond_in(j)).type)==0) % This checks for bonds between equal element types
+        if [atom(i).molid]==[atom(bond_in(j)).molid] && (strncmpi([atom(i).type],[atom(bond_in(j)).type],1) == 0) % This checks for bonds between equal element types
             % Original, uncomment this section
             % max_distance = max_short_dist;
             % Only test
@@ -257,17 +257,17 @@ for i = 1:size(XYZ_data,1)
 end
 i
 
-% [Y,I]=sort(Bond_index(:,1));
-% Bond_index=Bond_index(I,:);
-% Bond_index = unique(Bond_index,'rows','stable');
-% 
-% [Y,I]=sort(Angle_index(:,1));
-% Angle_index=Angle_index(I,:);
-% Angle_index = unique(Angle_index,'rows','stable');
-% 
-% [Y,I]=sort(Angle_index(:,2));
-% Angle_index=Angle_index(I,:);
-% Angle_index = unique(Angle_index,'rows','stable');
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,1));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,2));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
 
 overlap_index=overlap_index(1:size(overlap_index,1)/2,:);
 % [Y,I]=sort(cell2mat(overlap_index(:,2)));
@@ -408,21 +408,21 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
 
 end
 
-[Y,I]=sort(Bond_index(:,2));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,1));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
-
-[Y,I]=sort(Angle_index(:,2));
-Angle_index=Angle_index(I,:);
-Angle_index = unique(Angle_index,'rows','stable');
+% [Y,I]=sort(Bond_index(:,2));
+% Bond_index=Bond_index(I,:);
+% Bond_index = unique(Bond_index,'rows','stable');
+% 
+% [Y,I]=sort(Bond_index(:,1));
+% Bond_index=Bond_index(I,:);
+% Bond_index = unique(Bond_index,'rows','stable');
+% 
+% [Y,I]=sort(Angle_index(:,1));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
+% 
+% [Y,I]=sort(Angle_index(:,2));
+% Angle_index=Angle_index(I,:);
+% Angle_index = unique(Angle_index,'rows','stable');
 
 atom=order_attributes(atom);
 
