@@ -62,17 +62,17 @@ for assignment_run=heal_iterations
     All_Neighbours=[];
     % Heal broken bonds in the structure in steps, start from the center of the particle
     if assignment_run==1
-        Heal_Al=0 % 1 for yes and 0 for no
+        Heal_Al=0; % 1 for yes and 0 for no
     elseif assignment_run==2
-        Heal_Mgo=0 % 1 for yes and 0 for no
+        Heal_Mgo=0; % 1 for yes and 0 for no
     elseif assignment_run==3
-        Heal_Feo=0 % 1 for yes and 0 for no
+        Heal_Feo=0; % 1 for yes and 0 for no
     elseif assignment_run==4
-        Heal_Si=1 % 1 for yes and 0 for no
+        Heal_Si=1; % 1 for yes and 0 for no
     elseif assignment_run==5
-        Heal_O=1 % 1 for yes and 0 for no
+        Heal_O=1; % 1 for yes and 0 for no
     elseif assignment_run==6
-        Heal_H=0 % 1 for yes and 0 for no
+        Heal_H=0; % 1 for yes and 0 for no
     elseif assignment_run==7
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==8
@@ -326,7 +326,18 @@ for assignment_run=heal_iterations
                 % If the element is Fe
                 if strncmpi(atom(i).type,{'Fe'},2) % Fe
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Fe O O O O O O
-                        if sum([atom(i).neigh.dist])<12.7
+
+                        if mean([atom(i).neigh.dist])>2.02 && mean([atom(i).neigh.dist]<2.1)
+                            disp('Ave oct Fe-O distance is large..')
+                            mean([atom(i).neigh.dist])
+                            if mean([atom(i).neigh.dist])<2.06
+                                disp('Guessing its Fe3+..')
+                            else
+                                disp('Guessing its Fe2+..')
+                            end
+                        end
+
+                        if mean([atom(i).neigh.dist])<2.06
                             atom(i).fftype={'Feo'};
                         else
                             atom(i).fftype={'Fe2'};
@@ -677,7 +688,7 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')
@@ -739,8 +750,8 @@ while i<size(All_Neighbours,1)+1
         All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
     else
 
-end
-All_Neighbours(i,3)
+    end
+    All_Neighbours(i,3)
     All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
     i=i+1;
 end

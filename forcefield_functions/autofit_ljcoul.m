@@ -15,9 +15,10 @@ r=.1:.001:1.2; % nm
 % C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Al' 'Ob'});
+ff=ff2.ff;
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff(ff,{'Fe2+' 'OW'});
 
-% [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
 
 % A1=41970.1381; % nm
 % A2=41970.1381;
@@ -33,8 +34,8 @@ hold on
 
 [r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r,1);
 
-q1=1.782;
-q2=-1.188;
+q1=1.20;
+q2=-1.2;
 sig1=.1;
 sig2=.317;
 eps1=.6;
@@ -42,7 +43,7 @@ eps2=.6837;
 C4 = 0
 %% Initial values
 xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .1     1   .1    1];
+delta    = [ 1   1    .01     .01   .01    .01];
 
 x0=xinit;
 %% In order to keep parameters around 1..

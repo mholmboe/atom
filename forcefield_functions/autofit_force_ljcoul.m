@@ -26,8 +26,8 @@ r=r-(r(2)-r(1))/2;
  [r,lj,coul,data] = ljcoul_force([q1,q2,sig1,sig2,eps1,eps2],r,1);
 % [r,lj,coul,data] = ljcoul_force_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r)
 
-q1=1.782;
-q2=-1.188;
+q1=1.605;
+q2=-1.07;
 sig1=.1;
 sig2=.317;
 eps1=.6;
@@ -35,7 +35,7 @@ eps2=.6837;
 % C4 = 0.01
 %% Initial values
 xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .1     1   .1    1];
+delta    = [ 1   1    .1     .1   .1    .1];
 
 x0=xinit;
 %% In order to keep parameters around 1..

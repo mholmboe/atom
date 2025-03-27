@@ -10,6 +10,8 @@
 %% Examples
 % # radii = radius_ion({'O'})
 % # radii = radius_ion('O')
+% # radii = radius_ion('Fe',+2)
+% # radii = radius_ion('Fe',+2,6)
 
 function [radii,Atom_label] = radius_ion(Atom_label,varargin)
 
