@@ -99,11 +99,7 @@ end
 
 if exist('Total_charge','var')
     disp('Total charge for the .itp file was')
-<<<<<<< HEAD
-    round(Total_charge,5)
-=======
     round2dec(Total_charge,5)
->>>>>>> ae77844 (Updated 5 Feb 2025)
 end
 
 %% Find atomtype specific indexes
@@ -407,11 +403,7 @@ if nAngles>0
     fprintf(fid, '\n');
     count_a = 1;
     while count_a <= nAngles % CHARMM st
-<<<<<<< HEAD
-        Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index,strcat("# ",[atom(Angle_index(count_a,1)).type],"-",[atom(Angle_index(count_a,2)).type],"-",[atom(Angle_index(count_a,3)).type]," ",num2str(round(Angle_index(count_a,4),2)))};
-=======
         Angle_order(count_a,:)= {count_a+prev_angle_num, angle_types(count_a)+prev_angle_types, Angle_index(count_a,1)+prev_atom_index,Angle_index(count_a,2)+prev_atom_index,Angle_index(count_a,3)+prev_atom_index,strcat("# ",[atom(Angle_index(count_a,1)).type],"-",[atom(Angle_index(count_a,2)).type],"-",[atom(Angle_index(count_a,3)).type]," ",num2str(round2dec(Angle_index(count_a,4),2)))};
->>>>>>> ae77844 (Updated 5 Feb 2025)
         fprintf(fid, '\t%-i\t\t%-i\t\t%-i\t\t%-i\t\t%-i\t\t\t%s\n', Angle_order{count_a,:});
         count_a = count_a + 1;
     end

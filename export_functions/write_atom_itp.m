@@ -64,9 +64,9 @@ if nargin>5
 
     if strcmpi(ffname,'minff')
         % minff_param(sort(unique([atom.type])),watermodel);
-        % if ~isfield(atom,'charge')
-        % atom=charge_clayff_atom(atom,Box_dim,{'Al' 'Alt' 'Fe2' 'Feo' 'Fee' 'Fet' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Sit' 'Sio' 'H'},[1.782 1.782 0.64 1.14 1.14 1.14 1 1 1 1.562 1.562 1.884 1.884 0.4]);
-        % end
+        if ~isfield(atom,'charge')
+            atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+        end
         atom = mass_atom(atom);
         Total_charge=sum([atom.charge])
         round2dec(Total_charge,5)
@@ -143,7 +143,7 @@ else
     % minff_param(sort(unique([atom.type])),'OPC3');
     atom = mass_atom(atom);
     if ~isfield(atom,'charge')
-        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+            atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
     Total_charge=sum([atom.charge])
     round2dec(Total_charge,5)

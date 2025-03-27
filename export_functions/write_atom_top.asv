@@ -1,9 +1,9 @@
-%% write_atom_top.m
-% * This script creates and prints a gromacs .top file
+%% write_atom_itp.m
+% * This script creates and prints a gromacs .itp file
 % * Works for minff, clayff and possibly interface ff with spc, spce or tip3p
 % * The variables explicit_bonds|explicit_angles (1/0) on that are set
 % * between lines ~50-120 for each specific forcefield, determines if the
-% * bond and angle terms are added to the .top file.
+% * bond and angle terms are added to the .itp file.
 % *
 % * In the examples below, the first cutoff (1.25) represents max bond
 % * distance to any H. The second cutoff (2.25) represents the max bond
@@ -18,14 +18,14 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_top(atom,Box_dim,filename) % Basic input arguments
-% # write_atom_top(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
-% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
-% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'minff','opc3')
-% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
-% # write_atom_top(atom,Box_dim,filename,1.25,2.25,'interface','tip3p',1)
+% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
+% # write_atom_itp(atom,Box_dim,filename,1.25,1.25) % Default forcefield is clayff_2004
+% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e')
+% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'minff','opc3')
+% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
+% # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p',1)
 
-function write_atom_top(atom,Box_dim,filename,varargin)
+function write_atom_itp(atom,Box_dim,filename,varargin)
 
 format long
 nAtoms=size(atom,2);
@@ -240,7 +240,7 @@ Bond_index = unique(Bond_index,'rows','stable');
 % end
 
 %
-file_title = 'Gromacs awesome top file'; % Header in output file
+file_title = 'Gromacs awesome itp file'; % Header in output file
 molecule_name = char([atom(1).resname]); % molecule name
 Atom_label = unique([atom.type]);
 
@@ -251,7 +251,7 @@ fprintf(fid, '%s % s\n',';','File written by MHolmboe (michael.holmboe@umu.se)')
 fprintf(fid, '\n');
 fprintf(fid, '%s\n','[ moleculetype ]');
 fprintf(fid, '%s % s\n',';','molname   nrexcl');
-% fprintf(fid, '%s       %d\n',strrep(molecule_name(1:3),'.top',''),nrexcl);
+% fprintf(fid, '%s       %d\n',strrep(molecule_name(1:3),'.itp',''),nrexcl);
 fprintf(fid, '%s       %d\n',strcat(molecule_name(1:3),MolId),nrexcl);
 fprintf(fid, '\n');
 fprintf(fid, '%s\n','[ atoms ]');
@@ -406,7 +406,7 @@ if numel(Angle_order)>0
 end
 
 if exist('Total_charge','var')
-    disp('Total charge for the .top file was')
+    disp('Total charge for the .itp file was')
     round2dec(Total_charge,5)
 end
 
@@ -596,8 +596,8 @@ fclose(fid);
 [atom(strcmp([atom.type],{'Ow'})).type]=deal({'OW'});
 [atom(strcmp([atom.type],{'Hw'})).type]=deal({'HW'});
 
-atom_top=atom;
-assignin('caller','atom_top',atom_top);
+atom_itp=atom;
+assignin('caller','atom_itp',atom_itp);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
 assignin('caller','nBonds',nBonds);
@@ -608,4 +608,6 @@ assignin('caller','nAngles',nAngles);
 % assignin('caller','Masses',Masses);
 
 % toc
+
+
 
