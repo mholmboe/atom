@@ -56,6 +56,8 @@ else
     xy=0;xz=0;yz=0;
 end
 
+disp('Calculating distances')
+
 close_count=1;
 Bond_index=single(zeros(4*size(XYZ_data,1),3)); % use of single instead of double
 Angle_index=single(zeros(4*size(XYZ_data,1),4)); % use of single instead of double
@@ -176,7 +178,7 @@ for i = 1:size(XYZ_data,1)
                 close_count=close_count+1;
                 overlap_index=[overlap_index; {i bond_in(j) r(bond_in(j)) XYZ_labels(i) XYZ_labels(bond_in(j)) XYZ_data(i,:) XYZ_data(bond_in(j),:)}];
             end
-            
+
             if r(bond_in(j)) > max_distance/3 && r(bond_in(j)) < max_distance %strncmpi(XYZ_labels(i),strtrim(XYZ_labels(j)),1) == 0;
                 if strncmpi(strtrim(XYZ_labels(i)),{'OW'},2)% || strncmpi(strtrim(XYZ_labels(bond_in(j))),{'OW'},2); % < bond_in(j) && ismember(XYZ_labels(i),{'Ow','Hw','OW','HW','HW1','HW2'}) > 0;
                     if bond_in(j) > i && bond_in(j) < i+3 %strncmpi(strtrim(XYZ_labels(i)),{'Ow'},2) && bond_in(j) > i && bond_in(j) < i+3;
@@ -186,7 +188,7 @@ for i = 1:size(XYZ_data,1)
                         b=b+1;
                         if r(bond_in(j)) < rmaxshort % This should always be true right?
                             Neigh_ind(n,1)= bond_in(j);
-                            Neigh_vec(n,1:3) = [rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
+                            Neigh_vec(n,1:3) = -[rx(bond_in(j)) ry(bond_in(j)) rz(bond_in(j))];
                             n=n+1;
                         end
                     end
@@ -281,7 +283,7 @@ Angle_index(~any(Angle_index,2),:) = [];
 nBonds=size(Bond_index,1);
 nAngles=size(Angle_index,1);
 
-if nargin > 4 %% This will print a whole lot more info to the calling workspace
+try
     % Set a cutoff vector
     rmax=repmat(max_neigh_distance,nAtoms,1);
     % Reduce the cutoff vector for H - X
@@ -323,8 +325,10 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
             end
         end
     end
-    i
-
+catch
+    disp('Could not assign either bonds, neighbours or angles...')
+end
+if nargin > 4 %% This will print a whole lot more info to the calling workspace
     %%%%%%%%%%
 
     Atom_labels=unique([atom.type]);
@@ -411,15 +415,15 @@ end
 % [Y,I]=sort(Bond_index(:,2));
 % Bond_index=Bond_index(I,:);
 % Bond_index = unique(Bond_index,'rows','stable');
-% 
+%
 % [Y,I]=sort(Bond_index(:,1));
 % Bond_index=Bond_index(I,:);
 % Bond_index = unique(Bond_index,'rows','stable');
-% 
+%
 % [Y,I]=sort(Angle_index(:,1));
 % Angle_index=Angle_index(I,:);
 % Angle_index = unique(Angle_index,'rows','stable');
-% 
+%
 % [Y,I]=sort(Angle_index(:,2));
 % Angle_index=Angle_index(I,:);
 % Angle_index = unique(Angle_index,'rows','stable');

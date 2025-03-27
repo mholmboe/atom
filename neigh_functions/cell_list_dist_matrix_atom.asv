@@ -264,11 +264,7 @@ for cID = 1:numCells
     end
 end
 
-dist_matrix(abs(dist_matrix) <= 1E-7) = 0;
-dist_list(abs(dist_list) <= 1E-7) = 0;
-X_dist(abs(X_dist) <= 1E-7) = 0;
-Y_dist(abs(Y_dist) <= 1E-7) = 0;
-Z_dist(abs(Z_dist) <= 1E-7) = 0;
+bond_list(abs(bond_list) <= tolerance) = 0;
 
 assignin('caller','pair',bond_list);
 assignin('caller','dist',dist_list);

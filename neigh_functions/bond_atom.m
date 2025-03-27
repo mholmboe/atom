@@ -43,11 +43,13 @@ end
 
 Radiiproperties=load('general_functions/Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,rmaxshort,2.25);
-
-disp('Calculating the distance matrix with cell lists')
-% dist_matrix = dist_matrix_atom(atom,Box_dim); % To calculate a full distance matrix
-[dist_matrix,bond_list, dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,rmaxshort,rmaxlong);
-
+if size(atom,2)<10000
+    disp('Calculating the full distance matrix')
+    dist_matrix = dist_matrix_atom(atom,Box_dim); % To calculate a full distance matrix
+else
+    disp('Calculating the distance matrix with cell lists')
+    [dist_matrix,bond_list, dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,rmaxshort,rmaxlong);
+end
 
 XYZ_radii=zeros(length(XYZ_labels),1);
 XYZ_formalcharge=zeros(length(XYZ_labels),1);

@@ -67,9 +67,9 @@ if size(Box_dim,2)==3
 
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         % if mod(i,1000)==1
         %     if i > 1
@@ -105,9 +105,9 @@ else % if cell is triclinic, and this part is not actually tested yet...
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         % if mod(i,1000)==1
         %     if i > 1
