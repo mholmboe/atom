@@ -1,13 +1,13 @@
 
 # Atomistic Topology Operations in MATLAB
 
-MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations. Now also compatible with recent versions of [**OCTAVE**](https://octave.org), a free alternative to [**MATLAB**](www.mathworks.com). 
+MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations. Now also compatible with recent versions of [**OCTAVE**](https://octave.org), a free alternative to [**MATLAB**](www.mathworks.com). A lightweight version of this toolbox has also been implemented in python [**atomipy**](github.com/mholmboe/atomipy), but can currently mostly be used to generate topology files for the [**MINFF**](github.com/mholmboe/minff) forcefield.
 
 ## Overview
-The purpose of the atom scripts and functions is to automate and enable the construction and analysis of complex and anisotropic, multicomponent molecular systems, and generate topological information with bonds, angles, and (optionally) dihedrals.
+The purpose of the atom scripts and functions is to automate and enable the construction and analysis of complex and anisotropic, multicomponent molecular systems, and generate topological information with bonds, angles, and (optionally) dihedrals. It is hence particularly useful for settings up simulations using the  [**MINFF**](github.com/mholmboe/minff) of CLAYFF forcefields.
 
 Download the whole function library from the:
-- [Matlab File Exchange](https://se.mathworks.com/matlabcentral/fileexchange/59622-atom)
+- [MATLAB File Exchange](https://se.mathworks.com/matlabcentral/fileexchange/59622-atom)
 - [GitHub](https://github.com/mholmboe/atom)
 
 For a comprehensive list of the different functions, look here
@@ -36,7 +36,11 @@ open import_atom; % Tip: see the function file/s for their example input argumen
 
 mineral = replicate_atom(oneunitcell, Box_dim, [6 4 1]); % Replicate the unit cell 6x4x1 times 
 
-mineral_ff = minff_atom(mineral, Box_dim); % Assign, for instance, the atom names according to the MINFF or CLAYFF (INTERFACE may work) force fields 
+mineral_ff = minff_atom(mineral, Box_dim); % Assign, for instance, the atom names according to the MINFF force field
+
+% or
+
+mineral_ff = clayff{2004}_atom(mineral, Box_dim); % Assign, for instance, the atom names according to the expanded CLAYFF or original CLAYFF2004 (INTERFACE may work) force fields 
 
 ions = ionize_atom(arguments); % Add ions homogeneously or with preference to a surface 
 
