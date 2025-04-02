@@ -120,6 +120,11 @@ if nargin>2
     Charge=unique([atom(at_ind).charge],'stable');
 end
 
+ind_Hw=strncmpi([atom.type],'Hw',2);
+ind_Ow=strncmpi([atom.type],'Ow',2);
+[atom(ind_Hw).charge]=deal(0.447585);
+[atom(ind_Ow).charge]=deal(-0.89517);
+
 % atom = composition_atom(atom);
 
 disp('Total charge')
