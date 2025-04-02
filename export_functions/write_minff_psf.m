@@ -1,15 +1,12 @@
 %% write_minff_psf.m
 % * This script creates and prints a .psf file
 % * Works for minff.
-% * The variables explicit_bonds|explicit_angles (1/0) on that are set
-% * between lines ~50-120 for each specific forcefield, determines if the
-% * bond and angle terms are added to the .itp file.
 % *
 % * In the examples below, the first cutoff (1.25) represents max bond
 % * distance to any H. The second cutoff (2.45) represents the max bond
 % * distance between any non-H atomtypes, like Si-O.
 % * Additional commands governing the selection of bonds/angles can be
-% * found on lines ~140-175, and 180-200 for angles
+% * found on lines ~91-126, and 134-150 for angles
 %
 %% Version
 % 3.00
@@ -61,7 +58,7 @@ for i=1:size(Atom_labels,2)
 end
 
 if ~isfield(atom,'charge')
-    atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+    atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 end
 Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)
