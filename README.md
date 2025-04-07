@@ -1,10 +1,10 @@
 
 # Atomistic Topology Operations in MATLAB
 
-MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations. Now also compatible with recent versions of [**OCTAVE**](https://octave.org), a free alternative to [**MATLAB**](www.mathworks.com). A lightweight version of this toolbox has also been implemented in python [**atomipy**](github.com/mholmboe/atomipy), but can currently mostly be used to generate topology files for the [**MINFF**](github.com/mholmboe/minff) forcefield.
+MATLAB scripts for building and manipulating molecular simulation cells to be used with, for instance, molecular dynamics or Monte Carlo simulations. Now also compatible with recent versions of [**OCTAVE**](https://octave.org), a free alternative to [**MATLAB**](www.mathworks.com). A lightweight version of this toolbox has also been implemented in python [**atomipy**](https://github.com/mholmboe/atomipy), but can currently mostly be used to generate topology files for the [**MINFF**](https://github.com/mholmboe/minff) forcefield.
 
 ## Overview
-The purpose of the atom scripts and functions is to automate and enable the construction and analysis of complex and anisotropic, multicomponent molecular systems, and generate topological information with bonds, angles, and (optionally) dihedrals. It is hence particularly useful for settings up simulations using the  [**MINFF**](github.com/mholmboe/minff) of CLAYFF forcefields, and writing corresponding structure (.pdb|.gro|.xyz) and topology files (.itp|.psf|.data) for simulations in typical MC/MD packages, such as Gromacs, RASPA2, as well as NAMD, LAMMPS (less tested).
+The purpose of the atom scripts and functions is to automate and enable the construction and analysis of complex and anisotropic, multicomponent molecular systems, and generate topological information with bonds, angles, and (optionally) dihedrals. It is hence particularly useful for settings up simulations using the  [**MINFF**](https://github.com/mholmboe/minff) of CLAYFF forcefields, and writing corresponding structure (.pdb|.gro|.xyz) and topology files (.itp|.psf|.data) for simulations in typical MC/MD packages, such as Gromacs, RASPA2, as well as NAMD, LAMMPS (less tested).
 
 Download the whole function library from the:
 - [MATLAB File Exchange](https://se.mathworks.com/matlabcentral/fileexchange/59622-atom)
@@ -17,7 +17,7 @@ See also the link to the:
 - [HTML documentation](http://moleculargeo.chem.umu.se/wp-content/uploads/file-manager/atom/Documentation/)
 
 ## Installation
-Just download the [**atom Toolbox**](github.com/mholmboe/atom) and put it in the MATLAB (or OCTAVE) path.
+Just download the [**atom Toolbox**](https://github.com/mholmboe/atom) and put it in the MATLAB (or OCTAVE) path.
 
 ### Prerequisites
 - [**MATLAB**](www.mathworks.com) or [**OCTAVE**](https://octave.org)
