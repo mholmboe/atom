@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_minff_psf.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="write_minff_psf.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -81,15 +81,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ul>
 <li>This script creates and prints a .psf file</li>
-<li>Works for minff.</li>
-<li>The variables explicit_bonds|explicit_angles (1/0) on that are set</li>
-<li>between lines ~50-120 for each specific forcefield, determines if the</li>
-<li>bond and angle terms are added to the .itp file. *</li>
+<li>Works for minff. *</li>
 <li>In the examples below, the first cutoff (1.25) represents max bond</li>
 <li>distance to any H. The second cutoff (2.45) represents the max bond</li>
 <li>distance between any non-H atomtypes, like Si-O.</li>
 <li>Additional commands governing the selection of bonds/angles can be</li>
-<li>found on lines ~140-175, and 180-200 for angles</li>
+<li>found on lines ~91-126, and 134-150 for angles</li>
 </ul>
 </div>
 <!--/introduction-->
@@ -169,7 +166,7 @@ Masses=[];
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
-    atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Fe3e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+	atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alo'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo3'</span> <span class="string">'Fet3'</span> <span class="string">'Fee3'</span> <span class="string">'Feo2'</span> <span class="string">'Fet2'</span> <span class="string">'Fee2'</span> <span class="string">'Fs'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 <span class="keyword">end</span>
 Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)
@@ -406,15 +403,12 @@ assignin(<span class="string">'caller'</span>,<span class="string">'psf_atom'</s
 %% write_minff_psf.m
 % * This script creates and prints a .psf file
 % * Works for minff.
-% * The variables explicit_bonds|explicit_angles (1/0) on that are set
-% * between lines ~50-120 for each specific forcefield, determines if the
-% * bond and angle terms are added to the .itp file.
 % *
 % * In the examples below, the first cutoff (1.25) represents max bond
 % * distance to any H. The second cutoff (2.45) represents the max bond
 % * distance between any non-H atomtypes, like Si-O.
 % * Additional commands governing the selection of bonds/angles can be
-% * found on lines ~140-175, and 180-200 for angles
+% * found on lines ~91-126, and 134-150 for angles
 %
 %% Version
 % 3.00
@@ -466,7 +460,7 @@ for i=1:size(Atom_labels,2)
 end
 
 if ~isfield(atom,'charge')
-    atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+	atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 end
 Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)

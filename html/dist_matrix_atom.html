@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>dist_matrix.m</title>
+<title>dist_matrix_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="dist_matrix_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,7 +76,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h1>dist_matrix.m</h1>
+<h1>dist_matrix_atom.m</h1>
 <!--introduction-->
 <div>
 <ul>
@@ -165,9 +165,9 @@ i=1;
 
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         <span class="comment">% if mod(i,1000)==1</span>
         <span class="comment">%     if i &gt; 1</span>
@@ -203,9 +203,9 @@ i=1;
         <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); <span class="comment">% distance calc.</span>
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         <span class="comment">% if mod(i,1000)==1</span>
         <span class="comment">%     if i &gt; 1</span>
@@ -234,7 +234,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</spa
 </div>
 <!--
 ##### SOURCE BEGIN #####
-%% dist_matrix.m
+%% dist_matrix_atom.m
 % * This function calculates the distance matrix from the atom struct, or
 % the distances between atom1 and atom2
 % * Note that there is also and cell_list_dist_matrix_atom function that
@@ -303,9 +303,9 @@ if size(Box_dim,2)==3
 
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         % if mod(i,1000)==1
         %     if i > 1
@@ -341,9 +341,9 @@ else % if cell is triclinic, and this part is not actually tested yet...
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         r = sqrt( rx(:,1).^2 + ry(:,1).^2 + rz(:,1).^2 ); % distance calc.
         dist_matrix(:,i)=r;
-        X_dist(:,i)=rx;
-        Y_dist(:,i)=ry;
-        Z_dist(:,i)=rz;
+        X_dist(:,i)=-rx;
+        Y_dist(:,i)=-ry;
+        Z_dist(:,i)=-rz;
 
         % if mod(i,1000)==1
         %     if i > 1

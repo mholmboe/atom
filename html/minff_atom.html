@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>minff_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="minff_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -158,17 +158,17 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
     All_Neighbours=[];
     <span class="comment">% Heal broken bonds in the structure in steps, start from the center of the particle</span>
     <span class="keyword">if</span> assignment_run==1
-        Heal_Al=0 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_Al=0; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==2
-        Heal_Mgo=0 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_Mgo=0; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==3
-        Heal_Feo=0 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_Feo=0; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==4
-        Heal_Si=1 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_Si=1; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==5
-        Heal_O=1 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_O=1; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==6
-        Heal_H=0 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_H=0; <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==7
         Add_H=1 <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==8
@@ -306,7 +306,7 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                 <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Al'</span>},2) <span class="comment">% Al</span>
 
                     <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Al O O O O O O</span>
-                        atom(i).fftype={<span class="string">'Al'</span>};
+                        atom(i).fftype={<span class="string">'Alo'</span>};
                     <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 5 <span class="comment">% Al O O O O</span>
                         i
                         atom(i).fftype={<span class="string">'Ale'</span>}
@@ -422,18 +422,30 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                 <span class="comment">% If the element is Fe</span>
                 <span class="keyword">if</span> strncmpi(atom(i).type,{<span class="string">'Fe'</span>},2) <span class="comment">% Fe</span>
                     <span class="keyword">if</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 6 <span class="comment">% Fe O O O O O O</span>
-                        <span class="keyword">if</span> sum([atom(i).neigh.dist])&lt;12.7
-                            atom(i).fftype={<span class="string">'Feo'</span>};
-                        <span class="keyword">else</span>
-                            atom(i).fftype={<span class="string">'Fe2'</span>};
+
+                        <span class="keyword">if</span> mean([atom(i).neigh.dist])&gt;2.05 &amp;&amp; mean([atom(i).neigh.dist]&lt;2.1)
+                            disp(<span class="string">'Ave oct Fe-O distance is large..'</span>)
+                            mean([atom(i).neigh.dist])
+                            <span class="keyword">if</span> mean([atom(i).neigh.dist])&lt;2.07
+                                disp(<span class="string">'Guessing its Fe3+..'</span>)
+                            <span class="keyword">else</span>
+                                disp(<span class="string">'Guessing its Fe2+..'</span>)
+                            <span class="keyword">end</span>
                         <span class="keyword">end</span>
+
+                        <span class="keyword">if</span> mean([atom(i).neigh.dist])&lt;2.07
+                            atom(i).fftype={<span class="string">'Feo3'</span>};
+                        <span class="keyword">else</span>
+                            atom(i).fftype={<span class="string">'Feo2'</span>};
+                        <span class="keyword">end</span>
+
                     <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 5 <span class="comment">% Fe O O O O</span>
-                        atom(i).fftype={<span class="string">'Fee'</span>};
+                        atom(i).fftype={<span class="string">'Fee3'</span>};
                     <span class="keyword">elseif</span> sum(strncmp({<span class="string">'O'</span>},[atom(i).neigh.type],1)) == 4 <span class="comment">% Fe O O O O</span>
                         <span class="keyword">if</span> sum([atom(i).neigh.dist])&lt;7.5
-                            atom(i).fftype={<span class="string">'Fet'</span>};
+                            atom(i).fftype={<span class="string">'Fet3'</span>};
                         <span class="keyword">else</span>
-                            atom(i).fftype={<span class="string">'Fe2'</span>};
+                            atom(i).fftype={<span class="string">'Fet2'</span>};
                         <span class="keyword">end</span>
                     <span class="keyword">elseif</span> nNeigh &gt; 6
                         disp(<span class="string">'Fe atom over coordinated'</span>)
@@ -775,7 +787,7 @@ temp=element_atom(atom);
     [atom(ind_Hw2).type]=deal({<span class="string">'HW2'</span>});
 <span class="keyword">end</span>
 
-atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Fe3e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alo'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo3'</span> <span class="string">'Fet3'</span> <span class="string">'Fee3'</span> <span class="string">'Feo2'</span> <span class="string">'Fet2'</span> <span class="string">'Fee2'</span> <span class="string">'Fs'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 <span class="keyword">if</span> abs(round2dec(sum([atom.charge])) - sum([atom.charge]))&gt;0.0001
     disp(<span class="string">'Initial total charge!'</span>)
@@ -837,8 +849,8 @@ i=1;
         All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
     <span class="keyword">else</span>
 
-<span class="keyword">end</span>
-All_Neighbours(i,3)
+    <span class="keyword">end</span>
+    All_Neighbours(i,3)
     All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
     i=i+1;
 <span class="keyword">end</span>
@@ -922,17 +934,17 @@ for assignment_run=heal_iterations
     All_Neighbours=[];
     % Heal broken bonds in the structure in steps, start from the center of the particle
     if assignment_run==1
-        Heal_Al=0 % 1 for yes and 0 for no
+        Heal_Al=0; % 1 for yes and 0 for no
     elseif assignment_run==2
-        Heal_Mgo=0 % 1 for yes and 0 for no
+        Heal_Mgo=0; % 1 for yes and 0 for no
     elseif assignment_run==3
-        Heal_Feo=0 % 1 for yes and 0 for no
+        Heal_Feo=0; % 1 for yes and 0 for no
     elseif assignment_run==4
-        Heal_Si=1 % 1 for yes and 0 for no
+        Heal_Si=1; % 1 for yes and 0 for no
     elseif assignment_run==5
-        Heal_O=1 % 1 for yes and 0 for no
+        Heal_O=1; % 1 for yes and 0 for no
     elseif assignment_run==6
-        Heal_H=0 % 1 for yes and 0 for no
+        Heal_H=0; % 1 for yes and 0 for no
     elseif assignment_run==7
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==8
@@ -1070,7 +1082,7 @@ for assignment_run=heal_iterations
                 if strncmpi(atom(i).type,{'Al'},2) % Al
 
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
-                        atom(i).fftype={'Al'};
+                        atom(i).fftype={'Alo'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
                         i
                         atom(i).fftype={'Ale'}
@@ -1186,18 +1198,30 @@ for assignment_run=heal_iterations
                 % If the element is Fe
                 if strncmpi(atom(i).type,{'Fe'},2) % Fe
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Fe O O O O O O
-                        if sum([atom(i).neigh.dist])<12.7
-                            atom(i).fftype={'Feo'};
-                        else
-                            atom(i).fftype={'Fe2'};
+
+                        if mean([atom(i).neigh.dist])>2.05 && mean([atom(i).neigh.dist]<2.1)
+                            disp('Ave oct Fe-O distance is large..')
+                            mean([atom(i).neigh.dist])
+                            if mean([atom(i).neigh.dist])<2.07
+                                disp('Guessing its Fe3+..')
+                            else
+                                disp('Guessing its Fe2+..')
+                            end
                         end
+
+                        if mean([atom(i).neigh.dist])<2.07
+                            atom(i).fftype={'Feo3'};
+                        else
+                            atom(i).fftype={'Feo2'};
+                        end
+                        
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Fe O O O O
-                        atom(i).fftype={'Fee'};
+                        atom(i).fftype={'Fee3'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Fe O O O O
                         if sum([atom(i).neigh.dist])<7.5
-                            atom(i).fftype={'Fet'};
+                            atom(i).fftype={'Fet3'};
                         else
-                            atom(i).fftype={'Fe2'};
+                            atom(i).fftype={'Fet2'};
                         end
                     elseif nNeigh > 6
                         disp('Fe atom over coordinated')
@@ -1537,7 +1561,7 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')
@@ -1599,8 +1623,8 @@ while i<size(All_Neighbours,1)+1
         All_Neighbours{i,2}=strcat(All_Neighbours{i,2},num2str(n));
     else
 
-end
-All_Neighbours(i,3)
+    end
+    All_Neighbours(i,3)
     All_Neighbours(i,6)={unique([atom(strcmp([atom.type],All_Neighbours(i,3))).charge])};
     i=i+1;
 end

@@ -100,6 +100,7 @@
 % # <replace_string.html replace_string(filename_in,filename_out,old_string,new_string)> % Replace strings in files.
 
 %% Neighbor/distance functions
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <bond_atom.html bond_atom(atom,Box_dim,max_long_dist)> % This function tries to assign all bonds to a Bond_matrix and a Bond_index variable.
 % # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,varargin)> % This function tries to find all bonds and angles of the atom struct 'more' is an optional varargin argument.
 % # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom(atom,Box_dim,varargin)> % This function tries to find all bonds, angles, and dihedrals of the atom struct. Rmaxshort and Rmaxlong as well as 'more' is an optional varargin argument.
@@ -251,6 +252,7 @@
 % # <tip3p2tip4p.html tip3p2tip4p(filename)> % Convert a .gro file with tip3p water to tip4p water.
 
 %% Various distance and bond functions
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <bond_angle_atom.html bond_angle_atom(atom,Box_dim,max_short_dist,max_long_dist,varargin)> % Find all bonds and angles of the atom struct. 'More' is an optional argument.
 % # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom(atom,Box_dim,varargin)> % Find all bonds, angles, and dihedrals of the atom struct. Optional arguments include Rmaxshort and Rmaxlong.
 % # <bond_angle_type.html bond_angle_type(atom1,atom2,Box_dim,rmin,rmax,angle_limit,varargin)> % Find all bonds and angles of the atom types.
@@ -266,6 +268,7 @@
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
 
 %% Other general functions
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % Retrieve atomic scattering factors vs. 2theta.
@@ -372,6 +375,7 @@
 % # <smear_charge.html smear_charge(atom,Box_dim,varargin)> % Distributes charge across atoms, possibly using charge smearing techniques.
 
 %% minff, with atomtypes by MHolmboe
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <minff_atom.html minff_atom(atom,Box_dim,varargin)> % Assign minff atom types with edge healing.
 % # <charge_minff_atom.html charge_minff_atom(atom,Box_dim,varargin)> % Set the charge for MINFF atom types.
 

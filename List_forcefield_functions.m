@@ -10,6 +10,7 @@
 %% Custom topology tools
 
 %% minff, with atomtypes by MHolmboe
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <minff_atom.html minff_atom(atom,Box_dim,varargin)> % Assign minff atom types with edge healing.
 % # <charge_minff_atom.html charge_minf_atom(atom,Box_dim,varargin)> % Set the charge for MINFF atom types.
 

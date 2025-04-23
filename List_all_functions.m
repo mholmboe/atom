@@ -24,6 +24,7 @@
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
 % # <adjust_H_atom.html adjust_H_atom(atom,Box_dim)> % Adjust hydrogen atoms in the atom struct.
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.
+% # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <atom_variable.html atom> % The main matlab struct variable
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % Retrieve atomic scattering factors vs. 2theta.
 % # <autofit_2xljcoul.html autofit_2xljcoul(atom,Box_dim,varargin)> % Automated fitting of 2x Lennard-Jones and Coulomb parameters.

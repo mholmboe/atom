@@ -412,21 +412,21 @@ if nargin > 4 %% This will print a whole lot more info to the calling workspace
 
 end
 
-% [Y,I]=sort(Bond_index(:,2));
-% Bond_index=Bond_index(I,:);
-% Bond_index = unique(Bond_index,'rows','stable');
-%
-% [Y,I]=sort(Bond_index(:,1));
-% Bond_index=Bond_index(I,:);
-% Bond_index = unique(Bond_index,'rows','stable');
-%
-% [Y,I]=sort(Angle_index(:,1));
-% Angle_index=Angle_index(I,:);
-% Angle_index = unique(Angle_index,'rows','stable');
-%
-% [Y,I]=sort(Angle_index(:,2));
-% Angle_index=Angle_index(I,:);
-% Angle_index = unique(Angle_index,'rows','stable');
+[Y,I]=sort(Bond_index(:,2));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,1));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,2));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
 
 atom=order_attributes(atom);
 

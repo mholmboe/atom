@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>charge_minff_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="charge_minff_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -136,8 +136,8 @@ nAtoms=size(atom,2);
     Ox_ind=find(strncmpi([atom.type],<span class="string">'O'</span>,1)); <span class="comment">% setdiff(1:nAtoms,Met_ind);</span>
     Fs_ind=find(strncmpi([atom.type],<span class="string">'Fs'</span>,2)); <span class="comment">% setdiff(1:nAtoms,Met_ind);</span>
 
-    atom=bond_angle_atom(atom,Box_dim,1.25,2.25);<span class="comment">%,'more');</span>
-    <span class="comment">%atom = bond_atom(atom,Box_dim,2.45,0.6);</span>
+    <span class="comment">% atom = bond_angle_atom(atom,Box_dim,1.25,2.45);%,'more');</span>
+    atom = bond_atom(atom,Box_dim,2.45,0.6);
 
     <span class="keyword">if</span> numel(Ox_ind) &gt;= size(Bond_index,1)
         atom = bond_atom(atom,Box_dim,2.45,0.6);
@@ -156,6 +156,18 @@ nAtoms=size(atom,2);
                         Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fe2'</span>,3)
                         Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Feo2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fet2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fee2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Feo3'</span>,4)
+                        Z=3;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fet3'</span>,4)
+                        Z=3;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fee3'</span>,4)
+                        Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fe'</span>,2)
                         Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'F'</span>,1) <span class="comment">% Fs</span>
@@ -194,6 +206,18 @@ nAtoms=size(atom,2);
                         Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fe2'</span>,3)
                         Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Feo2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fet2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fee2'</span>,4)
+                        Z=2;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Feo3'</span>,4)
+                        Z=3;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fet3'</span>,4)
+                        Z=3;
+                    <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fee3'</span>,4)
+                        Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Fe'</span>,2)
                         Z=3;
                     <span class="keyword">elseif</span> strncmpi([atom(bond_ind(j)).type],<span class="string">'Ti'</span>,2)
@@ -222,6 +246,11 @@ nAtoms=size(atom,2);
     <span class="comment">%     Atom_label</span>
     Charge=unique([atom(at_ind).charge],<span class="string">'stable'</span>);
 <span class="keyword">end</span>
+
+ind_Hw=strncmpi([atom.type],<span class="string">'Hw'</span>,2);
+ind_Ow=strncmpi([atom.type],<span class="string">'Ow'</span>,2);
+[atom(ind_Hw).charge]=deal(0.447585);
+[atom(ind_Ow).charge]=deal(-0.89517);
 
 <span class="comment">% atom = composition_atom(atom);</span>
 
@@ -278,8 +307,8 @@ if nargin>2
     Ox_ind=find(strncmpi([atom.type],'O',1)); % setdiff(1:nAtoms,Met_ind);
     Fs_ind=find(strncmpi([atom.type],'Fs',2)); % setdiff(1:nAtoms,Met_ind);
 
-    atom=bond_angle_atom(atom,Box_dim,1.25,2.25);%,'more');
-    %atom = bond_atom(atom,Box_dim,2.45,0.6);
+    % atom = bond_angle_atom(atom,Box_dim,1.25,2.45);%,'more');
+    atom = bond_atom(atom,Box_dim,2.45,0.6);
 
     if numel(Ox_ind) >= size(Bond_index,1)
         atom = bond_atom(atom,Box_dim,2.45,0.6);
@@ -298,6 +327,18 @@ if nargin>2
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe2',3)
                         Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee3',4)
+                        Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'F',1) % Fs
@@ -336,6 +377,18 @@ if nargin>2
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe2',3)
                         Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee3',4)
+                        Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Ti',2)
@@ -364,6 +417,11 @@ if nargin>2
     %     Atom_label
     Charge=unique([atom(at_ind).charge],'stable');
 end
+
+ind_Hw=strncmpi([atom.type],'Hw',2);
+ind_Ow=strncmpi([atom.type],'Ow',2);
+[atom(ind_Hw).charge]=deal(0.447585);
+[atom(ind_Ow).charge]=deal(-0.89517);
 
 % atom = composition_atom(atom);
 

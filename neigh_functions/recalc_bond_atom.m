@@ -43,12 +43,12 @@ elseif nargin>5
     rmaxlong=varargin{4};
 end
 
-disp('Calculating the distance matrix')
 
-
-if size(atom,2)>50000 && numel(Box_dim)<9
+if size(atom,2)>20000 && numel(Box_dim)<9
+    disp('Calculating the distance matrix with cell lists')
     dist_matrix = cell_list_dist_matrix_atom(atom,Box_dim);%,1.25,4);
-elseif size(atom,2) < 50000
+elseif size(atom,2) < 20000
+        disp('Calculating the full distance matrix')
     dist_matrix = dist_matrix_atom(atom,Box_dim);%,1.25,4);
 else
     disp('The nAtoms in the atoms truct may be too large, try reducing the number of atoms?')

@@ -172,7 +172,7 @@ else
     % minff_param(sort(unique([atom.type])),'OPC3');
     atom = mass_atom(atom);
     if ~isfield(atom,'charge')
-        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+		atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
     Total_charge=sum([atom.charge])
     round2dec(Total_charge,5)
@@ -194,38 +194,132 @@ nAngles
 nDihedrals
 
 if nBonds>0
-    % Calculate the bond_types
-    bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
-    % b1=join([bond_pairs(:,1) bond_pairs(:,2)]); % Does not work in older MATLAB versions?
-    b1=strcat(bond_pairs(:,1),{' '},bond_pairs(:,2));
-    b1=unique(b1,'stable')
-    % b2=join([bond_pairs(:,2) bond_pairs(:,1)]); % Does not work in older MATLAB versions?
-    b2=strcat(bond_pairs(:,2),{' '},bond_pairs(:,1));
-    b2=unique(b2,'stable');
+
+    %% To reduce the number of bond types
+    bond_pairs=sort([[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]']);
+
+    bond_info1=[];
+    for i = 1:size(bond_pairs,1)
+        
+        bond_info1{i,1} = sprintf('%s %s', bond_pairs{i,1}, bond_pairs{i,2});
+    end
+    b1=bond_info1;[b1,idxb1]=unique(b1,'stable');
     nbond_types=size(b1,1);
-    bond_pairs=join(bond_pairs);
-    for i=1:size(bond_pairs,1)
-        [ind,bond_types(i)]=ismember(bond_pairs(i),[b1;b2]);
+    for i=1:size(bond_info1,1)
+        [ind,bond_types(i)]=ismember(bond_info1(i),[b1]); %;b2]);
     end
     bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
+
+    bond_coeffs=[1:length(idxb1)]';
+    bond_dist=Bond_index(idxb1,3);
+    bond_kb=Bond_index(idxb1,3);
+    bond_kb(bond_dist>1.25)=kbM;
+    bond_kb(bond_dist<1.25)=kbH;
+
+    bond_dist(bond_dist<1.25)=bHdist;
+    bond_coeffs=[bond_coeffs bond_kb bond_dist];
+
+    % %% To maximize the number of bond types
+    % bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+    % bond_info1=[];%bond_info2=[];
+    % for i = 1:size(bond_pairs,1)
+    %     bond_info1{i,1} = sprintf('%s %s %.3f', bond_pairs{i,1}, bond_pairs{i,2}, Bond_index(i,3));
+    %     % bond_info2{i,1} = sprintf('%s %s %.3f', bond_pairs{i,2}, bond_pairs{i,1}, Bond_index(i,3));
+    % end
+    % b1=bond_info1;[b1,idxb1]=unique(b1,'stable');
+    % % b2=bond_info1;b2=unique(b2,'stable');
+    % nbond_types=size(b1,1);
+    % for i=1:size(bond_info1,1)
+    %     [ind,bond_types(i)]=ismember(bond_info1(i),[b1]); %;b2]);
+    %     % bond_coeffs
+    % end
+    % bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
+    % 
+    % bond_coeffs=[1:length(idxb1)]';
+    % bond_dist=Bond_index(idxb1,3);
+    % bond_kb=Bond_index(idxb1,3);
+    % bond_kb(bond_dist>1.25)=kbM;
+    % bond_kb(bond_dist<1.25)=kbH;
+    % 
+    % bond_dist(bond_dist<1.25)=bHdist;
+    % bond_coeffs=[bond_coeffs bond_kb bond_dist];
+
 else
     nbond_types=0;
 end
 
 if nAngles>0
-    % Calculate the angle_types
-    angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
-    a1=join([angle_triplets(:,1) angle_triplets(:,2) angle_triplets(:,3)]);a1=unique(a1,'stable');
-    a2=join([angle_triplets(:,3) angle_triplets(:,2) angle_triplets(:,1)]);a2=unique(a2,'stable');
+
+     %% To reduce the number of angle types
+    angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]';...
+        [atom(Angle_index(:,3)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,1)).type]'];
+    Angle_index2=[Angle_index(:,1:4);Angle_index(:,[3 2 1 4])];
+
+    
+    angle_endtypes=string(angle_triplets(:,[1,3]));
+    angle_endtypes(:, [1, 2]) = cellstr(angle_endtypes);
+    angle_triplets=[angle_endtypes(:,1) [atom(Angle_index2(:,2)).type]' angle_endtypes(:,2)];
+
+    angle_info1=[];% angle_info2=[];
+    for i = 1:size(angle_triplets,1)
+        angle_info1{i,1} = sprintf('%s %s %s', angle_triplets{i,1}, angle_triplets{i,2}, angle_triplets{i,3});
+    end
+    a1=angle_info1;[a1,idxa1]=unique(a1,'stable');
     nangle_types=size(a1,1);
-    angle_triplets=join(angle_triplets);
-    for i=1:size(angle_triplets,1)
-        [ind,angle_types(i)]=ismember(angle_triplets(i),[a1;a2]);
+    for i=1:size(angle_info1,1)
+        [ind,angle_types(i)]=ismember(angle_info1(i),a1);
     end
     angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
+    selected_Angle_index=Angle_index2(idxa1,1:3);
+    [H_row,H_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_H)));
+    [Hw_row,Hw_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_Hw)));
+    % Angle_index(H_row,1:4)
+
+    angle_coeffs=[1:length(idxa1)]';
+    for i=1:size(idxa1,1)
+        angle_deg(i,1)=mean(Angle_index2(ismember(angle_info1,angle_info1(idxa1(i),:)),4));
+    end
+    
+    angle_ka=angle_deg;
+    angle_ka(:)=KANGLE;
+
+    angle_ka(H_row)=KANGLEH;
+    angle_deg(H_row)=angleH;
+
+    angle_ka(Hw_row)=KANGLE_WAT;
+    angle_deg(Hw_row)=ANGLE_WAT;
+
+    angle_coeffs=[angle_coeffs angle_ka angle_deg];
+
+    % %% To maximize the number of angles
+    % 
+    % angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+    % angle_info1=[];% angle_info2=[];
+    % for i = 1:size(angle_triplets,1)
+    %     angle_info1{i,1} = sprintf('%s %s %s %.2f', angle_triplets{i,1}, angle_triplets{i,2}, angle_triplets{i,3}, Angle_index(i,4));
+    % end
+    % a1=angle_info1;[a1,idxa1]=unique(a1,'stable');
+    % nangle_types=size(a1,1);
+    % for i=1:size(angle_info1,1)
+    %     [ind,angle_types(i)]=ismember(angle_info1(i),a1);
+    % end
+    % angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
+    % selected_Angle_index=Angle_index(idxa1,1:3);
+    % [H_row,H_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_H)));
+    % % Angle_index(H_row,1:4)
+    % 
+    % angle_coeffs=[1:length(idxa1)]';
+    % angle_ka=Angle_index(idxa1,4);
+    % angle_deg=Angle_index(idxa1,4);
+    % angle_ka(:)=KANGLE;
+    % angle_ka(H_row)=KANGLEH;
+    % angle_deg(H_row)=angleH;
+    % angle_coeffs=[angle_coeffs angle_ka angle_deg];
+
 else
     nangle_types=0;
 end
+
 
 if nDihedrals>0
     % Calculate the dihedral_types

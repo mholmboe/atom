@@ -33,8 +33,8 @@ if nargin>2
     Ox_ind=find(strncmpi([atom.type],'O',1)); % setdiff(1:nAtoms,Met_ind);
     Fs_ind=find(strncmpi([atom.type],'Fs',2)); % setdiff(1:nAtoms,Met_ind);
 
-    atom=bond_angle_atom(atom,Box_dim,1.25,2.25);%,'more');
-    %atom = bond_atom(atom,Box_dim,2.45,0.6);
+    % atom = bond_angle_atom(atom,Box_dim,1.25,2.45);%,'more');
+    atom = bond_atom(atom,Box_dim,2.45,0.6);
 
     if numel(Ox_ind) >= size(Bond_index,1)
         atom = bond_atom(atom,Box_dim,2.45,0.6);
@@ -53,6 +53,18 @@ if nargin>2
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe2',3)
                         Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee3',4)
+                        Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'F',1) % Fs
@@ -91,6 +103,18 @@ if nargin>2
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe2',3)
                         Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee2',4)
+                        Z=2;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Feo3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fet3',4)
+                        Z=3;
+                    elseif strncmpi([atom(bond_ind(j)).type],'Fee3',4)
+                        Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Fe',2)
                         Z=3;
                     elseif strncmpi([atom(bond_ind(j)).type],'Ti',2)
@@ -119,6 +143,11 @@ if nargin>2
     %     Atom_label
     Charge=unique([atom(at_ind).charge],'stable');
 end
+
+ind_Hw=strncmpi([atom.type],'Hw',2);
+ind_Ow=strncmpi([atom.type],'Ow',2);
+[atom(ind_Hw).charge]=deal(0.447585);
+[atom(ind_Ow).charge]=deal(-0.89517);
 
 % atom = composition_atom(atom);
 

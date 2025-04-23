@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>autofit_ljcoul</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="autofit_ljcoul.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -114,9 +114,10 @@ r=.1:.001:1.2; <span class="comment">% nm</span>
 <span class="comment">% C4=0.05;</span>
 
 hold <span class="string">on</span>
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{<span class="string">'Al'</span> <span class="string">'Ob'</span>});
+ff=ff2.ff;
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff(ff,{<span class="string">'Fe2+'</span> <span class="string">'OW'</span>});
 
-<span class="comment">% [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);</span>
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
 
 <span class="comment">% A1=41970.1381; % nm</span>
 <span class="comment">% A2=41970.1381;</span>
@@ -132,8 +133,8 @@ hold <span class="string">on</span>
 
 [r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r,1);
 
-q1=1.782;
-q2=-1.188;
+q1=1.20;
+q2=-1.2;
 sig1=.1;
 sig2=.317;
 eps1=.6;
@@ -142,7 +143,7 @@ C4 = 0
 </pre>
 <h2 id="2">Initial values</h2>
 <pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .1     1   .1    1];
+delta    = [ 1   1    .01     .01   .01    .01];
 
 x0=xinit;
 </pre>
@@ -227,9 +228,10 @@ r=.1:.001:1.2; % nm
 % C4=0.05;
 
 hold on
-[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2] = nonbonded_ff(ff,{'Al' 'Ob'});
+ff=ff2.ff;
+[rout,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff(ff,{'Fe2+' 'OW'});
 
-% [r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
+[r,lj,coul,data] = ljcoul_C12C6C4([q1,q2,sig1,sig2,eps1,eps2,C4,C4],r);
 
 % A1=41970.1381; % nm
 % A2=41970.1381;
@@ -245,8 +247,8 @@ hold on
 
 [r,lj,coul,data] = ljcoul([q1,q2,sig1,sig2,eps1,eps2],r,1);
 
-q1=1.782;
-q2=-1.188;
+q1=1.20;
+q2=-1.2;
 sig1=.1;
 sig2=.317;
 eps1=.6;
@@ -254,7 +256,7 @@ eps2=.6837;
 C4 = 0
 %% Initial values
 xinit    = [ q1  q2  sig1  sig2  eps1  eps2]
-delta    = [ 1   1    .1     1   .1    1];
+delta    = [ 1   1    .01     .01   .01    .01];
 
 x0=xinit;
 %% In order to keep parameters around 1..

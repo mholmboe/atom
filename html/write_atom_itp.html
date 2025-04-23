@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_itp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-02-05">
+<meta name="DC.date" content="2025-04-23">
 <meta name="DC.source" content="write_atom_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -175,9 +175,10 @@ nAtoms=size(atom,2);
 
     <span class="keyword">if</span> strcmpi(ffname,<span class="string">'minff'</span>)
         <span class="comment">% minff_param(sort(unique([atom.type])),watermodel);</span>
-        <span class="comment">% if ~isfield(atom,'charge')</span>
-        <span class="comment">% atom=charge_clayff_atom(atom,Box_dim,{'Al' 'Alt' 'Fe2' 'Feo' 'Fee' 'Fet' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Sit' 'Sio' 'H'},[1.782 1.782 0.64 1.14 1.14 1.14 1 1 1 1.562 1.562 1.884 1.884 0.4]);</span>
-        <span class="comment">% end</span>
+        <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
+			atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alo'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo3'</span> <span class="string">'Fet3'</span> <span class="string">'Fee3'</span> <span class="string">'Feo2'</span> <span class="string">'Fet2'</span> <span class="string">'Fee2'</span> <span class="string">'Fs'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+        <span class="keyword">end</span>
+        atom = mass_atom(atom);
         Total_charge=sum([atom.charge])
         round2dec(Total_charge,5)
         <span class="comment">%         pause</span>
@@ -251,8 +252,9 @@ nAtoms=size(atom,2);
     ffname=<span class="string">'minff'</span>;
     watermodel=<span class="string">'OPC3'</span>; <span class="comment">% SPC/E, depreceated</span>
     <span class="comment">% minff_param(sort(unique([atom.type])),'OPC3');</span>
+    atom = mass_atom(atom);
     <span class="keyword">if</span> ~isfield(atom,<span class="string">'charge'</span>)
-        atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Fe3e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+            atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo'</span> <span class="string">'Fet'</span> <span class="string">'Fee'</span> <span class="string">'Fe3e'</span> <span class="string">'Fe2'</span> <span class="string">'Fe2e'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     <span class="keyword">end</span>
     Total_charge=sum([atom.charge])
     round2dec(Total_charge,5)
@@ -427,7 +429,7 @@ bondtype=1; <span class="comment">% Gromacs bond type. 1 means harmonic bond, k(
         unique(Bond_order(:,end-1:end))
     <span class="keyword">end</span>
 <span class="keyword">catch</span>
-    disp(<span class="string">'No bonds?'</span>)
+    disp(<span class="string">'Found no bonds'</span>)
 <span class="keyword">end</span>
 </pre>
 <h2 id="10">To include a generic 1-4 pairlist</h2>
@@ -509,7 +511,7 @@ fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="keyword">if</span> numel(Angle_order)&gt;0
     assignin(<span class="string">'caller'</span>,<span class="string">'Angle_order'</span>,Angle_order);
-    disp(<span class="string">'These atom types has angles'</span>)
+    disp(<span class="string">'Found angles between..'</span>)
     unique(Angle_order(:,end-2:end))
 <span class="keyword">end</span>
 
@@ -782,9 +784,10 @@ if nargin>5
 
     if strcmpi(ffname,'minff')
         % minff_param(sort(unique([atom.type])),watermodel);
-        % if ~isfield(atom,'charge')
-        % atom=charge_clayff_atom(atom,Box_dim,{'Al' 'Alt' 'Fe2' 'Feo' 'Fee' 'Fet' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Sit' 'Sio' 'H'},[1.782 1.782 0.64 1.14 1.14 1.14 1 1 1 1.562 1.562 1.884 1.884 0.4]);
-        % end
+        if ~isfield(atom,'charge')
+			atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+        end
+        atom = mass_atom(atom);
         Total_charge=sum([atom.charge])
         round2dec(Total_charge,5)
         %         pause
@@ -858,8 +861,9 @@ else
     ffname='minff';
     watermodel='OPC3'; % SPC/E, depreceated
     % minff_param(sort(unique([atom.type])),'OPC3');
+    atom = mass_atom(atom);
     if ~isfield(atom,'charge')
-        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+            atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
     Total_charge=sum([atom.charge])
     round2dec(Total_charge,5)
@@ -1036,7 +1040,7 @@ try
         unique(Bond_order(:,end-1:end))
     end
 catch
-    disp('No bonds?')
+    disp('Found no bonds')
 end
 
 %% To include a generic 1-4 pairlist
@@ -1117,7 +1121,7 @@ fprintf(fid, '\n');
 
 if numel(Angle_order)>0
     assignin('caller','Angle_order',Angle_order);
-    disp('These atom types has angles')
+    disp('Found angles between..')
     unique(Angle_order(:,end-2:end))
 end
 

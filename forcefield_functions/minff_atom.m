@@ -210,7 +210,7 @@ for assignment_run=heal_iterations
                 if strncmpi(atom(i).type,{'Al'},2) % Al
 
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Al O O O O O O
-                        atom(i).fftype={'Al'};
+                        atom(i).fftype={'Alo'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Al O O O O
                         i
                         atom(i).fftype={'Ale'}
@@ -327,28 +327,29 @@ for assignment_run=heal_iterations
                 if strncmpi(atom(i).type,{'Fe'},2) % Fe
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Fe O O O O O O
 
-                        if mean([atom(i).neigh.dist])>2.02 && mean([atom(i).neigh.dist]<2.1)
+                        if mean([atom(i).neigh.dist])>2.05 && mean([atom(i).neigh.dist]<2.1)
                             disp('Ave oct Fe-O distance is large..')
                             mean([atom(i).neigh.dist])
-                            if mean([atom(i).neigh.dist])<2.06
+                            if mean([atom(i).neigh.dist])<2.07
                                 disp('Guessing its Fe3+..')
                             else
                                 disp('Guessing its Fe2+..')
                             end
                         end
 
-                        if mean([atom(i).neigh.dist])<2.06
-                            atom(i).fftype={'Feo'};
+                        if mean([atom(i).neigh.dist])<2.07
+                            atom(i).fftype={'Feo3'};
                         else
-                            atom(i).fftype={'Fe2'};
+                            atom(i).fftype={'Feo2'};
                         end
+                        
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Fe O O O O
-                        atom(i).fftype={'Fee'};
+                        atom(i).fftype={'Fee3'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Fe O O O O
                         if sum([atom(i).neigh.dist])<7.5
-                            atom(i).fftype={'Fet'};
+                            atom(i).fftype={'Fet3'};
                         else
-                            atom(i).fftype={'Fe2'};
+                            atom(i).fftype={'Fet2'};
                         end
                     elseif nNeigh > 6
                         disp('Fe atom over coordinated')
@@ -688,7 +689,7 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe3e' 'Fe2' 'Fe2e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.75 1.184 1.32 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')

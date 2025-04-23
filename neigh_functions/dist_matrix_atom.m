@@ -1,4 +1,4 @@
-%% dist_matrix.m
+%% dist_matrix_atom.m
 % * This function calculates the distance matrix from the atom struct, or
 % the distances between atom1 and atom2
 % * Note that there is also and cell_list_dist_matrix_atom function that

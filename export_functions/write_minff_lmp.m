@@ -1,6 +1,9 @@
 %% write_minff_lmp.m
 % * This script creates and prints a lammps data file (.data). Works best for
 % MINFF systems. Nevertheless, this new version should be able to handle bonds|angles|dihedrals
+% See lines 200-250 as well as lines 255-330 for how to handle bond types and
+% angles types. Furthermore, some angle and bonds values/force constants
+% are hardcoded on line 23-31 below. Make sure these are correct yourself!
 %
 %
 %% Version
@@ -15,11 +18,11 @@
 %
 
 function write_minff_lmp(atom,Box_dim,filename,varargin)
-format compact;
 
 % Some settings needed in order to print a proper lammps in file %%
-
-bHdist=0.9572;              % Å
+bHdist=0.97888;             % OPC3 water model, in Å
+KANGLE_WAT=383 /2/4.184;    % Dummy value for the rigid OPC3
+ANGLE_WAT=109.47;           % Angle value for the rigid OPC3
 kbH=441050 /(2*4.184*10^2); % Gromacs Energy [kJ/mol] and distance [nm] to Lammps real units [kcal/mol] and [Å]  / 2 / 4.184 / 100.
 kbM=0 /(2*4.184*10^2);      % Gromacs Energy [kJ/mol] and distance [nm] to Lammps real units [kcal/mol] and [Å]  / 2 / 4.184 / 100.
 KANGLEH=125.52 /2/4.184;    % Gromacs [kJ/mol] to Lammps real units [kcal/mol]  / 2 / 4.184. Note the factor of 2. From Pouvrea, Greathouse, Cygan, and Andrey G. Kalinichev 2017
@@ -94,7 +97,7 @@ end
 
 
 if ~isfield(atom,'charge')
-    atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.985 2.48 1.14 1.14 1.14 0.7 0.86666 1.45 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+	atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
 end
 
 if exist('Total_charge','var')
@@ -107,7 +110,9 @@ Bond_index=[];Angle_index=[];Dihedral_index=[];
 
 ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],'h')));
 ind_H=find(strncmpi([atom.type],{'H'},1));
+ind_Hw=find(strncmpi([atom.type],{'Hw'},2));
 ind_O=find(strncmpi([atom.type],{'O'},1));
+ind_Ow=find(strncmpi([atom.type],{'Ow'},2));
 ind_Osih=find(strncmpi([atom.type],{'Osih'},4));
 ind_Alhh=find(strncmpi([atom.type],{'Oalhh'},5));
 ind_Mghh=find(strncmpi([atom.type],{'Omhh'},4));
@@ -196,18 +201,17 @@ nDihedrals=size(Dihedral_index,1)
 
 if nBonds>0
 
-    bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
-    bond_info1=[];%bond_info2=[];
+    %% To reduce the number of bond types
+    bond_pairs=sort(string([[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]']),2);
+
+    bond_info1=[];
     for i = 1:size(bond_pairs,1)
-        bond_info1{i,1} = sprintf('%s %s %.3f', bond_pairs{i,1}, bond_pairs{i,2}, Bond_index(i,3));
-        % bond_info2{i,1} = sprintf('%s %s %.3f', bond_pairs{i,2}, bond_pairs{i,1}, Bond_index(i,3));
+        bond_info1{i,1} = sprintf('%s %s', bond_pairs{i,1}, bond_pairs{i,2});
     end
     b1=bond_info1;[b1,idxb1]=unique(b1,'stable');
-    % b2=bond_info1;b2=unique(b2,'stable');
     nbond_types=size(b1,1);
     for i=1:size(bond_info1,1)
         [ind,bond_types(i)]=ismember(bond_info1(i),[b1]); %;b2]);
-        % bond_coeffs
     end
     bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
 
@@ -220,16 +224,46 @@ if nBonds>0
     bond_dist(bond_dist<1.25)=bHdist;
     bond_coeffs=[bond_coeffs bond_kb bond_dist];
 
+    % %% To maximize the number of bond types
+    % bond_pairs=[[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]'];
+    % bond_info1=[];%bond_info2=[];
+    % for i = 1:size(bond_pairs,1)
+    %     bond_info1{i,1} = sprintf('%s %s %.3f', bond_pairs{i,1}, bond_pairs{i,2}, Bond_index(i,3));
+    %     % bond_info2{i,1} = sprintf('%s %s %.3f', bond_pairs{i,2}, bond_pairs{i,1}, Bond_index(i,3));
+    % end
+    % b1=bond_info1;[b1,idxb1]=unique(b1,'stable');
+    % % b2=bond_info1;b2=unique(b2,'stable');
+    % nbond_types=size(b1,1);
+    % for i=1:size(bond_info1,1)
+    %     [ind,bond_types(i)]=ismember(bond_info1(i),[b1]); %;b2]);
+    %     % bond_coeffs
+    % end
+    % bond_types(bond_types>nbond_types)=bond_types(bond_types>nbond_types)-nbond_types;
+    % 
+    % bond_coeffs=[1:length(idxb1)]';
+    % bond_dist=Bond_index(idxb1,3);
+    % bond_kb=Bond_index(idxb1,3);
+    % bond_kb(bond_dist>1.25)=kbM;
+    % bond_kb(bond_dist<1.25)=kbH;
+    % 
+    % bond_dist(bond_dist<1.25)=bHdist;
+    % bond_coeffs=[bond_coeffs bond_kb bond_dist];
+
 else
     nbond_types=0;
 end
 
 if nAngles>0
 
-    angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+     %% To reduce the number of angle types
+    angle_triplets=string([[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]']);
+
+    angle_endtypes=sort(angle_triplets(:,[1,3]),2);
+    angle_triplets=[angle_endtypes(:,1) [atom(Angle_index(:,2)).type]' angle_endtypes(:,2)];
+
     angle_info1=[];% angle_info2=[];
     for i = 1:size(angle_triplets,1)
-        angle_info1{i,1} = sprintf('%s %s %s %.2f', angle_triplets{i,1}, angle_triplets{i,2}, angle_triplets{i,3}, Angle_index(i,4));
+        angle_info1{i,1} = sprintf('%s %s %s', angle_triplets{i,1}, angle_triplets{i,2}, angle_triplets{i,3});
     end
     a1=angle_info1;[a1,idxa1]=unique(a1,'stable');
     nangle_types=size(a1,1);
@@ -239,15 +273,49 @@ if nAngles>0
     angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
     selected_Angle_index=Angle_index(idxa1,1:3);
     [H_row,H_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_H)));
+    [Hw_row,Hw_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_Hw)));
     % Angle_index(H_row,1:4)
 
     angle_coeffs=[1:length(idxa1)]';
-    angle_ka=Angle_index(idxa1,4);
-    angle_deg=Angle_index(idxa1,4);
+    for i=1:size(idxa1,1)
+        angle_deg(i,1)=mean(Angle_index(ismember(angle_info1,angle_info1(idxa1(i),:)),4));
+    end
+    
+    angle_ka=angle_deg;
     angle_ka(:)=KANGLE;
+
     angle_ka(H_row)=KANGLEH;
     angle_deg(H_row)=angleH;
+
+    angle_ka(Hw_row)=KANGLE_WAT;
+    angle_deg(Hw_row)=ANGLE_WAT;
+
     angle_coeffs=[angle_coeffs angle_ka angle_deg];
+
+    % %% To maximize the number of angles
+    % 
+    % angle_triplets=[[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]'];
+    % angle_info1=[];% angle_info2=[];
+    % for i = 1:size(angle_triplets,1)
+    %     angle_info1{i,1} = sprintf('%s %s %s %.2f', angle_triplets{i,1}, angle_triplets{i,2}, angle_triplets{i,3}, Angle_index(i,4));
+    % end
+    % a1=angle_info1;[a1,idxa1]=unique(a1,'stable');
+    % nangle_types=size(a1,1);
+    % for i=1:size(angle_info1,1)
+    %     [ind,angle_types(i)]=ismember(angle_info1(i),a1);
+    % end
+    % angle_types(angle_types>nangle_types)=angle_types(angle_types>nangle_types)-nangle_types;
+    % selected_Angle_index=Angle_index(idxa1,1:3);
+    % [H_row,H_col]=ind2sub(size(selected_Angle_index),find(ismember(selected_Angle_index,ind_H)));
+    % % Angle_index(H_row,1:4)
+    % 
+    % angle_coeffs=[1:length(idxa1)]';
+    % angle_ka=Angle_index(idxa1,4);
+    % angle_deg=Angle_index(idxa1,4);
+    % angle_ka(:)=KANGLE;
+    % angle_ka(H_row)=KANGLEH;
+    % angle_deg(H_row)=angleH;
+    % angle_coeffs=[angle_coeffs angle_ka angle_deg];
 
 else
     nangle_types=0;
@@ -267,6 +335,17 @@ if nDihedrals>0
 else
     ndihedral_types=0;
 end
+
+assignin('caller','bond_info1',bond_info1);
+assignin('caller','bond_coeffs',bond_coeffs);
+assignin('caller','bond_pairs',bond_pairs);
+assignin('caller','bond_dist',bond_dist);
+assignin('caller','bond_types',bond_types');
+
+assignin('caller','angle_info1',angle_info1);
+assignin('caller','angle_coeffs',angle_coeffs);
+assignin('caller','angle_triplets',angle_triplets);
+assignin('caller','angle_types',angle_types');
 
 % End of settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -354,7 +433,7 @@ for i = 1:nAtoms
         Atom_label_ID(i,1)=find(ismember(Atom_labels,[atom(i).type])==1);
     end
     Atoms_data(i,:) = {i+prev_atom_index, [atom(i).molid]+prev_mol_index, Atom_label_ID(i,1), [atom(i).charge],[atom(i).x],[atom(i).y],[atom(i).z],'#',char(atom(i).type)};
-    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.5f\t%8.5f\t%8.5f\t%8.5f  %-s  %-s\n', Atoms_data{i,:});
+    fprintf(fid, '\t%-i\t%-i\t%-i\t%8.6f\t%8.5f\t%8.5f\t%8.5f  %-s  %-s\n', Atoms_data{i,:});
 end
 
 %%
@@ -370,7 +449,7 @@ if nBonds>0
     fprintf(fid, '\n');
     for i =1:size(bond_coeffs,1)
         temp_bond_string={bond_coeffs(i,:) strcat("# ",b1(i))};
-        fprintf(fid, '\t%-i\t%-8.2f\t%-6.4f\t\t%s\n',temp_bond_string{:});
+        fprintf(fid, '\t%-i\t%-8.4f\t%-6.4f\t\t%s\n',temp_bond_string{:});
     end
     fprintf(fid, '\n');
     fprintf(fid, '\n');
@@ -394,7 +473,7 @@ if nAngles>0
     fprintf(fid, '\n');
     for i =1:size(angle_coeffs,1)
         temp_angle_string={angle_coeffs(i,:) strcat("0      0       # ",a1(i))};
-        fprintf(fid, '\t%-i\t\t%-8.2f\t%-8.2f\t\t%s\n',temp_angle_string{:});
+        fprintf(fid, '\t%-i\t\t%-8.4f\t%-8.4f\t\t%s\n',temp_angle_string{:});
     end
     fprintf(fid, '\n');
     fprintf(fid, '\n');

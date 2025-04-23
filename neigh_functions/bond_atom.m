@@ -43,7 +43,7 @@ end
 
 Radiiproperties=load('general_functions/Revised_Shannon_radii.mat');
 % atom=bond_valence_atom(atom,Box_dim,rmaxshort,2.25);
-if size(atom,2)<10000
+if size(atom,2)<20000
     disp('Calculating the full distance matrix')
     dist_matrix = dist_matrix_atom(atom,Box_dim); % To calculate a full distance matrix
 else
@@ -164,17 +164,17 @@ while i<size(atom,2)+1
         end
     end
 
-    if ~isempty(Angle_index)
-        if ismember(i,Angle_index(:,1:3))
-            %                 [C,D]=find(Angle_index(:,1:3)==i);
-            [C,D]=find(Angle_index(:,2)==i);
-            atom(i).angle.type = 1;
-            atom(i).angle.index = Angle_index(C,1:3);
-            atom(i).angle.angle = Angle_index(C,4);
-            atom(i).angle.vec1 = Angle_index(C,5:7);
-            atom(i).angle.vec2 = Angle_index(C,8:10);
-        end
-    end
+    % if ~isempty(Angle_index)
+    %     if ismember(i,Angle_index(:,1:3))
+    %         %                 [C,D]=find(Angle_index(:,1:3)==i);
+    %         [C,D]=find(Angle_index(:,2)==i);
+    %         atom(i).angle.type = 1;
+    %         atom(i).angle.index = Angle_index(C,1:3);
+    %         atom(i).angle.angle = Angle_index(C,4);
+    %         atom(i).angle.vec1 = Angle_index(C,5:7);
+    %         atom(i).angle.vec2 = Angle_index(C,8:10);
+    %     end
+    % end
 
 
     %%
@@ -187,6 +187,38 @@ while i<size(atom,2)+1
     i=i+1;
 end
 % i-1
+
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+Bond_index(~any(Bond_index,2),:) = [];
+nBonds=size(Bond_index,1);
+
+nAngles=0;
+if ~isempty(Angle_index)
+    [Y,I]=sort(Angle_index(:,2));
+    Angle_index=Angle_index(I,:);
+    Angle_index = unique(Angle_index,'rows','stable');
+    Angle_index(~any(Angle_index,2),:) = [];
+    nAngles=size(Angle_index,1);
+    assignin('caller','Angle_index',Angle_index);
+end
+
+i=1;
+while i<size(atom,2)+1
+    if ~isempty(Angle_index)
+        if ismember(i,Angle_index(:,1:3))
+            %                 [C,D]=find(Angle_index(:,1:3)==i);
+            [C,D]=find(Angle_index(:,2)==i);
+            atom(i).angle.type = 1;
+            atom(i).angle.index = Angle_index(C,1:3);
+            atom(i).angle.angle = Angle_index(C,4);
+            atom(i).angle.vec1 = Angle_index(C,5:7);
+            atom(i).angle.vec2 = Angle_index(C,8:10);
+        end
+    end
+    i=i+1;
+end
 
 CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
 if length(Bond_index)>0
@@ -227,22 +259,6 @@ for i=1:size(Neigh_index,1)
     end
 end
 Neigh_index(rm_ind,:)=[];
-
-[Y,I]=sort(Bond_index(:,1));
-Bond_index=Bond_index(I,:);
-Bond_index = unique(Bond_index,'rows','stable');
-Bond_index(~any(Bond_index,2),:) = [];
-nBonds=size(Bond_index,1);
-
-nAngles=0;
-if ~isempty(Angle_index)
-    [Y,I]=sort(Angle_index(:,2));
-    Angle_index=Angle_index(I,:);
-    Angle_index = unique(Angle_index,'rows','stable');
-    Angle_index(~any(Angle_index,2),:) = [];
-    nAngles=size(Angle_index,1);
-    assignin('caller','Angle_index',Angle_index);
-end
 
 assignin('caller','Neigh_ind',Neigh_ind);
 assignin('caller','Neigh_vec',Neigh_vec);
