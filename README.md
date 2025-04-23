@@ -124,12 +124,22 @@ atom_interface = interface_atom(atom, Box_dim);
 ```
 ---
 
+### Extract bond and angle statistics
+
+Write a log file with the atomtype specific bond distances and angles
+
+```matlab
+result = stats_atom(atom_minff, Box_dim,'output.log');  
+```
+---
+
 ### Write topology files
 ```matlab
-write_minff_itp(atom, Box_dim, filename); % GROMACS topology file, note only bonds and angles
-write_minff_psf(atom, Box_dim, filename); % Note: only bonds and angles
-write_minff_lmp(atom, Box_dim, filename); % Note: see inside function how bond/angle types are handled
+write_minff_itp(atom_minff, Box_dim, filename); % GROMACS topology file, note only bonds and angles
+write_minff_psf(atom_minff, Box_dim, filename); % Note: only bonds and angles
+write_minff_lmp(atom_minff, Box_dim, filename); % Note: see inside function how bond/angle types are handled
 
+% Legacy functions
 write_atom_itp(atom, Box_dim, filename, 1.2, 1.2, 'minff', 'spce'); % GROMACS topology file, note only bonds and angles
 write_atom_psf(atom, Box_dim, filename, 1.2, 1.2, 'clayff'); % Note: only bonds and angles
 write_atom_lmp(atom, Box_dim, filename); % Note: see inside function how bond/angle types are handled

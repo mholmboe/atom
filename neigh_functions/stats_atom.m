@@ -1,4 +1,4 @@
-%% atom_stats.m Generate statistics about atom types, coordination, and charges in the structure.
+%% stats_atom.m Generate statistics about atom types, coordination, and charges in the structure.
 % * This function analyzes atom types, their coordination environment, charges,
 % coordination numbers, bond distances, and angles, and outputs a formatted report.
 % The report can be written to a log file and/or returned as a string.
@@ -26,12 +26,12 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-%   result =  atom_stats(atom, total_charge, ffname)
-%   result =  atom_stats(atom, total_charge, ffname, Box_dim)
-%   result =  atom_stats(atom, total_charge, ffname, Box_dim, Cell)
-%   result =  atom_stats(atom, total_charge, ffname, Box_dim, Cell, log_file)
+%   result =  stats_atom(atom, total_charge, ffname)
+%   result =  stats_atom(atom, total_charge, ffname, Box_dim)
+%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell)
+%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell, log_file)
 %
-function result =  atom_stats(atom,Box_dim,log_file)
+function result =  stats_atom(atom,Box_dim,log_file)
 
 % Box_dim to Cell
 if size(Box_dim,2)==6
