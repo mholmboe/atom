@@ -67,7 +67,7 @@ atom_minff = minff_atom(atom,Box_dim) % Assign the minff atom types to the atoms
 % In cases were atoms need healing, or in order to protonate edge groups,
 % one can use a slighlt longer command like below. For more info look into
 % the <minff_atom.html minff_atom> function and lines 49-80.
-atom_minff = minff_atom(atom_minff,Box_dim,'minff','spc',[1:7]) % Assign the minff atom types to the atomstruct
+atom_minff = minff_atom(atom_minff,Box_dim,'minff',[1:7]) % Assign the minff atom types to the atomstruct
 
 %% Write the new modified  MINFF .pdb file
 write_atom_pdb(atom_minff,Box_dim,strcat('mod_',filename_out)); % Print the clay layer to a .pdb file

@@ -1,0 +1,19 @@
+[ bondtypes ]
+;i      j	   func     b0	    kb
+; Bonds are defined elsewhere, in each respective .itp file
+Oh      H		1   	0.09572	441050
+Ob      H		1   	0.09572	441050
+Ohmg    H		1   	0.09572	441050
+; Oalh    H		1   	0.09572	441050
+; Oalhh   H		1   	0.09572	441050
+; Osih    H		1   	0.09572	441050
+; Alo		Oalh    1   	0.195   441050
+; Alo		Oalhh   1   	0.195 	441050
+; Sit		Osih	1   	0.160   441050
+
+[ angletypes ]
+;i      j       k	func	th0	cth
+; Angles are defined elsewhere, in each respective .itp file
+;
+; Note that for the M-O-H angles, MINFF v1.0 uses the angles parameters from Pouvreau, 
+; Greathouse, Cygan and Kalinichev, see J. Phys. Chem. C 2019, 123, 11628−11638.

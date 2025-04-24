@@ -1,0 +1,18 @@
+#include "min.ff/forcefield.itp"
+#include "MMT_minff_1.itp"
+#include "MMT_minff_2.itp"
+#include "min.ff/ions.itp"
+#include "min.ff/opc3.itp"
+
+[ system ]
+; Name
+2 Na-montmorillonite layers with three water-layers
+
+[ molecules ]
+; Compound        #mols
+MMT_1 1
+MMT_2 1
+Na+ 32
+SOL 720
+
+
