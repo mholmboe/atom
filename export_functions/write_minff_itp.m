@@ -1,4 +1,4 @@
-%% write_atom_itp.m
+%% write_minff_itp.m
 % * This script creates and prints a gromacs .itp file
 % * Works for minff.
 % * The variables explicit_bonds|explicit_angles (1/0) on that are set
@@ -18,8 +18,8 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
-% # write_atom_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.
+% # write_minff_itp(atom,Box_dim,filename) % Basic input arguments
+% # write_minff_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.
 
 function write_minff_itp(atom,Box_dim,filename,varargin)
 
@@ -269,7 +269,6 @@ while count_a <= length(Angle_index) %nAngles;
         else % Orig Interface 2005
             adeg=Angle_index(count_a,4);
             ktheta=KANGLE;
-
         end
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
         fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f   %-8.2f %s %s-%s-%s\n', Angle_order{count_a,:});

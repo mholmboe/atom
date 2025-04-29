@@ -26,10 +26,8 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-%   result =  stats_atom(atom, total_charge, ffname)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell, log_file)
+%   result =  stats_atom(atom, Box_dim)
+%   rresult =  stats_atom(atom, Box_dim, log_file)
 %
 function result =  stats_atom(atom,Box_dim,log_file)
 

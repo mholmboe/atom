@@ -107,29 +107,30 @@ while i<size(atom,2)+1
 
     while j <= numel(bond_ind) && k <= numel(bond_ind) %<= neigh %atom(i).neigh=[];
         if dist_matrix(bond_ind(j),i)>0
-            %             if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
-            if atom(i).molid==atom(bond_ind(j)).molid
-                k=k+1;
-                [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
-                [atom(i).neigh.index(k,1)]=bond_ind(j);
-                [atom(i).neigh.type(k,1)]=XYZ_labels(bond_ind(j));
-                [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
-                [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
-                if [atom(i).molid]==[atom(bond_ind(j)).molid] && dist_matrix(bond_ind(j),i)<rmaxlong
-                    [atom(i).bond.dist(k,1)]=dist_matrix(bond_ind(j),i);
-                    [atom(i).bond.index(k,:)]=[i bond_ind(j)];
-                    [atom(i).bond.type]=1;
-                    Bond_index(b,1)=min([i bond_ind(j)]);
-                    Bond_index(b,2)=max([i bond_ind(j)]);
-                    Bond_index(b,3)=[atom(i).bond.dist(k,1)];
-                    %                     b=b+1;
-                    %                 end
-                    Neigh_ind(b,1) = bond_ind(j);%%
-                    Neigh_vec(b,1:3) = -[atom(i).neigh.r_vec(k,:)]; %%
-                    b=b+1; %%
+            if XYZ_formalcharge(i)*XYZ_formalcharge(bond_ind(j))<=0 && atom(i).molid==atom(bond_ind(j)).molid
+                if atom(i).molid==atom(bond_ind(j)).molid
+                    k=k+1;
+                    [atom(i).neigh.dist(k,1)]=dist_matrix(bond_ind(j),i);
+                    [atom(i).neigh.index(k,1)]=bond_ind(j);
+                    [atom(i).neigh.type(k,1)]=XYZ_labels(bond_ind(j));
+                    [atom(i).neigh.coords(k,:)]=[XYZ_data(bond_ind(j),1) XYZ_data(bond_ind(j),2) XYZ_data(bond_ind(j),3)];
+                    [atom(i).neigh.r_vec(k,:)]=[X_dist(bond_ind(j),i) Y_dist(bond_ind(j),i) Z_dist(bond_ind(j),i)];
+                    if [atom(i).molid]==[atom(bond_ind(j)).molid] && dist_matrix(bond_ind(j),i)<rmaxlong
+                        [atom(i).bond.dist(k,1)]=dist_matrix(bond_ind(j),i);
+                        [atom(i).bond.index(k,:)]=[i bond_ind(j)];
+                        [atom(i).bond.type]=1;
+                        Bond_index(b,1)=min([i bond_ind(j)]);
+                        Bond_index(b,2)=max([i bond_ind(j)]);
+                        Bond_index(b,3)=[atom(i).bond.dist(k,1)];
+                        %                     b=b+1;
+                        %                 end
+                        Neigh_ind(b,1) = bond_ind(j);%%
+                        Neigh_vec(b,1:3) = -[atom(i).neigh.r_vec(k,:)]; %%
+                        b=b+1; %%
+
+                    end
 
                 end
-
             end
         end
         j=j+1;
