@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>xrd_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="xrd_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -263,7 +263,7 @@ S1=2.3;S2=2.3; <span class="comment">% Primary and secondary Soller slit , in de
 <span class="keyword">end</span>
 </pre>
 <h2 id="8">Enter the degree (number greater than or equal to 0) and direction of preferential orientation</h2>
-<pre class="codeinput">pref=1;
+<pre class="codeinput">pref=0;
 preferred_h=1;
 preferred_k=1;
 preferred_l=1;
@@ -847,7 +847,7 @@ if mode==0
 end
 
 %% Enter the degree (number greater than or equal to 0) and direction of preferential orientation
-pref=1;
+pref=0;
 preferred_h=1;
 preferred_k=1;
 preferred_l=1;

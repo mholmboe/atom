@@ -286,7 +286,6 @@ try
         tempdir=strcat(dirtype,num2str(i),'/');
 
         cd(tempdir);
-
         try
             disp('Analyzing bond distances/valences!')
             load(strcat('prev_res_',num2str(i),'.mat')); % pause(0.1)

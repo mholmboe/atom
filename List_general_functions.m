@@ -30,6 +30,7 @@
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
 
 %% Other general functions
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % Retrieve atomic scattering factors vs. 2theta.

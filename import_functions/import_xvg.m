@@ -119,8 +119,8 @@ try
         end
     end
 catch
-    disp('Could not read the column labels, but you')
-    disp('still have your data in the variable Data!')
+    % disp('Could not read the column labels, but you')
+    % disp('still have your data in the variable Data!')
 end
 
 % If we quickly want to plot the data, add a second argument when calling the function

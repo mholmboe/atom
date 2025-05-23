@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_custom_itp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="write_custom_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,7 +97,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">To include a generic 1-4 pairlist</a>
+<a href="#5">Find atomtype specific indexes</a>
+</li>
+<li>
+<a href="#6">To include a generic 1-4 pairlist</a>
 </li>
 </ul>
 </div>
@@ -141,15 +144,32 @@ Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)
 <span class="comment">%         pause</span>
 nrexcl=1; <span class="comment">% See the gromacs manual</span>
-explicit_bonds = 0;
-explicit_angles = 0;
+explicit_bonds = 1;
+explicit_angles = 1;
 MolId=atom(1).molid;
 
 <span class="keyword">if</span> isfield(atom,<span class="string">'element'</span>)==0
     element=element_atom(atom);
     [atom.element]=element.type;
 <span class="keyword">end</span>
-[atom.fftype]=atom.type;
+</pre>
+<h2 id="5">Find atomtype specific indexes</h2>
+<pre class="codeinput">ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],<span class="string">'h'</span>)));
+ind_H=find(strncmpi([atom.type],{<span class="string">'H'</span>},1));
+ind_O=find(strncmpi([atom.type],{<span class="string">'O'</span>},1));
+ind_Osih=find(strncmpi([atom.type],{<span class="string">'Osih'</span>},4));
+ind_Alhh=find(strncmpi([atom.type],{<span class="string">'Oalhh'</span>},5));
+ind_Mghh=find(strncmpi([atom.type],{<span class="string">'Omhh'</span>},4));
+ind_Fehh=find(strncmpi([atom.type],{<span class="string">'Ofehh'</span>},5));
+ind_Oh=intersect(ind_O,ind_Hneighbours);
+ind_Al=find(strncmpi([atom.type],<span class="string">'Al'</span>,2));
+ind_Al=find(strcmp([atom.type],<span class="string">'Al'</span>));
+ind_Mgo=find(ismember([atom.type],{<span class="string">'Mgo'</span> <span class="string">'Mgh'</span>}));
+ind_Si=find(strncmpi([atom.type],{<span class="string">'Si'</span>},2));
+ind_Oct=sort([ind_Al ind_Mgo]);
+ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
+
+[atom.type]=atom.fftype;
 atom = bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
 atom = mass_atom(atom);
 atom=update_atom(atom);
@@ -225,7 +245,7 @@ bondtype=1; <span class="comment">% Gromacs bond type. 1 means harmonic bond, k(
     disp(<span class="string">'No bonds?'</span>)
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">To include a generic 1-4 pairlist</h2>
+<h2 id="6">To include a generic 1-4 pairlist</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> length(Pairlist)&gt;0
 
@@ -248,10 +268,14 @@ fprintf(fid, <span class="string">'[ angles ] \n'</span>);
 fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; i    j   k   type'</span>);
 
 count_a = 1;<span class="comment">%explicit_angles = 0;</span>
-angletype=5; Angle_order={};
+angletype=1; Angle_order={};
 Angle_index=sortrows(Angle_index);
 <span class="keyword">while</span> count_a &lt;= length(Angle_index) <span class="comment">%nAngles;</span>
     <span class="keyword">if</span> explicit_angles == 1
+
+        adeg=round2dec(Angle_index(count_a,4),2);
+        ktheta=500;
+
         <span class="keyword">if</span> sum(ismember(Angle_index(count_a,1:3),ind_H))==1
             <span class="keyword">if</span> sum(ismember(Angle_index(count_a,1:3),ind_Mgo))&gt;0 <span class="comment">% Pouvreau,? Jeffery A. Greathouse,? Randall T. Cygan,? and Andrey G. Kalinichev 2017</span>
                 adeg=110;
@@ -437,15 +461,34 @@ Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)
 %         pause
 nrexcl=1; % See the gromacs manual
-explicit_bonds = 0;
-explicit_angles = 0;
+explicit_bonds = 1;
+explicit_angles = 1;
 MolId=atom(1).molid;
 
 if isfield(atom,'element')==0
     element=element_atom(atom);
     [atom.element]=element.type;
 end
-[atom.fftype]=atom.type;
+
+
+%% Find atomtype specific indexes
+
+ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],'h')));
+ind_H=find(strncmpi([atom.type],{'H'},1));
+ind_O=find(strncmpi([atom.type],{'O'},1));
+ind_Osih=find(strncmpi([atom.type],{'Osih'},4));
+ind_Alhh=find(strncmpi([atom.type],{'Oalhh'},5));
+ind_Mghh=find(strncmpi([atom.type],{'Omhh'},4));
+ind_Fehh=find(strncmpi([atom.type],{'Ofehh'},5));
+ind_Oh=intersect(ind_O,ind_Hneighbours);
+ind_Al=find(strncmpi([atom.type],'Al',2));
+ind_Al=find(strcmp([atom.type],'Al'));
+ind_Mgo=find(ismember([atom.type],{'Mgo' 'Mgh'}));
+ind_Si=find(strncmpi([atom.type],{'Si'},2));
+ind_Oct=sort([ind_Al ind_Mgo]);
+ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
+
+[atom.type]=atom.fftype;
 atom = bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
 atom = mass_atom(atom);
 atom=update_atom(atom);
@@ -543,10 +586,14 @@ fprintf(fid, '[ angles ] \n');
 fprintf(fid, '%s\n','; i    j   k   type');
 
 count_a = 1;%explicit_angles = 0;
-angletype=5; Angle_order={};
+angletype=1; Angle_order={};
 Angle_index=sortrows(Angle_index);
 while count_a <= length(Angle_index) %nAngles;
     if explicit_angles == 1
+        
+        adeg=round2dec(Angle_index(count_a,4),2);
+        ktheta=500;
+
         if sum(ismember(Angle_index(count_a,1:3),ind_H))==1
             if sum(ismember(Angle_index(count_a,1:3),ind_Mgo))>0 % Pouvreau,? Jeffery A. Greathouse,? Randall T. Cygan,? and Andrey G. Kalinichev 2017
                 adeg=110;

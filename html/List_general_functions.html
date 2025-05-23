@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of general functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="List_general_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -165,6 +165,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="5">Other general functions</h2>
 <div>
 <ol>
+<li>
+<a href="add_H_atom.html">add_H_atom(atom,Box_dim,ind)</a> % This function protonates one or two sites in the atom struct</li>
 <li>
 <a href="add2atom.html">add2atom(XYZ_labels,XYZ_data,varargin)</a> % Append XYZ atom type labels and XYZ data to an existing atom struct.</li>
 <li>
@@ -354,6 +356,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
 
 %% Other general functions
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.
 % # <atomic_scattering_factors.html atomic_scattering_factors(Atom_label,lambda,twotheta,DW)> % Retrieve atomic scattering factors vs. 2theta.

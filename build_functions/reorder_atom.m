@@ -80,8 +80,8 @@ elseif iscell(neworder)==1 && strncmpi(type,'atomtype',6) || strncmpi(type,'type
         end
     end
 
-    neworder(ismember(neworder,{'H' 'O'}))=[];
-    neworder(end+1)={'O'};neworder(end+1)={'H'};
+    % neworder(ismember(neworder,{'H' 'O'}))=[];
+    % neworder(end+1)={'O'};neworder(end+1)={'H'};
 
     for i=1:numel(neworder)
         atomtype(i).ind = find(ismember([atom.type],neworder(i)));

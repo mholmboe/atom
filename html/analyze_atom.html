@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>analyze_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="analyze_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -185,7 +185,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'
     properties(i).fftype=atom(i).type;
     properties(i).neigh=element(i).neigh;
     properties(i).bond=element(i).bond;
-    <span class="comment">%     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()</span>
+    properties(i).angle=element(i).angle; <span class="comment">% Because bond_atom() and not bond_angle_atom()</span>
     properties(i).bv=element(i).bv;
     properties(i).valence=element(i).valence;
     properties(i).ave_dist=mean(properties(i).bond.dist);
@@ -474,7 +474,7 @@ for i=1:size(element,2)
     properties(i).fftype=atom(i).type;
     properties(i).neigh=element(i).neigh;
     properties(i).bond=element(i).bond;
-    %     properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()
+    properties(i).angle=element(i).angle; % Because bond_atom() and not bond_angle_atom()
     properties(i).bv=element(i).bv;
     properties(i).valence=element(i).valence;
     properties(i).ave_dist=mean(properties(i).bond.dist);

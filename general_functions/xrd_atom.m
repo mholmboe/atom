@@ -68,7 +68,7 @@ if mode==0
 end
 
 %% Enter the degree (number greater than or equal to 0) and direction of preferential orientation
-pref=1;
+pref=0;
 preferred_h=1;
 preferred_k=1;
 preferred_l=1;

@@ -38,15 +38,34 @@ Total_charge=sum([atom.charge])
 round2dec(Total_charge,5)
 %         pause
 nrexcl=1; % See the gromacs manual
-explicit_bonds = 0;
-explicit_angles = 0;
+explicit_bonds = 1;
+explicit_angles = 1;
 MolId=atom(1).molid;
 
 if isfield(atom,'element')==0
     element=element_atom(atom);
     [atom.element]=element.type;
 end
-[atom.fftype]=atom.type;
+
+
+%% Find atomtype specific indexes
+
+ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],'h')));
+ind_H=find(strncmpi([atom.type],{'H'},1));
+ind_O=find(strncmpi([atom.type],{'O'},1));
+ind_Osih=find(strncmpi([atom.type],{'Osih'},4));
+ind_Alhh=find(strncmpi([atom.type],{'Oalhh'},5));
+ind_Mghh=find(strncmpi([atom.type],{'Omhh'},4));
+ind_Fehh=find(strncmpi([atom.type],{'Ofehh'},5));
+ind_Oh=intersect(ind_O,ind_Hneighbours);
+ind_Al=find(strncmpi([atom.type],'Al',2));
+ind_Al=find(strcmp([atom.type],'Al'));
+ind_Mgo=find(ismember([atom.type],{'Mgo' 'Mgh'}));
+ind_Si=find(strncmpi([atom.type],{'Si'},2));
+ind_Oct=sort([ind_Al ind_Mgo]);
+ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
+
+[atom.type]=atom.fftype;
 atom = bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
 atom = mass_atom(atom);
 atom=update_atom(atom);
@@ -144,10 +163,14 @@ fprintf(fid, '[ angles ] \n');
 fprintf(fid, '%s\n','; i    j   k   type');
 
 count_a = 1;%explicit_angles = 0;
-angletype=5; Angle_order={};
+angletype=1; Angle_order={};
 Angle_index=sortrows(Angle_index);
 while count_a <= length(Angle_index) %nAngles;
     if explicit_angles == 1
+        
+        adeg=round2dec(Angle_index(count_a,4),2);
+        ktheta=500;
+
         if sum(ismember(Angle_index(count_a,1:3),ind_H))==1
             if sum(ismember(Angle_index(count_a,1:3),ind_Mgo))>0 % Pouvreau,? Jeffery A. Greathouse,? Randall T. Cygan,? and Andrey G. Kalinichev 2017
                 adeg=110;

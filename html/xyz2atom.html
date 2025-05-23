@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>xyz2atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="xyz2atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -190,7 +190,7 @@ first_in=[1];last_in=[];
     <span class="keyword">elseif</span> i == 1
         atom(i).molid=molid(1);
     <span class="keyword">end</span>
-    atom(i).resname=resname;<span class="comment">%XYZ_labels(i);</span>
+    atom(i).resname={resname};<span class="comment">%XYZ_labels(i);</span>
     atom(i).type=XYZ_labels(i);
     atom(i).fftype=XYZ_labels(i);
     atom(i).index=index+mod(i,100000);
@@ -223,7 +223,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAtoms'</spa
 assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim'</span>,Box_dim)
 assignin(<span class="string">'caller'</span>,<span class="string">'molid'</span>,molid)
 
-disp(<span class="string">'add2atom done!'</span>)
+<span class="comment">% disp('add2atom done!')</span>
 
 <span class="keyword">end</span>
 </pre>
@@ -320,7 +320,7 @@ for i=1:nAtoms
     elseif i == 1
         atom(i).molid=molid(1);
     end
-    atom(i).resname=resname;%XYZ_labels(i);
+    atom(i).resname={resname};%XYZ_labels(i);
     atom(i).type=XYZ_labels(i);
     atom(i).fftype=XYZ_labels(i);
     atom(i).index=index+mod(i,100000);
@@ -353,7 +353,7 @@ assignin('caller','nAtoms',nAtoms)
 assignin('caller','Box_dim',Box_dim)
 assignin('caller','molid',molid)
 
-disp('add2atom done!')
+% disp('add2atom done!')
 
 end
 

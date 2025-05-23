@@ -23,8 +23,8 @@ else
     rmax=varargin{1};
 end
 
-i=1;rmind_tot=[];
-while i < size(fused_atom,2)
+i=size(fused_atom,2);rmind_tot=[];
+while i > 0
     rmind=find(dist_matrix(:,i)<rmax)';
     if numel(rmind)>1
         x1=[fused_atom(i).x];
@@ -39,7 +39,7 @@ while i < size(fused_atom,2)
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
         
 %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-        rmind_tot=[rmind_tot rmind(rmind>i)];
+        rmind_tot=[rmind_tot rmind(rmind<i)];
     end
     
     % if mod(i,100)==1
@@ -47,7 +47,7 @@ while i < size(fused_atom,2)
     %         i-1
     %     end
     % end
-    i=i+1;
+    i=i-1;
 end
 i
 

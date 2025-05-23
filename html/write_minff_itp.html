@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>write_atom_itp.m</title>
+<title>write_minff_itp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="write_minff_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,7 +76,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h1>write_atom_itp.m</h1>
+<h1>write_minff_itp.m</h1>
 <!--introduction-->
 <div>
 <ul>
@@ -124,8 +124,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="3">Examples</h2>
 <div>
 <ol>
-<li>write_atom_itp(atom,Box_dim,filename) % Basic input arguments</li>
-<li>write_atom_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.</li>
+<li>write_minff_itp(atom,Box_dim,filename) % Basic input arguments</li>
+<li>write_minff_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -375,7 +375,6 @@ angletype=1; Angle_order={};
         <span class="keyword">else</span> <span class="comment">% Orig Interface 2005</span>
             adeg=Angle_index(count_a,4);
             ktheta=KANGLE;
-
         <span class="keyword">end</span>
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, <span class="string">';'</span>, strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
         fprintf(fid, <span class="string">'%-5i %-5i %-5i %-5i %-6.2f   %-8.2f %s %s-%s-%s\n'</span>, Angle_order{count_a,:});
@@ -580,7 +579,7 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</sp
 </div>
 <!--
 ##### SOURCE BEGIN #####
-%% write_atom_itp.m
+%% write_minff_itp.m
 % * This script creates and prints a gromacs .itp file
 % * Works for minff.
 % * The variables explicit_bonds|explicit_angles (1/0) on that are set
@@ -600,8 +599,8 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</sp
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # write_atom_itp(atom,Box_dim,filename) % Basic input arguments
-% # write_atom_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.
+% # write_minff_itp(atom,Box_dim,filename) % Basic input arguments
+% # write_minff_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.
 
 function write_minff_itp(atom,Box_dim,filename,varargin)
 
@@ -851,7 +850,6 @@ while count_a <= length(Angle_index) %nAngles;
         else % Orig Interface 2005
             adeg=Angle_index(count_a,4);
             ktheta=KANGLE;
-
         end
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
         fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f   %-8.2f %s %s-%s-%s\n', Angle_order{count_a,:});

@@ -63,6 +63,13 @@ if size(SOL,2)<3
     SOL=[];
 end
 
+Ow_ind=find(strncmp([SOL.type],{'O'},1));
+Hw_ind=find(strncmp([SOL.type],{'H'},1));
+
+[SOL(Ow_ind).type]=deal({'Ow'});
+[SOL(Hw_ind).type]=deal({'Hw'});
+[SOL([Ow_ind Hw_ind]).resname]=deal({'SOL'});
+
 if numel(rm_ind)>0
     atom(unique(rm_ind))=[];
 end

@@ -10,7 +10,7 @@
 %
 %% Examples
 % # atom = neigh_atom(atom,Box_dim,rmax) % Basic input arguments
-% # atom = neigh_atom(atom,Box_dim,rmax) % Allows settng the max cutoff
+% # atom = neigh_atom(atom,Box_dim,rmax) % Allows setting the max cutoff
 % # atom = neigh_atom(atom,Box_dim,rmax,101) % To analyze selected indexes
 %
 function atom = neigh_atom(atom,Box_dim,varargin)

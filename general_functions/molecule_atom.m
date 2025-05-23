@@ -1,5 +1,5 @@
 %% molecule_atom.m
-% * This function will set the molecule ID (MolId), residue name (Resname) 
+% * This function will set the molecule ID (MolId), residue name (Resname)
 % * of the atom struct, ie making the atom struct a single molecule, as
 % * well as optionally setting the atomtype names to the resp. elements.
 %
@@ -16,8 +16,8 @@
 %% Examples
 % # atom = molecule_atom(atom) % Basic input arguments
 % # atom = molecule_atom(atom,Molid) % Setting the Molid to an integer number
-% # atom = molecule_atom(atom,Molid,Resname) % Also adding a residue name 
-% # atom = molecule_atom(atom,Molid,Resname,Element) % To set atomtype names to the resp. elements (1), or not (0) 
+% # atom = molecule_atom(atom,Molid,Resname) % Also adding a residue name
+% # atom = molecule_atom(atom,Molid,Resname,Element) % To set atomtype names to the resp. elements (1), or not (0)
 
 function atom = molecule_atom(atom,varargin)
 
@@ -37,8 +37,13 @@ elseif nargin==4
     Element=varargin{3};
 end
 
-if Molid>0
+if numel(Molid)==1
     [atom.molid]=deal(Molid);
+elseif numel(Molid) == size(atom,2)
+    for i=1:size(atom,2)
+        atom(i).molid=Molid(i);
+    end
+
 end
 
 if iscell(Resname)

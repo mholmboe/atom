@@ -83,7 +83,7 @@ for i=1:nAtoms
     elseif i == 1
         atom(i).molid=molid(1);
     end
-    atom(i).resname=resname;%XYZ_labels(i);
+    atom(i).resname={resname};%XYZ_labels(i);
     atom(i).type=XYZ_labels(i);
     atom(i).fftype=XYZ_labels(i);
     atom(i).index=index+mod(i,100000);
@@ -116,6 +116,6 @@ assignin('caller','nAtoms',nAtoms)
 assignin('caller','Box_dim',Box_dim)
 assignin('caller','molid',molid)
 
-disp('add2atom done!')
+% disp('add2atom done!')
 
 end

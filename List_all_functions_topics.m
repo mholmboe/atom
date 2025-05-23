@@ -128,6 +128,7 @@
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 
 %% Specific atom struct functions
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atomtype labels and XYZ data to an existing atom struct.
 % # <adjust_H_atom.html adjust_H_atom(atom,Box_dim)> % Adjust hydrogen atoms in the atom struct.
 % # <cat_atom.html cat_atom(atom_1,atom_2)> % Concatenate two atom structs.
@@ -179,6 +180,7 @@
 % # <update_atom.html update_atom(atom)> % Update molecule and atom indices in the atom struct.
 
 %% Add/create/replicate/overwrite atoms
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <copy_atom.html copy_atom(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)> % Copy and translate atoms in the atom struct.
 % # <copy_type.html copy_type(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)> % Copy and translate types in the atom struct.
 % # <create_atom.html create_atom(type,resname,limits,nmax,varargin)> % Create new atoms, useful for adding ions to a system.
@@ -268,6 +270,7 @@
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
 
 %% Other general functions
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <atom_stats.html atom_stats(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <add2atom.html add2atom(XYZ_labels,XYZ_data,varargin)> % Append XYZ atom type labels and XYZ data to an existing atom struct.
 % # <analyze_atom.html analyze_atom(atom,Box_dim)> % Fetch properties of atoms using methods like bond valence and radii.

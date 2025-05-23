@@ -29,7 +29,7 @@
 %   result =  stats_atom(atom, Box_dim)
 %   rresult =  stats_atom(atom, Box_dim, log_file)
 %
-function result =  stats_atom(atom,Box_dim,log_file)
+function result =  stats_atom(atom,Box_dim,log_file,varargin)
 
 % Box_dim to Cell
 if size(Box_dim,2)==6
@@ -42,6 +42,13 @@ end
 if nargin < 3
     log_file = 'output.log';
 end
+
+if nargin > 3
+    rmaxlong = varargin{1};
+else
+    rmaxlong = 2.45;
+end
+
 
 % Conversion factor for density calculation: amu/Å³ to g/cm³
 % 1 amu = 1.66053886e-24 g and 1 Å³ = 1e-24 cm³

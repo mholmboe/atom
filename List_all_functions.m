@@ -8,6 +8,7 @@
 %
 
 %% All functions
+% # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
 % # <Atom_label_variable.html Atom_label> % 1xn cell array 
 % # <Box_dim2Cell.html Box_dim2Cell(Box_dim)> % Transform the Box_dim variable to the Cell variable.
 % # <Box_dim_variable.html Box_dim> % A 1x3 or 1x9 array variable holding the Box size parameters

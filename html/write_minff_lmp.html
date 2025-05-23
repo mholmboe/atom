@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_minff_lmp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="write_minff_lmp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -534,7 +534,7 @@ fprintf(fid, <span class="string">'\n'</span>);
 </pre>
 <pre class="codeinput">
 <span class="keyword">else</span>
-    disp(<span class="string">'Could not write pair coeffs!!'</span>)
+    disp(<span class="string">'Did not write pair coeffs, they need to be added!!'</span>)
 <span class="keyword">end</span>
 fprintf(fid, <span class="string">'\n'</span>);
 <span class="comment">%</span>
@@ -1051,7 +1051,7 @@ if size(ff,1)>0
         fprintf(fid, '%i %f %f %s %s\n', paircoeffs{i,:});
     end
 else
-    disp('Could not write pair coeffs!!')
+    disp('Did not write pair coeffs, they need to be added!!')
 end
 fprintf(fid, '\n');
 %

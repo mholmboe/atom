@@ -421,7 +421,7 @@ if size(ff,1)>0
         fprintf(fid, '%i %f %f %s %s\n', paircoeffs{i,:});
     end
 else
-    disp('Could not write pair coeffs!!')
+    disp('Did not write pair coeffs, they need to be added!!')
 end
 fprintf(fid, '\n');
 %

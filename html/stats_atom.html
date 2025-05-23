@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>stats_atom.m Generate statistics about atom types, coordination, and charges in the structure.</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="stats_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -105,13 +105,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
 </p>
 <h2 id="3">Examples</h2>
-<pre class="language-matlab">result =  stats_atom(atom, total_charge, ffname)
-result =  stats_atom(atom, total_charge, ffname, Box_dim)
-result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell)
-result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell, log_file)
+<pre class="language-matlab">result =  stats_atom(atom, Box_dim)
+rresult =  stats_atom(atom, Box_dim, log_file)
 </pre>
 <pre class="codeinput">
-<span class="keyword">function</span> result =  stats_atom(atom,Box_dim,log_file)
+<span class="keyword">function</span> result =  stats_atom(atom,Box_dim,log_file,varargin)
 
 <span class="comment">% Box_dim to Cell</span>
 <span class="keyword">if</span> size(Box_dim,2)==6
@@ -124,6 +122,13 @@ result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell, log_file)
 <span class="keyword">if</span> nargin &lt; 3
     log_file = <span class="string">'output.log'</span>;
 <span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 3
+    rmaxlong = varargin{1};
+<span class="keyword">else</span>
+    rmaxlong = 2.45;
+<span class="keyword">end</span>
+
 
 <span class="comment">% Conversion factor for density calculation: amu/&Aring;&sup3; to g/cm&sup3;</span>
 <span class="comment">% 1 amu = 1.66053886e-24 g and 1 &Aring;&sup3; = 1e-24 cm&sup3;</span>
@@ -711,12 +716,10 @@ result = sprintf(<span class="string">'%s\n'</span>, output{:});
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-%   result =  stats_atom(atom, total_charge, ffname)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell)
-%   result =  stats_atom(atom, total_charge, ffname, Box_dim, Cell, log_file)
+%   result =  stats_atom(atom, Box_dim)
+%   rresult =  stats_atom(atom, Box_dim, log_file)
 %
-function result =  stats_atom(atom,Box_dim,log_file)
+function result =  stats_atom(atom,Box_dim,log_file,varargin)
 
 % Box_dim to Cell
 if size(Box_dim,2)==6
@@ -729,6 +732,13 @@ end
 if nargin < 3
     log_file = 'output.log';
 end
+
+if nargin > 3
+    rmaxlong = varargin{1};
+else
+    rmaxlong = 2.45;
+end
+
 
 % Conversion factor for density calculation: amu/Å³ to g/cm³
 % 1 amu = 1.66053886e-24 g and 1 Å³ = 1e-24 cm³

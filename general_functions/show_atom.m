@@ -86,7 +86,7 @@ else
         alpha=1; % Transperacy
     end
 
-    rmaxlong=2.25
+    rmaxlong=2.45
     distance_factor=0.6;
     if nargin>5
         if numel(varargin{6})>0

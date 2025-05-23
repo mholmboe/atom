@@ -14,7 +14,18 @@
 % # write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce') % Basic input arguments
 %
 function write_atom_lmp(atom,Box_dim,filename,varargin)
-format compact;
+format compact
+
+% Some settings needed in order to print a proper lammps in file %%
+bHdist=0.97888;             % OPC3 water model, in Å
+KANGLE_WAT=383 /2/4.184;    % Dummy value for the rigid OPC3
+ANGLE_WAT=109.47;           % Angle value for the rigid OPC3
+kbH=441050 /(2*4.184*10^2); % Gromacs Energy [kJ/mol] and distance [nm] to Lammps real units [kcal/mol] and [Å]  / 2 / 4.184 / 100.
+kbM=0 /(2*4.184*10^2);      % Gromacs Energy [kJ/mol] and distance [nm] to Lammps real units [kcal/mol] and [Å]  / 2 / 4.184 / 100.
+KANGLEH=125.52 /2/4.184;    % Gromacs [kJ/mol] to Lammps real units [kcal/mol]  / 2 / 4.184. Note the factor of 2. From Pouvrea, Greathouse, Cygan, and Andrey G. Kalinichev 2017
+KANGLE=500.00 /2/4.184;     % Gromacs [kJ/mol] to Lammps real units [kcal/mol]  / 2 / 4.184. Note the factor of 2
+angleH=110;                 % From Pouvrea, Greathouse, Cygan, and Andrey G. Kalinichev 2017
+precision=7;                % num2str(X,precision)
 
 % Change these values in case you want to merge a lammps topology file with
 % another one already haveing bonds, angles, dihedrals...
@@ -41,11 +52,11 @@ else
 end
 
 if nargin > 3
-    short_r=varargin{1};
-    long_r=varargin{2};
+    maxrshort=varargin{1};
+    maxrlong=varargin{2};
 else
-    short_r=1.25;
-    long_r=2.45; % long=short since clayff
+    maxrshort=1.25;
+    maxrlong=2.45; % long=short since clayff
 end
 
 % if nargin>5
@@ -182,12 +193,103 @@ else
     explicit_angles = 1
 end
 
+
+
+%% Find atomtype specific indexes
+Bond_index=[];Angle_index=[];Dihedral_index=[];
+
+ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],'h')));
+ind_H=find(strncmpi([atom.type],{'H'},1));
+ind_Hw=find(strncmpi([atom.type],{'Hw'},2));
+ind_O=find(strncmpi([atom.type],{'O'},1));
+ind_Ow=find(strncmpi([atom.type],{'Ow'},2));
+ind_Osih=find(strncmpi([atom.type],{'Osih'},4));
+ind_Alhh=find(strncmpi([atom.type],{'Oalhh'},5));
+ind_Mghh=find(strncmpi([atom.type],{'Omhh'},4));
+ind_Fehh=find(strncmpi([atom.type],{'Ofehh'},5));
+ind_Oh=intersect(ind_O,ind_Hneighbours);
+ind_Al=find(strncmpi([atom.type],'Al',2));
+ind_Al=find(strcmp([atom.type],'Al'));
+ind_Mgo=find(ismember([atom.type],{'Mgo' 'Mgh'}));
+ind_Si=find(strncmpi([atom.type],{'Si'},2));
+ind_Oct=sort([ind_Al ind_Mgo]);
+ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
+
 % Scan the xyz data and look for O-H bonds and angles
-atom=bond_angle_dihedral_atom(atom,Box_dim,short_r,long_r);
+atom=bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
+
+%     %% To only keep bonds to atoms also bonded to H's, uncomment the next four lines
+%     disp('Keeping only bonds with H')
+%     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Hneighbours)));
+%     Bond_index=Bond_index(h_row,:);
+%     nBonds=size(Bond_index,1);
+
+%% To only keep bonds to H's, uncomment the next three lines
+%     [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
+%     Bond_index=Bond_index(H_row,:);
+%     nBonds=size(Bond_index,1);
+
+%     %% To only keep edge bonds (and all O-H), uncomment the next four lines
+disp('Keeping only bonds with H or edge-O ')
+[h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Edge)));
+Bond_index=Bond_index(h_row,:);
+
+%% To only keep bonds between Osih - H, uncomment the next four lines
+%     disp('Keeping only bonds with H')
+%     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Osih)));
+%     Bond_index=Bond_index(h_row,:);
+%     nBonds=size(Bond_index,1);
+
+%     %% To remove bonds with 'Al'
+%     [Al_row,Al_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Al)));
+%     Bond_index(Al_row,:)=[];
+%     nBonds=size(Bond_index,1);
+
+%     %% To remove bonds with 'Si'
+%     [Si_row,Si_col]=ind2sub(size(Bond_index),find(ismember(Bond_index(:,2),ind_Si)));
+%     Bond_index(Si_row,:)=[];
+%     nBonds=size(Bond_index,1);
+
+%    %% To remove bonds larger than certain rmin, uncomment next two lines
+%     rm_ind=find(Bond_index(:,3)>1.25);
+%     Bond_index(rm_ind,:)=[];
+%     nBonds=size(Bond_index,1);
+
+[Y,I]=sort(Bond_index(:,1));
+Bond_index=Bond_index(I,:);
+Bond_index = unique(Bond_index,'rows','stable');
+
+% if strncmpi(ffname,'minff',5)
+disp('Keeping all angles with O... ')
+%     disp('What to do with edge angles with Al')
+%     disp('Removing angles with Al')
+%     [Al_row,Al_col]=ind2sub(size(Angle_index),find(ismember(Angle_index,ind_Al)));
+%     Angle_index(Al_row,:)=[];
+%     % To remove angles with 'Si'
+%     Si_ind=find(strcmp(XYZ_labels(:,1),'Si'));
+%     [Si_row,Si_col]=ind2sub(size(Angle_index),find(ismember(Angle_index(:,2),Si_ind)));
+%     Angle_index(Si_row,:)=[];
+% %% Extra stuff
+%     Angle_index
+%     rm_ind=find(Angle_index(:,4)>150|Angle_index(:,4)<60);
+%     Angle_index(rm_ind,:)=[];
+%     [Y,I]=sort(Angle_index(:,2));
+%     Angle_index=Angle_index(I,:);
+%     Angle_index = unique(Angle_index,'rows','stable');
+% end
+
 assignin('caller','atom',atom);
+% assignin('caller','Epsilon',Epsilon);
+% assignin('caller','Sigma',Sigma);
+assignin('caller','Masses',Masses);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
 assignin('caller','Dihedral_index',Dihedral_index);
+nAtoms=size(atom,2)
+nBonds=size(Bond_index,1)
+nAngles=size(Angle_index,1)
+nDihedrals=size(Dihedral_index,1)
+
 nAtoms=size(atom,2)
 nBonds
 nAngles

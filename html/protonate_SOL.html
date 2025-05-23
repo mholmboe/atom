@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>protonate_SOL.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-05-23">
+<meta name="DC.source" content="protonate_SOL.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>protonate_SOL.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function protonates the sites in the atom struct given by the index vector ind by adding a H's to a new H atom struct. It does so by placing the H opposite to the mean position of all neughbours within 2.5 &Aring;ngstr&ouml;m of the site to be protonated</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Hatom = protonate_SOL(atom,Box_dim) % Protonating all O's that are only single bonded</li>
+<li>Hatom = protonate_SOL(atom,Box_dim,ind) % Protonates all sites with index ind</li>
+<li>Hatom = protonate_SOL(atom,Box_dim,ind,nH) % nH = 1 or 2</li>
+<li>Hatom = protonate_SOL(atom,Box_dim,ind,nH,rmaxlong) % rcut can be used to change the default cutoff 2.25 &Aring;ngstr&ouml;m</li>
+<li>Hatom = protonate_SOL(atom,Box_dim,ind,nH,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> H_atom = protonate_SOL(atom,Box_dim,varargin)
+
+<span class="keyword">if</span> nargin==2
+    disp(<span class="string">'Assuming all oxygen atoms should have 2 neighbours...'</span>);
+    disp(<span class="string">'else also supply an ind vector for sites to protonate!'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 2
+    ind=varargin{1};
+<span class="keyword">else</span>
+    ind=[];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 3
+    nH=varargin{2};
+<span class="keyword">else</span>
+    nH=2;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &gt; 4
+    rmaxlong=varargin{3};
+<span class="keyword">else</span>
+    rmaxlong=2.25;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &lt; 6
+    H_type={<span class="string">'H'</span>};
+<span class="keyword">else</span>
+    H_type=varargin{4};
+    <span class="keyword">if</span> ~iscell(H_type)
+        H_type={H_type};
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Default parameters</span>
+rOH    = 0.9572;
+HOHangle  = 104.5 * pi / 180;
+
+<span class="comment">% Build neighbor lists</span>
+atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
+
+H_atom = [];index=atom(end).index;
+<span class="keyword">for</span> i = reshape(ind,1,[])
+
+    <span class="comment">% Compute bisector direction</span>
+    r_vecs = atom(i).neigh.r_vec;                     <span class="comment">% Ni&times;3</span>
+    mean_dir = mean(r_vecs,1);
+    u = -mean_dir / norm(mean_dir);                    <span class="comment">% unit direction</span>
+
+    <span class="comment">% Choose placement directions</span>
+    <span class="keyword">if</span> nH==1
+        direction = u;
+    <span class="keyword">elseif</span> nH==2
+        <span class="comment">% construct perpendicular basis</span>
+        tmp = [1 0 0];
+        <span class="keyword">if</span> abs(dot(tmp,u))&gt;0.9, tmp = [0 1 0]; <span class="keyword">end</span>
+        v1 = cross(u, tmp); v1 = v1/norm(v1);
+        theta = HOHangle/2;
+        direction = [cos(theta)*u + sin(theta)*v1;
+                     cos(theta)*u - sin(theta)*v1];
+    <span class="keyword">else</span>
+        error(<span class="string">'Only 1 or 2 H supported.'</span>);
+    <span class="keyword">end</span>
+
+    <span class="comment">% Create H atoms</span>
+    basePos = [atom(i).x, atom(i).y, atom(i).z];
+    <span class="keyword">for</span> k = 1:size(direction,1)
+        pos = basePos + rOH * direction(k,:)
+        Hn = xyz2atom(H_type, pos,Box_dim,[atom(1).resname],[]);
+        Hn.molid = atom(i).molid;
+        Hn.index = index + 1;
+        H_atom = [H_atom, Hn];
+        index = index + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isfield(H_atom,<span class="string">'element'</span>)
+    H_atom=rmfield(H_atom,<span class="string">'element'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% protonate_SOL.m
+% * This function protonates the sites in the atom struct given by the
+% index vector ind by adding a H's to a new H atom struct. It does so by
+% placing the H opposite to the mean position of all neughbours within 2.5
+% Ångström of the site to be protonated
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # Hatom = protonate_SOL(atom,Box_dim) % Protonating all O's that are only single bonded
+% # Hatom = protonate_SOL(atom,Box_dim,ind) % Protonates all sites with index ind
+% # Hatom = protonate_SOL(atom,Box_dim,ind,nH) % nH = 1 or 2
+% # Hatom = protonate_SOL(atom,Box_dim,ind,nH,rmaxlong) % rcut can be used to change the default cutoff 2.25 Ångström
+% # Hatom = protonate_SOL(atom,Box_dim,ind,nH,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
+%
+
+function H_atom = protonate_SOL(atom,Box_dim,varargin)
+
+if nargin==2
+    disp('Assuming all oxygen atoms should have 2 neighbours...');
+    disp('else also supply an ind vector for sites to protonate!');
+end
+
+if nargin > 2
+    ind=varargin{1};
+else
+    ind=[];
+end
+
+if nargin > 3
+    nH=varargin{2};
+else
+    nH=2;
+end
+
+if nargin > 4
+    rmaxlong=varargin{3};
+else
+    rmaxlong=2.25;
+end
+
+if nargin < 6
+    H_type={'H'};
+else
+    H_type=varargin{4};
+    if ~iscell(H_type)
+        H_type={H_type};
+    end
+end
+
+% Default parameters
+rOH    = 0.9572;
+HOHangle  = 104.5 * pi / 180;
+
+% Build neighbor lists
+atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
+
+H_atom = [];index=atom(end).index;
+for i = reshape(ind,1,[])
+
+    % Compute bisector direction
+    r_vecs = atom(i).neigh.r_vec;                     % Ni×3
+    mean_dir = mean(r_vecs,1);
+    u = -mean_dir / norm(mean_dir);                    % unit direction
+
+    % Choose placement directions
+    if nH==1
+        direction = u;
+    elseif nH==2
+        % construct perpendicular basis
+        tmp = [1 0 0];
+        if abs(dot(tmp,u))>0.9, tmp = [0 1 0]; end
+        v1 = cross(u, tmp); v1 = v1/norm(v1);
+        theta = HOHangle/2;
+        direction = [cos(theta)*u + sin(theta)*v1;
+                     cos(theta)*u - sin(theta)*v1];
+    else
+        error('Only 1 or 2 H supported.');
+    end
+
+    % Create H atoms
+    basePos = [atom(i).x, atom(i).y, atom(i).z];
+    for k = 1:size(direction,1)
+        pos = basePos + rOH * direction(k,:)
+        Hn = xyz2atom(H_type, pos,Box_dim,[atom(1).resname],[]);
+        Hn.molid = atom(i).molid;
+        Hn.index = index + 1;
+        H_atom = [H_atom, Hn];
+        index = index + 1;
+    end
+end
+
+if isfield(H_atom,'element')
+    H_atom=rmfield(H_atom,'element');
+end
+
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

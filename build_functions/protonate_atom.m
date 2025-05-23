@@ -35,7 +35,7 @@ if nargin==2
     disp('else also supply an ind vector for sites to protonate!');
 end
 
-atom = element_atom(atom);
+% atom = element_atom(atom);
 
 if nargin > 2
     ind=varargin{1};
@@ -49,7 +49,7 @@ else
     rmaxlong=2.25;
 end
 
-if nargin < 4
+if nargin < 5
     heal_type={'H'};
 else
     heal_type=varargin{3};
@@ -60,12 +60,14 @@ end
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
 
-i=1;
-while i<=size(atom,2)
-    if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
-        ind=[ind i];
+if numel(ind)<1
+    i=1;
+    while i<=size(atom,2)
+        if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
+            ind=[ind i];
+        end
+        i=i+1;
     end
-    i=i+1;
 end
 
 if numel(ind)<1
@@ -76,6 +78,7 @@ end
 disp('Guessing this many H´s!')
 
 if numel(ind) > 0
+    ind=unique(ind);
     H_atom=[];
     for i=ind
         i

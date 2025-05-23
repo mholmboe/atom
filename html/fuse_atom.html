@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>fuse_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="fuse_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -123,8 +123,8 @@ dist_matrix=dist_matrix_atom(atom,Box_dim);
     rmax=varargin{1};
 <span class="keyword">end</span>
 
-i=1;rmind_tot=[];
-<span class="keyword">while</span> i &lt; size(fused_atom,2)
+i=size(fused_atom,2);rmind_tot=[];
+<span class="keyword">while</span> i &gt; 0
     rmind=find(dist_matrix(:,i)&lt;rmax)';
     <span class="keyword">if</span> numel(rmind)&gt;1
         x1=[fused_atom(i).x];
@@ -139,7 +139,7 @@ i=1;rmind_tot=[];
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).z]);</span>
 
 <span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);</span>
-        rmind_tot=[rmind_tot rmind(rmind&gt;i)];
+        rmind_tot=[rmind_tot rmind(rmind&lt;i)];
     <span class="keyword">end</span>
 
     <span class="comment">% if mod(i,100)==1</span>
@@ -147,7 +147,7 @@ i=1;rmind_tot=[];
     <span class="comment">%         i-1</span>
     <span class="comment">%     end</span>
     <span class="comment">% end</span>
-    i=i+1;
+    i=i-1;
 <span class="keyword">end</span>
 i
 
@@ -212,8 +212,8 @@ else
     rmax=varargin{1};
 end
 
-i=1;rmind_tot=[];
-while i < size(fused_atom,2)
+i=size(fused_atom,2);rmind_tot=[];
+while i > 0
     rmind=find(dist_matrix(:,i)<rmax)';
     if numel(rmind)>1
         x1=[fused_atom(i).x];
@@ -228,7 +228,7 @@ while i < size(fused_atom,2)
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
         
 %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
-        rmind_tot=[rmind_tot rmind(rmind>i)];
+        rmind_tot=[rmind_tot rmind(rmind<i)];
     end
     
     % if mod(i,100)==1
@@ -236,7 +236,7 @@ while i < size(fused_atom,2)
     %         i-1
     %     end
     % end
-    i=i+1;
+    i=i-1;
 end
 i
 

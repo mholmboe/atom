@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>protonate_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-04-24">
+<meta name="DC.date" content="2025-05-23">
 <meta name="DC.source" content="protonate_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -132,7 +132,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     disp(<span class="string">'else also supply an ind vector for sites to protonate!'</span>);
 <span class="keyword">end</span>
 
-atom = element_atom(atom);
+<span class="comment">% atom = element_atom(atom);</span>
 
 <span class="keyword">if</span> nargin &gt; 2
     ind=varargin{1};
@@ -146,7 +146,7 @@ atom = element_atom(atom);
     rmaxlong=2.25;
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> nargin &lt; 4
+<span class="keyword">if</span> nargin &lt; 5
     heal_type={<span class="string">'H'</span>};
 <span class="keyword">else</span>
     heal_type=varargin{3};
@@ -157,12 +157,14 @@ atom = element_atom(atom);
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
 
-i=1;
-<span class="keyword">while</span> i&lt;=size(atom,2)
-    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1) &amp;&amp; numel(atom(i).neigh.index) &lt; 2
-        ind=[ind i];
+<span class="keyword">if</span> numel(ind)&lt;1
+    i=1;
+    <span class="keyword">while</span> i&lt;=size(atom,2)
+        <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'O'</span>,1) &amp;&amp; numel(atom(i).neigh.index) &lt; 2
+            ind=[ind i];
+        <span class="keyword">end</span>
+        i=i+1;
     <span class="keyword">end</span>
-    i=i+1;
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> numel(ind)&lt;1
@@ -173,6 +175,7 @@ i=1;
 disp(<span class="string">'Guessing this many H&acute;s!'</span>)
 
 <span class="keyword">if</span> numel(ind) &gt; 0
+    ind=unique(ind);
     H_atom=[];
     <span class="keyword">for</span> i=ind
         i
@@ -282,7 +285,7 @@ if nargin==2
     disp('else also supply an ind vector for sites to protonate!');
 end
 
-atom = element_atom(atom);
+% atom = element_atom(atom);
 
 if nargin > 2
     ind=varargin{1};
@@ -296,7 +299,7 @@ else
     rmaxlong=2.25;
 end
 
-if nargin < 4
+if nargin < 5
     heal_type={'H'};
 else
     heal_type=varargin{3};
@@ -307,12 +310,14 @@ end
 
 atom = neigh_atom(atom,Box_dim,1.25,rmaxlong);
 
-i=1;
-while i<=size(atom,2)
-    if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
-        ind=[ind i];
+if numel(ind)<1
+    i=1;
+    while i<=size(atom,2)
+        if strncmpi([atom(i).type],'O',1) && numel(atom(i).neigh.index) < 2
+            ind=[ind i];
+        end
+        i=i+1;
     end
-    i=i+1;
 end
 
 if numel(ind)<1
@@ -323,6 +328,7 @@ end
 disp('Guessing this many H´s!')
 
 if numel(ind) > 0
+    ind=unique(ind);
     H_atom=[];
     for i=ind
         i

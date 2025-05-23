@@ -50,6 +50,7 @@ System = wrap_atom(System,Full_Box_dim); % Do we want to wrap atoms into cell
 write_atom_gro(System,Full_Box_dim,filename_out);
 
 %% Write a full LAMMPS topology for CLAYFF and SPCE
+% write_minff_lmp(System,Full_Box_dim,'system.lj');
 % write_atom_lmp(System,Full_Box_dim,'system.lj',1.25,1.25,'clayff','spce');
 
 %% Plot the final structure in vmd
