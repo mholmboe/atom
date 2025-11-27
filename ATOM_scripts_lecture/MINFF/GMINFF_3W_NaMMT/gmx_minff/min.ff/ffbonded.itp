@@ -4,12 +4,12 @@
 Oh      H		1   	0.09572	441050
 Ob      H		1   	0.09572	441050
 Ohmg    H		1   	0.09572	441050
-; Oalh    H		1   	0.09572	441050
-; Oalhh   H		1   	0.09572	441050
-; Osih    H		1   	0.09572	441050
-; Alo		Oalh    1   	0.195   441050
-; Alo		Oalhh   1   	0.195 	441050
-; Sit		Osih	1   	0.160   441050
+Oalh    H		1   	0.09572	441050
+Oalhh   H		1   	0.09572	441050
+Osih    H		1   	0.09572	441050
+Alo		Oalh    1   	0.195   441050
+Alo		Oalhh   1   	0.195 	441050
+Sit		Osih	1   	0.160   441050
 
 [ angletypes ]
 ;i      j       k	func	th0	cth

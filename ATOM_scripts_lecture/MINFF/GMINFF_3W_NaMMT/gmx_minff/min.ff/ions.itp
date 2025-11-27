@@ -945,7 +945,7 @@ H+_Zundel     1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -959,7 +959,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1001,7 +1001,7 @@ NH4+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1015,7 +1015,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1029,7 +1029,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1057,7 +1057,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1071,7 +1071,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1085,7 +1085,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1099,7 +1099,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1113,7 +1113,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1127,7 +1127,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1145,7 +1145,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1159,7 +1159,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1201,7 +1201,7 @@ NH4+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1215,7 +1215,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1229,7 +1229,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1257,7 +1257,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1271,7 +1271,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1285,7 +1285,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1299,7 +1299,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1313,7 +1313,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1327,7 +1327,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1345,7 +1345,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1359,7 +1359,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1401,7 +1401,7 @@ NH4+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1415,7 +1415,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1429,7 +1429,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1457,7 +1457,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1471,7 +1471,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1485,7 +1485,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1499,7 +1499,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1513,7 +1513,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1527,7 +1527,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1545,7 +1545,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1559,7 +1559,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1601,7 +1601,7 @@ NH4+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1615,7 +1615,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1629,7 +1629,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1657,7 +1657,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1671,7 +1671,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1685,7 +1685,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1699,7 +1699,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1713,7 +1713,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1727,7 +1727,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1745,7 +1745,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1759,7 +1759,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1773,7 +1773,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1787,7 +1787,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1801,7 +1801,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1829,7 +1829,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1843,7 +1843,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1857,7 +1857,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1871,7 +1871,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1885,7 +1885,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1899,7 +1899,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1917,7 +1917,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1931,7 +1931,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1945,7 +1945,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1959,7 +1959,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -1973,7 +1973,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2001,7 +2001,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2015,7 +2015,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2029,7 +2029,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2043,7 +2043,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2057,7 +2057,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2071,7 +2071,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2089,7 +2089,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2103,7 +2103,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2117,7 +2117,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2131,7 +2131,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2145,7 +2145,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2173,7 +2173,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2187,7 +2187,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2201,7 +2201,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2215,7 +2215,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2229,7 +2229,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2243,7 +2243,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2261,7 +2261,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2275,7 +2275,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2289,7 +2289,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2303,7 +2303,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2317,7 +2317,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2345,7 +2345,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2359,7 +2359,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2373,7 +2373,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2387,7 +2387,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2401,7 +2401,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2415,7 +2415,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2433,7 +2433,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2447,7 +2447,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2461,7 +2461,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2475,7 +2475,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2489,7 +2489,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2517,7 +2517,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2531,7 +2531,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2545,7 +2545,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2559,7 +2559,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2573,7 +2573,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2587,7 +2587,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2605,7 +2605,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2619,7 +2619,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2633,7 +2633,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2647,7 +2647,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2661,7 +2661,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2689,7 +2689,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2703,7 +2703,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2717,7 +2717,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2731,7 +2731,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2745,7 +2745,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2759,7 +2759,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2777,7 +2777,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2791,7 +2791,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2805,7 +2805,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2819,7 +2819,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2833,7 +2833,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2861,7 +2861,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2875,7 +2875,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2889,7 +2889,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2903,7 +2903,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2917,7 +2917,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2931,7 +2931,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2949,7 +2949,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Li+           1
+Li            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2963,7 +2963,7 @@ Li+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-F−            1
+F             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2977,7 +2977,7 @@ F−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Na+           1
+Na             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -2991,7 +2991,7 @@ Na+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cl−           1
+Cl           1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3005,7 +3005,7 @@ Cl−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-K+            1
+K             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3033,7 +3033,7 @@ Cu+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Br−           1
+Br            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3047,7 +3047,7 @@ Br−           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Rb+           1
+Rb            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3061,7 +3061,7 @@ Rb+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ag+           1
+Ag            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3075,7 +3075,7 @@ Ag+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-I−            1
+I             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3089,7 +3089,7 @@ I−            1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cs+           1
+Cs             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3103,7 +3103,7 @@ Cs+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Tl+           1
+Tl            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3121,7 +3121,7 @@ Tl+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3135,7 +3135,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3149,7 +3149,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3163,7 +3163,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3177,7 +3177,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3191,7 +3191,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3233,7 +3233,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3261,7 +3261,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3275,7 +3275,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3289,7 +3289,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3317,7 +3317,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3331,7 +3331,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3345,7 +3345,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3429,7 +3429,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3461,7 +3461,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3475,7 +3475,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3489,7 +3489,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3503,7 +3503,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3517,7 +3517,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3531,7 +3531,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3573,7 +3573,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3601,7 +3601,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3615,7 +3615,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3629,7 +3629,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3657,7 +3657,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3671,7 +3671,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3685,7 +3685,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3769,7 +3769,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3801,7 +3801,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3815,7 +3815,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3829,7 +3829,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3843,7 +3843,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3857,7 +3857,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3871,7 +3871,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3913,7 +3913,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3941,7 +3941,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3955,7 +3955,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3969,7 +3969,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -3997,7 +3997,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4011,7 +4011,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4025,7 +4025,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4109,7 +4109,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4141,7 +4141,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4155,7 +4155,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4169,7 +4169,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4183,7 +4183,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4197,7 +4197,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4211,7 +4211,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4253,7 +4253,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4281,7 +4281,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4295,7 +4295,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4309,7 +4309,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4337,7 +4337,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4351,7 +4351,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4365,7 +4365,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4449,7 +4449,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4481,7 +4481,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4495,7 +4495,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4509,7 +4509,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4523,7 +4523,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4537,7 +4537,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4551,7 +4551,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4593,7 +4593,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4621,7 +4621,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4635,7 +4635,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4649,7 +4649,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4677,7 +4677,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4691,7 +4691,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4705,7 +4705,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4789,7 +4789,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4821,7 +4821,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4835,7 +4835,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4849,7 +4849,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4863,7 +4863,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4877,7 +4877,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4891,7 +4891,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4933,7 +4933,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4961,7 +4961,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4975,7 +4975,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -4989,7 +4989,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5017,7 +5017,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5031,7 +5031,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5045,7 +5045,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5129,7 +5129,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5161,7 +5161,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5175,7 +5175,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5189,7 +5189,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5203,7 +5203,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5217,7 +5217,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5231,7 +5231,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5273,7 +5273,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5301,7 +5301,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5315,7 +5315,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5329,7 +5329,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5357,7 +5357,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5371,7 +5371,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5385,7 +5385,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5469,7 +5469,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5501,7 +5501,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5515,7 +5515,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5529,7 +5529,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5543,7 +5543,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5557,7 +5557,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5571,7 +5571,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5613,7 +5613,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5641,7 +5641,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5655,7 +5655,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5669,7 +5669,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Pd2+          1
+Pd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5697,7 +5697,7 @@ Ag2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5711,7 +5711,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5725,7 +5725,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5809,7 +5809,7 @@ Pt2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5841,7 +5841,7 @@ Pb2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5855,7 +5855,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5869,7 +5869,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5883,7 +5883,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5897,7 +5897,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5911,7 +5911,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5953,7 +5953,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5981,7 +5981,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -5995,7 +5995,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6009,7 +6009,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6023,7 +6023,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6037,7 +6037,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6051,7 +6051,7 @@ Ba2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6069,7 +6069,7 @@ Hg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6083,7 +6083,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6097,7 +6097,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6111,7 +6111,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6125,7 +6125,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6139,7 +6139,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6181,7 +6181,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6209,7 +6209,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6223,7 +6223,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6237,7 +6237,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6251,7 +6251,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6265,7 +6265,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6279,7 +6279,7 @@ Ba2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6297,7 +6297,7 @@ Hg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6311,7 +6311,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6325,7 +6325,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6339,7 +6339,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6353,7 +6353,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6367,7 +6367,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6409,7 +6409,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6437,7 +6437,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6451,7 +6451,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6465,7 +6465,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6479,7 +6479,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6493,7 +6493,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6507,7 +6507,7 @@ Ba2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6525,7 +6525,7 @@ Hg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Be2+          1
+Be            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6539,7 +6539,7 @@ Be2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mg2+          1
+Mg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6553,7 +6553,7 @@ Mg2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ca2+          1
+Ca            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6567,7 +6567,7 @@ Ca2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-V2+           1
+V             1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6581,7 +6581,7 @@ V2+           1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cr2+          1
+Cr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6595,7 +6595,7 @@ Cr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Mn2+          1
+Mn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6637,7 +6637,7 @@ Co2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ni2+          1
+Ni            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6665,7 +6665,7 @@ Cu2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Zn2+          1
+Zn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6679,7 +6679,7 @@ Zn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sr2+          1
+Sr            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6693,7 +6693,7 @@ Sr2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Cd2+          1
+Cd            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6707,7 +6707,7 @@ Cd2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Sn2+          1
+Sn            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6721,7 +6721,7 @@ Sn2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Ba2+          1
+Ba            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge
@@ -6735,7 +6735,7 @@ Ba2+          1
 
 [ moleculetype ]
 ; molname   nrexcl
-Hg2+          1
+Hg            1
 
 [ atoms ]
 ; id    at type res nr  residu name at name  cg nr  charge

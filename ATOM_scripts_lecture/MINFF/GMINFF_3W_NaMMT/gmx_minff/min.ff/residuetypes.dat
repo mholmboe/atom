@@ -186,6 +186,9 @@ T4P	Water
 T5P	Water
 T3H	Water
 MIN	Mineral
+MOL	Molecule
+MMT	Montmorillonite
+KAO Kaolinite
 K	Ion
 NA	Ion
 CA	Ion
