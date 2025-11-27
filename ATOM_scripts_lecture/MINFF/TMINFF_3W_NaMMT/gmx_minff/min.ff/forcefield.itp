@@ -1,4 +1,10 @@
-; min.ff
+#define _FF_MINFF
+
+; This force field uses a format that requires Gromacs 2018 or later.
+;
+; Documentation for the (g/t)MINFF force field: 
+; https://github.com/mholmboe/minff
+; 
 
 [ defaults ]
 ; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
