@@ -153,6 +153,9 @@ end
 if exist('atoms','var')
     clearvars atoms
     atoms_cell = regexp(itp.atoms,'\s+', 'split');
+    assignin('base',"atoms_cell",atoms_cell);
+    nrows=size(atoms_cell{1},1);
+    ncol=size(atoms_cell{1},2);
     atoms_cell = vertcat(atoms_cell{:});
     atoms_section_labels = {'nr' 'type' 'resnr' 'residue' 'atom' 'cgnr' 'charge' 'mass' 'typeB' 'chargeB' 'massB'  'comment'};
     for i=1:min([12 size(atoms_cell,2)])

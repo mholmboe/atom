@@ -113,4 +113,5 @@ if xyz_labels>0
 end
 
 rotate3d on;
+hold off;
 

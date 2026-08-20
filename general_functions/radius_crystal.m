@@ -8,12 +8,12 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # radii = radius_crystal('O') % Element name
-% # radii = radius_crystal('O',-2) % Element name, Charge
-% # radii = radius_crystal('O',-2,2) % Element name, Charge, CN
+% # radii = radius_crystal({'O'})
+% # radii = radius_crystal('O')
+% # radii = radius_crystal('Fe',+2)
+% # radii = radius_crystal('Fe',+2,6)
 
-
-function radii = radius_crystal(Atom_label,varargin)
+function [radii,Atom_label] = radius_crystal(Atom_label,varargin)
 
 if ~iscell(Atom_label)
     Atom_label={Atom_label};
@@ -32,6 +32,11 @@ end
 Radiiproperties=load('Revised_Shannon_radii.mat');
 radii=zeros(length(Atom_label),1);
 for i=1:length(Atom_label)
+    
+    if numel(Atom_label{i})>2
+        Atom_label{i}=Atom_label{i}(1:2);
+    end
+    
     try
         ind=find(strncmpi([Radiiproperties.Ion],Atom_label(i),2));
     catch
@@ -41,7 +46,25 @@ for i=1:length(Atom_label)
             ind=285;% As in O
         end
     end
-    %     radii(i)=median(Radiiproperties.IonicRadii(ind
+    ind_type=ind;
+    if numel(ind_type)>1
+        ind_type=ind_type(1);
+    elseif numel(ind_type)==0
+        try
+            ind=find(strncmpi([Radiiproperties.Ion],Atom_label{i}(1),1));
+            if numel(ind)==0
+                ind=285;
+                ind_type=285;
+            else
+                ind=ind(1);
+                ind_type=ind;
+            end
+        catch
+            ind=285;
+            ind_type=285;
+        end
+    end
+    %     radii(i)=median(Radiiproperties.IonicRadii(ind))';
     if numel(Oxidationstate)>0
         if numel(CN)>0
             ind_cn=find(CN(i)==[Radiiproperties.CN]);
@@ -51,7 +74,7 @@ for i=1:length(Atom_label)
             if numel(ind)>0
                 radii(i,1)=Radiiproperties.CrysRadii(ind(1));
             else
-               disp('Did not find this combination of ion, oxidation state and coordination number...') 
+                disp('Did not find this combination of ion, oxidation state and coordination number...')
             end
         else
             ind_ox=find(Oxidationstate(i)==[Radiiproperties.OxState]);
@@ -59,13 +82,16 @@ for i=1:length(Atom_label)
             if numel(Oxidationstate)>0
                 radii(i,1)=Radiiproperties.CrysRadii(ind(1));
             else
-                disp('Did not find this combination of ion and oxidation state...') 
+                disp('Did not find this combination of ion and oxidation state...')
             end
         end
     else
-        radii(i,1)=Radiiproperties.CrysRadii(ind(1));
+        if numel(ind)>1
+            ind=ind(1);
+        end
+        radii(i,1)=Radiiproperties.CrysRadii(ind_type);
     end
 end
-
-
-
+Atom_label;
+ind_type(1);
+Atom_label=[Radiiproperties.Ion(ind_type)];

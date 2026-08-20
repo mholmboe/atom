@@ -14,6 +14,11 @@ energygrps="MMT Ion Water"
 tcgrps="System"
 commgrps="MMT_1 MMT_2 Water_and_ions"
 
+# Variables controlling LJ parameters from ffnonbonded.itp (copied from ffnonbonded_tminff_k500.itp)
+watermodel="OPC3"
+mineral="Montmorillonite_k500"
+ions="OPC3_IOD_LM"
+
 cluster=$1		# Passed variable 1 (machine) from caller, leave empty if local machine
 ncores=$2		# Passed variable 2 (number of proc.) from caller, leave empty if local machine
 

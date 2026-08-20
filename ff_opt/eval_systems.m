@@ -88,7 +88,7 @@ catch
     cd(ParentSimDir);
 end
 
-if gpuDeviceCount("available") == 0 || ~strcmp(computer('arch'),'maca64') == 0
+if gpuDeviceCount("available") == 0 && strcmp(computer('arch'),'maca64') == 0
     %% -multidir simulations: requires gmx_mpi runs
     try
         if numSimulation==1 || ~strcmp(computer('arch'),'maca64') == 0

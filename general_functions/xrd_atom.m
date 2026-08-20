@@ -54,6 +54,7 @@ Div_slit = .01; % Divergence slit setting, 0 for automatic
 roughness = 0; % Surface roughness
 sigma_star=45; % Reynolds 00l mean preferred orientation, 45 [deg] is random, 1 [deg] is the opposite
 RNDPWD = 1; %  Random powder
+NA=6.022E23; % Avogadros number
 % mu_star=45; % Not yet implemented
 % alfa_strain = 0; % Not yet implemented
 
@@ -90,6 +91,16 @@ else
     Box_dim=varargin{2};
 end
 
+% % If Box_dim actually is a 1x6 Cell variable
+if numel(Box_dim)==6
+    Box_dim = Cell2Box_dim(Box_dim);
+end
+
+%% To calculate a relative intensity factor for a pure single formula unit cell
+atom = mass_atom(atom,Box_dim);
+Z=Box_density*NA*(Box_volume/1E24)/Mw_occupancy;
+scalefactor=Z*Mw_occupancy/Box_volume;
+
 if nargin>2
     rep_factors=varargin{3};
 else
@@ -105,29 +116,41 @@ end
 
 %% Specials section
 % atom = unreplicate_atom(atom,Box_dim,rep_factors);
-% for R=1:1
+% for R=1:2
 %     % %% Unreplicate the atom struct
 %     % atom = unreplicate_atom(atom,Box_dim,rep_factors);
-%
+% 
 %     %% Replicate and displace the atom struct
-%     atom = replicate_atom(atom,Box_dim,[1 1 2]);
-%     atom(size(atom,2)/2+1:end) = translate_atom(atom(size(atom,2)/2+1:end),[0 Box_dim(2)/3 0]);
-%     atom = replicate_atom(atom,Box_dim,[2 2 1]);
-%     rep_factors=rep_factors.*[2 2 2];
+%     % atom = replicate_atom(atom,Box_dim,[1 1 2]);
+%     % atom(size(atom,2)/2+1:end) = translate_atom(atom(size(atom,2)/2+1:end),[0 Box_dim(2)/3 0]);
+%     % atom = replicate_atom(atom,Box_dim,[2 2 1]);
+%     % rep_factors=rep_factors.*[2 2 2];
 %     % plot_atom(atom,Box_dim);
 %     % pause;
-%
+% 
 %     %% Rotate some layers
 %     new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
-%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 2]);
-%     rot = translate_atom(rot,[2 5 0]);
+%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 30]);
+%     % rot = translate_atom(rot,[2 5 0]);
 %     atom = update_atom({atom rot});
 %     new = replicate_atom(atom,Box_dim,[1 1 2]); % Generates a new Box_dim
-%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 2]);
+%     rot = rotate_atom(new(size(new,2)/2+1:end),Box_dim,[0 0 30]);
 %     rot = translate_atom(rot,[2 3 0]);
 %     atom = update_atom({atom rot});
 %     rep_factors=rep_factors.*[1 1 4];
 % end
+
+% % %% Rotate n replicated molecular layers
+% % nLayers = 6;                 % number of replicated layers
+% % nAtoms = numel(atom);
+% % atom_rot = atom;             % first layer unchanged
+% % for i = 1:nLayers-1
+% %     rot = rotate_atom(atom,Box_dim,i*[0 0 15]);
+% %     rot=translate_atom(rot,i*[0 0 Box_dim(3)]);
+% %     rot=translate_atom(rot,i*[rand(1) rand(1) 0]);
+% %     atom_rot = update_atom({atom_rot rot});
+% % end
+% % atom = atom_rot;
 
 % %% Slice the atom struct
 % atom = slice_triclinic_atom(atom,Box_dim);
@@ -427,7 +450,7 @@ else
 end
 
 %% Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function
-intensity=Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part;
+intensity=scalefactor*Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part;
 
 %% Divergence slit
 if Div_slit>0
@@ -475,6 +498,7 @@ else
     %     intensity=real(intensity/max(intensity(1:floor(15/((exp_twotheta(end)-exp_twotheta(1))/length(exp_twotheta))))));
 end
 
+assignin('caller','atom_xrd',atom)
 assignin('caller','F_squared',F_squared)
 % assignin('caller','twotheta_rad',twotheta_rad)
 assignin('caller','twotheta_disc',two_theta_disc)
@@ -531,9 +555,9 @@ if nargin<5
             Miller_seq=abs(hkl_max_Intensity(ind,:));
             seq=sort(abs(Miller_seq),2,'descend');
             multiplicity =numel(find(ismember(hkl_abs_sorted,seq,'rows')));
-            text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.06,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
+            text(two_theta_disc_Intensity_max(ind)-0.32,peaks_int(i)+0.06,strcat('(',Miller_index(~isspace(Miller_index)),')'),'FontSize',14);
             if size(atom,2)<100
-                text(two_theta_disc_Intensity_max(ind)-3.2,peaks_int(i)+0.12,num2str(multiplicity),'FontSize',14);
+                text(two_theta_disc_Intensity_max(ind)-0.32,peaks_int(i)+0.12,num2str(multiplicity),'FontSize',14);
             end
             hkl_ind=[hkl_ind i];
 

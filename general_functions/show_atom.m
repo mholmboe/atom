@@ -64,8 +64,9 @@ else
 
     bond_radii = 0.12; % bond radii
     resolution = 30;  % higher looks better, takes more time
-    element=element_atom(atom);
-    XYZ_labels=[element.type]';
+    % element=element_atom(atom);
+    % XYZ_labels=[element.type]';
+    XYZ_labels=[atom.type]';
     nAtoms = size(XYZ_labels,1);
 
     if strncmpi(style,'crystal',3)
@@ -79,6 +80,8 @@ else
         radii = 1/5*abs(radius_vdw(XYZ_labels));
     end
     color =  1*element_color(XYZ_labels);
+
+    color(ismember(XYZ_labels,{'Alt' 'Fet'}))=0.3*color(ismember(XYZ_labels,{'Alt' 'Fet'}));
 
     if nargin>4
         alpha=1-varargin{5};
@@ -341,6 +344,9 @@ else
                 patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
                     'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
                     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1.25);
+                % patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+                %     'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
+                %     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
             end
 
             if mod(i,1000)==1 || i==size(atom,2)

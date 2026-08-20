@@ -38,7 +38,7 @@ polytype_ind=find(ismember([atom.type],polytype));
 if nargin>3
     rmaxlong=varargin{2}; % Dummy value
 else
-    rmaxlong=2.25;
+    rmaxlong=2.45;
 end
 
 if nargin>5
@@ -102,9 +102,9 @@ if numel(Box_dim)>0
 end
 
 % Sets plot limits for the data
-xlo = floor(min([-5 min([atom.x])-2])); xhi = ceil(max([max([atom.x])+2 Box_dim(1)])/5)*5;
-ylo = floor(min([-5 min([atom.y])-2])); yhi = ceil(max([max([atom.y])+2 Box_dim(2)])/5)*5;
-zlo = floor(min([-5 min([atom.z])-2])); zhi = ceil(max([max([atom.z])+2 Box_dim(3)])/5)*5;
+xlo = floor(min([-2.5 min([atom.x])-2])); xhi = ceil(max([max([atom.x])+2 Box_dim(1)])/5)*5;
+ylo = floor(min([-2.5 min([atom.y])-2])); yhi = ceil(max([max([atom.y])+2 Box_dim(2)])/5)*5;
+zlo = floor(min([-2.5 min([atom.z])-2])); zhi = ceil(max([max([atom.z])+2 Box_dim(3)])/5)*5;
 % else
 %     xlo = floor(min([-5 min([atom.x])-max(radii)])); xhi = ceil(max(max([atom.x]))/5)*5;
 %     ylo = floor(min([-5 min([atom.y])-max(radii)])); yhi = ceil(max(max([atom.y]))/5)*5;
@@ -173,12 +173,12 @@ for ip=1:numel(polytype_ind)
 
         poly_color=color_temp.^.5;
         poly_color_edge=color_temp./5;
-        patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
-            'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
-            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1.25);
-            %     patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]+[atom(i).neigh.r_vec],'FaceColor',poly_color,...
-            % 'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
-            % 'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
+        % patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+        %     'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
+        %     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
+                patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+            'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
+            'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
     end
 
     if mod(i,1000)==1 || i==size(atom,2)

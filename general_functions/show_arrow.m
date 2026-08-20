@@ -64,9 +64,9 @@ end
 if ~exist('stemWidth','var')
     ax = axis;
     if numel(ax)==4
-        stemWidth = norm(ax([2 4])-ax([1 3]))/300;
+        stemWidth = norm(ax([2 4])-ax([1 3]))/200;
     elseif numel(ax)==6
-        stemWidth = norm(ax([2 4 6])-ax([1 3 5]))/300;
+        stemWidth = norm(ax([2 4 6])-ax([1 3 5]))/200;
     end
 end
 if ~exist('tipWidth','var')

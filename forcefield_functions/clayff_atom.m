@@ -80,7 +80,7 @@ for assignment_run=heal_iterations
     elseif assignment_run==6
         Heal_O=1 % 1 for yes and 0 for no
     elseif assignment_run==7
-        Heal_H=0 % 1 for yes and 0 for no
+        Heal_H=1 % 1 for yes and 0 for no
     elseif assignment_run==8
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==9
@@ -624,6 +624,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'AlFeoFeo') || strcmp(Neighbours,'AlFeFe')
                         atom(i).fftype={'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeFet') || strcmp(Neighbours, 'AlFeoFet')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlAltFe') || strcmp(Neighbours, 'AlAltFeo') || strcmp(Neighbours, 'AltAlFe') || strcmp(Neighbours, 'AltAlFeo')
+                        atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours,'AlFeSi') || strcmp(Neighbours,'AlFeoSi')
                         atom(i).fftype={'Op'};
                     elseif  strncmp(Neighbours,'FeHMg',5) || strncmp(Neighbours,'FeoHMg',5)

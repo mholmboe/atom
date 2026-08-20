@@ -495,6 +495,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlFeFe') || strcmp(Neighbours, 'AlFeoFeo') || strcmp(Neighbours, 'AltFeFe') || strcmp(Neighbours, 'AltFeoFeo')
                         atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeFet') || strcmp(Neighbours, 'AlFeoFet')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlAltFe') || strcmp(Neighbours, 'AlAltFeo') || strcmp(Neighbours, 'AltAlFe') || strcmp(Neighbours, 'AltAlFeo')
+                        atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlFeH') || strcmp(Neighbours, 'AlFeoH')
                         atom(i).fftype = {'Oh'};
                     elseif strcmp(Neighbours, 'AlFeSi') || strcmp(Neighbours, 'AlFeoSi')
@@ -515,7 +519,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Odsub'};
                     elseif strcmp(Neighbours, 'AltH')
                         atom(i).fftype = {'Oh'};
-                    elseif strncmp(Neighbours, 'AltMgh', 6) || strcmp(Neighbours, 'AltMgoMgoMgo')
+                    elseif strncmp(Neighbours, 'AltMgh', 6) || strcmp(Neighbours, 'AltMgMgMg') || strcmp(Neighbours, 'AltMgoMgoMgo') || strcmp(Neighbours, 'AltMghMghMgh')
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AltSi')
                         atom(i).fftype = {'Obs'};
@@ -689,7 +693,7 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Ca' 'Cl' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 2 -1 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')

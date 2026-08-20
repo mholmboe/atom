@@ -30,7 +30,7 @@ for i=1:length(unique([atom.type]))
     Atom_types=[Atom_types Atom_label(i)];
     Atom_numbers=[Atom_numbers sum(ismember([atom.type],Atom_label(i)))];
     if isfield(atom,'charge')
-        Atom_charge=[Atom_charge mean([atom(ismember([atom.type],Atom_label(i))).charge])];
+        Atom_charge=[Atom_charge round2dec(mean([atom(ismember([atom.type],Atom_label(i))).charge]),6)];
     end
 end
 composition.Atom_types=Atom_types

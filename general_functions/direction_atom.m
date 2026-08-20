@@ -168,7 +168,7 @@ for i=1:size(atom1,2)
     
 end
 
-assignin('caller','Neigh',neigh)
+% assignin('caller','Neigh',neigh)
 assignin('caller','Angle_index',Angle_index)
 
 end

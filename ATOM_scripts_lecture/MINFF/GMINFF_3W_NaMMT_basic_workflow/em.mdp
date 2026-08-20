@@ -1,4 +1,4 @@
-define                   = -DGMINFF_k500 -DOPC3_IOD_LM -DFLEXIBLE -DPOSRES_noH
+define                   = -DOPC3 -DGMINFF_k500 -DOPC3_IOD_LM -DFLEXIBLE -DPOSRES_noH
 ; RUN CONTROL PARAMETERS
 integrator               = steep
 dt                       = 0.001

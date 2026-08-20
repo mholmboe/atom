@@ -54,16 +54,18 @@ end
 disp('Forcefield not stated, will make some assumptions then...')
 ffname='minff';
 watermodel='OPC3'; % SPC/E, depreceated
-Atom_labels=unique([atom.type]);
+Atom_labels=unique([atom.type])
 atom = mass_atom(atom);
-Masses=[];
-for i=1:size(Atom_labels,2)
-    ind=find(strcmpi([atom.type],Atom_labels(i)));
-    Masses(i)=[atom(ind(i)).mass];
-end
+% assignin('caller','atom_itp',atom);
+% Masses=[];
+% for i=1:size(Atom_labels,2)
+%     ind=find(strcmpi([atom.type],Atom_labels(i)))
+%     Masses(i)=[atom(ind(i)).mass];
+% end
 
 if ~isfield(atom,'charge')
-	atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+%	atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+    atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Ca' 'Cl' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 2 -1 1.884 1.884 1.884 2.413 0.86 0.4]);
 end
 Total_charge=sum([atom.charge])
 round2dec(Total_charge,6)

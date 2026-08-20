@@ -104,7 +104,7 @@ trajstep=zeros(MaxFrames,1);
 trajtime=zeros(MaxFrames,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 rframe=0;frame=1;
-while true % Frameloop
+while true && frame < MaxFrames+1 % Frameloop
     [rstatus,rtraj]=read_xtc(rTraj);
     if(not(rstatus))
         rframe=rframe+stride;

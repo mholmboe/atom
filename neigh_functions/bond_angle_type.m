@@ -36,7 +36,6 @@ elseif numel(Box_dim)==9
     xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
 end
 
-a=1;Angle_index=zeros(1,12);
 for i=1:size(atom1,2)
     XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
 
@@ -113,6 +112,7 @@ for i=1:size(atom1,2)
     neigh_ind(~any(neigh_ind,2),:) = [];
     neigh_vec(~any(neigh_vec,2),:) = [];
 
+    a=1;Angle_index=zeros(1,12);
     for v=1:size(neigh_ind,1)
         for w=1:size(neigh_ind,1) % From v or from 1?
             angle=rad2deg(atan2(norm(cross(neigh_vec(v,:),neigh_vec(w,:))),dot(neigh_vec(v,:),neigh_vec(w,:))));

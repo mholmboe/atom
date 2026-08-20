@@ -221,6 +221,14 @@ while i<size(atom,2)+1
     i=i+1;
 end
 
+[Y,I]=sort(Angle_index(:,1));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
+
+[Y,I]=sort(Angle_index(:,2));
+Angle_index=Angle_index(I,:);
+Angle_index = unique(Angle_index,'rows','stable');
+
 CoordNumber=zeros(1,size(atom,2));Remove_ind=0;
 if length(Bond_index)>0
     [Y,i] = sort(Bond_index(:,1));

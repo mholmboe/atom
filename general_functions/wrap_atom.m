@@ -17,6 +17,14 @@ function atom = wrap_atom(atom,Box_dim,varargin)
 
 attribut_in=fieldnames(atom);
 
+if numel(Box_dim)==1
+    Box_dim(1)=Box_dim(1);
+    Box_dim(2)=Box_dim(1);
+    Box_dim(3)=Box_dim(1);
+elseif numel(Box_dim)==6
+    Box_dim = Cell2Box_dim(Box_dim); % If Box_dim actually is Cell
+end
+
 if nargin==2
     if size(Box_dim(1,:),2)==3
         % disp('assuming orthogonal box when wrapping!!!')

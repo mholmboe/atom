@@ -79,7 +79,7 @@ if size(tric_Box_dim(1,:),2)>3
     Box_dim=tric_Box_dim;
 
     if sum(abs(triclinic_Box_dim-tric_Box_dim))>0.01
-        disp('Canged box dimensions between initial and temp triclinic cell')
+        disp('Changed box dimensions between initial and temp triclinic cell')
         triclinic_Box_dim
         tric_Box_dim
         pause

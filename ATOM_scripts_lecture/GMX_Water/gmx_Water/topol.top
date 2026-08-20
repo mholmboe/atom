@@ -1,0 +1,12 @@
+#include "min.ff/forcefield.itp"
+#include "min.ff/spc.itp"
+
+[ system ]
+; Name
+2 Na-montmorillonite layers with three water-layers
+
+[ molecules ]
+; Compound        #mols
+SOL   864
+
+

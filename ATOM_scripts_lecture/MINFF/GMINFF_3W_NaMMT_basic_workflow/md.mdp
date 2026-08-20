@@ -1,4 +1,4 @@
-define      	= -DGMINFF_k500 -DOPC3_IOD_LM
+define      	= -DOPC3 -DGMINFF_k500 -DOPC3_IOD_LM
 ; Run parameters
 integrator		= md		; leap-frog integrator
 nsteps			= 10000000	; run these many steps

@@ -46,7 +46,7 @@ fi
 ### Create em.mdp file ########################################
 cat << EOF >| "$sim".mdp
 title		    = $type equilibration 
-define      	= -DMontmorillonite_k500 -DOPC3_IOD_LM
+define      	= -D$watermodel -D$mineral -D$ions
 ; Run parameters
 integrator		= md		; leap-frog integrator
 nsteps			= $nsteps	; run these many steps

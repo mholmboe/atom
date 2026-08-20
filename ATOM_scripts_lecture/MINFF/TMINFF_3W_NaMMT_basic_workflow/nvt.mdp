@@ -1,4 +1,4 @@
-define		    = -DMontmorillonite_k500 -DOPC3_IOD_LM -DFLEXIBLE -DPOSRES_noH ;
+define		    = -DOPC3 -DMontmorillonite_k500 -DOPC3_IOD_LM -DFLEXIBLE -DPOSRES_noH ;
 ; Run parameters
 integrator		= md		; leap-frog integrator
 nsteps			= 20000	    ; run these many steps

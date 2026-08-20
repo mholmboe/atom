@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# MATLAB / editor temp files
+*.asv
+*~
+~$*
+
+# GROMACS run output (keep inputs: .mdp, .top, .itp, .gro, .pdb, .ndx)
+*.trr
+*.tpr
+*.edr
+*.cpt
+*.xtc
+#*#
+step*.pdb

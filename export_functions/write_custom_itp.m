@@ -66,7 +66,11 @@ ind_Oct=sort([ind_Al ind_Mgo]);
 ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
 
 [atom.type]=atom.fftype;
-atom = bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
+if size(atom,2)<10000
+    atom = bond_angle_dihedral_atom(atom,Box_dim,maxrshort,maxrlong);
+else
+    atom = bond_atom(atom,Box_dim,maxrlong);
+end
 atom = mass_atom(atom);
 atom=update_atom(atom);
 %
@@ -94,7 +98,8 @@ for i = 1:nAtoms
     end
     charge=round2dec([atom(i).charge],5)%+0.00328402;
     sum_charge=sum_charge+charge;
-    Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).element]),i, charge,[atom(i).mass],';',sum_charge};
+    % Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).element]),i, charge,[atom(i).mass],';',sum_charge};
+    Atoms_data(i,:) = {i, char([atom(i).fftype]),[atom(i).molid],molecule_name(1:3),char([atom(i).type]),i, charge,[atom(i).mass],';',sum_charge};
     % fprintf(fid, '%-4i\t%6s\t%8i\t%8s\t%8s\t%8i\t%8.6f\t%-8.6f\n', Atoms_data{i,:});
     fprintf(fid, '%6i%11s%9i%5s%7s%7i\t%8.5f\t%8.5f\t%5s\t%8.5f\n', Atoms_data{i,:});
 end
@@ -142,7 +147,7 @@ catch
 end
 
 %% To include a generic 1-4 pairlist
-if length(Pairlist)>0
+if exist('Pairlist','var') && ~isempty(Pairlist)
 
     fprintf(fid, '\n');
     fprintf(fid, '[ pairs ] \n');
@@ -164,10 +169,10 @@ fprintf(fid, '%s\n','; i    j   k   type');
 
 count_a = 1;%explicit_angles = 0;
 angletype=1; Angle_order={};
-Angle_index=sortrows(Angle_index);
+Angle_index=sortrows(Angle_index,[2]);
 while count_a <= length(Angle_index) %nAngles;
     if explicit_angles == 1
-        
+
         adeg=round2dec(Angle_index(count_a,4),2);
         ktheta=500;
 
@@ -208,47 +213,60 @@ if numel(Angle_order)>0
     unique(Angle_order(:,end-2:end))
 end
 
-fprintf(fid, '[ dihedrals ] \n');
-fprintf(fid, '%s\n','; i    j   k   type');
+if exist('Dihedral_index','var') && ~isempty(Dihedral_index)
 
-count_d = 1;
-dihedraltype=9; Dihedral_order={};
-Dihedral_index=sortrows(Dihedral_index);
-while count_d <= length(Dihedral_index)
-    Dihedral_order(count_d,:)= {Dihedral_index(count_d,1), Dihedral_index(count_d,2), Dihedral_index(count_d,3), Dihedral_index(count_d,4), dihedraltype, ';',...
-        strtrim(char([atom(Dihedral_index(count_d,1)).type])), strtrim(char([atom(Dihedral_index(count_d,2)).type])), strtrim(char([atom(Dihedral_index(count_d,3)).type])), strtrim(char([atom(Dihedral_index(count_d,4)).type]))};
-    fprintf(fid, '%-5i %-5i %-5i %-5i %-5i %s %s-%s-%s-%s\n', Dihedral_order{count_d,:});
-    count_d = count_d + 1;
-end
-fprintf(fid, '\n');
+    fprintf(fid, '[ dihedrals ] \n');
+    fprintf(fid, '%s\n','; i    j   k   type');
 
-if numel(Dihedral_order)>0
-    assignin('caller','Dihedral_order',Dihedral_order);
-    disp('These atom types has dihedrals')
-    unique(Dihedral_order(:,end-2:end))
-end
+    count_d = 1;
+    dihedraltype=9; Dihedral_order={};
+    % Dihedral_index=sortrows(Dihedral_index);
+    while count_d <= length(Dihedral_index)
+        Dihedral_order(count_d,:)= {Dihedral_index(count_d,1), Dihedral_index(count_d,2), Dihedral_index(count_d,3), Dihedral_index(count_d,4), dihedraltype, ';',...
+            strtrim(char([atom(Dihedral_index(count_d,1)).type])), strtrim(char([atom(Dihedral_index(count_d,2)).type])), strtrim(char([atom(Dihedral_index(count_d,3)).type])), strtrim(char([atom(Dihedral_index(count_d,4)).type]))};
+        fprintf(fid, '%-5i %-5i %-5i %-5i %-5i %s %s-%s-%s-%s\n', Dihedral_order{count_d,:});
+        count_d = count_d + 1;
+    end
+    fprintf(fid, '\n');
 
-fprintf(fid, '[ dihedrals ] \n');
-fprintf(fid, '%s\n','; i    j   k   type');
+    if numel(Dihedral_order)>0
+        assignin('caller','Dihedral_order',Dihedral_order);
+        disp('These atom types has dihedrals')
+        unique(Dihedral_order(:,end-2:end))
+    end
 
-count_d = 1;
-dihedraltype=2; Improper_dihedral_order={};
-Improper_dihedral_index=sortrows(Improper_dihedral_index);
-while count_d <= length(Improper_dihedral_index)
-    Improper_dihedral_order(count_d,:)= {Improper_dihedral_index(count_d,1), Improper_dihedral_index(count_d,2), Improper_dihedral_index(count_d,3), Improper_dihedral_index(count_d,4), dihedraltype, ';',...
-        strtrim(char([atom(Improper_dihedral_index(count_d,1)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,2)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,3)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,4)).type]))};
-    fprintf(fid, '%-5i %-5i %-5i %-5i %-5i %s %s-%s-%s-%s\n', Improper_dihedral_order{count_d,:});
-    count_d = count_d + 1;
-end
-fprintf(fid, '\n');
+    assignin('caller','Dihedral_index',Dihedral_index);
+    assignin('caller','nDihedrals',nDihedrals);
 
-if numel(Improper_dihedral_order)>0
-    assignin('caller','Improper_dihedral_order',Improper_dihedral_order);
-    disp('These atom types has improper dihedrals')
-    unique(Improper_dihedral_order(:,end-2:end))
 end
 
+if exist('Improper_dihedral_order','var') && ~isempty(Improper_dihedral_order)
 
+    fprintf(fid, '[ dihedrals ] \n');
+    fprintf(fid, '%s\n','; i    j   k   type');
+
+    count_d = 1;
+    dihedraltype=2; Improper_dihedral_order={};
+    Improper_dihedral_index=sortrows(Improper_dihedral_index);
+    while count_d <= length(Improper_dihedral_index)
+        Improper_dihedral_order(count_d,:)= {Improper_dihedral_index(count_d,1), Improper_dihedral_index(count_d,2), Improper_dihedral_index(count_d,3), Improper_dihedral_index(count_d,4), dihedraltype, ';',...
+            strtrim(char([atom(Improper_dihedral_index(count_d,1)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,2)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,3)).type])), strtrim(char([atom(Improper_dihedral_index(count_d,4)).type]))};
+        fprintf(fid, '%-5i %-5i %-5i %-5i %-5i %s %s-%s-%s-%s\n', Improper_dihedral_order{count_d,:});
+        count_d = count_d + 1;
+    end
+    fprintf(fid, '\n');
+
+    if numel(Improper_dihedral_order)>0
+        assignin('caller','Improper_dihedral_order',Improper_dihedral_order);
+        disp('These atom types has improper dihedrals')
+        unique(Improper_dihedral_order(:,end-2:end))
+    end
+
+
+    assignin('caller','nImpropers',nImpropers);
+    assignin('caller','Improper_dihedral_index',Improper_dihedral_index);
+
+end
 
 if exist('Total_charge','var')
     disp('Total charge for the .itp file was')
@@ -301,9 +319,7 @@ assignin('caller','Atoms_data',Atoms_data);
 assignin('caller','atom_itp',atom_itp);
 assignin('caller','Bond_index',Bond_index);
 assignin('caller','Angle_index',Angle_index);
-assignin('caller','Dihedral_index',Dihedral_index);
-assignin('caller','Improper_dihedral_index',Improper_dihedral_index);
+
 assignin('caller','nBonds',nBonds);
 assignin('caller','nAngles',nAngles);
-assignin('caller','nDihedrals',nDihedrals);
-assignin('caller','nImpropers',nImpropers);
+

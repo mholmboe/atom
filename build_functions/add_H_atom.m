@@ -85,7 +85,7 @@ for i = reshape(ind,1,[])
     % Create H atoms
     basePos = [atom(i).x, atom(i).y, atom(i).z];
     for k = 1:size(direction,1)
-        pos = basePos + rOH * direction(k,:)
+        pos = basePos + rOH * direction(k,:);
         Hn = xyz2atom(H_type, pos,Box_dim,[atom(1).resname],[]);
         Hn.molid = atom(i).molid;
         Hn.index = index + 1;

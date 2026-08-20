@@ -30,18 +30,40 @@ while i > 0
         x1=[fused_atom(i).x];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
-        
-%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+
+        %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        %         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+
+        if abs(mean(X_dist(rmind,i))) < 0.01  & abs(mean(Y_dist(rmind,i))) < 0.01 & abs(mean(Z_dist(rmind,i))) < 0.01
+            disp('Fusing identical atom positions of different atomtypes')
+            if length(unique([atom(rmind).type])) == 1
+                disp('Fusing identical atom sites')
+            elseif length(unique([atom(rmind).type])) > 1
+                disp('Fusing identical atom sites of different atomtypes')
+            end
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        else
+            if length(unique([atom(rmind).type])) == 1
+                disp('Fusing close atom sites')
+            elseif length(unique([atom(rmind).type])) > 1
+                disp('Fusing close atom sites of different atomtypes')
+            end
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        end
+
 
         [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));% mean([fused_atom(rmind).x]);
         [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));% mean([fused_atom(rmind).y]);
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
-        
-%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+
+        %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind<i)];
     end
-    
+
     % if mod(i,100)==1
     %     if i > 1
     %         i-1

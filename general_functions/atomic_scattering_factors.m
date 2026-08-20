@@ -880,7 +880,7 @@ f = f_zero.*exp(-Biso*sin((twotheta/2)*pi()/180).^2/lambda^2);
 
 nElectrons=Waasmaier_Kirfel_data(index,1)-Waasmaier_Kirfel_data(index,2);
 
-Atomtype=char(Atom_label)
+Atomtype=char(Atom_label);
 
 assignin('caller','nElectrons',nElectrons);
 assignin('caller','Atomtype',Atomtype);

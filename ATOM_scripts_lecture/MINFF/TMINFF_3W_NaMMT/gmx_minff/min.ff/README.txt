@@ -44,9 +44,9 @@ Mineral list (# 13 and 22 missing)
 19	Hematite
 20	Lepidocrocite
 21	Wustite
+23	CaO
+24	Portlandite
 23	CaF2
-24	CaO
-25	Portlandite
 26	Nontronite
 27	Montmorillonite
 28	Dickite

@@ -49,7 +49,7 @@ fi
 ### Create em.mdp file ########################################
 cat << EOF >| "$sim".mdp
 title		    = $type equilibration 
-define		    = -DGMINFF_k500 -DOPC3_IOD_LM -DFLEXIBLE -DPOSRES_noH ;
+define		    = -D$watermodel -D$mineral -D$ions -DFLEXIBLE -DPOSRES_noH ;
 ; Run parameters
 integrator		= md		; stochastic integrator
 nsteps			= $nsteps	; run these many steps
