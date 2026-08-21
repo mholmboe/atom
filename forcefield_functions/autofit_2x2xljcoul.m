@@ -1,3 +1,18 @@
+%% autofit_2x2xljcoul.m
+% * This special script automatically fits two pairs of Lennard-Jones and
+% * Coulomb parameters to one or several reference forcefields, using lsqnonlin
+% * and the ljcoul_2x2x_objective_func() objective function.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # autofit_2x2xljcoul % Edit the reference forcefields at the top of the script
+%
+
 clear;
 close all;
 hold on

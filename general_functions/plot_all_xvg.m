@@ -1,19 +1,31 @@
-function DataAll = plot_all_xvg(filenamePattern,varargin)
-% plot_xvg  Import and plot one or more .xvg files (with wildcard support)
+%% plot_all_xvg.m
+% * This function imports and plots one or more Gromacs .xvg files,
+% * with wildcard support and optional Gaussian smoothing.
 %
 % Usage:
-%   Data = plot_xvg('energy.xvg', ... )
-%   DataAll = plot_xvg('energy*.xvg', [1 5 3], [0 200], [0 1.5], 2)
+%   Data = plot_all_xvg('energy.xvg', ... )
+%   DataAll = plot_all_xvg('energy*.xvg', [1 5 3], [0 200], [0 1.5], 2)
 %
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% #  Data = plot_all_xvg('energy.xvg', ... )
+% #  DataAll = plot_all_xvg('energy*.xvg', [1 5 3], [0 200], [0 1.5], 2)
+%
+% Output:
+%   DataAll           Cell array (1×Nfiles) of imported & processed data matrices
 % Inputs:
 %   filenamePattern   String, may include '*' wildcard (e.g. 'ene*.xvg')
 %   varargin{1}       Columns to plot (e.g. [1 5 3])
 %   varargin{2}       X-axis limits [xmin xmax]
 %   varargin{3}       Y-axis limits [ymin ymax]
 %   varargin{4}       Smoothing span (integer for Gaussian smoothing)
-%
-% Output:
-%   DataAll           Cell array (1×Nfiles) of imported & processed data matrices
+
+function DataAll = plot_all_xvg(filenamePattern,varargin)
 
 % Find matching files
 fileList = dir(filenamePattern);

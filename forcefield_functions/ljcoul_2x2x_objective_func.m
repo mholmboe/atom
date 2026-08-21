@@ -1,3 +1,17 @@
+%% ljcoul_2x2x_objective_func.m
+% * This special function is the objective function used by lsqnonlin when
+% * fitting two pairs of Lennard-Jones and Coulomb parameters to reference data.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # res = ljcoul_2x2x_objective_func(param,data,r,scalefactors)
+%
+
 function res = ljcoul_2x2x_objective_func(param,data,r,scalefactors,varargin)
 
 param=param./scalefactors;

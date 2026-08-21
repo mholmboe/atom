@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>clayff_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="clayff_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -178,7 +178,7 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
     <span class="keyword">elseif</span> assignment_run==6
         Heal_O=1 <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==7
-        Heal_H=0 <span class="comment">% 1 for yes and 0 for no</span>
+        Heal_H=1 <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==8
         Add_H=1 <span class="comment">% 1 for yes and 0 for no</span>
     <span class="keyword">elseif</span> assignment_run==9
@@ -723,6 +723,10 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                         atom(i).fftype={<span class="string">'Oh'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'AlFeoFeo'</span>) || strcmp(Neighbours,<span class="string">'AlFeFe'</span>)
                         atom(i).fftype={<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeFet'</span>) || strcmp(Neighbours, <span class="string">'AlFeoFet'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAltFe'</span>) || strcmp(Neighbours, <span class="string">'AlAltFeo'</span>) || strcmp(Neighbours, <span class="string">'AltAlFe'</span>) || strcmp(Neighbours, <span class="string">'AltAlFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours,<span class="string">'AlFeSi'</span>) || strcmp(Neighbours,<span class="string">'AlFeoSi'</span>)
                         atom(i).fftype={<span class="string">'Op'</span>};
                     <span class="keyword">elseif</span>  strncmp(Neighbours,<span class="string">'FeHMg'</span>,5) || strncmp(Neighbours,<span class="string">'FeoHMg'</span>,5)
@@ -1097,7 +1101,7 @@ for assignment_run=heal_iterations
     elseif assignment_run==6
         Heal_O=1 % 1 for yes and 0 for no
     elseif assignment_run==7
-        Heal_H=0 % 1 for yes and 0 for no
+        Heal_H=1 % 1 for yes and 0 for no
     elseif assignment_run==8
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==9
@@ -1641,6 +1645,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype={'Oh'};
                     elseif strcmp(Neighbours,'AlFeoFeo') || strcmp(Neighbours,'AlFeFe')
                         atom(i).fftype={'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeFet') || strcmp(Neighbours, 'AlFeoFet')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlAltFe') || strcmp(Neighbours, 'AlAltFeo') || strcmp(Neighbours, 'AltAlFe') || strcmp(Neighbours, 'AltAlFeo')
+                        atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours,'AlFeSi') || strcmp(Neighbours,'AlFeoSi')
                         atom(i).fftype={'Op'};
                     elseif  strncmp(Neighbours,'FeHMg',5) || strncmp(Neighbours,'FeoHMg',5)

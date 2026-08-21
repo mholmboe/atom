@@ -39,6 +39,7 @@
 % # <import_atom.html import_atom(filename)> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.
 % # <import_itp.html import_itp(filename)> % Import a Gromacs .itp topology file
 % # <import_xyz.html import_xyz(filename)> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.
+% # <import_atom_gro_legacy.html import_atom_gro_legacy(filename,varargin)> % Legacy version of import_atom_gro, importing .gro files into an atom struct.
 
 %% Import of trajectory files
 % # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
@@ -60,6 +61,7 @@
 % # <import_mclf_dispersion.html import_mclf_dispersion(filename)> % Import dispersion parameters for MCLF.
 % # <import_cp2k.html import_cp2k(filename)> % Import a CP2K output file.
 % # <import_cp2k_resp.html import_cp2k_resp(filename)> % Import RESP charges from CP2K.
+% # <import_CONECT.html import_CONECT(filename)> % Extract the CONECT records from a .pdb file and store them in the Bond_index variable.
 
 %% Export of structure/topology files
 % # <write_atom_all.html write_atom_all(atom,Box_dim,filename_out,varargin)> % Write various file types for the atom struct, best suited for Clayff systems.
@@ -79,6 +81,13 @@
 % # <write_atom_top.html write_atom_top(atom,Box_dim,filename_out)> % Write a topology file (.top) from the atom struct.
 % # <write_itp.html write_itp(itp,filename)> % Exports a Gromacs .itp topology file from a itp struct 
 % # <CONECT_atom.html CONECT_atom(atom,Box_dim,filename_out)> % Write CONECT records for a PDB file.
+% # <write_custom_itp.html write_custom_itp(atom,Box_dim,filename,varargin)> % Create and print a custom Gromacs .itp topology file.
+% # <write_minff_itp.html write_minff_itp(atom,Box_dim,filename,varargin)> % Create and print a Gromacs .itp topology file for MINFF systems.
+% # <write_minff_lmp.html write_minff_lmp(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems.
+% # <write_minff_lmp_max_bondtypes.html write_minff_lmp_max_bondtypes(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems, using the maximum number of bond types.
+% # <write_minff_lmp_v2.html write_minff_lmp_v2(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems, splitting bimodal angle populations into separate angle types.
+% # <write_minff_psf.html write_minff_psf(atom,Box_dim,filename,varargin)> % Create and print a .psf topology file for MINFF systems.
+% # <write_xyz.html write_xyz(XYZ_labels,XYZ_data,varargin)> % Write an .xyz file from the XYZ_labels and XYZ_data variables.
 
 %% Export of trajectory files
 % # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % Write a .gro trajectory file.
@@ -126,6 +135,10 @@
 % # <remove_H2O.html remove_H2O(atom)> % This function removes water molecules (H2O) from the atom struct.
 % # <remove_sametype_bond.html remove_sametype_bond(atom,bond_matrix)> % This function removes bonds between atoms of the same type.
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
+% # <direction_atom.html direction_atom(atom1,atom2,Box_dim,direction_vec,rmaxshort,rmaxlong,angle_limit,varargin)> % Find all angles between atom1 and atom2 relative to a given direction vector.
+% # <hbond_atom.html hbond_atom(atom,Box_dim,varargin)> % Calculate the number of hydrogen bonds in the atom struct.
+% # <list_bonded_atom.html list_bonded_atom(atom,Bond_index)> % List all bonds, angles or dihedrals between the different atom types.
+% # <n2t_atom.html n2t_atom(atom,Box_dim,outfile,varargin)> % Write a Gromacs atomname2type.n2t file from the atom struct, with charges, masses and neighbour distances.
 
 %% Specific atom struct functions
 % # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
@@ -199,6 +212,16 @@
 % # <translate_atom.html translate_atom(atom,trans_vec,Resname)> % Translate a residue by a specified vector.
 % # <translate_molid.html translate_molid(atom,trans_vec,molid)> % Translate a molecule ID by a specified vector.
 % # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % Create a nanotube structure from the atom struct.
+% # <addvsites_atom.html addvsites_atom(atom,atomtype,new_atomtype,varargin)> % Generate virtual (ghost) sites on top of real particle sites.
+% # <adjust_Hw_atom.html adjust_Hw_atom(atom,Box_dim,varargin)> % Set the angles of structural H2O and the X-H bond distances to reasonable values.
+% # <concatenate_atom.html concatenate_atom(atom,varargin)> % Old function that concatenates atom sections, use update_atom({atom_1 atom_2}) instead.
+% # <number_type.html number_type(atom,varargin)> % Number the atom types, like H1, H2, H3... in the atom struct.
+% # <protonate_SOL.html protonate_SOL(atom,Box_dim,varargin)> % Protonate the sites given by an index vector by adding H's to a new Hw atom struct.
+% # <reorder_atom.html reorder_atom(atom,neworder,varargin)> % Reorder the atoms in an atom struct, useful for creating united-atom structures.
+% # <reorder_atom_gro.html reorder_atom_gro(atom,atomlist,Box_dim,filename_out)> % Reorder the atoms in a .gro file, useful for creating united-atom structures.
+% # <replace_molid.html replace_molid(new_atom,prev_atom,MolID)> % Replace a molecule, given by its MolID, in an atom struct with a new single-MolID atom struct.
+% # <sort_molid.html sort_molid(MolID)> % Sort the molecular indexes in ascending order.
+% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,varargin)> % Add XYZ data, like from a .xyz structure file, to the atom struct format.
 
 %% Slice out a region of the box
 % # <slice_atom.html slice_atom(atom,limits,invert)> % Slice the atom struct within specified limits.
@@ -224,6 +247,9 @@
 
 %% Wrap/unwrap functions
 % # <unwrap_atom.html unwrap_atom(atom,Box_dim,dim)> % Unwrap the atom struct along the specified dimension.
+% # <wrap_atom.html wrap_atom(atom,Box_dim,varargin)> % Wrap the atoms into the box, optionally only along the x and y dimensions.
+% # <Wrap_Coord_func.html Wrap_Coord_func(XYZ_data,Box_dim)> % Old function that wraps atoms sticking out back into the box, untested for triclinic boxes.
+% # <wrap_molid.html wrap_molid(atom,Box_dim)> % Wrap the atom struct into the box, keeping molecules with the same MolID together.
 
 %% Keep/remove functions
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residue with a specific molecule ID.
@@ -234,6 +260,8 @@
 % # <remove_type.html remove_type(atom,typescell)> % Remove atom types specified in typescell.
 % # <rename_atom.html rename_atom(atom,old_name,new_name)> % Rename atoms in the atom struct.
 % # <rename_type.html rename_type(atom,atomtype,new_atomtype,varargin)> % Rename atom types in the atom struct.
+% # <keep_atom.html keep_atom(atom,resname)> % Remove all atoms but the ones with the passed resname.
+% # <keep_resname.html keep_resname(atom,resnames)> % Remove all atoms but the ones with the passed resnames.
 
 %% Translate or rotate functions
 % # <bend_atom.html bend_atom(atom,Box_dim,Radii)> % This simple function tries to bend an atom struct
@@ -326,6 +354,23 @@
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % Compute sigma values for van der Waals interactions.
 % # <Bragg.html Bragg(varargin)> % Calculate Bragg peaks for crystallographic or XRD data.
 % # <unreplicate_atom.html unreplicate_atom(atom)> % Remove replicated atoms from the structure.
+% # <atomic_mass.html atomic_mass(Atom_label)> % Fetch the mass for each atom type and put it into the atom.mass field.
+% # <change_atom.html change_atom> % Template script that imports a structure file, changes some atom types and writes it back out.
+% # <check_atom.html check_atom(atom,Box_dim,rmaxshort,rmaxlong)> % Analyse various properties of the atom struct, like bonds, angles and coordination.
+% # <fit2lattice_atom.html fit2lattice_atom(atom_model,atom_ref,Box_dim_ref,varargin)> % Import a model structure of a single molecule like PO43- and fit it into a reference crystal lattice.
+% # <fit2lattice_atom_v2.html fit2lattice_atom_v2(atom_model,atom_ref,Box_dim_ref,varargin)> % Second version of fit2lattice_atom, fitting a molecular model into a reference crystal lattice.
+% # <fit2lattice_atom_v3.html fit2lattice_atom_v3(atom_model,atom_ref,Box_dim_ref,varargin)> % Third version of fit2lattice_atom, fitting a molecular model into a reference crystal lattice.
+% # <frac_atom.html frac_atom(atom,Box_dim,varargin)> % Transform a triclinic atom struct into fractional coordinates.
+% # <order_attributes.html order_attributes(atom)> % Order the atom struct attributes/fields in a certain order.
+% # <plot_all_xvg.html plot_all_xvg(filenamePattern,varargin)> % Import and plot one or more Gromacs .xvg files, with wildcard support and optional smoothing.
+% # <poly_atom.html poly_atom(atom,Box_dim,varargin)> % Plot the coordination polyhedra of the atom struct, similar to show_atom.
+% # <round2dec.html round2dec(in_value,varargin)> % Round a value to a certain number of decimals, compatible with both MATLAB and OCTAVE.
+% # <scale_atom.html scale_atom(atom,Box_dim,scale_vec,varargin)> % Scale the coordinates in the atom struct.
+% # <show_atomo.html show_atomo(varargin)> % Alternative version of show_atom, drawing the atom struct in 3D.
+% # <tetrahedral_rotation_atom.html tetrahedral_rotation_atom(atom,Box_dim,varargin)> % Calculate the tetrahedral rotation angle alpha, the ditrigonal distortion of a clay/mica tetrahedral sheet.
+% # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
+% # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
+% # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
 
 %% Keep/remove functions
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residue with a specific molecule ID.
@@ -369,6 +414,21 @@
 % # <tip3p2tip4p.html tip3p2tip4p(filename)> % This function converts a .gro file with spc water to some tip4p water
 
 %% Custom toplogy tools
+% # <atom_make_ndx.html atom_make_ndx(filename,groupname,atomtypes,molid)> % Print custom Gromacs .ndx files for the given atom types and MolID's.
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded(filename,groupname,atomtypes)> % Print one custom Gromacs .ndx group based on the bonded atom types.
+% # <atom_mk_angndx.html atom_mk_angndx(filename,groupname,atomtypes)> % Print one custom Gromacs angle .ndx group based on the atom types.
+% # <atom_read_ndx.html atom_read_ndx(filename,varargin)> % Read Gromacs index (.ndx) files into arrays.
+% # <decompose_traj.html decompose_traj(trajname,outtrajname,varargin)> % Template function used to extract trajectory components from a Gromacs .xtc or .trr file.
+% # <extract_vxvy_from_trr.html extract_vxvy_from_trr(trajname,outtrajname,varargin)> % Extract the x and y components of the velocities in a Gromacs .trr file, using libxdrfile.
+% # <extract_vz_from_trr.html extract_vz_from_trr(trajname,outtrajname,varargin)> % Extract the z component of the velocities in a Gromacs .trr file, using libxdrfile.
+% # <fit2lattice.html fit2lattice> % Special script that imports a model like PO43- and tries to fit it into a crystal lattice holding such sites.
+% # <gmx_make_ndx.html gmx_make_ndx(id,groupname,varargin)> % Print custom Gromacs .ndx files from a list of atom indexes.
+% # <gmx_mk_angndx.html gmx_mk_angndx(atom,Box_dim,atomtype1,atomtype2,atomtype3,groupname,varargin)> % Print custom Gromacs angle .ndx files with triplet indices for atomtype1-3.
+% # <import_mdp.html import_mdp(mdp_filename)> % Import a Gromacs .mdp file into a mdp struct.
+% # <import_ndx.html import_ndx(filename,varargin)> % Read Gromacs index (.ndx) files into arrays.
+% # <modify_itp.html modify_itp(itp,index,varargin)> % Modify an itp struct, currently by adding values to all indexed values or removing single ones.
+% # <pdb2make_ndx.html pdb2make_ndx(filename,groupname,atomtypes,molid)> % Print custom Gromacs .ndx files directly from a .pdb file.
+% # <write_mdp.html write_mdp(mdp,varargin)> % Write a Gromacs .mdp file from an imported mdp struct.
 
 %% Miscellaneous ff functions
 % # <print_top.html print_top(atom,Box_dim,varargin)> % Prints or generates topology-related data.
@@ -376,6 +436,15 @@
 % # <change_top.html change_top(atom,Box_dim,varargin)> % Modifies the topology file or its parameters.
 % # <mass_atom_clayff.html mass_atom_clayff(atom)> % Defines or calculates masses for Clayff atoms.
 % # <smear_charge.html smear_charge(atom,Box_dim,varargin)> % Distributes charge across atoms, possibly using charge smearing techniques.
+% # <charge_clayffmod_atom.html charge_clayffmod_atom(atom,Box_dim,varargin)> % Smear out the charge at isomorphic substitution sites according to the modified Clayff.
+% # <clayff_atom_old.html clayff_atom_old(atom,Box_dim,varargin)> % Older version of clayff_atom, assigning Clayff atom types with edge healing.
+% # <ff_atom.html ff_atom(atom,Box_dim,varargin)> % Assign all atoms according to some custom force field.
+% # <interface15_phosphate_atom.html interface15_phosphate_atom(atom,Box_dim,varargin)> % Assign all atoms according to the INTERFACE 1.5 atom types for hydroxyapatite.
+% # <lmp_atom_style_full_func.html lmp_atom_style_full_func(fid,Atom_label,Charge,XYZ_labels,XYZ_data)> % Create and print the Atoms section of a LAMMPS data file according to atom style full.
+% # <minff_atom_mini.html minff_atom_mini(atom,Box_dim,varargin)> % Minimal version of minff_atom, assigning atoms according to the MINFF atom types.
+% # <old_minff_param.html old_minff_param(Atom_label,varargin)> % Hold an older set of the MINFF force field parameters.
+% # <smear_charge_atom.html smear_charge_atom(atom,Box_dim,varargin)> % Smear out the charge at isomorphic substitution sites over the neighbouring atoms.
+% # <test_ff_atom.html test_ff_atom(atom,Box_dim,varargin)> % Test version of ff_atom, assigning all atoms according to some custom force field.
 
 %% minff, with atomtypes by MHolmboe
 % # <minff_atom.html minff_atom(atom,Box_dim,varargin)> % Assign minff atom types with edge healing.
@@ -432,6 +501,10 @@
 % # <ljcoul.html ljcoul(atom,Box_dim,varargin)> % General Lennard-Jones and Coulomb interaction function.
 % # <ljcoul_2x2x.html ljcoul_2x2x(atom,Box_dim,varargin)> % Lennard-Jones and Coulomb potential with 2x factors.
 % # <ljcoul_2x.html ljcoul_2x(atom,Box_dim,varargin)> % Variation of Lennard-Jones Coulomb with 2x factors.
+% # <dispcoul_C6C8C10.html dispcoul_C6C8C10(param,varargin)> % Calculate and plot the dispersion and Coulomb potential from C6, C8 and C10 parameters.
+% # <harmonic_bond.html harmonic_bond(dist,kb)> % Calculate and plot a harmonic bond potential from a bond distance and a force constant.
+% # <ljcoul_C6C12.html ljcoul_C6C12(param,varargin)> % Calculate and plot the Lennard-Jones and Coulomb potential from C6 and C12 parameters.
+% # <nonbonded_ff.html nonbonded_ff(ff,atomtype,varargin)> % Plot the Lennard-Jones, Coulomb and total nonbonded potential for one or two atom types in a ff struct.
 
 %% Objective Functions and Force Calculations
 % # <buckinghamcoul_objective_func.html buckinghamcoul_objective_func(atom,Box_dim,varargin)> % Objective function for fitting Buckingham and Coulomb potentials.
@@ -441,6 +514,11 @@
 % # <ljcoul_2x_force.html ljcoul_2x_force(atom,Box_dim,varargin)> % Force calculation involving 2x Lennard-Jones and Coulomb potentials.
 % # <ljcoul_force_C12C6C4.html ljcoul_force_C12C6C4(atom,Box_dim,varargin)> % Force calculation for Lennard-Jones potential with C12, C6, C4 terms.
 % # <ljcoul_force_objective_func.html ljcoul_force_objective_func(atom,Box_dim,varargin)> % Objective function for force calculations with Lennard-Jones and Coulomb potentials.
+% # <eval_cn.html eval_cn(rdf,cn)> % Calculate the coordination number from RDF and cumulative CN data, by finding the thickness of the first shell.
+% # <eval_sim.html eval_sim(param,scalefactors,dirtype,varargin)> % Objective function for lsqnonlin used in the force field optimization scheme.
+% # <eval_systems.html eval_systems(dirtype,varargin)> % Run and evaluate the reference simulation systems used in the force field optimization scheme.
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func(param,data,r,scalefactors,varargin)> % Objective function fitting two pairs of Lennard-Jones and Coulomb parameters to reference data.
+% # <ljcoul_2x_force_objective_func.html ljcoul_2x_force_objective_func(param,data,r,scalefactors,varargin)> % Objective function fitting 2x Lennard-Jones and Coulomb force parameters to reference data.
 
 %% Automated Fitting Tools
 % # <autofit_C6C8C10xljcoul.html autofit_C6C8C10xljcoul(atom,Box_dim,varargin)> % Automated fitting for Lennard-Jones Coulombic parameters with C6, C8, C10 terms.
@@ -451,6 +529,14 @@
 % # <autofit_buckcoul.html autofit_buckcoul(atom,Box_dim,varargin)> % Automated fitting for Buckingham and Coulomb potentials.
 % # <autofit_force_2xljcoul.html autofit_force_2xljcoul(atom,Box_dim,varargin)> % Automated fitting of force parameters for 2x Lennard-Jones and Coulomb interactions.
 % # <autofit_ljcoul.html autofit_ljcoul(atom,Box_dim,varargin)> % Automated fitting for Lennard-Jones and Coulombic interactions.
+% # <autofit_2x2xljcoul.html autofit_2x2xljcoul> % Script that automatically fits two pairs of Lennard-Jones and Coulomb parameters to reference force fields.
+% # <autofit_force_ljcoul.html autofit_force_ljcoul> % Script that automatically fits Lennard-Jones and Coulomb parameters to reference forces.
+% # <ff_helpfile.html ff_helpfile> % Helper script that builds ff structs with ion parameters for a set of water models.
+% # <ff_helpfile2.html ff_helpfile2> % Helper script that inspects and renames atom types in a saved ff struct.
+% # <ff_helpfile3.html ff_helpfile3> % Helper script that merges monovalent and polyvalent ion ff structs for a set of water models.
+% # <ff_plotfile.html ff_plotfile> % Helper script that plots the nonbonded potentials of selected atom type pairs for several ff structs.
+% # <replace_row.html replace_row(old_row,new_row,filename,outfilename)> % Replace rows in text files, used when updating force field parameter files.
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin(x0,delta,dirtype,varargin)> % Invoke lsqnonlin to optimize force field parameters against reference simulation data.
 
 
 

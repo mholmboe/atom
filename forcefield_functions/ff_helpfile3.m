@@ -1,3 +1,17 @@
+%% ff_helpfile3.m
+% * This helper script merges the monovalent and polyvalent ion forcefield (ff)
+% * structs for a set of water models into single .mat files.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # ff_helpfile3 % Edit ffname and watermodels at the top of the script
+%
+
 format long
 
 % ffname='ions_Zhang'

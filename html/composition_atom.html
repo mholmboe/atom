@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>composition_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="composition_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -130,7 +130,7 @@ Atom_label=unique([atom.type]);
     Atom_types=[Atom_types Atom_label(i)];
     Atom_numbers=[Atom_numbers sum(ismember([atom.type],Atom_label(i)))];
     <span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>)
-        Atom_charge=[Atom_charge mean([atom(ismember([atom.type],Atom_label(i))).charge])];
+        Atom_charge=[Atom_charge round2dec(mean([atom(ismember([atom.type],Atom_label(i))).charge]),6)];
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 composition.Atom_types=Atom_types
@@ -186,7 +186,7 @@ for i=1:length(unique([atom.type]))
     Atom_types=[Atom_types Atom_label(i)];
     Atom_numbers=[Atom_numbers sum(ismember([atom.type],Atom_label(i)))];
     if isfield(atom,'charge')
-        Atom_charge=[Atom_charge mean([atom(ismember([atom.type],Atom_label(i))).charge])];
+        Atom_charge=[Atom_charge round2dec(mean([atom(ismember([atom.type],Atom_label(i))).charge]),6)];
     end
 end
 composition.Atom_types=Atom_types

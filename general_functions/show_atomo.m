@@ -1,4 +1,4 @@
-%%  show_atom.m
+%% show_atomo.m
 % * This function draws the atom struct in 3D. It neglects bonds over the
 % * pbc for clarity (this can be changed on line 54).
 % * For less fancier plots, use the plot_atom(atom,Box_dim) function

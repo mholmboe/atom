@@ -450,7 +450,7 @@ else
 end
 
 %% Mix together the Lorentzian and Gaussian parts in the ratio specified by eta to generate the pseudo-Voigt function
-intensity=scalefactor*Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part;
+intensity=scalefactor*(Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part);
 
 %% Divergence slit
 if Div_slit>0

@@ -1,3 +1,18 @@
+%% autofit_force_ljcoul.m
+% * This special script automatically fits Lennard-Jones and Coulomb parameters
+% * to reference forces, using lsqnonlin and the ljcoul_force_objective_func()
+% * objective function.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # autofit_force_ljcoul % Edit the initial values at the top of the script
+%
+
 % clear;
 close all;
 hold on

@@ -1,3 +1,17 @@
+%% ff_helpfile.m
+% * This helper script builds forcefield (ff) structs holding ion parameters
+% * for a set of water models, and saves them as .mat files.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # ff_helpfile % Edit ffname and watermodels at the top of the script
+%
+
 format long
 
 ffname='Zhang_monovalent'

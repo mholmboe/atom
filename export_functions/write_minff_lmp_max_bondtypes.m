@@ -1,4 +1,4 @@
-%% write_minff_lmp.m
+%% write_minff_lmp_max_bondtypes.m
 % * This script creates and prints a lammps data file (.data). Works best for
 % MINFF systems. Nevertheless, this new version should be able to handle bonds|angles|dihedrals
 %

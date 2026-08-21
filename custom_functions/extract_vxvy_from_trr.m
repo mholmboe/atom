@@ -1,3 +1,17 @@
+%% extract_vxvy_from_trr.m
+% * This function extracts the x and y components of the velocities in a
+% * Gromacs .trr file, using libxdrfile from mxdrfile.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # extract_vxvy_from_trr('traj.trr','vxvy.trr')
+%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% This script tests the read and write of
 %% xtc files with libxdrfile from gmx

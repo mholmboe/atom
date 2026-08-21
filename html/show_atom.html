@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="show_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -165,8 +165,9 @@ tic
 
     bond_radii = 0.12; <span class="comment">% bond radii</span>
     resolution = 30;  <span class="comment">% higher looks better, takes more time</span>
-    element=element_atom(atom);
-    XYZ_labels=[element.type]';
+    <span class="comment">% element=element_atom(atom);</span>
+    <span class="comment">% XYZ_labels=[element.type]';</span>
+    XYZ_labels=[atom.type]';
     nAtoms = size(XYZ_labels,1);
 
     <span class="keyword">if</span> strncmpi(style,<span class="string">'crystal'</span>,3)
@@ -180,6 +181,8 @@ tic
         radii = 1/5*abs(radius_vdw(XYZ_labels));
     <span class="keyword">end</span>
     color =  1*element_color(XYZ_labels);
+
+    color(ismember(XYZ_labels,{<span class="string">'Alt'</span> <span class="string">'Fet'</span>}))=0.3*color(ismember(XYZ_labels,{<span class="string">'Alt'</span> <span class="string">'Fet'</span>}));
 
     <span class="keyword">if</span> nargin&gt;4
         alpha=1-varargin{5};
@@ -442,6 +445,9 @@ tic
                 patch(<span class="string">'Faces'</span>,PolyInd,<span class="string">'Vertices'</span>,[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],<span class="string">'FaceColor'</span>,poly_color,<span class="keyword">...</span>
                     <span class="string">'EdgeColor'</span>,poly_color_edge,<span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="string">'Facealpha'</span>,alpha,<span class="keyword">...</span>
                     <span class="string">'AmbientStrength'</span>,0.8,<span class="string">'DiffuseStrength'</span>,0.6,<span class="string">'SpecularStrength'</span>,0.2,<span class="string">'LineWidth'</span>,1.25);
+                <span class="comment">% patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...</span>
+                <span class="comment">%     'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...</span>
+                <span class="comment">%     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);</span>
             <span class="keyword">end</span>
 
             <span class="keyword">if</span> mod(i,1000)==1 || i==size(atom,2)
@@ -646,8 +652,9 @@ else
 
     bond_radii = 0.12; % bond radii
     resolution = 30;  % higher looks better, takes more time
-    element=element_atom(atom);
-    XYZ_labels=[element.type]';
+    % element=element_atom(atom);
+    % XYZ_labels=[element.type]';
+    XYZ_labels=[atom.type]';
     nAtoms = size(XYZ_labels,1);
 
     if strncmpi(style,'crystal',3)
@@ -661,6 +668,8 @@ else
         radii = 1/5*abs(radius_vdw(XYZ_labels));
     end
     color =  1*element_color(XYZ_labels);
+
+    color(ismember(XYZ_labels,{'Alt' 'Fet'}))=0.3*color(ismember(XYZ_labels,{'Alt' 'Fet'}));
 
     if nargin>4
         alpha=1-varargin{5};
@@ -923,6 +932,9 @@ else
                 patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
                     'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
                     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1.25);
+                % patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+                %     'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
+                %     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
             end
 
             if mod(i,1000)==1 || i==size(atom,2)

@@ -34,6 +34,8 @@
 % # <remove_H2O.html remove_H2O(atom)> % This function removes water molecules (H2O) from the atom struct.
 % # <remove_sametype_bond.html remove_sametype_bond(atom,bond_matrix)> % This function removes bonds between atoms of the same type.
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
+% # <list_bonded_atom.html list_bonded_atom(atom,Bond_index)> % List all bonds, angles or dihedrals between the different atom types.
+% # <n2t_atom.html n2t_atom(atom,Box_dim,outfile,varargin)> % Write a Gromacs atomname2type.n2t file from the atom struct, with charges, masses and neighbour distances.
 
 %
 %% Version

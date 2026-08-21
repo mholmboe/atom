@@ -1,4 +1,4 @@
-%% minff_atom.m
+%% minff_atom_mini.m
 % * This function tries to assign all atoms according to the MINFF atom
 % types. The variables distance_factor and rmaxlong are related to the
 % neighbour/bond cutoff radius for each atomtype

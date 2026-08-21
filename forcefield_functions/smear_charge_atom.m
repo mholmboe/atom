@@ -1,4 +1,4 @@
-%% smear_charge_atoms.m
+%% smear_charge_atom.m
 % * This function tries to smear out the charge at isomorphic substitutions sites
 % * atom is the atom struct
 % * Box_dim is the box dimension vector

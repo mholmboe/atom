@@ -1,3 +1,17 @@
+%% extract_vz_from_trr.m
+% * This function extracts the z component of the velocities in a Gromacs
+% * .trr file, using libxdrfile from mxdrfile.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # extract_vz_from_trr('traj.trr','vz.trr')
+%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% This function tries to extract the z component of the velocieties
 %% in a Gromacs .trr file, using libxdrfile from gmx. Hacked by MHolmboe

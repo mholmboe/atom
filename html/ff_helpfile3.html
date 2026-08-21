@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>ff_helpfile3</title>
+<title>ff_helpfile3.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="ff_helpfile3.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,6 +76,40 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>ff_helpfile3.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This helper script merges the monovalent and polyvalent ion forcefield (ff)</li>
+<li>structs for a set of water models into single .mat files.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>ff_helpfile3 % Edit ffname and watermodels at the top of the script</li>
+</ol>
+</div>
 <pre class="codeinput">format <span class="string">long</span>
 
 <span class="comment">% ffname='ions_Zhang'</span>
@@ -117,6 +151,20 @@ watermodels={<span class="string">'opc3'</span> <span class="string">'tip3p'</sp
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% ff_helpfile3.m
+% * This helper script merges the monovalent and polyvalent ion forcefield (ff)
+% * structs for a set of water models into single .mat files.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # ff_helpfile3 % Edit ffname and watermodels at the top of the script
+%
+
 format long
 
 % ffname='ions_Zhang'

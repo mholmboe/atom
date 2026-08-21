@@ -1,4 +1,4 @@
-%% xrd_atom.m
+%% xrd_rietveld_atom.m
 % * This function calculates theoretical XRD patterns from an atom struct
 % or an .pdb|.gro coordinate file having a filled orthogonal or triclinic
 % cell. Note that the atom struct may have a occupancy and a B-factor field.

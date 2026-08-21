@@ -1,3 +1,17 @@
+%% harmonic_bond.m
+% * This function calculates and plots a harmonic bond potential
+% * Ubond = kb*(r-r0)^2 from a bond distance dist and a force constant kb.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [r,Ubond] = harmonic_bond(0.16,190000) % dist in nm, kb in kJ/mol/nm^2
+%
+
 function [r,Ubond] = harmonic_bond(dist,kb) % ff and atomtype can be single variables or cell 'tuplets'
 
 % if ischar(atomtype)

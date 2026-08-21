@@ -1,4 +1,4 @@
-%% atom2mk_angndx.m
+%% atom_mk_angndx.m
 % * This function can help you print one custom gromacs angle.ndx group,
 % * based on the atomtypes names. You just have to pass on the three (or
 % * four) atomtypes that makes up the angle, like {'Mgo' 'Ohmg' 'H'}, or

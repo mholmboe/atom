@@ -1,4 +1,4 @@
-%% ff_atom.m
+%% test_ff_atom.m
 % * This function tries to assign all atoms according to some custom force field
 %
 %% Version

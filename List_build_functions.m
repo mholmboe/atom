@@ -58,6 +58,11 @@
 % # <translate_molid.html translate_molid(atom,trans_vec,molid)> % Translate a molecule ID by a specified vector.
 % # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % Create a nanotube structure from the atom struct.
 % # <update_atom.html update_atom(atom)> % Update molecule and atom indices in the atom struct.
+% # <number_type.html number_type(atom,varargin)> % Number the atom types, like H1, H2, H3... in the atom struct.
+% # <reorder_atom.html reorder_atom(atom,neworder,varargin)> % Reorder the atoms in an atom struct, useful for creating united-atom structures.
+% # <reorder_atom_gro.html reorder_atom_gro(atom,atomlist,Box_dim,filename_out)> % Reorder the atoms in a .gro file, useful for creating united-atom structures.
+% # <replace_molid.html replace_molid(new_atom,prev_atom,MolID)> % Replace a molecule, given by its MolID, in an atom struct with a new single-MolID atom struct.
+% # <sort_molid.html sort_molid(MolID)> % Sort the molecular indexes in ascending order.
 
 %% Add/create/replicate/overwrite atoms
 % # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
@@ -79,6 +84,11 @@
 % # <translate_atom.html translate_atom(atom,trans_vec,Resname)> % Translate a residue by a specified vector.
 % # <translate_molid.html translate_molid(atom,trans_vec,molid)> % Translate a molecule ID by a specified vector.
 % # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % Create a nanotube structure from the atom struct.
+% # <addvsites_atom.html addvsites_atom(atom,atomtype,new_atomtype,varargin)> % Generate virtual (ghost) sites on top of real particle sites.
+% # <adjust_Hw_atom.html adjust_Hw_atom(atom,Box_dim,varargin)> % Set the angles of structural H2O and the X-H bond distances to reasonable values.
+% # <concatenate_atom.html concatenate_atom(atom,varargin)> % Old function that concatenates atom sections, use update_atom({atom_1 atom_2}) instead.
+% # <protonate_SOL.html protonate_SOL(atom,Box_dim,varargin)> % Protonate the sites given by an index vector by adding H's to a new Hw atom struct.
+% # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,varargin)> % Add XYZ data, like from a .xyz structure file, to the atom struct format.
 
 %% Slice out a region of the box
 % # <slice_atom.html slice_atom(atom,limits,invert)> % Slice the atom struct within specified limits.

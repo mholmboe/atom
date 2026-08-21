@@ -1,3 +1,19 @@
+%% nonbonded_ff.m
+% * This function plots the Lennard-Jones, the Coulomb and the total nonbonded
+% * potential for one or two atomtypes taken from a forcefield (ff) struct.
+% * ff and atomtype can be single variables or cell 'tuplets'.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [r,lj,coul,Utot] = nonbonded_ff(ff,{'Na'}) % Single atomtype
+% # [r,lj,coul,Utot] = nonbonded_ff(ff,{'Na' 'OW'}) % Atomtype pair
+%
+
 function [r,lj,coul,Utot,q1,q2,sig1,sig2,eps1,eps2,C4] = nonbonded_ff(ff,atomtype,varargin) % ff and atomtype can be single variables or cell 'tuplets'
 
 if ischar(atomtype)

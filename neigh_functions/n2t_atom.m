@@ -1,4 +1,5 @@
-%% n2t_atom.m — write GROMACS atomname2type.n2t files
+%% n2t_atom.m
+% * This function writes a Gromacs atomname2type.n2t file from the atom struct.
 %
 % Columns: Element  AtomType  Charge  Mass[u]  CN  [NeighborElement  Distance(nm)] x CN
 % - Element <- element_atom(atom) -> element(i).type

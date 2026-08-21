@@ -1,4 +1,4 @@
-%% eval_sim.m
+%% run_opt_ff_lsqnonlin.m
 % * This special function invokes lsqnolin, used in the forcefield optimization
 % scheme called autofit_ff. This function is called by opt_ff.m
 %

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>bond_angle_type.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="bond_angle_type.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -134,7 +134,6 @@ lx=Box_dim(1);ly=Box_dim(2);lz=Box_dim(3);
     xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
 <span class="keyword">end</span>
 
-a=1;Angle_index=zeros(1,12);
 <span class="keyword">for</span> i=1:size(atom1,2)
     XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
 
@@ -211,6 +210,7 @@ a=1;Angle_index=zeros(1,12);
     neigh_ind(~any(neigh_ind,2),:) = [];
     neigh_vec(~any(neigh_vec,2),:) = [];
 
+    a=1;Angle_index=zeros(1,12);
     <span class="keyword">for</span> v=1:size(neigh_ind,1)
         <span class="keyword">for</span> w=1:size(neigh_ind,1) <span class="comment">% From v or from 1?</span>
             angle=rad2deg(atan2(norm(cross(neigh_vec(v,:),neigh_vec(w,:))),dot(neigh_vec(v,:),neigh_vec(w,:))));
@@ -314,7 +314,6 @@ elseif numel(Box_dim)==9
     xy=Box_dim(6);xz=Box_dim(8);yz=Box_dim(9);
 end
 
-a=1;Angle_index=zeros(1,12);
 for i=1:size(atom1,2)
     XYZ_data=[[atom2.x]' [atom2.y]' [atom2.z]'];
 
@@ -391,6 +390,7 @@ for i=1:size(atom1,2)
     neigh_ind(~any(neigh_ind,2),:) = [];
     neigh_vec(~any(neigh_vec,2),:) = [];
 
+    a=1;Angle_index=zeros(1,12);
     for v=1:size(neigh_ind,1)
         for w=1:size(neigh_ind,1) % From v or from 1?
             angle=rad2deg(atan2(norm(cross(neigh_vec(v,:),neigh_vec(w,:))),dot(neigh_vec(v,:),neigh_vec(w,:))));

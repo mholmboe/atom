@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>stats_atom.m Generate statistics about atom types, coordination, and charges in the structure.</title>
+<title>stats_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="stats_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,7 +76,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h1>stats_atom.m Generate statistics about atom types, coordination, and charges in the structure.</h1>
+<h1>stats_atom.m</h1>
 <!--introduction-->
 <div>
 <ul>
@@ -97,6 +97,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#5">What to do if atom(i) is a free ion with no bonds or angles?</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -106,7 +109,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </p>
 <h2 id="3">Examples</h2>
 <pre class="language-matlab">result =  stats_atom(atom, Box_dim)
-rresult =  stats_atom(atom, Box_dim, log_file)
+result =  stats_atom(atom, Box_dim, log_file)
 </pre>
 <pre class="codeinput">
 <span class="keyword">function</span> result =  stats_atom(atom,Box_dim,log_file,varargin)
@@ -219,95 +222,101 @@ atom=bond_atom(atom,Box_dim,2.45);
     <span class="keyword">end</span>
 
     <span class="comment">% Collect angles if available</span>
-    <span class="keyword">if</span> isfield(atom, <span class="string">'angle'</span>) &amp;&amp; ~isempty(atom(i).angle)
-        <span class="keyword">for</span> a = 1:size(atom(i).angle.angle, 1)
-            <span class="comment">% angle_data format is expected to be [neigh1_idx, neigh2_idx, angle_value]</span>
-            neigh1_idx = atom(i).angle.index(a, 1);
-            neigh2_idx = atom(i).angle.index(a, 3);
-            angle_value = atom(i).angle.angle(a,1);
+    <span class="keyword">if</span> isfield(atom, <span class="string">'angle'</span>)
 
-            <span class="comment">% Add to angles</span>
-            <span class="keyword">if</span> isKey(angles, atom_type)
-                angles(atom_type) = [angles(atom_type), angle_value];
-            <span class="keyword">else</span>
-                angles(atom_type) = angle_value;
-            <span class="keyword">end</span>
+        <span class="keyword">if</span> sum([atom(i).angle.index])&gt;0
+</pre>
+<h2 id="5">What to do if atom(i) is a free ion with no bonds or angles?</h2>
+<pre class="codeinput">            <span class="keyword">for</span> a = 1:size(atom(i).angle.angle, 1)
+                <span class="comment">% angle_data format is expected to be [neigh1_idx, neigh2_idx, angle_value]</span>
+                neigh1_idx = atom(i).angle.index(a, 1);
+                neigh2_idx = atom(i).angle.index(a, 3);
+                angle_value = atom(i).angle.angle(a,1);
 
-            <span class="comment">% Special handling for hydrogen-involved angles</span>
-            <span class="keyword">if</span> neigh1_idx &lt;= size(atom,2) &amp;&amp; neigh1_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
-                neigh1_type = string(atom(neigh1_idx).type);
-                <span class="keyword">if</span> ~isempty(neigh1_type) &amp;&amp; length(neigh1_type) &gt;= 1 &amp;&amp; strcmpi(neigh1_type(1), <span class="string">'H'</span>)
-                    <span class="keyword">if</span> isKey(h_involved_angles, neigh1_type)
-                        h_involved_angles(neigh1_type) = [h_involved_angles(neigh1_type), angle_value];
-                    <span class="keyword">else</span>
-                        h_involved_angles(neigh1_type) = angle_value;
-                    <span class="keyword">end</span>
-                <span class="keyword">end</span>
-            <span class="keyword">end</span>
-
-            <span class="keyword">if</span> neigh2_idx &lt;= length(atom) &amp;&amp; neigh2_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
-                neigh2_type = string(atom(neigh2_idx).type);
-                <span class="keyword">if</span> ~isempty(neigh2_type) &amp;&amp; length(neigh2_type) &gt;= 1 &amp;&amp; strcmpi(neigh2_type(1), <span class="string">'H'</span>)
-                    <span class="keyword">if</span> isKey(h_involved_angles, neigh2_type)
-                        h_involved_angles(neigh2_type) = [h_involved_angles(neigh2_type), angle_value];
-                    <span class="keyword">else</span>
-                        h_involved_angles(neigh2_type) = angle_value;
-                    <span class="keyword">end</span>
-                <span class="keyword">end</span>
-            <span class="keyword">end</span>
-
-            <span class="comment">% Collect angle type triplets</span>
-            <span class="keyword">if</span> neigh1_idx &lt;= size(atom,2) &amp;&amp; neigh1_idx &gt; 0 &amp;&amp; neigh2_idx &lt;= size(atom,2) &amp;&amp; neigh2_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
-                neigh1_type = string(atom(neigh1_idx).type);
-                neigh2_type = string(atom(neigh2_idx).type);
-
-                <span class="comment">% Create a unique representation for the angle triplet</span>
-                <span class="comment">% For A-B-C, where B is the center atom, order A and C alphabetically</span>
-                <span class="comment">% Handle special cases first (empty strings)</span>
-                neigh_type_sorted = sort([neigh1_type,neigh2_type]);
-
-                neigh1_type = neigh_type_sorted(1);
-                neigh2_type = neigh_type_sorted(2);
-
-                <span class="keyword">if</span> isempty(neigh1_type) || isempty(neigh2_type)
-                    angle_triplet = strcat(neigh1_type, <span class="string">'-'</span>, atom_type, <span class="string">'-'</span>, neigh2_type);
+                <span class="comment">% Add to angles</span>
+                <span class="keyword">if</span> isKey(angles, atom_type)
+                    angles(atom_type) = [angles(atom_type), angle_value];
                 <span class="keyword">else</span>
-                    <span class="comment">% Sort the terminal atom types alphabetically</span>
-                    <span class="keyword">if</span> strcmp(neigh1_type, neigh2_type) &gt; 0
-                        <span class="comment">% neigh2_type comes before neigh1_type alphabetically</span>
-                        angle_triplet = strcat(neigh2_type, <span class="string">'-'</span>, atom_type, <span class="string">'-'</span>, neigh1_type);
-                    <span class="keyword">else</span>
-                        <span class="comment">% neigh1_type comes before or is equal to neigh2_type</span>
+                    angles(atom_type) = angle_value;
+                <span class="keyword">end</span>
+
+                <span class="comment">% Special handling for hydrogen-involved angles</span>
+                <span class="keyword">if</span> neigh1_idx &lt;= size(atom,2) &amp;&amp; neigh1_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
+                    neigh1_type = string(atom(neigh1_idx).type);
+                    <span class="keyword">if</span> ~isempty(neigh1_type) &amp;&amp; length(neigh1_type) &gt;= 1 &amp;&amp; strcmpi(neigh1_type(1), <span class="string">'H'</span>)
+                        <span class="keyword">if</span> isKey(h_involved_angles, neigh1_type)
+                            h_involved_angles(neigh1_type) = [h_involved_angles(neigh1_type), angle_value];
+                        <span class="keyword">else</span>
+                            h_involved_angles(neigh1_type) = angle_value;
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="keyword">if</span> neigh2_idx &lt;= length(atom) &amp;&amp; neigh2_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
+                    neigh2_type = string(atom(neigh2_idx).type);
+                    <span class="keyword">if</span> ~isempty(neigh2_type) &amp;&amp; length(neigh2_type) &gt;= 1 &amp;&amp; strcmpi(neigh2_type(1), <span class="string">'H'</span>)
+                        <span class="keyword">if</span> isKey(h_involved_angles, neigh2_type)
+                            h_involved_angles(neigh2_type) = [h_involved_angles(neigh2_type), angle_value];
+                        <span class="keyword">else</span>
+                            h_involved_angles(neigh2_type) = angle_value;
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+
+                <span class="comment">% Collect angle type triplets</span>
+                <span class="keyword">if</span> neigh1_idx &lt;= size(atom,2) &amp;&amp; neigh1_idx &gt; 0 &amp;&amp; neigh2_idx &lt;= size(atom,2) &amp;&amp; neigh2_idx &gt; 0 <span class="comment">% &amp;&amp; isfield(atom, 'type')</span>
+                    neigh1_type = string(atom(neigh1_idx).type);
+                    neigh2_type = string(atom(neigh2_idx).type);
+
+                    <span class="comment">% Create a unique representation for the angle triplet</span>
+                    <span class="comment">% For A-B-C, where B is the center atom, order A and C alphabetically</span>
+                    <span class="comment">% Handle special cases first (empty strings)</span>
+                    neigh_type_sorted = sort([neigh1_type,neigh2_type]);
+
+                    neigh1_type = neigh_type_sorted(1);
+                    neigh2_type = neigh_type_sorted(2);
+
+                    <span class="keyword">if</span> isempty(neigh1_type) || isempty(neigh2_type)
                         angle_triplet = strcat(neigh1_type, <span class="string">'-'</span>, atom_type, <span class="string">'-'</span>, neigh2_type);
+                    <span class="keyword">else</span>
+                        <span class="comment">% Sort the terminal atom types alphabetically</span>
+                        <span class="keyword">if</span> strcmp(neigh1_type, neigh2_type) &gt; 0
+                            <span class="comment">% neigh2_type comes before neigh1_type alphabetically</span>
+                            angle_triplet = strcat(neigh2_type, <span class="string">'-'</span>, atom_type, <span class="string">'-'</span>, neigh1_type);
+                        <span class="keyword">else</span>
+                            <span class="comment">% neigh1_type comes before or is equal to neigh2_type</span>
+                            angle_triplet = strcat(neigh1_type, <span class="string">'-'</span>, atom_type, <span class="string">'-'</span>, neigh2_type);
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+
+                    <span class="comment">% % Create a unique representation for the angle triplet</span>
+                    <span class="comment">% % For A-B-C, where B is the center atom, order as (min(A,C), B, max(A,C))</span>
+                    <span class="comment">% if strcmp(neigh1_type, neigh2_type) || strcmp(neigh1_type, '') || strcmp(neigh2_type, '')</span>
+                    <span class="comment">%     angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
+                    <span class="comment">% else</span>
+                    <span class="comment">%     if strcmp(neigh1_type, neigh2_type)</span>
+                    <span class="comment">%         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
+                    <span class="comment">%     elseif strcmp(neigh1_type, '') || strcmp(neigh2_type, '')</span>
+                    <span class="comment">%         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
+                    <span class="comment">%     else</span>
+                    <span class="comment">%         if strcmp(neigh1_type, neigh2_type) &lt; 0</span>
+                    <span class="comment">%             angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
+                    <span class="comment">%         else</span>
+                    <span class="comment">%             angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);</span>
+                    <span class="comment">%         end</span>
+                    <span class="comment">%     end</span>
+                    <span class="comment">% end</span>
+
+
+                    <span class="keyword">if</span> isKey(angle_type_triplets, angle_triplet)
+                        angle_type_triplets(angle_triplet) = [angle_type_triplets(angle_triplet), angle_value];
+                    <span class="keyword">else</span>
+                        angle_type_triplets(angle_triplet) = angle_value;
                     <span class="keyword">end</span>
                 <span class="keyword">end</span>
-
-                <span class="comment">% % Create a unique representation for the angle triplet</span>
-                <span class="comment">% % For A-B-C, where B is the center atom, order as (min(A,C), B, max(A,C))</span>
-                <span class="comment">% if strcmp(neigh1_type, neigh2_type) || strcmp(neigh1_type, '') || strcmp(neigh2_type, '')</span>
-                <span class="comment">%     angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
-                <span class="comment">% else</span>
-                <span class="comment">%     if strcmp(neigh1_type, neigh2_type)</span>
-                <span class="comment">%         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
-                <span class="comment">%     elseif strcmp(neigh1_type, '') || strcmp(neigh2_type, '')</span>
-                <span class="comment">%         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
-                <span class="comment">%     else</span>
-                <span class="comment">%         if strcmp(neigh1_type, neigh2_type) &lt; 0</span>
-                <span class="comment">%             angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);</span>
-                <span class="comment">%         else</span>
-                <span class="comment">%             angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);</span>
-                <span class="comment">%         end</span>
-                <span class="comment">%     end</span>
-                <span class="comment">% end</span>
-
-
-                <span class="keyword">if</span> isKey(angle_type_triplets, angle_triplet)
-                    angle_type_triplets(angle_triplet) = [angle_type_triplets(angle_triplet), angle_value];
-                <span class="keyword">else</span>
-                    angle_type_triplets(angle_triplet) = angle_value;
-                <span class="keyword">end</span>
             <span class="keyword">end</span>
-        <span class="keyword">end</span>
+</pre>
+<pre class="codeinput">        <span class="keyword">end</span>
     <span class="keyword">end</span>
 
     <span class="comment">% Create a sorted neighbor string</span>
@@ -688,7 +697,7 @@ result = sprintf(<span class="string">'%s\n'</span>, output{:});
 </div>
 <!--
 ##### SOURCE BEGIN #####
-%% stats_atom.m Generate statistics about atom types, coordination, and charges in the structure.
+%% stats_atom.m
 % * This function analyzes atom types, their coordination environment, charges,
 % coordination numbers, bond distances, and angles, and outputs a formatted report.
 % The report can be written to a log file and/or returned as a string.
@@ -717,7 +726,7 @@ result = sprintf(<span class="string">'%s\n'</span>, output{:});
 %
 %% Examples
 %   result =  stats_atom(atom, Box_dim)
-%   rresult =  stats_atom(atom, Box_dim, log_file)
+%   result =  stats_atom(atom, Box_dim, log_file)
 %
 function result =  stats_atom(atom,Box_dim,log_file,varargin)
 
@@ -829,92 +838,98 @@ for i = 1:length(atom)
     end
 
     % Collect angles if available
-    if isfield(atom, 'angle') && ~isempty(atom(i).angle)
-        for a = 1:size(atom(i).angle.angle, 1)
-            % angle_data format is expected to be [neigh1_idx, neigh2_idx, angle_value]
-            neigh1_idx = atom(i).angle.index(a, 1);
-            neigh2_idx = atom(i).angle.index(a, 3);
-            angle_value = atom(i).angle.angle(a,1);
+    if isfield(atom, 'angle')
 
-            % Add to angles
-            if isKey(angles, atom_type)
-                angles(atom_type) = [angles(atom_type), angle_value];
-            else
-                angles(atom_type) = angle_value;
-            end
+        if sum([atom(i).angle.index])>0
 
-            % Special handling for hydrogen-involved angles
-            if neigh1_idx <= size(atom,2) && neigh1_idx > 0 % && isfield(atom, 'type')
-                neigh1_type = string(atom(neigh1_idx).type);
-                if ~isempty(neigh1_type) && length(neigh1_type) >= 1 && strcmpi(neigh1_type(1), 'H')
-                    if isKey(h_involved_angles, neigh1_type)
-                        h_involved_angles(neigh1_type) = [h_involved_angles(neigh1_type), angle_value];
-                    else
-                        h_involved_angles(neigh1_type) = angle_value;
-                    end
-                end
-            end
+            %% What to do if atom(i) is a free ion with no bonds or angles?
 
-            if neigh2_idx <= length(atom) && neigh2_idx > 0 % && isfield(atom, 'type')
-                neigh2_type = string(atom(neigh2_idx).type);
-                if ~isempty(neigh2_type) && length(neigh2_type) >= 1 && strcmpi(neigh2_type(1), 'H')
-                    if isKey(h_involved_angles, neigh2_type)
-                        h_involved_angles(neigh2_type) = [h_involved_angles(neigh2_type), angle_value];
-                    else
-                        h_involved_angles(neigh2_type) = angle_value;
-                    end
-                end
-            end
+            for a = 1:size(atom(i).angle.angle, 1)
+                % angle_data format is expected to be [neigh1_idx, neigh2_idx, angle_value]
+                neigh1_idx = atom(i).angle.index(a, 1);
+                neigh2_idx = atom(i).angle.index(a, 3);
+                angle_value = atom(i).angle.angle(a,1);
 
-            % Collect angle type triplets
-            if neigh1_idx <= size(atom,2) && neigh1_idx > 0 && neigh2_idx <= size(atom,2) && neigh2_idx > 0 % && isfield(atom, 'type')
-                neigh1_type = string(atom(neigh1_idx).type);
-                neigh2_type = string(atom(neigh2_idx).type);
-
-                % Create a unique representation for the angle triplet
-                % For A-B-C, where B is the center atom, order A and C alphabetically
-                % Handle special cases first (empty strings)
-                neigh_type_sorted = sort([neigh1_type,neigh2_type]);
-
-                neigh1_type = neigh_type_sorted(1);
-                neigh2_type = neigh_type_sorted(2);
-
-                if isempty(neigh1_type) || isempty(neigh2_type)
-                    angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                % Add to angles
+                if isKey(angles, atom_type)
+                    angles(atom_type) = [angles(atom_type), angle_value];
                 else
-                    % Sort the terminal atom types alphabetically
-                    if strcmp(neigh1_type, neigh2_type) > 0
-                        % neigh2_type comes before neigh1_type alphabetically
-                        angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);
-                    else
-                        % neigh1_type comes before or is equal to neigh2_type
+                    angles(atom_type) = angle_value;
+                end
+
+                % Special handling for hydrogen-involved angles
+                if neigh1_idx <= size(atom,2) && neigh1_idx > 0 % && isfield(atom, 'type')
+                    neigh1_type = string(atom(neigh1_idx).type);
+                    if ~isempty(neigh1_type) && length(neigh1_type) >= 1 && strcmpi(neigh1_type(1), 'H')
+                        if isKey(h_involved_angles, neigh1_type)
+                            h_involved_angles(neigh1_type) = [h_involved_angles(neigh1_type), angle_value];
+                        else
+                            h_involved_angles(neigh1_type) = angle_value;
+                        end
+                    end
+                end
+
+                if neigh2_idx <= length(atom) && neigh2_idx > 0 % && isfield(atom, 'type')
+                    neigh2_type = string(atom(neigh2_idx).type);
+                    if ~isempty(neigh2_type) && length(neigh2_type) >= 1 && strcmpi(neigh2_type(1), 'H')
+                        if isKey(h_involved_angles, neigh2_type)
+                            h_involved_angles(neigh2_type) = [h_involved_angles(neigh2_type), angle_value];
+                        else
+                            h_involved_angles(neigh2_type) = angle_value;
+                        end
+                    end
+                end
+
+                % Collect angle type triplets
+                if neigh1_idx <= size(atom,2) && neigh1_idx > 0 && neigh2_idx <= size(atom,2) && neigh2_idx > 0 % && isfield(atom, 'type')
+                    neigh1_type = string(atom(neigh1_idx).type);
+                    neigh2_type = string(atom(neigh2_idx).type);
+
+                    % Create a unique representation for the angle triplet
+                    % For A-B-C, where B is the center atom, order A and C alphabetically
+                    % Handle special cases first (empty strings)
+                    neigh_type_sorted = sort([neigh1_type,neigh2_type]);
+
+                    neigh1_type = neigh_type_sorted(1);
+                    neigh2_type = neigh_type_sorted(2);
+
+                    if isempty(neigh1_type) || isempty(neigh2_type)
                         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                    else
+                        % Sort the terminal atom types alphabetically
+                        if strcmp(neigh1_type, neigh2_type) > 0
+                            % neigh2_type comes before neigh1_type alphabetically
+                            angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);
+                        else
+                            % neigh1_type comes before or is equal to neigh2_type
+                            angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                        end
                     end
-                end
 
-                % % Create a unique representation for the angle triplet
-                % % For A-B-C, where B is the center atom, order as (min(A,C), B, max(A,C))
-                % if strcmp(neigh1_type, neigh2_type) || strcmp(neigh1_type, '') || strcmp(neigh2_type, '')
-                %     angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
-                % else
-                %     if strcmp(neigh1_type, neigh2_type)
-                %         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
-                %     elseif strcmp(neigh1_type, '') || strcmp(neigh2_type, '')
-                %         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
-                %     else
-                %         if strcmp(neigh1_type, neigh2_type) < 0
-                %             angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
-                %         else
-                %             angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);
-                %         end
-                %     end
-                % end
+                    % % Create a unique representation for the angle triplet
+                    % % For A-B-C, where B is the center atom, order as (min(A,C), B, max(A,C))
+                    % if strcmp(neigh1_type, neigh2_type) || strcmp(neigh1_type, '') || strcmp(neigh2_type, '')
+                    %     angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                    % else
+                    %     if strcmp(neigh1_type, neigh2_type)
+                    %         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                    %     elseif strcmp(neigh1_type, '') || strcmp(neigh2_type, '')
+                    %         angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                    %     else
+                    %         if strcmp(neigh1_type, neigh2_type) < 0
+                    %             angle_triplet = strcat(neigh1_type, '-', atom_type, '-', neigh2_type);
+                    %         else
+                    %             angle_triplet = strcat(neigh2_type, '-', atom_type, '-', neigh1_type);
+                    %         end
+                    %     end
+                    % end
 
 
-                if isKey(angle_type_triplets, angle_triplet)
-                    angle_type_triplets(angle_triplet) = [angle_type_triplets(angle_triplet), angle_value];
-                else
-                    angle_type_triplets(angle_triplet) = angle_value;
+                    if isKey(angle_type_triplets, angle_triplet)
+                        angle_type_triplets(angle_triplet) = [angle_type_triplets(angle_triplet), angle_value];
+                    else
+                        angle_type_triplets(angle_triplet) = angle_value;
+                    end
                 end
             end
         end

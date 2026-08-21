@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>mass_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="mass_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -121,7 +121,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 mass={<span class="keyword">...</span>
     1.00794 <span class="string">'Hydrogen'</span> <span class="string">'H'</span> 1 ;<span class="keyword">...</span>
     4.0026 <span class="string">'Helium'</span> <span class="string">'He'</span> 2 ;<span class="keyword">...</span>
-    6.941 <span class="string">'Lithium'</span> <span class="string">'Li'</span> 3 ;<span class="keyword">...</span>
+    6.94 <span class="string">'Lithium'</span> <span class="string">'Li'</span> 3 ;<span class="keyword">...</span>
     9.0122 <span class="string">'Beryllium'</span> <span class="string">'Be'</span> 4 ;<span class="keyword">...</span>
     10.811 <span class="string">'Boron'</span> <span class="string">'B'</span> 5 ;<span class="keyword">...</span>
     12.0107 <span class="string">'Carbon'</span> <span class="string">'C'</span> 6 ;<span class="keyword">...</span>
@@ -148,7 +148,7 @@ mass={<span class="keyword">...</span>
     58.6934 <span class="string">'Nickel'</span> <span class="string">'Ni'</span> 28 ;<span class="keyword">...</span>
     58.9332 <span class="string">'Cobalt'</span> <span class="string">'Co'</span> 27 ;<span class="keyword">...</span>
     63.546 <span class="string">'Copper'</span> <span class="string">'Cu'</span> 29 ;<span class="keyword">...</span>
-    65.39 <span class="string">'Zinc'</span> <span class="string">'Zn'</span> 30 ;<span class="keyword">...</span>
+    65.38 <span class="string">'Zinc'</span> <span class="string">'Zn'</span> 30 ;<span class="keyword">...</span>
     69.723 <span class="string">'Gallium'</span> <span class="string">'Ga'</span> 31 ;<span class="keyword">...</span>
     72.64 <span class="string">'Germanium'</span> <span class="string">'Ge'</span> 32 ;<span class="keyword">...</span>
     74.9216 <span class="string">'Arsenic'</span> <span class="string">'As'</span> 33 ;<span class="keyword">...</span>
@@ -166,7 +166,7 @@ mass={<span class="keyword">...</span>
     102.9055 <span class="string">'Rhodium'</span> <span class="string">'Rh'</span> 45 ;<span class="keyword">...</span>
     106.42 <span class="string">'Palladium'</span> <span class="string">'Pd'</span> 46 ;<span class="keyword">...</span>
     107.8682 <span class="string">'Silver'</span> <span class="string">'Ag'</span> 47 ;<span class="keyword">...</span>
-    112.411 <span class="string">'Cadmium'</span> <span class="string">'Cd'</span> 48 ;<span class="keyword">...</span>
+    112.414 <span class="string">'Cadmium'</span> <span class="string">'Cd'</span> 48 ;<span class="keyword">...</span>
     114.818 <span class="string">'Indium'</span> <span class="string">'In'</span> 49 ;<span class="keyword">...</span>
     118.71 <span class="string">'Tin'</span> <span class="string">'Sn'</span> 50 ;<span class="keyword">...</span>
     121.76 <span class="string">'Antimony'</span> <span class="string">'Sb'</span> 51 ;<span class="keyword">...</span>
@@ -281,6 +281,14 @@ Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 <span class="keyword">if</span> nargin&gt;1
     Box_dim=varargin{1};
 
+    <span class="keyword">if</span> numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    <span class="keyword">elseif</span> numel(Box_dim)==6
+        Box_dim = Cell2Box_dim(Box_dim); <span class="comment">% If Box_dim actually is Cell</span>
+    <span class="keyword">end</span>
+
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
@@ -302,10 +310,10 @@ Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
     Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
-<span class="comment">%     disp('Volume in &Aring;^3:')</span>
-<span class="comment">%     Box_volume</span>
-<span class="comment">%     disp('Density in g/cm^3')</span>
-<span class="comment">%     Box_density</span>
+    <span class="comment">%     disp('Volume in &Aring;^3:')</span>
+    <span class="comment">%     Box_volume</span>
+    <span class="comment">%     disp('Density in g/cm^3')</span>
+    <span class="comment">%     Box_density</span>
     assignin(<span class="string">'caller'</span>,<span class="string">'Box_volume'</span>,Box_volume);
     assignin(<span class="string">'caller'</span>,<span class="string">'Box_density'</span>,Box_density);
 <span class="keyword">end</span>
@@ -347,7 +355,7 @@ element=element_atom(atom);
 mass={...
     1.00794 'Hydrogen' 'H' 1 ;...
     4.0026 'Helium' 'He' 2 ;...
-    6.941 'Lithium' 'Li' 3 ;...
+    6.94 'Lithium' 'Li' 3 ;...
     9.0122 'Beryllium' 'Be' 4 ;...
     10.811 'Boron' 'B' 5 ;...
     12.0107 'Carbon' 'C' 6 ;...
@@ -374,7 +382,7 @@ mass={...
     58.6934 'Nickel' 'Ni' 28 ;...
     58.9332 'Cobalt' 'Co' 27 ;...
     63.546 'Copper' 'Cu' 29 ;...
-    65.39 'Zinc' 'Zn' 30 ;...
+    65.38 'Zinc' 'Zn' 30 ;...
     69.723 'Gallium' 'Ga' 31 ;...
     72.64 'Germanium' 'Ge' 32 ;...
     74.9216 'Arsenic' 'As' 33 ;...
@@ -392,7 +400,7 @@ mass={...
     102.9055 'Rhodium' 'Rh' 45 ;...
     106.42 'Palladium' 'Pd' 46 ;...
     107.8682 'Silver' 'Ag' 47 ;...
-    112.411 'Cadmium' 'Cd' 48 ;...
+    112.414 'Cadmium' 'Cd' 48 ;...
     114.818 'Indium' 'In' 49 ;...
     118.71 'Tin' 'Sn' 50 ;...
     121.76 'Antimony' 'Sb' 51 ;...
@@ -506,7 +514,15 @@ Mw_occupancy=sum([atom.mass].*[atom.occupancy]);
 
 if nargin>1
     Box_dim=varargin{1};
-    
+
+    if numel(Box_dim)==1
+        Box_dim(1)=Box_dim(1);
+        Box_dim(2)=Box_dim(1);
+        Box_dim(3)=Box_dim(1);
+    elseif numel(Box_dim)==6
+        Box_dim = Cell2Box_dim(Box_dim); % If Box_dim actually is Cell
+    end
+
     lx=Box_dim(1);
     ly=Box_dim(2);
     lz=Box_dim(3);
@@ -525,13 +541,13 @@ if nargin>1
     alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
     beta=rad2deg(acos(xz/c));
     gamma=rad2deg(acos(xy/b));
-    
+
     Box_volume=a*b*c*(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
     Box_density=Mw_occupancy/6.022E23/(Box_volume*1E-24);
-%     disp('Volume in Å^3:')
-%     Box_volume
-%     disp('Density in g/cm^3')
-%     Box_density
+    %     disp('Volume in Å^3:')
+    %     Box_volume
+    %     disp('Density in g/cm^3')
+    %     Box_density
     assignin('caller','Box_volume',Box_volume);
     assignin('caller','Box_density',Box_density);
 end

@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>modify_itp</title>
+<title>modify_itp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="modify_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,47 +76,66 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>modify_itp.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function modifies an itp struct imported with import_itp().</li>
+<li>Currently it can only add values to all indexed values or remove single ones.</li>
+</ul>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
 <li>
-<a href="#2">modify_itp.m</a>
+<a href="#1">Version</a>
 </li>
 <li>
-<a href="#3">This function modifies a itp struct</a>
+<a href="#2">Contact</a>
 </li>
 <li>
-<a href="#4">Currently it can only add values to all indexed values or remove single ones</a>
+<a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a></a>
+<a href="#5">Create vars for the sections</a>
 </li>
 <li>
-<a href="#6">Create vars for the sections</a>
+<a href="#6">If you want to add any +1 value to the atom index order</a>
 </li>
 <li>
-<a href="#7">If you want to add any +1 value to the atom index order</a>
-</li>
-<li>
-<a href="#8">If you manually deleted a single index 'index'</a>
+<a href="#7">If you manually deleted a single index 'index'</a>
 </li>
 </ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>itp = modify_itp(itp,index,'add') % Add +1 to all indexed values</li>
+<li>itp = modify_itp(itp,index,'remove') % Remove the indexed values</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> itp = modify_itp(itp,index,varargin)
 </pre>
-<h2 id="2">modify_itp.m</h2>
-<h2 id="3">This function modifies a itp struct</h2>
-<h2 id="4">Currently it can only add values to all indexed values or remove single ones</h2>
-<h2 id="5">Please report bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
-</h2>
-<h2 id="6">Create vars for the sections</h2>
+<pre class="codeinput">
+<span class="comment">% modify_itp.m</span>
+<span class="comment">% This function modifies a itp struct</span>
+<span class="comment">% Currently it can only add values to all indexed values or remove single ones</span>
+<span class="comment">% Please report bugs to michael.holmboe@umu.se</span>
+</pre>
+<h2 id="5">Create vars for the sections</h2>
 <pre class="codeinput">names = fieldnames(itp);
 <span class="keyword">for</span> i=1:length(names)
     eval([names{i} <span class="string">'=itp.'</span> names{i} <span class="string">';'</span>]);
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">If you want to add any +1 value to the atom index order</h2>
+<h2 id="6">If you want to add any +1 value to the atom index order</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> strcmp(varargin{1},<span class="string">'add'</span>)
     <span class="keyword">if</span> exist(<span class="string">'atoms'</span>,<span class="string">'var'</span>)
@@ -155,7 +174,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="8">If you manually deleted a single index 'index'</h2>
+<h2 id="7">If you manually deleted a single index 'index'</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> strcmp(varargin{1},<span class="string">'delete'</span>)
     <span class="keyword">if</span> exist(<span class="string">'atoms'</span>,<span class="string">'var'</span>)
@@ -205,11 +224,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </div>
 <!--
 ##### SOURCE BEGIN #####
-function itp = modify_itp(itp,index,varargin)
 %% modify_itp.m
-%% This function modifies a itp struct
-%% Currently it can only add values to all indexed values or remove single ones
-%% Please report bugs to michael.holmboe@umu.se
+% * This function modifies an itp struct imported with import_itp().
+% * Currently it can only add values to all indexed values or remove single ones.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # itp = modify_itp(itp,index,'add') % Add +1 to all indexed values
+% # itp = modify_itp(itp,index,'remove') % Remove the indexed values
+%
+
+function itp = modify_itp(itp,index,varargin)
+% modify_itp.m
+% This function modifies a itp struct
+% Currently it can only add values to all indexed values or remove single ones
+% Please report bugs to michael.holmboe@umu.se
 
 %% Create vars for the sections
 names = fieldnames(itp);

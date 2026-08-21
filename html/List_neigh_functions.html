@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of neighbour analysis and distance matrix functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="List_neigh_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -159,6 +159,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="remove_sametype_bond.html">remove_sametype_bond(atom,bond_matrix)</a> % This function removes bonds between atoms of the same type.</li>
 <li>
 <a href="stats_atom.html">stats_atom(atom,Box_dim)</a> % Generate statistics about atom types, coordination, and charges in the structure.</li>
+<li>
+<a href="list_bonded_atom.html">list_bonded_atom(atom,Bond_index)</a> % List all bonds, angles or dihedrals between the different atom types.</li>
+<li>
+<a href="n2t_atom.html">n2t_atom(atom,Box_dim,outfile,varargin)</a> % Write a Gromacs atomname2type.n2t file from the atom struct, with charges, masses and neighbour distances.</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -213,6 +217,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <remove_H2O.html remove_H2O(atom)> % This function removes water molecules (H2O) from the atom struct.
 % # <remove_sametype_bond.html remove_sametype_bond(atom,bond_matrix)> % This function removes bonds between atoms of the same type.
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
+% # <list_bonded_atom.html list_bonded_atom(atom,Bond_index)> % List all bonds, angles or dihedrals between the different atom types.
+% # <n2t_atom.html n2t_atom(atom,Box_dim,outfile,varargin)> % Write a Gromacs atomname2type.n2t file from the atom struct, with charges, masses and neighbour distances.
 
 %
 %% Version

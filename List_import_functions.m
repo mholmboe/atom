@@ -30,6 +30,7 @@
 % # <import_atom_poscar.html import_atom_poscar(filename)> % Import a VASP POSCAR file into the atom struct.
 % # <import_atom.html import_atom(filename)> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.
 % # <import_xyz.html import_xyz(filename)> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.
+% # <import_atom_gro_legacy.html import_atom_gro_legacy(filename,varargin)> % Legacy version of import_atom_gro, importing .gro files into an atom struct.
 
 %% Import of trajectory files
 % # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
@@ -51,6 +52,7 @@
 % # <import_mclf_dispersion.html import_mclf_dispersion(filename)> % Import dispersion parameters for MCLF.
 % # <import_cp2k.html import_cp2k(filename)> % Import a CP2K output file.
 % # <import_cp2k_resp.html import_cp2k_resp(filename)> % Import RESP charges from CP2K.
+% # <import_CONECT.html import_CONECT(filename)> % Extract the CONECT records from a .pdb file and store them in the Bond_index variable.
 
 %
 %% Version

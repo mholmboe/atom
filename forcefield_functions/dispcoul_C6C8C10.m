@@ -1,3 +1,18 @@
+%% dispcoul_C6C8C10.m
+% * This function calculates and plots the dispersion and the Coulomb potential
+% * from the C6, C8 and C10 dispersion coefficients and the charges in param.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [r,dispersion,coul,Utot] = dispcoul_C6C8C10(param)
+% # [r,dispersion,coul,Utot] = dispcoul_C6C8C10(param,data,r)
+%
+
 function [r,dispersion,coul,Utot] = dispcoul_C6C8C10(param,varargin)
 
 C61=0;

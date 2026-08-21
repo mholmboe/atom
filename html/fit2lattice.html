@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>fit2lattice</title>
+<title>fit2lattice.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="fit2lattice.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,54 +76,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h2>Contents</h2>
-<div>
-<ul>
-<li>
-<a href="#1">fit2lattice.m</a>
-</li>
-<li>
-<a href="#2">Set filenames/residue name</a>
-</li>
-<li>
-<a href="#3">Import and setup reference and model structures, strip away waters and counter-ions..</a>
-</li>
-<li>
-<a href="#4">Choose a main atomtype used for centering the model onto the reference structure</a>
-</li>
-<li>
-<a href="#5">Calculate how many models would fit in reference</a>
-</li>
-<li>
-<a href="#6">Place the model at origo</a>
-</li>
-<li>
-<a href="#7">For every model to be superpositioned over the reference...</a>
-</li>
-<li>
-<a href="#10">Generate random angles between -180 to +180</a>
-</li>
-<li>
-<a href="#11">Rotate and move the temporary model structure</a>
-</li>
-<li>
-<a href="#12">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</a>
-</li>
-<li>
-<a href="#13">Calculate the difference</a>
-</li>
-<li>
-<a href="#14">Save the best angles</a>
-</li>
-<li>
-<a href="#16">Add the temp_model to the the full model</a>
-</li>
-<li>
-<a href="#18">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</a>
-</li>
-</ul>
-</div>
-<h2 id="1">fit2lattice.m</h2>
+<h1>fit2lattice.m</h1>
+<!--introduction-->
 <div>
 <ul>
 <li>This is a special script (and not a function) that imports a model</li>
@@ -132,16 +86,81 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>reintroduced to the final model</li>
 </ul>
 </div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#4">Set filenames/residue name</a>
+</li>
+<li>
+<a href="#5">Import and setup reference and model structures, strip away waters and counter-ions..</a>
+</li>
+<li>
+<a href="#6">Choose a main atomtype used for centering the model onto the reference structure</a>
+</li>
+<li>
+<a href="#7">Calculate how many models would fit in reference</a>
+</li>
+<li>
+<a href="#8">Place the model at origo</a>
+</li>
+<li>
+<a href="#9">For every model to be superpositioned over the reference...</a>
+</li>
+<li>
+<a href="#12">Generate random angles between -180 to +180</a>
+</li>
+<li>
+<a href="#13">Rotate and move the temporary model structure</a>
+</li>
+<li>
+<a href="#14">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</a>
+</li>
+<li>
+<a href="#15">Calculate the difference</a>
+</li>
+<li>
+<a href="#16">Save the best angles</a>
+</li>
+<li>
+<a href="#18">Add the temp_model to the the full model</a>
+</li>
+<li>
+<a href="#20">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>fit2lattice % Edit the filenames at the top of the script</li>
+</ol>
+</div>
 <pre class="codeinput">clear <span class="string">all</span>;
 format <span class="string">compact</span>;
 </pre>
-<h2 id="2">Set filenames/residue name</h2>
+<h2 id="4">Set filenames/residue name</h2>
 <pre class="codeinput">ref_filename=<span class="string">'H3PO4_CollCode15887.pdb'</span>
 model_filename=<span class="string">'1xH3PO4.pdb'</span>
 outfilename=<span class="string">'preem.gro'</span>
 resname=<span class="string">'PO4'</span>;
 </pre>
-<h2 id="3">Import and setup reference and model structures, strip away waters and counter-ions..</h2>
+<h2 id="5">Import and setup reference and model structures, strip away waters and counter-ions..</h2>
 <pre class="codeinput">model=import_atom(model_filename);
 ref=import_atom(ref_filename);
 
@@ -163,7 +182,7 @@ ref(strcmp([ref.resname],<span class="string">'ION'</span>))=[];
 ref(strcmp([ref.resname],<span class="string">'SOL'</span>))=[];
 ref=bond_angle_atom(ref,Box_dim,1.25,2.45,<span class="string">'more'</span>);
 </pre>
-<h2 id="4">Choose a main atomtype used for centering the model onto the reference structure</h2>
+<h2 id="6">Choose a main atomtype used for centering the model onto the reference structure</h2>
 <pre class="codeinput">Atom_type=unique([ref.type]);
 Atom_type(ismember(Atom_type,{<span class="string">'H'</span> <span class="string">'O'</span> <span class="string">'Li'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Ca'</span> <span class="string">'Mg'</span> <span class="string">'Cs'</span>}))=[];
 
@@ -173,13 +192,13 @@ nAtomtypeModel=sum(strcmp([model.type],Atom_type));
 AtomtypeRef_ind=find(strcmp([ref.type],Atom_type));
 AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
 </pre>
-<h2 id="5">Calculate how many models would fit in reference</h2>
+<h2 id="7">Calculate how many models would fit in reference</h2>
 <pre class="codeinput">nRepFactor=nAtomtypeRef/nAtomtypeModel;
 </pre>
-<h2 id="6">Place the model at origo</h2>
+<h2 id="8">Place the model at origo</h2>
 <pre class="codeinput">model=translate_atom(model,-[model(AtomtypeModel_ind(1)).x model(AtomtypeModel_ind(1)).y model(AtomtypeModel_ind(1)).z]);
 </pre>
-<h2 id="7">For every model to be superpositioned over the reference...</h2>
+<h2 id="9">For every model to be superpositioned over the reference...</h2>
 <pre class="codeinput">full_model=[];BestAngles=[0 0 0]; BestAngles_all=[];res_all=[];
 <span class="keyword">for</span> i=1:nRepFactor
 </pre>
@@ -187,14 +206,14 @@ AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
     n=1; prev_res=1E23;
     <span class="keyword">while</span> sum(prev_res.^2)&gt;0.1 &amp;&amp; n &lt; 5000
 </pre>
-<h2 id="10">Generate random angles between -180 to +180</h2>
+<h2 id="12">Generate random angles between -180 to +180</h2>
 <pre class="codeinput">        angles=[360*rand-180 360*rand-180 360*rand-180];
 </pre>
-<h2 id="11">Rotate and move the temporary model structure</h2>
+<h2 id="13">Rotate and move the temporary model structure</h2>
 <pre class="codeinput">        temp_model = rotate_atom(model,Box_dim,angles,AtomtypeModel_ind); <span class="comment">% Rotate the temp_model around origo</span>
         temp_model = translate_atom(temp_model,[ref(AtomtypeRef_ind(i)).x ref(AtomtypeRef_ind(i)).y ref(AtomtypeRef_ind(i)).z]); <span class="comment">% Translate the temp_model to the i:th position</span>
 </pre>
-<h2 id="12">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</h2>
+<h2 id="14">Calculate and compare distance matrixes (reshaped to vectors in the end) for each temp_model structure and the respective part of the reference structure</h2>
 <pre class="codeinput">        d_ref_matrix=dist_matrix_atom(ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),<span class="keyword">...</span>
             ref(unique(ref(AtomtypeRef_ind(i)).angle.index(:,1:2:end))),Box_dim);
         d_ref_matrix=sort(d_ref_matrix,2);
@@ -205,10 +224,10 @@ AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
         d_model_matrix=sort(d_model_matrix,2);
         d_model_matrix=reshape(d_model_matrix,1,[]);
 </pre>
-<h2 id="13">Calculate the difference</h2>
+<h2 id="15">Calculate the difference</h2>
 <pre class="codeinput">        res=d_ref_matrix-d_model_matrix;
 </pre>
-<h2 id="14">Save the best angles</h2>
+<h2 id="16">Save the best angles</h2>
 <pre class="codeinput">        <span class="keyword">if</span> sum(res.^2)&lt;sum(prev_res.^2)
             best_model=temp_model; <span class="comment">% New</span>
             prev_res=res;
@@ -229,13 +248,13 @@ AtomtypeModel_ind=find(strcmp([model.type],Atom_type));
     res_all=[res_all sum(res.^2)];
     BestAngles_all = [BestAngles_all BestAngles(end,:)];
 </pre>
-<h2 id="16">Add the temp_model to the the full model</h2>
+<h2 id="18">Add the temp_model to the the full model</h2>
 <pre class="codeinput">    full_model = update_atom({full_model best_model}); <span class="comment">% New</span>
 </pre>
 <pre class="codeinput">
 <span class="keyword">end</span>
 </pre>
-<h2 id="18">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</h2>
+<h2 id="20">Finalize and write the final structure, possibly with the original ions and waters (that have been reordered)</h2>
 <pre class="codeinput">full_model = wrap_atom(full_model,Box_dim);
 System=update_atom({full_model Ion SOL});
 prop = analyze_atom(System,Box_dim,2.65);
@@ -255,6 +274,16 @@ vmd(update_atom({ref full_model}),Box_dim)
 % * like (PO43-) and tris to fit it into a crystal lattice possibly holding
 % * such sites. Any waters or counter-ions (see lin 39) is reordered and
 % * reintroduced to the final model
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # fit2lattice % Edit the filenames at the top of the script
+%
 
 clear all;
 format compact;

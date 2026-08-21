@@ -1,0 +1,644 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>n2t_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-08-21">
+<meta name="DC.source" content="n2t_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>n2t_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function writes a Gromacs atomname2type.n2t file from the atom struct.</li>
+</ul>
+</div>
+<p>Columns: Element AtomType Charge Mass[u] CN [NeighborElement Distance(nm)] x CN - Element <a href="-">element_atom(atom) -</a> element(i).type - AtomType &lt;- original atom(i).type - CN = unique neighbor atoms - Neighbors = exactly CN entries (no aggregation) - Distances = mean per neighbor position (&Aring;&rarr;nm) - Charge = mean per environment if atom(i).charge exists, else 0.0</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<p>txt = n2t_atom(atom,Box_dim,'atomtype2name.n2t'); % Basic input arguments</p>
+<pre class="codeinput">
+<span class="keyword">function</span> txt = n2t_atom(atom, Box_dim, outfile, varargin)
+
+<span class="keyword">if</span> nargin &lt; 3 || isempty(outfile), outfile = <span class="string">'atomname2type.n2t'</span>; <span class="keyword">end</span>
+
+<span class="comment">% % % Optional explicit element struct</span>
+<span class="comment">% % if ~isempty(varargin) &amp;&amp; isstruct(varargin{1})</span>
+<span class="comment">% %     element = varargin{1}; varargin(1) = [];</span>
+<span class="comment">% % else</span>
+<span class="comment">% %     element = [];</span>
+<span class="comment">% % end</span>
+
+<span class="comment">% Options</span>
+useCharges = true; autoBond = true; rmaxlong = 2.45; verbose = true; to_nm = 0.1;
+<span class="keyword">for</span> k = 1:2:numel(varargin)
+    key = lower(string(varargin{k})); <span class="keyword">if</span> k+1&gt;numel(varargin), <span class="keyword">break</span>; <span class="keyword">end</span>
+    val = varargin{k+1};
+    <span class="keyword">switch</span> key
+        <span class="keyword">case</span> <span class="string">"usecharges"</span>,  useCharges = logical(val);
+        <span class="keyword">case</span> <span class="string">"autobond"</span>,    autoBond   = logical(val);
+        <span class="keyword">case</span> <span class="string">"rmaxlong"</span>,    rmaxlong   = val;
+        <span class="keyword">case</span> <span class="string">"verbose"</span>,     verbose    = logical(val);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Ensure masses</span>
+<span class="keyword">if</span> ~isfield(atom,<span class="string">'mass'</span>) || isempty([atom.mass]), atom = mass_atom(atom); <span class="keyword">end</span>
+
+<span class="comment">% Elements</span>
+ element = element_atom(atom);
+
+<span class="comment">% if isempty(element), element = element_atom(atom); end</span>
+<span class="comment">% if ~isfield(element,'type') || numel(element) ~= numel(atom)</span>
+<span class="comment">%     error('element_atom(atom) must return element(i).type for each atom.');</span>
+<span class="comment">% end</span>
+getEl = @(i) get_field_cell(element,i,<span class="string">'type'</span>,<span class="string">'X'</span>);
+getTy = @(i) get_field_str(atom,i,<span class="string">'type'</span>,<span class="string">'X'</span>);
+
+<span class="comment">% % % Ensure neighbors/bonds</span>
+<span class="comment">% % need_bonds = (~isfield(atom,'bond')) || all(arrayfun(@(a) isempty(a.bond), atom));</span>
+<span class="comment">% % need_neigh = (~isfield(atom,'neigh')) || all(arrayfun(@(a) isempty(a.neigh), atom));</span>
+<span class="comment">% % if autoBond &amp;&amp; (need_bonds || need_neigh)</span>
+<span class="comment">% %     if nargin&lt;2 || isempty(Box_dim)</span>
+<span class="comment">% %         warning('No bonds/neighbors and Box_dim missing; proceeding without distances.');</span>
+<span class="comment">% %     else</span>
+         atom = bond_atom(atom, Box_dim, rmaxlong);
+<span class="comment">% %     end</span>
+<span class="comment">% % end</span>
+
+<span class="comment">% Build per-site neighbor sequences</span>
+<span class="comment">% ----------------- per-site neighbor sequences -----------------</span>
+Natom = numel(atom);
+site = struct(<span class="string">'centerEl'</span>,{},<span class="string">'centerTy'</span>,{},<span class="string">'CN'</span>,{}, <span class="keyword">...</span>
+              <span class="string">'neighElSeq'</span>,{},<span class="string">'neighDistsA'</span>,{},<span class="string">'hasCharge'</span>,{});
+
+<span class="keyword">for</span> i = 1:Natom
+    centerEl = string(getEl(i)); <span class="keyword">if</span> strlength(centerEl)==0, centerEl=<span class="string">"X"</span>; <span class="keyword">end</span>
+    centerTy = string(getTy(i)); <span class="keyword">if</span> strlength(centerTy)==0, centerTy=centerEl; <span class="keyword">end</span>
+
+    <span class="comment">% --- neighbors by index (unique atoms) ---</span>
+    neigh_idx  = get_field_vec(atom,i,<span class="string">'neigh.index'</span>,[]);
+    <span class="keyword">if</span> ~isempty(neigh_idx)
+        neigh_idx = unique(neigh_idx,<span class="string">'stable'</span>);
+    <span class="keyword">end</span>
+
+    <span class="comment">% --- build distance map from bonds (robust), fallback to neigh.dist, then coords ---</span>
+    distMap = containers.Map(<span class="string">'KeyType'</span>,<span class="string">'double'</span>,<span class="string">'ValueType'</span>,<span class="string">'double'</span>);
+    <span class="keyword">if</span> isfield(atom,<span class="string">'bond'</span>) &amp;&amp; ~isempty(atom(i).bond) &amp;&amp; isfield(atom(i).bond,<span class="string">'index'</span>) <span class="keyword">...</span>
+                              &amp;&amp; ~isempty(atom(i).bond.index)
+        bidx = atom(i).bond.index;   <span class="comment">% [i j]</span>
+        bdis = atom(i).bond.dist;    <span class="comment">% &Aring;</span>
+        <span class="keyword">for</span> b = 1:size(bidx,1)
+            j = bidx(b,2);
+            <span class="keyword">if</span> j&gt;=1 &amp;&amp; j&lt;=Natom
+                distMap(double(j)) = double(bdis(b));
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    neigh_dist = get_field_vec(atom,i,<span class="string">'neigh.dist'</span>,[]); <span class="comment">% may be empty/misaligned</span>
+
+    <span class="comment">% --- assemble canonical neighbor element + distance arrays (&Aring;) ---</span>
+    nEl = strings(0,1); nD = [];
+    <span class="keyword">for</span> k = 1:numel(neigh_idx)
+        j = neigh_idx(k);
+        <span class="keyword">if</span> j&gt;=1 &amp;&amp; j&lt;=Natom
+            <span class="comment">% element of neighbor j</span>
+            nej_el = string(getEl(j)); <span class="keyword">if</span> strlength(nej_el)==0, nej_el=<span class="string">"X"</span>; <span class="keyword">end</span>
+            nEl(end+1,1) = nej_el; <span class="comment">%#ok&lt;AGROW&gt;</span>
+
+            <span class="comment">% distance preference: bond map -&gt; neigh.dist(k) -&gt; from coordinates</span>
+            <span class="keyword">if</span> isKey(distMap,double(j))
+                d = distMap(double(j));
+            <span class="keyword">elseif</span> ~isempty(neigh_dist) &amp;&amp; k&lt;=numel(neigh_dist) &amp;&amp; isfinite(neigh_dist(k))
+                d = double(neigh_dist(k));
+            <span class="keyword">elseif</span> all(isfield(atom, {<span class="string">'x'</span>,<span class="string">'y'</span>,<span class="string">'z'</span>}))
+                d = sqrt( (atom(i).x-atom(j).x)^2 + (atom(i).y-atom(j).y)^2 + (atom(i).z-atom(j).z)^2 );
+            <span class="keyword">else</span>
+                d = NaN;
+            <span class="keyword">end</span>
+            nD(end+1,1) = d; <span class="comment">%#ok&lt;AGROW&gt;</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% --- sort neighbors by (element, then distance) for canonical ordering ---</span>
+    <span class="keyword">if</span> ~isempty(nEl)
+        <span class="comment">% numeric secondary key via formatted strings for stable sort</span>
+        [~, ord] = sortrows([nEl, string(num2str_vector(nD))]);
+        nEl = nEl(ord); nD = nD(ord);
+    <span class="keyword">end</span>
+
+    site(end+1) = struct( <span class="keyword">...</span>
+        <span class="string">'centerEl'</span>,    centerEl, <span class="keyword">...</span>
+        <span class="string">'centerTy'</span>,    centerTy, <span class="keyword">...</span>
+        <span class="string">'CN'</span>,          numel(nEl), <span class="keyword">...</span>
+        <span class="string">'neighElSeq'</span>,  nEl, <span class="keyword">...</span>
+        <span class="string">'neighDistsA'</span>, nD, <span class="keyword">...</span>
+        <span class="string">'hasCharge'</span>,   isfield(atom,<span class="string">'charge'</span>) &amp;&amp; ~isempty(atom(i).charge) ); <span class="comment">%#ok&lt;AGROW&gt;</span>
+<span class="keyword">end</span>
+<span class="comment">% ----------------- group identical environments -----------------</span>
+
+<span class="comment">% Group identical environments: key = El|Ty|CN|ElSeq</span>
+envMap = containers.Map();
+<span class="keyword">for</span> s = 1:numel(site)
+    el  = site(s).centerEl; ty = site(s).centerTy; cn = site(s).CN;
+    seq = strjoin(site(s).neighElSeq,<span class="string">'|'</span>);
+    key = sprintf(<span class="string">'%s|%s|%d|%s'</span>, el, ty, cn, seq);
+    <span class="keyword">if</span> ~isKey(envMap,key)
+        pos = poscell(site(s).neighDistsA); posDists = cell(1,cn);
+        <span class="keyword">for</span> p = 1:cn
+            posDists{p} = []; <span class="keyword">if</span> p&lt;=numel(pos) &amp;&amp; isfinite(pos{p}), posDists{p}(end+1,1) = pos{p}; <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        envMap(key) = struct(<span class="string">'centerEl'</span>,el,<span class="string">'centerTy'</span>,ty,<span class="string">'CN'</span>,cn,<span class="string">'seqEl'</span>,site(s).neighElSeq, <span class="keyword">...</span>
+                             <span class="string">'posDists'</span>,{posDists},<span class="string">'members'</span>,1,<span class="string">'memberIdx'</span>,s,<span class="string">'charges'</span>,get_charge(atom,s));
+    <span class="keyword">else</span>
+        E = envMap(key);
+        pos = poscell(site(s).neighDistsA);
+        <span class="keyword">for</span> p = 1:max(numel(E.posDists), numel(pos))
+            <span class="keyword">if</span> p&gt;numel(E.posDists) || isempty(E.posDists{p}), E.posDists{p} = []; <span class="keyword">end</span>
+            <span class="keyword">if</span> p&lt;=numel(pos) &amp;&amp; isfinite(pos{p}), E.posDists{p}(end+1,1) = pos{p}; <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        E.members   = E.members + 1;
+        E.memberIdx = [E.memberIdx s]; <span class="comment">%#ok&lt;AGROW&gt;</span>
+        qc = get_charge(atom,s); <span class="keyword">if</span> ~isempty(qc), E.charges(end+1,1) = qc; <span class="keyword">end</span>
+        envMap(key) = E;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Render lines</span>
+keysEnv = envMap.keys;
+records = struct(<span class="string">'Element'</span>,{},<span class="string">'AtomType'</span>,{},<span class="string">'Charge'</span>,{},<span class="string">'Mass'</span>,{},<span class="string">'CN'</span>,{});
+neighborBlocks = {};
+<span class="keyword">for</span> kk = 1:numel(keysEnv)
+    E = envMap(keysEnv{kk});
+    <span class="comment">% Charge</span>
+    q = 0.0; <span class="keyword">if</span> useCharges &amp;&amp; ~isempty(E.charges), q = mean(E.charges); <span class="keyword">end</span>
+    <span class="comment">% MASS: use masses of THIS atomtype in THIS environment (members), not element-average</span>
+    masses = [atom(E.memberIdx).mass];
+    <span class="keyword">if</span> isempty(masses)
+        m = NaN;
+    <span class="keyword">else</span>
+        m = masses(1);
+        <span class="keyword">if</span> any(abs(masses - m) &gt; 1e-6)
+            m = median(masses);
+            <span class="keyword">if</span> verbose
+                warning(<span class="string">'n2t_atom:massInconsistency'</span>, <span class="keyword">...</span>
+                    <span class="string">'Multiple masses for AtomType %s (%s); using median %.5f'</span>, <span class="keyword">...</span>
+                    E.centerTy, E.centerEl, m);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="comment">% Distances per position</span>
+    CN  = E.CN; seq = E.seqEl; dnm = zeros(CN,1);
+    <span class="keyword">for</span> p = 1:CN
+        <span class="keyword">if</span> p&lt;=numel(E.posDists) &amp;&amp; ~isempty(E.posDists{p}), dnm(p) = mean(E.posDists{p})*to_nm; <span class="keyword">else</span>, dnm(p)=0.0; <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    rec.Element = char(E.centerEl); rec.AtomType = char(E.centerTy);
+    rec.Charge = q; rec.Mass = m; rec.CN = CN; records(end+1) = rec; <span class="comment">%#ok&lt;AGROW&gt;</span>
+    block = cell(CN,2);
+    <span class="keyword">for</span> p=1:CN, block{p,1}=char(seq(p)); block{p,2}=dnm(p); <span class="keyword">end</span>
+    neighborBlocks{end+1} = block; <span class="comment">%#ok&lt;AGROW&gt;</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Order: descending CN, then Element, then AtomType</span>
+<span class="keyword">if</span> ~isempty(records)
+    CNlist = arrayfun(@(r) r.CN, records);
+    elNames = string({records.Element}).'; tyNames = string({records.AtomType}).';
+    [~, order] = sortrows([ -CNlist(:), elNames, tyNames ]);
+<span class="keyword">else</span>
+    order = [];
+<span class="keyword">end</span>
+
+header = [
+    <span class="string">"; atomname2type.n2t generated by n2t_atom()"</span>
+    <span class="string">"; Columns: Element  AtomType  Charge  Mass[u]  CN  [NeighborElement  Distance(nm)]"</span>
+    <span class="string">"; Element from element_atom(atom) -&gt; element(i).type ; AtomType from original atom(i).type"</span>
+    <span class="string">"; Mass from atom(i).mass for the members of each (Element,AtomType,CN,NeighborSeq) environment."</span>
+];
+
+lines = strings(0,1);
+<span class="keyword">for</span> ix = order'
+    r = records(ix);
+    line = sprintf(<span class="string">'%-2s %-16s % .6f %10.5f %2d'</span>, r.Element, r.AtomType, r.Charge, r.Mass, r.CN);
+    block = neighborBlocks{ix};
+    <span class="keyword">for</span> k = 1:r.CN
+        line = sprintf(<span class="string">'%s  %-2s %6.3f'</span>, line, block{k,1}, block{k,2});
+    <span class="keyword">end</span>
+    lines(end+1,1) = string(line); <span class="comment">%#ok&lt;AGROW&gt;</span>
+<span class="keyword">end</span>
+
+txt = strjoin([header; lines], newline);
+fid = fopen(outfile,<span class="string">'w'</span>);
+<span class="keyword">if</span> fid&lt;0
+    warning(<span class="string">'Could not open %s for writing. Returning text.'</span>, outfile);
+<span class="keyword">else</span>
+    fprintf(fid,<span class="string">'%s\n'</span>,txt); fclose(fid);
+    <span class="keyword">if</span> verbose, fprintf(<span class="string">'Wrote %d entries to %s\n'</span>, numel(lines), outfile); <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ---------------- helpers ----------------</span>
+<span class="keyword">function</span> val = get_field_vec(S,i,field,default)
+<span class="keyword">try</span>
+    parts = strsplit(field,<span class="string">'.'</span>); v = S(i).(parts{1});
+    <span class="keyword">for</span> t = 2:numel(parts), v = v.(parts{t}); <span class="keyword">end</span>
+    <span class="keyword">if</span> isempty(v), val = default; <span class="keyword">else</span>, val = v; <span class="keyword">end</span>
+<span class="keyword">catch</span>, val = default; <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> val = get_field_cell(S,i,field,default)
+<span class="keyword">try</span>, val = S(i).(field); <span class="keyword">if</span> isempty(val), val = default; <span class="keyword">end</span>
+<span class="keyword">catch</span>, val = default; <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> val = get_field_str(S,i,field,default)
+<span class="keyword">try</span>, val = S(i).(field); <span class="keyword">if</span> isempty(val), val = default; <span class="keyword">end</span>
+    <span class="keyword">if</span> isstring(val), val = char(val); <span class="keyword">end</span>
+<span class="keyword">catch</span>, val = default; <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = poscell(v)
+<span class="keyword">if</span> isempty(v), out = {}; <span class="keyword">else</span>, out = arrayfun(@(x) x, v, <span class="string">'UniformOutput'</span>, false); <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> s = num2str_vector(v)
+<span class="keyword">if</span> isempty(v), s = <span class="string">""</span>; <span class="keyword">else</span>, s = string(arrayfun(@(x) sprintf(<span class="string">'%12.6f'</span>,x), v, <span class="string">'UniformOutput'</span>, false)); <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> q = get_charge(atom, idx_site)
+i = idx_site;
+<span class="keyword">if</span> isfield(atom,<span class="string">'charge'</span>) &amp;&amp; ~isempty(atom(i).charge), q = atom(i).charge; <span class="keyword">else</span>, q = []; <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% n2t_atom.m
+% * This function writes a Gromacs atomname2type.n2t file from the atom struct.
+%
+% Columns: Element  AtomType  Charge  Mass[u]  CN  [NeighborElement  Distance(nm)] x CN
+% - Element <- element_atom(atom) -> element(i).type
+% - AtomType <- original atom(i).type
+% - CN = unique neighbor atoms
+% - Neighbors = exactly CN entries (no aggregation)
+% - Distances = mean per neighbor position (Å→nm)
+% - Charge = mean per environment if atom(i).charge exists, else 0.0
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% txt = n2t_atom(atom,Box_dim,'atomtype2name.n2t'); % Basic input arguments
+%
+
+function txt = n2t_atom(atom, Box_dim, outfile, varargin)
+
+if nargin < 3 || isempty(outfile), outfile = 'atomname2type.n2t'; end
+
+% % % Optional explicit element struct
+% % if ~isempty(varargin) && isstruct(varargin{1})
+% %     element = varargin{1}; varargin(1) = [];
+% % else
+% %     element = [];
+% % end
+
+% Options
+useCharges = true; autoBond = true; rmaxlong = 2.45; verbose = true; to_nm = 0.1;
+for k = 1:2:numel(varargin)
+    key = lower(string(varargin{k})); if k+1>numel(varargin), break; end
+    val = varargin{k+1};
+    switch key
+        case "usecharges",  useCharges = logical(val);
+        case "autobond",    autoBond   = logical(val);
+        case "rmaxlong",    rmaxlong   = val;
+        case "verbose",     verbose    = logical(val);
+    end
+end
+
+% Ensure masses
+if ~isfield(atom,'mass') || isempty([atom.mass]), atom = mass_atom(atom); end
+
+% Elements 
+ element = element_atom(atom);
+
+% if isempty(element), element = element_atom(atom); end
+% if ~isfield(element,'type') || numel(element) ~= numel(atom)
+%     error('element_atom(atom) must return element(i).type for each atom.');
+% end
+getEl = @(i) get_field_cell(element,i,'type','X');
+getTy = @(i) get_field_str(atom,i,'type','X');
+
+% % % Ensure neighbors/bonds
+% % need_bonds = (~isfield(atom,'bond')) || all(arrayfun(@(a) isempty(a.bond), atom));
+% % need_neigh = (~isfield(atom,'neigh')) || all(arrayfun(@(a) isempty(a.neigh), atom));
+% % if autoBond && (need_bonds || need_neigh)
+% %     if nargin<2 || isempty(Box_dim)
+% %         warning('No bonds/neighbors and Box_dim missing; proceeding without distances.');
+% %     else
+         atom = bond_atom(atom, Box_dim, rmaxlong);
+% %     end
+% % end
+
+% Build per-site neighbor sequences
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- per-site neighbor sequences REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+Natom = numel(atom);
+site = struct('centerEl',{},'centerTy',{},'CN',{}, ...
+              'neighElSeq',{},'neighDistsA',{},'hasCharge',{});
+
+for i = 1:Natom
+    centerEl = string(getEl(i)); if strlength(centerEl)==0, centerEl="X"; end
+    centerTy = string(getTy(i)); if strlength(centerTy)==0, centerTy=centerEl; end
+
+    % REPLACE_WITH_DASH_DASH- neighbors by index (unique atoms) REPLACE_WITH_DASH_DASH-
+    neigh_idx  = get_field_vec(atom,i,'neigh.index',[]);
+    if ~isempty(neigh_idx)
+        neigh_idx = unique(neigh_idx,'stable');
+    end
+
+    % REPLACE_WITH_DASH_DASH- build distance map from bonds (robust), fallback to neigh.dist, then coords REPLACE_WITH_DASH_DASH-
+    distMap = containers.Map('KeyType','double','ValueType','double');
+    if isfield(atom,'bond') && ~isempty(atom(i).bond) && isfield(atom(i).bond,'index') ...
+                              && ~isempty(atom(i).bond.index)
+        bidx = atom(i).bond.index;   % [i j]
+        bdis = atom(i).bond.dist;    % Å
+        for b = 1:size(bidx,1)
+            j = bidx(b,2);
+            if j>=1 && j<=Natom
+                distMap(double(j)) = double(bdis(b));
+            end
+        end
+    end
+    neigh_dist = get_field_vec(atom,i,'neigh.dist',[]); % may be empty/misaligned
+
+    % REPLACE_WITH_DASH_DASH- assemble canonical neighbor element + distance arrays (Å) REPLACE_WITH_DASH_DASH-
+    nEl = strings(0,1); nD = [];
+    for k = 1:numel(neigh_idx)
+        j = neigh_idx(k);
+        if j>=1 && j<=Natom
+            % element of neighbor j
+            nej_el = string(getEl(j)); if strlength(nej_el)==0, nej_el="X"; end
+            nEl(end+1,1) = nej_el; %#ok<AGROW>
+
+            % distance preference: bond map -> neigh.dist(k) -> from coordinates
+            if isKey(distMap,double(j))
+                d = distMap(double(j));
+            elseif ~isempty(neigh_dist) && k<=numel(neigh_dist) && isfinite(neigh_dist(k))
+                d = double(neigh_dist(k));
+            elseif all(isfield(atom, {'x','y','z'}))
+                d = sqrt( (atom(i).x-atom(j).x)^2 + (atom(i).y-atom(j).y)^2 + (atom(i).z-atom(j).z)^2 );
+            else
+                d = NaN;
+            end
+            nD(end+1,1) = d; %#ok<AGROW>
+        end
+    end
+
+    % REPLACE_WITH_DASH_DASH- sort neighbors by (element, then distance) for canonical ordering REPLACE_WITH_DASH_DASH-
+    if ~isempty(nEl)
+        % numeric secondary key via formatted strings for stable sort
+        [~, ord] = sortrows([nEl, string(num2str_vector(nD))]);
+        nEl = nEl(ord); nD = nD(ord);
+    end
+
+    site(end+1) = struct( ...
+        'centerEl',    centerEl, ...
+        'centerTy',    centerTy, ...
+        'CN',          numel(nEl), ...
+        'neighElSeq',  nEl, ...
+        'neighDistsA', nD, ...
+        'hasCharge',   isfield(atom,'charge') && ~isempty(atom(i).charge) ); %#ok<AGROW>
+end
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- group identical environments REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+% Group identical environments: key = El|Ty|CN|ElSeq
+envMap = containers.Map();
+for s = 1:numel(site)
+    el  = site(s).centerEl; ty = site(s).centerTy; cn = site(s).CN;
+    seq = strjoin(site(s).neighElSeq,'|');
+    key = sprintf('%s|%s|%d|%s', el, ty, cn, seq);
+    if ~isKey(envMap,key)
+        pos = poscell(site(s).neighDistsA); posDists = cell(1,cn);
+        for p = 1:cn
+            posDists{p} = []; if p<=numel(pos) && isfinite(pos{p}), posDists{p}(end+1,1) = pos{p}; end
+        end
+        envMap(key) = struct('centerEl',el,'centerTy',ty,'CN',cn,'seqEl',site(s).neighElSeq, ...
+                             'posDists',{posDists},'members',1,'memberIdx',s,'charges',get_charge(atom,s));
+    else
+        E = envMap(key);
+        pos = poscell(site(s).neighDistsA);
+        for p = 1:max(numel(E.posDists), numel(pos))
+            if p>numel(E.posDists) || isempty(E.posDists{p}), E.posDists{p} = []; end
+            if p<=numel(pos) && isfinite(pos{p}), E.posDists{p}(end+1,1) = pos{p}; end
+        end
+        E.members   = E.members + 1;
+        E.memberIdx = [E.memberIdx s]; %#ok<AGROW>
+        qc = get_charge(atom,s); if ~isempty(qc), E.charges(end+1,1) = qc; end
+        envMap(key) = E;
+    end
+end
+
+% Render lines
+keysEnv = envMap.keys;
+records = struct('Element',{},'AtomType',{},'Charge',{},'Mass',{},'CN',{});
+neighborBlocks = {};
+for kk = 1:numel(keysEnv)
+    E = envMap(keysEnv{kk});
+    % Charge
+    q = 0.0; if useCharges && ~isempty(E.charges), q = mean(E.charges); end
+    % MASS: use masses of THIS atomtype in THIS environment (members), not element-average
+    masses = [atom(E.memberIdx).mass];
+    if isempty(masses)
+        m = NaN;
+    else
+        m = masses(1);
+        if any(abs(masses - m) > 1e-6)
+            m = median(masses);
+            if verbose
+                warning('n2t_atom:massInconsistency', ...
+                    'Multiple masses for AtomType %s (%s); using median %.5f', ...
+                    E.centerTy, E.centerEl, m);
+            end
+        end
+    end
+    % Distances per position
+    CN  = E.CN; seq = E.seqEl; dnm = zeros(CN,1);
+    for p = 1:CN
+        if p<=numel(E.posDists) && ~isempty(E.posDists{p}), dnm(p) = mean(E.posDists{p})*to_nm; else, dnm(p)=0.0; end
+    end
+    rec.Element = char(E.centerEl); rec.AtomType = char(E.centerTy);
+    rec.Charge = q; rec.Mass = m; rec.CN = CN; records(end+1) = rec; %#ok<AGROW>
+    block = cell(CN,2);
+    for p=1:CN, block{p,1}=char(seq(p)); block{p,2}=dnm(p); end
+    neighborBlocks{end+1} = block; %#ok<AGROW>
+end
+
+% Order: descending CN, then Element, then AtomType
+if ~isempty(records)
+    CNlist = arrayfun(@(r) r.CN, records);
+    elNames = string({records.Element}).'; tyNames = string({records.AtomType}).';
+    [~, order] = sortrows([ -CNlist(:), elNames, tyNames ]);
+else
+    order = [];
+end
+
+header = [
+    "; atomname2type.n2t generated by n2t_atom()"
+    "; Columns: Element  AtomType  Charge  Mass[u]  CN  [NeighborElement  Distance(nm)]"
+    "; Element from element_atom(atom) -> element(i).type ; AtomType from original atom(i).type"
+    "; Mass from atom(i).mass for the members of each (Element,AtomType,CN,NeighborSeq) environment."
+];
+
+lines = strings(0,1);
+for ix = order'
+    r = records(ix);
+    line = sprintf('%-2s %-16s % .6f %10.5f %2d', r.Element, r.AtomType, r.Charge, r.Mass, r.CN);
+    block = neighborBlocks{ix};
+    for k = 1:r.CN
+        line = sprintf('%s  %-2s %6.3f', line, block{k,1}, block{k,2});
+    end
+    lines(end+1,1) = string(line); %#ok<AGROW>
+end
+
+txt = strjoin([header; lines], newline);
+fid = fopen(outfile,'w');
+if fid<0
+    warning('Could not open %s for writing. Returning text.', outfile);
+else
+    fprintf(fid,'%s\n',txt); fclose(fid);
+    if verbose, fprintf('Wrote %d entries to %s\n', numel(lines), outfile); end
+end
+end
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH helpers REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+function val = get_field_vec(S,i,field,default)
+try
+    parts = strsplit(field,'.'); v = S(i).(parts{1});
+    for t = 2:numel(parts), v = v.(parts{t}); end
+    if isempty(v), val = default; else, val = v; end
+catch, val = default; end
+end
+
+function val = get_field_cell(S,i,field,default)
+try, val = S(i).(field); if isempty(val), val = default; end
+catch, val = default; end
+end
+
+function val = get_field_str(S,i,field,default)
+try, val = S(i).(field); if isempty(val), val = default; end
+    if isstring(val), val = char(val); end
+catch, val = default; end
+end
+
+function out = poscell(v)
+if isempty(v), out = {}; else, out = arrayfun(@(x) x, v, 'UniformOutput', false); end
+end
+
+function s = num2str_vector(v)
+if isempty(v), s = ""; else, s = string(arrayfun(@(x) sprintf('%12.6f',x), v, 'UniformOutput', false)); end
+end
+
+function q = get_charge(atom, idx_site)
+i = idx_site;
+if isfield(atom,'charge') && ~isempty(atom(i).charge), q = atom(i).charge; else, q = []; end
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

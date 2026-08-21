@@ -28,6 +28,9 @@
 % # <rdf_atom.html rdf_atom(atom,Box_dim,varargin)> % Calculate the radial distribution function and coordination number.
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
+% # <check_atom.html check_atom(atom,Box_dim,rmaxshort,rmaxlong)> % Analyse various properties of the atom struct, like bonds, angles and coordination.
+% # <direction_atom.html direction_atom(atom1,atom2,Box_dim,direction_vec,rmaxshort,rmaxlong,angle_limit,varargin)> % Find all angles between atom1 and atom2 relative to a given direction vector.
+% # <hbond_atom.html hbond_atom(atom,Box_dim,varargin)> % Calculate the number of hydrogen bonds in the atom struct.
 
 %% Other general functions
 % # <add_H_atom.html add_H_atom(atom,Box_dim,ind)> % This function protonates one or two sites in the atom struct 
@@ -86,20 +89,37 @@
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % Compute sigma values for van der Waals interactions.
 % # <Bragg.html Bragg(varargin)> % Calculate Bragg peaks for crystallographic or XRD data.
 % # <unreplicate_atom.html unreplicate_atom(atom)> % Remove replicated atoms from the structure.
+% # <atomic_mass.html atomic_mass(Atom_label)> % Fetch the mass for each atom type and put it into the atom.mass field.
+% # <change_atom.html change_atom> % Template script that imports a structure file, changes some atom types and writes it back out.
+% # <frac_atom.html frac_atom(atom,Box_dim,varargin)> % Transform a triclinic atom struct into fractional coordinates.
+% # <order_attributes.html order_attributes(atom)> % Order the atom struct attributes/fields in a certain order.
+% # <plot_all_xvg.html plot_all_xvg(filenamePattern,varargin)> % Import and plot one or more Gromacs .xvg files, with wildcard support and optional smoothing.
+% # <poly_atom.html poly_atom(atom,Box_dim,varargin)> % Plot the coordination polyhedra of the atom struct, similar to show_atom.
+% # <round2dec.html round2dec(in_value,varargin)> % Round a value to a certain number of decimals, compatible with both MATLAB and OCTAVE.
+% # <scale_atom.html scale_atom(atom,Box_dim,scale_vec,varargin)> % Scale the coordinates in the atom struct.
+% # <show_atomo.html show_atomo(varargin)> % Alternative version of show_atom, drawing the atom struct in 3D.
+% # <tetrahedral_rotation_atom.html tetrahedral_rotation_atom(atom,Box_dim,varargin)> % Calculate the tetrahedral rotation angle alpha, the ditrigonal distortion of a clay/mica tetrahedral sheet.
+% # <wrap_atom.html wrap_atom(atom,Box_dim,varargin)> % Wrap the atoms into the box, optionally only along the x and y dimensions.
+% # <Wrap_Coord_func.html Wrap_Coord_func(XYZ_data,Box_dim)> % Old function that wraps atoms sticking out back into the box, untested for triclinic boxes.
+% # <wrap_molid.html wrap_molid(atom,Box_dim)> % Wrap the atom struct into the box, keeping molecules with the same MolID together.
+% # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
+% # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
+% # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
 
 %% Keep/remove functions
-% # <keep_atom.html keep_atom(atom,resname)> % Keep only specified residue names in the atom struct.
-% # <keep_resname.html keep_resname(atom,resnames)> % Keep only specified residue names.
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residues with specified molecule IDs.
 % # <remove_occypancy_atom.html remove_occypancy_atom(atom)> % Remove particles with identical coordinates to preceding ones.
 % # <remove_residues.html remove_residues(atom,resnames,lo,hi,dim)> % Remove residues within specified limits.
 % # <remove_resname.html remove_resname(atom,resnames)> % Remove residues by name.
 % # <remove_SOL.html remove_SOL(atom,atomname,lo,hi,dim)> % Remove solvent residues within specified limits.
 % # <remove_type.html remove_type(atom,typescell)> % Remove specified atom types.
+% # <keep_atom.html keep_atom(atom,resname)> % Remove all atoms but the ones with the passed resname.
+% # <keep_resname.html keep_resname(atom,resnames)> % Remove all atoms but the ones with the passed resnames.
 
 %% Lattice fitting functions
-% # <fit2lattice_atom.html fit2lattice_atom(atom,Box_dim)> % Fit atoms to a lattice.
-% # <fit2lattice_atom_v2.html fit2lattice_atom_v2(atom,Box
+% # <fit2lattice_atom.html fit2lattice_atom(atom_model,atom_ref,Box_dim_ref,varargin)> % Import a model structure of a single molecule like PO43- and fit it into a reference crystal lattice.
+% # <fit2lattice_atom_v2.html fit2lattice_atom_v2(atom_model,atom_ref,Box_dim_ref,varargin)> % Second version of fit2lattice_atom, fitting a molecular model into a reference crystal lattice.
+% # <fit2lattice_atom_v3.html fit2lattice_atom_v3(atom_model,atom_ref,Box_dim_ref,varargin)> % Third version of fit2lattice_atom, fitting a molecular model into a reference crystal lattice.
 
 %
 %% Version

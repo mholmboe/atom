@@ -1,4 +1,4 @@
-%% xrd_atom.m
+%% xrd_atom_matlab.m
 % * This function calculates theoretical XRD patterns from an atom struct
 % or an .pdb|.gro coordinate file having a filled orthogonal or triclinic
 % cell. Note that the atom struct may have a occupancy and a B-factor field.
@@ -33,10 +33,10 @@ function [exp_twotheta,intensity] = xrd_atom_matlab(varargin)
 
 %% Various settings
 % num_hkl=72; % Maximum number of reflections, used for all h,k,l's, or edit manually later on..
-lambda=1.54187; % Ångstrom
+lambda=1.54187; % Ã…ngstrom
 anglestep=0.02; % The incremental twotheta angle step
 exp_twotheta=2:anglestep:90; % The twotheta range of interest
-B_all=0; % Debye-Waller factor Ångstrom, in case no such field exist within the atom struct
+B_all=0; % Debye-Waller factor Ã…ngstrom, in case no such field exist within the atom struct
 Lorentzian_factor=1; % [0-1] Enter the fraction of the calculated pattern you would like to have described by a lorentzian peak shape vs. a gaussian peak shape
 neutral_atoms=0; % Use structure factors for neutral atoms
 hkl_max=0; % 0 for inifinite, Set > 0 to choose max h,k,l index limit. A speed-up thing.
@@ -364,7 +364,7 @@ if mode==1
     Lorentz=(1+cos(exp_twotheta*pi()/180).^2);
     SingXtalLorentz=sin(exp_twotheta/2*pi()/180);
     if strcmp(L_type,'Reynolds')
-        LP=Lorentz./ ( sin(exp_twotheta*pi()/180).*(sin(exp_twotheta/2*pi()/180)).^0.8);
+        LP=Lorentz./( sin(exp_twotheta*pi()/180).*(sin(exp_twotheta/2*pi()/180)).^0.8);
     else
         LP=Lorentz./SingXtalLorentz.*PSI;
     end

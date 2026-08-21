@@ -1,4 +1,4 @@
-%% import_atom_gro.m
+%% import_atom_gro_legacy.m
 % * This function import .gro files into an atom struct variable
 % * varargin can be used to translate, alt. center+translate the molecule
 %

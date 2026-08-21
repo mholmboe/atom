@@ -1,3 +1,19 @@
+%% ljcoul_C6C12.m
+% * This function calculates and plots the Lennard-Jones and the Coulomb
+% * potential from the charges and the C6/C12 parameters in the param vector.
+% * param = [q1 q2 c61 c62 c121 c122] and optionally C4 terms.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_C6C12(param)
+% # [r,lj,coul,Utot] = ljcoul_C6C12(param,r) % Custom distance vector r in nm
+%
+
 function [r,lj,coul,Utot] = ljcoul_C6C12(param,varargin)
 
 q1=param(1);

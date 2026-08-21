@@ -3,6 +3,16 @@
 % * like (PO43-) and tris to fit it into a crystal lattice possibly holding
 % * such sites. Any waters or counter-ions (see lin 39) is reordered and
 % * reintroduced to the final model
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # fit2lattice % Edit the filenames at the top of the script
+%
 
 clear all;
 format compact;

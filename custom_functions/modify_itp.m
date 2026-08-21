@@ -1,8 +1,23 @@
-function itp = modify_itp(itp,index,varargin)
 %% modify_itp.m
-%% This function modifies a itp struct
-%% Currently it can only add values to all indexed values or remove single ones
-%% Please report bugs to michael.holmboe@umu.se
+% * This function modifies an itp struct imported with import_itp().
+% * Currently it can only add values to all indexed values or remove single ones.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # itp = modify_itp(itp,index,'add') % Add +1 to all indexed values
+% # itp = modify_itp(itp,index,'remove') % Remove the indexed values
+%
+
+function itp = modify_itp(itp,index,varargin)
+% modify_itp.m
+% This function modifies a itp struct
+% Currently it can only add values to all indexed values or remove single ones
+% Please report bugs to michael.holmboe@umu.se
 
 %% Create vars for the sections
 names = fieldnames(itp);

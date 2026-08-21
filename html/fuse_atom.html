@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>fuse_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="fuse_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -131,14 +131,36 @@ i=size(fused_atom,2);rmind_tot=[];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
 
-<span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);</span>
-<span class="comment">%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);</span>
+        <span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);</span>
+        <span class="comment">%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);</span>
+
+        <span class="keyword">if</span> abs(mean(X_dist(rmind,i))) &lt; 0.01  &amp; abs(mean(Y_dist(rmind,i))) &lt; 0.01 &amp; abs(mean(Z_dist(rmind,i))) &lt; 0.01
+            disp(<span class="string">'Fusing identical atom positions of different atomtypes'</span>)
+            <span class="keyword">if</span> length(unique([atom(rmind).type])) == 1
+                disp(<span class="string">'Fusing identical atom sites'</span>)
+            <span class="keyword">elseif</span> length(unique([atom(rmind).type])) &gt; 1
+                disp(<span class="string">'Fusing identical atom sites of different atomtypes'</span>)
+            <span class="keyword">end</span>
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        <span class="keyword">else</span>
+            <span class="keyword">if</span> length(unique([atom(rmind).type])) == 1
+                disp(<span class="string">'Fusing close atom sites'</span>)
+            <span class="keyword">elseif</span> length(unique([atom(rmind).type])) &gt; 1
+                disp(<span class="string">'Fusing close atom sites of different atomtypes'</span>)
+            <span class="keyword">end</span>
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        <span class="keyword">end</span>
+
 
         [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).x]);</span>
         [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).y]);</span>
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));<span class="comment">% mean([fused_atom(rmind).z]);</span>
 
-<span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);</span>
+        <span class="comment">%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);</span>
         rmind_tot=[rmind_tot rmind(rmind&lt;i)];
     <span class="keyword">end</span>
 
@@ -219,18 +241,40 @@ while i > 0
         x1=[fused_atom(i).x];
         y1=[fused_atom(i).y];
         z1=[fused_atom(i).z];
-        
-%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
-%         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+
+        %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[Box_dim(1)/2-x1 Box_dim(2)/2-y1 Box_dim(3)/2-z1]);
+        %         fused_atom(rmind) = wrap_atom(fused_atom(rmind),Box_dim);
+
+        if abs(mean(X_dist(rmind,i))) < 0.01  & abs(mean(Y_dist(rmind,i))) < 0.01 & abs(mean(Z_dist(rmind,i))) < 0.01
+            disp('Fusing identical atom positions of different atomtypes')
+            if length(unique([atom(rmind).type])) == 1
+                disp('Fusing identical atom sites')
+            elseif length(unique([atom(rmind).type])) > 1
+                disp('Fusing identical atom sites of different atomtypes')
+            end
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        else
+            if length(unique([atom(rmind).type])) == 1
+                disp('Fusing close atom sites')
+            elseif length(unique([atom(rmind).type])) > 1
+                disp('Fusing close atom sites of different atomtypes')
+            end
+
+            [rmind [atom(rmind).type] [mean(X_dist(rmind,i)) mean(Y_dist(rmind,i)) mean(Z_dist(rmind,i))]]
+
+        end
+
 
         [fused_atom(i).x]=fused_atom(i).x-mean(X_dist(rmind,i));% mean([fused_atom(rmind).x]);
         [fused_atom(i).y]=fused_atom(i).y-mean(Y_dist(rmind,i));% mean([fused_atom(rmind).y]);
         [fused_atom(i).z]=fused_atom(i).z-mean(Z_dist(rmind,i));% mean([fused_atom(rmind).z]);
-        
-%         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
+
+        %         fused_atom(rmind) = translate_atom(fused_atom(rmind),[-Box_dim(1)/2+x1 -Box_dim(2)/2+y1 -Box_dim(3)/2+z1]);
         rmind_tot=[rmind_tot rmind(rmind<i)];
     end
-    
+
     % if mod(i,100)==1
     %     if i > 1
     %         i-1

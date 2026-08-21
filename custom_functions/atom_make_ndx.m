@@ -1,4 +1,4 @@
-%% atom2make_ndx.m
+%% atom_make_ndx.m
 % * This special function can help you print custom gromacs .ndx files, you
 % * just have to find a way to find the indexes you want.
 % * Likely best used interactively... se below

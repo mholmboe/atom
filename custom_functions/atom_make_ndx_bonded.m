@@ -1,4 +1,4 @@
-%% atom2make_ndx_bonded.m
+%% atom_make_ndx_bonded.m
 % * This function can help you print one custom gromacs .ndx group,
 % * based on the atomtypes names. You just have to pass on the two (or
 % * three) atomtypes that makes up the bond, like {'Ohmg' 'H'}, or

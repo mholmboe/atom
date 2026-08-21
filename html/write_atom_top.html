@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_top.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="write_atom_top.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -141,10 +141,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <pre class="codeinput">format <span class="string">long</span>
 nAtoms=size(atom,2);
 
-<span class="keyword">if</span> regexp(filename,<span class="string">'.itp'</span>) ~= false
+<span class="keyword">if</span> regexp(filename,<span class="string">'.top'</span>) ~= false
     filename = filename;
 <span class="keyword">else</span>
-    filename = strcat(filename,<span class="string">'.itp'</span>);
+    filename = strcat(filename,<span class="string">'.top'</span>);
 <span class="keyword">end</span>
 
 <span class="keyword">if</span> nargin &gt; 3
@@ -498,7 +498,9 @@ Angle_index=sortrows(Angle_index);
             <span class="keyword">end</span>
         <span class="keyword">end</span>
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, <span class="string">';'</span>, strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
+        <span class="keyword">if</span> round2dec(adeg,2)&lt;150
         fprintf(fid, <span class="string">'%-5i %-5i %-5i %-5i %-6.2f   %-8.2f %s %s-%s-%s\n'</span>, Angle_order{count_a,:});
+        <span class="keyword">end</span>
         count_a = count_a + 1;
     <span class="keyword">else</span>
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, <span class="string">';'</span>, round2dec(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
@@ -540,64 +542,64 @@ fprintf(fid, <span class="string">'\n'</span>);
 
 <span class="comment">%%%%%%%%%%%%%%%%%%</span>
 
-fprintf(fid, <span class="string">'#ifdef POSRES_XY_MMT_1  \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'100'</span>, <span class="string">'100'</span>, <span class="string">'10000'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
-
-fprintf(fid, <span class="string">'\n'</span>);
-fprintf(fid, <span class="string">'\n'</span>);
-
-fprintf(fid, <span class="string">'#ifdef POSRES_XY_MMT_2  \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>, <span class="string">'0'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
-
-fprintf(fid, <span class="string">'\n'</span>);
-fprintf(fid, <span class="string">'\n'</span>);
+<span class="comment">% fprintf(fid, '#ifdef POSRES_XY_MMT_1  \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">%</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if ismember(i,ind_Oct)</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '100', '100', '10000'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '#ifdef POSRES_XY_MMT_2  \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if ismember(i,ind_Oct)</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '0'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
 
 <span class="comment">%%%%%%%%%%%%</span>
 
 
-<span class="keyword">if</span> strncmpi(ffname,<span class="string">'clayff'</span>,5)
-    fprintf(fid, <span class="string">'#ifdef POSRES_Clayff \n'</span>);
-    fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-    fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-    <span class="keyword">for</span> i = 1:nAtoms
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'#endif \n'</span>);
-<span class="keyword">else</span>
-    fprintf(fid, <span class="string">'#ifdef POSRES_interface \n'</span>);
-    fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-    fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-    <span class="keyword">for</span> i = 1:nAtoms
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-    fprintf(fid, <span class="string">'#endif \n'</span>);
-<span class="keyword">end</span>
-
-fprintf(fid, <span class="string">'\n'</span>);
-fprintf(fid, <span class="string">'\n'</span>);
+<span class="comment">% if strncmpi(ffname,'clayff',5)</span>
+<span class="comment">%     fprintf(fid, '#ifdef POSRES_Clayff \n');</span>
+<span class="comment">%     fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">%     fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">%     for i = 1:nAtoms</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">%     fprintf(fid, '#endif \n');</span>
+<span class="comment">% else</span>
+<span class="comment">%     fprintf(fid, '#ifdef POSRES_interface \n');</span>
+<span class="comment">%     fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">%     fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">%     for i = 1:nAtoms</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">%     fprintf(fid, '#endif \n');</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
 
 fprintf(fid, <span class="string">'#ifdef POSRES \n'</span>);
 fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
@@ -617,21 +619,6 @@ fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
 fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
 <span class="keyword">for</span> i = 1:nAtoms
     <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'H'</span>,1)==0
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
-
-fprintf(fid, <span class="string">'\n'</span>);
-fprintf(fid, <span class="string">'\n'</span>);
-
-fprintf(fid, <span class="string">'#ifdef POSRES_XYZ \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'H'</span>,1)==0
         pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'500'</span>, <span class="string">'500'</span>, <span class="string">'500'</span>};
         fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
         fprintf(fid, <span class="string">'\n'</span>);
@@ -642,59 +629,74 @@ fprintf(fid, <span class="string">'#endif \n'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
 
-fprintf(fid, <span class="string">'#ifdef POSRES_XY \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> strncmpi([atom(i).type],<span class="string">'H'</span>,1)==0
-        <span class="comment">%         if strcmp([atom(i).type],'Al') &gt; 0 || strcmp([atom(i).type],'Mgo') &gt; 0</span>
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'1000'</span>,<span class="string">'0'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-        <span class="comment">%         end</span>
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
+<span class="comment">% fprintf(fid, '#ifdef POSRES_XYZ \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if strncmpi([atom(i).type],'H',1)==0</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '#ifdef POSRES_XY \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if strncmpi([atom(i).type],'H',1)==0</span>
+<span class="comment">%         %         if strcmp([atom(i).type],'Al') &gt; 0 || strcmp([atom(i).type],'Mgo') &gt; 0</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '1000', '1000','0'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%         %         end</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '#ifdef POSRES_Oct_500 \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if ismember(i,ind_Al)</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">% fprintf(fid, '\n');</span>
+<span class="comment">%</span>
+<span class="comment">% fprintf(fid, '#ifdef POSRES_Y_100 \n');</span>
+<span class="comment">% fprintf(fid, '[ position_restraints ] \n');</span>
+<span class="comment">% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');</span>
+<span class="comment">% for i = 1:nAtoms</span>
+<span class="comment">%     if ismember(i,ind_Oct)</span>
+<span class="comment">%         pos_res(i,:) = {num2str(i), '1', '1000', '100', '1000'};</span>
+<span class="comment">%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});</span>
+<span class="comment">%         fprintf(fid, '\n');</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+<span class="comment">% fprintf(fid, '#endif \n');</span>
 
 fprintf(fid, <span class="string">'\n'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'[ system ]'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; name'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'A mineral simulation'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
-
-fprintf(fid, <span class="string">'#ifdef POSRES_Oct_500 \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> ismember(i,ind_Al)
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'500'</span>, <span class="string">'500'</span>, <span class="string">'500'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
-
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'[ molecules ]'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; Compound        #mols'</span>);
+fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'MIN 1'</span>);
 fprintf(fid, <span class="string">'\n'</span>);
-fprintf(fid, <span class="string">'\n'</span>);
-
-fprintf(fid, <span class="string">'#ifdef POSRES_Y_100 \n'</span>);
-fprintf(fid, <span class="string">'[ position_restraints ] \n'</span>);
-fprintf(fid, <span class="string">'%s\n'</span>,<span class="string">'; atom  type      fx      fy      fz'</span>);
-<span class="keyword">for</span> i = 1:nAtoms
-    <span class="keyword">if</span> ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), <span class="string">'1'</span>, <span class="string">'1000'</span>, <span class="string">'100'</span>, <span class="string">'1000'</span>};
-        fprintf(fid, <span class="string">'%6s\t%6s\t%6s\t%6s\t%6s%\n'</span>, pos_res{i,:});
-        fprintf(fid, <span class="string">'\n'</span>);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-fprintf(fid, <span class="string">'#endif \n'</span>);
-
-fprintf(fid, <span class="string">'\r\n'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ system ]'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; name'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'A mineral simulation'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'[ molecules ]'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'; Compound        #mols'</span>);
-fprintf(fid, <span class="string">'%s\r\n'</span>,<span class="string">'MIN 1'</span>);
-fprintf(fid, <span class="string">'\r\n'</span>);
 
 
 fprintf(fid, <span class="string">'\n'</span>);
@@ -761,10 +763,10 @@ function write_atom_top(atom,Box_dim,filename,varargin)
 format long
 nAtoms=size(atom,2);
 
-if regexp(filename,'.itp') ~= false
+if regexp(filename,'.top') ~= false
     filename = filename;
 else
-    filename = strcat(filename,'.itp');
+    filename = strcat(filename,'.top');
 end
 
 if nargin > 3
@@ -1119,7 +1121,9 @@ while count_a <= length(Angle_index) %nAngles;
             end
         end
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, round2dec(adeg,2),	ktheta, ';', strtrim(char([atom(Angle_index(count_a,1)).type])), strtrim(char([atom(Angle_index(count_a,2)).type])), strtrim(char([atom(Angle_index(count_a,3)).type]))};
+        if round2dec(adeg,2)<150
         fprintf(fid, '%-5i %-5i %-5i %-5i %-6.2f   %-8.2f %s %s-%s-%s\n', Angle_order{count_a,:});
+        end
         count_a = count_a + 1;
     else
         Angle_order(count_a,:)= {Angle_index(count_a,1), Angle_index(count_a,2), Angle_index(count_a,3), angletype, ';', round2dec(Angle_index(count_a,4),2), strtrim(char([atom(Angle_index(count_a,1)).fftype])), strtrim(char([atom(Angle_index(count_a,2)).fftype])), strtrim(char([atom(Angle_index(count_a,3)).fftype]))};
@@ -1161,64 +1165,64 @@ end
 
 %%%%%%%%%%%%%%%%%%
 
-fprintf(fid, '#ifdef POSRES_XY_MMT_1  \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-
-for i = 1:nAtoms
-    if ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), '1', '100', '100', '10000'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-end
-fprintf(fid, '#endif \n');
-
-fprintf(fid, '\n');
-fprintf(fid, '\n');
-
-fprintf(fid, '#ifdef POSRES_XY_MMT_2  \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-for i = 1:nAtoms
-    if ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000', '0'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-end
-fprintf(fid, '#endif \n');
-
-fprintf(fid, '\n');
-fprintf(fid, '\n');
+% fprintf(fid, '#ifdef POSRES_XY_MMT_1  \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% 
+% for i = 1:nAtoms
+%     if ismember(i,ind_Oct)
+%         pos_res(i,:) = {num2str(i), '1', '100', '100', '10000'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+% end
+% fprintf(fid, '#endif \n');
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
+% 
+% fprintf(fid, '#ifdef POSRES_XY_MMT_2  \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% for i = 1:nAtoms
+%     if ismember(i,ind_Oct)
+%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '0'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+% end
+% fprintf(fid, '#endif \n');
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
 
 %%%%%%%%%%%%
 
 
-if strncmpi(ffname,'clayff',5)
-    fprintf(fid, '#ifdef POSRES_Clayff \n');
-    fprintf(fid, '[ position_restraints ] \n');
-    fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-    for i = 1:nAtoms
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-    fprintf(fid, '#endif \n');
-else
-    fprintf(fid, '#ifdef POSRES_interface \n');
-    fprintf(fid, '[ position_restraints ] \n');
-    fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-    for i = 1:nAtoms
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-    fprintf(fid, '#endif \n');
-end
-
-fprintf(fid, '\n');
-fprintf(fid, '\n');
+% if strncmpi(ffname,'clayff',5)
+%     fprintf(fid, '#ifdef POSRES_Clayff \n');
+%     fprintf(fid, '[ position_restraints ] \n');
+%     fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+%     for i = 1:nAtoms
+%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+%     fprintf(fid, '#endif \n');
+% else
+%     fprintf(fid, '#ifdef POSRES_interface \n');
+%     fprintf(fid, '[ position_restraints ] \n');
+%     fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+%     for i = 1:nAtoms
+%         pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+%     fprintf(fid, '#endif \n');
+% end
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
 
 fprintf(fid, '#ifdef POSRES \n');
 fprintf(fid, '[ position_restraints ] \n');
@@ -1238,21 +1242,6 @@ fprintf(fid, '[ position_restraints ] \n');
 fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
 for i = 1:nAtoms
     if strncmpi([atom(i).type],'H',1)==0
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000', '1000'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-end
-fprintf(fid, '#endif \n');
-
-fprintf(fid, '\n');
-fprintf(fid, '\n');
-
-fprintf(fid, '#ifdef POSRES_XYZ \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-for i = 1:nAtoms
-    if strncmpi([atom(i).type],'H',1)==0
         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
         fprintf(fid, '\n');
@@ -1263,59 +1252,74 @@ fprintf(fid, '#endif \n');
 fprintf(fid, '\n');
 fprintf(fid, '\n');
 
-fprintf(fid, '#ifdef POSRES_XY \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-for i = 1:nAtoms
-    if strncmpi([atom(i).type],'H',1)==0
-        %         if strcmp([atom(i).type],'Al') > 0 || strcmp([atom(i).type],'Mgo') > 0
-        pos_res(i,:) = {num2str(i), '1', '1000', '1000','0'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-        %         end
-    end
-end
-fprintf(fid, '#endif \n');
+% fprintf(fid, '#ifdef POSRES_XYZ \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% for i = 1:nAtoms
+%     if strncmpi([atom(i).type],'H',1)==0
+%         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+% end
+% fprintf(fid, '#endif \n');
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
+% 
+% fprintf(fid, '#ifdef POSRES_XY \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% for i = 1:nAtoms
+%     if strncmpi([atom(i).type],'H',1)==0
+%         %         if strcmp([atom(i).type],'Al') > 0 || strcmp([atom(i).type],'Mgo') > 0
+%         pos_res(i,:) = {num2str(i), '1', '1000', '1000','0'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%         %         end
+%     end
+% end
+% fprintf(fid, '#endif \n');
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
+% 
+% fprintf(fid, '#ifdef POSRES_Oct_500 \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% for i = 1:nAtoms
+%     if ismember(i,ind_Al)
+%         pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+% end
+% fprintf(fid, '#endif \n');
+% 
+% fprintf(fid, '\n');
+% fprintf(fid, '\n');
+% 
+% fprintf(fid, '#ifdef POSRES_Y_100 \n');
+% fprintf(fid, '[ position_restraints ] \n');
+% fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
+% for i = 1:nAtoms
+%     if ismember(i,ind_Oct)
+%         pos_res(i,:) = {num2str(i), '1', '1000', '100', '1000'};
+%         fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
+%         fprintf(fid, '\n');
+%     end
+% end
+% fprintf(fid, '#endif \n');
 
 fprintf(fid, '\n');
+fprintf(fid, '%s\n','[ system ]');
+fprintf(fid, '%s\n','; name');
+fprintf(fid, '%s\n','A mineral simulation');
 fprintf(fid, '\n');
-
-fprintf(fid, '#ifdef POSRES_Oct_500 \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-for i = 1:nAtoms
-    if ismember(i,ind_Al)
-        pos_res(i,:) = {num2str(i), '1', '500', '500', '500'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-end
-fprintf(fid, '#endif \n');
-
+fprintf(fid, '%s\n','[ molecules ]');
+fprintf(fid, '%s\n','; Compound        #mols');
+fprintf(fid, '%s\n','MIN 1');
 fprintf(fid, '\n');
-fprintf(fid, '\n');
-
-fprintf(fid, '#ifdef POSRES_Y_100 \n');
-fprintf(fid, '[ position_restraints ] \n');
-fprintf(fid, '%s\n','; atom  type      fx      fy      fz');
-for i = 1:nAtoms
-    if ismember(i,ind_Oct)
-        pos_res(i,:) = {num2str(i), '1', '1000', '100', '1000'};
-        fprintf(fid, '%6s\t%6s\t%6s\t%6s\t%6s%\n', pos_res{i,:});
-        fprintf(fid, '\n');
-    end
-end
-fprintf(fid, '#endif \n');
-
-fprintf(fid, '\r\n');
-fprintf(fid, '%s\r\n','[ system ]');
-fprintf(fid, '%s\r\n','; name');
-fprintf(fid, '%s\r\n','A mineral simulation');
-fprintf(fid, '\r\n');
-fprintf(fid, '%s\r\n','[ molecules ]');
-fprintf(fid, '%s\r\n','; Compound        #mols');
-fprintf(fid, '%s\r\n','MIN 1');
-fprintf(fid, '\r\n');
 
 
 fprintf(fid, '\n');

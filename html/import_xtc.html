@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_xtc.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="import_xtc.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -202,7 +202,7 @@ trajstep=zeros(MaxFrames,1);
 trajtime=zeros(MaxFrames,1);
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 rframe=0;frame=1;
-<span class="keyword">while</span> true <span class="comment">% Frameloop</span>
+<span class="keyword">while</span> true &amp;&amp; frame &lt; MaxFrames+1 <span class="comment">% Frameloop</span>
     [rstatus,rtraj]=read_xtc(rTraj);
     <span class="keyword">if</span>(not(rstatus))
         rframe=rframe+stride;
@@ -374,7 +374,7 @@ trajstep=zeros(MaxFrames,1);
 trajtime=zeros(MaxFrames,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 rframe=0;frame=1;
-while true % Frameloop
+while true && frame < MaxFrames+1 % Frameloop
     [rstatus,rtraj]=read_xtc(rTraj);
     if(not(rstatus))
         rframe=rframe+stride;

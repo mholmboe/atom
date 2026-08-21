@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of import functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="List_import_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -165,6 +165,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_atom.html">import_atom(filename)</a> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.</li>
 <li>
 <a href="import_xyz.html">import_xyz(filename)</a> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.</li>
+<li>
+<a href="import_atom_gro_legacy.html">import_atom_gro_legacy(filename,varargin)</a> % Legacy version of import_atom_gro, importing .gro files into an atom struct.</li>
 </ol>
 </div>
 <h2 id="6">Import of trajectory files</h2>
@@ -209,6 +211,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="import_cp2k.html">import_cp2k(filename)</a> % Import a CP2K output file.</li>
 <li>
 <a href="import_cp2k_resp.html">import_cp2k_resp(filename)</a> % Import RESP charges from CP2K.</li>
+<li>
+<a href="import_CONECT.html">import_CONECT(filename)</a> % Extract the CONECT records from a .pdb file and store them in the Bond_index variable.</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -259,6 +263,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <import_atom_poscar.html import_atom_poscar(filename)> % Import a VASP POSCAR file into the atom struct.
 % # <import_atom.html import_atom(filename)> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.
 % # <import_xyz.html import_xyz(filename)> % Import an .xyz file. Atom types should be made of letters, not numbers. Use import_atom_xyz instead.
+% # <import_atom_gro_legacy.html import_atom_gro_legacy(filename,varargin)> % Legacy version of import_atom_gro, importing .gro files into an atom struct.
 
 %% Import of trajectory files
 % # <import_gro_traj.html import_gro_traj(filename,varargin)> % Import a structure and a .gro trajectory file.
@@ -280,6 +285,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <import_mclf_dispersion.html import_mclf_dispersion(filename)> % Import dispersion parameters for MCLF.
 % # <import_cp2k.html import_cp2k(filename)> % Import a CP2K output file.
 % # <import_cp2k_resp.html import_cp2k_resp(filename)> % Import RESP charges from CP2K.
+% # <import_CONECT.html import_CONECT(filename)> % Extract the CONECT records from a .pdb file and store them in the Bond_index variable.
 
 %
 %% Version

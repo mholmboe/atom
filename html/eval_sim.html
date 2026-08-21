@@ -1,0 +1,1176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>eval_sim.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-08-21">
+<meta name="DC.source" content="eval_sim.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>eval_sim.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This special function is the objective function for lsqnonlin used in the forcefield optimization scheme called autofit_ff. This function is called by run_opt_ff_lsqnonlin.m and opt_ff.m</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Examples</a>
+</li>
+<li>
+<a href="#4">To also fit the charges or other extra parameters</a>
+</li>
+<li>
+<a href="#5">PBC variable</a>
+</li>
+<li>
+<a href="#6">Directory filename</a>
+</li>
+<li>
+<a href="#7">Initiate some variables</a>
+</li>
+<li>
+<a href="#9">Set new charges</a>
+</li>
+<li>
+<a href="#10">Running in serial</a>
+</li>
+<li>
+<a href="#11">Running in serial</a>
+</li>
+<li>
+<a href="#14">-multidir simulations: requires gmx_mpi runs</a>
+</li>
+<li>
+<a href="#15">-multidir simulations: requires gmx_mpi runs</a>
+</li>
+<li>
+<a href="#18">Analyzing the trajectory</a>
+</li>
+<li>
+<a href="#22">Since we are only looking at a fractional system, since else too many angles, bonds..</a>
+</li>
+<li>
+<a href="#24">To analyze the RDF and CN data</a>
+</li>
+<li>
+<a href="#25">To remove bonds and angles with H's</a>
+</li>
+<li>
+<a href="#26">Make sure we have the same res_temp size due to unknown occasional bug</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<p>Contact Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="2">Examples</h2>
+<div>
+<ol>
+<li>f=@(x)eval_sim(x,scalefactors,dirtype,indexes); % From run_opt_ff_lsqnonlin</li>
+<li>res = eval_sim(fx,scalefactors,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> res = eval_sim(param,scalefactors,dirtype,varargin)
+</pre>
+<pre class="codeinput">ParentSimDir = pwd;
+
+<span class="comment">% Scale back all the parameters</span>
+param=param./scalefactors;
+</pre>
+<h2 id="4">To also fit the charges or other extra parameters</h2>
+<pre class="codeinput">fextra=nargin-3;
+nparam=size(param,2);
+
+disp(<span class="string">'Will run with these parameters:'</span>)
+param
+</pre>
+<h2 id="5">PBC variable</h2>
+<pre class="codeinput">PBC=1; <span class="comment">% Assume periodic molecules at first, check later in system_info.mat</span>
+</pre>
+<h2 id="6">Directory filename</h2>
+<pre class="codeinput">filename=lower(dirtype);
+</pre>
+<h2 id="7">Initiate some variables</h2>
+<pre class="codeinput">all_mean_posres=[];
+all_diff_BoxX=[];all_diff_BoxY=[];all_diff_BoxZ=[];
+skip_simulation=[];
+
+<span class="comment">% Loop through each subfolder and extract the numeric part</span>
+subFolders = dir(<span class="string">'OPT*'</span>);
+numSimulation = []; <span class="comment">% numSimulation=size(dir(strcat(dirtype,'*')),1);</span>
+<span class="keyword">for</span> k = 1:length(subFolders)
+    folderName = subFolders(k).name;
+
+    <span class="comment">% Use regular expression to extract the number from the folder name</span>
+    numStr = regexp(folderName, <span class="string">'\d+'</span>, <span class="string">'match'</span>);
+
+    <span class="keyword">if</span> ~isempty(numStr)
+        numSimulation(end+1) = str2double(numStr{1}); <span class="comment">%#ok&lt;*AGROW&gt;</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+numSimulation=sort(numSimulation);
+
+<span class="keyword">try</span>
+    <span class="keyword">try</span>
+        <span class="keyword">for</span> i=numSimulation <span class="comment">%1:numSimulation</span>
+</pre>
+<pre class="codeinput">            tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
+
+            cd(tempdir);
+</pre>
+<h2 id="9">Set new charges</h2>
+<pre class="codeinput">            load(<span class="string">'system_info.mat'</span>);
+            nOpt_labels=size(Opt_labels,2);
+
+            <span class="keyword">if</span> size(ff,2)==1
+                ff=ff.ff;
+            <span class="keyword">end</span>
+
+            <span class="keyword">if</span> nparam&gt;2*nOpt_labels
+                disp(<span class="string">'Setting new charges in the .itp topology file!'</span>)
+                itp=import_itp(<span class="string">'min.itp'</span>);
+                temp_atom=atom;
+                [temp_atom.type]=atom.fftype;
+                <span class="keyword">if</span> ~strncmp(Opt_labels,<span class="string">'H'</span>,1)
+                    <span class="keyword">try</span>
+                        Hind=strcmp([ff.type],<span class="string">'H'</span>);
+                        Hq=ff(Hind).charge;
+                    <span class="keyword">catch</span>
+                        Hq=0.4;
+                    <span class="keyword">end</span>
+                    temp_atom=charge_clayff_atom(temp_atom,Box_dim,[Opt_labels(~strncmp(Opt_labels,<span class="string">'O'</span>,1)) {<span class="string">'H'</span>}],[param(end-(nparam-2*nOpt_labels)+1:end) Hq]);
+                <span class="keyword">else</span>
+                    temp_atom=charge_clayff_atom(temp_atom,Box_dim,[Opt_labels(~strncmp(Opt_labels,<span class="string">'O'</span>,1))],[param(end-(nparam-2*nOpt_labels)+1:end)]);
+                <span class="keyword">end</span>
+                [itp.atoms.charge]=[temp_atom.charge]';
+                write_itp(itp,<span class="string">'min.itp'</span>);
+            <span class="keyword">end</span>
+
+            print_top(param,<span class="string">'header.top'</span>,<span class="string">'topol.top'</span>);
+            change_top(param,<span class="string">'header.top'</span>);
+
+            copyfile(<span class="string">'temp.top'</span>,strcat(<span class="string">'../last'</span>,num2str(i),<span class="string">'.top'</span>));
+            copyfile(<span class="string">'temp.top'</span>,strcat(<span class="string">'last'</span>,num2str(i),<span class="string">'.top'</span>));
+
+            dirtypefiles=dir;
+            <span class="keyword">if</span> sum(strcmp({dirtypefiles.name},strcat(<span class="string">'prev_analysis_'</span>,num2str(i),<span class="string">'.mat'</span>)))==0
+                iteration=0;
+                Opt_ind=[];
+                orig_param=param;
+                prev_param=param;
+                save(<span class="string">'orig_param.mat'</span>,<span class="string">'orig_param'</span>);
+                save(<span class="string">'prev_param.mat'</span>,<span class="string">'prev_param'</span>);
+                fid = fopen(<span class="string">'thermo_out.dat'</span>,<span class="string">'at+'</span>);
+                fprintf(fid, <span class="string">'%s\n'</span>, (<span class="string">'% Sim   norm(res_temp)^2     GII     RDF_diff    CN_diff    CoordNum    Bond_diff    Angle_diff     mean_pressure   mean_potential  mean_posres     mean_temperature    param    mean_Box_X     mean_Box_Y  mean_Box_Z  diff_Box_X diff_Box_Y   diff_Box_Z Cell_ave Cell_std'</span>));
+                fclose(fid);
+            <span class="keyword">else</span>
+                load(<span class="string">'system_info.mat'</span>);
+                load(<span class="string">'prev_param.mat'</span>);
+                Opt_labels_list=[Opt_labels;Opt_labels];
+                Opt_labels_list=Opt_labels_list(:)';
+                Opt_ind=find(prev_param-param);
+                <span class="keyword">if</span> numel(Opt_ind)&gt;0
+                    <span class="keyword">if</span> sum(ismember(Atom_labels,Opt_labels_list(Opt_ind)))==0
+                        skip_simulation=[skip_simulation i];
+                        cd(ParentSimDir);
+                        <span class="keyword">continue</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+            <span class="keyword">try</span>
+                disp(<span class="string">'Running gmx grompp'</span>)
+                <span class="comment">% eval(char(strcat('!gmx grompp -f',{' '},filename,'.mdp -c pre',filename,'.gro -r pre',filename,'.gro -p temp.top  -n index.ndx -pp temp_gmx -po temp_gmx -maxwarn 3 -o',{' '},filename,'.tpr ')));% 2&gt;/dev/null')));</span>
+                <span class="syscmd">!bash run_gmx_grompp.sh</span>
+            <span class="keyword">catch</span>
+                disp(<span class="string">'Something went wrong with gmx grompp ...'</span>)
+                disp(<span class="string">'numSimulation'</span>)
+                i
+                pause
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) &gt; 0 || strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 1
+</pre>
+<h2 id="10">Running in serial</h2>
+<pre class="codeinput">                disp(<span class="string">'Running gmx mdrun in serial'</span>)
+                <span class="comment">% eval(char(strcat('!gmx mdrun -nt 4 -deffnm',{' '},filename)));</span>
+                <span class="syscmd">!bash run_gmx_mdrun.sh 'opt -ntomp 8 -rdd 0.5 -dds 0.90'</span>
+</pre>
+<h2 id="11">Running in serial</h2>
+<pre class="codeinput">            <span class="keyword">end</span>
+            cd(ParentSimDir);
+</pre>
+<pre class="codeinput">        <span class="keyword">end</span>
+    <span class="keyword">catch</span>
+        disp(<span class="string">'Did not finish gmx grompp for some reason...'</span>)
+        cd(ParentSimDir);
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) == 0 &amp;&amp; strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
+</pre>
+<h2 id="14">-multidir simulations: requires gmx_mpi runs</h2>
+<pre class="codeinput">        <span class="keyword">try</span>
+            <span class="keyword">if</span> numSimulation==1 || ~strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
+                tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
+                cd(tempdir);
+                disp(<span class="string">'Running gmx mdrun'</span>)
+                <span class="comment">% eval(char(strcat('!gmx mdrun -nt 4 -deffnm',{' '},filename)));</span>
+                <span class="syscmd">!bash run_gmx_mdrun.sh 'opt -nt 4 -rdd 0.5 -dds 0.90'</span>
+                cd(ParentSimDir);
+            <span class="keyword">else</span>
+                SimulationDirectories=[];
+                <span class="keyword">for</span> i=numSimulation
+                    SimulationDirectories=[SimulationDirectories <span class="string">' '</span> strcat(dirtype,num2str(i))]; <span class="comment">% Directories strin, starting with a ' ' space</span>
+                <span class="keyword">end</span>
+                disp(<span class="string">'Running gmx_mpi mdrun, since we want to use the -multidir option!'</span>)
+                <span class="comment">%           eval(char(strcat('!mpirun -np',{' '},num2str(numSimulation),{' '},'gmx_mpi mdrun -ntomp 1 -deffnm',{' '},filename,{' '},'-multidir',SimulationDirectories))); % -nt 6</span>
+                eval(char(strcat(<span class="string">'!bash ../gmx_scripts/run_gmx_mdrun_mpi.sh'</span>,{<span class="string">' '</span>},num2str(numSimulation))));
+            <span class="keyword">end</span>
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Did not finish gmx mdrun for some reason...'</span>)
+            disp(<span class="string">'numSimulation'</span>)
+            i
+            cd(ParentSimDir);
+        <span class="keyword">end</span>
+</pre>
+<h2 id="15">-multidir simulations: requires gmx_mpi runs</h2>
+<pre class="codeinput">    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> i=numSimulation <span class="comment">%1:numSimulation</span>
+</pre>
+<pre class="codeinput">        tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
+
+        cd(tempdir);
+
+        <span class="comment">%         if ismember(i,skip_simulation)</span>
+        <span class="comment">%             continue</span>
+        <span class="comment">%         end</span>
+
+        <span class="keyword">try</span>
+            <span class="keyword">try</span>
+                atom=import_atom_gro(<span class="string">'opt.gro'</span>);
+            <span class="keyword">catch</span>
+                disp(<span class="string">'Simulation did not finish properly..'</span>)
+            <span class="keyword">end</span>
+            disp(<span class="string">'Analyzing Box size!'</span>)
+            <span class="syscmd">!bash run_gmx_boxsize.sh # Note the different index order for zsh compared to bash</span>
+            <span class="comment">%             % eval(char(strcat('!echo Box-X | gmx energy -f',{' '},filename,'.edr -b 0 -o Box_X.xvg 2&gt;/dev/null')));</span>
+            <span class="comment">%             !bash run_gmx_energy.sh Box-X</span>
+            Box_X=import_xvg(<span class="string">'Box_X.xvg'</span>);
+            analyze_start=floor(0.5*size(Box_X,1));
+            init_Box_X=Box_X(1,2); <span class="comment">% Since we want to compare with the Boxsize at t=0</span>
+            mean_Box_X=mean(Box_X(analyze_start:end,2));
+            diff_Box_X=mean(Box_X(:,2)-init_Box_X);
+            all_diff_BoxX=[all_diff_BoxX diff_Box_X/mean_Box_X];
+
+            <span class="comment">% eval(char(strcat('!echo Box-Y | gmx energy -f',{' '},filename,'.edr -o -b 0 Box_Y.xvg 2&gt;/dev/null')));</span>
+            <span class="comment">%             !bash run_gmx_energy.sh Box-Y</span>
+            Box_Y=import_xvg(<span class="string">'Box_Y.xvg'</span>);
+            init_Box_Y=Box_Y(1,2);
+            mean_Box_Y=mean(Box_Y(analyze_start:end,2));
+            diff_Box_Y=mean(Box_Y(:,2)-init_Box_Y);
+            all_diff_BoxY=[all_diff_BoxY diff_Box_Y/mean_Box_Y];
+
+            <span class="comment">% eval(char(strcat('!echo Box-Z | gmx energy -f',{' '},filename,'.edr -o -b 0 Box_Z.xvg 2&gt;/dev/null')));</span>
+            <span class="comment">%             !bash run_gmx_energy.sh Box-Z</span>
+            Box_Z=import_xvg(<span class="string">'Box_Z.xvg'</span>);
+            init_Box_Z=Box_Z(1,2);
+            mean_Box_Z=mean(Box_Z(analyze_start:end,2));
+            diff_Box_Z=mean(Box_Z(:,2)-init_Box_Z);
+            all_diff_BoxZ=[all_diff_BoxZ diff_Box_Z/mean_Box_Z];
+            save(strcat(<span class="string">'prev_res_'</span>,num2str(i),<span class="string">'.mat'</span>));
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Could not extract the Box_X/Y/Z from the .edr file'</span>)
+            load(strcat(<span class="string">'prev_res_'</span>,num2str(i),<span class="string">'.mat'</span>))
+            mean_Box_X=1.1*mean_Box_X;
+            mean_Box_Y=1.1*mean_Box_Y;
+            mean_Box_Z=1.1*mean_Box_Z;
+            diff_Box_X=1.1*diff_Box_X;
+            diff_Box_Y=1.1*diff_Box_Y;
+            diff_Box_Z=1.1*diff_Box_Z;
+            <span class="comment">% all_diff_BoxX=all_diff_BoxX;</span>
+            <span class="comment">% all_diff_BoxY=all_diff_BoxY;</span>
+            <span class="comment">% all_diff_BoxZ=all_diff_BoxZ;</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">try</span>
+            <span class="syscmd">!bash run_gmx_thermo.sh # Note the different index order for zsh compared to bash</span>
+            disp(<span class="string">'Analyzing pressure!'</span>)
+
+            mean_pressure=load(<span class="string">'pressure.dat'</span>); <span class="comment">%mean(pressure(:,2));</span>
+
+            disp(<span class="string">'Analyzing potential energy!'</span>)
+
+            mean_potential=load(<span class="string">'potential.dat'</span>); <span class="comment">%median(potential(:,2));</span>
+
+            disp(<span class="string">'Analyzing position restraints!'</span>)
+
+            mean_posres=load(<span class="string">'posres.dat'</span>); <span class="comment">%median(posres(:,2));</span>
+            all_mean_posres=[all_mean_posres mean_posres];
+
+            disp(<span class="string">'Analyzing temperature!'</span>)
+
+            mean_temperature=load(<span class="string">'temperature.dat'</span>); <span class="comment">%median(temperature(:,2));</span>
+            save(strcat(<span class="string">'prev_res_'</span>,num2str(i),<span class="string">'.mat'</span>));
+        <span class="keyword">catch</span>
+            disp(<span class="string">'Could not extract the Pressure, Potential, Temperature.. from the .edr file'</span>)
+            pause(1)
+            load(strcat(<span class="string">'prev_res_'</span>,num2str(i),<span class="string">'.mat'</span>))
+            mean_pressure=2*mean_pressure;
+            mean_potential=2*mean_potential
+            mean_posres=2*mean_posres
+            all_mean_posres=[all_mean_posres 2*mean_posres];
+            mean_temperature=mean_temperature;
+        <span class="keyword">end</span>
+</pre>
+<h2 id="18">Analyzing the trajectory</h2>
+<pre class="codeinput">        <span class="syscmd">!bash run_gmx_traj.sh</span>
+
+        <span class="keyword">if</span> isempty(dir(fullfile(pwd,strcat(<span class="string">'prev_analysis_*.mat'</span>))))
+            <span class="keyword">try</span>
+                copyfile(<span class="string">'opt.gro'</span>,<span class="string">'opt_t0.gro'</span>);
+                copyfile(<span class="string">'temp.top'</span>,strcat(<span class="string">'../first'</span>,num2str(i),<span class="string">'.top'</span>));
+                copyfile(<span class="string">'temp.top'</span>,strcat(<span class="string">'first'</span>,num2str(i),<span class="string">'.top'</span>));
+                copyfile(<span class="string">'rmsf.xvg'</span>,<span class="string">'rmsf_t0.xvg'</span>);
+                copyfile(<span class="string">'rmsdev.xvg'</span>,<span class="string">'rmsdev_t0.xvg'</span>);
+                copyfile(<span class="string">'rmsdev.pdb'</span>,<span class="string">'rmsdev_t0.pdb'</span>);
+            <span class="keyword">catch</span>
+                disp(<span class="string">'Could not save the inital simulation output!'</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        cd(ParentSimDir);
+</pre>
+<pre class="codeinput">    <span class="keyword">end</span>
+
+    res=[];
+    all_GII=[];
+    indexes=[]; <span class="comment">% Matlab struct</span>
+    <span class="keyword">for</span> i=numSimulation <span class="comment">%1:numSimulation</span>
+
+        tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
+
+        cd(tempdir);
+        <span class="keyword">try</span>
+</pre>
+<pre class="codeinput">            disp(<span class="string">'Analyzing bond distances/valences!'</span>)
+            load(strcat(<span class="string">'prev_res_'</span>,num2str(i),<span class="string">'.mat'</span>)); <span class="comment">% pause(0.1)</span>
+            load(<span class="string">'system_info.mat'</span>); <span class="comment">% pause(0.1)</span>
+            indexes(i).ind=find(strncmpi([atom.resname],resname,2));
+            laststep=<span class="string">'Run_simulation'</span>;
+            thermo=readlines(<span class="string">'thermo_out.dat'</span>);
+            iteration=size(thermo,1)-1;
+
+            <span class="comment">%     [Y,I] = sort(Bond_index(:,3));</span>
+            <span class="comment">%     target_Bond_index=Bond_index(I,:);</span>
+            <span class="comment">%     [Y,I] = sort(Angle_index(:,4));</span>
+            <span class="comment">%     target_Angle_index=Angle_index(I,:);</span>
+            <span class="comment">%     [Y,I] = sort(Dihedral_index(:,5));</span>
+            <span class="comment">%             %     target_Dihedral_index=Dihedral_index(I,:);</span>
+            <span class="comment">%             target_Bond_index=Bond_index;</span>
+            <span class="comment">%             target_Angle_index=Angle_index;</span>
+            <span class="comment">% target_Dihedral_index=Dihedral_index;</span>
+
+            <span class="keyword">if</span> ~ismember(i,skip_simulation)
+</pre>
+<pre class="codeinput">                <span class="keyword">if</span> (max([atom([indexes(i).ind]).x])-min([atom([indexes(i).ind]).x]))&gt;0.9*Box_dim(1) || <span class="keyword">...</span>
+                        (max([atom([indexes(i).ind]).y])-min([atom([indexes(i).ind]).y]))&gt;0.9*Box_dim(2) || <span class="keyword">...</span>
+                        (max([atom([indexes(i).ind]).z])-min([atom([indexes(i).ind]).z]))&gt;0.9*Box_dim(3)
+                    PBC=1;
+                    [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(<span class="string">'conf'</span>,<span class="string">'median'</span>);
+                <span class="keyword">else</span>
+                    PBC=0;
+                    [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(<span class="string">'conf'</span>,<span class="string">'ave'</span>);
+                <span class="keyword">end</span>
+</pre>
+<h2 id="22">Since we are only looking at a fractional system, since else too many angles, bonds..</h2>
+<pre class="codeinput">                atom_ave=atom_ave([indexes(i).ind]); <span class="comment">% Also Box_dim_ave,Cell_ave,Box_dim_std,Cell_std...</span>
+
+                atom_ave = recalc_bond_atom(atom_ave,Box_dim_ave,target_Bond_index,target_Angle_index);<span class="comment">%,target_Dihedral_index); % Will output new Bond_index, Angle_index, dihedral_index</span>
+                temp_Bond_index=Bond_index;temp_Angle_index=Angle_index;
+                GII=0;GII_noH=0;
+                <span class="comment">%             temp_prop = analyze_atom(element_atom(atom_ave([indexes(i).ind])),Box_dim_ave,0,target_Bond_index);</span>
+                temp_prop = analyze_atom(element_atom(atom_ave([indexes(i).ind])),Box_dim_ave,0,Bond_index,[ValenceProperties.oxstate]);
+                write_atom_gro(atom_ave,Box_dim_ave,strcat(<span class="string">'ave_struct_'</span>,num2str(iteration),<span class="string">'.gro'</span>));
+                replace_string(<span class="string">'Created in Matlab'</span>,strcat(<span class="string">'GII='</span>,num2str(GII),<span class="string">'; GII_noH='</span>,num2str(GII_noH)),strcat(<span class="string">'ave_struct_'</span>,num2str(iteration),<span class="string">'.gro'</span>));
+</pre>
+<pre class="codeinput">            <span class="keyword">else</span>
+                load(strcat(<span class="string">'prev_analysis_'</span>,num2str(i),<span class="string">'.mat'</span>),<span class="string">'atom_ave'</span>,<span class="string">'Box_dim_ave'</span>,<span class="string">'Cell_ave'</span>,<span class="string">'Cell_std'</span>,<span class="string">'temp_Bond_index'</span>,<span class="string">'temp_Angle_index'</span>,<span class="string">'GII'</span>,<span class="string">'GII_noH'</span>);
+                copyfile(strcat(<span class="string">'ave_struct_'</span>,num2str(iteration-1),<span class="string">'.gro'</span>),strcat(<span class="string">'ave_struct_'</span>,num2str(iteration),<span class="string">'.gro'</span>));
+            <span class="keyword">end</span>
+
+
+            <span class="comment">% % In case of noPBC</span>
+            <span class="comment">% %     if PBC==0</span>
+            <span class="comment">% dlmwrite('bond.ndx',{'[ B1B2 ]'},'delimiter','')</span>
+            <span class="comment">% dlmwrite('bond.ndx',target_Bond_index(:,1:2),'delimiter',' ','-append')</span>
+            <span class="comment">% %         eval(char(strcat('!echo 0 | gmx distance -f temp.xtc -s opt.tpr -n bond.ndx -rmpbc -pbc yes -len 0.15 -tol 1 -oav -oall -oxyz -oh -oallstat -b 5 2&gt;/dev/null')));</span>
+            <span class="comment">% %         diststat=import_xvg('diststat.xvg');</span>
+            <span class="comment">% %         Bond_index=target_Bond_index(:,1:3);</span>
+            <span class="comment">% %         Bond_index(:,3)=10*diststat(:,2);</span>
+            <span class="comment">% %         Bond_index(:,4)=10*diststat(:,3);</span>
+            <span class="comment">% %</span>
+            <span class="comment">% dlmwrite('angle.ndx',{'[ A2A1A3 ]'},'delimiter','')</span>
+            <span class="comment">% dlmwrite('angle.ndx',target_Angle_index(:,1:3),'delimiter',' ','-append')</span>
+            <span class="comment">% %         eval(char(strcat('!echo 0 | gmx angle -f temp.xtc -type angle -b 5 -n angle.ndx -od -ov -all 2&gt;/dev/null')));</span>
+            <span class="comment">% %         angaver=import_xvg('angaver.xvg');</span>
+            <span class="comment">% %         angaver(:,1:2)=[];</span>
+            <span class="comment">% %         Angle_index=target_Angle_index(:,1:3);</span>
+            <span class="comment">% %         Angle_index(:,4)=mean(angaver)';</span>
+            <span class="comment">% %     end</span>
+</pre>
+<h2 id="24">To analyze the RDF and CN data</h2>
+<pre class="codeinput">            <span class="keyword">try</span>
+                <span class="keyword">if</span> numel(rdf_target)&gt;0
+                    <span class="syscmd">!bash run_gmx_rdf.sh 'ref' 'sel'</span>
+                    rdf=import_xvg(<span class="string">'rdf_opt.xvg'</span>);rdf=rdf(:,1:2); <span class="comment">% Relevant RDF data should be found in column 1:2</span>
+                    cn=import_xvg(<span class="string">'cn_opt.xvg'</span>);cn=cn(:,1:2); <span class="comment">% Relevant CN data should be found in column 1:2</span>
+                <span class="keyword">end</span>
+            <span class="keyword">catch</span>
+                disp(<span class="string">'Did not succeed with the RDF/CN analysis!!!'</span>)
+                pause(1)
+            <span class="keyword">end</span>
+</pre>
+<h2 id="25">To remove bonds and angles with H's</h2>
+<pre class="codeinput">            ind_H=find(strncmpi([atom_ave.type],{<span class="string">'H'</span>},1));
+            [H_row,H_col]=ind2sub(size(target_Bond_index),find(ismember(target_Bond_index,ind_H)));
+            target_Bond_index(H_row,:)=[];
+            <span class="keyword">if</span> ~ismember(i,skip_simulation)
+                temp_Bond_index(H_row,:)=[];
+            <span class="keyword">end</span>
+            [H_row,H_col]=ind2sub(size(target_Angle_index),find(ismember(target_Angle_index,ind_H)));
+            target_Angle_index(H_row,:)=[];
+            <span class="keyword">if</span> ~ismember(i,skip_simulation)
+                temp_Angle_index(H_row,:)=[];
+            <span class="keyword">end</span>
+
+            Bond_diff=[0];Angle_diff=[0];RDF_diff=[0];CN_diff=[0];CoordNum=0;
+            <span class="keyword">if</span> numel(rdf_target)&gt;0
+
+                rdf((rdf(:,1)&lt;0.125),2)=0;
+                rdf_target((rdf_target(:,1)&lt;0.125),2)=0;
+
+                rdf_temp=interp1(rdf(:,1),rdf(:,2),rdf_target(:,1));
+                cn_temp=interp1(cn(:,1),cn(:,2),cn_target(:,1));
+
+                rdf_temp=rdf_temp/max(rdf_temp);
+                rdf_target(:,2)=rdf_target(:,2)/max(rdf_target(:,2));
+
+                RDF_diff=(rdf_temp-rdf_target(:,2));
+                CN_diff=(cn_temp-cn_target(:,2));
+
+                <span class="keyword">try</span>
+                    CoordNum=eval_cn(rdf,cn);
+                <span class="keyword">catch</span>
+                    disp(<span class="string">'Did not compute CoordNum'</span>)
+                <span class="keyword">end</span>
+
+                <span class="keyword">if</span> PBC==0
+                    res_temp=double(RDF_diff); <span class="comment">%;CN_diff/100];</span>
+                <span class="keyword">elseif</span> PBC==1
+                    res_temp=double(1/10*(abs(diff_Box_X)+abs(diff_Box_Y)+abs(diff_Box_Z)) + RDF_diff); <span class="comment">%;CN_diff/100]);</span>
+                <span class="keyword">end</span>
+            <span class="keyword">else</span>
+
+                Bond_diff=double(temp_Bond_index(:,3))-double(target_Bond_index(:,3));
+                Angle_diff=double(temp_Angle_index(:,4))-double(target_Angle_index(:,4));
+
+                <span class="keyword">if</span> PBC==0
+                    res_temp=double([Bond_diff;Angle_diff/100]);
+                <span class="keyword">elseif</span> PBC==1
+                    <span class="comment">% if exist('GII')</span>
+                    <span class="comment">%     res_temp=double(2*GII + 2*GII_noH + 1/10*(diff_Box_X+diff_Box_Y+2*diff_Box_Z) + [Bond_diff;Angle_diff/100]);</span>
+                    <span class="comment">% else</span>
+
+                    <span class="comment">% res_temp=double(1/10*(abs(diff_Box_X)+abs(diff_Box_Y)+abs(diff_Box_Z)) + [Bond_diff;Angle_diff/100]);</span>
+                    res_temp = double(<span class="keyword">...</span>
+                        1/10*( abs(Cell_ave(1)-target_Cell(1)) + abs(Cell_ave(2)-target_Cell(2)) + abs(Cell_ave(3)-target_Cell(3)) )<span class="keyword">...</span>
+                        + 1/10*( abs(Cell_ave(4)-target_Cell(4)) + abs(Cell_ave(5)-target_Cell(5)) + abs(Cell_ave(6)-target_Cell(6)) )<span class="keyword">...</span>
+                        + [Bond_diff;Angle_diff]);
+                    <span class="comment">% end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+            dlmwrite(<span class="string">'res_temp.dat'</span>,size(res_temp) ,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>)
+</pre>
+<h2 id="26">Make sure we have the same res_temp size due to unknown occasional bug</h2>
+<pre class="codeinput">            <span class="keyword">if</span> iteration==1
+                res_temp_size=size(res_temp,1);
+                orig_res_temp=res_temp;
+                save(<span class="string">'res_temp_size.mat'</span>,<span class="string">'res_temp_size'</span>,<span class="string">'orig_res_temp'</span>);
+            <span class="keyword">end</span>
+            load(<span class="string">'res_temp_size.mat'</span>)
+            res_temp=interp1(1:size(res_temp,1),res_temp,1:res_temp_size)';
+            <span class="keyword">if</span> find(isnan(res_temp))&gt;0
+                res_temp=2*orig_res_temp;
+            <span class="keyword">end</span>
+
+            dlmwrite(<span class="string">'thermo_out.dat'</span>,[iteration norm(res_temp)^2 GII mean(abs(RDF_diff)) mean(abs(CN_diff)) CoordNum mean(abs(Bond_diff)) mean(abs(Angle_diff)) mean_pressure mean_potential mean_posres mean_temperature param mean_Box_X mean_Box_Y mean_Box_Z diff_Box_X/mean_Box_X diff_Box_Y/mean_Box_Y diff_Box_Z/mean_Box_Z Cell_ave Cell_std],<span class="string">'precision'</span>,<span class="string">'%1.6E'</span>,<span class="string">'delimiter'</span>,<span class="string">'\t'</span>,<span class="string">'-append'</span>)
+            <span class="comment">%         dlmwrite('progress_param.dat',[norm(res)^2 param GII penalty mean_posres/10000 50*diff_Box_X 50*diff_Box_Y 50*diff_Box_Y mean_potential mean_temperature mean_Box_X mean_Box_Y mean_Box_Z],'precision','%1.6E','delimiter','\t','-append')</span>
+            <span class="keyword">if</span> ~ismember(i,skip_simulation)
+                save(strcat(<span class="string">'prev_analysis_'</span>,num2str(i),<span class="string">'.mat'</span>))
+            <span class="keyword">end</span>
+            <span class="comment">%             save(strcat(_',num2str(i),'.mat'))</span>
+            pause(0.1)
+            res=[res;res_temp];
+
+            res_size=size(res)
+
+            <span class="comment">%             !rm -f conf*.gro</span>
+            <span class="syscmd">!rm -f \#*</span>
+</pre>
+<pre class="codeinput">        <span class="keyword">catch</span>
+            load(strcat(<span class="string">'prev_analysis_'</span>,num2str(i),<span class="string">'.mat'</span>),<span class="string">'res_temp'</span>);
+            res_temp=2*res_temp;
+            res=[res;res_temp];
+            disp(<span class="string">'Could not analyze this particular simulation for some reason'</span>)
+            i
+            pause(1)
+        <span class="keyword">end</span>
+
+        prev_param=param;
+        save(<span class="string">'prev_param.mat'</span>,<span class="string">'prev_param'</span>);
+
+        cd(ParentSimDir);
+
+        save(<span class="string">'prev_run.mat'</span>)
+
+        all_GII=[all_GII GII];
+
+    <span class="keyword">end</span>
+
+    ParentSimDirFiles=dir;
+    <span class="keyword">if</span> sum(strcmp({ParentSimDirFiles.name},<span class="string">'progress_param.dat'</span>))==0
+        fid = fopen(<span class="string">'progress_param.dat'</span>,<span class="string">'at+'</span>);
+        fprintf(fid, <span class="string">'%s\n'</span>, (<span class="string">'% sim  norm(res)^2  penalty  mean_GII parameters  mean_diff_BoxX   mean_diff_BoxY   mean_diff_BoxZ'</span>));
+        fclose(fid);
+    <span class="keyword">end</span>
+
+    penalty=mean(all_mean_posres)/(5000*length(numSimulation));
+    <span class="comment">%     res=res+penalty;</span>
+    <span class="comment">%     res=smooth(res,0.02,'rloess')';</span>
+    <span class="comment">%     res=smooth(rmsd(:,2)+rmsf+penalty',0.02,'rloess');%,11);</span>
+    <span class="comment">%     res=rmsd(:,2);%,11);</span>
+
+    dlmwrite(<span class="string">'progress_param.dat'</span>,[iteration norm(res)^2 penalty mean(all_GII) param mean(all_diff_BoxX) mean(all_diff_BoxY) mean(all_diff_BoxZ)],<span class="string">'precision'</span>,<span class="string">'%1.6E'</span>,<span class="string">'delimiter'</span>,<span class="string">'\t'</span>,<span class="string">'-append'</span>)
+
+
+<span class="keyword">catch</span>
+    disp(<span class="string">'The optimization run did not finish for some reason!!!'</span>)
+    pause(5)
+    cd(ParentSimDir);
+    load(<span class="string">'prev_run.mat'</span>)
+    penalty=2*penalty;
+    res=2*res;
+    dlmwrite(<span class="string">'progress_param.dat'</span>,<span class="string">'Crashed'</span>,<span class="string">'delimiter'</span>,<span class="string">'\t'</span>,<span class="string">'-append'</span>)
+    dlmwrite(<span class="string">'res.dat'</span>,<span class="string">'Crashed'</span>,<span class="string">'-append'</span>)
+<span class="keyword">end</span>
+
+dlmwrite(<span class="string">'res.dat'</span>,size(res),<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>,<span class="string">'precision'</span>,<span class="string">'%12i'</span>)
+<span class="comment">% res=interp1(1:size(res,1),res,1:50000*numSimulation,'nearest',0)';</span>
+<span class="comment">% dlmwrite('res.dat',size(res),'delimiter',' ','-append','precision','%12i')</span>
+
+save(<span class="string">'prev_run.mat'</span>)
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% eval_sim.m
+% * This special function is the objective function for lsqnonlin used in the
+% forcefield optimization scheme called autofit_ff. This function is called by
+% run_opt_ff_lsqnonlin.m and opt_ff.m
+%
+%% Version
+% 3.00
+%
+% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # f=@(x)eval_sim(x,scalefactors,dirtype,indexes);  % From run_opt_ff_lsqnonlin
+% # res = eval_sim(fx,scalefactors,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..
+
+function res = eval_sim(param,scalefactors,dirtype,varargin)
+
+ParentSimDir = pwd;
+
+% Scale back all the parameters
+param=param./scalefactors;
+
+%% To also fit the charges or other extra parameters
+fextra=nargin-3;
+nparam=size(param,2);
+
+disp('Will run with these parameters:')
+param
+
+%% PBC variable
+PBC=1; % Assume periodic molecules at first, check later in system_info.mat
+
+%% Directory filename
+filename=lower(dirtype);
+
+%% Initiate some variables
+all_mean_posres=[];
+all_diff_BoxX=[];all_diff_BoxY=[];all_diff_BoxZ=[];
+skip_simulation=[];
+
+% Loop through each subfolder and extract the numeric part
+subFolders = dir('OPT*');
+numSimulation = []; % numSimulation=size(dir(strcat(dirtype,'*')),1);
+for k = 1:length(subFolders)
+    folderName = subFolders(k).name;
+
+    % Use regular expression to extract the number from the folder name
+    numStr = regexp(folderName, '\d+', 'match');
+
+    if ~isempty(numStr)
+        numSimulation(end+1) = str2double(numStr{1}); %#ok<*AGROW>
+    end
+end
+numSimulation=sort(numSimulation);
+
+try
+    try
+        for i=numSimulation %1:numSimulation
+
+            tempdir=strcat(dirtype,num2str(i),'/');
+
+            cd(tempdir);
+
+            %% Set new charges
+            load('system_info.mat');
+            nOpt_labels=size(Opt_labels,2);
+
+            if size(ff,2)==1
+                ff=ff.ff;
+            end
+
+            if nparam>2*nOpt_labels
+                disp('Setting new charges in the .itp topology file!')
+                itp=import_itp('min.itp');
+                temp_atom=atom;
+                [temp_atom.type]=atom.fftype;
+                if ~strncmp(Opt_labels,'H',1)
+                    try
+                        Hind=strcmp([ff.type],'H');
+                        Hq=ff(Hind).charge;
+                    catch
+                        Hq=0.4;
+                    end
+                    temp_atom=charge_clayff_atom(temp_atom,Box_dim,[Opt_labels(~strncmp(Opt_labels,'O',1)) {'H'}],[param(end-(nparam-2*nOpt_labels)+1:end) Hq]);
+                else
+                    temp_atom=charge_clayff_atom(temp_atom,Box_dim,[Opt_labels(~strncmp(Opt_labels,'O',1))],[param(end-(nparam-2*nOpt_labels)+1:end)]);
+                end
+                [itp.atoms.charge]=[temp_atom.charge]';
+                write_itp(itp,'min.itp');
+            end
+
+            print_top(param,'header.top','topol.top');
+            change_top(param,'header.top');
+
+            copyfile('temp.top',strcat('../last',num2str(i),'.top'));
+            copyfile('temp.top',strcat('last',num2str(i),'.top'));
+
+            dirtypefiles=dir;
+            if sum(strcmp({dirtypefiles.name},strcat('prev_analysis_',num2str(i),'.mat')))==0
+                iteration=0;
+                Opt_ind=[];
+                orig_param=param;
+                prev_param=param;
+                save('orig_param.mat','orig_param');
+                save('prev_param.mat','prev_param');
+                fid = fopen('thermo_out.dat','at+');
+                fprintf(fid, '%s\n', ('% Sim   norm(res_temp)^2     GII     RDF_diff    CN_diff    CoordNum    Bond_diff    Angle_diff     mean_pressure   mean_potential  mean_posres     mean_temperature    param    mean_Box_X     mean_Box_Y  mean_Box_Z  diff_Box_X diff_Box_Y   diff_Box_Z Cell_ave Cell_std'));
+                fclose(fid);
+            else
+                load('system_info.mat');
+                load('prev_param.mat');
+                Opt_labels_list=[Opt_labels;Opt_labels];
+                Opt_labels_list=Opt_labels_list(:)';
+                Opt_ind=find(prev_param-param);
+                if numel(Opt_ind)>0
+                    if sum(ismember(Atom_labels,Opt_labels_list(Opt_ind)))==0
+                        skip_simulation=[skip_simulation i];
+                        cd(ParentSimDir);
+                        continue
+                    end
+                end
+            end
+
+            try
+                disp('Running gmx grompp')
+                % eval(char(strcat('!gmx grompp -f',{' '},filename,'.mdp -c pre',filename,'.gro -r pre',filename,'.gro -p temp.top  -n index.ndx -pp temp_gmx -po temp_gmx -maxwarn 3 -o',{' '},filename,'.tpr ')));% 2>/dev/null')));
+                !bash run_gmx_grompp.sh
+            catch
+                disp('Something went wrong with gmx grompp ...')
+                disp('numSimulation')
+                i
+                pause
+            end
+            if gpuDeviceCount("available") > 0 || strcmp(computer('arch'),'maca64') == 1
+                %% Running in serial
+                disp('Running gmx mdrun in serial')
+                % eval(char(strcat('!gmx mdrun -nt 4 -deffnm',{' '},filename)));
+                !bash run_gmx_mdrun.sh 'opt -ntomp 8 -rdd 0.5 -dds 0.90'
+                %% Running in serial
+            end
+            cd(ParentSimDir);
+        end
+    catch
+        disp('Did not finish gmx grompp for some reason...')
+        cd(ParentSimDir);
+    end
+
+    if gpuDeviceCount("available") == 0 && strcmp(computer('arch'),'maca64') == 0
+        %% -multidir simulations: requires gmx_mpi runs
+        try
+            if numSimulation==1 || ~strcmp(computer('arch'),'maca64') == 0
+                tempdir=strcat(dirtype,num2str(i),'/');
+                cd(tempdir);
+                disp('Running gmx mdrun')
+                % eval(char(strcat('!gmx mdrun -nt 4 -deffnm',{' '},filename)));
+                !bash run_gmx_mdrun.sh 'opt -nt 4 -rdd 0.5 -dds 0.90'
+                cd(ParentSimDir);
+            else
+                SimulationDirectories=[];
+                for i=numSimulation
+                    SimulationDirectories=[SimulationDirectories ' ' strcat(dirtype,num2str(i))]; % Directories strin, starting with a ' ' space
+                end
+                disp('Running gmx_mpi mdrun, since we want to use the -multidir option!')
+                %           eval(char(strcat('!mpirun -np',{' '},num2str(numSimulation),{' '},'gmx_mpi mdrun -ntomp 1 -deffnm',{' '},filename,{' '},'-multidir',SimulationDirectories))); % -nt 6
+                eval(char(strcat('!bash ../gmx_scripts/run_gmx_mdrun_mpi.sh',{' '},num2str(numSimulation))));
+            end
+        catch
+            disp('Did not finish gmx mdrun for some reason...')
+            disp('numSimulation')
+            i
+            cd(ParentSimDir);
+        end
+        %% -multidir simulations: requires gmx_mpi runs
+    end
+
+    for i=numSimulation %1:numSimulation
+
+        tempdir=strcat(dirtype,num2str(i),'/');
+
+        cd(tempdir);
+
+        %         if ismember(i,skip_simulation)
+        %             continue
+        %         end
+
+        try
+            try
+                atom=import_atom_gro('opt.gro');
+            catch
+                disp('Simulation did not finish properly..')
+            end
+            disp('Analyzing Box size!')
+            !bash run_gmx_boxsize.sh # Note the different index order for zsh compared to bash
+            %             % eval(char(strcat('!echo Box-X | gmx energy -f',{' '},filename,'.edr -b 0 -o Box_X.xvg 2>/dev/null')));
+            %             !bash run_gmx_energy.sh Box-X
+            Box_X=import_xvg('Box_X.xvg');
+            analyze_start=floor(0.5*size(Box_X,1));
+            init_Box_X=Box_X(1,2); % Since we want to compare with the Boxsize at t=0
+            mean_Box_X=mean(Box_X(analyze_start:end,2));
+            diff_Box_X=mean(Box_X(:,2)-init_Box_X);
+            all_diff_BoxX=[all_diff_BoxX diff_Box_X/mean_Box_X];
+
+            % eval(char(strcat('!echo Box-Y | gmx energy -f',{' '},filename,'.edr -o -b 0 Box_Y.xvg 2>/dev/null')));
+            %             !bash run_gmx_energy.sh Box-Y
+            Box_Y=import_xvg('Box_Y.xvg');
+            init_Box_Y=Box_Y(1,2);
+            mean_Box_Y=mean(Box_Y(analyze_start:end,2));
+            diff_Box_Y=mean(Box_Y(:,2)-init_Box_Y);
+            all_diff_BoxY=[all_diff_BoxY diff_Box_Y/mean_Box_Y];
+
+            % eval(char(strcat('!echo Box-Z | gmx energy -f',{' '},filename,'.edr -o -b 0 Box_Z.xvg 2>/dev/null')));
+            %             !bash run_gmx_energy.sh Box-Z
+            Box_Z=import_xvg('Box_Z.xvg');
+            init_Box_Z=Box_Z(1,2);
+            mean_Box_Z=mean(Box_Z(analyze_start:end,2));
+            diff_Box_Z=mean(Box_Z(:,2)-init_Box_Z);
+            all_diff_BoxZ=[all_diff_BoxZ diff_Box_Z/mean_Box_Z];
+            save(strcat('prev_res_',num2str(i),'.mat'));
+        catch
+            disp('Could not extract the Box_X/Y/Z from the .edr file')
+            load(strcat('prev_res_',num2str(i),'.mat'))
+            mean_Box_X=1.1*mean_Box_X;
+            mean_Box_Y=1.1*mean_Box_Y;
+            mean_Box_Z=1.1*mean_Box_Z;
+            diff_Box_X=1.1*diff_Box_X;
+            diff_Box_Y=1.1*diff_Box_Y;
+            diff_Box_Z=1.1*diff_Box_Z;
+            % all_diff_BoxX=all_diff_BoxX;
+            % all_diff_BoxY=all_diff_BoxY;
+            % all_diff_BoxZ=all_diff_BoxZ;
+        end
+
+        try
+            !bash run_gmx_thermo.sh # Note the different index order for zsh compared to bash
+            disp('Analyzing pressure!')
+
+            mean_pressure=load('pressure.dat'); %mean(pressure(:,2));
+
+            disp('Analyzing potential energy!')
+
+            mean_potential=load('potential.dat'); %median(potential(:,2));
+
+            disp('Analyzing position restraints!')
+
+            mean_posres=load('posres.dat'); %median(posres(:,2));
+            all_mean_posres=[all_mean_posres mean_posres];
+
+            disp('Analyzing temperature!')
+
+            mean_temperature=load('temperature.dat'); %median(temperature(:,2));
+            save(strcat('prev_res_',num2str(i),'.mat'));
+        catch
+            disp('Could not extract the Pressure, Potential, Temperature.. from the .edr file')
+            pause(1)
+            load(strcat('prev_res_',num2str(i),'.mat'))
+            mean_pressure=2*mean_pressure;
+            mean_potential=2*mean_potential
+            mean_posres=2*mean_posres
+            all_mean_posres=[all_mean_posres 2*mean_posres];
+            mean_temperature=mean_temperature;
+        end
+
+        %% Analyzing the trajectory
+        !bash run_gmx_traj.sh
+
+        if isempty(dir(fullfile(pwd,strcat('prev_analysis_*.mat'))))
+            try
+                copyfile('opt.gro','opt_t0.gro');
+                copyfile('temp.top',strcat('../first',num2str(i),'.top'));
+                copyfile('temp.top',strcat('first',num2str(i),'.top'));
+                copyfile('rmsf.xvg','rmsf_t0.xvg');
+                copyfile('rmsdev.xvg','rmsdev_t0.xvg');
+                copyfile('rmsdev.pdb','rmsdev_t0.pdb');
+            catch
+                disp('Could not save the inital simulation output!')
+            end
+        end
+        cd(ParentSimDir);
+    end
+
+    res=[];
+    all_GII=[];
+    indexes=[]; % Matlab struct
+    for i=numSimulation %1:numSimulation
+
+        tempdir=strcat(dirtype,num2str(i),'/');
+
+        cd(tempdir);
+        try
+            disp('Analyzing bond distances/valences!')
+            load(strcat('prev_res_',num2str(i),'.mat')); % pause(0.1)
+            load('system_info.mat'); % pause(0.1)
+            indexes(i).ind=find(strncmpi([atom.resname],resname,2));
+            laststep='Run_simulation';
+            thermo=readlines('thermo_out.dat');
+            iteration=size(thermo,1)-1;
+
+            %     [Y,I] = sort(Bond_index(:,3));
+            %     target_Bond_index=Bond_index(I,:);
+            %     [Y,I] = sort(Angle_index(:,4));
+            %     target_Angle_index=Angle_index(I,:);
+            %     [Y,I] = sort(Dihedral_index(:,5));
+            %             %     target_Dihedral_index=Dihedral_index(I,:);
+            %             target_Bond_index=Bond_index;
+            %             target_Angle_index=Angle_index;
+            % target_Dihedral_index=Dihedral_index;
+
+            if ~ismember(i,skip_simulation)
+
+                if (max([atom([indexes(i).ind]).x])-min([atom([indexes(i).ind]).x]))>0.9*Box_dim(1) || ...
+                        (max([atom([indexes(i).ind]).y])-min([atom([indexes(i).ind]).y]))>0.9*Box_dim(2) || ...
+                        (max([atom([indexes(i).ind]).z])-min([atom([indexes(i).ind]).z]))>0.9*Box_dim(3)
+                    PBC=1;
+                    [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro('conf','median');
+                else
+                    PBC=0;
+                    [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro('conf','ave');
+                end
+
+                %% Since we are only looking at a fractional system, since else too many angles, bonds..
+                atom_ave=atom_ave([indexes(i).ind]); % Also Box_dim_ave,Cell_ave,Box_dim_std,Cell_std...
+
+                atom_ave = recalc_bond_atom(atom_ave,Box_dim_ave,target_Bond_index,target_Angle_index);%,target_Dihedral_index); % Will output new Bond_index, Angle_index, dihedral_index
+                temp_Bond_index=Bond_index;temp_Angle_index=Angle_index;
+                GII=0;GII_noH=0;
+                %             temp_prop = analyze_atom(element_atom(atom_ave([indexes(i).ind])),Box_dim_ave,0,target_Bond_index);
+                temp_prop = analyze_atom(element_atom(atom_ave([indexes(i).ind])),Box_dim_ave,0,Bond_index,[ValenceProperties.oxstate]);
+                write_atom_gro(atom_ave,Box_dim_ave,strcat('ave_struct_',num2str(iteration),'.gro'));
+                replace_string('Created in Matlab',strcat('GII=',num2str(GII),'; GII_noH=',num2str(GII_noH)),strcat('ave_struct_',num2str(iteration),'.gro'));
+            else
+                load(strcat('prev_analysis_',num2str(i),'.mat'),'atom_ave','Box_dim_ave','Cell_ave','Cell_std','temp_Bond_index','temp_Angle_index','GII','GII_noH');
+                copyfile(strcat('ave_struct_',num2str(iteration-1),'.gro'),strcat('ave_struct_',num2str(iteration),'.gro'));
+            end
+
+            
+            % % In case of noPBC
+            % %     if PBC==0
+            % dlmwrite('bond.ndx',{'[ B1B2 ]'},'delimiter','')
+            % dlmwrite('bond.ndx',target_Bond_index(:,1:2),'delimiter',' ','-append')
+            % %         eval(char(strcat('!echo 0 | gmx distance -f temp.xtc -s opt.tpr -n bond.ndx -rmpbc -pbc yes -len 0.15 -tol 1 -oav -oall -oxyz -oh -oallstat -b 5 2>/dev/null')));
+            % %         diststat=import_xvg('diststat.xvg');
+            % %         Bond_index=target_Bond_index(:,1:3);
+            % %         Bond_index(:,3)=10*diststat(:,2);
+            % %         Bond_index(:,4)=10*diststat(:,3);
+            % %
+            % dlmwrite('angle.ndx',{'[ A2A1A3 ]'},'delimiter','')
+            % dlmwrite('angle.ndx',target_Angle_index(:,1:3),'delimiter',' ','-append')
+            % %         eval(char(strcat('!echo 0 | gmx angle -f temp.xtc -type angle -b 5 -n angle.ndx -od -ov -all 2>/dev/null')));
+            % %         angaver=import_xvg('angaver.xvg');
+            % %         angaver(:,1:2)=[];
+            % %         Angle_index=target_Angle_index(:,1:3);
+            % %         Angle_index(:,4)=mean(angaver)';
+            % %     end
+
+            %% To analyze the RDF and CN data
+            try
+                if numel(rdf_target)>0
+                    !bash run_gmx_rdf.sh 'ref' 'sel'
+                    rdf=import_xvg('rdf_opt.xvg');rdf=rdf(:,1:2); % Relevant RDF data should be found in column 1:2
+                    cn=import_xvg('cn_opt.xvg');cn=cn(:,1:2); % Relevant CN data should be found in column 1:2
+                end
+            catch
+                disp('Did not succeed with the RDF/CN analysis!!!')
+                pause(1)
+            end
+
+
+            %% To remove bonds and angles with H's
+            ind_H=find(strncmpi([atom_ave.type],{'H'},1));
+            [H_row,H_col]=ind2sub(size(target_Bond_index),find(ismember(target_Bond_index,ind_H)));
+            target_Bond_index(H_row,:)=[];
+            if ~ismember(i,skip_simulation)
+                temp_Bond_index(H_row,:)=[];
+            end
+            [H_row,H_col]=ind2sub(size(target_Angle_index),find(ismember(target_Angle_index,ind_H)));
+            target_Angle_index(H_row,:)=[];
+            if ~ismember(i,skip_simulation)
+                temp_Angle_index(H_row,:)=[];
+            end
+
+            Bond_diff=[0];Angle_diff=[0];RDF_diff=[0];CN_diff=[0];CoordNum=0;
+            if numel(rdf_target)>0
+
+                rdf((rdf(:,1)<0.125),2)=0;
+                rdf_target((rdf_target(:,1)<0.125),2)=0;
+
+                rdf_temp=interp1(rdf(:,1),rdf(:,2),rdf_target(:,1));
+                cn_temp=interp1(cn(:,1),cn(:,2),cn_target(:,1));
+
+                rdf_temp=rdf_temp/max(rdf_temp);
+                rdf_target(:,2)=rdf_target(:,2)/max(rdf_target(:,2));
+
+                RDF_diff=(rdf_temp-rdf_target(:,2));
+                CN_diff=(cn_temp-cn_target(:,2));
+
+                try
+                    CoordNum=eval_cn(rdf,cn);
+                catch
+                    disp('Did not compute CoordNum')
+                end
+
+                if PBC==0
+                    res_temp=double(RDF_diff); %;CN_diff/100];
+                elseif PBC==1
+                    res_temp=double(1/10*(abs(diff_Box_X)+abs(diff_Box_Y)+abs(diff_Box_Z)) + RDF_diff); %;CN_diff/100]);
+                end
+            else
+
+                Bond_diff=double(temp_Bond_index(:,3))-double(target_Bond_index(:,3));
+                Angle_diff=double(temp_Angle_index(:,4))-double(target_Angle_index(:,4));
+
+                if PBC==0
+                    res_temp=double([Bond_diff;Angle_diff/100]);
+                elseif PBC==1
+                    % if exist('GII')
+                    %     res_temp=double(2*GII + 2*GII_noH + 1/10*(diff_Box_X+diff_Box_Y+2*diff_Box_Z) + [Bond_diff;Angle_diff/100]);
+                    % else
+
+                    % res_temp=double(1/10*(abs(diff_Box_X)+abs(diff_Box_Y)+abs(diff_Box_Z)) + [Bond_diff;Angle_diff/100]);
+                    res_temp = double(...
+                        1/10*( abs(Cell_ave(1)-target_Cell(1)) + abs(Cell_ave(2)-target_Cell(2)) + abs(Cell_ave(3)-target_Cell(3)) )...
+                        + 1/10*( abs(Cell_ave(4)-target_Cell(4)) + abs(Cell_ave(5)-target_Cell(5)) + abs(Cell_ave(6)-target_Cell(6)) )...
+                        + [Bond_diff;Angle_diff]);
+                    % end
+                end
+            end
+
+            dlmwrite('res_temp.dat',size(res_temp) ,'delimiter',' ','-append')
+
+            %% Make sure we have the same res_temp size due to unknown occasional bug
+            if iteration==1
+                res_temp_size=size(res_temp,1);
+                orig_res_temp=res_temp;
+                save('res_temp_size.mat','res_temp_size','orig_res_temp');
+            end
+            load('res_temp_size.mat')
+            res_temp=interp1(1:size(res_temp,1),res_temp,1:res_temp_size)';
+            if find(isnan(res_temp))>0
+                res_temp=2*orig_res_temp;
+            end
+
+            dlmwrite('thermo_out.dat',[iteration norm(res_temp)^2 GII mean(abs(RDF_diff)) mean(abs(CN_diff)) CoordNum mean(abs(Bond_diff)) mean(abs(Angle_diff)) mean_pressure mean_potential mean_posres mean_temperature param mean_Box_X mean_Box_Y mean_Box_Z diff_Box_X/mean_Box_X diff_Box_Y/mean_Box_Y diff_Box_Z/mean_Box_Z Cell_ave Cell_std],'precision','%1.6E','delimiter','\t','-append')
+            %         dlmwrite('progress_param.dat',[norm(res)^2 param GII penalty mean_posres/10000 50*diff_Box_X 50*diff_Box_Y 50*diff_Box_Y mean_potential mean_temperature mean_Box_X mean_Box_Y mean_Box_Z],'precision','%1.6E','delimiter','\t','-append')
+            if ~ismember(i,skip_simulation)
+                save(strcat('prev_analysis_',num2str(i),'.mat'))
+            end
+            %             save(strcat(_',num2str(i),'.mat'))
+            pause(0.1)
+            res=[res;res_temp];
+
+            res_size=size(res)
+
+            %             !rm -f conf*.gro
+            !rm -f \#*
+
+        catch
+            load(strcat('prev_analysis_',num2str(i),'.mat'),'res_temp');
+            res_temp=2*res_temp;
+            res=[res;res_temp];
+            disp('Could not analyze this particular simulation for some reason')
+            i
+            pause(1)
+        end
+
+        prev_param=param;
+        save('prev_param.mat','prev_param');
+
+        cd(ParentSimDir);
+
+        save('prev_run.mat')
+
+        all_GII=[all_GII GII];
+
+    end
+
+    ParentSimDirFiles=dir;
+    if sum(strcmp({ParentSimDirFiles.name},'progress_param.dat'))==0
+        fid = fopen('progress_param.dat','at+');
+        fprintf(fid, '%s\n', ('% sim  norm(res)^2  penalty  mean_GII parameters  mean_diff_BoxX   mean_diff_BoxY   mean_diff_BoxZ'));
+        fclose(fid);
+    end
+
+    penalty=mean(all_mean_posres)/(5000*length(numSimulation));
+    %     res=res+penalty;
+    %     res=smooth(res,0.02,'rloess')';
+    %     res=smooth(rmsd(:,2)+rmsf+penalty',0.02,'rloess');%,11);
+    %     res=rmsd(:,2);%,11);
+
+    dlmwrite('progress_param.dat',[iteration norm(res)^2 penalty mean(all_GII) param mean(all_diff_BoxX) mean(all_diff_BoxY) mean(all_diff_BoxZ)],'precision','%1.6E','delimiter','\t','-append')
+
+
+catch
+    disp('The optimization run did not finish for some reason!!!')
+    pause(5)
+    cd(ParentSimDir);
+    load('prev_run.mat')
+    penalty=2*penalty;
+    res=2*res;
+    dlmwrite('progress_param.dat','Crashed','delimiter','\t','-append')
+    dlmwrite('res.dat','Crashed','-append')
+end
+
+dlmwrite('res.dat',size(res),'delimiter',' ','-append','precision','%12i')
+% res=interp1(1:size(res,1),res,1:50000*numSimulation,'nearest',0)';
+% dlmwrite('res.dat',size(res),'delimiter',' ','-append','precision','%12i')
+
+save('prev_run.mat')
+
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

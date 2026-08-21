@@ -25,6 +25,13 @@
 % # <write_atom_top.html write_atom_top(atom,Box_dim,filename_out)> % Write a topology file (.top) from the atom struct.
 % # <write_itp.html write_itp(itp,filename_out)> % Write a molecular topology file (.itp) from an itp struct.
 % # <CONECT_atom.html CONECT_atom(atom,Box_dim,filename_out)> % Write CONECT records for a PDB file.
+% # <write_custom_itp.html write_custom_itp(atom,Box_dim,filename,varargin)> % Create and print a custom Gromacs .itp topology file.
+% # <write_minff_itp.html write_minff_itp(atom,Box_dim,filename,varargin)> % Create and print a Gromacs .itp topology file for MINFF systems.
+% # <write_minff_lmp.html write_minff_lmp(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems.
+% # <write_minff_lmp_max_bondtypes.html write_minff_lmp_max_bondtypes(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems, using the maximum number of bond types.
+% # <write_minff_lmp_v2.html write_minff_lmp_v2(atom,Box_dim,filename,varargin)> % Create and print a LAMMPS data file (.data) for MINFF systems, splitting bimodal angle populations into separate angle types.
+% # <write_minff_psf.html write_minff_psf(atom,Box_dim,filename,varargin)> % Create and print a .psf topology file for MINFF systems.
+% # <write_xyz.html write_xyz(XYZ_labels,XYZ_data,varargin)> % Write an .xyz file from the XYZ_labels and XYZ_data variables.
 
 %% Export of trajectory files
 % # <write_gro_traj.html write_gro_traj(atom,traj,Box_dim,filename_out)> % Write a .gro trajectory file.

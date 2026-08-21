@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_miller.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="show_miller.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -81,8 +81,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ul>
 <li>This function draws up the h,k,l Miller plane within the Box_dim/Cell</li>
-<li>This function is inspired by miller.m, written by Lucas Ennes:</li>
-<li>Miller index (<a href="https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index">https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index</a>)</li>
 </ul>
 </div>
 <!--/introduction-->
@@ -98,21 +96,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
-<li>
-<a href="#5">Set the unit cell parameters</a>
-</li>
-<li>
-<a href="#7">Set the unit cell parameters</a>
-</li>
-<li>
-<a href="#9">Converting to radians</a>
-</li>
-<li>
-<a href="#10">Determine the two theta values for each h,k,l</a>
-</li>
-<li>
-<a href="#12">Set the plane</a>
-</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -123,326 +106,244 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="3">Examples</h2>
 <div>
 <ol>
-<li>show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell</li>
-<li>show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable</li>
-<li>show_miller(h,k,l,Box_dim,[0 0 1]) % Color</li>
-<li>show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy</li>
+<li>show_miller(h,k,l)</li>
+<li>show_miller(h,k,l,Box_dim) % 3, 6, or 9 elements</li>
+<li>show_miller(h,k,l,Box_dim,Color) % Color: 'b' or [r g b]</li>
+<li>show_miller(h,k,l,Box_dim,Color,FaceAlpha) % FaceAlpha in [0..1]</li>
 </ol>
 </div>
+<p>Name&ndash;Value options (pass after the positionals above): 'SinglePlane' true/false (default false) 'PlaneLevel' integer n or 'auto' (default 'auto') for hx+ky+lz = n 'ExcludeBoundary' true/false (default false): suppress edge/vertex-only contacts 'Box_dim' override positional Box_dim if desired (3/6/9) 'Color' override positional Color 'FaceAlpha' override positional FaceAlpha</p>
+<p>Notes &bull; Handles ANY sign combination (e.g., -1 -1 1, -1 -1 -1). &bull; Determines all integer n that intersect the unit fractional cell by scanning s=hx+ky+lz over the 8 corners; optionally draws a single plane. &bull; Box_dim supports [a b c], [a b c α β γ], or [lx ly lz 0 0 xy 0 xz yz].</p>
+<p>Returns: hPatches (column vector of patch handles).</p>
 <pre class="codeinput">
-<span class="keyword">function</span> show_miller(h,k,l,varargin)
-</pre>
-<pre class="codeinput">
-<span class="keyword">if</span> nargin==3
-    Box_dim=[1 1 1];
-    color=<span class="string">'b'</span>;
-<span class="keyword">elseif</span> nargin==4
-    Box_dim=varargin{1};
-    color=<span class="string">'b'</span>;
-<span class="keyword">elseif</span> nargin&gt;4
-    Box_dim=varargin{1};
-    color=varargin{2};
-<span class="keyword">end</span>
+<span class="keyword">function</span> hPatches = show_miller(h,k,l,Box_dim,color,faceAlpha, varargin)
 
-<span class="keyword">if</span> nargin&gt;5
-    alpha=1-varargin{3};
-<span class="keyword">else</span>
-    alpha=.5; <span class="comment">% Transperacy</span>
-<span class="keyword">end</span>
+    <span class="comment">% -------- Defaults for positionals --------</span>
+    <span class="keyword">if</span> nargin&lt;4 || isempty(Box_dim),   Box_dim   = [1 1 1]; <span class="keyword">end</span>
+    <span class="keyword">if</span> nargin&lt;5 || isempty(color),     color     = [0 0 1]; <span class="keyword">end</span>
+    <span class="keyword">if</span> nargin&lt;6 || isempty(faceAlpha), faceAlpha = 0.5;     <span class="keyword">end</span>
 
-<span class="keyword">if</span> size(Box_dim,2) == 1
-    Box_dim(2)=Box_dim(1);
-    Box_dim(3)=Box_dim(2);
-<span class="keyword">end</span>
-</pre>
-<h2 id="5">Set the unit cell parameters</h2>
-<pre class="codeinput">
-<span class="keyword">if</span> size(Box_dim,2) == 9
-</pre>
-<pre class="codeinput">    lx=Box_dim(1);
-    ly=Box_dim(2);
-    lz=Box_dim(3);
-    xy=Box_dim(6);
-    xz=Box_dim(8);
-    yz=Box_dim(9);
-    a=lx;
-    b=(ly^2+xy^2)^.5;
-    c=(lz^2+xz^2+yz^2)^.5;
-    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
-    beta=rad2deg(acos(xz/c));
-    gamma=rad2deg(acos(xy/b));
-</pre>
-<h2 id="7">Set the unit cell parameters</h2>
-<pre class="codeinput">
-<span class="keyword">elseif</span> size(Box_dim,2) == 6
-    a = Box_dim(1);
-    b = Box_dim(2);
-    c = Box_dim(3);
-    alfa = Box_dim(4);
-    beta = Box_dim(5);
-    gamma = Box_dim(6);
-    lx = a;
-    xy = b * cos(deg2rad(gamma));
-    ly = (b^2-xy^2)^.5;
-    xz = c*cos(deg2rad(beta));
-    yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
-    lz = (c^2 - xz^2 - yz^2)^0.5;
-    Box_dim=[lx ly lz 0 0 xy 0 xz yz];
-    Box_dim(Box_dim&lt;0.00001&amp;Box_dim&gt;-0.00001)=0;
-    <span class="keyword">if</span> sum(find(Box_dim(4:end)))&lt;0.0001
-        Box_dim=Box_dim(1:3);
-    <span class="keyword">end</span>
-<span class="keyword">elseif</span> size(Box_dim,2) == 3
-    lx=Box_dim(1);
-    ly=Box_dim(2);
-    lz=Box_dim(3);
-    xy=0;
-    xz=0;
-    yz=0;
-    a=lx;
-    b=ly;
-    c=lz;
-    alfa=90;
-    beta=90;
-    gamma=90;
-<span class="keyword">end</span>
-</pre>
-<h2 id="9">Converting to radians</h2>
-<pre class="codeinput">alfa_rad=alfa*pi/180;
-beta_rad=beta*pi/180;
-gamma_rad=gamma*pi/180;
-</pre>
-<h2 id="10">Determine the two theta values for each h,k,l</h2>
-<pre class="codeinput">Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
-recip_d_hkl=1/Volume.*<span class="keyword">...</span>
-    (h.^2*b^2*c^2*sin(alfa_rad)^2+<span class="keyword">...</span>
-    k.^2*a^2*c^2*sin(beta_rad)^2+<span class="keyword">...</span>
-    l.^2*a^2*b^2*sin(gamma_rad)^2+<span class="keyword">...</span>
-    2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+<span class="keyword">...</span>
-    2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+<span class="keyword">...</span>
-    2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
-recip_d_hkl=real(recip_d_hkl);
+    <span class="comment">% -------- Manual NV parsing (robust; no inputParser) --------</span>
+    opts.SinglePlane     = false;
+    opts.PlaneLevel      = <span class="string">'auto'</span>;
+    opts.ExcludeBoundary = false;
 
-d_hkl=1./recip_d_hkl;
-</pre>
-<pre class="codeinput">H=[];
-K=[];
-L=[];
-</pre>
-<h2 id="12">Set the plane</h2>
-<pre class="codeinput">
-<span class="keyword">if</span> h ~= 0 &amp;&amp; k ~= 0 &amp;&amp; l ~= 0
-
-    <span class="comment">% Triangular plane</span>
-    h = 1 / h;    k = 1 / k;    l = 1 / l;
-
-    <span class="comment">%     high = max([abs(h),abs(k),abs(l)]);</span>
-    <span class="comment">%</span>
-    <span class="comment">%     h = h / high;</span>
-    <span class="comment">%     k = k / high;</span>
-    <span class="comment">%     l = l / high;</span>
-
-    subh = 0;    subk = 0;    subl = 0;
-    <span class="keyword">if</span> h &lt; 0
-        subh = - h;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> k &lt; 0
-        subk = - k;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> l &lt; 0
-        subl = - l;
-    <span class="keyword">end</span>
-    H = [h+subh, subh, subh];
-    K = [subk, k+subk, subk];
-    L = [subl, subl, l+subl];
-
-    <span class="keyword">if</span> h &lt; 0
-        H(H&gt;0)=1;
-        H(H==0)=1+h;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> k &lt; 0
-        K(K&gt;0)=1;
-        K(K==0)=1+k;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> l &lt; 0
-        L(L&gt;0)=1;
-        L(L==0)=1+l;
-    <span class="keyword">end</span>
-
-
-<span class="keyword">else</span>
-    <span class="comment">% Rectangular plane</span>
-    <span class="comment">% Count zeros</span>
-    zeros = 0;
-    <span class="keyword">if</span> h == 0
-        zeros = zeros + 1;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> k == 0
-        zeros = zeros + 1;
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> l == 0
-        zeros = zeros + 1;
-    <span class="keyword">end</span>
-    <span class="comment">% 2 zeros</span>
-    <span class="keyword">if</span> zeros == 2
-        <span class="keyword">if</span> h ~= 0
-            <span class="keyword">for</span> i=1:abs(h)
-                H = [H;i/h*[1 1 1 1]];
-                K = [K;    [0 0 1 1]];
-                L = [L;    [0 1 1 0]];
-                <span class="keyword">if</span> h &lt; 0
-                    H(H&lt;0)=H(H&lt;0)+1;
+    i = 1;
+    <span class="keyword">while</span> i &lt;= numel(varargin)
+        name = varargin{i};
+        <span class="keyword">if</span> ~(ischar(name) || (isstring(name)&amp;&amp;isscalar(name)))
+            error(<span class="string">'show_miller:InvalidNameValue'</span>, <span class="keyword">...</span>
+                  <span class="string">'Expected name&ndash;value pairs after positional arguments.'</span>);
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> i==numel(varargin)
+            error(<span class="string">'show_miller:MissingValue'</span>,<span class="string">'Missing value for "%s".'</span>, name);
+        <span class="keyword">end</span>
+        val = varargin{i+1};
+        <span class="keyword">switch</span> lower(char(name))
+            <span class="keyword">case</span> <span class="string">'singleplane'</span>
+                opts.SinglePlane = logical(val);
+            <span class="keyword">case</span> <span class="string">'planelevel'</span>
+                <span class="keyword">if</span> ischar(val) || isstring(val)
+                    opts.PlaneLevel = char(val);
+                <span class="keyword">else</span>
+                    opts.PlaneLevel = round(val);
                 <span class="keyword">end</span>
-            <span class="keyword">end</span>
-        <span class="keyword">elseif</span> k ~= 0
-            <span class="keyword">for</span> i=1:abs(k)
-                H = [H;    [0 0 1 1]];
-                K = [K;i/k*[1 1 1 1]];
-                L = [L;    [0 1 1 0]];
-                <span class="keyword">if</span> k &lt; 0
-                    K(K&lt;0)=K(K&lt;0)+1;
-                <span class="keyword">end</span>
-            <span class="keyword">end</span>
-        <span class="keyword">elseif</span> l ~= 0
-            <span class="keyword">for</span> i=1:abs(l)
-                H = [H;    [0 1 1 0]];
-                K = [K;    [0 0 1 1]];
-                L = [L;i/l*[1 1 1 1]];
-                <span class="keyword">if</span> l &lt; 0
-                    L(L&lt;0)=L(L&lt;0)+1;
-                <span class="keyword">end</span>
+            <span class="keyword">case</span> <span class="string">'excludeboundary'</span>
+                opts.ExcludeBoundary = logical(val);
+            <span class="keyword">case</span> <span class="string">'box_dim'</span>
+                Box_dim = val;
+            <span class="keyword">case</span> <span class="string">'color'</span>
+                color = val;
+            <span class="keyword">case</span> <span class="string">'facealpha'</span>
+                faceAlpha = val;
+            <span class="keyword">otherwise</span>
+                error(<span class="string">'show_miller:UnknownOption'</span>,<span class="string">'Unknown option "%s".'</span>, name);
+        <span class="keyword">end</span>
+        i = i + 2;
+    <span class="keyword">end</span>
+
+    <span class="comment">% -------- Validate &amp; normalize inputs --------</span>
+    h = round(h); k = round(k); l = round(l);
+    assert(any([h k l]~=0), <span class="string">'At least one of h,k,l must be non-zero.'</span>);
+
+    <span class="keyword">if</span> ischar(color) || (isstring(color)&amp;&amp;isscalar(color))
+        color = local_colorSpecToRGB(char(color));
+    <span class="keyword">end</span>
+
+    [FromFrac,~,~,~,~,~,~] = local_from_Boxdim(Box_dim);
+
+
+    <span class="comment">% -------- Fractional cube &amp; edges --------</span>
+    Vfrac = [0 0 0; 1 0 0; 0 1 0; 1 1 0; 0 0 1; 1 0 1; 0 1 1; 1 1 1];
+    E = [1 2;3 4;5 6;7 8; 1 3;2 4;5 7;6 8; 1 5;2 6;3 7;4 8]; <span class="comment">% 12 edges</span>
+
+    <span class="comment">% Integer n range that can intersect the cell</span>
+    svals = Vfrac*[h; k; l];
+    nmin  = ceil(min(svals));
+    nmax  = floor(max(svals));
+
+    hold_state = ishold; hold <span class="string">on</span>;
+
+    <span class="comment">% Draw wireframe of the (possibly skew) cell</span>
+    Vcart = (FromFrac * Vfrac')';
+    local_draw_cell_wireframe(Vcart, E);
+
+    hPatches = gobjects(0,1);
+
+    <span class="comment">% -------- Single plane mode --------</span>
+    <span class="keyword">if</span> opts.SinglePlane
+        <span class="keyword">if</span> ischar(opts.PlaneLevel) || isstring(opts.PlaneLevel)
+            <span class="comment">% 'auto': pick usable n nearest to 1</span>
+            nlist = nmin:nmax;
+            <span class="keyword">if</span> isempty(nlist), <span class="keyword">if</span> ~hold_state, hold <span class="string">off</span>; <span class="keyword">end</span>, <span class="keyword">return</span>; <span class="keyword">end</span>
+            [n_sel,Pc_sel] = local_pick_single_level(nlist, E, Vfrac, FromFrac, [h k l], opts.ExcludeBoundary);
+            <span class="keyword">if</span> isempty(n_sel), <span class="keyword">if</span> ~hold_state, hold <span class="string">off</span>; <span class="keyword">end</span>, <span class="keyword">return</span>; <span class="keyword">end</span>
+            hPatches(1,1) = patch(<span class="string">'XData'</span>,Pc_sel(:,1),<span class="string">'YData'</span>,Pc_sel(:,2),<span class="string">'ZData'</span>,Pc_sel(:,3), <span class="keyword">...</span>
+                                  <span class="string">'FaceColor'</span>,color,<span class="string">'FaceAlpha'</span>,faceAlpha,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>);
+        <span class="keyword">else</span>
+            n = round(opts.PlaneLevel);
+            [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,[h k l],n);
+            <span class="keyword">if</span> ok &amp;&amp; local_polygon_ok(Pfrac,opts.ExcludeBoundary)
+                hPatches(1,1) = patch(<span class="string">'XData'</span>,Pc(:,1),<span class="string">'YData'</span>,Pc(:,2),<span class="string">'ZData'</span>,Pc(:,3), <span class="keyword">...</span>
+                                      <span class="string">'FaceColor'</span>,color,<span class="string">'FaceAlpha'</span>,faceAlpha,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>);
             <span class="keyword">end</span>
         <span class="keyword">end</span>
-        <span class="comment">% 1 zero</span>
-    <span class="keyword">elseif</span> zeros == 1
-
-        subh = 0;        subk = 0;        subl = 0;
-
-        <span class="keyword">if</span> h == 0
-            k = (1/k);
-            l = (1/l);
-
-            <span class="comment">%             high = max([k, l]);</span>
-            <span class="comment">%             k = k/high;</span>
-            <span class="comment">%             l = l/high;</span>
-
-            <span class="keyword">if</span> k &lt; 0
-                subk = -k;
-            <span class="keyword">end</span>
-            <span class="keyword">if</span> l &lt; 0
-                subl = -l;
-            <span class="keyword">end</span>
-            <span class="comment">%</span>
-            H = [0 1 1 0];
-            K = [subk subk k+subk k+subk];
-            L = [l+subl l+subl subl subl];
-
-        <span class="keyword">end</span>
-        <span class="keyword">if</span> k == 0
-            h = (1/h);
-            l = (1/l);
-
-            <span class="comment">%             high = max([h, l]);</span>
-            <span class="comment">%             h = h/high;</span>
-            <span class="comment">%             l = l/high;</span>
-
-            <span class="keyword">if</span> h &lt; 0
-                subh = -h;
-            <span class="keyword">end</span>
-            <span class="keyword">if</span> l &lt; 0
-                subl = -l;
-            <span class="keyword">end</span>
-            K = [0 1 1 0];
-            H = [h+subh h+subh subh subh];
-            L = [subl subl l+subl l+subl];
-        <span class="keyword">end</span>
-        <span class="keyword">if</span> l == 0
-            k = (1/k);
-            h = (1/h);
-
-            <span class="comment">%             high = max([k, h]);</span>
-            <span class="comment">%             k = k/high;</span>
-            <span class="comment">%             h = h/high;</span>
-
-            <span class="keyword">if</span> k &lt; 0
-                subk = -k;
-            <span class="keyword">end</span>
-            <span class="keyword">if</span> h &lt; 0
-                subh = -h;
-            <span class="keyword">end</span>
-            L = [0 1 1 0];
-            K = [subk subk k+subk k+subk];
-            H = [h+subh h+subh subh subh];
-        <span class="keyword">end</span>
-
-        <span class="keyword">if</span> h &lt; 0
-            H(H&gt;0)=1;
-            H(H==0)=1+h;
-        <span class="keyword">end</span>
-        <span class="keyword">if</span> k &lt; 0
-            K(K&gt;0)=1;
-            K(K==0)=1+k;
-        <span class="keyword">end</span>
-        <span class="keyword">if</span> l &lt; 0
-            L(L&gt;0)=1;
-            L(L==0)=1+l;
-        <span class="keyword">end</span>
-
     <span class="keyword">else</span>
-        error(<span class="string">'Weird plane'</span>)
+        <span class="comment">% -------- All planes mode --------</span>
+        <span class="keyword">for</span> n = nmin:nmax
+            [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,[h k l],n);
+            <span class="keyword">if</span> ~ok || ~local_polygon_ok(Pfrac,opts.ExcludeBoundary), <span class="keyword">continue</span>; <span class="keyword">end</span>
+            hPatches(end+1,1) = patch(<span class="string">'XData'</span>,Pc(:,1),<span class="string">'YData'</span>,Pc(:,2),<span class="string">'ZData'</span>,Pc(:,3), <span class="keyword">...</span>
+                                      <span class="string">'FaceColor'</span>,color,<span class="string">'FaceAlpha'</span>,faceAlpha,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>); <span class="comment">%#ok&lt;AGROW&gt;</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% -------- Cosmetics --------</span>
+    axis <span class="string">equal</span>; view(3);
+    camlight(220,210,<span class="string">'infinite'</span>); rotate3d <span class="string">on</span>;
+    set(gcf,<span class="string">'Color'</span>,[1 1 1]); set(gca,<span class="string">'Color'</span>,[1 1 1],<span class="string">'FontSize'</span>,12);
+    xlabel(<span class="string">'a [&Aring;]'</span>); ylabel(<span class="string">'b [&Aring;]'</span>); zlabel(<span class="string">'c [&Aring;]'</span>);
+    axis <span class="string">normal</span> <span class="string">tight</span> <span class="string">equal</span>
+
+    <span class="keyword">if</span> ~hold_state, hold <span class="string">off</span>; <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ========================= Helpers =========================</span>
+
+<span class="keyword">function</span> tf = local_polygon_ok(Pfrac,excludeBoundary)
+    <span class="keyword">if</span> size(Pfrac,1) &lt; 3, tf=false; <span class="keyword">return</span>; <span class="keyword">end</span>
+    <span class="keyword">if</span> ~excludeBoundary, tf=true; <span class="keyword">return</span>; <span class="keyword">end</span>
+    area = local_polyarea3d(Pfrac);
+    tf = area &gt; 1e-12;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,hkl,n)
+    h=hkl(1); k=hkl(2); l=hkl(3);
+    P = zeros(0,3);
+    <span class="keyword">for</span> e = 1:size(E,1)
+        v0 = Vfrac(E(e,1),:); v1 = Vfrac(E(e,2),:);
+        dv = v1 - v0;
+        denom = h*dv(1) + k*dv(2) + l*dv(3);
+        num   = n - (h*v0(1) + k*v0(2) + l*v0(3));
+        <span class="keyword">if</span> abs(denom) &lt; 1e-14, <span class="keyword">continue</span>; <span class="keyword">end</span>
+        t = num/denom;
+        <span class="keyword">if</span> t &gt;= -1e-12 &amp;&amp; t &lt;= 1+1e-12
+            p = v0 + t*dv;
+            <span class="keyword">if</span> all(p &gt;= -1e-12 &amp; p &lt;= 1+1e-12)
+                P(end+1,:) = min(max(p,0),1); <span class="comment">%#ok&lt;AGROW&gt;</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> isempty(P), Pfrac=[]; Pc=[]; ok=false; <span class="keyword">return</span>; <span class="keyword">end</span>
+    P = uniquetol(P,1e-10,<span class="string">'ByRows'</span>,true);
+    <span class="keyword">if</span> size(P,1) &lt; 3, Pfrac=[]; Pc=[]; ok=false; <span class="keyword">return</span>; <span class="keyword">end</span>
+
+    <span class="comment">% order vertices in-plane</span>
+    c0   = mean(P,1);
+    nvec = [h k l];
+    ref  = [1 0 0];
+    <span class="keyword">if</span> norm(cross(nvec,ref)) &lt; 1e-12, ref = [0 1 0]; <span class="keyword">end</span>
+    <span class="keyword">if</span> norm(cross(nvec,ref)) &lt; 1e-12, ref = [0 0 1]; <span class="keyword">end</span>
+    u = cross(nvec,ref); nu = norm(u);
+    <span class="keyword">if</span> nu &lt; 1e-14
+        [~,~,Vsvd] = svd(bsxfun(@minus,P,c0),<span class="string">'econ'</span>);
+        u = Vsvd(:,1).'; v = Vsvd(:,2).';
+    <span class="keyword">else</span>
+        u = u/nu; v = cross(nvec,u); v = v/norm(v);
+    <span class="keyword">end</span>
+    A = [(P - c0)*u' (P - c0)*v'];
+    [~,idx] = sort(atan2(A(:,2),A(:,1)));
+    Pfrac = P(idx,:);
+    Pc = (FromFrac * Pfrac')';  <span class="comment">% to Cartesian</span>
+    ok = true;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [n_sel,Pc_sel] = local_pick_single_level(nlist, E, Vfrac, FromFrac, hkl, excludeBoundary)
+    [~,order] = sort(abs(nlist - 1),<span class="string">'ascend'</span>);  <span class="comment">% nearest to n=1</span>
+    n_sel = []; Pc_sel = [];
+    <span class="keyword">for</span> ii = 1:numel(order)
+        n = nlist(order(ii));
+        [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,hkl,n);
+        <span class="keyword">if</span> ~ok || ~local_polygon_ok(Pfrac,excludeBoundary), <span class="keyword">continue</span>; <span class="keyword">end</span>
+        n_sel = n; Pc_sel = Pc; <span class="keyword">return</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-Simbox = [a b c alfa beta gamma Volume];
-assignin(<span class="string">'base'</span>,<span class="string">'Simbox'</span>,Simbox);
+<span class="keyword">function</span> area = local_polyarea3d(Pfrac)
+    c0 = mean(Pfrac,1); m = size(Pfrac,1); acc = [0 0 0];
+    <span class="keyword">for</span> i=1:m
+        a = Pfrac(i,:) - c0;
+        b = Pfrac(mod(i,m)+1,:) - c0;
+        acc = acc + cross(a,b);
+    <span class="keyword">end</span>
+    area = 0.5 * norm(acc);
+<span class="keyword">end</span>
 
-v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+<span class="keyword">function</span> [FromFrac,a,b,c,alpha_deg,beta_deg,gamma_deg] = local_from_Boxdim(Box_dim)
+    <span class="keyword">if</span> numel(Box_dim)==3
+        a=Box_dim(1); b=Box_dim(2); c=Box_dim(3);
+        alpha_deg=90; beta_deg=90; gamma_deg=90;
+    <span class="keyword">elseif</span> numel(Box_dim)==6
+        a=Box_dim(1); b=Box_dim(2); c=Box_dim(3);
+        alpha_deg=Box_dim(4); beta_deg=Box_dim(5); gamma_deg=Box_dim(6);
+    <span class="keyword">elseif</span> numel(Box_dim)==9
+        lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+        xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+        a=lx; b = hypot(ly,xy); c = sqrt(lz^2 + xz^2 + yz^2);
+        alpha_deg = rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+        beta_deg  = rad2deg(acos(xz/c));
+        gamma_deg = rad2deg(acos(xy/b));
+    <span class="keyword">else</span>
+        error(<span class="string">'Box_dim must have 3, 6, or 9 elements.'</span>);
+    <span class="keyword">end</span>
+    ga = deg2rad(gamma_deg); be = deg2rad(beta_deg); al = deg2rad(alpha_deg);
+    v = sqrt(1 - cos(al)^2 - cos(be)^2 - cos(ga)^2 + 2*cos(al)*cos(be)*cos(ga));
+    FromFrac = [ a, b*cos(ga),  c*cos(be); <span class="keyword">...</span>
+                 0, b*sin(ga),  c*(cos(al)-cos(be)*cos(ga))/sin(ga); <span class="keyword">...</span>
+                 0,        0,   c*v/sin(ga) ];
+<span class="keyword">end</span>
 
-FromFrac=[a b*cos(deg2rad(gamma))  c*cos(deg2rad(beta));<span class="keyword">...</span>
-    0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));<span class="keyword">...</span>
-    0 0                      c*v/sin(deg2rad(gamma))];
-
-max_order=max([size(H,1) size(K,1) size(L,1)]);
-max_dim=max([size(H,2) size(K,2) size(L,2)]);
-<span class="keyword">for</span> i=1:max_order
-    <span class="keyword">for</span> j=1:max_dim
-        HKL=FromFrac*[H(i,j) K(i,j) L(i,j)]';
-        H(i,j)=HKL(1);
-        K(i,j)=HKL(2);
-        L(i,j)=HKL(3);
+<span class="keyword">function</span> local_draw_cell_wireframe(Vcart, E)
+    lw = 2.0; ec = [0 0 1];
+    <span class="keyword">for</span> i = 1:size(E,1)
+        p = Vcart(E(i,1),:); q = Vcart(E(i,2),:);
+        line([p(1),q(1)],[p(2),q(2)],[p(3),q(3)],<span class="string">'Color'</span>,ec,<span class="string">'LineWidth'</span>,lw);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-hold <span class="string">on</span>;
-cameratoolbar
-rotate3d <span class="string">on</span>;
-camlight(220,210,<span class="string">'infinite'</span>);
-set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'Color'</span>,[1 1 1]);
-set(gca,<span class="string">'Color'</span>,[1 1 1],<span class="string">'FontSize'</span>,24); <span class="comment">% 'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)]</span>
-
-fig = gcf;
-fig.Color = [1 1 1];
-xlabel(<span class="string">'a [&Aring;]'</span>); ylabel(<span class="string">'b [&Aring;]'</span>); zlabel(<span class="string">'c [&Aring;]'</span>);
-<span class="comment">% view([0,0]);</span>
-
-<span class="comment">% if nargin&gt;5</span>
-<span class="comment">%     if varargin{3}==0</span>
-draw_box_atom(Box_dim,[0 0 0.8],2);
-<span class="comment">%     end</span>
-<span class="comment">% end</span>
-
-hold <span class="string">on</span>;
-assignin(<span class="string">'caller'</span>,<span class="string">'H'</span>,H);
-assignin(<span class="string">'caller'</span>,<span class="string">'K'</span>,K);
-assignin(<span class="string">'caller'</span>,<span class="string">'L'</span>,L);
-
-<span class="keyword">for</span> i=1:size(H,1)
-    patch(H(i,:),K(i,:),L(i,:),color,<span class="string">'FaceAlpha'</span>,alpha)
+<span class="keyword">function</span> rgb = local_colorSpecToRGB(c)
+    <span class="keyword">switch</span> char(c)
+        <span class="keyword">case</span> <span class="string">'b'</span>, rgb=[0 0 1];
+        <span class="keyword">case</span> <span class="string">'g'</span>, rgb=[0 1 0];
+        <span class="keyword">case</span> <span class="string">'r'</span>, rgb=[1 0 0];
+        <span class="keyword">case</span> <span class="string">'c'</span>, rgb=[0 1 1];
+        <span class="keyword">case</span> <span class="string">'m'</span>, rgb=[1 0 1];
+        <span class="keyword">case</span> <span class="string">'y'</span>, rgb=[1 1 0];
+        <span class="keyword">case</span> <span class="string">'k'</span>, rgb=[0 0 0];
+        <span class="keyword">case</span> <span class="string">'w'</span>, rgb=[1 1 1];
+        <span class="keyword">otherwise</span>, error(<span class="string">'Unknown color spec: %s'</span>, c);
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
-view(3)
-</pre>
-<pre class="codeinput">
-<span class="comment">% xlim([0 1]);ylim([0 1]);zlim([0 1])</span>
 </pre>
 <p class="footer">
 <br>
@@ -454,8 +355,6 @@ view(3)
 ##### SOURCE BEGIN #####
 %%  show_miller.m
 % * This function draws up the h,k,l Miller plane within the Box_dim/Cell
-% * This function is inspired by miller.m, written by Lucas Ennes:
-% * Miller index (https://www.mathworks.com/matlabcentral/fileexchange/68887-miller-index)
 
 %% Version
 % 3.00
@@ -464,317 +363,256 @@ view(3)
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # show_miller(h,k,l) % h k l designates the Miller plane of a ortohogonal 1x1x1 cell
-% # show_miller(h,k,l,Box_dim) % the 1x3 or the 1x9 Box_dim variable
-% # show_miller(h,k,l,Box_dim,[0 0 1]) % Color
-% # show_miller(h,k,l,Box_dim,[0 0 1],0.5) % Transperancy
+% #  show_miller(h,k,l)
+% #  show_miller(h,k,l,Box_dim)             % 3, 6, or 9 elements
+% #  show_miller(h,k,l,Box_dim,Color)       % Color: 'b' or [r g b]
+% #  show_miller(h,k,l,Box_dim,Color,FaceAlpha)   % FaceAlpha in [0..1]
+%
+% Name–Value options (pass after the positionals above):
+%   'SinglePlane'     true/false (default false)
+%   'PlaneLevel'      integer n or 'auto' (default 'auto') for hx+ky+lz = n
+%   'ExcludeBoundary' true/false (default false): suppress edge/vertex-only contacts
+%   'Box_dim'         override positional Box_dim if desired (3/6/9)
+%   'Color'           override positional Color
+%   'FaceAlpha'       override positional FaceAlpha
+%
+% Notes
+% • Handles ANY sign combination (e.g., -1 -1 1, -1 -1 -1).
+% • Determines all integer n that intersect the unit fractional cell by scanning
+%   s=hx+ky+lz over the 8 corners; optionally draws a single plane.
+% • Box_dim supports [a b c], [a b c α β γ], or [lx ly lz 0 0 xy 0 xz yz].
+%
+% Returns: hPatches (column vector of patch handles).
 
-function show_miller(h,k,l,varargin)
+function hPatches = show_miller(h,k,l,Box_dim,color,faceAlpha, varargin)
 
-if nargin==3
-    Box_dim=[1 1 1];
-    color='b';
-elseif nargin==4
-    Box_dim=varargin{1};
-    color='b';
-elseif nargin>4
-    Box_dim=varargin{1};
-    color=varargin{2};
-end
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Defaults for positionals REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    if nargin<4 || isempty(Box_dim),   Box_dim   = [1 1 1]; end
+    if nargin<5 || isempty(color),     color     = [0 0 1]; end
+    if nargin<6 || isempty(faceAlpha), faceAlpha = 0.5;     end
 
-if nargin>5
-    alpha=1-varargin{3};
-else
-    alpha=.5; % Transperacy
-end
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Manual NV parsing (robust; no inputParser) REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    opts.SinglePlane     = false;
+    opts.PlaneLevel      = 'auto';
+    opts.ExcludeBoundary = false;
 
-if size(Box_dim,2) == 1
-    Box_dim(2)=Box_dim(1);
-    Box_dim(3)=Box_dim(2);
-end
-
-%% Set the unit cell parameters
-if size(Box_dim,2) == 9
-    lx=Box_dim(1);
-    ly=Box_dim(2);
-    lz=Box_dim(3);
-    xy=Box_dim(6);
-    xz=Box_dim(8);
-    yz=Box_dim(9);
-    a=lx;
-    b=(ly^2+xy^2)^.5;
-    c=(lz^2+xz^2+yz^2)^.5;
-    alfa=rad2deg(acos((ly*yz+xy*xz)/(b*c)));
-    beta=rad2deg(acos(xz/c));
-    gamma=rad2deg(acos(xy/b));
-    %% Set the unit cell parameters
-elseif size(Box_dim,2) == 6
-    a = Box_dim(1);
-    b = Box_dim(2);
-    c = Box_dim(3);
-    alfa = Box_dim(4);
-    beta = Box_dim(5);
-    gamma = Box_dim(6);
-    lx = a;
-    xy = b * cos(deg2rad(gamma));
-    ly = (b^2-xy^2)^.5;
-    xz = c*cos(deg2rad(beta));
-    yz = (b*c*cos(deg2rad(alfa))-xy*xz)/ly;
-    lz = (c^2 - xz^2 - yz^2)^0.5;
-    Box_dim=[lx ly lz 0 0 xy 0 xz yz];
-    Box_dim(Box_dim<0.00001&Box_dim>-0.00001)=0;
-    if sum(find(Box_dim(4:end)))<0.0001
-        Box_dim=Box_dim(1:3);
-    end
-elseif size(Box_dim,2) == 3
-    lx=Box_dim(1);
-    ly=Box_dim(2);
-    lz=Box_dim(3);
-    xy=0;
-    xz=0;
-    yz=0;
-    a=lx;
-    b=ly;
-    c=lz;
-    alfa=90;
-    beta=90;
-    gamma=90;
-end
-
-%% Converting to radians
-alfa_rad=alfa*pi/180;
-beta_rad=beta*pi/180;
-gamma_rad=gamma*pi/180;
-
-%% Determine the two theta values for each h,k,l
-Volume=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
-recip_d_hkl=1/Volume.*...
-    (h.^2*b^2*c^2*sin(alfa_rad)^2+...
-    k.^2*a^2*c^2*sin(beta_rad)^2+...
-    l.^2*a^2*b^2*sin(gamma_rad)^2+...
-    2*h.*k*a*b*c^2*(cos(alfa_rad)*cos(beta_rad)-cos(gamma_rad))+...
-    2*k.*l*a^2*b*c*(cos(beta_rad)*cos(gamma_rad)-cos(alfa_rad))+...
-    2*h.*l*a*b^2*c*(cos(alfa_rad)*cos(gamma_rad)-cos(beta_rad))).^(0.5);
-recip_d_hkl=real(recip_d_hkl);
-
-d_hkl=1./recip_d_hkl;
-
-%%
-
-H=[];
-K=[];
-L=[];
-%% Set the plane
-if h ~= 0 && k ~= 0 && l ~= 0
-    
-    % Triangular plane
-    h = 1 / h;    k = 1 / k;    l = 1 / l;
-    
-    %     high = max([abs(h),abs(k),abs(l)]);
-    %
-    %     h = h / high;
-    %     k = k / high;
-    %     l = l / high;
-    
-    subh = 0;    subk = 0;    subl = 0;
-    if h < 0
-        subh = - h;
-    end
-    if k < 0
-        subk = - k;
-    end
-    if l < 0
-        subl = - l;
-    end
-    H = [h+subh, subh, subh];
-    K = [subk, k+subk, subk];
-    L = [subl, subl, l+subl];
-    
-    if h < 0
-        H(H>0)=1;
-        H(H==0)=1+h;
-    end
-    if k < 0
-        K(K>0)=1;
-        K(K==0)=1+k;
-    end
-    if l < 0
-        L(L>0)=1;
-        L(L==0)=1+l;
-    end
-    
-    
-else
-    % Rectangular plane
-    % Count zeros
-    zeros = 0;
-    if h == 0
-        zeros = zeros + 1;
-    end
-    if k == 0
-        zeros = zeros + 1;
-    end
-    if l == 0
-        zeros = zeros + 1;
-    end
-    % 2 zeros
-    if zeros == 2
-        if h ~= 0
-            for i=1:abs(h)
-                H = [H;i/h*[1 1 1 1]];
-                K = [K;    [0 0 1 1]];
-                L = [L;    [0 1 1 0]];
-                if h < 0
-                    H(H<0)=H(H<0)+1;
+    i = 1;
+    while i <= numel(varargin)
+        name = varargin{i};
+        if ~(ischar(name) || (isstring(name)&&isscalar(name)))
+            error('show_miller:InvalidNameValue', ...
+                  'Expected name–value pairs after positional arguments.');
+        end
+        if i==numel(varargin)
+            error('show_miller:MissingValue','Missing value for "%s".', name);
+        end
+        val = varargin{i+1};
+        switch lower(char(name))
+            case 'singleplane'
+                opts.SinglePlane = logical(val);
+            case 'planelevel'
+                if ischar(val) || isstring(val)
+                    opts.PlaneLevel = char(val);
+                else
+                    opts.PlaneLevel = round(val);
                 end
-            end
-        elseif k ~= 0
-            for i=1:abs(k)
-                H = [H;    [0 0 1 1]];
-                K = [K;i/k*[1 1 1 1]];
-                L = [L;    [0 1 1 0]];
-                if k < 0
-                    K(K<0)=K(K<0)+1;
-                end
-            end
-        elseif l ~= 0
-            for i=1:abs(l)
-                H = [H;    [0 1 1 0]];
-                K = [K;    [0 0 1 1]];
-                L = [L;i/l*[1 1 1 1]];
-                if l < 0
-                    L(L<0)=L(L<0)+1;
-                end
+            case 'excludeboundary'
+                opts.ExcludeBoundary = logical(val);
+            case 'box_dim'
+                Box_dim = val;
+            case 'color'
+                color = val;
+            case 'facealpha'
+                faceAlpha = val;
+            otherwise
+                error('show_miller:UnknownOption','Unknown option "%s".', name);
+        end
+        i = i + 2;
+    end
+
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Validate & normalize inputs REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    h = round(h); k = round(k); l = round(l);
+    assert(any([h k l]~=0), 'At least one of h,k,l must be non-zero.');
+
+    if ischar(color) || (isstring(color)&&isscalar(color))
+        color = local_colorSpecToRGB(char(color));
+    end
+
+    [FromFrac,~,~,~,~,~,~] = local_from_Boxdim(Box_dim);
+
+
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Fractional cube & edges REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    Vfrac = [0 0 0; 1 0 0; 0 1 0; 1 1 0; 0 0 1; 1 0 1; 0 1 1; 1 1 1];
+    E = [1 2;3 4;5 6;7 8; 1 3;2 4;5 7;6 8; 1 5;2 6;3 7;4 8]; % 12 edges
+
+    % Integer n range that can intersect the cell
+    svals = Vfrac*[h; k; l];
+    nmin  = ceil(min(svals));
+    nmax  = floor(max(svals));
+
+    hold_state = ishold; hold on;
+
+    % Draw wireframe of the (possibly skew) cell
+    Vcart = (FromFrac * Vfrac')';
+    local_draw_cell_wireframe(Vcart, E);
+
+    hPatches = gobjects(0,1);
+
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Single plane mode REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    if opts.SinglePlane
+        if ischar(opts.PlaneLevel) || isstring(opts.PlaneLevel)
+            % 'auto': pick usable n nearest to 1
+            nlist = nmin:nmax;
+            if isempty(nlist), if ~hold_state, hold off; end, return; end
+            [n_sel,Pc_sel] = local_pick_single_level(nlist, E, Vfrac, FromFrac, [h k l], opts.ExcludeBoundary);
+            if isempty(n_sel), if ~hold_state, hold off; end, return; end
+            hPatches(1,1) = patch('XData',Pc_sel(:,1),'YData',Pc_sel(:,2),'ZData',Pc_sel(:,3), ...
+                                  'FaceColor',color,'FaceAlpha',faceAlpha,'EdgeColor','none');
+        else
+            n = round(opts.PlaneLevel);
+            [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,[h k l],n);
+            if ok && local_polygon_ok(Pfrac,opts.ExcludeBoundary)
+                hPatches(1,1) = patch('XData',Pc(:,1),'YData',Pc(:,2),'ZData',Pc(:,3), ...
+                                      'FaceColor',color,'FaceAlpha',faceAlpha,'EdgeColor','none');
             end
         end
-        % 1 zero
-    elseif zeros == 1
-        
-        subh = 0;        subk = 0;        subl = 0;
-        
-        if h == 0
-            k = (1/k);
-            l = (1/l);
-            
-            %             high = max([k, l]);
-            %             k = k/high;
-            %             l = l/high;
-            
-            if k < 0
-                subk = -k;
-            end
-            if l < 0
-                subl = -l;
-            end
-            %
-            H = [0 1 1 0];
-            K = [subk subk k+subk k+subk];
-            L = [l+subl l+subl subl subl];
-            
-        end
-        if k == 0
-            h = (1/h);
-            l = (1/l);
-            
-            %             high = max([h, l]);
-            %             h = h/high;
-            %             l = l/high;
-            
-            if h < 0
-                subh = -h;
-            end
-            if l < 0
-                subl = -l;
-            end
-            K = [0 1 1 0];
-            H = [h+subh h+subh subh subh];
-            L = [subl subl l+subl l+subl];
-        end
-        if l == 0
-            k = (1/k);
-            h = (1/h);
-            
-            %             high = max([k, h]);
-            %             k = k/high;
-            %             h = h/high;
-            
-            if k < 0
-                subk = -k;
-            end
-            if h < 0
-                subh = -h;
-            end
-            L = [0 1 1 0];
-            K = [subk subk k+subk k+subk];
-            H = [h+subh h+subh subh subh];
-        end
-        
-        if h < 0
-            H(H>0)=1;
-            H(H==0)=1+h;
-        end
-        if k < 0
-            K(K>0)=1;
-            K(K==0)=1+k;
-        end
-        if l < 0
-            L(L>0)=1;
-            L(L==0)=1+l;
-        end
-        
     else
-        error('Weird plane')
+        % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH All planes mode REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+        for n = nmin:nmax
+            [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,[h k l],n);
+            if ~ok || ~local_polygon_ok(Pfrac,opts.ExcludeBoundary), continue; end
+            hPatches(end+1,1) = patch('XData',Pc(:,1),'YData',Pc(:,2),'ZData',Pc(:,3), ...
+                                      'FaceColor',color,'FaceAlpha',faceAlpha,'EdgeColor','none'); %#ok<AGROW>
+        end
+    end
+
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Cosmetics REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+    axis equal; view(3);
+    camlight(220,210,'infinite'); rotate3d on;
+    set(gcf,'Color',[1 1 1]); set(gca,'Color',[1 1 1],'FontSize',12);
+    xlabel('a [Å]'); ylabel('b [Å]'); zlabel('c [Å]');
+    axis normal tight equal
+
+    if ~hold_state, hold off; end
+end
+
+% ========================= Helpers =========================
+
+function tf = local_polygon_ok(Pfrac,excludeBoundary)
+    if size(Pfrac,1) < 3, tf=false; return; end
+    if ~excludeBoundary, tf=true; return; end
+    area = local_polyarea3d(Pfrac);
+    tf = area > 1e-12;
+end
+
+function [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,hkl,n)
+    h=hkl(1); k=hkl(2); l=hkl(3);
+    P = zeros(0,3);
+    for e = 1:size(E,1)
+        v0 = Vfrac(E(e,1),:); v1 = Vfrac(E(e,2),:);
+        dv = v1 - v0;
+        denom = h*dv(1) + k*dv(2) + l*dv(3);
+        num   = n - (h*v0(1) + k*v0(2) + l*v0(3));
+        if abs(denom) < 1e-14, continue; end
+        t = num/denom;
+        if t >= -1e-12 && t <= 1+1e-12
+            p = v0 + t*dv;
+            if all(p >= -1e-12 & p <= 1+1e-12)
+                P(end+1,:) = min(max(p,0),1); %#ok<AGROW>
+            end
+        end
+    end
+    if isempty(P), Pfrac=[]; Pc=[]; ok=false; return; end
+    P = uniquetol(P,1e-10,'ByRows',true);
+    if size(P,1) < 3, Pfrac=[]; Pc=[]; ok=false; return; end
+
+    % order vertices in-plane
+    c0   = mean(P,1);
+    nvec = [h k l];
+    ref  = [1 0 0];
+    if norm(cross(nvec,ref)) < 1e-12, ref = [0 1 0]; end
+    if norm(cross(nvec,ref)) < 1e-12, ref = [0 0 1]; end
+    u = cross(nvec,ref); nu = norm(u);
+    if nu < 1e-14
+        [~,~,Vsvd] = svd(bsxfun(@minus,P,c0),'econ');
+        u = Vsvd(:,1).'; v = Vsvd(:,2).';
+    else
+        u = u/nu; v = cross(nvec,u); v = v/norm(v);
+    end
+    A = [(P - c0)*u' (P - c0)*v'];
+    [~,idx] = sort(atan2(A(:,2),A(:,1)));
+    Pfrac = P(idx,:);
+    Pc = (FromFrac * Pfrac')';  % to Cartesian
+    ok = true;
+end
+
+function [n_sel,Pc_sel] = local_pick_single_level(nlist, E, Vfrac, FromFrac, hkl, excludeBoundary)
+    [~,order] = sort(abs(nlist - 1),'ascend');  % nearest to n=1
+    n_sel = []; Pc_sel = [];
+    for ii = 1:numel(order)
+        n = nlist(order(ii));
+        [Pfrac,Pc,ok] = local_intersect_polygon(E,Vfrac,FromFrac,hkl,n);
+        if ~ok || ~local_polygon_ok(Pfrac,excludeBoundary), continue; end
+        n_sel = n; Pc_sel = Pc; return
     end
 end
 
-Simbox = [a b c alfa beta gamma Volume];
-assignin('base','Simbox',Simbox);
+function area = local_polyarea3d(Pfrac)
+    c0 = mean(Pfrac,1); m = size(Pfrac,1); acc = [0 0 0];
+    for i=1:m
+        a = Pfrac(i,:) - c0;
+        b = Pfrac(mod(i,m)+1,:) - c0;
+        acc = acc + cross(a,b);
+    end
+    area = 0.5 * norm(acc);
+end
 
-v=(1 - cos(deg2rad(alfa))^2 - cos(deg2rad(beta))^2 - cos(deg2rad(gamma))^2 + 2*cos(deg2rad(alfa))*cos(deg2rad(beta))*cos(deg2rad(gamma)))^.5;
+function [FromFrac,a,b,c,alpha_deg,beta_deg,gamma_deg] = local_from_Boxdim(Box_dim)
+    if numel(Box_dim)==3
+        a=Box_dim(1); b=Box_dim(2); c=Box_dim(3);
+        alpha_deg=90; beta_deg=90; gamma_deg=90;
+    elseif numel(Box_dim)==6
+        a=Box_dim(1); b=Box_dim(2); c=Box_dim(3);
+        alpha_deg=Box_dim(4); beta_deg=Box_dim(5); gamma_deg=Box_dim(6);
+    elseif numel(Box_dim)==9
+        lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+        xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+        a=lx; b = hypot(ly,xy); c = sqrt(lz^2 + xz^2 + yz^2);
+        alpha_deg = rad2deg(acos((ly*yz+xy*xz)/(b*c)));
+        beta_deg  = rad2deg(acos(xz/c));
+        gamma_deg = rad2deg(acos(xy/b));
+    else
+        error('Box_dim must have 3, 6, or 9 elements.');
+    end
+    ga = deg2rad(gamma_deg); be = deg2rad(beta_deg); al = deg2rad(alpha_deg);
+    v = sqrt(1 - cos(al)^2 - cos(be)^2 - cos(ga)^2 + 2*cos(al)*cos(be)*cos(ga));
+    FromFrac = [ a, b*cos(ga),  c*cos(be); ...
+                 0, b*sin(ga),  c*(cos(al)-cos(be)*cos(ga))/sin(ga); ...
+                 0,        0,   c*v/sin(ga) ];
+end
 
-FromFrac=[a b*cos(deg2rad(gamma))  c*cos(deg2rad(beta));...
-    0 b*sin(deg2rad(gamma))  c*(cos(deg2rad(alfa))-cos(deg2rad(beta))*cos(deg2rad(gamma)))/sin(deg2rad(gamma));...
-    0 0                      c*v/sin(deg2rad(gamma))];
-
-max_order=max([size(H,1) size(K,1) size(L,1)]);
-max_dim=max([size(H,2) size(K,2) size(L,2)]);
-for i=1:max_order
-    for j=1:max_dim
-        HKL=FromFrac*[H(i,j) K(i,j) L(i,j)]';
-        H(i,j)=HKL(1);
-        K(i,j)=HKL(2);
-        L(i,j)=HKL(3);
+function local_draw_cell_wireframe(Vcart, E)
+    lw = 2.0; ec = [0 0 1];
+    for i = 1:size(E,1)
+        p = Vcart(E(i,1),:); q = Vcart(E(i,2),:);
+        line([p(1),q(1)],[p(2),q(2)],[p(3),q(3)],'Color',ec,'LineWidth',lw);
     end
 end
 
-hold on;
-cameratoolbar
-rotate3d on;
-camlight(220,210,'infinite');
-set(gcf,'Visible','on','Color',[1 1 1]);
-set(gca,'Color',[1 1 1],'FontSize',24); % 'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) (zhi-zlo)/(zhi-zlo)]
-
-fig = gcf;
-fig.Color = [1 1 1];
-xlabel('a [Å]'); ylabel('b [Å]'); zlabel('c [Å]');
-% view([0,0]);
-
-% if nargin>5
-%     if varargin{3}==0
-draw_box_atom(Box_dim,[0 0 0.8],2);
-%     end
-% end
-
-hold on;
-assignin('caller','H',H);
-assignin('caller','K',K);
-assignin('caller','L',L);
-
-for i=1:size(H,1)
-    patch(H(i,:),K(i,:),L(i,:),color,'FaceAlpha',alpha)
+function rgb = local_colorSpecToRGB(c)
+    switch char(c)
+        case 'b', rgb=[0 0 1];
+        case 'g', rgb=[0 1 0];
+        case 'r', rgb=[1 0 0];
+        case 'c', rgb=[0 1 1];
+        case 'm', rgb=[1 0 1];
+        case 'y', rgb=[1 1 0];
+        case 'k', rgb=[0 0 0];
+        case 'w', rgb=[1 1 1];
+        otherwise, error('Unknown color spec: %s', c);
+    end
 end
-view(3)
-% xlim([0 1]);ylim([0 1]);zlim([0 1])
+
 
 
 ##### SOURCE END #####

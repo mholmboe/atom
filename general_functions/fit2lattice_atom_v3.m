@@ -1,4 +1,4 @@
-%% fit2lattice_atom.m
+%% fit2lattice_atom_v3.m
 % * This is a special function imports a model structure of a single molecule
 % * like PO43- and tries to fit it into a crystal lattice possibly holding
 % * multiple such sites. Any waters or counter-ions (see lin 39) can be

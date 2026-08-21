@@ -1,3 +1,17 @@
+%% ff_plotfile.m
+% * This helper script plots the nonbonded potentials of selected atomtype pairs
+% * for several forcefield (ff) structs, using the nonbonded_ff() function.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # ff_plotfile % Edit the atomtypes and ffstrings at the top of the script
+%
+
 close all;
 
 %%

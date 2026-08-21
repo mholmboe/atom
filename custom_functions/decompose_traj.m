@@ -1,3 +1,17 @@
+%% decompose_traj.m
+% * This template function can be used to extract some trajectory components
+% * from a Gromacs .xtc or .trr file, using libxdrfile from mxdrfile.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # decompose_traj('traj.trr','out.trr')
+%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% This template function can be used to extract some trajectory components
 %% from a Gromacs .xtc or .trr files. Hacked by MHolmboe

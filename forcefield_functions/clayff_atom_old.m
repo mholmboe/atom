@@ -1,4 +1,4 @@
-%% clayff_atom.m
+%% clayff_atom_old.m
 % * This function tries to assign all atoms according to the clayff atom 
 % types (with modified atom names by MHolmboe), with some modifications
 % for edges, + ion pair potentials from Joung and Cheatham, 2008 + some 

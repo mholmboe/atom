@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>minff_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="minff_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -592,6 +592,10 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                         atom(i).fftype = {<span class="string">'Ops'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeFe'</span>) || strcmp(Neighbours, <span class="string">'AlFeoFeo'</span>) || strcmp(Neighbours, <span class="string">'AltFeFe'</span>) || strcmp(Neighbours, <span class="string">'AltFeoFeo'</span>)
                         atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeFet'</span>) || strcmp(Neighbours, <span class="string">'AlFeoFet'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
+                    <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlAltFe'</span>) || strcmp(Neighbours, <span class="string">'AlAltFeo'</span>) || strcmp(Neighbours, <span class="string">'AltAlFe'</span>) || strcmp(Neighbours, <span class="string">'AltAlFeo'</span>)
+                        atom(i).fftype = {<span class="string">'Ops'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeH'</span>) || strcmp(Neighbours, <span class="string">'AlFeoH'</span>)
                         atom(i).fftype = {<span class="string">'Oh'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AlFeSi'</span>) || strcmp(Neighbours, <span class="string">'AlFeoSi'</span>)
@@ -612,7 +616,7 @@ Add_extra_H=0; <span class="comment">% Add H to get positive edge As a final ste
                         atom(i).fftype = {<span class="string">'Odsub'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AltH'</span>)
                         atom(i).fftype = {<span class="string">'Oh'</span>};
-                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'AltMgh'</span>, 6) || strcmp(Neighbours, <span class="string">'AltMgoMgoMgo'</span>)
+                    <span class="keyword">elseif</span> strncmp(Neighbours, <span class="string">'AltMgh'</span>, 6) || strcmp(Neighbours, <span class="string">'AltMgMgMg'</span>) || strcmp(Neighbours, <span class="string">'AltMgoMgoMgo'</span>) || strcmp(Neighbours, <span class="string">'AltMghMghMgh'</span>)
                         atom(i).fftype = {<span class="string">'Ops'</span>};
                     <span class="keyword">elseif</span> strcmp(Neighbours, <span class="string">'AltSi'</span>)
                         atom(i).fftype = {<span class="string">'Obs'</span>};
@@ -787,7 +791,7 @@ temp=element_atom(atom);
     [atom(ind_Hw2).type]=deal({<span class="string">'HW2'</span>});
 <span class="keyword">end</span>
 
-atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alo'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo3'</span> <span class="string">'Fet3'</span> <span class="string">'Fee3'</span> <span class="string">'Feo2'</span> <span class="string">'Fet2'</span> <span class="string">'Fee2'</span> <span class="string">'Fs'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{<span class="string">'Al'</span> <span class="string">'Alo'</span> <span class="string">'Alt'</span> <span class="string">'Ale'</span> <span class="string">'Tio'</span> <span class="string">'Feo3'</span> <span class="string">'Fet3'</span> <span class="string">'Fee3'</span> <span class="string">'Feo2'</span> <span class="string">'Fet2'</span> <span class="string">'Fee2'</span> <span class="string">'Fs'</span> <span class="string">'Na'</span> <span class="string">'K'</span> <span class="string">'Cs'</span> <span class="string">'Mgo'</span> <span class="string">'Mgh'</span> <span class="string">'Mge'</span> <span class="string">'Cao'</span> <span class="string">'Cah'</span> <span class="string">'Ca'</span> <span class="string">'Cl'</span> <span class="string">'Sit'</span> <span class="string">'Si'</span> <span class="string">'Sio'</span> <span class="string">'Site'</span> <span class="string">'Lio'</span> <span class="string">'H'</span>},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 2 -1 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 <span class="keyword">if</span> abs(round2dec(sum([atom.charge])) - sum([atom.charge]))&gt;0.0001
     disp(<span class="string">'Initial total charge!'</span>)
@@ -1367,6 +1371,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlFeFe') || strcmp(Neighbours, 'AlFeoFeo') || strcmp(Neighbours, 'AltFeFe') || strcmp(Neighbours, 'AltFeoFeo')
                         atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlFeFet') || strcmp(Neighbours, 'AlFeoFet')
+                        atom(i).fftype = {'Ops'};
+                    elseif strcmp(Neighbours, 'AlAltFe') || strcmp(Neighbours, 'AlAltFeo') || strcmp(Neighbours, 'AltAlFe') || strcmp(Neighbours, 'AltAlFeo')
+                        atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlFeH') || strcmp(Neighbours, 'AlFeoH')
                         atom(i).fftype = {'Oh'};
                     elseif strcmp(Neighbours, 'AlFeSi') || strcmp(Neighbours, 'AlFeoSi')
@@ -1387,7 +1395,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Odsub'};
                     elseif strcmp(Neighbours, 'AltH')
                         atom(i).fftype = {'Oh'};
-                    elseif strncmp(Neighbours, 'AltMgh', 6) || strcmp(Neighbours, 'AltMgoMgoMgo')
+                    elseif strncmp(Neighbours, 'AltMgh', 6) || strcmp(Neighbours, 'AltMgMgMg') || strcmp(Neighbours, 'AltMgoMgoMgo') || strcmp(Neighbours, 'AltMghMghMgh')
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AltSi')
                         atom(i).fftype = {'Obs'};
@@ -1561,7 +1569,7 @@ elseif sum(strncmp([atom.type],'OW',2))>0
     [atom(ind_Hw2).type]=deal({'HW2'});
 end
 
-atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 1.884 1.884 1.884 2.413 0.86 0.4]);
+atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Ca' 'Cl' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},[1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 2 -1 1.884 1.884 1.884 2.413 0.86 0.4]);
 
 if abs(round2dec(sum([atom.charge])) - sum([atom.charge]))>0.0001
     disp('Initial total charge!')

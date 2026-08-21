@@ -1,3 +1,17 @@
+%% change_atom.m
+% * This template script imports a structure file, changes some of the atomtypes
+% * and writes the result back out to a .gro|.pdb|.xyz|.mol2 file.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # change_atom % Edit the filename and the atomtypes at the top of the script
+%
+
 clear all;
 format short;
 

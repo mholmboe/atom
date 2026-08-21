@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>The atom script library</title>
+<title>The atom toolbox</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-08-21">
 <meta name="DC.source" content="index.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,9 +76,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h1>The atom script library</h1>
+<h1>The atom toolbox</h1>
 <!--introduction-->
-<p>Below is links to all functions, sorted after topic/purpose</p>
 <!--/introduction-->
 <h2>Contents</h2>
 <div>
@@ -93,7 +92,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">How-to cite the atom library?</a>
 </li>
 <li>
-<a href="#4">How-to use these documentation pages</a>
+<a href="#4">Documentation</a>
 </li>
 <li>
 <a href="#6">Common types of variables</a>
@@ -120,8 +119,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>The atom library has been described in the following paper: atom: A MATLAB PACKAGE FOR MANIPULATION OF MOLECULAR SYSTEMS, Clays and Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y</li>
 </ul>
 </div>
-<h2 id="4">How-to use these documentation pages</h2>
-<p>You can read and browse through these html pages in any browser you want, but you could also use these html files (which are part of the distribution) interactively via MATLAB's own browser by executing the code line by line after highlighting the code (using right-click) and choosing 'Evaluate selection' as illustrated below - or just press 'Shift+F7' as illustrated in the figure below.</p>
+<h2 id="4">Documentation</h2>
+<p>Documentation for the atom toolbox can be found at github.com/mholmboe/atom/, as well as in html, integrated in the atom library in the html directory. You can read and browse through these html pages in any browser you want, but you could also use these html files (which are part of the distribution) interactively via MATLAB's own browser by executing the code line by line after highlighting the code (using right-click) and choosing 'Evaluate selection' as illustrated below - or just press 'Shift+F7' as illustrated in the figure below.</p>
 <p>
 <img vspace="5" hspace="5" src="interactive_html.png" alt=""> </p>
 <h2 id="6">Common types of variables</h2>
@@ -150,6 +149,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="List_all_functions.html">All functions sorted alphabetically</a>
 </li>
 <li>
+<a href="List_all_functions_topics.html">All functions sorted by topic</a>
+</li>
+<li>
 <a href="List_build_functions.html">Functions for building molecular boxes</a>
 </li>
 <li>
@@ -159,10 +161,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="List_general_functions.html">General functions</a>
 </li>
 <li>
+<a href="List_neigh_functions.html">Neighbour analysis and distance matrix functions</a>
+</li>
+<li>
 <a href="List_export_functions.html">Export related functions</a>
 </li>
 <li>
 <a href="List_import_functions.html">Import related functions</a>
+</li>
+<li>
+<a href="List_custom_functions.html">Custom Gromacs and topology tools</a>
+</li>
+<li>
+<a href="List_ff_opt_functions.html">Forcefield optimization functions</a>
 </li>
 </ul>
 </div>
@@ -182,8 +193,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </div>
 <!--
 ##### SOURCE BEGIN #####
-%% The atom script library
-% Below is links to all functions, sorted after topic/purpose
+%% The atom toolbox
 %
 
 %% Version
@@ -198,7 +208,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % atom: A MATLAB PACKAGE FOR MANIPULATION OF MOLECULAR SYSTEMS, Clays and
 % Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y
  
-%% How-to use these documentation pages
+%% Documentation
+% Documentation for the atom toolbox can be found at github.com/mholmboe/atom/,
+% as well as in html, integrated in the atom library in the html directory.
 % You can read and browse through these html pages in any browser you want,
 % but you could also use these html files (which are part of the distribution)
 % interactively via MATLAB's own browser by executing the code line by line 
@@ -218,11 +230,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
  
 %% All available functions
 % * <List_all_functions.html All functions sorted alphabetically>
+% * <List_all_functions_topics.html All functions sorted by topic>
 % * <List_build_functions.html Functions for building molecular boxes> 
 % * <List_forcefield_functions.html Topology and forcefield specific functions> 
 % * <List_general_functions.html General functions>
+% * <List_neigh_functions.html Neighbour analysis and distance matrix functions>
 % * <List_export_functions.html Export related functions> 
-% * <List_import_functions.html Import related functions> 
+% * <List_import_functions.html Import related functions>
+% * <List_custom_functions.html Custom Gromacs and topology tools>
+% * <List_ff_opt_functions.html Forcefield optimization functions> 
  
 %% Available structures and pre-equilibrated solvents
 % * <List_structures.html List of available structures, solvents and more>

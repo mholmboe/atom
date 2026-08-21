@@ -1,4 +1,4 @@
-%% clayff_param.m
+%% old_minff_param.m
 % * This function holds some of the extended Clayff parameters
 %
 %% Version
