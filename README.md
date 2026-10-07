@@ -201,7 +201,7 @@ A few files are not covered by the MIT license and keep the license of their ori
 
 - Reading and writing of Gromacs `.xtc` and `.trr` trajectories builds on the [**mxdrfile**](http://kaplajon.github.io/mxdrfile/) package by Jon Kapla, which is BSD 3-Clause licensed. This affects `import_xtc.m`, `import_trr.m`, `decompose_traj.m`, `extract_vxvy_from_trr.m` and `extract_vz_from_trr.m`, which all retain the original notice in their headers.
 - The `min.ff` directories under `ATOM_scripts_lecture/` contain standard data and water model files from the [**GROMACS**](https://www.gromacs.org) distribution, which is LGPL-2.1-or-later, included unmodified so the examples run out of the box.
-- `show_arrow.m` was adapted from *mArrow3.m* by Georg Stillfried, and `show_atom.m`/`show_atomo.m` were inspired by *molecule3D.m* by André Ludwig.
+- `show_arrow.m` is a derivative of *mArrow3.m* by Georg Stillfried and is BSD 2-Clause licensed, with the full license in its header. `show_atom.m`/`show_atomo.m` were inspired by *molecule3D.m* by André Ludwig.
 
 The tabulated reference data that ships with the toolbox, such as the revised Shannon radii, the bond valence parameters, the atomic scattering factors and the published force field parameters, is taken from the scientific literature. The original publications are cited next to the data and should be cited when the data is used.
 

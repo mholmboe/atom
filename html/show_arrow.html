@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_arrow</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-07">
 <meta name="DC.source" content="show_arrow.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -89,31 +89,34 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#4">Examples</a>
 </li>
 <li>
-<a href="#6">evaluate property specifications</a>
+<a href="#5">License</a>
 </li>
 <li>
-<a href="#7">default parameters</a>
+<a href="#7">evaluate property specifications</a>
 </li>
 <li>
-<a href="#8">ensure column vectors</a>
+<a href="#8">default parameters</a>
 </li>
 <li>
-<a href="#9">basic lengths and vectors</a>
+<a href="#9">ensure column vectors</a>
 </li>
 <li>
-<a href="#10">basic angles</a>
+<a href="#10">basic lengths and vectors</a>
 </li>
 <li>
-<a href="#11">initialize face matrix</a>
+<a href="#11">basic angles</a>
 </li>
 <li>
-<a href="#12">normal arrow</a>
+<a href="#12">initialize face matrix</a>
 </li>
 <li>
-<a href="#14">only cone v</a>
+<a href="#13">normal arrow</a>
 </li>
 <li>
-<a href="#16">draw</a>
+<a href="#15">only cone v</a>
+</li>
+<li>
+<a href="#17">draw</a>
 </li>
 </ul>
 </div>
@@ -156,13 +159,35 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>show_arrow([0 0 0],[1 2 3],'color',[0 0 1]);</li>
 </ol>
 </div>
+<h2 id="5">License</h2>
+<div>
+<ul>
+<li>This function is a derivative work of mArrow3.m by Georg Stillfried, which</li>
+<li>is distributed on the MATLAB File Exchange under the BSD 2-Clause license.</li>
+<li>That license therefore governs this file, and is reproduced in full below.</li>
+<li>See the NOTICE file of the atom Toolbox for the other third-party components.</li>
+</ul>
+</div>
+<p>Copyright (c) 2009, Georg Stillfried All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+<div>
+<ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+</ul>
+</div>
+<div>
+<ul>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+</ul>
+</div>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 <pre class="codeinput">
 <span class="keyword">function</span> h = show_arrow(p1,p2,varargin)
 </pre>
 <pre class="codeinput">propertyNames = {<span class="string">'edgeColor'</span>};
 propertyValues = {<span class="string">'none'</span>};
 </pre>
-<h2 id="6">evaluate property specifications</h2>
+<h2 id="7">evaluate property specifications</h2>
 <pre class="codeinput">
 <span class="keyword">for</span> argno = 1:2:nargin-2
     <span class="keyword">switch</span> varargin{argno}
@@ -187,7 +212,7 @@ propertyValues = {<span class="string">'none'</span>};
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">default parameters</h2>
+<h2 id="8">default parameters</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> ~exist(<span class="string">'stemWidth'</span>,<span class="string">'var'</span>)
     ax = axis;
@@ -205,11 +230,11 @@ tipLength = tipWidth/tan(tipAngle/2);
 ppsc = 50;  <span class="comment">% (points per small circle)</span>
 ppbc = 250; <span class="comment">% (points per big circle)</span>
 </pre>
-<h2 id="8">ensure column vectors</h2>
+<h2 id="9">ensure column vectors</h2>
 <pre class="codeinput">p1 = p1(:);
 p2 = p2(:);
 </pre>
-<h2 id="9">basic lengths and vectors</h2>
+<h2 id="10">basic lengths and vectors</h2>
 <pre class="codeinput">x = (p2-p1)/norm(p2-p1); <span class="comment">% (unit vector in arrow direction)</span>
 y = cross(x,[0;0;1]);    <span class="comment">% (y and z are unit vectors orthogonal to arrow)</span>
 <span class="keyword">if</span> norm(y)&lt;0.1
@@ -219,7 +244,7 @@ y = y/norm(y);
 z = cross(x,y);
 z = z/norm(z);
 </pre>
-<h2 id="10">basic angles</h2>
+<h2 id="11">basic angles</h2>
 <pre class="codeinput">theta = 0:2*pi/ppsc:2*pi; <span class="comment">% (list of angles from 0 to 2*pi for small circle)</span>
 sintheta = sin(theta);
 costheta = cos(theta);
@@ -227,10 +252,10 @@ upsilon = 0:2*pi/ppbc:2*pi; <span class="comment">% (list of angles from 0 to 2*
 sinupsilon = sin(upsilon);
 cosupsilon = cos(upsilon);
 </pre>
-<h2 id="11">initialize face matrix</h2>
+<h2 id="12">initialize face matrix</h2>
 <pre class="codeinput">f = NaN([ppsc+ppbc+2 ppbc+1]);
 </pre>
-<h2 id="12">normal arrow</h2>
+<h2 id="13">normal arrow</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> norm(p2-p1)&gt;tipLength
 </pre>
@@ -262,7 +287,7 @@ cosupsilon = cos(upsilon);
         f(ppsc+2+idx,1:3) = [2*ppsc+2+idx 2*ppsc+2+idx+1 2*ppsc+ppbc+4];
     <span class="keyword">end</span>
 </pre>
-<h2 id="14">only cone v</h2>
+<h2 id="15">only cone v</h2>
 <pre class="codeinput">
 <span class="keyword">else</span>
     tipWidth = 2*sin(tipAngle/2)*norm(p2-p1);
@@ -280,7 +305,7 @@ cosupsilon = cos(upsilon);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="16">draw</h2>
+<h2 id="17">draw</h2>
 <pre class="codeinput">fv.faces = f;
 fv.vertices = v;
 h = patch(fv);
@@ -334,6 +359,38 @@ h = patch(fv);
 %
 %% Examples
 % # show_arrow([0 0 0],[1 2 3],'color',[0 0 1]);
+%
+%% License
+% * This function is a derivative work of mArrow3.m by Georg Stillfried, which
+% * is distributed on the MATLAB File Exchange under the BSD 2-Clause license.
+% * That license therefore governs this file, and is reproduced in full below.
+% * See the NOTICE file of the atom Toolbox for the other third-party components.
+%
+% Copyright (c) 2009, Georg Stillfried
+% All rights reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are met:
+%
+% * Redistributions of source code must retain the above copyright notice, this
+%   list of conditions and the following disclaimer.
+%
+% * Redistributions in binary form must reproduce the above copyright notice,
+%   this list of conditions and the following disclaimer in the documentation
+%   and/or other materials provided with the distribution.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+% IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+% ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+% LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+% CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+% SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+% INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+% CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+% POSSIBILITY OF SUCH DAMAGE.
+%
 
 function h = show_arrow(p1,p2,varargin)
 

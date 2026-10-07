@@ -61,21 +61,29 @@ part of the MINFF force field, https://github.com/mholmboe/minff, and are not
 GROMACS files.
 
 
-3. Other derived MATLAB functions
+3. mArrow3, Copyright (c) 2009 Georg Stillfried  --  BSD 2-Clause License
 -------------------------------------------------------------------------------
 
-The following functions were adapted from, or inspired by, freely available
-MATLAB code by other authors, who are credited in the headers of the respective
-files. Where an original license applies, it governs that file:
+    general_functions/show_arrow.m
 
-    general_functions/show_arrow.m     adapted from mArrow3.m by Georg
-                                       Stillfried, MATLAB File Exchange, 2009
+is a derivative work of mArrow3.m by Georg Stillfried, distributed on the MATLAB
+File Exchange under the BSD 2-Clause license. That license governs this file and
+is reproduced in full in its header. Redistribution, in source or binary form,
+must retain the copyright notice, the list of conditions and the disclaimer.
+
+
+4. Other derived MATLAB functions
+-------------------------------------------------------------------------------
+
+The following functions were inspired by freely available MATLAB code by other
+authors, who are credited in the headers of the respective files:
+
     general_functions/show_atom.m      inspired by molecule3D.m by
                                        Andre Ludwig (aludwig@phys.ethz.ch)
     general_functions/show_atomo.m     Octave compatible version of the above
 
 
-4. Bundled reference data
+5. Bundled reference data
 -------------------------------------------------------------------------------
 
 The toolbox ships tabulated values taken from the scientific literature, such as
