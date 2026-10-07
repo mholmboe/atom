@@ -116,6 +116,7 @@
 % # <ff_helpfile2.html ff_helpfile2> % Helper script that inspects and renames atom types in a saved ff struct.
 % # <ff_helpfile3.html ff_helpfile3> % Helper script that merges monovalent and polyvalent ion ff structs for a set of water models.
 % # <ff_plotfile.html ff_plotfile> % Helper script that plots the nonbonded potentials of selected atom type pairs for several ff structs.
+% # <find_angle_atom.html find_angle_atom(atom,index_matrix,sel_types,varargin)> % Find the rows of an Angle_index or Bond_index that involve certain atomtypes, with the matching modes contains, only, exact and center.
 % # <find_bonded_atom.html find_bonded_atom(atom,bond_matrix,label1,label2)> % This function performs a cross-check of the bond matrix.
 % # <find_H2O.html find_H2O(atom)> % This function identifies and returns water molecules (H2O) within the atom struct.
 % # <find_pair_atom.html find_pair_atom(atom,bond_matrix,pair1,pair2)> % This function finds and returns specific atom pairs from the bond matrix.
@@ -135,6 +136,7 @@
 % # <heal_atom.html heal_atom(atom,Box_dim,ind,varargin)> % Heal sites in the atom struct by adding a certain atom type.
 % # <hist_atom.html hist_atom(atom,s)> % Calculate density profiles in the X, Y, or Z direction.
 % # <histz_atom.html histz_atom(atom,s)> % Calculate density profiles in the Z direction.
+% # <hydroxyl_orientation_atom.html hydroxyl_orientation_atom(atom,Box_dim,varargin)> % Angle between the structural O-H vectors and the layer normal, folded into [0 90] deg.
 % # <import_atom.html import_atom(filename)> % Import a .xyz, .gro, or .pdb file into a structure variable called atom.
 % # <import_atom_car.html import_atom_car(filename,varargin)> % Import .car files from Hendrik Heinz INTERFACE force field distribution, then write out a Gromacs molecular topology file (.itp) and a new .pdb file.
 % # <import_atom_gro.html import_atom_gro(filename)> % Import .gro files into the atom struct.
@@ -224,6 +226,7 @@
 % # <noupdate_atom.html noupdate_atom(atom)> % Prevent updating of certain properties in the atom struct.
 % # <number_type.html number_type(atom,varargin)> % Number the atom types, like H1, H2, H3... in the atom struct.
 % # <occupancy_atom.html occupancy_atom(atom,Box_dim)> % Calculate occupancy of atoms within the box dimensions.
+% # <octahedral_distortion_atom.html octahedral_distortion_atom(atom,Box_dim,varargin)> % Distortion of the octahedral cations: mean M-O, Baur's Delta, Robinson's lambda and sigma2, and the flattening angle psi.
 % # <old_minff_param.html old_minff_param(Atom_label,varargin)> % Hold an older set of the MINFF force field parameters.
 % # <opls_go_atom.html opls_go_atom(atom,Box_dim,rmin,rlarge)> % Smear out the charge around -OH and epoxide groups in graphene oxide.
 % # <oplsaa_go_param.html oplsaa_go_param(Atom_label,water_model)> % Hold the extended OPLS-AA force field parameters for graphite oxide.
@@ -277,12 +280,14 @@
 % # <scale_atom.html scale_atom(atom,Box_dim,scale_vec,varargin)> % Scale the coordinates in the atom struct.
 % # <show_arrow.html show_arrow(p1,p2,varargin)> % Plot a 3D arrow as a patch object.
 % # <show_atom.html show_atom(atom,varargin)> % Draw the atom struct in 3D with additional features.
+% # <show_atom_springs.html show_atom_springs(atom,Box_dim,varargin)> % Draw the atom struct in 3D like show_atom, but with helical springs instead of bonds, for bond pairs or angle triplets.
 % # <show_atomo.html show_atomo(varargin)> % Alternative version of show_atom, drawing the atom struct in 3D.
 % # <show_axis.html show_axis(varargin)> % Draw the axis in a plot.
 % # <show_box.html show_box(Box_dim)> % Draw the simulation box.
 % # <show_density_atom.html show_density_atom(atom)> % Display density of atoms.
 % # <show_Hbonds_atom.html show_Hbonds_atom(atom)> % Display or calculate hydrogen bonds in the atom struct.
 % # <show_miller.html show_miller(Box_dim)> % Draw the Miller planes of the Box_dim/Cell variables.
+% # <show_spring.html show_spring(p1,p2,varargin)> % Draw a 3D helical (coil/shock) spring between two points, as a tube or a line.
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % Compute sigma values for van der Waals interactions.
 % # <slice_atom.html slice_atom(atom,limits,invert)> % Slice the atom struct within specified limits.
 % # <slice_box.html slice_box(atom,Box_dim,limits)> % Slice a simulation box within given limits.

@@ -1,0 +1,555 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>octahedral_distortion_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-09-24">
+<meta name="DC.source" content="octahedral_distortion_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>octahedral_distortion_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>Distortion parameters of the octahedrally coordinated cations of a clay/mica</li>
+<li>layer, i.e. the Alo-Op/Oh and Mgo-Omg/Ohmg coordination of a smectite. *</li>
+<li>Per octahedron the following standard measures are computed:</li>
+<li>MO mean M-O bond length (Angstrom)</li>
+<li>Delta Baur's bond length distortion index, mean(<tt>d_i - <a href="d">d</a></tt>)/&lt;d&gt;, 0 = regular</li>
+<li>lambda Robinson's quadratic elongation, mean((d_i/d0)^2), 1 = regular, where d0</li>
+<li>is the centre-to-vertex distance of a regular octahedron of equal volume</li>
+<li>sigma2 Robinson's bond angle variance, sum((theta_i-90)^2)/11 over the 12 cis</li>
+<li>O-M-O angles (deg^2), 0 = regular</li>
+<li>psi octahedral flattening angle, cos(psi) = t_oct/(2*&lt;M-O&gt;), ideal 54.74 deg,</li>
+<li>with t_oct the separation of the two O triangles along the layer normal *</li>
+<li>Robinson, Gibbs &amp; Ribbe, Science 172 (1971) 567; Baur, Acta Cryst B30 (1974) 1195. *</li>
+<li>Results are returned for all octahedra together and, in info.by_cation, split per</li>
+<li>cation type (Al, Mgo, Feo, ...). info.by_ligand gives the mean M-O distance per</li>
+<li>coordinating oxygen type, so Alo-Op and Alo-Oh are separated.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>Delta = octahedral_distortion_atom(atom,Box_dim)</li>
+<li>[Delta,per_oct,info] = octahedral_distortion_atom(atom,Box_dim)</li>
+<li>Delta = octahedral_distortion_atom(atom,Box_dim,'oct_cutoff',2.5)</li>
+<li>Delta = octahedral_distortion_atom(atom,Box_dim,'oct_types',{'Al','Mgo'})</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [Delta,per_oct,info] = octahedral_distortion_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">
+<span class="comment">% --- options (name/value) ---</span>
+p = struct(<span class="string">'oct_cutoff'</span>,2.5, <span class="keyword">...</span><span class="comment">     % max M-O distance in Angstrom</span>
+           <span class="string">'oct_types'</span>,{{}}, <span class="keyword">...</span><span class="comment">     % default: the oct_elements prefixes below</span>
+           <span class="string">'oct_elements'</span>,{{<span class="string">'Al'</span>,<span class="string">'Mg'</span>,<span class="string">'Fe'</span>,<span class="string">'Li'</span>,<span class="string">'Ti'</span>,<span class="string">'Mn'</span>,<span class="string">'Ni'</span>,<span class="string">'Co'</span>,<span class="string">'Cr'</span>,<span class="string">'Zn'</span>}}, <span class="keyword">...</span>
+           <span class="string">'tet_types'</span>,{{<span class="string">'Si'</span>,<span class="string">'Sit'</span>,<span class="string">'Alt'</span>,<span class="string">'Tit'</span>,<span class="string">'Fet'</span>,<span class="string">'Fee3'</span>}}, <span class="keyword">...</span>
+           <span class="string">'normal'</span>,[0 0 1], <span class="keyword">...</span><span class="comment">     % layer normal, for psi</span>
+           <span class="string">'min_coord'</span>,5, <span class="string">'max_coord'</span>,7);
+<span class="keyword">for</span> k=1:2:numel(varargin)
+    p.(varargin{k}) = varargin{k+1};
+<span class="keyword">end</span>
+
+X=[atom.x]'; Y=[atom.y]'; Z=[atom.z]';
+T=[atom.type];
+N=numel(atom);
+E=T;
+<span class="keyword">if</span> isfield(atom,<span class="string">'element'</span>)
+    <span class="keyword">try</span>
+        Etmp=[atom.element];
+        <span class="keyword">if</span> numel(Etmp)==N &amp;&amp; all(~cellfun(@isempty,Etmp)), E=Etmp; <span class="keyword">end</span>
+    <span class="keyword">catch</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+<span class="keyword">if</span> numel(Box_dim)&gt;=9
+    xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+<span class="keyword">else</span>
+    xy=0; xz=0; yz=0;
+<span class="keyword">end</span>
+nrm = p.normal(:); nrm = nrm/norm(nrm);
+
+Delta=NaN; per_oct=[];
+info=struct(<span class="string">'MO'</span>,NaN,<span class="string">'MO_std'</span>,NaN,<span class="string">'Delta'</span>,NaN,<span class="string">'Delta_std'</span>,NaN, <span class="keyword">...</span>
+            <span class="string">'lambda'</span>,NaN,<span class="string">'lambda_std'</span>,NaN,<span class="string">'sigma2'</span>,NaN,<span class="string">'sigma2_std'</span>,NaN, <span class="keyword">...</span>
+            <span class="string">'psi'</span>,NaN,<span class="string">'psi_std'</span>,NaN,<span class="string">'n_oct'</span>,0,<span class="string">'n_oct_skipped'</span>,0, <span class="keyword">...</span>
+            <span class="string">'by_cation'</span>,struct([]),<span class="string">'by_ligand'</span>,struct([]),<span class="string">'note'</span>,<span class="string">''</span>);
+
+<span class="comment">% --- pick the octahedral cations ---</span>
+is_tet = ismember(T,p.tet_types);
+<span class="keyword">if</span> ~isempty(p.oct_types)
+    is_oct = ismember(T,p.oct_types);
+<span class="keyword">else</span>
+    is_oct = false(1,N);
+    <span class="keyword">for</span> kk=1:numel(p.oct_elements)
+        e=p.oct_elements{kk};
+        is_oct = is_oct | strncmpi(T,e,numel(e)) | strncmpi(E,e,numel(e));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+is_oct = is_oct &amp; ~is_tet;
+is_O   = strcmp(E,<span class="string">'O'</span>) | strncmpi(T,<span class="string">'O'</span>,1);
+m_idx=find(is_oct); o_idx=find(is_O);
+<span class="keyword">if</span> isempty(m_idx) || isempty(o_idx)
+    info.note=<span class="string">'no octahedral cations and/or oxygens found'</span>;
+    <span class="keyword">return</span>;
+<span class="keyword">end</span>
+
+Xo=X(o_idx); Yo=Y(o_idx); Zo=Z(o_idx);
+MO=[]; DD=[]; LA=[]; SG=[]; PS=[]; ctype={}; nskip=0;
+lig_type={}; lig_d=[]; lig_cat={};
+<span class="keyword">for</span> ii=1:numel(m_idx)
+    M=m_idx(ii);
+    d = mic_([Xo-X(M), Yo-Y(M), Zo-Z(M)], lx,ly,lz,xy,xz,yz);
+    r = sqrt(sum(d.^2,2));
+    sel = find(r &lt; p.oct_cutoff);
+    nc  = numel(sel);
+    <span class="keyword">if</span> nc &lt; p.min_coord || nc &gt; p.max_coord, nskip=nskip+1; <span class="keyword">continue</span>; <span class="keyword">end</span>
+
+    v  = d(sel,:);            <span class="comment">% M-&gt;O vectors</span>
+    dd = r(sel);              <span class="comment">% M-O distances</span>
+    dm = mean(dd);
+    <span class="keyword">if</span> dm&lt;=0, nskip=nskip+1; <span class="keyword">continue</span>; <span class="keyword">end</span>
+
+    MO(end+1)    = dm;                                   <span class="comment">%#ok&lt;AGROW&gt;</span>
+    DD(end+1)    = mean(abs(dd-dm))/dm;                  <span class="comment">%#ok&lt;AGROW&gt; Baur</span>
+    ctype{end+1} = T{M};                                 <span class="comment">%#ok&lt;AGROW&gt;</span>
+
+    <span class="comment">% --- ligand bookkeeping, so Alo-Op and Alo-Oh can be separated ---</span>
+    <span class="keyword">for</span> kk=1:nc
+        lig_type{end+1} = T{o_idx(sel(kk))};             <span class="comment">%#ok&lt;AGROW&gt;</span>
+        lig_d(end+1)    = dd(kk);                        <span class="comment">%#ok&lt;AGROW&gt;</span>
+        lig_cat{end+1}  = T{M};                          <span class="comment">%#ok&lt;AGROW&gt;</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% --- Robinson quadratic elongation, only for a proper 6-coordination ---</span>
+    <span class="keyword">if</span> nc==6
+        Vol = octvol_(v);
+        <span class="keyword">if</span> ~isnan(Vol) &amp;&amp; Vol&gt;0
+            <span class="comment">% A regular octahedron with centre-to-vertex distance a has V = 4/3*a^3,</span>
+            <span class="comment">% so the equal-volume reference bond length is d0 = (3V/4)^(1/3).</span>
+            d0 = (3*Vol/4)^(1/3);
+            LA(end+1) = mean((dd/d0).^2);                <span class="comment">%#ok&lt;AGROW&gt;</span>
+        <span class="keyword">else</span>
+            LA(end+1) = NaN;                             <span class="comment">%#ok&lt;AGROW&gt;</span>
+        <span class="keyword">end</span>
+        <span class="comment">% --- Robinson bond angle variance over the 12 cis angles ---</span>
+        na=[];
+        <span class="keyword">for</span> a1=1:nc-1
+            <span class="keyword">for</span> a2=a1+1:nc
+                na(end+1) = acosd(max(-1,min(1, <span class="keyword">...</span>
+                    dot(v(a1,:),v(a2,:))/(dd(a1)*dd(a2))))); <span class="comment">%#ok&lt;AGROW&gt;</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        na = sort(na);                                   <span class="comment">% 15 angles: 12 cis + 3 trans</span>
+        cis = na(1:12);
+        SG(end+1) = sum((cis-90).^2)/11;                 <span class="comment">%#ok&lt;AGROW&gt;</span>
+    <span class="keyword">else</span>
+        LA(end+1) = NaN;  SG(end+1) = NaN;               <span class="comment">%#ok&lt;AGROW&gt;</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% --- flattening angle psi ---</span>
+    proj = sort(v*nrm);
+    k    = floor(nc/2);
+    t_oct= mean(proj(end-k+1:end)) - mean(proj(1:k));
+    PS(end+1) = acosd(min(1,max(0, t_oct/(2*dm))));      <span class="comment">%#ok&lt;AGROW&gt;</span>
+<span class="keyword">end</span>
+
+info.n_oct_skipped = nskip;
+<span class="keyword">if</span> isempty(MO)
+    info.note=<span class="string">'no octahedra with an acceptable coordination number'</span>;
+    <span class="keyword">return</span>;
+<span class="keyword">end</span>
+
+Delta = mean(DD);
+per_oct = [MO(:), DD(:), LA(:), SG(:), PS(:)];     <span class="comment">% one row per octahedron</span>
+info.n_oct      = numel(MO);
+info.MO         = mean(MO);        info.MO_std     = std(MO,1);
+info.Delta      = mean(DD);        info.Delta_std  = std(DD,1);
+info.lambda     = mean(LA,<span class="string">'omitnan'</span>);  info.lambda_std = std(LA(~isnan(LA)),1);
+info.sigma2     = mean(SG,<span class="string">'omitnan'</span>);  info.sigma2_std = std(SG(~isnan(SG)),1);
+info.psi        = mean(PS);        info.psi_std    = std(PS,1);
+
+<span class="comment">% --- per cation type ---</span>
+uc = unique(ctype);
+bc = struct(<span class="string">'type'</span>,{},<span class="string">'MO'</span>,{},<span class="string">'Delta'</span>,{},<span class="string">'lambda'</span>,{},<span class="string">'sigma2'</span>,{},<span class="string">'psi'</span>,{},<span class="string">'n'</span>,{});
+<span class="keyword">for</span> kk=1:numel(uc)
+    sel = strcmp(ctype, uc{kk});
+    bc(kk).type   = uc{kk};
+    bc(kk).MO     = mean(MO(sel));
+    bc(kk).Delta  = mean(DD(sel));
+    bc(kk).lambda = mean(LA(sel),<span class="string">'omitnan'</span>);
+    bc(kk).sigma2 = mean(SG(sel),<span class="string">'omitnan'</span>);
+    bc(kk).psi    = mean(PS(sel));
+    bc(kk).n      = sum(sel);
+<span class="keyword">end</span>
+info.by_cation = bc;
+
+<span class="comment">% --- per cation-ligand pair, e.g. Al-Op, Al-Oh, Mgo-Omg, Mgo-Ohmg ---</span>
+pair = strcat(lig_cat, <span class="string">'-'</span>, lig_type);
+up   = unique(pair);
+bl   = struct(<span class="string">'pair'</span>,{},<span class="string">'MO'</span>,{},<span class="string">'MO_std'</span>,{},<span class="string">'n'</span>,{});
+<span class="keyword">for</span> kk=1:numel(up)
+    sel = strcmp(pair, up{kk});
+    bl(kk).pair   = up{kk};
+    bl(kk).MO     = mean(lig_d(sel));
+    bl(kk).MO_std = std(lig_d(sel),1);
+    bl(kk).n      = sum(sel);
+<span class="keyword">end</span>
+info.by_ligand = bl;
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>  <span class="comment">% main function</span>
+
+
+<span class="comment">% ===== local helpers =====</span>
+<span class="keyword">function</span> d = mic_(d, lx,ly,lz,xy,xz,yz)
+<span class="comment">% Triclinic minimum-image (GROMACS Box_dim convention), matching bond_angle_type.</span>
+rx=d(:,1); ry=d(:,2); rz=d(:,3);
+gt=rz&gt;lz/2;  lt=rz&lt;-lz/2;
+rz(gt)=rz(gt)-lz; rz(lt)=rz(lt)+lz;
+rx(gt)=rx(gt)-xz; rx(lt)=rx(lt)+xz;
+ry(gt)=ry(gt)-yz; ry(lt)=ry(lt)+yz;
+gt=ry&gt;ly/2;  lt=ry&lt;-ly/2;
+ry(gt)=ry(gt)-ly; ry(lt)=ry(lt)+ly;
+rx(gt)=rx(gt)-xy; rx(lt)=rx(lt)+xy;
+gt=rx&gt;lx/2;  lt=rx&lt;-lx/2;
+rx(gt)=rx(gt)-lx; rx(lt)=rx(lt)+lx;
+d=[rx ry rz];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> V = octvol_(v)
+<span class="comment">% Volume of the polyhedron spanned by the 6 M-&gt;O vectors, via its convex hull.</span>
+V=NaN;
+<span class="keyword">try</span>
+    [~,V] = convhull(v(:,1),v(:,2),v(:,3));
+<span class="keyword">catch</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% octahedral_distortion_atom.m
+% * Distortion parameters of the octahedrally coordinated cations of a clay/mica
+% * layer, i.e. the Alo-Op/Oh and Mgo-Omg/Ohmg coordination of a smectite.
+% *
+% * Per octahedron the following standard measures are computed:
+% *   MO      mean M-O bond length (Angstrom)
+% *   Delta   Baur's bond length distortion index, mean(|d_i - <d>|)/<d>, 0 = regular
+% *   lambda  Robinson's quadratic elongation, mean((d_i/d0)^2), 1 = regular, where d0
+% *           is the centre-to-vertex distance of a regular octahedron of equal volume
+% *   sigma2  Robinson's bond angle variance, sum((theta_i-90)^2)/11 over the 12 cis
+% *           O-M-O angles (deg^2), 0 = regular
+% *   psi     octahedral flattening angle, cos(psi) = t_oct/(2*<M-O>), ideal 54.74 deg,
+% *           with t_oct the separation of the two O triangles along the layer normal
+% *
+% * Robinson, Gibbs & Ribbe, Science 172 (1971) 567; Baur, Acta Cryst B30 (1974) 1195.
+% *
+% * Results are returned for all octahedra together and, in info.by_cation, split per
+% * cation type (Al, Mgo, Feo, ...). info.by_ligand gives the mean M-O distance per
+% * coordinating oxygen type, so Alo-Op and Alo-Oh are separated.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # Delta = octahedral_distortion_atom(atom,Box_dim)
+% # [Delta,per_oct,info] = octahedral_distortion_atom(atom,Box_dim)
+% # Delta = octahedral_distortion_atom(atom,Box_dim,'oct_cutoff',2.5)
+% # Delta = octahedral_distortion_atom(atom,Box_dim,'oct_types',{'Al','Mgo'})
+%
+
+function [Delta,per_oct,info] = octahedral_distortion_atom(atom,Box_dim,varargin)
+%%
+
+% REPLACE_WITH_DASH_DASH- options (name/value) REPLACE_WITH_DASH_DASH-
+p = struct('oct_cutoff',2.5, ...     % max M-O distance in Angstrom
+           'oct_types',{{}}, ...     % default: the oct_elements prefixes below
+           'oct_elements',{{'Al','Mg','Fe','Li','Ti','Mn','Ni','Co','Cr','Zn'}}, ...
+           'tet_types',{{'Si','Sit','Alt','Tit','Fet','Fee3'}}, ...
+           'normal',[0 0 1], ...     % layer normal, for psi
+           'min_coord',5, 'max_coord',7);
+for k=1:2:numel(varargin)
+    p.(varargin{k}) = varargin{k+1};
+end
+
+X=[atom.x]'; Y=[atom.y]'; Z=[atom.z]';
+T=[atom.type];
+N=numel(atom);
+E=T;
+if isfield(atom,'element')
+    try
+        Etmp=[atom.element];
+        if numel(Etmp)==N && all(~cellfun(@isempty,Etmp)), E=Etmp; end
+    catch
+    end
+end
+
+lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+if numel(Box_dim)>=9
+    xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+else
+    xy=0; xz=0; yz=0;
+end
+nrm = p.normal(:); nrm = nrm/norm(nrm);
+
+Delta=NaN; per_oct=[];
+info=struct('MO',NaN,'MO_std',NaN,'Delta',NaN,'Delta_std',NaN, ...
+            'lambda',NaN,'lambda_std',NaN,'sigma2',NaN,'sigma2_std',NaN, ...
+            'psi',NaN,'psi_std',NaN,'n_oct',0,'n_oct_skipped',0, ...
+            'by_cation',struct([]),'by_ligand',struct([]),'note','');
+
+% REPLACE_WITH_DASH_DASH- pick the octahedral cations REPLACE_WITH_DASH_DASH-
+is_tet = ismember(T,p.tet_types);
+if ~isempty(p.oct_types)
+    is_oct = ismember(T,p.oct_types);
+else
+    is_oct = false(1,N);
+    for kk=1:numel(p.oct_elements)
+        e=p.oct_elements{kk};
+        is_oct = is_oct | strncmpi(T,e,numel(e)) | strncmpi(E,e,numel(e));
+    end
+end
+is_oct = is_oct & ~is_tet;
+is_O   = strcmp(E,'O') | strncmpi(T,'O',1);
+m_idx=find(is_oct); o_idx=find(is_O);
+if isempty(m_idx) || isempty(o_idx)
+    info.note='no octahedral cations and/or oxygens found';
+    return;
+end
+
+Xo=X(o_idx); Yo=Y(o_idx); Zo=Z(o_idx);
+MO=[]; DD=[]; LA=[]; SG=[]; PS=[]; ctype={}; nskip=0;
+lig_type={}; lig_d=[]; lig_cat={};
+for ii=1:numel(m_idx)
+    M=m_idx(ii);
+    d = mic_([Xo-X(M), Yo-Y(M), Zo-Z(M)], lx,ly,lz,xy,xz,yz);
+    r = sqrt(sum(d.^2,2));
+    sel = find(r < p.oct_cutoff);
+    nc  = numel(sel);
+    if nc < p.min_coord || nc > p.max_coord, nskip=nskip+1; continue; end
+
+    v  = d(sel,:);            % M->O vectors
+    dd = r(sel);              % M-O distances
+    dm = mean(dd);
+    if dm<=0, nskip=nskip+1; continue; end
+
+    MO(end+1)    = dm;                                   %#ok<AGROW>
+    DD(end+1)    = mean(abs(dd-dm))/dm;                  %#ok<AGROW> Baur
+    ctype{end+1} = T{M};                                 %#ok<AGROW>
+
+    % REPLACE_WITH_DASH_DASH- ligand bookkeeping, so Alo-Op and Alo-Oh can be separated REPLACE_WITH_DASH_DASH-
+    for kk=1:nc
+        lig_type{end+1} = T{o_idx(sel(kk))};             %#ok<AGROW>
+        lig_d(end+1)    = dd(kk);                        %#ok<AGROW>
+        lig_cat{end+1}  = T{M};                          %#ok<AGROW>
+    end
+
+    % REPLACE_WITH_DASH_DASH- Robinson quadratic elongation, only for a proper 6-coordination REPLACE_WITH_DASH_DASH-
+    if nc==6
+        Vol = octvol_(v);
+        if ~isnan(Vol) && Vol>0
+            % A regular octahedron with centre-to-vertex distance a has V = 4/3*a^3,
+            % so the equal-volume reference bond length is d0 = (3V/4)^(1/3).
+            d0 = (3*Vol/4)^(1/3);
+            LA(end+1) = mean((dd/d0).^2);                %#ok<AGROW>
+        else
+            LA(end+1) = NaN;                             %#ok<AGROW>
+        end
+        % REPLACE_WITH_DASH_DASH- Robinson bond angle variance over the 12 cis angles REPLACE_WITH_DASH_DASH-
+        na=[];
+        for a1=1:nc-1
+            for a2=a1+1:nc
+                na(end+1) = acosd(max(-1,min(1, ...
+                    dot(v(a1,:),v(a2,:))/(dd(a1)*dd(a2))))); %#ok<AGROW>
+            end
+        end
+        na = sort(na);                                   % 15 angles: 12 cis + 3 trans
+        cis = na(1:12);
+        SG(end+1) = sum((cis-90).^2)/11;                 %#ok<AGROW>
+    else
+        LA(end+1) = NaN;  SG(end+1) = NaN;               %#ok<AGROW>
+    end
+
+    % REPLACE_WITH_DASH_DASH- flattening angle psi REPLACE_WITH_DASH_DASH-
+    proj = sort(v*nrm);
+    k    = floor(nc/2);
+    t_oct= mean(proj(end-k+1:end)) - mean(proj(1:k));
+    PS(end+1) = acosd(min(1,max(0, t_oct/(2*dm))));      %#ok<AGROW>
+end
+
+info.n_oct_skipped = nskip;
+if isempty(MO)
+    info.note='no octahedra with an acceptable coordination number';
+    return;
+end
+
+Delta = mean(DD);
+per_oct = [MO(:), DD(:), LA(:), SG(:), PS(:)];     % one row per octahedron
+info.n_oct      = numel(MO);
+info.MO         = mean(MO);        info.MO_std     = std(MO,1);
+info.Delta      = mean(DD);        info.Delta_std  = std(DD,1);
+info.lambda     = mean(LA,'omitnan');  info.lambda_std = std(LA(~isnan(LA)),1);
+info.sigma2     = mean(SG,'omitnan');  info.sigma2_std = std(SG(~isnan(SG)),1);
+info.psi        = mean(PS);        info.psi_std    = std(PS,1);
+
+% REPLACE_WITH_DASH_DASH- per cation type REPLACE_WITH_DASH_DASH-
+uc = unique(ctype);
+bc = struct('type',{},'MO',{},'Delta',{},'lambda',{},'sigma2',{},'psi',{},'n',{});
+for kk=1:numel(uc)
+    sel = strcmp(ctype, uc{kk});
+    bc(kk).type   = uc{kk};
+    bc(kk).MO     = mean(MO(sel));
+    bc(kk).Delta  = mean(DD(sel));
+    bc(kk).lambda = mean(LA(sel),'omitnan');
+    bc(kk).sigma2 = mean(SG(sel),'omitnan');
+    bc(kk).psi    = mean(PS(sel));
+    bc(kk).n      = sum(sel);
+end
+info.by_cation = bc;
+
+% REPLACE_WITH_DASH_DASH- per cation-ligand pair, e.g. Al-Op, Al-Oh, Mgo-Omg, Mgo-Ohmg REPLACE_WITH_DASH_DASH-
+pair = strcat(lig_cat, '-', lig_type);
+up   = unique(pair);
+bl   = struct('pair',{},'MO',{},'MO_std',{},'n',{});
+for kk=1:numel(up)
+    sel = strcmp(pair, up{kk});
+    bl(kk).pair   = up{kk};
+    bl(kk).MO     = mean(lig_d(sel));
+    bl(kk).MO_std = std(lig_d(sel),1);
+    bl(kk).n      = sum(sel);
+end
+info.by_ligand = bl;
+
+end  % main function
+
+
+% ===== local helpers =====
+function d = mic_(d, lx,ly,lz,xy,xz,yz)
+% Triclinic minimum-image (GROMACS Box_dim convention), matching bond_angle_type.
+rx=d(:,1); ry=d(:,2); rz=d(:,3);
+gt=rz>lz/2;  lt=rz<-lz/2;
+rz(gt)=rz(gt)-lz; rz(lt)=rz(lt)+lz;
+rx(gt)=rx(gt)-xz; rx(lt)=rx(lt)+xz;
+ry(gt)=ry(gt)-yz; ry(lt)=ry(lt)+yz;
+gt=ry>ly/2;  lt=ry<-ly/2;
+ry(gt)=ry(gt)-ly; ry(lt)=ry(lt)+ly;
+rx(gt)=rx(gt)-xy; rx(lt)=rx(lt)+xy;
+gt=rx>lx/2;  lt=rx<-lx/2;
+rx(gt)=rx(gt)-lx; rx(lt)=rx(lt)+lx;
+d=[rx ry rz];
+end
+
+function V = octvol_(v)
+% Volume of the polyhedron spanned by the 6 M->O vectors, via its convex hull.
+V=NaN;
+try
+    [~,V] = convhull(v(:,1),v(:,2),v(:,3));
+catch
+end
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

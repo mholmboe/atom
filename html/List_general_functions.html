@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>List of general functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-09-24">
 <meta name="DC.source" content="List_general_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -315,6 +315,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="xrd_atom_no_plot.html">xrd_atom_no_plot(varargin)</a> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.</li>
 <li>
 <a href="xrd_rietveld_atom.html">xrd_rietveld_atom(varargin)</a> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.</li>
+<li>
+<a href="hydroxyl_orientation_atom.html">hydroxyl_orientation_atom(atom,Box_dim,varargin)</a> % Angle between the structural O-H vectors and the layer normal, folded into [0 90] deg.</li>
+<li>
+<a href="octahedral_distortion_atom.html">octahedral_distortion_atom(atom,Box_dim,varargin)</a> % Distortion of the octahedral cations: mean M-O, Baur's Delta, Robinson's lambda and sigma2, and the flattening angle psi.</li>
+<li>
+<a href="show_atom_springs.html">show_atom_springs(atom,Box_dim,varargin)</a> % Draw the atom struct in 3D like show_atom, but with helical springs instead of bonds, for bond pairs or angle triplets.</li>
+<li>
+<a href="show_spring.html">show_spring(p1,p2,varargin)</a> % Draw a 3D helical (coil/shock) spring between two points, as a tube or a line.</li>
 </ol>
 </div>
 <h2 id="6">Keep/remove functions</h2>
@@ -472,6 +480,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
 % # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
 % # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
+% # <hydroxyl_orientation_atom.html hydroxyl_orientation_atom(atom,Box_dim,varargin)> % Angle between the structural O-H vectors and the layer normal, folded into [0 90] deg.
+% # <octahedral_distortion_atom.html octahedral_distortion_atom(atom,Box_dim,varargin)> % Distortion of the octahedral cations: mean M-O, Baur's Delta, Robinson's lambda and sigma2, and the flattening angle psi.
+% # <show_atom_springs.html show_atom_springs(atom,Box_dim,varargin)> % Draw the atom struct in 3D like show_atom, but with helical springs instead of bonds, for bond pairs or angle triplets.
+% # <show_spring.html show_spring(p1,p2,varargin)> % Draw a 3D helical (coil/shock) spring between two points, as a tube or a line.
 
 %% Keep/remove functions
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residues with specified molecule IDs.

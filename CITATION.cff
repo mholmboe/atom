@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+title: "atom Toolbox: Atomistic Topology Operations in MATLAB"
+message: "If you use this toolbox in your research, please cite both the toolbox and the article below."
+type: software
+authors:
+  - family-names: Holmboe
+    given-names: Michael
+    email: michael.holmboe@umu.se
+    affiliation: "Umeå University, Sweden"
+version: "3.00"
+license: MIT
+repository-code: "https://github.com/mholmboe/atom"
+url: "https://github.com/mholmboe/atom"
+abstract: >-
+  MATLAB scripts for building and manipulating molecular simulation cells for
+  molecular dynamics or Monte Carlo simulations, with support for generating
+  topology files with bonds, angles and dihedrals for the MINFF, CLAYFF and
+  INTERFACE force fields, and for writing structure and topology files for
+  Gromacs, LAMMPS, NAMD and RASPA2. Also compatible with recent versions of
+  OCTAVE.
+keywords:
+  - molecular dynamics
+  - molecular modelling
+  - clay minerals
+  - montmorillonite
+  - force field
+  - topology
+  - MINFF
+  - CLAYFF
+  - Gromacs
+  - LAMMPS
+  - MATLAB
+  - OCTAVE
+preferred-citation:
+  type: article
+  title: "atom: A MATLAB Package for Manipulation of Molecular Systems"
+  authors:
+    - family-names: Holmboe
+      given-names: Michael
+      email: michael.holmboe@umu.se
+      affiliation: "Umeå University, Sweden"
+  journal: "Clays and Clay Minerals"
+  year: 2019
+  doi: "10.1007/s42860-019-00043-y"

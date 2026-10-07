@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>show_spring.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-09-24">
+<meta name="DC.source" content="show_spring.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>show_spring.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function draws a 3D helical (coil/shock) spring between two points p1 and p2.</li>
+<li>It is meant to illustrate a harmonic interaction, either a bond between a pair of</li>
+<li>atoms or an angle between the two outer atoms of a triplet, see show_atom_springs(). *</li>
+<li>The spring is drawn either as a swept tube ('tube', looks best with lighting) or as</li>
+<li>a simple 3D line ('line', much faster for many springs). The coil amplitude is</li>
+<li>tapered to zero over the first and last 'lead' fraction, so the spring starts and</li>
+<li>ends exactly on the axis p1-&gt;p2. *</li>
+<li>springWidth sets the thickness of the entire spring (the coil diameter), while</li>
+<li>wireWidth sets the thickness of the wire itself for the 'tube' style, and linewidth</li>
+<li>does the same for the 'line' style.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>show_spring([0 0 0],[3 0 0])</li>
+<li>show_spring([0 0 0],[3 0 0],'color',[1 0 0])</li>
+<li>show_spring([0 0 0],[3 0 0],'springWidth',0.8,'wireWidth',0.12,'coils',8)</li>
+<li>show_spring([0 0 0],[3 0 0],'style','line','linewidth',2,'color','r')</li>
+<li>show_spring([0 0 0],[3 0 0],'gap',0.4) % Shrink both ends, e.g. to clear the atoms</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> h = show_spring(p1,p2,varargin)
+</pre>
+<pre class="codeinput">
+<span class="comment">% --- options (name/value) ---</span>
+p = struct(<span class="string">'color'</span>,[0.2 0.2 0.2], <span class="keyword">...</span><span class="comment">  % spring color</span>
+           <span class="string">'springWidth'</span>,0.7, <span class="keyword">...</span><span class="comment">      % thickness of the entire spring (coil diameter)</span>
+           <span class="string">'wireWidth'</span>,0.10, <span class="keyword">...</span><span class="comment">       % thickness of the wire itself, 'tube' style</span>
+           <span class="string">'linewidth'</span>,1.5, <span class="keyword">...</span><span class="comment">        % wire thickness in points, 'line' style</span>
+           <span class="string">'coils'</span>,6, <span class="keyword">...</span><span class="comment">              % number of turns</span>
+           <span class="string">'style'</span>,<span class="string">'tube'</span>, <span class="keyword">...</span><span class="comment">         % 'tube' or 'line'</span>
+           <span class="string">'lead'</span>,0.12, <span class="keyword">...</span><span class="comment">            % straight/tapered fraction at each end</span>
+           <span class="string">'resolution'</span>,10, <span class="keyword">...</span><span class="comment">        % cross-section points, 'tube' style</span>
+           <span class="string">'pointsPerCoil'</span>,24, <span class="keyword">...</span><span class="comment">     % centerline points per turn</span>
+           <span class="string">'gap'</span>,0, <span class="keyword">...</span><span class="comment">                % shorten both ends by this length</span>
+           <span class="string">'facealpha'</span>,1);
+<span class="keyword">for</span> k=1:2:numel(varargin)
+    nm = varargin{k};
+    fn = fieldnames(p);
+    hit = find(strcmpi(fn,nm),1);
+    <span class="keyword">if</span> isempty(hit)
+        error(<span class="string">'show_spring:UnknownOption'</span>,<span class="string">'Unknown option "%s".'</span>, num2str(nm));
+    <span class="keyword">end</span>
+    p.(fn{hit}) = varargin{k+1};
+<span class="keyword">end</span>
+
+p1 = p1(:)'; p2 = p2(:)';
+ax = p2 - p1;
+L  = norm(ax);
+<span class="keyword">if</span> L &lt;= 0, h = []; <span class="keyword">return</span>; <span class="keyword">end</span>
+w  = ax / L;
+
+<span class="comment">% --- optionally clear the ends, e.g. so the spring starts at the atom surfaces ---</span>
+<span class="keyword">if</span> p.gap &gt; 0
+    <span class="keyword">if</span> 2*p.gap &gt;= L, h = []; <span class="keyword">return</span>; <span class="keyword">end</span>
+    p1 = p1 + p.gap*w;
+    p2 = p2 - p.gap*w;
+    L  = L - 2*p.gap;
+<span class="keyword">end</span>
+
+<span class="comment">% --- an orthonormal frame around the axis ---</span>
+tmp = [0 0 1];
+<span class="keyword">if</span> abs(dot(tmp,w)) &gt; 0.9, tmp = [1 0 0]; <span class="keyword">end</span>
+u1 = cross(w,tmp); u1 = u1/norm(u1);
+u2 = cross(w,u1);
+
+<span class="comment">% --- helical centerline, with the amplitude tapered to zero at both ends ---</span>
+M   = max(16, round(p.pointsPerCoil * p.coils));
+t   = linspace(0,1,M)';
+R   = p.springWidth/2;
+amp = R*ones(M,1);
+ld  = max(eps, p.lead);
+il  = t &lt; ld;        amp(il) = R * (t(il)/ld);
+ir  = t &gt; 1-ld;      amp(ir) = R * ((1-t(ir))/ld);
+ph  = 2*pi*p.coils*t;
+C   = p1 + t*L.*w + (amp.*cos(ph))*u1 + (amp.*sin(ph))*u2;
+
+<span class="keyword">if</span> strncmpi(p.style,<span class="string">'line'</span>,4)
+    h = plot3(C(:,1),C(:,2),C(:,3),<span class="string">'-'</span>,<span class="string">'Color'</span>,p.color,<span class="string">'LineWidth'</span>,p.linewidth);
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+
+<span class="comment">% --- sweep a circular cross-section along the centerline (parallel transport) ---</span>
+T = gradient_(C);
+N = zeros(M,3);
+n0 = u1 - dot(u1,T(1,:))*T(1,:);
+<span class="keyword">if</span> norm(n0) &lt; 1e-12, n0 = u2 - dot(u2,T(1,:))*T(1,:); <span class="keyword">end</span>
+N(1,:) = n0/norm(n0);
+<span class="keyword">for</span> k = 2:M
+    v = cross(T(k-1,:),T(k,:));
+    nv = norm(v);
+    <span class="keyword">if</span> nv &lt; 1e-12
+        N(k,:) = N(k-1,:);
+    <span class="keyword">else</span>
+        v  = v/nv;
+        th = atan2(nv, dot(T(k-1,:),T(k,:)));
+        N(k,:) = rodrigues_(N(k-1,:), v, th);      <span class="comment">% rotation-minimizing frame</span>
+    <span class="keyword">end</span>
+    N(k,:) = N(k,:) - dot(N(k,:),T(k,:))*T(k,:);
+    nn = norm(N(k,:));
+    <span class="keyword">if</span> nn &lt; 1e-12, N(k,:) = N(k-1,:); <span class="keyword">else</span>, N(k,:) = N(k,:)/nn; <span class="keyword">end</span>
+<span class="keyword">end</span>
+B = cross(T,N,2);
+
+rw  = p.wireWidth/2;
+phi = linspace(0,2*pi,max(4,p.resolution));
+X = C(:,1) + rw*(cos(phi).*N(:,1) + sin(phi).*B(:,1));
+Y = C(:,2) + rw*(cos(phi).*N(:,2) + sin(phi).*B(:,2));
+Z = C(:,3) + rw*(cos(phi).*N(:,3) + sin(phi).*B(:,3));
+
+h = surface(X,Y,Z,<span class="string">'FaceColor'</span>,p.color,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+            <span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="string">'FaceAlpha'</span>,p.facealpha, <span class="keyword">...</span>
+            <span class="string">'AmbientStrength'</span>,.6,<span class="string">'DiffuseStrength'</span>,.3,<span class="string">'SpecularStrength'</span>,.1);
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>  <span class="comment">% main function</span>
+
+
+<span class="comment">% ===== local helpers =====</span>
+<span class="keyword">function</span> T = gradient_(C)
+<span class="comment">% Unit tangents along a 3D curve, by central differences.</span>
+T = zeros(size(C));
+T(2:end-1,:) = C(3:end,:) - C(1:end-2,:);
+T(1,:)       = C(2,:) - C(1,:);
+T(end,:)     = C(end,:) - C(end-1,:);
+nn = sqrt(sum(T.^2,2)); nn(nn==0) = 1;
+T = T ./ nn;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> vr = rodrigues_(v, k, th)
+<span class="comment">% Rotate the row vector v about the unit axis k by th radians.</span>
+vr = v*cos(th) + cross(k,v)*sin(th) + k*dot(k,v)*(1-cos(th));
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% show_spring.m
+% * This function draws a 3D helical (coil/shock) spring between two points p1 and p2.
+% * It is meant to illustrate a harmonic interaction, either a bond between a pair of
+% * atoms or an angle between the two outer atoms of a triplet, see show_atom_springs().
+% *
+% * The spring is drawn either as a swept tube ('tube', looks best with lighting) or as
+% * a simple 3D line ('line', much faster for many springs). The coil amplitude is
+% * tapered to zero over the first and last 'lead' fraction, so the spring starts and
+% * ends exactly on the axis p1->p2.
+% *
+% * springWidth sets the thickness of the entire spring (the coil diameter), while
+% * wireWidth sets the thickness of the wire itself for the 'tube' style, and linewidth
+% * does the same for the 'line' style.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # show_spring([0 0 0],[3 0 0])
+% # show_spring([0 0 0],[3 0 0],'color',[1 0 0])
+% # show_spring([0 0 0],[3 0 0],'springWidth',0.8,'wireWidth',0.12,'coils',8)
+% # show_spring([0 0 0],[3 0 0],'style','line','linewidth',2,'color','r')
+% # show_spring([0 0 0],[3 0 0],'gap',0.4) % Shrink both ends, e.g. to clear the atoms
+%
+
+function h = show_spring(p1,p2,varargin)
+%%
+
+% REPLACE_WITH_DASH_DASH- options (name/value) REPLACE_WITH_DASH_DASH-
+p = struct('color',[0.2 0.2 0.2], ...  % spring color
+           'springWidth',0.7, ...      % thickness of the entire spring (coil diameter)
+           'wireWidth',0.10, ...       % thickness of the wire itself, 'tube' style
+           'linewidth',1.5, ...        % wire thickness in points, 'line' style
+           'coils',6, ...              % number of turns
+           'style','tube', ...         % 'tube' or 'line'
+           'lead',0.12, ...            % straight/tapered fraction at each end
+           'resolution',10, ...        % cross-section points, 'tube' style
+           'pointsPerCoil',24, ...     % centerline points per turn
+           'gap',0, ...                % shorten both ends by this length
+           'facealpha',1);
+for k=1:2:numel(varargin)
+    nm = varargin{k};
+    fn = fieldnames(p);
+    hit = find(strcmpi(fn,nm),1);
+    if isempty(hit)
+        error('show_spring:UnknownOption','Unknown option "%s".', num2str(nm));
+    end
+    p.(fn{hit}) = varargin{k+1};
+end
+
+p1 = p1(:)'; p2 = p2(:)';
+ax = p2 - p1;
+L  = norm(ax);
+if L <= 0, h = []; return; end
+w  = ax / L;
+
+% REPLACE_WITH_DASH_DASH- optionally clear the ends, e.g. so the spring starts at the atom surfaces REPLACE_WITH_DASH_DASH-
+if p.gap > 0
+    if 2*p.gap >= L, h = []; return; end
+    p1 = p1 + p.gap*w;
+    p2 = p2 - p.gap*w;
+    L  = L - 2*p.gap;
+end
+
+% REPLACE_WITH_DASH_DASH- an orthonormal frame around the axis REPLACE_WITH_DASH_DASH-
+tmp = [0 0 1];
+if abs(dot(tmp,w)) > 0.9, tmp = [1 0 0]; end
+u1 = cross(w,tmp); u1 = u1/norm(u1);
+u2 = cross(w,u1);
+
+% REPLACE_WITH_DASH_DASH- helical centerline, with the amplitude tapered to zero at both ends REPLACE_WITH_DASH_DASH-
+M   = max(16, round(p.pointsPerCoil * p.coils));
+t   = linspace(0,1,M)';
+R   = p.springWidth/2;
+amp = R*ones(M,1);
+ld  = max(eps, p.lead);
+il  = t < ld;        amp(il) = R * (t(il)/ld);
+ir  = t > 1-ld;      amp(ir) = R * ((1-t(ir))/ld);
+ph  = 2*pi*p.coils*t;
+C   = p1 + t*L.*w + (amp.*cos(ph))*u1 + (amp.*sin(ph))*u2;
+
+if strncmpi(p.style,'line',4)
+    h = plot3(C(:,1),C(:,2),C(:,3),'-','Color',p.color,'LineWidth',p.linewidth);
+    return
+end
+
+% REPLACE_WITH_DASH_DASH- sweep a circular cross-section along the centerline (parallel transport) REPLACE_WITH_DASH_DASH-
+T = gradient_(C);
+N = zeros(M,3);
+n0 = u1 - dot(u1,T(1,:))*T(1,:);
+if norm(n0) < 1e-12, n0 = u2 - dot(u2,T(1,:))*T(1,:); end
+N(1,:) = n0/norm(n0);
+for k = 2:M
+    v = cross(T(k-1,:),T(k,:));
+    nv = norm(v);
+    if nv < 1e-12
+        N(k,:) = N(k-1,:);
+    else
+        v  = v/nv;
+        th = atan2(nv, dot(T(k-1,:),T(k,:)));
+        N(k,:) = rodrigues_(N(k-1,:), v, th);      % rotation-minimizing frame
+    end
+    N(k,:) = N(k,:) - dot(N(k,:),T(k,:))*T(k,:);
+    nn = norm(N(k,:));
+    if nn < 1e-12, N(k,:) = N(k-1,:); else, N(k,:) = N(k,:)/nn; end
+end
+B = cross(T,N,2);
+
+rw  = p.wireWidth/2;
+phi = linspace(0,2*pi,max(4,p.resolution));
+X = C(:,1) + rw*(cos(phi).*N(:,1) + sin(phi).*B(:,1));
+Y = C(:,2) + rw*(cos(phi).*N(:,2) + sin(phi).*B(:,2));
+Z = C(:,3) + rw*(cos(phi).*N(:,3) + sin(phi).*B(:,3));
+
+h = surface(X,Y,Z,'FaceColor',p.color,'EdgeColor','none', ...
+            'FaceLighting','gouraud','FaceAlpha',p.facealpha, ...
+            'AmbientStrength',.6,'DiffuseStrength',.3,'SpecularStrength',.1);
+
+end  % main function
+
+
+% ===== local helpers =====
+function T = gradient_(C)
+% Unit tangents along a 3D curve, by central differences.
+T = zeros(size(C));
+T(2:end-1,:) = C(3:end,:) - C(1:end-2,:);
+T(1,:)       = C(2,:) - C(1,:);
+T(end,:)     = C(end,:) - C(end-1,:);
+nn = sqrt(sum(T.^2,2)); nn(nn==0) = 1;
+T = T ./ nn;
+end
+
+function vr = rodrigues_(v, k, th)
+% Rotate the row vector v about the unit axis k by th radians.
+vr = v*cos(th) + cross(k,v)*sin(th) + k*dot(k,v)*(1-cos(th));
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

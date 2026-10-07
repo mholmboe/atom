@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>find_angle_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-10-07">
+<meta name="DC.source" content="find_angle_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>find_angle_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>This function finds the rows of an Angle_index (or Bond_index) that involve</li>
+<li>certain atomtypes, and returns their row indices. It is meant for picking out</li>
+<li>for instance all Si-Ob-Si angles, or every angle involving both Ob and Si, from</li>
+<li>the full Angle_index produced by bond_atom() or bond_angle_dihedral_atom(). *</li>
+<li>Pass the index columns only, i.e. Angle_index (extra columns are ignored, the</li>
+<li>atom indices are taken from columns 1-3) or Bond_index(:,1:2) for bonds. A</li>
+<li>matrix with two columns is treated as pairs, one with three or more as triplets. *</li>
+<li>The matching mode decides what 'involving' means:</li>
+<li>'contains' (default) the triplet holds at least one atom of each listed type.</li>
+<li>Repeat a type to ask for two of them, so {'Ob','Ob'} requires two.</li>
+<li>'only' every atom of the triplet is one of the listed types</li>
+<li>'exact' the types match the given pattern, e.g. {'Ob','Si','Op'}, with the</li>
+<li>two ends allowed to swap. Use '*' as a wildcard for any type.</li>
+<li>'center' only the central atom, i.e. column 2, has to match *</li>
+<li>The returned indices plug straight into show_atom_springs, see the examples.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>ind = find_angle_atom(atom,Angle_index,'Ob') % Every angle involving an Ob</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'Ob','Si'}) % Involving both Ob and Si</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'Ob','Si','Op'}) % Involving all three</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'Ob','Si'},'mode','only') % Only Ob and Si</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'Ob','Si','Ob'},'mode','exact') % Ob-Si-Ob</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'*','Ob','*'},'mode','exact') % Centred on Ob</li>
+<li>ind = find_angle_atom(atom,Angle_index,{'Si'},'mode','center') % The same thing</li>
+<li>ind = find_angle_atom(atom,Bond_index(:,1:2),{'Si','Ob'},'mode','only') % Si-Ob bonds</li>
+<li>show_atom_springs(atom,Box_dim,'spring_index',Angle_index(ind,1:3))</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [ind,types] = find_angle_atom(atom,index_matrix,sel_types,varargin)
+</pre>
+<pre class="codeinput">
+<span class="comment">% --- options (name/value) ---</span>
+p = struct(<span class="string">'mode'</span>,<span class="string">'contains'</span>);
+<span class="keyword">for</span> k=1:2:numel(varargin)
+    fn = fieldnames(p);
+    hit = find(strcmpi(fn,varargin{k}),1);
+    <span class="keyword">if</span> isempty(hit)
+        error(<span class="string">'find_angle_atom:UnknownOption'</span>,<span class="string">'Unknown option "%s".'</span>, num2str(varargin{k}));
+    <span class="keyword">end</span>
+    p.(fn{hit}) = varargin{k+1};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ischar(sel_types) || isstring(sel_types), sel_types = {char(sel_types)}; <span class="keyword">end</span>
+sel_types = cellfun(@char, sel_types, <span class="string">'UniformOutput'</span>, false);
+
+ind=[]; types={};
+<span class="keyword">if</span> isempty(index_matrix), <span class="keyword">return</span>; <span class="keyword">end</span>
+
+nc = size(index_matrix,2);
+<span class="keyword">if</span> nc &lt; 2
+    error(<span class="string">'find_angle_atom:BadIndex'</span>,<span class="string">'The index matrix needs at least two columns.'</span>);
+<span class="keyword">end</span>
+<span class="keyword">if</span> nc == 2
+    cols = 1:2;                       <span class="comment">% a pair list</span>
+<span class="keyword">elseif</span> nc == 3 &amp;&amp; any(mod(index_matrix(:,3),1) ~= 0)
+    <span class="comment">% A three-column matrix whose last column is not integer is a Bond_index,</span>
+    <span class="comment">% where column 3 holds the bond distance rather than a third atom.</span>
+    cols = 1:2;
+    disp(<span class="string">'Third column is not integer, treating this as a Bond_index of pairs'</span>)
+<span class="keyword">else</span>
+    cols = 1:3;                       <span class="comment">% a triplet list, e.g. Angle_index</span>
+<span class="keyword">end</span>
+
+T = [atom.type];
+idx = index_matrix(:,cols);
+<span class="keyword">if</span> any(idx(:) &lt; 1) || any(idx(:) &gt; numel(atom))
+    error(<span class="string">'find_angle_atom:OutOfRange'</span>,<span class="string">'The index matrix points outside the atom struct.'</span>);
+<span class="keyword">end</span>
+tt = reshape(T(idx), size(idx));       <span class="comment">% types of each member, same shape as idx</span>
+
+keep = false(size(idx,1),1);
+<span class="keyword">switch</span> lower(p.mode)
+    <span class="keyword">case</span> <span class="string">'contains'</span>
+        <span class="comment">% Each listed type must be present, counting repeats.</span>
+        ureq = unique(sel_types);
+        need = cellfun(@(u) sum(strcmp(sel_types,u)), ureq);
+        <span class="keyword">for</span> r = 1:size(idx,1)
+            ok = true;
+            <span class="keyword">for</span> q = 1:numel(ureq)
+                <span class="keyword">if</span> sum(strcmp(tt(r,:), ureq{q})) &lt; need(q), ok = false; <span class="keyword">break</span>; <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            keep(r) = ok;
+        <span class="keyword">end</span>
+    <span class="keyword">case</span> <span class="string">'only'</span>
+        <span class="keyword">for</span> r = 1:size(idx,1)
+            keep(r) = all(ismember(tt(r,:), sel_types));
+        <span class="keyword">end</span>
+    <span class="keyword">case</span> <span class="string">'exact'</span>
+        <span class="keyword">if</span> numel(sel_types) ~= numel(cols)
+            error(<span class="string">'find_angle_atom:BadPattern'</span>, <span class="keyword">...</span>
+                  <span class="string">'Mode ''exact'' needs a pattern with %d types.'</span>, numel(cols));
+        <span class="keyword">end</span>
+        pat = sel_types;
+        rev = pat(end:-1:1);
+        <span class="keyword">for</span> r = 1:size(idx,1)
+            keep(r) = match_(tt(r,:),pat) || match_(tt(r,:),rev);
+        <span class="keyword">end</span>
+    <span class="keyword">case</span> <span class="string">'center'</span>
+        <span class="keyword">if</span> numel(cols) &lt; 3
+            error(<span class="string">'find_angle_atom:NoCenter'</span>,<span class="string">'Mode ''center'' needs triplets, not pairs.'</span>);
+        <span class="keyword">end</span>
+        keep = ismember(tt(:,2), sel_types);
+    <span class="keyword">otherwise</span>
+        error(<span class="string">'find_angle_atom:BadMode'</span>, <span class="keyword">...</span>
+              <span class="string">'Unknown mode "%s", use contains | only | exact | center.'</span>, p.mode);
+<span class="keyword">end</span>
+
+ind   = find(keep);
+types = tt(keep,:);
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>  <span class="comment">% main function</span>
+
+
+<span class="comment">% ===== local helpers =====</span>
+<span class="keyword">function</span> tf = match_(t, pat)
+<span class="comment">% Element-wise type match, where '*' in the pattern matches anything.</span>
+tf = true;
+<span class="keyword">for</span> k = 1:numel(pat)
+    <span class="keyword">if</span> strcmp(pat{k},<span class="string">'*'</span>), <span class="keyword">continue</span>; <span class="keyword">end</span>
+    <span class="keyword">if</span> ~strcmp(t{k}, pat{k}), tf = false; <span class="keyword">return</span>; <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% find_angle_atom.m
+% * This function finds the rows of an Angle_index (or Bond_index) that involve
+% * certain atomtypes, and returns their row indices. It is meant for picking out
+% * for instance all Si-Ob-Si angles, or every angle involving both Ob and Si, from
+% * the full Angle_index produced by bond_atom() or bond_angle_dihedral_atom().
+% *
+% * Pass the index columns only, i.e. Angle_index (extra columns are ignored, the
+% * atom indices are taken from columns 1-3) or Bond_index(:,1:2) for bonds. A
+% * matrix with two columns is treated as pairs, one with three or more as triplets.
+% *
+% * The matching mode decides what 'involving' means:
+% *   'contains'  (default) the triplet holds at least one atom of each listed type.
+% *               Repeat a type to ask for two of them, so {'Ob','Ob'} requires two.
+% *   'only'      every atom of the triplet is one of the listed types
+% *   'exact'     the types match the given pattern, e.g. {'Ob','Si','Op'}, with the
+% *               two ends allowed to swap. Use '*' as a wildcard for any type.
+% *   'center'    only the central atom, i.e. column 2, has to match
+% *
+% * The returned indices plug straight into show_atom_springs, see the examples.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # ind = find_angle_atom(atom,Angle_index,'Ob') % Every angle involving an Ob
+% # ind = find_angle_atom(atom,Angle_index,{'Ob','Si'}) % Involving both Ob and Si
+% # ind = find_angle_atom(atom,Angle_index,{'Ob','Si','Op'}) % Involving all three
+% # ind = find_angle_atom(atom,Angle_index,{'Ob','Si'},'mode','only') % Only Ob and Si
+% # ind = find_angle_atom(atom,Angle_index,{'Ob','Si','Ob'},'mode','exact') % Ob-Si-Ob
+% # ind = find_angle_atom(atom,Angle_index,{'*','Ob','*'},'mode','exact') % Centred on Ob
+% # ind = find_angle_atom(atom,Angle_index,{'Si'},'mode','center') % The same thing
+% # ind = find_angle_atom(atom,Bond_index(:,1:2),{'Si','Ob'},'mode','only') % Si-Ob bonds
+% # show_atom_springs(atom,Box_dim,'spring_index',Angle_index(ind,1:3))
+%
+
+function [ind,types] = find_angle_atom(atom,index_matrix,sel_types,varargin)
+%%
+
+% REPLACE_WITH_DASH_DASH- options (name/value) REPLACE_WITH_DASH_DASH-
+p = struct('mode','contains');
+for k=1:2:numel(varargin)
+    fn = fieldnames(p);
+    hit = find(strcmpi(fn,varargin{k}),1);
+    if isempty(hit)
+        error('find_angle_atom:UnknownOption','Unknown option "%s".', num2str(varargin{k}));
+    end
+    p.(fn{hit}) = varargin{k+1};
+end
+
+if ischar(sel_types) || isstring(sel_types), sel_types = {char(sel_types)}; end
+sel_types = cellfun(@char, sel_types, 'UniformOutput', false);
+
+ind=[]; types={};
+if isempty(index_matrix), return; end
+
+nc = size(index_matrix,2);
+if nc < 2
+    error('find_angle_atom:BadIndex','The index matrix needs at least two columns.');
+end
+if nc == 2
+    cols = 1:2;                       % a pair list
+elseif nc == 3 && any(mod(index_matrix(:,3),1) ~= 0)
+    % A three-column matrix whose last column is not integer is a Bond_index,
+    % where column 3 holds the bond distance rather than a third atom.
+    cols = 1:2;
+    disp('Third column is not integer, treating this as a Bond_index of pairs')
+else
+    cols = 1:3;                       % a triplet list, e.g. Angle_index
+end
+
+T = [atom.type];
+idx = index_matrix(:,cols);
+if any(idx(:) < 1) || any(idx(:) > numel(atom))
+    error('find_angle_atom:OutOfRange','The index matrix points outside the atom struct.');
+end
+tt = reshape(T(idx), size(idx));       % types of each member, same shape as idx
+
+keep = false(size(idx,1),1);
+switch lower(p.mode)
+    case 'contains'
+        % Each listed type must be present, counting repeats.
+        ureq = unique(sel_types);
+        need = cellfun(@(u) sum(strcmp(sel_types,u)), ureq);
+        for r = 1:size(idx,1)
+            ok = true;
+            for q = 1:numel(ureq)
+                if sum(strcmp(tt(r,:), ureq{q})) < need(q), ok = false; break; end
+            end
+            keep(r) = ok;
+        end
+    case 'only'
+        for r = 1:size(idx,1)
+            keep(r) = all(ismember(tt(r,:), sel_types));
+        end
+    case 'exact'
+        if numel(sel_types) ~= numel(cols)
+            error('find_angle_atom:BadPattern', ...
+                  'Mode ''exact'' needs a pattern with %d types.', numel(cols));
+        end
+        pat = sel_types;
+        rev = pat(end:-1:1);
+        for r = 1:size(idx,1)
+            keep(r) = match_(tt(r,:),pat) || match_(tt(r,:),rev);
+        end
+    case 'center'
+        if numel(cols) < 3
+            error('find_angle_atom:NoCenter','Mode ''center'' needs triplets, not pairs.');
+        end
+        keep = ismember(tt(:,2), sel_types);
+    otherwise
+        error('find_angle_atom:BadMode', ...
+              'Unknown mode "%s", use contains | only | exact | center.', p.mode);
+end
+
+ind   = find(keep);
+types = tt(keep,:);
+
+end  % main function
+
+
+% ===== local helpers =====
+function tf = match_(t, pat)
+% Element-wise type match, where '*' in the pattern matches anything.
+tf = true;
+for k = 1:numel(pat)
+    if strcmp(pat{k},'*'), continue; end
+    if ~strcmp(t{k}, pat{k}), tf = false; return; end
+end
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

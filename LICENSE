@@ -1,0 +1,76 @@
+MIT License
+
+Copyright (c) 2017-2026 Michael Holmboe
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===============================================================================
+THIRD-PARTY COMPONENTS
+===============================================================================
+
+The MIT license above covers the atom Toolbox itself. Some files are derived
+from, or distributed together with, software written by others and remain under
+their original licenses. Those licenses are reproduced in the files themselves
+and are not superseded by the MIT license above.
+
+-------------------------------------------------------------------------------
+1. mxdrfile, Copyright (c) 2014 Jon Kapla  --  BSD 3-Clause License
+-------------------------------------------------------------------------------
+
+Reading and writing of Gromacs .xtc and .trr trajectory files relies on the
+mxdrfile package by Jon Kapla, http://kaplajon.github.io/mxdrfile/, which is
+distributed under the BSD 3-Clause license. The full license text is retained
+in the header of each of the following files:
+
+    import_functions/import_xtc.m
+    import_functions/import_trr.m
+    custom_functions/decompose_traj.m
+    custom_functions/extract_vxvy_from_trr.m
+    custom_functions/extract_vz_from_trr.m
+
+Redistribution of these files, in source or binary form, must retain that
+copyright notice, the list of conditions and the accompanying disclaimer. The
+name of the author may not be used to endorse or promote derived products
+without specific prior written permission.
+
+-------------------------------------------------------------------------------
+2. Other derived functions
+-------------------------------------------------------------------------------
+
+The following functions were adapted from or inspired by freely available
+MATLAB code by other authors, who are credited in the headers of the respective
+files. Where an original license applies, it governs that file:
+
+    general_functions/show_arrow.m     adapted from mArrow3.m by Georg
+                                       Stillfried, MATLAB File Exchange, 2009
+    general_functions/show_atom.m      inspired by molecule3D.m by
+                                       Andre Ludwig (aludwig@phys.ethz.ch)
+    general_functions/show_atomo.m     Octave compatible version of the above
+
+-------------------------------------------------------------------------------
+3. Bundled reference data
+-------------------------------------------------------------------------------
+
+The toolbox ships tabulated values taken from the scientific literature, such
+as the revised Shannon ionic and crystal radii, bond valence parameters from
+the IUCr, atomic scattering factors from Waasmaier & Kirfel (1995), and
+published force field parameters for CLAYFF, INTERFACE, MINFF and others. The
+original publications are cited next to the data in the corresponding files and
+should be cited when the data is used.

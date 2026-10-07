@@ -36,6 +36,7 @@
 % # <stats_atom.html stats_atom(atom,Box_dim)> % Generate statistics about atom types, coordination, and charges in the structure.
 % # <list_bonded_atom.html list_bonded_atom(atom,Bond_index)> % List all bonds, angles or dihedrals between the different atom types.
 % # <n2t_atom.html n2t_atom(atom,Box_dim,outfile,varargin)> % Write a Gromacs atomname2type.n2t file from the atom struct, with charges, masses and neighbour distances.
+% # <find_angle_atom.html find_angle_atom(atom,index_matrix,sel_types,varargin)> % Find the rows of an Angle_index or Bond_index that involve certain atomtypes, with the matching modes contains, only, exact and center.
 
 %
 %% Version

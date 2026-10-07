@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>hydroxyl_orientation_atom.m</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-09-24">
+<meta name="DC.source" content="hydroxyl_orientation_atom.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>hydroxyl_orientation_atom.m</h1>
+<!--introduction-->
+<div>
+<ul>
+<li>Orientation of the structural O-H vectors of a clay/mica layer relative to the</li>
+<li>layer normal (by default z, i.e. the c* direction of a 00l-oriented cell).</li>
+<li>For each H the bonded hydroxyl O is found within a short cutoff, and the angle</li>
+<li>between the O-&gt;H vector and the normal is returned. *</li>
+<li>Because an O-H pointing "up" and one pointing "down" are equivalent by symmetry,</li>
+<li>the angle is folded into [0 90] deg, i.e. theta = acosd(<tt>cos</tt>). theta = 0 means</li>
+<li>the O-H points along the normal, theta = 90 means it lies in the ab plane. The</li>
+<li>complement, info.theta_plane = 90 - theta, is the angle to the (001) plane that</li>
+<li>clay studies usually quote (the OH dipole tilt, rho). *</li>
+<li>In a dioctahedral smectite the O-H points towards the vacant octahedral site and</li>
+<li>thus lies close to the ab plane (theta near 90, theta_plane small), while in a</li>
+<li>trioctahedral one it points nearly along the normal (theta near 0). *</li>
+<li>The angles are also reported per hydroxyl-O type in info.by_type, so that for</li>
+<li>instance Oh (Al-OH-Al) and Ohmg (Al-OH-Mg) are separated.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Version</a>
+</li>
+<li>
+<a href="#2">Contact</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Version</h2>
+<p>3.00</p>
+<h2 id="2">Contact</h2>
+<p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
+</p>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>theta = hydroxyl_orientation_atom(atom,Box_dim)</li>
+<li>[theta,angles,info] = hydroxyl_orientation_atom(atom,Box_dim)</li>
+<li>theta = hydroxyl_orientation_atom(atom,Box_dim,'normal',[0 0 1])</li>
+<li>theta = hydroxyl_orientation_atom(atom,Box_dim,'oh_cutoff',1.3)</li>
+</ol>
+</div>
+<pre class="codeinput">
+<span class="keyword">function</span> [theta,angles,info] = hydroxyl_orientation_atom(atom,Box_dim,varargin)
+</pre>
+<pre class="codeinput">
+<span class="comment">% --- options (name/value) ---</span>
+p = struct(<span class="string">'oh_cutoff'</span>,1.3, <span class="keyword">...</span><span class="comment">      % max O-H distance in Angstrom</span>
+           <span class="string">'h_types'</span>,{{}}, <span class="keyword">...</span><span class="comment">       % default: any type/element starting with H</span>
+           <span class="string">'normal'</span>,[0 0 1], <span class="keyword">...</span><span class="comment">     % layer normal</span>
+           <span class="string">'fold'</span>,true);             <span class="comment">% fold the angle into [0 90]</span>
+<span class="keyword">for</span> k=1:2:numel(varargin)
+    p.(varargin{k}) = varargin{k+1};
+<span class="keyword">end</span>
+
+X=[atom.x]'; Y=[atom.y]'; Z=[atom.z]';
+T=[atom.type];
+N=numel(atom);
+E=T;
+<span class="keyword">if</span> isfield(atom,<span class="string">'element'</span>)
+    <span class="keyword">try</span>
+        Etmp=[atom.element];
+        <span class="keyword">if</span> numel(Etmp)==N &amp;&amp; all(~cellfun(@isempty,Etmp)), E=Etmp; <span class="keyword">end</span>
+    <span class="keyword">catch</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+<span class="keyword">if</span> numel(Box_dim)&gt;=9
+    xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+<span class="keyword">else</span>
+    xy=0; xz=0; yz=0;
+<span class="keyword">end</span>
+
+nrm = p.normal(:)'; nrm = nrm/norm(nrm);
+
+theta=NaN; angles=[];
+info=struct(<span class="string">'theta_std'</span>,NaN,<span class="string">'theta_median'</span>,NaN,<span class="string">'theta_plane'</span>,NaN, <span class="keyword">...</span>
+            <span class="string">'theta_signed'</span>,NaN,<span class="string">'n_OH'</span>,0,<span class="string">'n_H'</span>,0,<span class="string">'by_type'</span>,struct([]),<span class="string">'note'</span>,<span class="string">''</span>);
+
+<span class="comment">% --- hydrogens and oxygens ---</span>
+<span class="keyword">if</span> ~isempty(p.h_types)
+    is_H = ismember(T,p.h_types);
+<span class="keyword">else</span>
+    is_H = strcmp(E,<span class="string">'H'</span>) | strncmpi(T,<span class="string">'H'</span>,1);
+<span class="keyword">end</span>
+is_O = strcmp(E,<span class="string">'O'</span>) | strncmpi(T,<span class="string">'O'</span>,1);
+h_idx=find(is_H); o_idx=find(is_O);
+info.n_H=numel(h_idx);
+<span class="keyword">if</span> isempty(h_idx) || isempty(o_idx)
+    info.note=<span class="string">'no hydrogens and/or oxygens found'</span>;
+    <span class="keyword">return</span>;
+<span class="keyword">end</span>
+
+Xo=X(o_idx); Yo=Y(o_idx); Zo=Z(o_idx);
+ang=[]; signed=[]; otype={};
+<span class="keyword">for</span> ii=1:numel(h_idx)
+    h=h_idx(ii);
+    d = mic_([Xo-X(h), Yo-Y(h), Zo-Z(h)], lx,ly,lz,xy,xz,yz);   <span class="comment">% H-&gt;O vectors</span>
+    r = sqrt(sum(d.^2,2));
+    [rmin,kk] = min(r);
+    <span class="keyword">if</span> rmin &gt;= p.oh_cutoff, <span class="keyword">continue</span>; <span class="keyword">end</span>                        <span class="comment">% unbound H, e.g. water</span>
+    vOH = -d(kk,:);                                              <span class="comment">% O-&gt;H</span>
+    nv  = norm(vOH);
+    <span class="keyword">if</span> nv==0, <span class="keyword">continue</span>; <span class="keyword">end</span>
+    c = dot(vOH/nv, nrm);
+    signed(end+1) = acosd(max(-1,min(1,c)));                     <span class="comment">%#ok&lt;AGROW&gt; 0..180</span>
+    <span class="keyword">if</span> p.fold
+        ang(end+1) = acosd(min(1,abs(c)));                       <span class="comment">%#ok&lt;AGROW&gt; 0..90</span>
+    <span class="keyword">else</span>
+        ang(end+1) = signed(end);                                <span class="comment">%#ok&lt;AGROW&gt;</span>
+    <span class="keyword">end</span>
+    otype{end+1} = T{o_idx(kk)};                                 <span class="comment">%#ok&lt;AGROW&gt;</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isempty(ang)
+    info.note=<span class="string">'no O-H pairs found within oh_cutoff'</span>;
+    <span class="keyword">return</span>;
+<span class="keyword">end</span>
+
+angles = ang(:);
+theta  = mean(angles);
+info.n_OH        = numel(angles);
+info.theta_std   = std(angles,1);
+info.theta_median= median(angles);
+info.theta_plane = 90 - theta;          <span class="comment">% angle to the (001) plane</span>
+info.theta_signed= mean(signed);
+
+<span class="comment">% --- breakdown per hydroxyl-O type ---</span>
+ut = unique(otype);
+bt = struct(<span class="string">'type'</span>,{},<span class="string">'theta'</span>,{},<span class="string">'theta_std'</span>,{},<span class="string">'theta_plane'</span>,{},<span class="string">'n'</span>,{});
+<span class="keyword">for</span> kk=1:numel(ut)
+    sel = strcmp(otype, ut{kk});
+    bt(kk).type        = ut{kk};
+    bt(kk).theta       = mean(angles(sel));
+    bt(kk).theta_std   = std(angles(sel),1);
+    bt(kk).theta_plane = 90 - mean(angles(sel));
+    bt(kk).n           = sum(sel);
+<span class="keyword">end</span>
+info.by_type = bt;
+</pre>
+<pre class="codeinput">
+<span class="keyword">end</span>  <span class="comment">% main function</span>
+
+
+<span class="comment">% ===== local helpers =====</span>
+<span class="keyword">function</span> d = mic_(d, lx,ly,lz,xy,xz,yz)
+<span class="comment">% Triclinic minimum-image (GROMACS Box_dim convention), matching bond_angle_type.</span>
+rx=d(:,1); ry=d(:,2); rz=d(:,3);
+gt=rz&gt;lz/2;  lt=rz&lt;-lz/2;
+rz(gt)=rz(gt)-lz; rz(lt)=rz(lt)+lz;
+rx(gt)=rx(gt)-xz; rx(lt)=rx(lt)+xz;
+ry(gt)=ry(gt)-yz; ry(lt)=ry(lt)+yz;
+gt=ry&gt;ly/2;  lt=ry&lt;-ly/2;
+ry(gt)=ry(gt)-ly; ry(lt)=ry(lt)+ly;
+rx(gt)=rx(gt)-xy; rx(lt)=rx(lt)+xy;
+gt=rx&gt;lx/2;  lt=rx&lt;-lx/2;
+rx(gt)=rx(gt)-lx; rx(lt)=rx(lt)+lx;
+d=[rx ry rz];
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% hydroxyl_orientation_atom.m
+% * Orientation of the structural O-H vectors of a clay/mica layer relative to the
+% * layer normal (by default z, i.e. the c* direction of a 00l-oriented cell).
+% * For each H the bonded hydroxyl O is found within a short cutoff, and the angle
+% * between the O->H vector and the normal is returned.
+% *
+% * Because an O-H pointing "up" and one pointing "down" are equivalent by symmetry,
+% * the angle is folded into [0 90] deg, i.e. theta = acosd(|cos|). theta = 0 means
+% * the O-H points along the normal, theta = 90 means it lies in the ab plane. The
+% * complement, info.theta_plane = 90 - theta, is the angle to the (001) plane that
+% * clay studies usually quote (the OH dipole tilt, rho).
+% *
+% * In a dioctahedral smectite the O-H points towards the vacant octahedral site and
+% * thus lies close to the ab plane (theta near 90, theta_plane small), while in a
+% * trioctahedral one it points nearly along the normal (theta near 0).
+% *
+% * The angles are also reported per hydroxyl-O type in info.by_type, so that for
+% * instance Oh (Al-OH-Al) and Ohmg (Al-OH-Mg) are separated.
+%
+%% Version
+% 3.00
+%
+%% Contact
+% Please report problems/bugs to michael.holmboe@umu.se
+%
+%% Examples
+% # theta = hydroxyl_orientation_atom(atom,Box_dim)
+% # [theta,angles,info] = hydroxyl_orientation_atom(atom,Box_dim)
+% # theta = hydroxyl_orientation_atom(atom,Box_dim,'normal',[0 0 1])
+% # theta = hydroxyl_orientation_atom(atom,Box_dim,'oh_cutoff',1.3)
+%
+
+function [theta,angles,info] = hydroxyl_orientation_atom(atom,Box_dim,varargin)
+%%
+
+% REPLACE_WITH_DASH_DASH- options (name/value) REPLACE_WITH_DASH_DASH-
+p = struct('oh_cutoff',1.3, ...      % max O-H distance in Angstrom
+           'h_types',{{}}, ...       % default: any type/element starting with H
+           'normal',[0 0 1], ...     % layer normal
+           'fold',true);             % fold the angle into [0 90]
+for k=1:2:numel(varargin)
+    p.(varargin{k}) = varargin{k+1};
+end
+
+X=[atom.x]'; Y=[atom.y]'; Z=[atom.z]';
+T=[atom.type];
+N=numel(atom);
+E=T;
+if isfield(atom,'element')
+    try
+        Etmp=[atom.element];
+        if numel(Etmp)==N && all(~cellfun(@isempty,Etmp)), E=Etmp; end
+    catch
+    end
+end
+
+lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
+if numel(Box_dim)>=9
+    xy=Box_dim(6); xz=Box_dim(8); yz=Box_dim(9);
+else
+    xy=0; xz=0; yz=0;
+end
+
+nrm = p.normal(:)'; nrm = nrm/norm(nrm);
+
+theta=NaN; angles=[];
+info=struct('theta_std',NaN,'theta_median',NaN,'theta_plane',NaN, ...
+            'theta_signed',NaN,'n_OH',0,'n_H',0,'by_type',struct([]),'note','');
+
+% REPLACE_WITH_DASH_DASH- hydrogens and oxygens REPLACE_WITH_DASH_DASH-
+if ~isempty(p.h_types)
+    is_H = ismember(T,p.h_types);
+else
+    is_H = strcmp(E,'H') | strncmpi(T,'H',1);
+end
+is_O = strcmp(E,'O') | strncmpi(T,'O',1);
+h_idx=find(is_H); o_idx=find(is_O);
+info.n_H=numel(h_idx);
+if isempty(h_idx) || isempty(o_idx)
+    info.note='no hydrogens and/or oxygens found';
+    return;
+end
+
+Xo=X(o_idx); Yo=Y(o_idx); Zo=Z(o_idx);
+ang=[]; signed=[]; otype={};
+for ii=1:numel(h_idx)
+    h=h_idx(ii);
+    d = mic_([Xo-X(h), Yo-Y(h), Zo-Z(h)], lx,ly,lz,xy,xz,yz);   % H->O vectors
+    r = sqrt(sum(d.^2,2));
+    [rmin,kk] = min(r);
+    if rmin >= p.oh_cutoff, continue; end                        % unbound H, e.g. water
+    vOH = -d(kk,:);                                              % O->H
+    nv  = norm(vOH);
+    if nv==0, continue; end
+    c = dot(vOH/nv, nrm);
+    signed(end+1) = acosd(max(-1,min(1,c)));                     %#ok<AGROW> 0..180
+    if p.fold
+        ang(end+1) = acosd(min(1,abs(c)));                       %#ok<AGROW> 0..90
+    else
+        ang(end+1) = signed(end);                                %#ok<AGROW>
+    end
+    otype{end+1} = T{o_idx(kk)};                                 %#ok<AGROW>
+end
+
+if isempty(ang)
+    info.note='no O-H pairs found within oh_cutoff';
+    return;
+end
+
+angles = ang(:);
+theta  = mean(angles);
+info.n_OH        = numel(angles);
+info.theta_std   = std(angles,1);
+info.theta_median= median(angles);
+info.theta_plane = 90 - theta;          % angle to the (001) plane
+info.theta_signed= mean(signed);
+
+% REPLACE_WITH_DASH_DASH- breakdown per hydroxyl-O type REPLACE_WITH_DASH_DASH-
+ut = unique(otype);
+bt = struct('type',{},'theta',{},'theta_std',{},'theta_plane',{},'n',{});
+for kk=1:numel(ut)
+    sel = strcmp(otype, ut{kk});
+    bt(kk).type        = ut{kk};
+    bt(kk).theta       = mean(angles(sel));
+    bt(kk).theta_std   = std(angles(sel),1);
+    bt(kk).theta_plane = 90 - mean(angles(sel));
+    bt(kk).n           = sum(sel);
+end
+info.by_type = bt;
+
+end  % main function
+
+
+% ===== local helpers =====
+function d = mic_(d, lx,ly,lz,xy,xz,yz)
+% Triclinic minimum-image (GROMACS Box_dim convention), matching bond_angle_type.
+rx=d(:,1); ry=d(:,2); rz=d(:,3);
+gt=rz>lz/2;  lt=rz<-lz/2;
+rz(gt)=rz(gt)-lz; rz(lt)=rz(lt)+lz;
+rx(gt)=rx(gt)-xz; rx(lt)=rx(lt)+xz;
+ry(gt)=ry(gt)-yz; ry(lt)=ry(lt)+yz;
+gt=ry>ly/2;  lt=ry<-ly/2;
+ry(gt)=ry(gt)-ly; ry(lt)=ry(lt)+ly;
+rx(gt)=rx(gt)-xy; rx(lt)=rx(lt)+xy;
+gt=rx>lx/2;  lt=rx<-lx/2;
+rx(gt)=rx(gt)-lx; rx(lt)=rx(lt)+lx;
+d=[rx ry rz];
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>
