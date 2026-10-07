@@ -1,0 +1,86 @@
+THIRD-PARTY COMPONENTS IN THE atom TOOLBOX
+==========================================
+
+The MIT license in the LICENSE file covers the atom Toolbox itself. Some files
+are derived from, or distributed together with, software and data written by
+others, and remain under the license of their original author. Those licenses
+are not superseded by the MIT license.
+
+
+1. mxdrfile, Copyright (c) 2014 Jon Kapla  --  BSD 3-Clause License
+-------------------------------------------------------------------------------
+
+Reading and writing of Gromacs .xtc and .trr trajectory files relies on the
+mxdrfile package by Jon Kapla, http://kaplajon.github.io/mxdrfile/, which is
+distributed under the BSD 3-Clause license. The full license text is retained in
+the header of each of the following files:
+
+    import_functions/import_xtc.m
+    import_functions/import_trr.m
+    custom_functions/decompose_traj.m
+    custom_functions/extract_vxvy_from_trr.m
+    custom_functions/extract_vz_from_trr.m
+
+Redistribution of these files, in source or binary form, must retain that
+copyright notice, the list of conditions and the accompanying disclaimer. The
+name of the author may not be used to endorse or promote derived products
+without specific prior written permission.
+
+
+2. GROMACS force field and data files  --  LGPL-2.1-or-later
+-------------------------------------------------------------------------------
+
+The example force field directories shipped with the lecture material contain
+standard data and topology files taken from the GROMACS distribution,
+https://www.gromacs.org, which is licensed under the GNU Lesser General Public
+License version 2.1 or later. They are included unmodified so that the examples
+can be run directly with GROMACS.
+
+This applies to the following files in each of the min.ff directories under
+ATOM_scripts_lecture/:
+
+    atommass.dat, electroneg.dat, elements.dat, nsfactor.dat,
+    residuetypes.dat, watermodels.dat
+
+    flexwat-ferguson.itp, ions.itp, opc.itp, opc3.itp, spc.itp, spce.itp,
+    tip3p.itp, tip3p-fb.itp, tip4p.itp, tip4p-fb.itp, tip4p2005.itp,
+    tip4p2005f.itp, tip4p2005_nrexcl2.itp, tip4p2005_nrxcl1.itp,
+    tip4pew.itp, tip4pice.itp, tip5p.itp, tips3p.itp
+
+found under:
+
+    ATOM_scripts_lecture/GMX_Water/gmx_Water/min.ff/
+    ATOM_scripts_lecture/MINFF/GMINFF_3W_NaMMT/gmx_minff/min.ff/
+    ATOM_scripts_lecture/MINFF/GMINFF_3W_NaMMT_basic_workflow/gmx_minff/min.ff/
+    ATOM_scripts_lecture/MINFF/TMINFF_3W_NaMMT/gmx_minff/min.ff/
+    ATOM_scripts_lecture/MINFF/TMINFF_3W_NaMMT_basic_workflow/gmx_minff/min.ff/
+
+The MINFF force field files in the same directories, such as ffnonbonded.itp,
+ffbonded.itp and the ffnonbonded_tminff_* and ffnonbonded_gminff variants, are
+part of the MINFF force field, https://github.com/mholmboe/minff, and are not
+GROMACS files.
+
+
+3. Other derived MATLAB functions
+-------------------------------------------------------------------------------
+
+The following functions were adapted from, or inspired by, freely available
+MATLAB code by other authors, who are credited in the headers of the respective
+files. Where an original license applies, it governs that file:
+
+    general_functions/show_arrow.m     adapted from mArrow3.m by Georg
+                                       Stillfried, MATLAB File Exchange, 2009
+    general_functions/show_atom.m      inspired by molecule3D.m by
+                                       Andre Ludwig (aludwig@phys.ethz.ch)
+    general_functions/show_atomo.m     Octave compatible version of the above
+
+
+4. Bundled reference data
+-------------------------------------------------------------------------------
+
+The toolbox ships tabulated values taken from the scientific literature, such as
+the revised Shannon ionic and crystal radii, bond valence parameters from the
+IUCr, atomic scattering factors from Waasmaier & Kirfel (1995), and published
+force field parameters for CLAYFF, INTERFACE, MINFF and others. The original
+publications are cited next to the data in the corresponding files and should be
+cited when the data is used.
