@@ -1,5 +1,3 @@
-; This is basically a copy of the ffbonded_gminff.itp file
-;
 [ bondtypes ]
 ;i      j	   func     b0	    kb
 ; Bonds are defined elsewhere, in each respective .itp file

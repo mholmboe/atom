@@ -4,7 +4,7 @@
 ; -D{abbreviation} syntax in the Gromacs .mdp file, hence use the -D flag in the .mdp 
 ; file to activate the specific param set, like:
 ; 
-; define = -DGMINFF_k500 -DOPC3_IOD_LM ; see for instance lines from 2432, 5840, 10152
+; define = -DMINFF_k500 -DOPC3_IOD_LM ; see for instance lines from 2432, 5840, 10152
 ;
 ; The last part of this file contain parameters for different common water models
 ;

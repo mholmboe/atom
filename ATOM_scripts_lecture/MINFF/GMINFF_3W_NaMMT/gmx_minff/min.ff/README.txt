@@ -13,11 +13,13 @@ using the Lennard-Jones parameters for the oxygen atomtypes taken from OPC3 wate
 	The mineral set and the angle force constant are selected with two separate
 	-D flags in the .mdp file:
 
-	    define = -DGMINFF -DMINFF_k500 -DOPC3 -DOPC3_HFE_LM
+	    define = -DMINFF_k500 -DOPC3 -DOPC3_HFE_LM
 
 	where MINFF_k0, MINFF_k250, MINFF_k500 or MINFF_k1500 picks the O-M-O angle
-	force constant in kJ/mol/rad2. The older combined form (-DGMINFF_k500) still
-	works and is equivalent, so existing .mdp files need no change.
+	force constant in kJ/mol/rad2. No separate keyword for the parameter set is
+	needed here; including ffnonbonded_gminff.itp (or ffnonbonded.itp) is what
+	selects the general parameters. The older form -DGMINFF_k500 no longer works
+	and must be replaced by -DMINFF_k500.
 
 * Filename ffbonded_gminff.itp
 	- bonded parameters for the general MINFF. Identical in content to
@@ -51,8 +53,8 @@ These new oxygen parameters optimized in step 2 are commented by a ; and not nec
 
 	where MINFF_k0, MINFF_k250, MINFF_k500 or MINFF_k1500 picks the O-M-O angle
 	force constant in kJ/mol/rad2. The older combined form (-DMontmorillonite_k500)
-	is no longer used for the tailored sets. For the general sets the old form
-	(-DGMINFF_k500) still works, and is equivalent to -DGMINFF -DMINFF_k500.
+	is no longer used. For the general sets, see above: -DGMINFF_k500 has likewise
+	been replaced by -DMINFF_k500.
 
 * Filename ffbonded_tminff.itp
 	- bonded parameters for the tailored MINFF, guarded by mineral name alone
