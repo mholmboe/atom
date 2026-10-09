@@ -1,4 +1,4 @@
-#include "min.ff/forcefield.itp"
+#include "min.ff/forcefield_tminff.itp"
 #include "MMT_minff_1.itp"
 #include "MMT_minff_2.itp"
 #include "min.ff/ions.itp"

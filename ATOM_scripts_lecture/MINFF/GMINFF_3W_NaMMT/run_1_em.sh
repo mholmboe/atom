@@ -44,7 +44,7 @@ fi
 ### Create em.mdp file ########################################
 cat << EOF >| "$sim".mdp
 ; Parameters describing what to do, when to stop and what to save
-define		= -D$watermodel -D$mineral -D$ions -DFLEXIBLE -DPOSRES_noH ; Use felxible SPC/E during miniposition restrain the protein
+define		= -D$watermodel -D$forcefield -D$ions -DFLEXIBLE -DPOSRES_noH
 integrator	= steep		; Algorithm (steep = steepest descent minimization)
 emtol		= 500.0  	; Stop minimization when the maximum force < 1000.0 kJ/mol/nm
 emstep      = 0.01      ; Energy step size

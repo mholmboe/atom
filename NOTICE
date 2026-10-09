@@ -55,10 +55,10 @@ found under:
     ATOM_scripts_lecture/MINFF/TMINFF_3W_NaMMT/gmx_minff/min.ff/
     ATOM_scripts_lecture/MINFF/TMINFF_3W_NaMMT_basic_workflow/gmx_minff/min.ff/
 
-The MINFF force field files in the same directories, such as ffnonbonded.itp,
-ffbonded.itp and the ffnonbonded_tminff_* and ffnonbonded_gminff variants, are
-part of the MINFF force field, https://github.com/mholmboe/minff, and are not
-GROMACS files.
+The MINFF force field files in the same directories are part of the MINFF force
+field, https://github.com/mholmboe/minff, and are not GROMACS files. These are
+the forcefield.itp, ffnonbonded.itp and ffbonded.itp trio, their _gminff and
+_tminff variants, atomtypes.atp and atomname2type.n2t.
 
 
 3. mArrow3, Copyright (c) 2009 Georg Stillfried  --  BSD 2-Clause License

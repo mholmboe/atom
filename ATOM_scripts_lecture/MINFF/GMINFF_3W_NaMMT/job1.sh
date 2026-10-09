@@ -16,7 +16,7 @@ commgrps="MMT_1 MMT_2 Water_and_ions"
 
 # Variables controlling LJ parameters from ffnonbonded.itp (copied from ffnonbonded_tminff_k500.itp)
 watermodel="OPC3"
-mineral="GMINFF_k500"
+forcefield="MINFF_k500"
 ions="OPC3_IOD_LM"
 
 cluster=$1		# Passed variable 1 (machine) from caller, leave empty if local machine

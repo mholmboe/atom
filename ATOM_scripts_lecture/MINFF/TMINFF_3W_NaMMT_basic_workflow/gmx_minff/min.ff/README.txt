@@ -10,6 +10,25 @@ using the Lennard-Jones parameters for the oxygen atomtypes taken from OPC3 wate
 	- CLAYFF
 	- Several ion-pair potentials and water models
 
+	The mineral set and the angle force constant are selected with two separate
+	-D flags in the .mdp file:
+
+	    define = -DGMINFF -DMINFF_k500 -DOPC3 -DOPC3_HFE_LM
+
+	where MINFF_k0, MINFF_k250, MINFF_k500 or MINFF_k1500 picks the O-M-O angle
+	force constant in kJ/mol/rad2. The older combined form (-DGMINFF_k500) still
+	works and is equivalent, so existing .mdp files need no change.
+
+* Filename ffbonded_gminff.itp
+	- bonded parameters for the general MINFF. Identical in content to
+	  ffbonded.itp; kept under its own name so that each parameter set has a
+	  matching forcefield/ffnonbonded/ffbonded trio.
+
+* Filename forcefield_gminff.itp
+	- include this to use the general parameters; it pulls in
+	  ffnonbonded_gminff.itp and ffbonded_gminff.itp. forcefield.itp is
+	  equivalent and includes ffnonbonded.itp and ffbonded.itp instead.
+
 
 **Lennard-Jones parameters for the tailored MINFF**
 
@@ -17,13 +36,37 @@ Note that the Lennard-Jones parameters inn step 1 for each mineral were first op
 In a second step the oxygen Lennard-Jones parameters were optimized, keeping the metal parameters from step 1 fixed. 
 These new oxygen parameters optimized in step 2 are commented by a ; and not necessarily better than the parameters optmized in step 1.
 
-* Filename ffnonbonded_tminff_k0|k250|k500|1500.itp
-	- tailored MINFF for k=0, 250, 500, 1500 kJ/mol/rad2, sorted by mineral
+* Filename ffnonbonded_tminff.itp
+	- tailored MINFF for all four angle force constants, sorted by mineral
+	- CLAYFF
+	- Several ion-pair potentials and water models
 
-* Filename ffnonbonded_tminff_all_k_sorted_by_mineral.itp
-	- tailored MINFF for k=0, 250, 500, 1500 kJ/mol/rad2, sorted by mineral
+	This one file replaces the former ffnonbonded_tminff_k0|k250|k500|k1500.itp
+	and ffnonbonded_tminff_all_k_sorted_by_mineral.itp, which have been removed.
+
+	The mineral and the angle force constant are now selected independently,
+	with two separate -D flags in the .mdp file. Both are required:
+
+	    define = -DMontmorillonite -DMINFF_k500 -DOPC3 -DOPC3_HFE_LM
+
+	where MINFF_k0, MINFF_k250, MINFF_k500 or MINFF_k1500 picks the O-M-O angle
+	force constant in kJ/mol/rad2. The older combined form (-DMontmorillonite_k500)
+	is no longer used for the tailored sets. For the general sets the old form
+	(-DGMINFF_k500) still works, and is equivalent to -DGMINFF -DMINFF_k500.
+
+* Filename ffbonded_tminff.itp
+	- bonded parameters for the tailored MINFF, guarded by mineral name alone
+	  since they do not depend on the angle force constant: the O-M-O stiffness
+	  is applied through KANGLE in each mineral .itp file, not here.
+	- Only the terms whose atomtypes the chosen mineral actually declares are
+	  emitted, so grompp never sees a bondtype referring to an undeclared type.
+	  Minerals without hydroxyl groups contribute no bonded terms.
+
+* Filename forcefield_tminff.itp
+	- include this instead of forcefield.itp to use the tailored parameters;
+	  it pulls in ffnonbonded_tminff.itp and ffbonded_tminff.itp.
 	
-Mineral list (# 13 and 22 missing)
+Mineral list (# 13 and 22 missing, and that's ok)
 1	Kaolinite
 2	Pyrophyllite
 3	Talc

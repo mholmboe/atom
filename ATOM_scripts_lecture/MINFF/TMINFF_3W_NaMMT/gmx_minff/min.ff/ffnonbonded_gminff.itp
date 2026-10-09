@@ -60,10 +60,10 @@
 ; 0.01 Å. The CM set is a compromise between HFE and IOD data sets for the divalent ions.
 
 
-
 [ atomtypes ]
 ; name  number  mass  charge  ptype  sigma   epsilon ;
-#ifdef GMINFF_k0
+;
+#ifdef MINFF_k0
 ; GMINFF k0 kJ/mol/rad2
 H          1	 1.00794	 0.40000   A  	 0.000000	 0.000000 ; Hydroxyl hydrogen
 He         1	 1.00794	 0.40000   A  	 0.000000	 0.000000 ; Edge hydroxyl hydrogen
@@ -104,7 +104,7 @@ Feo3      26	 55.84500	 1.50000   A  	 0.168158	 0.385264 ; Ex. Hematite
 Tio       22	 47.86700	 2.48000   A  	 0.188206	 0.806177 ; Ex. TiO2
 #endif
 
-#ifdef GMINFF_k250
+#ifdef MINFF_k250
 ; GMINFF k250 kJ/mol/rad2
 H          1	 1.00794	 0.40000   A  	 0.000000	 0.000000
 He         1	 1.00794	 0.40000   A  	 0.000000	 0.000000
@@ -145,7 +145,7 @@ Feo3      26	 55.84500	 1.50000   A  	 0.168158	 0.385264
 Tio       22	 47.86700	 2.48000   A  	 0.189407	 0.806691
 #endif
 
-#ifdef GMINFF_k500
+#ifdef MINFF_k500
 ; GMINFF k500kJ/mol/rad2
 H          1	 1.00794	 0.40000   A  	 0.000000	 0.000000
 He         1	 1.00794	 0.40000   A  	 0.000000	 0.000000
@@ -186,7 +186,7 @@ Feo3      26	 55.84500	 1.50000   A  	 0.169565	 0.387325
 Tio       22	 47.86700	 2.48000   A  	 0.188503	 0.808327
 #endif
 
-#ifdef GMINFF_k1500
+#ifdef MINFF_k1500
 ; GMINFF k1500kJ/mol/rad2
 H          1	 1.00794	 0.40000   A  	 0.000000	 0.000000
 He         1	 1.00794	 0.40000   A  	 0.000000	 0.000000
@@ -1340,8 +1340,4 @@ MW             0     0.0000      0.000000   A    0.00000e+00     0.00000e+000
 ; dummy defs
 MW             0     0.0000      0.0000     A    0.00000e+00     0.00000e+00
 #endif
-
-
-
-	
 

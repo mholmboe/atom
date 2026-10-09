@@ -13,7 +13,7 @@
 ; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
 1               2               no              1.0     1.0
 
-#include "ffnonbonded.itp"
-#include "ffbonded.itp"
+#include "ffnonbonded_gminff.itp"
+#include "ffbonded_gminff.itp"
 
 
