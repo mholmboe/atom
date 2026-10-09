@@ -14,7 +14,9 @@ energygrps="MMT Ion Water"
 tcgrps="System"
 commgrps="MMT_1 MMT_2 Water_and_ions"
 
-# Variables controlling LJ parameters from ffnonbonded.itp (copied from ffnonbonded_tminff_k500.itp)
+# Variables controlling the LJ parameters. topol.top includes
+# min.ff/forcefield.itp, which pulls in ffnonbonded.itp.
+# The general sets are selected by the angle force constant alone.
 watermodel="OPC3"
 forcefield="MINFF_k500"
 ions="OPC3_IOD_LM"
