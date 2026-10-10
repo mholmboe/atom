@@ -969,7 +969,6 @@ Fs         9	 18.99840	-0.76000   A  	 0.316767	 0.197396
 Cah       20	 40.07800	 1.52000   A  	 0.255603	 0.891915
 ; Optimized sigma and epsilon values for the O atomtypes
 ; Fs         9	 18.99840	-0.76000   A  	 0.316767	 0.197396
-; Cah       20	 40.07800	 1.52000   A  	 0.255603	 0.891915
 #endif
 #ifdef MINFF_k250
 ; name  number   mass        charge  ptype   sigma       epsilon ;
@@ -977,7 +976,6 @@ Fs         9	 18.99840	-0.76000   A  	 0.317848	 0.194159
 Cah       20	 40.07800	 1.52000   A  	 0.255600	 0.931942
 ; Optimized sigma and epsilon values for the O atomtypes
 ; Fs         9	 18.99840	-0.76000   A  	 0.317848	 0.194159
-; Cah       20	 40.07800	 1.52000   A  	 0.255600	 0.931942
 #endif
 #ifdef MINFF_k500
 ; name  number   mass        charge  ptype   sigma       epsilon ;
@@ -985,7 +983,6 @@ Fs         9	 18.99840	-0.76000   A  	 0.320267	 0.185651
 Cah       20	 40.07800	 1.52000   A  	 0.255225	 0.889170
 ; Optimized sigma and epsilon values for the O atomtypes
 ; Fs         9	 18.99840	-0.76000   A  	 0.320267	 0.185651
-; Cah       20	 40.07800	 1.52000   A  	 0.255225	 0.889170
 #endif
 #ifdef MINFF_k1500
 ; name  number   mass        charge  ptype   sigma       epsilon ;
@@ -993,7 +990,6 @@ Fs         9	 18.99840	-0.76000   A  	 0.317199	 0.194190
 Cah       20	 40.07800	 1.52000   A  	 0.257873	 0.929519
 ; Optimized sigma and epsilon values for the O atomtypes
 ; Fs         9	 18.99840	-0.76000   A  	 0.317199	 0.194190
-; Cah       20	 40.07800	 1.52000   A  	 0.257873	 0.929519
 #endif
 #endif
 
