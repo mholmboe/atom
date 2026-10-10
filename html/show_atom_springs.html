@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_atom_springs.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-09-24">
+<meta name="DC.date" content="2026-10-10">
 <meta name="DC.source" content="show_atom_springs.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -359,7 +359,7 @@ need_scan = isempty(p.spring_index) &amp;&amp; ~strcmpi(p.spring,<span class="st
 xhi = max(xhi,5); yhi = max(yhi,5); zhi = max(zhi,5);
 
 hold <span class="string">on</span>; rotate3d <span class="string">on</span>;
-camlight(220,210,<span class="string">'infinite'</span>);
+<span class="comment">% camlight(220,210,'infinite');</span>
 set(gcf,<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'Color'</span>,[1 1 1]);
 set(gca,<span class="string">'Color'</span>,[1 1 1], <span class="keyword">...</span>
     <span class="string">'PlotBoxAspectRatio'</span>,[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) 1],<span class="string">'FontSize'</span>,24);
@@ -390,10 +390,10 @@ view([0,0]);
     [rx,ry,rz] = sphere(resolution);
     <span class="keyword">for</span> i = 1:nAtoms
         <span class="keyword">switch</span> style
-            <span class="keyword">case</span> {<span class="string">'ballstick'</span>,<span class="string">'small'</span>,<span class="string">'smallvdw'</span>}, r_temp = radii(i);
+            <span class="keyword">case</span> {<span class="string">'ballstick'</span>,<span class="string">'small'</span>,<span class="string">'smallvdw'</span>}, r_temp = p.radiiScale*radii(i);
             <span class="keyword">case</span> <span class="string">'licorice'</span>,                       r_temp = p.radiiScale*bond_radii;
-            <span class="keyword">case</span> {<span class="string">'halfvdw'</span>,<span class="string">'contour'</span>},            r_temp = 5/2*radii(i);
-            <span class="keyword">otherwise</span>,                             r_temp = 5*radii(i);
+            <span class="keyword">case</span> {<span class="string">'halfvdw'</span>,<span class="string">'contour'</span>},            r_temp = 5/2*p.radiiScale*radii(i);
+            <span class="keyword">otherwise</span>,                             r_temp = 5*p.radiiScale*radii(i);
         <span class="keyword">end</span>
         surface(XYZ_data(i,1) + r_temp*rx, XYZ_data(i,2) + r_temp*ry, <span class="keyword">...</span>
                 XYZ_data(i,3) + r_temp*rz,<span class="string">'FaceColor'</span>,color(i,:), <span class="keyword">...</span>
@@ -874,7 +874,7 @@ end
 xhi = max(xhi,5); yhi = max(yhi,5); zhi = max(zhi,5);
 
 hold on; rotate3d on;
-camlight(220,210,'infinite');
+% camlight(220,210,'infinite');
 set(gcf,'Visible','on','Color',[1 1 1]);
 set(gca,'Color',[1 1 1], ...
     'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) 1],'FontSize',24);
@@ -904,10 +904,10 @@ elseif ~strncmpi(style,'lines',4)
     [rx,ry,rz] = sphere(resolution);
     for i = 1:nAtoms
         switch style
-            case {'ballstick','small','smallvdw'}, r_temp = radii(i);
+            case {'ballstick','small','smallvdw'}, r_temp = p.radiiScale*radii(i);
             case 'licorice',                       r_temp = p.radiiScale*bond_radii;
-            case {'halfvdw','contour'},            r_temp = 5/2*radii(i);
-            otherwise,                             r_temp = 5*radii(i);
+            case {'halfvdw','contour'},            r_temp = 5/2*p.radiiScale*radii(i);
+            otherwise,                             r_temp = 5*p.radiiScale*radii(i);
         end
         surface(XYZ_data(i,1) + r_temp*rx, XYZ_data(i,2) + r_temp*ry, ...
                 XYZ_data(i,3) + r_temp*rz,'FaceColor',color(i,:), ...

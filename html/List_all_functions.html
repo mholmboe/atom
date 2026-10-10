@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Complete list of all atom functions</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-07">
+<meta name="DC.date" content="2026-10-10">
 <meta name="DC.source" content="List_all_functions.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -820,11 +820,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="xrd_atom.html">xrd_atom(varargin)</a> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.</li>
 <li>
-<a href="xrd_atom_matlab.html">xrd_atom_matlab(varargin)</a> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.</li>
-<li>
-<a href="xrd_atom_no_plot.html">xrd_atom_no_plot(varargin)</a> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.</li>
-<li>
-<a href="xrd_rietveld_atom.html">xrd_rietveld_atom(varargin)</a> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.</li>
+<a href="xrd_atom_legacy.html">xrd_atom_legacy(varargin)</a> % Legacy version of xrd_atom, kept for reference, calculating theoretical XRD patterns from an atom struct or a .pdb|.gro file.</li>
 <li>
 <a href="xyz2atom.html">xyz2atom(XYZ_labels,XYZ_data,Box_dim,varargin)</a> % Add XYZ data, like from a .xyz structure file, to the atom struct format.</li>
 <li>
@@ -1212,9 +1208,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % # <write_xyz.html write_xyz(XYZ_labels,XYZ_data,varargin)> % Write an .xyz file from the XYZ_labels and XYZ_data variables.
 % # <write_xyz_traj.html write_xyz_traj(atom,traj,Box_dim,filename_out)> % Write a .xyz trajectory file.
 % # <xrd_atom.html xrd_atom(varargin)> % Calculate theoretical XRD patterns from a .pdb, .gro file, or atom struct.
-% # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
-% # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
-% # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
+% # <xrd_atom_legacy.html xrd_atom_legacy(varargin)> % Legacy version of xrd_atom, kept for reference, calculating theoretical XRD patterns from an atom struct or a .pdb|.gro file.
 % # <xyz2atom.html xyz2atom(XYZ_labels,XYZ_data,Box_dim,varargin)> % Add XYZ data, like from a .xyz structure file, to the atom struct format.
 % # <XYZ_data_variable.html XYZ_data> % A nx3 matrix holdnig the XYZ-coordinates
 % # <XYZ_labels_variable.html XYZ_labels> % A cell list om atom types

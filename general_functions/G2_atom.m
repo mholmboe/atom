@@ -163,7 +163,6 @@ for push=1:1
         Element = Wrap_Coord_func(Element, L);
         Element_density = histcounts(Element,Distance)'/norm;
         Element_density = Element_density-floor(Element_density./d001)*d001;
-        
         Element_density = Element_density(1:ceil(d001/step),1);
         Element_density = smooth((Element_density+flipud(Element_density))/2,11);
         

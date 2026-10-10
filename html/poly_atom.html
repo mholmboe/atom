@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>poly_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-10">
 <meta name="DC.source" content="poly_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -270,13 +270,12 @@ view([0,0]);
                 <span class="keyword">end</span>
             <span class="keyword">end</span>
         <span class="keyword">end</span>
-
         poly_color=color_temp.^.5;
         poly_color_edge=color_temp./5;
         <span class="comment">% patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...</span>
         <span class="comment">%     'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...</span>
         <span class="comment">%     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);</span>
-                patch(<span class="string">'Faces'</span>,PolyInd,<span class="string">'Vertices'</span>,[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],<span class="string">'FaceColor'</span>,poly_color,<span class="keyword">...</span>
+        patch(<span class="string">'Faces'</span>,PolyInd,<span class="string">'Vertices'</span>,[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],<span class="string">'FaceColor'</span>,poly_color,<span class="keyword">...</span>
             <span class="string">'Linestyle'</span>,<span class="string">'none'</span>,<span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="string">'Facealpha'</span>,alpha,<span class="keyword">...</span>
             <span class="string">'AmbientStrength'</span>,0.8,<span class="string">'DiffuseStrength'</span>,0.6,<span class="string">'SpecularStrength'</span>,0.2);<span class="comment">%,'LineWidth',1.25);</span>
     <span class="keyword">end</span>
@@ -477,13 +476,12 @@ for ip=1:numel(polytype_ind)
                 end
             end
         end
-
         poly_color=color_temp.^.5;
         poly_color_edge=color_temp./5;
         % patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
         %     'EdgeColor',poly_color_edge,'FaceLighting','gouraud','Facealpha',alpha,...
         %     'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2,'LineWidth',1);
-                patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
+        patch('Faces',PolyInd,'Vertices',[atom(i).x atom(i).y atom(i).z]-[atom(i).neigh.r_vec],'FaceColor',poly_color,...
             'Linestyle','none','FaceLighting','gouraud','Facealpha',alpha,...
             'AmbientStrength',0.8,'DiffuseStrength',0.6,'SpecularStrength',0.2);%,'LineWidth',1.25);
     end

@@ -102,13 +102,11 @@
 % # <wrap_atom.html wrap_atom(atom,Box_dim,varargin)> % Wrap the atoms into the box, optionally only along the x and y dimensions.
 % # <Wrap_Coord_func.html Wrap_Coord_func(XYZ_data,Box_dim)> % Old function that wraps atoms sticking out back into the box, untested for triclinic boxes.
 % # <wrap_molid.html wrap_molid(atom,Box_dim)> % Wrap the atom struct into the box, keeping molecules with the same MolID together.
-% # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
-% # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
-% # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
 % # <hydroxyl_orientation_atom.html hydroxyl_orientation_atom(atom,Box_dim,varargin)> % Angle between the structural O-H vectors and the layer normal, folded into [0 90] deg.
 % # <octahedral_distortion_atom.html octahedral_distortion_atom(atom,Box_dim,varargin)> % Distortion of the octahedral cations: mean M-O, Baur's Delta, Robinson's lambda and sigma2, and the flattening angle psi.
 % # <show_atom_springs.html show_atom_springs(atom,Box_dim,varargin)> % Draw the atom struct in 3D like show_atom, but with helical springs instead of bonds, for bond pairs or angle triplets.
 % # <show_spring.html show_spring(p1,p2,varargin)> % Draw a 3D helical (coil/shock) spring between two points, as a tube or a line.
+% # <xrd_atom_legacy.html xrd_atom_legacy(varargin)> % Legacy version of xrd_atom, kept for reference, calculating theoretical XRD patterns from an atom struct or a .pdb|.gro file.
 
 %% Keep/remove functions
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residues with specified molecule IDs.

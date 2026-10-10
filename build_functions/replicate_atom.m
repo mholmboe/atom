@@ -14,11 +14,11 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% # atom = replicate_atom(atom,Box_dim,[6 4 1]) % Basic input arguments
-% # atom = replicate_atom(atom,Box_dim,[6 4 1],'yxz') % Replicates in the order of the dimensions y-x-z
-% * atom = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid') % Adds a new MolID to each new replicate entry
+% # [atom, Box_dim] = replicate_atom(atom,Box_dim,[6 4 1]) % Basic input arguments
+% # [atom, Box_dim] = replicate_atom(atom,Box_dim,[6 4 1],'yxz') % Replicates in the order of the dimensions y-x-z
+% * [atom, Box_dim] = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid') % Adds a new MolID to each new replicate entry
 %
-function atom = replicate_atom(atom,Box_dim,replicate,varargin)
+function [atom,Box_dim] = replicate_atom(atom,Box_dim,replicate,varargin)
 
 if numel(replicate)==1
     replicate(1)=replicate(1);

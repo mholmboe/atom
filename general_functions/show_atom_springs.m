@@ -247,7 +247,7 @@ end
 xhi = max(xhi,5); yhi = max(yhi,5); zhi = max(zhi,5);
 
 hold on; rotate3d on;
-camlight(220,210,'infinite');
+% camlight(220,210,'infinite');
 set(gcf,'Visible','on','Color',[1 1 1]);
 set(gca,'Color',[1 1 1], ...
     'PlotBoxAspectRatio',[(xhi-xlo)/(zhi-zlo) (yhi-ylo)/(zhi-zlo) 1],'FontSize',24);

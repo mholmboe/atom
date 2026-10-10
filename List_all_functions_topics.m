@@ -369,13 +369,11 @@
 % # <scale_atom.html scale_atom(atom,Box_dim,scale_vec,varargin)> % Scale the coordinates in the atom struct.
 % # <show_atomo.html show_atomo(varargin)> % Alternative version of show_atom, drawing the atom struct in 3D.
 % # <tetrahedral_rotation_atom.html tetrahedral_rotation_atom(atom,Box_dim,varargin)> % Calculate the tetrahedral rotation angle alpha, the ditrigonal distortion of a clay/mica tetrahedral sheet.
-% # <xrd_atom_matlab.html xrd_atom_matlab(varargin)> % Version of xrd_atom using only built-in MATLAB functions to calculate theoretical XRD patterns.
-% # <xrd_atom_no_plot.html xrd_atom_no_plot(varargin)> % Version of xrd_atom that calculates theoretical XRD patterns without plotting them.
-% # <xrd_rietveld_atom.html xrd_rietveld_atom(varargin)> % Version of xrd_atom used for Rietveld-style refinement of theoretical XRD patterns.
 % # <hydroxyl_orientation_atom.html hydroxyl_orientation_atom(atom,Box_dim,varargin)> % Angle between the structural O-H vectors and the layer normal, folded into [0 90] deg.
 % # <octahedral_distortion_atom.html octahedral_distortion_atom(atom,Box_dim,varargin)> % Distortion of the octahedral cations: mean M-O, Baur's Delta, Robinson's lambda and sigma2, and the flattening angle psi.
 % # <show_atom_springs.html show_atom_springs(atom,Box_dim,varargin)> % Draw the atom struct in 3D like show_atom, but with helical springs instead of bonds, for bond pairs or angle triplets.
 % # <show_spring.html show_spring(p1,p2,varargin)> % Draw a 3D helical (coil/shock) spring between two points, as a tube or a line.
+% # <xrd_atom_legacy.html xrd_atom_legacy(varargin)> % Legacy version of xrd_atom, kept for reference, calculating theoretical XRD patterns from an atom struct or a .pdb|.gro file.
 
 %% Keep/remove functions
 % # <remove_molid.html remove_molid(atom,MolID)> % Remove residue with a specific molecule ID.
