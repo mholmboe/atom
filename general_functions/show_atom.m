@@ -19,6 +19,15 @@
 % # show_atom(atom,Box_dim,'ballstick',0,0,[2.25 0.6]) % Will set the rmaxlong cutoff and alternativel a distance_Factor
 % # show_atom(atom,Box_dim,'ballstick',0,0,[],[0 0 -50]) % Will translate the XYZ coordinates
 % # show_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
+%
+% * The atom sizes follow the representation style, but can be overridden with the
+% * name/value options below, given after the positional arguments above. Note that
+% * the radii variable that this function writes back to the calling workspace is an
+% * OUTPUT only, so setting it there has no effect, use these options instead.
+%
+% # show_atom(atom,Box_dim,'ballstick','radiiScale',0.25) % Quarter sized atoms
+% # show_atom(atom,Box_dim,'radii',0.3) % Every atom drawn with radius 0.3 A
+% # show_atom(atom,Box_dim,'radii',rvec) % One radius per atom
 
 
 function show_atom(varargin)
@@ -29,6 +38,30 @@ if exist('__octave_config_info__') == 5
     show_atomo(varargin{:}) 
 else
 
+    %% Optional name/value options, given after the positional arguments
+    % The positional interface below is unchanged. Anything from the first
+    % recognised option name onwards is peeled off here, so that nPos counts
+    % only the positional arguments. nPos is used instead of nargin from here on.
+    opt = struct('radii',[], 'radiiScale',1);
+    optnames = fieldnames(opt);
+    for k = 3:numel(varargin)
+        if (ischar(varargin{k}) || isstring(varargin{k})) && any(strcmpi(optnames,varargin{k}))
+            rest = varargin(k:end);
+            varargin = varargin(1:k-1);
+            for q = 1:2:numel(rest)
+                hit = find(strcmpi(optnames,rest{q}),1);
+                if isempty(hit)
+                    error('show_atom:UnknownOption','Unknown option "%s".',num2str(rest{q}));
+                end
+                if q+1 > numel(rest)
+                    error('show_atom:MissingValue','Missing value for "%s".',char(rest{q}));
+                end
+                opt.(optnames{hit}) = rest{q+1};
+            end
+            break
+        end
+    end
+    nPos = numel(varargin);
 
     %% Fetch either a .pdb|.gro file or use an atom struct with its Box_dim
     if ischar(varargin{1})
@@ -44,7 +77,7 @@ else
         assignin('caller','Box_dim_xrd',Box_dim)
     else
         atom=varargin{1};
-        if nargin>1
+        if nPos>1
             Box_dim=varargin{2};
         end
     end
@@ -52,7 +85,7 @@ else
     disp('Choose between these representations:')
     disp('ballstick licorice smallvdw halfvdw vdw contour crystal ionic polyhedra lines labels charge index')
 
-    if nargin>2
+    if nPos>2
         style = char(varargin{3}); %'ballstick','licorice','halfvdw','vdw'
     else
         style = 'ballstick';
@@ -81,9 +114,10 @@ else
     end
     color =  1*element_color(XYZ_labels);
 
-    color(ismember(XYZ_labels,{'Alt' 'Fet'}))=0.3*color(ismember(XYZ_labels,{'Alt' 'Fet'}));
+    dark_ind = ismember(XYZ_labels,{'Alt' 'Fet'});
+    color(dark_ind,:) = 0.3*color(dark_ind,:); % row-wise, so all three channels darken
 
-    if nargin>4
+    if nPos>4
         alpha=1-varargin{5};
     else
         alpha=1; % Transperacy
@@ -91,7 +125,7 @@ else
 
     rmaxlong=2.45
     distance_factor=0.6;
-    if nargin>5
+    if nPos>5
         if numel(varargin{6})>0
             rmaxlong=varargin{6}; % Dummy value
             if numel(rmaxlong)>1
@@ -101,7 +135,7 @@ else
         end
     end
 
-    if nargin>6
+    if nPos>6
         trans_vec=varargin{7};
         if numel(trans_vec)==3
             atom=translate_atom(atom,trans_vec(1:3));
@@ -111,9 +145,11 @@ else
         end
     end
 
-    if nargin>7
-        color=varargin{8};
-        color=repmat(color,nAtoms,1);
+    if nPos>7
+        if numel(varargin{8})>0   % guard, as for the rmaxlong and trans_vec arguments
+            color=varargin{8};
+            color=repmat(color,nAtoms,1);
+        end
     end
 
     XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
@@ -121,10 +157,26 @@ else
     water_ind=find(ismember(XYZ_labels,{'Ow' 'OW' 'Hw' 'HW' 'HW1' 'HW2'}));
     radii(water_ind)=bond_radii;%0.5*radii(water_ind);
 
+    %% User control over the atom radii
+    % Applied last, so an explicit radii also wins over the water override above.
+    % The scale is carried by the vector itself, so the axis limits and the bond
+    % cylinder lengths follow along with it.
+    if ~isempty(opt.radii)
+        if isscalar(opt.radii)
+            radii = opt.radii*ones(nAtoms,1);
+        elseif numel(opt.radii) == nAtoms
+            radii = opt.radii(:);
+        else
+            error('show_atom:BadRadii', ...
+                  'radii must be a scalar or have one value per atom (%d).',nAtoms);
+        end
+    end
+    radii = opt.radiiScale * radii(:);
+
     assignin('caller','radii',radii)
     assignin('caller','color',color)
 
-    if nargin>1
+    if nPos>1
 
         Box_dim=varargin{2};
 
@@ -246,7 +298,7 @@ else
                 case 'contour'
                     r_temp = 5/2*radii(i);
                 case 'licorice'
-                    r_temp = bond_radii;
+                    r_temp = opt.radiiScale*bond_radii;
                 case 'ballstick'
                     r_temp = radii(i);
                 case 'small'
@@ -446,7 +498,7 @@ else
             zticks([floor(zlo:1:ceil(zhi))]);
         end
     else
-        if nargin>3
+        if nPos>3
             if varargin{4}==0
                 disp('Will not draw any box!')
             else
