@@ -1,11 +1,12 @@
 ; This is basically a copy of the ffnonbonded_gminff.itp file
 ;
-; General (G)MINFF parameters Aug 13 2026
+; General (G)MINFF parameters Oct 11 2026
 ; Please report errors to michael.holmboe@umu.se
 ;
 ; This file contains non-bonded paramaters compiled from several different sources and 
 ; made available as-is and without any guarantee of their correctness or accuracy. Hence,
-; check the original papers listed below before using any of these parameters.
+; check the original papers listed below before using any of these parameters. MINFF has 
+; mostly been tested with the OPC3 water model and ion potentials from Li&Merz's papers.
 ;
 ; The first part of this file contains forcefield parameters for the general MINFF, called
 ; GMINFF, after angle force constants 0, 250, 500, 1500 kJ·mol⁻¹·rad⁻² between all O-M-O.
@@ -20,7 +21,6 @@
 ;
 ; The last part of this file contain parameters for different common water models
 ;
-;
 ; References (water models excluded, should be added..)
 ; 1.  GMINFF - Version 1.0 for the k0, k250, k500, k1500 general (GMINFF) parameter sets 
 ; 2.  CLAYFF - Cygan et al., 2004, J. Phys. Chem. B, 108, 15141-15149, DOI:10.1021/jp0363287
@@ -32,6 +32,9 @@
 ; 8.  LM - Sengupta, Li, Song & Merz, 2021, J. Chem. Inf. Model. 2021, 61, 869−880, DOI:10.1021/acs.jcim.0c01390 
 ; 9.  LM - Li, Song, Li & Merz, 2020, : J. Chem. Theory Comput. 2020, 16, 4429−4442, DOI:10.1021/acs.jctc.0c00194
 ; 10. LM - Li, Song & Merz, 2021, J. Chem. Theory Comput. 2021, 17, 2342−2354, DOI:10.1021/acs.jctc.0c01320
+; 11. ZQ - Monovalent ions, Qiu et al., J. Chem. Inf. Model. 2021, 61, 4113-4132, doi 10.1021/acs.jcim.1c00550
+; 12. ZQ - Divalent ions, Zhang et al., J. Chem. Inf. Model. 2021, 61, 4031-4044, doi 10.1021/acs.jcim.1c00580 
+; 13. ZQ - Polyvalent ions, Zhang et al., J. Chem. Inf. Model. 2021, 61, 4613-4629, doi 10.1021/acs.jcim.1c00723
 ;
 ;
 ; References					Available ion-pair sets/abbreviations
@@ -57,9 +60,17 @@
 ; Ref 10:	Polyvalent ions:	OPC3_HFE_LM, OPC_HFE_LM, TIP3PFB_HFE_LM, TIP4PFB_HFE_LM
 ;           					OPC3_IOD_LM, OPC_IOD_LM, TIP3PFB_IOD_LM, TIP4PFB_IOD_LM
 ;
+; Ref 11-13: Mono-, Di-, Polyvalent Ions:
+;								OPC3_ZQ, OPC_ZQ, SPCE_ZQ, SPCEB_ZQ, TIP3P_ZQ, TIP3PFB_ZQ,  
+;								TIP4P2005_ZQ, TIP4PEW_ZQ, TIP4PFB_ZQ, TIP4PD_ZQ,
+;								A99SBDISP_ZQ
+;
 ; Note about ref 6-10: The HFE parameter set can reportedly reproduce the target HFE values 
 ; within 1 kcal/mol, while the IOD parameter set can reproduce the target IOD values within 
 ; 0.01 Å. The CM set is a compromise between HFE and IOD data sets for the divalent ions.
+; Note about ref 11-13: These models deliberately pair a small R with a very large eps 
+; (up to ~1e4 kcal/mol for M(III)/M(IV) ions). That is what the papers report, not a
+; transcription error; see the discussion of Figure 5 in the M(III)/M(IV) paper.
 
 
 [ atomtypes ]
@@ -1131,10 +1142,6 @@ U4+           92	 238.028900	 4.000000   A	  0.20455	   0.00181653
 Pu4+          94	 244.000000	 4.000000   A	 0.216488	   0.00591923
 #endif
 
-; Rmin/2 corrected against Li, Song, Merz, J. Chem. Theory Comput. 2021, 17, 2342, Table 3.
-; The sigma column had been entered in the paper's row order while the ion names here are
-; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
-; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef OPC3_IOD_LM
 Al3+          13	 26.981500	 3.000000   A	 0.229317	 0.0172449
 Cr3+          24	 51.996100	 3.000000   A	 0.243037	 0.0446558
@@ -1162,10 +1169,6 @@ U4+           92	 238.028900	 4.000000   A	 0.304331	 0.600996
 Pu4+          94	 244.000000	 4.000000   A	 0.299698	 0.528389
 #endif
 
-; Rmin/2 corrected against Li, Song, Merz, J. Chem. Theory Comput. 2021, 17, 2342, Table 3.
-; The sigma column had been entered in the paper's row order while the ion names here are
-; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
-; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef OPC_IOD_LM
 Al3+          13	 26.981500	 3.000000   A	 0.222725	 0.0101938
 Cr3+          24	 51.996100	 3.000000   A	 0.238048	 0.0322573
@@ -1193,10 +1196,6 @@ U4+           92	 238.028900	 4.000000   A	 0.299877	 0.531094
 Pu4+          94	 244.000000	 4.000000   A	 0.295422	 0.465638
 #endif
 
-; Rmin/2 corrected against Li, Song, Merz, J. Chem. Theory Comput. 2021, 17, 2342, Table 3.
-; The sigma column had been entered in the paper's row order while the ion names here are
-; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
-; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef TIP3PFB_IOD_LM
 Al3+          13	 26.981500	 3.000000   A	 0.229317	 0.0172449
 Cr3+          24	 51.996100	 3.000000   A	 0.243037	 0.0446558
@@ -1224,10 +1223,6 @@ U4+           92	 238.028900	 4.000000   A	 0.303796	 0.592382
 Pu4+          94	 244.000000	 4.000000   A	 0.299698	 0.528389
 #endif
 
-; Rmin/2 corrected against Li, Song, Merz, J. Chem. Theory Comput. 2021, 17, 2342, Table 3.
-; The sigma column had been entered in the paper's row order while the ion names here are
-; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
-; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef TIP4PFB_IOD_LM
 Al3+          13	 26.981500	 3.000000   A	 0.225754	 0.0130568
 Cr3+          24	 51.996100	 3.000000   A	 0.239652	 0.0359005
@@ -1254,31 +1249,6 @@ Th4+          90	 232.038100	 4.000000   A	 0.304509	 0.603881
 U4+           92	 238.028900	 4.000000   A	  0.30148	 0.555759
 Pu4+          94	 244.000000	 4.000000   A	 0.297026	 0.488675
 #endif
-
-; Various atomtypes for the different water models (To do: Add references)
-; 3-site models
-; ============================================================================
-; Zhang & Qiu 12-6 LJ nonbonded ion models  (_ZQ)
-;
-; Monovalent ions   Qiu et al., J. Chem. Inf. Model. 2021, 61, 4113-4132
-;                   doi 10.1021/acs.jcim.1c00550               Tables 4-7
-; Divalent cations  Zhang et al., J. Chem. Inf. Model. 2021, 61, 4031-4044
-;                   doi 10.1021/acs.jcim.1c00580               Tables 2-5
-; M(III) / M(IV)    Zhang et al., J. Chem. Inf. Model. 2021, 61, 4613-4629
-;                   doi 10.1021/acs.jcim.1c00723               Tables 2-5
-;
-; The papers tabulate R = Rmin/2 in Angstrom and eps in kcal/mol. Converted as
-;   sigma[nm] = 2*R / 2^(1/6) / 10          eps[kJ/mol] = eps[kcal/mol]*4.184
-;
-; Atomtype names follow the Li & Merz (_LM) blocks in this file; 53 of the 54
-; names are shared with them. The exception is Qiu's second fluoride model,
-; written F*- in the paper and named F-_star here, because '*' is not safe in
-; a GROMACS atomtype name.
-;
-; NOTE: these models deliberately pair a small R with a very large eps (up to
-; ~1e4 kcal/mol for M(III)/M(IV) ions). That is what the papers report, not a
-; transcription error; see the discussion of Figure 5 in the M(III)/M(IV) paper.
-; ============================================================================
 
 #ifdef OPC3_ZQ
 ; Zhang/Qiu 12-6 ion set for the OPC3 water model (54 ions)
