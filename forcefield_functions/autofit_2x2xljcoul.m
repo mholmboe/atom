@@ -24,9 +24,9 @@ ref_ff2='water_models.mat'
 ff1=load(ref_ff1)
 ff2=load(ref_ff2)
 
-extraff1='ions_Merz_CM_divalent_OPC3_ff';extraff1=load(extraff1);
-extraff2='ions_Merz_IOD_divalent_OPC3_ff';extraff2=load(extraff2);
-extraff3='ions_Merz_HFE_divalent_OPC3_ff';extraff3=load(extraff3);
+extraff1='ions_Merz_CM_divalent_opc3_ff';extraff1=load(extraff1);
+extraff2='ions_Merz_IOD_divalent_opc3_ff';extraff2=load(extraff2);
+extraff3='ions_Merz_HFE_divalent_opc3_ff';extraff3=load(extraff3);
 
 Ion1='Ca'
 Ion2='OW'

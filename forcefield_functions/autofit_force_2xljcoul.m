@@ -6,9 +6,9 @@ format compact;
 % initial_ff='clayff.mat'
 ref_ff1='ions_Merz_12_6_4_divalent_opc3_ff.mat'
 ref_ff2='water_models.mat'
-extraff1='ions_Merz_CM_divalent_OPC3_ff'
-extraff2='ions_Merz_IOD_divalent_OPC3_ff'
-extraff3='ions_Merz_HFE_divalent_OPC3_ff'
+extraff1='ions_Merz_CM_divalent_opc3_ff'
+extraff2='ions_Merz_IOD_divalent_opc3_ff'
+extraff3='ions_Merz_HFE_divalent_opc3_ff'
 
 Ion1='Mg'
 Ion2='OW'

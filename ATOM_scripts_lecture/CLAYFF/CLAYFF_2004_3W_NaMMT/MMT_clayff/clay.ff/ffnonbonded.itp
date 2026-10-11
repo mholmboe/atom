@@ -22,7 +22,8 @@ mgo		12	24.30500	1.36000	A	0.526400	3.77807E-06	;	Octahedral	magnesium
 mgh		12	24.30500	1.05000	A	0.526400	3.77807E-06	;	Hydroxide	magnesium			
 cao		20	40.07800	1.36000	A	0.556700	2.10447E-05	;	Octahedral	calcium			
 cah		20	40.07800	1.05000	A	0.556700	2.10447E-05	;	Hydroxide	calcium			
-feo		26	55.84500	1.57500	A	0.407222	3.77671E-05	;	Octahedral	iron, Fe-O, recalculated from Sebastian Kerisit 2011 supporting info, check if correct!!!			
+feo		26	55.84500	1.57500	A	0.490620    3.77807E-06	;	The correct CLAYFF param for octahedral Fe3+, see SI of doi.org/10.1021/acs.jpcc.1c04600
+;feo	26	55.84500	1.57500	A	0.407222	3.77671E-05	;	Octahedral	iron, Fe-O, recalculated from Sebastian Kerisit 2011 supporting info	
 lio		3	6.941000	0.52500	A	0.421000	3.77807E-05	;	Octahedral	lithium
 
 Du		10	0.000000	0.00000	A	0.000000	0.000000	;	dummy atom

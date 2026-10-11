@@ -19,20 +19,20 @@ hold on
 if nargin>7
     extraff1=varargin{1};
     extraff1=load(extraff1);
-    % extraff1='ions_Merz_CM_divalent_OPC3_ff';
+    % extraff1='ions_Merz_CM_divalent_opc3_ff';
     nonbonded_ff([extraff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'g');
     
 end
 if nargin>8
     extraff2=varargin{2};
     extraff2=load(extraff2);
-    % extraff2='ions_Merz_IOD_divalent_OPC3_ff';
+    % extraff2='ions_Merz_IOD_divalent_opc3_ff';
     nonbonded_ff([extraff2 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'m');
 end
 if nargin>9
     extraff3=varargin{3};
     extraff3=load(extraff3);
-    % extraff3='ions_Merz_HFE_divalent_OPC3_ff';
+    % extraff3='ions_Merz_HFE_divalent_opc3_ff';
     nonbonded_ff([extraff3 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'c');
 end
 

@@ -103,7 +103,7 @@ for n=1:numel(watermodels)
     ffAttributes=ffAttributes(ind_ff);
     ff=orderfields(ff,unique({defaultAttributes{:} ffAttributes{:}},'stable'));
     
-%      fff=load('ions_Merz_12-6-4_monovalent_spce_ff.mat')
+%      fff=load('ions_Merz_12_6_4_monovalent_spce_ff.mat')
 %     
 %     for i=1:size(ff,2)
 %         ff(i).charge=fff.ff(i).charge;

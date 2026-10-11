@@ -10,9 +10,9 @@ ff=load(initial_ff);
 ff1=load(ref_ff1)
 ff2=load(ref_ff2)
 
-% extraff1='ions_Merz_CM_monovalent_OPC3_ff';extraff1=load(extraff1);
-% extraff2='ions_Merz_IOD_monovalent_OPC3_ff';extraff2=load(extraff2);
-% extraff3='ions_Merz_HFE_monovalent_OPC3_ff';extraff3=load(extraff3);
+% (no CM monovalent set exists: Li & Merz published the CM set for divalent ions only)
+% extraff2='ions_Merz_IOD_monovalent_opc3_ff';extraff2=load(extraff2);
+% extraff3='ions_Merz_HFE_monovalent_opc3_ff';extraff3=load(extraff3);
 
 Ion1='F-'
 Ion2='OW'
