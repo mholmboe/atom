@@ -18,7 +18,7 @@
 % * instance Oh (Al-OH-Al) and Ohmg (Al-OH-Mg) are separated.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

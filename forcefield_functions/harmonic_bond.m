@@ -3,7 +3,7 @@
 % * Ubond = kb*(r-r0)^2 from a bond distance dist and a force constant kb.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

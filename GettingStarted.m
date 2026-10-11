@@ -1,7 +1,7 @@
 %% Run this function, or open the html file html/index.html manually
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -15,7 +15,7 @@
 % export_ndx(id,'SOL_low_z','index.ndx') % Write out it indexes (here called id) under the group name SOL_low_z to a file called index.ndx
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

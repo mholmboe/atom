@@ -2,7 +2,7 @@
 % * This function draws the axis in a plot
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -3,7 +3,7 @@
 % compatibility between MATLAB and Octave which can't do round2dec(X,precision)
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

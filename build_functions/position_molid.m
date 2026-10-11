@@ -2,7 +2,7 @@
 % * This function moves a MolID (by it's COM) to a certain position
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

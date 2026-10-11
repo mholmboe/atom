@@ -6,7 +6,7 @@
 % [SOL,atom]=find_H2O(atom,Box_dim,1.05) to add the Hw's to the Ow's... 
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -3,7 +3,7 @@
 % * trans_vec. It's pretty straingh tforward.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

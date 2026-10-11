@@ -3,7 +3,7 @@
 % * from the C6, C8 and C10 dispersion coefficients and the charges in param.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

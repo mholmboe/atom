@@ -1,7 +1,7 @@
 %% Complete list of all atom functions per topic
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

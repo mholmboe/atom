@@ -3,7 +3,7 @@
 % * Currently it can only add values to all indexed values or remove single ones.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

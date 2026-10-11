@@ -6,7 +6,7 @@
 % * Ohmg/Oh - H. Note that you can use strncmpi to get a wider search.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

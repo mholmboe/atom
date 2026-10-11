@@ -8,7 +8,7 @@
 % * replicate is a [1x3] row vector indicating the replicating factors in x/y/z or a/b/c directions, resp.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

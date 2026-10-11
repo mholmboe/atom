@@ -3,7 +3,7 @@
 % and if not sets the x,y,z to nan,nan,nan.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

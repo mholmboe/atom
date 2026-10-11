@@ -4,7 +4,7 @@
 % .pdb file, into a 1x3 or the 1x9  Box_dim variable  
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 
 %% Example

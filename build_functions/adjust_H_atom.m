@@ -3,7 +3,7 @@
 % * distances of X-H to reasonable values.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

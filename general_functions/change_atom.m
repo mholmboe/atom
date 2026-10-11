@@ -3,7 +3,7 @@
 % * and writes the result back out to a .gro|.pdb|.xyz|.mol2 file.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

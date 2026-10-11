@@ -10,7 +10,7 @@
 % - Charge = mean per environment if atom(i).charge exists, else 0.0
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

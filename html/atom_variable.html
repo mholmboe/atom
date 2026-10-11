@@ -111,7 +111,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </ul>
 </div>
 <h2 id="1">Version</h2>
-<p>3.00</p>
+<p>3.0.1</p>
 <h2 id="2">Introduction to the atom struct</h2>
 <p>The <a href="atom_variable.html">atom</a> struct variable (as in Atomistic Topology Operations in Matlab) is an indexed Matlab struct variable that stores molecule attributes like atomtype names, moleculeID's, atomID's, coordinates and more as indexed fields in the atom struct. A brief list of the atom struct fields are listed below. Normally all strings are cell strings and all numeric variables are in single-precision. Unassigned values are set to 'NaN' or 0 . <b><i>atom</i></b> is the default variable name for the atom struct, however any string name (not starting with a numeric value) would also work, like <b><i>DNA</i></b>, <b><i>Ions</i></b> or <b><i>Water</i></b> etc.</p>
 <p>Furthermore, different atom structs for instance representing a DNA molecule, a set of counter-ions and solvating waters, can easy be concatenated/appended to each other by issuing:</p>
@@ -224,7 +224,7 @@ show_atom(atom,Box_dim,.1,1) <span class="comment">% Plot the atom with the Box_
 % * The atom struct, the main variable in the atom MATLAB library.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 
 %% Introduction to the atom struct

@@ -4,7 +4,7 @@
 % run_opt_ff_lsqnonlin.m and opt_ff.m
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 % Contact
 % Please report problems/bugs to michael.holmboe@umu.se

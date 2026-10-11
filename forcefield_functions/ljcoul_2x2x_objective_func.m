@@ -3,7 +3,7 @@
 % * fitting two pairs of Lennard-Jones and Coulomb parameters to reference data.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

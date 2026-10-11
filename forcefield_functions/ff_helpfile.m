@@ -3,7 +3,7 @@
 % * for a set of water models, and saves them as .mat files.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

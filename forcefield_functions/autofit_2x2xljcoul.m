@@ -4,7 +4,7 @@
 % * and the ljcoul_2x2x_objective_func() objective function.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

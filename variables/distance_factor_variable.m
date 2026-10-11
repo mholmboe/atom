@@ -8,7 +8,7 @@
 % are considered to be bonded/neighbours.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 
 %% Example

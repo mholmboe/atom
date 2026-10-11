@@ -2,7 +2,7 @@
 % * This function tries to guess the resname based in the atom types
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

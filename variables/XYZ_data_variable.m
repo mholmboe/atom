@@ -6,7 +6,7 @@
 % struct using the function <xyz2atom.html xyz2atom>
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 
 %% Example

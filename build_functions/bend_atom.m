@@ -3,7 +3,7 @@
 % downwards. It works best if the original atom struct initally is centered.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

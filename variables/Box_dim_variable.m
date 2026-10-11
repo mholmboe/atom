@@ -9,7 +9,7 @@
 % non-zero parameters are the tilt factors of the triclinic box.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Example
 % # Box_dim = [10];

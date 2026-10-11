@@ -3,7 +3,7 @@
 % * fitting 2x Lennard-Jones and Coulomb parameters to reference forces.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

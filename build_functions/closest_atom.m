@@ -11,7 +11,7 @@
 % * nMolID is the number of molecules to keep
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

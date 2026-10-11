@@ -17,7 +17,7 @@
 % * http://www.rsc.org/suppdata/ee/c3/c3ee40876k/c3ee40876k.pdf
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

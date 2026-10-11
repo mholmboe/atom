@@ -4,7 +4,7 @@
 % * varargin can be used to translate, alt. center+translate the molecule
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

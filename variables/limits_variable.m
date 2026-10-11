@@ -9,7 +9,7 @@
 % zlo equals zhi.
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Example
 % # limits = [10]; % a cube from (0,0,0) to (10,10,10)

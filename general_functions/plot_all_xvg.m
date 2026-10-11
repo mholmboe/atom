@@ -7,7 +7,7 @@
 %   DataAll = plot_all_xvg('energy*.xvg', [1 5 3], [0 200], [0 1.5], 2)
 %
 %% Version
-% 3.00
+% 3.0.1
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
