@@ -67,7 +67,7 @@ bond_type_pairs = containers.Map('KeyType', 'char', 'ValueType', 'any');
 angle_type_triplets = containers.Map('KeyType', 'char', 'ValueType', 'any');
 
 %
-atom=bond_atom(atom,Box_dim,2.45);
+atom=bond_atom(atom,Box_dim,rmaxlong);
 
 % Gather coordination information
 for i = 1:length(atom)
