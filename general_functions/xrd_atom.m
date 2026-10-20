@@ -51,9 +51,9 @@ pref=0; preferred_h=1; preferred_k=1; preferred_l=1;
 if nargin==1
     filename=varargin{1};
     if regexp(filename,'.gro') > 1
-        disp('Found .gro file'); atom = import_atom_gro(filename);
+        disp('Found .gro file'); [atom,Box_dim] = import_atom_gro(filename);
     elseif regexp(filename,'.pdb') > 1
-        disp('Found .pdb file'); atom = import_atom_pdb(filename);
+        disp('Found .pdb file'); [atom,Box_dim] = import_atom_pdb(filename);
     end
     assignin('caller','atom_xrd',atom);
     assignin('caller','Box_dim_xrd',Box_dim)

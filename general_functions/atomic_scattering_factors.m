@@ -8,6 +8,12 @@ end
 if size(Atom_label{1},2)>1
     Atom_label{1}(2:end)=lower(Atom_label{1}(2:end));
 end
+% Normalise the first character too, so that a label written in lower case ('cu', 'cd', 'ob')
+% behaves exactly like its element-symbol form ('Cu', 'Cd', 'Ob'). Without this only the tail
+% was normalised, so 'cu' missed the rules below and resolved to neutral Cu instead of Cu2+.
+if ~isempty(Atom_label{1})
+    Atom_label{1}(1)=upper(Atom_label{1}(1));
+end
 
 ind0=cell2mat(regexp(Atom_label,'0'));
 if numel(ind0)>0
@@ -86,12 +92,18 @@ else
     elseif strncmpi(Atom_label,{'Oc'},2)
         %disp('Treating Owx as uncharged O')
         Atom_label={'O'};
+    elseif any(strcmpi(Atom_label,{'O1-','O2-'}))
+        % Explicit ionic oxygen: use exactly as given. Without this the test below
+        % also matches 'O2-' and silently replaces it with 'O1-'.
     elseif strncmpi(Atom_label,{'O'},1)
         %disp('Treating Owx as uncharged O')
         Atom_label={'O1-'};
     end
     
-    if strncmpi(Atom_label,{'H'},1)
+    % Hg and Hs are kept as real elements. He, Hf and Ho are deliberately treated as hydrogen
+    % because they are CLAYFF/MINFF hydrogen types (He is the edge hydroxyl hydrogen, Ho the
+    % hydroxyl hydrogen). For the elements themselves pass a charged label, e.g. 'Ho3+'.
+    if strncmpi(Atom_label,{'H'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'hg','hs'})
         if strncmpi(Atom_label,{'HEF'},2)
             %disp('Treating HEdelamn/Favejee as uncharged H')
             Atom_label={'H'};
@@ -114,7 +126,9 @@ else
         end
     end
     
-    if strncmp(Atom_label,{'C'},1)
+    % Real elements that start with C (Cd, Ce, Cf, Cm, Co, Cr, Cu) must not be treated as carbon.
+    % Matched case-insensitively so that a lower-case label behaves like its capitalised form.
+    if strncmpi(Atom_label,{'C'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'cd','ce','cf','cm','co','cr','cu'})
         if strncmpi(Atom_label,{'Cl'},2)
             %disp('Treating Cl as Cl1-')
             Atom_label={'Cl1-'};
@@ -818,7 +832,7 @@ coeffs=[...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1)
+index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
 
 %% Whatwhatwhat?
 if numel(index)==0
@@ -826,14 +840,14 @@ if numel(index)==0
     Unknown_Atom_label=Atom_label
     if size(Atom_label{1},2)>2
         Atom_label=Atom_label{1}(1:2)
-        index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+        index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
     end
     if numel(index)==0
         disp('Did not found the atomtype...')
         Atom_label
         if size(Atom_label{1},2)==2
             Atom_label=Atom_label{1}(1)
-            index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+            index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
             if numel(index)==0
                 disp('Did not found the atomtype...')
                 Atom_label

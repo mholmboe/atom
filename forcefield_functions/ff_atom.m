@@ -9,7 +9,8 @@
 %
 %% Examples
 % # atom=ff_atom(atom,Box_dim)
-% # atom=ff_atom(atom,Box_dim,ff)
+% # atom=ff_atom(atom,Box_dim,rmaxlong)
+% # atom=ff_atom(atom,Box_dim,rmaxlong,Bond_index)
 
 
 function atom=ff_atom(atom,Box_dim,varargin)
@@ -27,12 +28,44 @@ end
 
 temp_atom=atom;
 
-atom=element_atom(atom);
+% % atom=element_atom(atom);
+% % [atom.element]=atom.type;
+% % [atom.fftype]=atom.element;
+% %
+% % XYZ_labels=[atom.type]';
+% % XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+
+%% From minff_atom
 [atom.element]=atom.type;
+
+for i=1:size(atom,2)
+    if strncmpi(atom(i).type,{'Si'},2);atom(i).element={'Si'};
+    elseif strncmp(atom(i).type,{'SC'},2);atom(i).element={'Si'};
+    elseif strncmpi(atom(i).type,{'Ale'},3);atom(i).element={'Ale'};
+    elseif strncmpi(atom(i).type,{'Alt'},3);atom(i).element={'Alt'};
+    elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+    elseif strncmpi(atom(i).type,{'Mge'},3);atom(i).element={'Mge'};
+    elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
+    elseif strncmpi(atom(i).type,{'Fee'},3);atom(i).element={'Fee'};
+    elseif strncmpi(atom(i).type,{'Fet'},3);atom(i).element={'Fet'};
+    elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
+    elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};
+    elseif strncmpi(atom(i).type,{'Li'},2);atom(i).element={'Li'};
+    elseif strncmpi(atom(i).type,{'Ow'},2);atom(i).element={'Ow'};
+    elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={'Hw'};
+    elseif strncmpi(atom(i).type,{'O'},1);atom(i).element={'O'};
+    elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};
+    else
+        [atom(i).element]=atom(i).type;
+    end
+end
+
+[atom.type]=atom.element;
 [atom.fftype]=atom.element;
 
 XYZ_labels=[atom.type]';
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+%% From minff_atom
 
 if exist('Bond_index','var')
     atom=cn_atom(atom,Box_dim,rmaxlong,Bond_index);
@@ -140,23 +173,38 @@ if numel(All_Neighbours)>0
         if ~ismember(All_Neighbours{i,1},{'OW' 'Ow' 'HW1' 'HW2' 'HW' 'Hw'})
             if ismember(All_Neighbours{i,1},{'O' 'H'})
                 for j=1:size(ind,2)
+                    % if strncmp(All_Neighbours{i,1},'H',1)
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3})
+                    % elseif length(All_Neighbours{i,3})==1
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'s',All_Neighbours{i,3});
+                    % elseif length(All_Neighbours{i,3})==2
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'b',All_Neighbours{i,3});
+                    % elseif length(All_Neighbours{i,3})==3
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                    % elseif length(All_Neighbours{i,3})==4
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                    % elseif length(All_Neighbours{i,3})==5
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'e',All_Neighbours{i,3});
+                    % elseif length(All_Neighbours{i,3})==6
+                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'o',All_Neighbours{i,3});
+                    % end
+                    % % else
+                    % %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours(i,3));
                     if strncmp(All_Neighbours{i,1},'H',1)
                         [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3})
                     elseif length(All_Neighbours{i,3})==1
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'s',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==2
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'b',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==3
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==4
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'p',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==5
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'e',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     elseif length(All_Neighbours{i,3})==6
-                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),'o',All_Neighbours{i,3});
+                        [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours{i,3});
                     end
-                    % else
-                    %     [atom(ind(j)).fftype]=strcat(All_Neighbours(i,1),All_Neighbours(i,3));
                 end
             else
                 for j=1:size(ind,2)
@@ -189,8 +237,8 @@ if numel(All_Neighbours)>0
 
 
     if ~isfield(atom,'charge')
-        atom=charge_minff_atom(atom,Box_dim,{'Al'  'Alo'  'Alt' 'Ale' 'Tio' 'Feo' 'Fet' 'Fee' 'Fe2' 'Fe2e' 'Fe3e' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},...
-            [1.782  1.782 1.782 1.985 2.48  1.14  1.14   1.14 0.7   0.86666 1.45  1    1    1   1.562 1.74  1.635 1.66  1.52  1.884 1.884 1.884 2.413 0.86  0.4]);
+        atom=charge_minff_atom(atom,Box_dim,{'Al' 'Alo' 'Alt' 'Ale' 'Tio' 'Feo3' 'Fet3' 'Fee3' 'Feo2' 'Fet2' 'Fee2' 'Fs' 'Na' 'K' 'Cs' 'Mgo' 'Mgh' 'Mge' 'Cao' 'Cah' 'Ca' 'Cl' 'Sit' 'Si' 'Sio' 'Site' 'Lio' 'H'},...
+            [1.782 1.782 1.782 1.985 2.48 1.5 1.5 1.75 1.184 1.184 1.32 -0.76 1 1 1 1.562 1.74 1.635 1.66 1.52 2 -1 1.884 1.884 1.884 2.413 0.86 0.4]);
     end
 
     if isfield(atom,'charge')
@@ -206,7 +254,6 @@ if numel(All_Neighbours)>0
             All_Neighbours(i,10)={unique([atom(ind).cn])};
         end
     end
-
 
     % atom = number_type(atom,0);
     % ff=load(strcat(ffname,'_ff.mat'));
@@ -269,9 +316,7 @@ for i=1:size(All_Neighbours,1)
     All_types(i).cn=All_Neighbours{i,10};
 end
 
-
 assignin('caller','Bond_index',Bond_index);
-
 assignin('caller','All_Neighbours',All_Neighbours);
 assignin('caller','All_types',All_types);
 assignin('caller','XYZ_labels',XYZ_labels);

@@ -72,7 +72,7 @@ for assignment_run=heal_iterations
     elseif assignment_run==5
         Heal_O=1; % 1 for yes and 0 for no
     elseif assignment_run==6
-        Heal_H=0; % 1 for yes and 0 for no
+        Heal_H=1; % 1 for yes and 0 for no
     elseif assignment_run==7
         Add_H=1 % 1 for yes and 0 for no
     elseif assignment_run==8
@@ -87,6 +87,7 @@ for assignment_run=heal_iterations
         elseif strncmpi(atom(i).type,{'Ale'},3);atom(i).element={'Ale'};
         elseif strncmpi(atom(i).type,{'Alt'},3);atom(i).element={'Alt'};
         elseif strncmpi(atom(i).type,{'Al'},2);atom(i).element={'Al'};
+        elseif strncmpi(atom(i).type,{'Mge'},3);atom(i).element={'Mge'};
         elseif strncmpi(atom(i).type,{'Mg'},2);atom(i).element={'Mg'};
         elseif strncmpi(atom(i).type,{'Fee'},3);atom(i).element={'Fee'};
         elseif strncmpi(atom(i).type,{'Fet'},3);atom(i).element={'Fet'};
@@ -297,9 +298,20 @@ for assignment_run=heal_iterations
 
                 % If the element is Ca
                 if strncmpi(atom(i).type,{'Ca'},2) % Cao
-
+                    atom(i).fftype={'Cao'};
                     if sum(strncmp({'O'},[atom(i).neigh.type],1)) == 6 % Cao O O O O O O
-                        atom(i).fftype={'Cao'};
+                        if sum(strncmpi([atom.type],'Ca',2))>sum(strncmpi([atom.type],'Si',2))
+                            atom(i).fftype={'Cao'}; % Ex Lime
+                            if sum(strncmpi([atom.type],'Ca',2))<sum(strncmpi([atom.type],'H',1))
+                                atom(i).fftype={'Cah'}; % Ex. Portlandite
+                            end
+                        elseif sum(strncmpi([atom.type],'Ca',2))<sum(strncmpi([atom.type],'Si',2))
+                            atom(i).fftype={'Cah'}; %
+                            if sum(strncmpi([atom.type],'Al',2))>sum(strncmpi([atom.type],'Ca',2))
+                                atom(i).fftype={'Cao'}; % Silicate
+                            end
+                        end
+                        % atom(i).fftype={'Cao'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4
                         atom(i).fftype={'Cah'};
                         %                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 2
@@ -342,7 +354,7 @@ for assignment_run=heal_iterations
                         else
                             atom(i).fftype={'Feo2'};
                         end
-                        
+
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 5 % Fe O O O O
                         atom(i).fftype={'Fee3'};
                     elseif sum(strncmp({'O'},[atom(i).neigh.type],1)) == 4 % Fe O O O O
@@ -490,7 +502,7 @@ for assignment_run=heal_iterations
                     elseif strcmp(Neighbours, 'AlAleH') || strcmp(Neighbours, 'AleH')
                         atom(i).fftype = {'Oh'};
                     elseif strcmp(Neighbours, 'AlAleSi') || strcmp(Neighbours, 'AleSi')
-                        atom(i).fftype = {'Ob'};
+                        atom(i).fftype = {'Op'};
                     elseif strcmp(Neighbours, 'AlAltH')
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlFeFe') || strcmp(Neighbours, 'AlFeoFeo') || strcmp(Neighbours, 'AltFeFe') || strcmp(Neighbours, 'AltFeoFeo')
@@ -499,9 +511,9 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Ops'};
                     elseif strcmp(Neighbours, 'AlAltFe') || strcmp(Neighbours, 'AlAltFeo') || strcmp(Neighbours, 'AltAlFe') || strcmp(Neighbours, 'AltAlFeo')
                         atom(i).fftype = {'Ops'};
-                    elseif strcmp(Neighbours, 'AlFeH') || strcmp(Neighbours, 'AlFeoH')
+                    elseif strcmp(Neighbours, 'AlFeH') || strcmp(Neighbours, 'AlFeoH') || strcmp(Neighbours, 'AlFeeH')
                         atom(i).fftype = {'Oh'};
-                    elseif strcmp(Neighbours, 'AlFeSi') || strcmp(Neighbours, 'AlFeoSi')
+                    elseif strcmp(Neighbours, 'AlFeSi') || strcmp(Neighbours, 'AlFeoSi') || strcmp(Neighbours, 'AlFeeSi')
                         atom(i).fftype = {'Op'};
                     elseif strcmp(Neighbours, 'AlFet') || strcmp(Neighbours, 'AlAlFet')
                         atom(i).fftype = {'Ops'};
@@ -513,7 +525,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Oahs'}; % Al-OH-Si for acidic edge
                     elseif strncmp(Neighbours, 'AlHMg', 5)
                         atom(i).fftype = {'Ohmg'};
-                    elseif strcmp(Neighbours, 'AlMgSi') || strcmp(Neighbours, 'AlMgoSi')
+                    elseif strcmp(Neighbours, 'AlMgSi') || strcmp(Neighbours, 'AlMgoSi') || strcmp(Neighbours, 'AleMgSi') || strcmp(Neighbours, 'AlMgeSi')
                         atom(i).fftype = {'Omg'};
                     elseif strcmp(Neighbours, 'AlOmg')
                         atom(i).fftype = {'Odsub'};
@@ -543,10 +555,10 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Oh'};
                     elseif strcmp(Neighbours, 'FeFeH') || strcmp(Neighbours, 'FeoFeoH')
                         atom(i).fftype = {'Oh'};
-                    elseif strcmp(Neighbours, 'FeFeSi') || strcmp(Neighbours, 'FeoFeoSi')
+                    elseif strcmp(Neighbours, 'FeFeSi') || strcmp(Neighbours, 'FeoFeoSi') | strcmp(Neighbours, 'FeeSi')
                         atom(i).fftype = {'Op'};
                     elseif strcmp(Neighbours, 'FeH') || strcmp(Neighbours, 'FeoH')
-                        atom(i).fftype = {'Oh'};
+                        atom(i).fftype = {'Ofh'};
                     elseif strncmp(Neighbours, 'FeHMg', 5) || strncmp(Neighbours, 'FeoHMg', 5)
                         atom(i).fftype = {'Ohmg'};
                     elseif strcmp(Neighbours, 'FeMgSi') || strncmp(Neighbours, 'FeMgoSi', 5) || strncmp(Neighbours, 'FeoMgSi', 5)
@@ -559,8 +571,12 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Ohli'};
                     elseif strcmp(Neighbours, 'HHMg') || strcmp(Neighbours, 'HHMgh') || strncmp(Neighbours, 'HHMgo', 5)
                         atom(i).fftype = {'Omhh'};
-                    elseif strcmp(Neighbours, 'HMg') || strcmp(Neighbours, 'HMgh')
-                        atom(i).fftype = {'Ome'};
+                    elseif strcmp(Neighbours, 'HMg') || strcmp(Neighbours, 'HMgh') || strcmp(Neighbours, 'HMge')
+                        atom(i).fftype = {'Oh'};
+                    elseif strcmp(Neighbours, 'FeHH') || strcmp(Neighbours, 'FeeHH') || strncmp(Neighbours, 'FetHH', 5)
+                        atom(i).fftype = {'Ofehh'};
+                    elseif strcmp(Neighbours, 'FeeH')
+                        atom(i).fftype = {'Oh'};
                     elseif strcmp(Neighbours, 'HMgMg') || strcmp(Neighbours, 'HMghMgh')
                         atom(i).fftype = {'Ohmg'};
                     elseif strcmp(Neighbours, 'HMgMgMg') || strcmp(Neighbours, 'HMghMghMgh')
@@ -577,7 +593,7 @@ for assignment_run=heal_iterations
                         atom(i).fftype = {'Op'};
                     elseif strcmp(Neighbours, 'MgMgSi') || strcmp(Neighbours, 'MgoMgoSi')
                         atom(i).fftype = {'Odsub'};
-                    elseif strcmp(Neighbours, 'MgSi')
+                    elseif strcmp(Neighbours, 'MgSi') || strcmp(Neighbours, 'MgeSi')
                         atom(i).fftype = {'Omg'};
                     elseif strcmp(Neighbours, 'SiSi') || strcmp(Neighbours, 'SiSiSi')
                         atom(i).fftype = {'Ob'};
@@ -761,11 +777,15 @@ while i<size(All_Neighbours,1)+1
     i=i+1;
 end
 
-% atom_ff=ff_atom(atom,Box_dim,'minff',rmaxlong);
-% assignin('caller','atom_ff',atom_ff);
-% assignin('caller','All_types',All_types);
-
 assignin('caller','remove_ind',rm_ind);
 assignin('caller','All_Neighbours',All_Neighbours);
+
+atom_ff=ff_atom(atom,Box_dim);
+All_Neighbours_ff=All_Neighbours;
+assignin('caller','atom_ff',atom_ff);
+assignin('caller','All_types',All_types);
+assignin('caller','All_Neighbours_ff',All_Neighbours_ff);
+
+
 
 

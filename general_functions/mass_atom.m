@@ -130,32 +130,28 @@ mass={...
     277 'Hassium' 'Hs' 108 ;...
     };
 
-ind=[];ind_array=[];
-if iscell([element.type]) && length([element.type]) > 1
-    for i=1:length([element.type])
-        ind=find(strncmpi([element(i).type],mass(:,3),2));
-        if numel(ind) == 0
-            ind=find(strncmpi([element(i).type],mass(:,3),1));
-            if numel(ind) == 0
-                disp('Could not find mass for')
-                disp([element(i).type])
-                disp('setting it to 10 au')
-                ind = 6;
-            end
-        end
-        ind_array=[ind_array ind(1)];
-    end
-    ind=ind_array;
-else
-    ind=find(strcmpi([element.type],mass(:,1)))
+% One lookup per atom, whatever the type is stored as (char or cell)
+ind_array=[];
+for i=1:numel(element)
+    t=element(i).type;
+    if iscell(t), t=t{1}; end
+    ind=find(strncmpi(t,mass(:,3),2));
     if numel(ind) == 0
-        ind = 6;
+        ind=find(strncmpi(t,mass(:,3),1));
+        if numel(ind) == 0
+            disp('Could not find mass for')
+            disp(t)
+            disp('setting it to 10 au')
+            ind = 6;
+        end
     end
+    ind_array=[ind_array ind(1)];
 end
+ind=ind_array;
 
 atnum = cell2mat(mass(ind,4));
 mass = cell2mat(mass(ind,1));
-for i=1:length([atom.type])
+for i=1:numel(atom)
     [atom(i).mass]=mass(i);
     [atom(i).atnum]=atnum(i);
 end

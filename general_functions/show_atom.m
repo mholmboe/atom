@@ -97,7 +97,7 @@ else
 
     bond_radii = 0.12; % bond radii
     resolution = 30;  % higher looks better, takes more time
-    % element=element_atom(atom);
+    element=element_atom(atom);
     % XYZ_labels=[element.type]';
     XYZ_labels=[atom.type]';
     nAtoms = size(XYZ_labels,1);

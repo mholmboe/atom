@@ -15,6 +15,10 @@
 ; grompp never sees a bondtype referring to an undeclared atomtype.
 ;
 ; Documentation: https://github.com/mholmboe/minff
+; If you use MINFF, please cite Holmboe, Lavauzelle and Swai, "MINFF: A Family of
+; Classical Force Fields for Minerals with Tunable Angle Terms", arXiv:2610.18220,
+; doi.org/10.48550/arXiv.2610.18220
+;
 
 [ defaults ]
 ; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ

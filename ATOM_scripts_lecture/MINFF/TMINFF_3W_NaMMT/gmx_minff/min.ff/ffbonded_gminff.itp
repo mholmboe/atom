@@ -1,3 +1,8 @@
+; If you use MINFF, please cite Holmboe, Lavauzelle and Swai, "MINFF: A Family of
+; Classical Force Fields for Minerals with Tunable Angle Terms", arXiv:2610.18220,
+; doi.org/10.48550/arXiv.2610.18220
+;
+
 [ bondtypes ]
 ;i      j	   func     b0	    kb
 ; Bonds are defined elsewhere, in each respective .itp file

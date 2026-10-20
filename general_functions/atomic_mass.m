@@ -127,27 +127,24 @@ Mass_data={...
     277 'Hassium' 'Hs' 108 ;...
     };
 
-ind=[];ind_array=[];
-if iscell(Atom_label) && length(Atom_label) > 1
-    for i=1:length(Atom_label)
-        ind=find(strncmpi(Atom_label(i),Mass_data(:,1),2));
-        if numel(ind) == 0
-            ind=find(strncmpi(Atom_label(i),Mass_data(:,1),1));
-            if numel(ind) == 0
-                disp('Could not find mass for')
-                disp(Atom_label(i))
-                disp('setting it to 10.0')
-                ind = 10.0;
-            end
-        end
-        ind_array=[ind_array ind(1)];
+% Mass_data columns: mass, name, symbol, atomic number. Look the symbol up (exact first, then the
+% first 2 or 1 characters, so force-field types such as 'Si1' or 'Alo' work) and return the mass.
+if ~iscell(Atom_label), Atom_label={Atom_label}; end
+ind_array=nan(1,numel(Atom_label));
+for i=1:numel(Atom_label)
+    ind=find(strcmpi(Atom_label{i},Mass_data(:,3)));
+    if numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),2));
     end
-    ind=ind_array;
-else
-    ind=find(strcmpi(Atom_label,Mass_data(:,1)));
-    if numel(ind) == 0
-        ind = 8;
+    if numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),1));
+    end
+    if numel(ind)==0
+        warning('atomic_mass:unknown','Could not find a mass for %s, returning NaN',Atom_label{i});
+    else
+        ind_array(i)=ind(1);
     end
 end
-
-mass = cell2mat(Mass_data(ind,2));
+mass = nan(numel(ind_array),1);
+found = ~isnan(ind_array);
+mass(found) = cell2mat(Mass_data(ind_array(found),1));

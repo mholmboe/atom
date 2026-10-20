@@ -49,6 +49,7 @@
         ho    1.00794 ;   HYDROXYL HYDROGEN
        Lio    6.94000 ;   OCTAHEDRAL LIO, LI2O
        lio    6.94100 ;   OCTAHEDRAL LITHIUM
+       Mge   24.30500 ;   EDGE MG2+, NOT RIGOROUSLY TESTED
        Mgh   24.30500 ;   BRUCITE
        mgh   24.30500 ;   HYDROXIDE MAGNESIUM
        Mgo   24.30500 ;   PERICLASE
