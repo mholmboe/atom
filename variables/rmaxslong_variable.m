@@ -3,7 +3,7 @@
 % involving a H-atom.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 
 %% Example

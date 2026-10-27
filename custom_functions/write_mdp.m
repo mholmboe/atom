@@ -5,7 +5,7 @@
 %% Please report bugs/issues to michael.holmboe@umu.se
 
 %% Version
-% 3.0.1
+% 3.0.2
 
 %% Examples
 % # write_mdp(mdp) % Write the mdp struct to the default out.mdp

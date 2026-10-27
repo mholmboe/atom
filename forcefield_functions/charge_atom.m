@@ -7,7 +7,7 @@
 % * watermodel is not always used but should be 'spc' 'spc/e' 'tip3p'
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

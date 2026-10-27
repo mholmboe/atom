@@ -9,7 +9,7 @@
 % 37 can be used to skew the spiral in the x and/or the y direction/s.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

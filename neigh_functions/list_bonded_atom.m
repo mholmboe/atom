@@ -2,7 +2,7 @@
 % * This function tries to find all bonds, angles or dihedral between the  atomtypes
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

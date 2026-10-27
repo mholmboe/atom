@@ -4,7 +4,7 @@
 % alt. try the <bond_atom.html bond_atom> function.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

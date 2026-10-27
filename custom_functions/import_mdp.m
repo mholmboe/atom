@@ -5,7 +5,7 @@
 %% Please report bugs/issues to michael.holmboe@umu.se
 
 %% Version
-% 3.0.1
+% 3.0.2
 
 %% Examples
 % # mdp = import_mdp('grompp.mdp') % Import a Gromacs .mdp run-parameter file into a struct

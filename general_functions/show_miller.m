@@ -2,7 +2,7 @@
 % * This function draws up the h,k,l Miller plane within the Box_dim/Cell
 
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

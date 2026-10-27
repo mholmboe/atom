@@ -3,7 +3,7 @@
 % skip spaces, or double quotations as in "'PATH'"
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

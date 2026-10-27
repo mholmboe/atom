@@ -2,7 +2,7 @@
 % * This function tries to calculate the number of hydrogen bonds
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

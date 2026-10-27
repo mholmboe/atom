@@ -2,7 +2,7 @@
 % * This function tries to minimize the box size and remove gaps between molecules along x,y,z
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

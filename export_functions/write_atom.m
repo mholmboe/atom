@@ -3,7 +3,7 @@
 % * Not finished for all writing functions yet... Tested 15/04/2017
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

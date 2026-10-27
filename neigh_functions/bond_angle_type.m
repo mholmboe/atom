@@ -4,7 +4,7 @@
 % angle_limit from max to min angle
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report bugs to michael.holmboe@umu.se

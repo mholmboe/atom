@@ -3,7 +3,7 @@
 % the n atomtypes in the atom struct.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 
 %% Example

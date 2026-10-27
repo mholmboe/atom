@@ -2,7 +2,7 @@
 % * The atom struct, the main variable in the atom MATLAB library.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 
 %% Introduction to the atom struct

@@ -7,8 +7,8 @@ authors:
     given-names: Michael
     email: michael.holmboe@umu.se
     affiliation: "Umeå University, Sweden"
-version: "3.0.1"
-date-released: 2026-10-11
+version: "3.0.2"
+date-released: 2026-10-27
 license: MIT
 repository-code: "https://github.com/mholmboe/atom"
 url: "https://github.com/mholmboe/atom"

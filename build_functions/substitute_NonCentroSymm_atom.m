@@ -5,7 +5,7 @@
 % * atom is the atom struct. This is the non-centrosymmetric version.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

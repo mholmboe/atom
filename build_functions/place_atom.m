@@ -3,7 +3,7 @@
 % called position, trying to use the COM of the molecule
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

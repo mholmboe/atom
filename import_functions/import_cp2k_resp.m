@@ -2,7 +2,7 @@
 % * This function imports resp charges calculated in/from cp2k. Not very well tested...
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -19,7 +19,7 @@
 % * The returned indices plug straight into show_atom_springs, see the examples.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

@@ -2,7 +2,7 @@
 % * Note that you need to set your own gmx Gromacs path on line 16.
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se

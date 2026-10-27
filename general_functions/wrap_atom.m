@@ -4,7 +4,7 @@
 % * Which one is fastest? Ortogonal or triclinic version?
 %
 %% Version
-% 3.0.1
+% 3.0.2
 %
 %% Contact
 % Please report problems/bugs to michael.holmboe@umu.se
