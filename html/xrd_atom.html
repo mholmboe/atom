@@ -301,7 +301,34 @@ occupancy=[atom.occupancy]';
 
 frac=orto_atom(atom,Box_dim);
 frac=element_atom(frac);
+
+<span class="comment">% element_atom collapses a force field site type onto its element and overwrites .type</span>
+<span class="comment">% with it, keeping the original label in .fftype.  Scatter with the site type wherever</span>
+<span class="comment">% it resolves to a tabulated row, so that a partial charge is not thrown away on the</span>
+<span class="comment">% way in.  Mgo and Mgh are Mg1+ in the table, but the collapsed 'Mg' is promoted to the</span>
+<span class="comment">% aqueous Mg2+, a whole electron out for the octahedral magnesium that defines a</span>
+<span class="comment">% montmorillonite.  Explicit ionic labels survive the same way: an Fe2+ site used to</span>
+<span class="comment">% collapse to 'Fe' and come back as Fe1.5+.</span>
+<span class="comment">%</span>
+<span class="comment">% Site types with no tabulated row of their own -- several INTERFACE types and the</span>
+<span class="comment">% per-water-model HW_* and OW_* types -- keep the element label, which is what this</span>
+<span class="comment">% function passed before, so nothing that worked becomes a NaN.</span>
 atom_type=[frac.type];
+<span class="keyword">if</span> isfield(frac,<span class="string">'fftype'</span>)
+    fftypes=[frac.fftype];
+    <span class="keyword">for</span> u=unique(fftypes)
+        resolves=false;
+        <span class="keyword">try</span>
+            [~,f_probe]=evalc(<span class="string">'atomic_scattering_factors(u,lambda,0,0)'</span>);
+            resolves=all(isfinite(f_probe));
+        <span class="keyword">catch</span>
+            resolves=false;
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> resolves
+            atom_type(strcmp(fftypes,u))=u;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
 x=[frac.xfrac]'; y=[frac.yfrac]'; z=[frac.zfrac]';
 <span class="keyword">if</span> ~isfield(frac,<span class="string">'B'</span>)
     [frac.B]=deal(B_all);
@@ -757,7 +784,34 @@ end
 
 frac=orto_atom(atom,Box_dim);
 frac=element_atom(frac);
+
+% element_atom collapses a force field site type onto its element and overwrites .type
+% with it, keeping the original label in .fftype.  Scatter with the site type wherever
+% it resolves to a tabulated row, so that a partial charge is not thrown away on the
+% way in.  Mgo and Mgh are Mg1+ in the table, but the collapsed 'Mg' is promoted to the
+% aqueous Mg2+, a whole electron out for the octahedral magnesium that defines a
+% montmorillonite.  Explicit ionic labels survive the same way: an Fe2+ site used to
+% collapse to 'Fe' and come back as Fe1.5+.
+%
+% Site types with no tabulated row of their own REPLACE_WITH_DASH_DASH several INTERFACE types and the
+% per-water-model HW_* and OW_* types REPLACE_WITH_DASH_DASH keep the element label, which is what this
+% function passed before, so nothing that worked becomes a NaN.
 atom_type=[frac.type];
+if isfield(frac,'fftype')
+    fftypes=[frac.fftype];
+    for u=unique(fftypes)
+        resolves=false;
+        try
+            [~,f_probe]=evalc('atomic_scattering_factors(u,lambda,0,0)');
+            resolves=all(isfinite(f_probe));
+        catch
+            resolves=false;
+        end
+        if resolves
+            atom_type(strcmp(fftypes,u))=u;
+        end
+    end
+end
 x=[frac.xfrac]'; y=[frac.yfrac]'; z=[frac.zfrac]';
 if ~isfield(frac,'B')
     [frac.B]=deal(B_all);

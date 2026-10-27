@@ -222,6 +222,34 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
         <span class="comment">%disp('Treating Tio as Ti2+')</span>
         Atom_label={<span class="string">'Ti2+'</span>};
     <span class="keyword">end</span>
+
+    <span class="comment">% INTERFACE site types whose names collide with element symbols. Their meaning is</span>
+    <span class="comment">% taken from the comments beside them in interface_param.m, not guessed: AY1, AY2,</span>
+    <span class="comment">% AYE, AYT1 and aoe are 'ao octahedral aluminium'; SY1, SY2, SC4 and SC5 are 'st</span>
+    <span class="comment">% tetrahedral silicon'; Ar is 'ho hydroxyl hydrogen'; Ce and Cen are the silicate</span>
+    <span class="comment">% sheet and aluminate sheet oxygens.  Without these, Ar matched ARGON, Ce and Cen</span>
+    <span class="comment">% matched CERIUM, and SC4 and SC5 matched SCANDIUM, so an INTERFACE hydroxyl oxygen</span>
+    <span class="comment">% scattered with 58 electrons instead of 9.</span>
+    <span class="comment">%</span>
+    <span class="comment">% This does shadow the elements argon and cerium for a bare label, which the '0'</span>
+    <span class="comment">% suffix still reaches: 'Ar0' and 'Ce0' skip every rule here and give the neutral</span>
+    <span class="comment">% element, as for any other label.</span>
+    <span class="keyword">if</span> ismember(Atom_label,{<span class="string">'Ay1'</span>,<span class="string">'Ay2'</span>,<span class="string">'Aye'</span>,<span class="string">'Ayt1'</span>,<span class="string">'Aoe'</span>})
+        <span class="comment">%disp('Treating an INTERFACE octahedral aluminium site as Al1.5+')</span>
+        Atom_label={<span class="string">'Al1.5+'</span>};
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> ismember(Atom_label,{<span class="string">'Sy1'</span>,<span class="string">'Sy2'</span>,<span class="string">'Sc4'</span>,<span class="string">'Sc5'</span>})
+        <span class="comment">%disp('Treating an INTERFACE tetrahedral silicon site as Si2+')</span>
+        Atom_label={<span class="string">'Si2+'</span>};
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> ismember(Atom_label,{<span class="string">'Ar'</span>})
+        <span class="comment">%disp('Treating the INTERFACE Ar site as hydroxyl H')</span>
+        Atom_label={<span class="string">'H'</span>};
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> ismember(Atom_label,{<span class="string">'Ce'</span>,<span class="string">'Cen'</span>})
+        <span class="comment">%disp('Treating the INTERFACE Ce/Cen sites as sheet oxygen')</span>
+        Atom_label={<span class="string">'O1-'</span>};
+    <span class="keyword">end</span>
     <span class="comment">% Mn, Mn2, Mn3 and Mn4 are deliberately left alone.  Their digits are not oxidation</span>
     <span class="comment">% states either -- CLAYFF gives Mn 2.100, Mn2 1.360, Mn3 1.575, Mn4 2.100 -- so</span>
     <span class="comment">% mapping them onto the published Mn2+, Mn3+ and Mn4+ rows by name would be wrong,</span>
@@ -1219,6 +1247,34 @@ else
     if ismember(Atom_label,{'Tio'})
         %disp('Treating Tio as Ti2+')
         Atom_label={'Ti2+'};
+    end
+
+    % INTERFACE site types whose names collide with element symbols. Their meaning is
+    % taken from the comments beside them in interface_param.m, not guessed: AY1, AY2,
+    % AYE, AYT1 and aoe are 'ao octahedral aluminium'; SY1, SY2, SC4 and SC5 are 'st
+    % tetrahedral silicon'; Ar is 'ho hydroxyl hydrogen'; Ce and Cen are the silicate
+    % sheet and aluminate sheet oxygens.  Without these, Ar matched ARGON, Ce and Cen
+    % matched CERIUM, and SC4 and SC5 matched SCANDIUM, so an INTERFACE hydroxyl oxygen
+    % scattered with 58 electrons instead of 9.
+    %
+    % This does shadow the elements argon and cerium for a bare label, which the '0'
+    % suffix still reaches: 'Ar0' and 'Ce0' skip every rule here and give the neutral
+    % element, as for any other label.
+    if ismember(Atom_label,{'Ay1','Ay2','Aye','Ayt1','Aoe'})
+        %disp('Treating an INTERFACE octahedral aluminium site as Al1.5+')
+        Atom_label={'Al1.5+'};
+    end
+    if ismember(Atom_label,{'Sy1','Sy2','Sc4','Sc5'})
+        %disp('Treating an INTERFACE tetrahedral silicon site as Si2+')
+        Atom_label={'Si2+'};
+    end
+    if ismember(Atom_label,{'Ar'})
+        %disp('Treating the INTERFACE Ar site as hydroxyl H')
+        Atom_label={'H'};
+    end
+    if ismember(Atom_label,{'Ce','Cen'})
+        %disp('Treating the INTERFACE Ce/Cen sites as sheet oxygen')
+        Atom_label={'O1-'};
     end
     % Mn, Mn2, Mn3 and Mn4 are deliberately left alone.  Their digits are not oxidation
     % states either REPLACE_WITH_DASH_DASH CLAYFF gives Mn 2.100, Mn2 1.360, Mn3 1.575, Mn4 2.100 REPLACE_WITH_DASH_DASH so

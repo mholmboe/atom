@@ -103,6 +103,34 @@ else
         %disp('Treating Tio as Ti2+')
         Atom_label={'Ti2+'};
     end
+
+    % INTERFACE site types whose names collide with element symbols. Their meaning is
+    % taken from the comments beside them in interface_param.m, not guessed: AY1, AY2,
+    % AYE, AYT1 and aoe are 'ao octahedral aluminium'; SY1, SY2, SC4 and SC5 are 'st
+    % tetrahedral silicon'; Ar is 'ho hydroxyl hydrogen'; Ce and Cen are the silicate
+    % sheet and aluminate sheet oxygens.  Without these, Ar matched ARGON, Ce and Cen
+    % matched CERIUM, and SC4 and SC5 matched SCANDIUM, so an INTERFACE hydroxyl oxygen
+    % scattered with 58 electrons instead of 9.
+    %
+    % This does shadow the elements argon and cerium for a bare label, which the '0'
+    % suffix still reaches: 'Ar0' and 'Ce0' skip every rule here and give the neutral
+    % element, as for any other label.
+    if ismember(Atom_label,{'Ay1','Ay2','Aye','Ayt1','Aoe'})
+        %disp('Treating an INTERFACE octahedral aluminium site as Al1.5+')
+        Atom_label={'Al1.5+'};
+    end
+    if ismember(Atom_label,{'Sy1','Sy2','Sc4','Sc5'})
+        %disp('Treating an INTERFACE tetrahedral silicon site as Si2+')
+        Atom_label={'Si2+'};
+    end
+    if ismember(Atom_label,{'Ar'})
+        %disp('Treating the INTERFACE Ar site as hydroxyl H')
+        Atom_label={'H'};
+    end
+    if ismember(Atom_label,{'Ce','Cen'})
+        %disp('Treating the INTERFACE Ce/Cen sites as sheet oxygen')
+        Atom_label={'O1-'};
+    end
     % Mn, Mn2, Mn3 and Mn4 are deliberately left alone.  Their digits are not oxidation
     % states either -- CLAYFF gives Mn 2.100, Mn2 1.360, Mn3 1.575, Mn4 2.100 -- so
     % mapping them onto the published Mn2+, Mn3+ and Mn4+ rows by name would be wrong,
