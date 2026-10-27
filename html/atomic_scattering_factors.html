@@ -144,6 +144,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Atom_label{1}(1)=upper(Atom_label{1}(1));
 <span class="keyword">end</span>
 
+<span class="comment">% Virtual and dummy sites carry charge but no electrons, so they contribute nothing to</span>
+<span class="comment">% an x-ray structure factor: TIP4P's MW, TIP5P's LP1 and LP2, and the Du and MY1 dummies.</span>
+<span class="comment">% They have no row in the table, so without this the lookup below matched the wrong</span>
+<span class="comment">% number of rows and the f0 sum failed outright -- xrd_atom could not process any TIP4P</span>
+<span class="comment">% or TIP5P structure, including LiveScripts/864_tip4p.gro and 864_tip5p.gro, which ship</span>
+<span class="comment">% with the toolbox, and which solvate_atom can produce.</span>
+<span class="keyword">if</span> ismember(Atom_label,{<span class="string">'Mw'</span>,<span class="string">'Lp'</span>,<span class="string">'Lp1'</span>,<span class="string">'Lp2'</span>,<span class="string">'Du'</span>,<span class="string">'My1'</span>})
+    f=zeros(size(twotheta));
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+
 ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
 <span class="keyword">if</span> numel(ind0)&gt;0
     Atom_label{1}(ind0)=[];
@@ -1169,6 +1180,17 @@ end
 % was normalised, so 'cu' missed the rules below and resolved to neutral Cu instead of Cu2+.
 if ~isempty(Atom_label{1})
     Atom_label{1}(1)=upper(Atom_label{1}(1));
+end
+
+% Virtual and dummy sites carry charge but no electrons, so they contribute nothing to
+% an x-ray structure factor: TIP4P's MW, TIP5P's LP1 and LP2, and the Du and MY1 dummies.
+% They have no row in the table, so without this the lookup below matched the wrong
+% number of rows and the f0 sum failed outright REPLACE_WITH_DASH_DASH xrd_atom could not process any TIP4P
+% or TIP5P structure, including LiveScripts/864_tip4p.gro and 864_tip5p.gro, which ship
+% with the toolbox, and which solvate_atom can produce.
+if ismember(Atom_label,{'Mw','Lp','Lp1','Lp2','Du','My1'})
+    f=zeros(size(twotheta));
+    return
 end
 
 ind0=cell2mat(regexp(Atom_label,'0'));

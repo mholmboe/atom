@@ -26,6 +26,17 @@ if ~isempty(Atom_label{1})
     Atom_label{1}(1)=upper(Atom_label{1}(1));
 end
 
+% Virtual and dummy sites carry charge but no electrons, so they contribute nothing to
+% an x-ray structure factor: TIP4P's MW, TIP5P's LP1 and LP2, and the Du and MY1 dummies.
+% They have no row in the table, so without this the lookup below matched the wrong
+% number of rows and the f0 sum failed outright -- xrd_atom could not process any TIP4P
+% or TIP5P structure, including LiveScripts/864_tip4p.gro and 864_tip5p.gro, which ship
+% with the toolbox, and which solvate_atom can produce.
+if ismember(Atom_label,{'Mw','Lp','Lp1','Lp2','Du','My1'})
+    f=zeros(size(twotheta));
+    return
+end
+
 ind0=cell2mat(regexp(Atom_label,'0'));
 if numel(ind0)>0
     Atom_label{1}(ind0)=[];

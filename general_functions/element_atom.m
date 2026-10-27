@@ -131,11 +131,16 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Zr'},2);atom(i).element={'Zr'};
     elseif strncmpi(atom(i).type,{'Zn'},2);atom(i).element={'Zn'};
     else
+        % Last resort for an unrecognised atomtype: take the element from the label's
+        % own first one or two characters.  This read atom(1).type for the second
+        % character where it meant atom(i).type, so an unrecognised label took that
+        % character from the FIRST atom of the struct instead of from itself, which
+        % silently produced the wrong element in a mixed structure.  The loop index and
+        % that first atom's type were also displayed on every unrecognised label, which
+        % was leftover debugging.
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         if size([atom(i).type{:}],2)>1
-            i
-            atom(1).type
-            [atom(i).element{1}(2)]=lower(atom(1).type{1}(2));
+            [atom(i).element{1}(2)]=lower(atom(i).type{1}(2));
         end
     end
 end

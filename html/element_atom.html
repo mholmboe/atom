@@ -245,11 +245,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Zr'</span>},2);atom(i).element={<span class="string">'Zr'</span>};
     <span class="keyword">elseif</span> strncmpi(atom(i).type,{<span class="string">'Zn'</span>},2);atom(i).element={<span class="string">'Zn'</span>};
     <span class="keyword">else</span>
+        <span class="comment">% Last resort for an unrecognised atomtype: take the element from the label's</span>
+        <span class="comment">% own first one or two characters.  This read atom(1).type for the second</span>
+        <span class="comment">% character where it meant atom(i).type, so an unrecognised label took that</span>
+        <span class="comment">% character from the FIRST atom of the struct instead of from itself, which</span>
+        <span class="comment">% silently produced the wrong element in a mixed structure.  The loop index and</span>
+        <span class="comment">% that first atom's type were also displayed on every unrecognised label, which</span>
+        <span class="comment">% was leftover debugging.</span>
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         <span class="keyword">if</span> size([atom(i).type{:}],2)&gt;1
-            i
-            atom(1).type
-            [atom(i).element{1}(2)]=lower(atom(1).type{1}(2));
+            [atom(i).element{1}(2)]=lower(atom(i).type{1}(2));
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -397,11 +402,16 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Zr'},2);atom(i).element={'Zr'};
     elseif strncmpi(atom(i).type,{'Zn'},2);atom(i).element={'Zn'};
     else
+        % Last resort for an unrecognised atomtype: take the element from the label's
+        % own first one or two characters.  This read atom(1).type for the second
+        % character where it meant atom(i).type, so an unrecognised label took that
+        % character from the FIRST atom of the struct instead of from itself, which
+        % silently produced the wrong element in a mixed structure.  The loop index and
+        % that first atom's type were also displayed on every unrecognised label, which
+        % was leftover debugging.
         [atom(i).element{1}(1)]=upper(atom(i).type{1}(1));
         if size([atom(i).type{:}],2)>1
-            i
-            atom(1).type
-            [atom(i).element{1}(2)]=lower(atom(1).type{1}(2));
+            [atom(i).element{1}(2)]=lower(atom(i).type{1}(2));
         end
     end
 end
