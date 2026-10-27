@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>Bragg</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="Bragg.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,6 +76,36 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>d = Bragg(1.5406,'twotheta',6.2) % d-spacing [same unit as lambda] from a 2theta angle [deg]</li>
+<li>d = Bragg(1.5406,'theta',3.1) % The same, from a theta angle [deg]</li>
+<li>twotheta = Bragg(1.5406,'d',14.2) % 2theta [deg] from a d-spacing</li>
+<li>d = Bragg(1.5406,'twotheta',6.2,2) % The same, for the second order reflection</li>
+</ol>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">See also</a>
+</li>
+</ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="xrd_atom.html">xrd_atom</a>
+</li>
+<li>
+<a href="atomic_scattering_factors.html">atomic_scattering_factors</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> new_var = Bragg(lambda,string,var,varargin)
 
@@ -102,6 +132,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # d = Bragg(1.5406,'twotheta',6.2) % d-spacing [same unit as lambda] from a 2theta angle [deg]
+% # d = Bragg(1.5406,'theta',3.1) % The same, from a theta angle [deg]
+% # twotheta = Bragg(1.5406,'d',14.2) % 2theta [deg] from a d-spacing
+% # d = Bragg(1.5406,'twotheta',6.2,2) % The same, for the second order reflection
+%
+%% See also
+% # <xrd_atom.html xrd_atom>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+%
 function new_var = Bragg(lambda,string,var,varargin)
 
 % Order of reflection

@@ -56,6 +56,9 @@
 %% then you could try
 %% system('gmx editconf -h')
 
+%% See also
+% # <gmx.html gmx>
+%
 function decompose_traj(trajname,outtrajname,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

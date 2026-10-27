@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>autofit_2xljcoul_batch</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="autofit_2xljcoul_batch.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,6 +76,42 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>autofit_2xljcoul_batch % Script: run autofit_2xljcoul over a list of ions in one go</li>
+</ol>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">See also</a>
+</li>
+</ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="autofit_2xljcoul_func.html">autofit_2xljcoul_func</a>
+</li>
+<li>
+<a href="radius_ion.html">radius_ion</a>
+</li>
+<li>
+<a href="autofit_2xljcoul.html">autofit_2xljcoul</a>
+</li>
+<li>
+<a href="autofit_force_2xljcoul.html">autofit_force_2xljcoul</a>
+</li>
+<li>
+<a href="autofit_2x2xljcoul.html">autofit_2x2xljcoul</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">clear <span class="string">all</span>;clc;close <span class="string">all</span>;
 
 Resultfile=<span class="string">'monovalent_pseudo_1264_IOD_SPCE_v1'</span>
@@ -86,9 +122,9 @@ ff=load(initial_ff);
 ff1=load(ref_ff1)
 ff2=load(ref_ff2)
 
-<span class="comment">% extraff1='ions_Merz_CM_monovalent_OPC3_ff';</span>
-<span class="comment">% extraff2='ions_Merz_IOD_monovalent_OPC3_ff';</span>
-<span class="comment">% extraff3='ions_Merz_HFE_monovalent_OPC3_ff';</span>
+<span class="comment">% (no CM monovalent set exists: Li &amp; Merz published the CM set for divalent ions only)</span>
+<span class="comment">% extraff2='ions_Merz_IOD_monovalent_opc3_ff';</span>
+<span class="comment">% extraff3='ions_Merz_HFE_monovalent_opc3_ff';</span>
 
 <span class="comment">% Ion1='Ca'</span>
 Ion2=<span class="string">'OW'</span>
@@ -171,6 +207,16 @@ save(strcat(Resultfile,<span class="string">'.mat'</span>),<span class="string">
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # autofit_2xljcoul_batch % Script: run autofit_2xljcoul over a list of ions in one go
+%
+%% See also
+% # <autofit_2xljcoul_func.html autofit_2xljcoul_func>
+% # <radius_ion.html radius_ion>
+% # <autofit_2xljcoul.html autofit_2xljcoul>
+% # <autofit_force_2xljcoul.html autofit_force_2xljcoul>
+% # <autofit_2x2xljcoul.html autofit_2x2xljcoul>
+%
 clear all;clc;close all;
 
 Resultfile='monovalent_pseudo_1264_IOD_SPCE_v1'
@@ -181,9 +227,9 @@ ff=load(initial_ff);
 ff1=load(ref_ff1)
 ff2=load(ref_ff2)
 
-% extraff1='ions_Merz_CM_monovalent_OPC3_ff';
-% extraff2='ions_Merz_IOD_monovalent_OPC3_ff';
-% extraff3='ions_Merz_HFE_monovalent_OPC3_ff';
+% (no CM monovalent set exists: Li & Merz published the CM set for divalent ions only)
+% extraff2='ions_Merz_IOD_monovalent_opc3_ff';
+% extraff3='ions_Merz_HFE_monovalent_opc3_ff';
 
 % Ion1='Ca'
 Ion2='OW'

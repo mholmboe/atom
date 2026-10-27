@@ -11,6 +11,13 @@
 %% Examples
 % # atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')
 %
+%% See also
+% # <analyze_atom.html analyze_atom>
+% # <clayff_atom.html clayff_atom>
+% # <replicate_atom.html replicate_atom>
+% # <resname_atom.html resname_atom>
+% # <write_atom_pdb.html write_atom_pdb>
+%
 function [atom,Box_dim] = import_ddec_charges(varargin)
 
 if nargin>0

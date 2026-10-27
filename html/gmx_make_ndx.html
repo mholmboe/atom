@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>gmx_make_ndx.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="gmx_make_ndx.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -104,6 +104,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -117,6 +120,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>gmx_make_ndx(id,groupname,filename) % Basic input arguments</li>
 <li>gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx</li>
 <li>gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="atom_make_ndx.html">atom_make_ndx</a>
+</li>
+<li>
+<a href="atom_make_ndx_bonded.html">atom_make_ndx_bonded</a>
+</li>
+<li>
+<a href="atom_read_ndx.html">atom_read_ndx</a>
+</li>
+<li>
+<a href="gmx_mk_angndx.html">gmx_mk_angndx</a>
+</li>
+<li>
+<a href="import_ndx.html">import_ndx</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -205,6 +228,13 @@ fclose(fid);
 % # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
+%% See also
+% # <atom_make_ndx.html atom_make_ndx>
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded>
+% # <atom_read_ndx.html atom_read_ndx>
+% # <gmx_mk_angndx.html gmx_mk_angndx>
+% # <import_ndx.html import_ndx>
+%
 function gmx_make_ndx(id,groupname,varargin)
 
 if nargin==1

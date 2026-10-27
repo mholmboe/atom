@@ -56,6 +56,10 @@
 %% then you could try
 %% system('gmx editconf -h')
 
+%% See also
+% # <gmx.html gmx>
+% # <extract_vz_from_trr.html extract_vz_from_trr>
+%
 function extract_vxvy_from_trr(trajname,outtrajname,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

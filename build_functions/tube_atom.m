@@ -17,6 +17,13 @@
 %% Examples
 % # atom = tube_atom(atom,Box_dim,Radii)
 
+%% See also
+% # <replicate_atom.html replicate_atom>
+% # <dist_matrix_noPBC_atom.html dist_matrix_noPBC_atom>
+% # <spiral_atom.html spiral_atom>
+% # <translate_atom.html translate_atom>
+% # <update_atom.html update_atom>
+%
 function atom = tube_atom(atom,Box_dim,Dim,nUC,AngularRange,UCaccuracy,deltaaccuracy,Rshift)
 
 % Dim=2; % 1 for X-direction, 2 for the Y-direction

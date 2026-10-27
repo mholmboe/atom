@@ -12,6 +12,13 @@
 % # atom = mass_atom_clayff(atom)
 % # atom = mass_atom_clayff(atom,'OW')
 %
+%% See also
+% # <charge_interface_atom.html charge_interface_atom>
+% # <clayff_atom.html clayff_atom>
+% # <clayff_param.html clayff_param>
+% # <element_atom.html element_atom>
+% # <interface_atom.html interface_atom>
+%
 function atom = mass_atom_clayff(atom,varargin)
 % Todo... write more general function...
 

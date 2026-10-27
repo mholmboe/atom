@@ -25,6 +25,13 @@
 % # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He',1.87)
 % # healed_atom = heal_atom(atom,Box_dim,[3 202 493],2.25,'He','Shannon')
 
+%% See also
+% # <fuse_atom.html fuse_atom>
+% # <protonate_atom.html protonate_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+% # <neigh_atom.html neigh_atom>
+%
 function healed_atom = heal_atom(atom,Box_dim,ind,varargin) % optional varargs == rmaxlong,heal_type,r|'Shannon');
 
 if nargin==2

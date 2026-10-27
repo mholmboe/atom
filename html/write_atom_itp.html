@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_itp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_atom_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -106,16 +106,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Find atomtype specific indexes</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#7">To only keep bonds to H's, uncomment the next three lines</a>
+<a href="#6">Find atomtype specific indexes</a>
 </li>
 <li>
-<a href="#8">To only keep bonds between Osih - H, uncomment the next four lines</a>
+<a href="#8">To only keep bonds to H's, uncomment the next three lines</a>
 </li>
 <li>
-<a href="#10">To include a generic 1-4 pairlist</a>
+<a href="#9">To only keep bonds between Osih - H, uncomment the next four lines</a>
+</li>
+<li>
+<a href="#11">To include a generic 1-4 pairlist</a>
 </li>
 </ul>
 </div>
@@ -133,6 +136,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'minff','opc3')</li>
 <li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')</li>
 <li>write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p',1)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_angle_atom.html">bond_angle_atom</a>
+</li>
+<li>
+<a href="bond_angle_dihedral_atom.html">bond_angle_dihedral_atom</a>
+</li>
+<li>
+<a href="charge_atom.html">charge_atom</a>
+</li>
+<li>
+<a href="charge_minff_atom.html">charge_minff_atom</a>
+</li>
+<li>
+<a href="charge_opls_go_atom.html">charge_opls_go_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -264,7 +287,7 @@ nAtoms=size(atom,2);
     explicit_angles = 1
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Find atomtype specific indexes</h2>
+<h2 id="6">Find atomtype specific indexes</h2>
 <pre class="codeinput">ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],<span class="string">'h'</span>)));
 ind_H=find(strncmpi([atom.type],{<span class="string">'H'</span>},1));
 ind_O=find(strncmpi([atom.type],{<span class="string">'O'</span>},1));
@@ -294,7 +317,7 @@ ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
     <span class="comment">%     Bond_index=Bond_index(h_row,:);</span>
     <span class="comment">%     nBonds=size(Bond_index,1);</span>
 </pre>
-<h2 id="7">To only keep bonds to H's, uncomment the next three lines</h2>
+<h2 id="8">To only keep bonds to H's, uncomment the next three lines</h2>
 <pre>   [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
    Bond_index=Bond_index(H_row,:);
    nBonds=size(Bond_index,1);</pre>
@@ -303,7 +326,7 @@ ind_Edge=unique([ind_H ind_Alhh ind_Mghh ind_Fehh ind_Osih]);
     [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Edge)));
     Bond_index=Bond_index(h_row,:);
 </pre>
-<h2 id="8">To only keep bonds between Osih - H, uncomment the next four lines</h2>
+<h2 id="9">To only keep bonds between Osih - H, uncomment the next four lines</h2>
 <pre>   disp('Keeping only bonds with H')
    [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Osih)));
    Bond_index=Bond_index(h_row,:);
@@ -432,7 +455,7 @@ bondtype=1; <span class="comment">% Gromacs bond type. 1 means harmonic bond, k(
     disp(<span class="string">'Found no bonds'</span>)
 <span class="keyword">end</span>
 </pre>
-<h2 id="10">To include a generic 1-4 pairlist</h2>
+<h2 id="11">To include a generic 1-4 pairlist</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> strncmpi(ffname,<span class="string">'interface'</span>,5)
 
@@ -745,6 +768,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'nAngles'</sp
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
 % # write_atom_itp(atom,Box_dim,filename,1.25,2.25,'interface','tip3p',1)
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+%
 function write_atom_itp(atom,Box_dim,filename,varargin)
 
 format long

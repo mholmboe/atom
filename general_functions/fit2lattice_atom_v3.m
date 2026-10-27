@@ -15,6 +15,13 @@
 % # [atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref) % Basic imput arguments
 %
 
+%% See also
+% # <fit2lattice_atom.html fit2lattice_atom>
+% # <analyze_atom.html analyze_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+%
 function [atom,Box_dim] = fit2lattice_atom(atom_model,atom_ref,Box_dim_ref,varargin)
 
 % clear all;

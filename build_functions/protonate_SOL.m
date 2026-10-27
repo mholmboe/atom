@@ -18,6 +18,11 @@
 % # Hatom = protonate_SOL(atom,Box_dim,ind,nH,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
 %
 
+%% See also
+% # <neigh_atom.html neigh_atom>
+% # <xyz2atom.html xyz2atom>
+% # <protonate_atom.html protonate_atom>
+%
 function H_atom = protonate_SOL(atom,Box_dim,varargin)
 
 if nargin==2

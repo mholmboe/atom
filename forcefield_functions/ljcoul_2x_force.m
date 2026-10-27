@@ -1,3 +1,13 @@
+%% Examples
+% # [r,lj,coul,Ftot] = ljcoul_2x_force(param) % As ljcoul_2x, but returning forces instead of energies
+%
+%% See also
+% # <ljcoul_2x_force_objective_func.html ljcoul_2x_force_objective_func>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul_force.html ljcoul_force>
+% # <ljcoul_force_C12C6C4.html ljcoul_force_C12C6C4>
+%
 function [r,lj,coul,Ftot] = ljcoul_2x_force(param,varargin)
 
 if nargin > 1

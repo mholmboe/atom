@@ -13,6 +13,13 @@
 % # ndx = atom_read_ndx(filename,atom) % Will generate new atom structs from the defined groups
 % # ndx = atom_read_ndx(filename,atom,Box_dim,1) % Will print separate .pdb files of all groups
 
+%% See also
+% # <write_atom_pdb.html write_atom_pdb>
+% # <atom_make_ndx.html atom_make_ndx>
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded>
+% # <gmx_make_ndx.html gmx_make_ndx>
+% # <import_ndx.html import_ndx>
+%
 function ndx = atom_read_ndx(filename,varargin)
 
 inputfile = fopen(filename, 'r');

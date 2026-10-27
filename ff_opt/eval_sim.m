@@ -13,6 +13,13 @@
 % # f=@(x)eval_sim(x,scalefactors,dirtype,indexes);  % From run_opt_ff_lsqnonlin
 % # res = eval_sim(fx,scalefactors,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..
 
+%% See also
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+% # <analyze_atom.html analyze_atom>
+% # <change_top.html change_top>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <element_atom.html element_atom>
+%
 function res = eval_sim(param,scalefactors,dirtype,varargin)
 
 ParentSimDir = pwd;

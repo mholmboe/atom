@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>hbond_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="hbond_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,34 +97,37 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Filter Hw with certain z coordinate</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#7">This is the slow step...</a>
+<a href="#6">Filter Hw with certain z coordinate</a>
 </li>
 <li>
-<a href="#8">Put together the Angle_index matrix</a>
+<a href="#8">This is the slow step...</a>
 </li>
 <li>
-<a href="#9">Check the D-H--A angles</a>
+<a href="#9">Put together the Angle_index matrix</a>
 </li>
 <li>
-<a href="#10">Check the D--A distances</a>
+<a href="#10">Check the D-H--A angles</a>
 </li>
 <li>
-<a href="#11">Cut out the cutout's</a>
+<a href="#11">Check the D--A distances</a>
 </li>
 <li>
-<a href="#12">Collect the donor Hbonds</a>
+<a href="#12">Cut out the cutout's</a>
 </li>
 <li>
-<a href="#13">Collect the acceptor Hbonds</a>
+<a href="#13">Collect the donor Hbonds</a>
 </li>
 <li>
-<a href="#14">Write a pdb without the CONECT section</a>
+<a href="#14">Collect the acceptor Hbonds</a>
 </li>
 <li>
-<a href="#15">Print the CONECT section with th HB bonds separately</a>
+<a href="#15">Write a pdb without the CONECT section</a>
+</li>
+<li>
+<a href="#16">Print the CONECT section with th HB bonds separately</a>
 </li>
 </ul>
 </div>
@@ -139,6 +142,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom=hbond_atom(atom,Box_dim) % Basic input arguments</li>
 <li>atom=hbond_atom(atom,Box_dim,hb_dist) % Sets the X-H-X distance</li>
 <li>atom=hbond_atom(atom,Box_dim,hb_dist,hbangle) % Sets the X-H-X angle</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_angle_type.html">bond_angle_type</a>
+</li>
+<li>
+<a href="write_atom_pdb.html">write_atom_pdb</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -189,36 +203,36 @@ Zslice=[];
 
 <span class="keyword">if</span> numel(Zslice)&gt;1
 </pre>
-<h2 id="5">Filter Hw with certain z coordinate</h2>
+<h2 id="6">Filter Hw with certain z coordinate</h2>
 <pre class="codeinput">    atom2=atom2([atom.z]&gt;min(Zslice)&amp;[atom.z]&lt;=max(Zslice));
 </pre>
 <pre class="codeinput">
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">This is the slow step...</h2>
+<h2 id="8">This is the slow step...</h2>
 <pre class="codeinput">temp_atom = bond_angle_type(atom1,atom2,Box_dim,0.8,hb_dist-1,120,0,<span class="string">'min_angle'</span>);
 </pre>
-<h2 id="8">Put together the Angle_index matrix</h2>
+<h2 id="9">Put together the Angle_index matrix</h2>
 <pre class="codeinput">Angle_index=cell2mat(arrayfun(@(x) x.neigh.angle, temp_atom(1:end),<span class="string">'UniformOutput'</span>,0)');
 temp_Angle_index=Angle_index;
 ind_reverse=find(Angle_index(:,5)&gt;1.2);
 temp_Angle_index(ind_reverse,[1 3 5:12])=Angle_index(ind_reverse,[3 1 6 5 10 11 12 7 8 9]);
 Angle_index=temp_Angle_index;
 </pre>
-<h2 id="9">Check the D-H--A angles</h2>
+<h2 id="10">Check the D-H--A angles</h2>
 <pre class="codeinput">HDA_angle=cell2mat(arrayfun(@(x) rad2deg(atan2(norm(cross([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)])),<span class="keyword">...</span>
     dot([Angle_index(x,10:12)]-[Angle_index(x,7:9)],[0 0 0]-[Angle_index(x,7:9)]))), 1:size(Angle_index,1),<span class="string">'UniformOutput'</span>,0)');
 HDA_angle_ind=find(HDA_angle&lt;hb_angle);
 </pre>
-<h2 id="10">Check the D--A distances</h2>
+<h2 id="11">Check the D--A distances</h2>
 <pre class="codeinput">DA_dist=cell2mat(arrayfun(@(x) pdist2(Angle_index(x,7:9),Angle_index(x,10:12)), 1:size(Angle_index,1),<span class="string">'UniformOutput'</span>,0)');
 DA_dist_ind=find(DA_dist&lt;hb_dist);
 HDA_ind=intersect(HDA_angle_ind,DA_dist_ind);
 </pre>
-<h2 id="11">Cut out the cutout's</h2>
+<h2 id="12">Cut out the cutout's</h2>
 <pre class="codeinput">Angle_index=Angle_index(HDA_ind,:);
 </pre>
-<h2 id="12">Collect the donor Hbonds</h2>
+<h2 id="13">Collect the donor Hbonds</h2>
 <pre class="codeinput">bins_HBD(1,:)=histcounts(sort([Angle_index(:,1)]),size(atom,2))';
 bins_DIST=histcounts(Angle_index(:,5),0:dist_step:hb_dist)';
 bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
@@ -233,7 +247,7 @@ nHD_bonds(1)=(1*length([HBD.HB1])+2*length([HBD.HB2])+3*length([HBD.HB3])<span c
 disp(<span class="string">'Total number of Donator H-bonds'</span>);
 nHD_bonds(end)
 </pre>
-<h2 id="13">Collect the acceptor Hbonds</h2>
+<h2 id="14">Collect the acceptor Hbonds</h2>
 <pre class="codeinput">bins_HBA(1,:)=histcounts(sort([Angle_index(:,3)]),size(atom,2))';
 bins_DIST=histcounts(Angle_index(:,6),0:dist_step:hb_dist)';
 bins_ANGLE=histcounts(180-Angle_index(:,4),0:angle_step:hb_angle)';
@@ -264,10 +278,10 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Angle_index'
 
 <span class="comment">% Print PDB and CONECT files, showing the HB's</span>
 </pre>
-<h2 id="14">Write a pdb without the CONECT section</h2>
+<h2 id="15">Write a pdb without the CONECT section</h2>
 <pre class="codeinput">write_atom_pdb(atom,Box_dim,outfilename)
 </pre>
-<h2 id="15">Print the CONECT section with th HB bonds separately</h2>
+<h2 id="16">Print the CONECT section with th HB bonds separately</h2>
 <pre class="codeinput">HB_Bond_index=[Angle_index(find(Angle_index(:,5)&gt;1.2),1:2) Angle_index(find(Angle_index(:,5)&gt;1.2),end); Angle_index(find(Angle_index(:,6)&gt;1.2),2:3) Angle_index(find(Angle_index(:,6)&gt;1.2),end)];
 HB_Bond_index=sortrows(HB_Bond_index,1);
 
@@ -310,6 +324,10 @@ fclose(fid);
 % # atom=hbond_atom(atom,Box_dim,hb_dist) % Sets the X-H-X distance
 % # atom=hbond_atom(atom,Box_dim,hb_dist,hbangle) % Sets the X-H-X angle
 
+%% See also
+% # <bond_angle_type.html bond_angle_type>
+% # <write_atom_pdb.html write_atom_pdb>
+%
 function atom=hbond_atom(atom,Box_dim,varargin)
 
 format short

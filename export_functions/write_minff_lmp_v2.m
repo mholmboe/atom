@@ -23,6 +23,13 @@
 % # write_minff_lmp_v2(atom,Box_dim,filename,[],1.25,2.45,'detect_bimodal',false)
 %
 
+%% See also
+% # <write_minff_lmp.html write_minff_lmp>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <mass_atom.html mass_atom>
+% # <write_minff_lmp_max_bondtypes.html write_minff_lmp_max_bondtypes>
+%
 function write_minff_lmp_v2(atom,Box_dim,filename,varargin)
 
 % Some settings needed in order to print a proper lammps in file %%

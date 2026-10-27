@@ -1,4 +1,14 @@
 % clear;
+%% Examples
+% # autofit_buckcoul % Script: fit a Buckingham + Coulomb potential, parameters are set inside the script
+%
+%% See also
+% # <buckinghamcoul.html buckinghamcoul>
+% # <buckinghamcoul_objective_func.html buckinghamcoul_objective_func>
+% # <ljcoul.html ljcoul>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 close all;
 hold on
 format compact;

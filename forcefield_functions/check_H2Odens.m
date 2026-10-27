@@ -13,6 +13,11 @@
 %% Examples
 % # H2Odens = check_H2Odens(atom,Box_dim)
 %
+%% See also
+% # <check_clayff_H2Odens.html check_clayff_H2Odens>
+% # <check_clayff_2004_charge.html check_clayff_2004_charge>
+% # <check_clayff_charge.html check_clayff_charge>
+%
 function H2Odens = check_H2Odens(atom,Box_dim)
 nSOL=sum(strncmpi([atom.type],'Ow',2))
 nSOLatoms=sum(ismember([atom.resname],{'Water' 'water' 'WAT' 'wat' 'SOL' 'sol'}))

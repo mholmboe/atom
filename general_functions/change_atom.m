@@ -12,6 +12,13 @@
 % # change_atom % Edit the filename and the atomtypes at the top of the script
 %
 
+%% See also
+% # <COM_molid.html COM_molid>
+% # <PATH2GMX.html PATH2GMX>
+% # <PATH2VMD.html PATH2VMD>
+% # <import_atom.html import_atom>
+% # <import_atom_gro.html import_atom_gro>
+%
 clear all;
 format short;
 

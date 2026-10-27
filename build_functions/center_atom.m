@@ -15,6 +15,16 @@
 % * atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na
 % * atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.
 %
+%% Examples
+% # atom = center_atom(atom,Box_dim) % Center all atoms in the box, along x, y and z
+% # atom = center_atom(atom,Box_dim,'MMT') % Center only the atoms with the resname MMT
+% # atom = center_atom(atom,Box_dim,'MMT','z') % Center the MMT resname along z only
+%
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <wrap_atom.html wrap_atom>
+%
 function atom = center_atom(atom,Box_dim,varargin)
 disp('Centering')
 

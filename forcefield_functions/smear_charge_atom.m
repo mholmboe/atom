@@ -12,6 +12,13 @@
 %% Examples with some fixed charges, the rest is smeared over the O's
 % * atom = smear_charge_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_atom.html bond_atom>
+% # <tweak_charge_atom.html tweak_charge_atom>
+% # <smear_charge.html smear_charge>
+% # <charge_clayffmod_atom.html charge_clayffmod_atom>
+%
 function atom = smear_charge_atom(atom,Box_dim,varargin)
 
 nAtoms=size(atom,2);

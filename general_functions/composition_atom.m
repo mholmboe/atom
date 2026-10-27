@@ -10,6 +10,12 @@
 %% Examples
 % * atom = composition_atom(atom)
 
+%% See also
+% # <element_atom.html element_atom>
+% # <mass_atom.html mass_atom>
+% # <stats_atom.html stats_atom>
+% # <properties_atom.html properties_atom>
+%
 function atom = composition_atom(atom)
 
 resname_labels=unique([atom.resname]);

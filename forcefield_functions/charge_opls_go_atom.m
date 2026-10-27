@@ -1,3 +1,13 @@
+%% Examples
+% # atom = charge_opls_go_atom(atom,Box_dim) % Set the OPLS/aa charges of a graphene oxide structure
+%
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <clayff_param.html clayff_param>
+% # <tweak_charge_atom.html tweak_charge_atom>
+% # <charge_atom.html charge_atom>
+%
 function atom = charge_opls_go_atom(atom,Box_dim,varargin)
 %% This is a tailor-made function and likely not relvant for you!!!
 %%

@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>write_itp</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_itp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,9 +76,21 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>write_itp(itp,'out.itp') % Write an imported itp struct back to a .itp file</li>
+<li>write_itp(itp,'out.itp',1.1,0.9) % The same, scaling all sigma by 1.1 and all epsilon by 0.9</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
+<li>
+<a href="#1">See also</a>
+</li>
 <li>
 <a href="#2">write_itp.m</a>
 </li>
@@ -104,6 +116,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#9">Create vars for the sections</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="write_atom_itp.html">write_atom_itp</a>
+</li>
+<li>
+<a href="write_atom_oplsaa_go_itp.html">write_atom_oplsaa_go_itp</a>
+</li>
+<li>
+<a href="write_custom_itp.html">write_custom_itp</a>
+</li>
+<li>
+<a href="write_minff_itp.html">write_minff_itp</a>
+</li>
+<li>
+<a href="write_atom.html">write_atom</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> write_itp(itp,filename,varargin)
@@ -474,6 +506,17 @@ fclose(fid);
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # write_itp(itp,'out.itp') % Write an imported itp struct back to a .itp file
+% # write_itp(itp,'out.itp',1.1,0.9) % The same, scaling all sigma by 1.1 and all epsilon by 0.9
+%
+%% See also
+% # <write_atom_itp.html write_atom_itp>
+% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp>
+% # <write_custom_itp.html write_custom_itp>
+% # <write_minff_itp.html write_minff_itp>
+% # <write_atom.html write_atom>
+%
 function write_itp(itp,filename,varargin)
 %% write_itp.m
 %% This function prints a gromacs .itp file from a itp struct

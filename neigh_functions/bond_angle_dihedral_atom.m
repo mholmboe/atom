@@ -17,6 +17,13 @@
 % # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25) % Setting the max distance rmaxshort and rmaxlong for bonds with H's
 % # atom=bond_angle_dihedral_atom(atom,Box_dim,1.25,2.25,'more') % Will write more info to the calling workspace
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_type.html bond_angle_type>
+% # <bond_matrix_atom.html bond_matrix_atom>
+% # <bond_valence_atom.html bond_valence_atom>
+%
 function atom = bond_angle_dihedral_atom(atom, varargin)
 
 

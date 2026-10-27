@@ -13,6 +13,13 @@
 % # atom = mass_atom(atom)
 % # atom = mass_atom(atom,Box_dim) % To calculate the density
 %
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <element_atom.html element_atom>
+% # <occupancy_atom.html occupancy_atom>
+% # <atomic_mass.html atomic_mass>
+% # <reduced_mass.html reduced_mass>
+%
 function atom = mass_atom(atom,varargin)
 
 element=element_atom(atom);

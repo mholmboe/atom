@@ -10,6 +10,13 @@
 %% Examples
 % # write_pdb_traj(atom,traj,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <write_ave_pdb.html write_ave_pdb>
+% # <write_gro_traj.html write_gro_traj>
+% # <write_xyz_traj.html write_xyz_traj>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+% # <write_ave_gro.html write_ave_gro>
+%
 function write_pdb_traj(atom,traj,Box_dim,filename_out)
 
 if regexp(filename_out,'.pdb') ~= false

@@ -14,6 +14,12 @@
 % # atom=adjust_H_atom(atom,Box_dim,ideal_H_distance,Bond_index) % So that we do not need to recalculate the Bond_index
 
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <neighbor_atom.html neighbor_atom>
+% # <neighbor_func.html neighbor_func>
+% # <add_H_atom.html add_H_atom>
+%
 function atom=adjust_H_atom(atom,Box_dim,varargin)
 %%
 

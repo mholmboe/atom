@@ -1,3 +1,13 @@
+%% Examples
+% # autofit_force_2xljcoul % Script: as autofit_2xljcoul, but fitting forces instead of energies
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x_force.html ljcoul_2x_force>
+% # <ljcoul_2x_force_objective_func.html ljcoul_2x_force_objective_func>
+% # <ljcoul_force.html ljcoul_force>
+% # <ljcoul_force_C12C6C4.html ljcoul_force_C12C6C4>
+%
 clear;
 close all;
 hold on

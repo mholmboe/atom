@@ -16,6 +16,13 @@
 % # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25) % Setting the max distance for bonds, otherwise default is 12 Å
 % # [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom,Box_dim,1.25,2.25,2.25) % Setting the max distance for angles, default is not to calculate any angles
 
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <dist_matrix_noPBC_atom.html dist_matrix_noPBC_atom>
+% # <dist_matrix_xyz.html dist_matrix_xyz>
+%
 function [dist_matrix,bond_list,dist_list,X_dist,Y_dist,Z_dist] = cell_list_dist_matrix_atom(atom, Box_dim,varargin)
 
 % Parse input & setup

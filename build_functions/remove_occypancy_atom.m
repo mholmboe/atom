@@ -14,6 +14,13 @@
 %% Examples
 % * atom=remove_occypancy_atom(atom) % Basic input arguments
 %
+%% See also
+% # <fuse_atom.html fuse_atom>
+% # <remove_SOL.html remove_SOL>
+% # <remove_molid.html remove_molid>
+% # <remove_residues.html remove_residues>
+% # <remove_resname.html remove_resname>
+%
 function atom=remove_occypancy_atom(atom)
 
 XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];

@@ -12,6 +12,9 @@
 % # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10]) % Translates the copied sites
 % # new_atom=copy_atom(atom,'Al','Mgo','ION',[0 0 10],10) % Translates and copies only 10 sites
 %
+%% See also
+% # <translate_atom.html translate_atom>
+%
 function new_atom=copy_atom(atom,atomtype,new_atomtype,new_resname,varargin)
 
 % Find all original atomtypes to replace

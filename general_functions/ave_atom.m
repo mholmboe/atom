@@ -11,6 +11,11 @@
 %% Examples
 % * atom = ave_atom(atom)
 %
+%% See also
+% # <median_atom.html median_atom>
+% # <COM_atom.html COM_atom>
+% # <center_atom.html center_atom>
+%
 function atom = ave_atom(atom)
 
 for i=1:max([atom(:).molid])

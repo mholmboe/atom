@@ -11,6 +11,13 @@
 % # [atom,traj] = import_xyz_traj('traj.xyz')
 % # [atom,traj] = import_xyz_traj('traj.xyz',1000,10)
 
+%% See also
+% # <resname_atom.html resname_atom>
+% # <write_xyz.html write_xyz>
+% # <import_atom_xyz.html import_atom_xyz>
+% # <import_gro_traj.html import_gro_traj>
+% # <import_mc_pdb_traj.html import_mc_pdb_traj>
+%
 function [atom,traj] = import_xyz_traj(filename,varargin)
 %%
 

@@ -10,6 +10,10 @@
 %% Examples
 % # atom = keep_atom(atom,{'SOL'})
 %
+%% See also
+% # <update_atom.html update_atom>
+% # <keep_resname.html keep_resname>
+%
 function atom = keep_atom(atom,resname)
 
 ind=ismember([atom.resname],resname);

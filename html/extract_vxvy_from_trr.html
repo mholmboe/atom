@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>extract_vxvy_from_trr.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="extract_vxvy_from_trr.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -194,10 +194,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#41">system('gmx editconf -h')</a>
 </li>
 <li>
-<a href="#43">Do something with the coordinates</a>
+<a href="#42">See also</a>
 </li>
 <li>
-<a href="#44">Write newcoords to a new trr file</a>
+<a href="#44">Do something with the coordinates</a>
+</li>
+<li>
+<a href="#45">Write newcoords to a new trr file</a>
 </li>
 </ul>
 </div>
@@ -253,6 +256,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="39">&gt;&gt;setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin'])</h2>
 <h2 id="40">then you could try</h2>
 <h2 id="41">system('gmx editconf -h')</h2>
+<h2 id="42">See also</h2>
+<div>
+<ol>
+<li>
+<a href="gmx.html">gmx</a>
+</li>
+<li>
+<a href="extract_vz_from_trr.html">extract_vz_from_trr</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> extract_vxvy_from_trr(trajname,outtrajname,varargin)
 
@@ -289,7 +303,7 @@ loadmxdrfile
                 disp(<span class="string">'Frame'</span>),disp(frame)
             <span class="keyword">end</span>
 </pre>
-<h2 id="43">Do something with the coordinates</h2>
+<h2 id="44">Do something with the coordinates</h2>
 <pre>           V_data(:,1)=traj.v.value(1,:)';
            V_data(:,2)=traj.v.value(2,:)';</pre>
 <pre class="codeinput">            V_data(:,3)=traj.v.value(3,:)';
@@ -298,7 +312,7 @@ loadmxdrfile
             <span class="comment">%             traj.v.value(2,:)=V_data(:,2)';</span>
             traj.v.value(3,:)=zeros(1,size(V_data(:,3),1));
 </pre>
-<h2 id="44">Write newcoords to a new trr file</h2>
+<h2 id="45">Write newcoords to a new trr file</h2>
 <pre class="codeinput">            wstatus=write_trr(wTraj, traj);
 </pre>
 <pre class="codeinput">        <span class="keyword">end</span> <span class="comment">% end of test of stride</span>
@@ -378,6 +392,10 @@ loadmxdrfile
 %% then you could try
 %% system('gmx editconf -h')
 
+%% See also
+% # <gmx.html gmx>
+% # <extract_vz_from_trr.html extract_vz_from_trr>
+%
 function extract_vxvy_from_trr(trajname,outtrajname,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

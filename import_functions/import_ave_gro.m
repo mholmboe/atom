@@ -13,6 +13,13 @@
 %% Examples
 % # atom = import_ave_gro('molecule.gro')
 
+%% See also
+% # <import_atom_gro.html import_atom_gro>
+% # <import_gro_traj.html import_gro_traj>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function [Coord,Box] = import_ave_gro(filename,varargin)
 %tic
 

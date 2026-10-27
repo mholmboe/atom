@@ -13,6 +13,13 @@
 % # atom=bond_atom(atom,Box_dim,2.25) % Allows setting the max cutoff
 % # atom=bond_atom(atom,Box_dim,Bond_index) % Uses an exisitng Bond_index
 %
+%% See also
+% # <bond_valence_atom.html bond_valence_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+% # <radius_ion.html radius_ion>
+%
 function atom = bond_atom(atom,Box_dim,varargin)
 
 rmaxshort=1.18;

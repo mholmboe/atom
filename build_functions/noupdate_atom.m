@@ -14,6 +14,10 @@
 % # atom = noupdate_atom(atom) % Basic input arguments
 % # atom = noupdate_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively
 %
+%% See also
+% # <update_atom.html update_atom>
+% # <resname_atom.html resname_atom>
+%
 function atom = noupdate_atom(atom,varargin)
 
 if iscell(atom)

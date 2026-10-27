@@ -14,6 +14,13 @@
 % # fb_atom = find_bonded_atom(atom,Box_dim,atomtype1,atomtype2)
 % # fb_atom = find_bonded_atom(atom,Box_dim,atomtype1,atomtype2,1.25,2.25)
 
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <neigh_atom.html neigh_atom>
+% # <find_H2O.html find_H2O>
+% # <find_angle_atom.html find_angle_atom>
+%
 function fb_atom = find_bonded_atom(atom,Box_dim,atomtype1,varargin)
 
 if isnumeric(atomtype1)

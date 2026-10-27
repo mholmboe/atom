@@ -5,8 +5,13 @@
 % * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
-% * atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])
+% * atom = create_grid_atom(atom_label,12,[20 15 2],'xy',[5 5 0])
 
+%% See also
+% # <create_atom.html create_atom>
+% # <add2atom.html add2atom>
+% # <translate_atom.html translate_atom>
+%
 function atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
  
 

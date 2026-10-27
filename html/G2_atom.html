@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>G2_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-10">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="G2_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -99,13 +99,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#6">Set the Debye-Waller factor</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#7">Collect the structural data</a>
+<a href="#7">Set the Debye-Waller factor</a>
 </li>
 <li>
-<a href="#9">Clear up structure</a>
+<a href="#8">Collect the structural data</a>
+</li>
+<li>
+<a href="#10">Clear up structure</a>
 </li>
 </ul>
 </div>
@@ -120,6 +123,23 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)</li>
 <li>[G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)</li>
 </ul>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="Wrap_Coord_func.html">Wrap_Coord_func</a>
+</li>
+<li>
+<a href="atomic_scattering_factors.html">atomic_scattering_factors</a>
+</li>
+<li>
+<a href="translate_atom.html">translate_atom</a>
+</li>
+<li>
+<a href="wrap_atom.html">wrap_atom</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
@@ -277,7 +297,7 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 
         DW=0;
 </pre>
-<h2 id="6">Set the Debye-Waller factor</h2>
+<h2 id="7">Set the Debye-Waller factor</h2>
 <pre class="codeinput">        <span class="keyword">if</span> ismember(Atom_label(h),{<span class="string">'Si'</span>,<span class="string">'Al'</span>,<span class="string">'Alt'</span>,<span class="string">'Mgo'</span>,<span class="string">'Mg'</span>,<span class="string">'H'</span>,<span class="string">'Hc'</span>,<span class="string">'Fe'</span>,<span class="string">'Feo'</span>})
             DW=1.5
         <span class="keyword">elseif</span> ismember(Atom_label(h),{<span class="string">'Li'</span>,<span class="string">'Na'</span>,<span class="string">'K'</span>,<span class="string">'Cs'</span>,<span class="string">'Mg'</span>,<span class="string">'Ca'</span>,<span class="string">'Sr'</span>,<span class="string">'Ba'</span>})
@@ -361,7 +381,7 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
         <span class="comment">%             plot(Distance(1:length(Element_density)),circshift(Element_density,[ceil(d001/2/step) 0]))</span>
         <span class="comment">%             stem(Distance(1:length(Element_density_disc)),circshift(Element_density_disc,[ceil(d001/2/step) 0]),'Marker','none')</span>
 </pre>
-<h2 id="7">Collect the structural data</h2>
+<h2 id="8">Collect the structural data</h2>
 <pre class="codeinput">        structure(h).type=Atom_label(h);
         structure(h).d001=d001;
         structure(h).P=single(Element_density)';<span class="comment">%UC(h).P;;%single(UC(h).P);</span>
@@ -371,7 +391,7 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 </pre>
 <pre class="codeinput">    <span class="keyword">end</span>
 </pre>
-<h2 id="9">Clear up structure</h2>
+<h2 id="10">Clear up structure</h2>
 <pre class="codeinput">    k=1;i=1;
     newstructure=structure;
     <span class="keyword">while</span> i &lt; size(structure,2)+1
@@ -435,6 +455,12 @@ Elements(:,3:3:end)=Elements(:,3:3:end) - min(min(Elements(:,3:3:end)));
 %% Examples
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)
+%
+%% See also
+% # <Wrap_Coord_func.html Wrap_Coord_func>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <translate_atom.html translate_atom>
+% # <wrap_atom.html wrap_atom>
 %
 function [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

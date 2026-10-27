@@ -15,6 +15,10 @@
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions
 %
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <show_box.html show_box>
+%
 function Simbox = draw_box_atom(Box_dim,varargin)
 
 if nargin>1

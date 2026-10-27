@@ -11,6 +11,11 @@
 % atom = frame2atom(atom,traj,frame,Box_dim)
 % atom = frame2atom(atom,traj,frame,Box_dim,'smooth')
 %
+% # new_atom = frame2atom(atom,traj,1) % Put the coordinates of frame 1 of a trajectory into the atom struct
+% # new_atom = frame2atom(atom,traj,1,1) % The same, adding a small jitter to smooth low-precision .xtc data
+%% See also
+% # <update_atom.html update_atom>
+%
 function new_atom = frame2atom(atom,traj,frame,varargin)
 
 new_atom=atom;

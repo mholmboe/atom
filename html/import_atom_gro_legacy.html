@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_atom_gro_legacy.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="import_atom_gro_legacy.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -98,10 +98,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Box vectors for the .gro format is (free format, space separated reals), values:</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">Box matrix</a>
+<a href="#6">Box vectors for the .gro format is (free format, space separated reals), values:</a>
+</li>
+<li>
+<a href="#7">Box matrix</a>
 </li>
 </ul>
 </div>
@@ -116,6 +119,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom = import_atom_gro('molecule.gro')</li>
 <li>atom = import_atom_gro('molecule.gro',[10 5 2])</li>
 <li>atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_atom_gro.html">import_atom_gro</a>
+</li>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+<li>
+<a href="center_atom.html">center_atom</a>
+</li>
+<li>
+<a href="resname_atom.html">resname_atom</a>
+</li>
+<li>
+<a href="translate_atom.html">translate_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -140,9 +163,9 @@ tic
     Box_dim=str2double(strsplit(char(Box_string{1,1})))*10;
     fclose(fileID);
 </pre>
-<h2 id="5">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
+<h2 id="6">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
 <p>v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y) the last 6 values may be omitted (they will be set to zero) when all angles are 90 GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.</p>
-<h2 id="6">Box matrix</h2>
+<h2 id="7">Box matrix</h2>
 <p>v1(x) v2(x) v3(x) v1(x) v2(x) v3(x) v1(y) v2(y) v3(y) == 0 v2(y) v3(y) v1(z) v2(z) v3(z) 0 0 v3(z)</p>
 <pre class="codeinput">    <span class="comment">% Read columns of data as strings:</span>
     formatSpec = <span class="string">'%5s%5s%5s%5.0f%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f%[^\n\r]'</span>;
@@ -276,6 +299,13 @@ toc
 % # atom = import_atom_gro('molecule.gro',[10 5 2])
 % # atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
+%% See also
+% # <import_atom_gro.html import_atom_gro>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <center_atom.html center_atom>
+% # <resname_atom.html resname_atom>
+% # <translate_atom.html translate_atom>
+%
 function [atom,Box_dim] = import_atom_gro_legacy(filename,varargin)
 tic
 

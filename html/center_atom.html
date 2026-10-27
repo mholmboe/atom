@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>center_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="center_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,6 +97,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#2">Contact</a>
 </li>
+<li>
+<a href="#3">Examples</a>
+</li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -110,6 +116,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na</li>
 <li>atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.</li>
 </ul>
+</div>
+<h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>atom = center_atom(atom,Box_dim) % Center all atoms in the box, along x, y and z</li>
+<li>atom = center_atom(atom,Box_dim,'MMT') % Center only the atoms with the resname MMT</li>
+<li>atom = center_atom(atom,Box_dim,'MMT','z') % Center the MMT resname along z only</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="orto_atom.html">orto_atom</a>
+</li>
+<li>
+<a href="triclinic_atom.html">triclinic_atom</a>
+</li>
+<li>
+<a href="wrap_atom.html">wrap_atom</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> atom = center_atom(atom,Box_dim,varargin)
@@ -213,6 +241,16 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_labels'<
 % * atom = center_atom(atom,Box_dim) % Basic input arguments
 % * atom = center_atom(atom,Box_dim,'Na') % Will center with respect to all residues named Na
 % * atom = center_atom(atom,Box_dim,'all','xy') % Will center woth respect to all sites in x and y, resp.
+%
+%% Examples
+% # atom = center_atom(atom,Box_dim) % Center all atoms in the box, along x, y and z
+% # atom = center_atom(atom,Box_dim,'MMT') % Center only the atoms with the resname MMT
+% # atom = center_atom(atom,Box_dim,'MMT','z') % Center the MMT resname along z only
+%
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <wrap_atom.html wrap_atom>
 %
 function atom = center_atom(atom,Box_dim,varargin)
 disp('Centering')

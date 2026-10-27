@@ -17,6 +17,10 @@
 % # vmd_linux('filename.pdb')
 % # vmd_linux('filename.pdb','filename.xtc')
 
+%% See also
+% # <PATH2VMD.html PATH2VMD>
+% # <write_atom_gro.html write_atom_gro>
+%
 function vmd_linux(varargin)
 
 % You need to set your own VMD path here!!!

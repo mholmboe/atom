@@ -10,6 +10,12 @@
 %% Examples
 % # [Bonded_list] = list_bonds_atom(atom,Bond_index)
 
+%% See also
+% # <list_bonds_atom.html list_bonds_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <find_bonded_atom.html find_bonded_atom>
+%
 function Bond_order = list_bonded_atom(atom,Bond_index)
 
 

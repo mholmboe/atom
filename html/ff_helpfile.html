@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>ff_helpfile.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="ff_helpfile.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -98,13 +98,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Constants</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">Order the records</a>
+<a href="#6">Constants</a>
 </li>
 <li>
-<a href="#7">Order the fields</a>
+<a href="#7">Order the records</a>
+</li>
+<li>
+<a href="#8">Order the fields</a>
 </li>
 </ul>
 </div>
@@ -117,6 +120,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ol>
 <li>ff_helpfile % Edit ffname and watermodels at the top of the script</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+<li>
+<a href="mass_atom.html">mass_atom</a>
+</li>
+<li>
+<a href="ff_helpfile2.html">ff_helpfile2</a>
+</li>
+<li>
+<a href="ff_helpfile3.html">ff_helpfile3</a>
+</li>
+<li>
+<a href="ff_plotfile.html">ff_plotfile</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">format <span class="string">long</span>
@@ -150,7 +173,7 @@ ff=[];
     [ff.atnum]=ff_temp.atnum;
     [ff.mass]=ff_temp.mass;
 </pre>
-<h2 id="5">Constants</h2>
+<h2 id="6">Constants</h2>
 <pre class="codeinput">    eVinJ=1.60217653E-19; <span class="comment">% SI</span>
     Na=6.022140857E+23;
     kBinJK=1.3806485279E-23;
@@ -187,7 +210,7 @@ ff=[];
     <span class="keyword">end</span>
 <span class="comment">%     save('ions_Merz_12_6_4_monovalent_tip4pfb_ff','ff')</span>
 </pre>
-<h2 id="6">Order the records</h2>
+<h2 id="7">Order the records</h2>
 <pre class="codeinput">    [atomtypes,atomtypes_order]=sort([ff.type]);
     ff_temp=ff;
     <span class="keyword">for</span> i=1:size(ff,2)
@@ -202,7 +225,7 @@ ff=[];
     <span class="keyword">end</span>
     ff=ff_temp;
 </pre>
-<h2 id="7">Order the fields</h2>
+<h2 id="8">Order the fields</h2>
 <pre class="codeinput">    defaultAttributes={<span class="string">'type'</span> <span class="string">'atnum'</span> <span class="string">'mass'</span> <span class="string">'charge'</span> <span class="string">'radius_nm'</span> <span class="string">'radius_A'</span> <span class="string">'sigma_nm'</span> <span class="string">'sigma_A'</span> <span class="string">'e_kJmol'</span> <span class="string">'e_kcalmol'</span> <span class="string">'e_eV'</span> <span class="string">'e_kB'</span> } <span class="comment">% 'C4_kcalmolA' 'C4_kJmolnm' }</span>
     ffAttributes=fieldnames(ff)';
     indDefault=find(ismember(defaultAttributes,ffAttributes));
@@ -211,7 +234,7 @@ ff=[];
     ffAttributes=ffAttributes(ind_ff);
     ff=orderfields(ff,unique({defaultAttributes{:} ffAttributes{:}},<span class="string">'stable'</span>));
 
-<span class="comment">%      fff=load('ions_Merz_12-6-4_monovalent_spce_ff.mat')</span>
+<span class="comment">%      fff=load('ions_Merz_12_6_4_monovalent_spce_ff.mat')</span>
 <span class="comment">%</span>
 <span class="comment">%     for i=1:size(ff,2)</span>
 <span class="comment">%         ff(i).charge=fff.ff(i).charge;</span>
@@ -244,6 +267,13 @@ ff=[];
 % # ff_helpfile % Edit ffname and watermodels at the top of the script
 %
 
+%% See also
+% # <element_atom.html element_atom>
+% # <mass_atom.html mass_atom>
+% # <ff_helpfile2.html ff_helpfile2>
+% # <ff_helpfile3.html ff_helpfile3>
+% # <ff_plotfile.html ff_plotfile>
+%
 format long
 
 ffname='Zhang_monovalent'
@@ -335,7 +365,7 @@ for n=1:numel(watermodels)
     ffAttributes=ffAttributes(ind_ff);
     ff=orderfields(ff,unique({defaultAttributes{:} ffAttributes{:}},'stable'));
     
-%      fff=load('ions_Merz_12-6-4_monovalent_spce_ff.mat')
+%      fff=load('ions_Merz_12_6_4_monovalent_spce_ff.mat')
 %     
 %     for i=1:size(ff,2)
 %         ff(i).charge=fff.ff(i).charge;

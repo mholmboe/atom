@@ -12,6 +12,11 @@
 %% Examples
 % # atom = replace_atom(in_atom,old_atom,3)
 
+%% See also
+% # <COM_atom.html COM_atom>
+% # <translate_atom.html translate_atom>
+% # <update_atom.html update_atom>
+%
 function atom=replace_atom(new_atom,prev_atom,MolID)
 
 disp('Assuming all atom structs are unwrapped and whole...')

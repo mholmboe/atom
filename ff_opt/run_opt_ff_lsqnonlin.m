@@ -11,6 +11,13 @@
 %% Examples
 % # fx = run_opt_ff_lsqnonlin(x0,delta,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..
 
+%% See also
+% # <eval_sim.html eval_sim>
+% # <ff_helpfile.html ff_helpfile>
+% # <ff_helpfile2.html ff_helpfile2>
+% # <ff_helpfile3.html ff_helpfile3>
+% # <ff_plotfile.html ff_plotfile>
+%
 function [fx,resnorm,residual,exitflag,output] = run_opt_ff_lsqnonlin(x0,delta,dirtype,varargin)
 
 fextra=nargin-3;

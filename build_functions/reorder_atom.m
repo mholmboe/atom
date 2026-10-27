@@ -19,6 +19,11 @@
 % # atom = reorder_atom(atom,{'MMT' 'SOL' 'Na'},'resname') % Orders according to resname
 % # atom = reorder_atom(atom,{'Na' 'Ow' 'Hw'},'atomtype') % Orders according to atomtype
 %
+%% See also
+% # <update_atom.html update_atom>
+% # <write_atom_gro.html write_atom_gro>
+% # <reorder_atom_gro.html reorder_atom_gro>
+%
 function atom = reorder_atom(atom,neworder,varargin)
 
 if nargin>2

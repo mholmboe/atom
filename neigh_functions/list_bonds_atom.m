@@ -13,6 +13,12 @@
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)
 % # [Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <list_bonded_atom.html list_bonded_atom>
+%
 function [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim,varargin)
 
 Bond_data=[];Angle_data=[];

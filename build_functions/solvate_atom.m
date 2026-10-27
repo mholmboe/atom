@@ -41,6 +41,13 @@
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'spc_ice') % Will use an hexagonal ice structure
 % * SOL = solvate_atom(limits,density,r,maxsol,solute_atom,'custom',mysolvent,mysolvent_Box_dim) % mysolvent(_Box_dim) is an atom struct
 %
+%% See also
+% # <import_atom_gro.html import_atom_gro>
+% # <merge_atom.html merge_atom>
+% # <replicate_atom.html replicate_atom>
+% # <scale_atom.html scale_atom>
+% # <slice_atom.html slice_atom>
+%
 function SOL = solvate_atom(limits,density,r,maxsol,varargin)
 
 % Solvent shell thickness

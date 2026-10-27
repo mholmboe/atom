@@ -10,6 +10,11 @@
 %% Examples
 % # keep_resname(atom,{'SOL'})
 
+%% See also
+% # <update_atom.html update_atom>
+% # <keep_atom.html keep_atom>
+% # <remove_resname.html remove_resname>
+%
 function atom = keep_resname(atom,resnames)
 
 ind=[];

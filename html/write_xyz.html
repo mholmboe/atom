@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_xyz.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_xyz.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -96,6 +96,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -109,6 +112,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>write_xyz(XYZ_labels,XYZ_data,filename_out) % Basic input arguments</li>
 <li>write_xyz(XYZ_labels,XYZ_data,Box_dim,filename_out) % Basic input arguments, with Box_dim as a comment</li>
 <li>write_xyz(XYZ_labels,XYZ_data,[],filename_out,Comment) % Basic input arguments, with a comment string</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="write_atom_xyz.html">write_atom_xyz</a>
+</li>
+<li>
+<a href="write_atom.html">write_atom</a>
+</li>
+<li>
+<a href="write_atom_all.html">write_atom_all</a>
+</li>
+<li>
+<a href="write_atom_cif.html">write_atom_cif</a>
+</li>
+<li>
+<a href="write_atom_dodecahedron_gro.html">write_atom_dodecahedron_gro</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -187,6 +210,13 @@ disp(<span class="string">'.xyz structure file written'</span>)
 % # write_xyz(XYZ_labels,XYZ_data,filename_out) % Basic input arguments
 % # write_xyz(XYZ_labels,XYZ_data,Box_dim,filename_out) % Basic input arguments, with Box_dim as a comment
 % # write_xyz(XYZ_labels,XYZ_data,[],filename_out,Comment) % Basic input arguments, with a comment string
+%
+%% See also
+% # <write_atom_xyz.html write_atom_xyz>
+% # <write_atom.html write_atom>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
 %
 function write_xyz(XYZ_labels,XYZ_data,varargin)
 

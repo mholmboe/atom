@@ -22,6 +22,13 @@
 % # prop = analyze_atom(atom,Box_dim,2.5)
 % # prop = analyze_atom(atom,Box_dim,2.5,Bond_index,Valencestates)
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_atom.html bond_atom>
+% # <bond_valence_atom.html bond_valence_atom>
+% # <bond_valence_data.html bond_valence_data>
+% # <element_atom.html element_atom>
+%
 function properties = analyze_atom(atom,Box_dim,varargin)
 
 % FIX multiple OxStates and other from the Shannon file

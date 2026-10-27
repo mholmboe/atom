@@ -10,6 +10,13 @@
 %% Examples
 % # write_atom_pqr(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_atom.html bond_atom>
+% # <charge_atom.html charge_atom>
+% # <check_clayff_charge.html check_clayff_charge>
+% # <check_interface_charge.html check_interface_charge>
+%
 function write_atom_pqr(atom,Box_dim,filename,varargin)
 
 % Have you done this?

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>dist_matrix_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="dist_matrix_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,6 +97,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -109,6 +112,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ol>
 <li>dist_matrix = dist_matrix_atom(atom1,Box_dim) % Basic input arguments</li>
 <li>dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % Calculates the distance matrix between sites in atom1 and in atom2</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom</a>
+</li>
+<li>
+<a href="cell_list_dist_matrix_atom1atom2.html">cell_list_dist_matrix_atom1atom2</a>
+</li>
+<li>
+<a href="dist_matrix_noPBC_atom.html">dist_matrix_noPBC_atom</a>
+</li>
+<li>
+<a href="dist_matrix_xyz.html">dist_matrix_xyz</a>
+</li>
+<li>
+<a href="bond_matrix_atom.html">bond_matrix_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -249,6 +272,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Z_dist'</spa
 %% Examples
 % # dist_matrix = dist_matrix_atom(atom1,Box_dim) % Basic input arguments
 % # dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % Calculates the distance matrix between sites in atom1 and in atom2
+%
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <dist_matrix_noPBC_atom.html dist_matrix_noPBC_atom>
+% # <dist_matrix_xyz.html dist_matrix_xyz>
+% # <bond_matrix_atom.html bond_matrix_atom>
 %
 function [dist_matrix,X_dist,Y_dist,Z_dist] = dist_matrix_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
 

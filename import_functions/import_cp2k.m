@@ -11,6 +11,13 @@
 %% Examples
 % #  atom = import_cp2k(filename)
 %
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <analyze_atom.html analyze_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <replicate_atom.html replicate_atom>
+% # <import_cp2k_resp.html import_cp2k_resp>
+%
 function [atom,Box_dim] = import_cp2k(varargin)
 
 if nargin>0

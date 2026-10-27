@@ -12,6 +12,13 @@
 % arguments. d is the corresponding cubic Box size, type is either 'square'
 % or 'hex'. See http://manual.gromacs.org/current/reference-manual/algorithms/periodic-boundary-conditions.html
 %
+%% See also
+% # <write_atom_gro.html write_atom_gro>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+%
 function [atom,Box_dim,Cell] = write_atom_dodecahedron_gro(atom,Box_dim,d,type,varargin)
 
 if nargin>4

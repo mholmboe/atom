@@ -11,6 +11,11 @@
 % * reduced_mass = reduced_mass(Atom_label1)
 % * reduced_mass = reduced_mass(Atom_label1,Atom_label2)
 
+%% See also
+% # <atomic_mass.html atomic_mass>
+% # <mass_atom.html mass_atom>
+% # <element_atom.html element_atom>
+%
 function reduced_mass = reduced_mass(Atom_label1,varargin)
 
 if nargin == 1

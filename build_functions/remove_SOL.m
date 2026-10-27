@@ -13,6 +13,13 @@
 % # atom = remove_SOL(atom,atomname,0,10,'z')
 % # atom = remove_SOL(atom,atomname,0,10,'z','OW')
 
+%% See also
+% # <update_atom.html update_atom>
+% # <remove_molid.html remove_molid>
+% # <remove_occypancy_atom.html remove_occypancy_atom>
+% # <remove_residues.html remove_residues>
+% # <remove_resname.html remove_resname>
+%
 function atom = remove_SOL(atom,atomname,lo,hi,dim,varargin)
 %%
 

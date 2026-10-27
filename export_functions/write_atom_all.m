@@ -13,6 +13,13 @@
 % # write_atom_all(atom,Box_dim,filename,1.25,2.25) % rmaxshort and rmaxlong
 % # write_atom_all(atom,Box_dim,filename,1.25,2.25,'clayff','spc/e') % rmaxshort and rmaxlong, ff and water model
 %
+%% See also
+% # <charge_atom.html charge_atom>
+% # <clayff_atom.html clayff_atom>
+% # <interface15_atom.html interface15_atom>
+% # <interface_atom.html interface_atom>
+% # <write_atom_cif.html write_atom_cif>
+%
 function write_atom_all(atom,Box_dim,filename,varargin)
 
 

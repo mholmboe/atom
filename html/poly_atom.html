@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>poly_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-10">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="poly_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,6 +97,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -112,6 +115,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom=poly_atom(atom,Box_dim,0,2.25) % 2.25 is a bond cutoff (sort of)</li>
 <li>atom=poly_atom(atom,Box_dim,0,2.25,1) % Last argument (1/0) to plot the Box</li>
 <li>atom=poly_atom(atom,Box_dim,0,2.25,1,0.3) % Last argument sets the transperancy</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="show_atom.html">show_atom</a>
+</li>
+<li>
+<a href="bond_atom.html">bond_atom</a>
+</li>
+<li>
+<a href="draw_box_atom.html">draw_box_atom</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+<li>
+<a href="element_color.html">element_color</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -321,6 +344,13 @@ hold <span class="string">off</span>;
 % # atom=poly_atom(atom,Box_dim,0,2.25,1)                % Last argument (1/0) to plot the Box
 % # atom=poly_atom(atom,Box_dim,0,2.25,1,0.3)            % Last argument sets the transperancy
 
+%% See also
+% # <show_atom.html show_atom>
+% # <bond_atom.html bond_atom>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_atom.html element_atom>
+% # <element_color.html element_color>
+%
 function atom = poly_atom(atom,Box_dim,varargin)
 
 if nargin>2

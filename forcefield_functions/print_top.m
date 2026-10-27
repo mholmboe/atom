@@ -1,3 +1,10 @@
+%% Examples
+% # print_top(param) % Write a topology skeleton with #define VAR placeholders to temp.top
+% # print_top(param,'topol.top') % The same, to a named file
+%
+%% See also
+% # <change_top.html change_top>
+%
 function print_top(param,varargin)
 
 if nargin>1

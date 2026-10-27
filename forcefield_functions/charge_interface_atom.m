@@ -12,6 +12,13 @@
 %% Examples with some fixed charges, the rest is smeared over the O's
 % # Total_charge = charge_interface_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <clayff_param.html clayff_param>
+% # <interface_param.html interface_param>
+% # <charge_atom.html charge_atom>
+%
 function atom = charge_interface_atom(atom,Box_dim,varargin)
 
 nAtoms=size(atom,2);

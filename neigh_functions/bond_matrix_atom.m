@@ -10,6 +10,13 @@
 %% Examples
 % # atom=bond_matrix_atom(atom,Box_dim) % Basic input arguments
 
+%% See also
+% # <bond_valence_atom.html bond_valence_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <clayff_param.html clayff_param>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+%
 function atom = bond_matrix_atom(atom,Box_dim,varargin)
 
 if ~isfield(atom,'element')

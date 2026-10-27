@@ -42,6 +42,13 @@
 % # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2,in_atom,'surface') % Preferred placement at the 'surface' or 'bulk'
 % # atom = ionize_atom('Na','Na',[0 0 0 10 20 30],10,2,in_atom,'surface'|'bulk','x'|'y'|'z'|20) % Preferred placement at the 'surface' or 'bulk' within the x|y|z or [value] range
 %
+%% See also
+% # <add2atom.html add2atom>
+% # <create_atom.html create_atom>
+% # <fuse_atom.html fuse_atom>
+% # <insert_atom.html insert_atom>
+% # <merge_atom.html merge_atom>
+%
 function atom = ionize_atom(type,resname,limits,nmax,varargin)
 
 sorted_distratio=[];

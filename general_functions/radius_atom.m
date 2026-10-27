@@ -12,6 +12,13 @@
 % # atom = radius_atom(atom,clayff,'spc')
 % # atom = radius_atom(atom,interface,'tip3p')
 
+%% See also
+% # <charge_interface_atom.html charge_interface_atom>
+% # <clayff_param.html clayff_param>
+% # <interface15_param.html interface15_param>
+% # <interface_param.html interface_param>
+% # <radius_crystal.html radius_crystal>
+%
 function atom = radius_atom(atom,ffname,watermodel)
 %% 
 

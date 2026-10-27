@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>atomic_scattering_factors</title>
+<title>This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&amp;Kirfel, 1995</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="atomic_scattering_factors.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,27 +76,56 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&amp;Kirfel, 1995</h1>
+<!--introduction-->
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
 <li>
-<a href="#1">This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&amp;Kirfel, 1995</a>
+<a href="#1">Examples</a>
 </li>
 <li>
-<a href="#4">This function calculates the 2theta dependent x-ray scattering form factor for element in Atom_label</a>
+<a href="#2">See also</a>
 </li>
 <li>
-<a href="#6">Atom name</a>
+<a href="#5">This function calculates the 2theta dependent x-ray scattering form factor for element in Atom_label</a>
 </li>
 <li>
-<a href="#7">atom_nr,charge,weight,debye-waller factor</a>
+<a href="#7">Atom name</a>
 </li>
 <li>
-<a href="#8">Whatwhatwhat?</a>
+<a href="#8">atom_nr,charge,weight,debye-waller factor</a>
+</li>
+<li>
+<a href="#9">Whatwhatwhat?</a>
 </li>
 </ul>
 </div>
-<h2 id="1">This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&amp;Kirfel, 1995</h2>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>f = atomic_scattering_factors('Si',1.5406,30,0) % X-ray scattering factor at 2theta = 30 deg, with Biso = 0</li>
+<li>f = atomic_scattering_factors('O2-',1.5406,0:0.1:60,0.5) % The same, over a 2theta range and with a Biso of 0.5 Note: ionic labels such as O1-, O2-, Na1+, Al1.5+ are looked up as given</li>
+</ol>
+</div>
+<h2 id="2">See also</h2>
+<div>
+<ol>
+<li>
+<a href="xrd_atom.html">xrd_atom</a>
+</li>
+<li>
+<a href="Bragg.html">Bragg</a>
+</li>
+<li>
+<a href="atomic_mass.html">atomic_mass</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> f = atomic_scattering_factors(Atom_label,lambda,twotheta,Biso,varargin)
 </pre>
@@ -107,6 +136,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 <span class="keyword">if</span> size(Atom_label{1},2)&gt;1
     Atom_label{1}(2:end)=lower(Atom_label{1}(2:end));
+<span class="keyword">end</span>
+<span class="comment">% Normalise the first character too, so that a label written in lower case ('cu', 'cd', 'ob')</span>
+<span class="comment">% behaves exactly like its element-symbol form ('Cu', 'Cd', 'Ob'). Without this only the tail</span>
+<span class="comment">% was normalised, so 'cu' missed the rules below and resolved to neutral Cu instead of Cu2+.</span>
+<span class="keyword">if</span> ~isempty(Atom_label{1})
+    Atom_label{1}(1)=upper(Atom_label{1}(1));
 <span class="keyword">end</span>
 
 ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
@@ -130,7 +165,7 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 </pre>
-<h2 id="4">This function calculates the 2theta dependent x-ray scattering form factor for element in Atom_label</h2>
+<h2 id="5">This function calculates the 2theta dependent x-ray scattering form factor for element in Atom_label</h2>
 <pre class="codeinput">    <span class="keyword">if</span> strcmp(Atom_label,{<span class="string">'Al'</span>})
         <span class="comment">%disp('Treating Al as Al1.5+')</span>
         Atom_label={<span class="string">'Al1.5+'</span>};
@@ -187,12 +222,17 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
     <span class="keyword">elseif</span> strncmpi(Atom_label,{<span class="string">'Oc'</span>},2)
         <span class="comment">%disp('Treating Owx as uncharged O')</span>
         Atom_label={<span class="string">'O'</span>};
+    <span class="keyword">elseif</span> any(strcmpi(Atom_label,{<span class="string">'O1-'</span>,<span class="string">'O2-'</span>}))
+        <span class="comment">% Explicit ionic oxygen: use exactly as given. Without this the test below</span>
+        <span class="comment">% also matches 'O2-' and silently replaces it with 'O1-'.</span>
     <span class="keyword">elseif</span> strncmpi(Atom_label,{<span class="string">'O'</span>},1)
         <span class="comment">%disp('Treating Owx as uncharged O')</span>
         Atom_label={<span class="string">'O1-'</span>};
     <span class="keyword">end</span>
 
-    <span class="keyword">if</span> strncmpi(Atom_label,{<span class="string">'H'</span>},1)
+    <span class="comment">% Every form of H, Hs, He, Ho and Hw is hydrogen (force-field hydrogen types such as CLAYFF/MINFF</span>
+    <span class="comment">% He and Ho, and water Hw). Hf (hafnium) and Hg (mercury) are the real elements.</span>
+    <span class="keyword">if</span> strncmpi(Atom_label,{<span class="string">'H'</span>},1) &amp;&amp; ~ismember(lower(Atom_label{1}(1:min(2,end))),{<span class="string">'hf'</span>,<span class="string">'hg'</span>})
         <span class="keyword">if</span> strncmpi(Atom_label,{<span class="string">'HEF'</span>},2)
             <span class="comment">%disp('Treating HEdelamn/Favejee as uncharged H')</span>
             Atom_label={<span class="string">'H'</span>};
@@ -215,7 +255,9 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 
-    <span class="keyword">if</span> strncmp(Atom_label,{<span class="string">'C'</span>},1)
+    <span class="comment">% Real elements that start with C (Cd, Ce, Cf, Cm, Co, Cr, Cu) must not be treated as carbon.</span>
+    <span class="comment">% Matched case-insensitively so that a lower-case label behaves like its capitalised form.</span>
+    <span class="keyword">if</span> strncmpi(Atom_label,{<span class="string">'C'</span>},1) &amp;&amp; ~ismember(lower(Atom_label{1}(1:min(2,end))),{<span class="string">'cd'</span>,<span class="string">'ce'</span>,<span class="string">'cf'</span>,<span class="string">'cm'</span>,<span class="string">'co'</span>,<span class="string">'cr'</span>,<span class="string">'cu'</span>})
         <span class="keyword">if</span> strncmpi(Atom_label,{<span class="string">'Cl'</span>},2)
             <span class="comment">%disp('Treating Cl as Cl1-')</span>
             Atom_label={<span class="string">'Cl1-'</span>};
@@ -251,7 +293,7 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 </pre>
-<h2 id="6">Atom name</h2>
+<h2 id="7">Atom name</h2>
 <pre class="codeinput">Waasmaier_Kirfel_label={<span class="keyword">...</span>
     <span class="string">'H'</span>;<span class="keyword">...</span>
     <span class="string">'H1-'</span>;<span class="keyword">...</span>
@@ -473,7 +515,7 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
     <span class="string">'Cf'</span>;<span class="keyword">...</span>
     };
 </pre>
-<h2 id="7">atom_nr,charge,weight,debye-waller factor</h2>
+<h2 id="8">atom_nr,charge,weight,debye-waller factor</h2>
 <pre class="codeinput">Waasmaier_Kirfel_data=[<span class="keyword">...</span>
     1 0 1.00794 0;<span class="keyword">...</span>
     1 -1 1.00794 2;<span class="keyword">...</span>
@@ -920,23 +962,23 @@ coeffs=[<span class="keyword">...</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1)
+index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
 </pre>
-<h2 id="8">Whatwhatwhat?</h2>
+<h2 id="9">Whatwhatwhat?</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> numel(index)==0
     disp(<span class="string">'Did not found the atomtype...'</span>)
     Unknown_Atom_label=Atom_label
     <span class="keyword">if</span> size(Atom_label{1},2)&gt;2
         Atom_label=Atom_label{1}(1:2)
-        index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+        index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
     <span class="keyword">end</span>
     <span class="keyword">if</span> numel(index)==0
         disp(<span class="string">'Did not found the atomtype...'</span>)
         Atom_label
         <span class="keyword">if</span> size(Atom_label{1},2)==2
             Atom_label=Atom_label{1}(1)
-            index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+            index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
             <span class="keyword">if</span> numel(index)==0
                 disp(<span class="string">'Did not found the atomtype...'</span>)
                 Atom_label
@@ -1003,6 +1045,17 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Atomtype'</s
 <!--
 ##### SOURCE BEGIN #####
 %% This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&Kirfel, 1995
+%% Examples
+% # f = atomic_scattering_factors('Si',1.5406,30,0) % X-ray scattering factor at 2theta = 30 deg, with Biso = 0
+% # f = atomic_scattering_factors('O2-',1.5406,0:0.1:60,0.5) % The same, over a 2theta range and with a Biso of 0.5
+% Note: ionic labels such as O1-, O2-, Na1+, Al1.5+ are looked up as given
+%
+%% See also
+% # <xrd_atom.html xrd_atom>
+% # <Bragg.html Bragg>
+% # <atomic_mass.html atomic_mass>
+% # <element_atom.html element_atom>
+%
 function f = atomic_scattering_factors(Atom_label,lambda,twotheta,Biso,varargin)
 
 if ~iscell(Atom_label)
@@ -1011,6 +1064,12 @@ end
 
 if size(Atom_label{1},2)>1
     Atom_label{1}(2:end)=lower(Atom_label{1}(2:end));
+end
+% Normalise the first character too, so that a label written in lower case ('cu', 'cd', 'ob')
+% behaves exactly like its element-symbol form ('Cu', 'Cd', 'Ob'). Without this only the tail
+% was normalised, so 'cu' missed the rules below and resolved to neutral Cu instead of Cu2+.
+if ~isempty(Atom_label{1})
+    Atom_label{1}(1)=upper(Atom_label{1}(1));
 end
 
 ind0=cell2mat(regexp(Atom_label,'0'));
@@ -1090,12 +1149,17 @@ else
     elseif strncmpi(Atom_label,{'Oc'},2)
         %disp('Treating Owx as uncharged O')
         Atom_label={'O'};
+    elseif any(strcmpi(Atom_label,{'O1-','O2-'}))
+        % Explicit ionic oxygen: use exactly as given. Without this the test below
+        % also matches 'O2-' and silently replaces it with 'O1-'.
     elseif strncmpi(Atom_label,{'O'},1)
         %disp('Treating Owx as uncharged O')
         Atom_label={'O1-'};
     end
     
-    if strncmpi(Atom_label,{'H'},1)
+    % Every form of H, Hs, He, Ho and Hw is hydrogen (force-field hydrogen types such as CLAYFF/MINFF
+    % He and Ho, and water Hw). Hf (hafnium) and Hg (mercury) are the real elements.
+    if strncmpi(Atom_label,{'H'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'hf','hg'})
         if strncmpi(Atom_label,{'HEF'},2)
             %disp('Treating HEdelamn/Favejee as uncharged H')
             Atom_label={'H'};
@@ -1118,7 +1182,9 @@ else
         end
     end
     
-    if strncmp(Atom_label,{'C'},1)
+    % Real elements that start with C (Cd, Ce, Cf, Cm, Co, Cr, Cu) must not be treated as carbon.
+    % Matched case-insensitively so that a lower-case label behaves like its capitalised form.
+    if strncmpi(Atom_label,{'C'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'cd','ce','cf','cm','co','cr','cu'})
         if strncmpi(Atom_label,{'Cl'},2)
             %disp('Treating Cl as Cl1-')
             Atom_label={'Cl1-'};
@@ -1822,7 +1888,7 @@ coeffs=[...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1)
+index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
 
 %% Whatwhatwhat?
 if numel(index)==0
@@ -1830,14 +1896,14 @@ if numel(index)==0
     Unknown_Atom_label=Atom_label
     if size(Atom_label{1},2)>2
         Atom_label=Atom_label{1}(1:2)
-        index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+        index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
     end
     if numel(index)==0
         disp('Did not found the atomtype...')
         Atom_label
         if size(Atom_label{1},2)==2
             Atom_label=Atom_label{1}(1)
-            index=find(ismember(Waasmaier_Kirfel_label,Atom_label)==1);
+            index=find(ismember(lower(Waasmaier_Kirfel_label),lower(Atom_label))==1);
             if numel(index)==0
                 disp('Did not found the atomtype...')
                 Atom_label

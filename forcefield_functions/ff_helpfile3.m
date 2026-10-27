@@ -12,6 +12,12 @@
 % # ff_helpfile3 % Edit ffname and watermodels at the top of the script
 %
 
+%% See also
+% # <ff_helpfile.html ff_helpfile>
+% # <ff_helpfile2.html ff_helpfile2>
+% # <ff_plotfile.html ff_plotfile>
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+%
 format long
 
 % ffname='ions_Zhang'

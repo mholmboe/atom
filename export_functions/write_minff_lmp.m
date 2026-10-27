@@ -17,6 +17,13 @@
 % # write_minff_lmp(atom,Box_dim,filename,ff) % ff being a MATLAB struct containing forcefield parameters
 %
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <mass_atom.html mass_atom>
+% # <write_minff_lmp_max_bondtypes.html write_minff_lmp_max_bondtypes>
+% # <write_minff_itp.html write_minff_itp>
+%
 function write_minff_lmp(atom,Box_dim,filename,varargin)
 
 % Some settings needed in order to print a proper lammps in file %%

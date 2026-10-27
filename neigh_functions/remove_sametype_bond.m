@@ -15,6 +15,13 @@
 % # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index) % Will also remove any dihedrals
 % # atom=remove_sametype_bond(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong) % Allows setting of the max cutoff
 
+%% See also
+% # <recalc_bond_atom.html recalc_bond_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_angle_type.html bond_angle_type>
+% # <bond_atom.html bond_atom>
+%
 function atom = remove_sametype_bond(atom,Box_dim,varargin)
 
 if nargin==2

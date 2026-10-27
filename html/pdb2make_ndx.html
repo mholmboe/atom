@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>pdb2make_ndx.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="pdb2make_ndx.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -98,6 +98,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -109,6 +112,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ol>
 <li>atom2make_ndx(filename,groupname,atomtypes,molid) % Basic input arguments</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_atom.html">import_atom</a>
+</li>
+<li>
+<a href="atom_make_ndx.html">atom_make_ndx</a>
+</li>
+<li>
+<a href="atom_make_ndx_bonded.html">atom_make_ndx_bonded</a>
+</li>
+<li>
+<a href="atom_read_ndx.html">atom_read_ndx</a>
+</li>
+<li>
+<a href="gmx_make_ndx.html">gmx_make_ndx</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -193,6 +216,13 @@ fclose(fid);
 %% Examples
 % # atom2make_ndx(filename,groupname,atomtypes,molid) % Basic input arguments
 
+%% See also
+% # <import_atom.html import_atom>
+% # <atom_make_ndx.html atom_make_ndx>
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded>
+% # <atom_read_ndx.html atom_read_ndx>
+% # <gmx_make_ndx.html gmx_make_ndx>
+%
 function pdb2make_ndx(filename,groupname,atomtypes,molid)
 
 % clear all; format compact;

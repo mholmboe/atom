@@ -19,6 +19,9 @@
 % # atom = molecule_atom(atom,Molid,Resname) % Also adding a residue name
 % # atom = molecule_atom(atom,Molid,Resname,Element) % To set atomtype names to the resp. elements (1), or not (0)
 
+%% See also
+% # <element_atom.html element_atom>
+%
 function atom = molecule_atom(atom,varargin)
 
 % Default values, may be overwritten below

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>eval_systems.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="eval_systems.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,34 +97,37 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Directory filename</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">Initiate some variables</a>
+<a href="#6">Directory filename</a>
 </li>
 <li>
-<a href="#8">Set new charges</a>
+<a href="#7">Initiate some variables</a>
 </li>
 <li>
-<a href="#9">Running in serial</a>
+<a href="#9">Set new charges</a>
 </li>
 <li>
 <a href="#10">Running in serial</a>
 </li>
 <li>
-<a href="#13">-multidir simulations: requires gmx_mpi runs</a>
+<a href="#11">Running in serial</a>
 </li>
 <li>
 <a href="#14">-multidir simulations: requires gmx_mpi runs</a>
 </li>
 <li>
-<a href="#17">Analyzing the trajectory</a>
+<a href="#15">-multidir simulations: requires gmx_mpi runs</a>
 </li>
 <li>
-<a href="#20">Since we are only looking at a fractional system, since else too many angles, bonds..</a>
+<a href="#18">Analyzing the trajectory</a>
 </li>
 <li>
-<a href="#21">To remove bonds and angles with H's</a>
+<a href="#21">Since we are only looking at a fractional system, since else too many angles, bonds..</a>
+</li>
+<li>
+<a href="#22">To remove bonds and angles with H's</a>
 </li>
 </ul>
 </div>
@@ -134,12 +137,37 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <p>Please report problems/bugs to <a href="mailto:michael.holmboe@umu.se">michael.holmboe@umu.se</a>
 </p>
 <h2 id="3">Examples</h2>
+<div>
+<ol>
+<li>eval_systems('minff') % Objective function for the force field optimisation, called by run_opt_ff_lsqnonlin</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="run_opt_ff_lsqnonlin.html">run_opt_ff_lsqnonlin</a>
+</li>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+<li>
+<a href="analyze_atom.html">analyze_atom</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+<li>
+<a href="import_xvg.html">import_xvg</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> eval_systems(dirtype,varargin)
 </pre>
 <pre class="codeinput">ParentSimDir = pwd;
 </pre>
-<h2 id="5">Directory filename</h2>
+<h2 id="6">Directory filename</h2>
 <pre class="codeinput">filename=lower(dirtype);
 
 fid = fopen(<span class="string">'thermo_out.dat'</span>,<span class="string">'at+'</span>);
@@ -150,7 +178,7 @@ fid = fopen(<span class="string">'Box_out.dat'</span>,<span class="string">'at+'
 fprintf(fid, <span class="string">'%s\n'</span>, (<span class="string">'% Cell_ref   Cell_ave   Cell_std   diff_Cell_prcnt    mean_Box_X     mean_Box_Y  mean_Box_Z  diff_Box_X  diff_Box_Y   diff_Box_Z Cell '</span>));
 fclose(fid);
 </pre>
-<h2 id="6">Initiate some variables</h2>
+<h2 id="7">Initiate some variables</h2>
 <pre class="codeinput">all_mean_posres=[];all_GII=[];
 all_diff_BoxX=[];all_diff_BoxY=[];all_diff_BoxZ=[];
 
@@ -177,7 +205,7 @@ numSimulation=sort(numSimulation);
 
         cd(tempdir);
 </pre>
-<h2 id="8">Set new charges</h2>
+<h2 id="9">Set new charges</h2>
 <pre class="codeinput">        load(<span class="string">'system_info.mat'</span>);
 
         <span class="keyword">if</span> size(ff,2)==1
@@ -196,14 +224,14 @@ numSimulation=sort(numSimulation);
         <span class="keyword">end</span>
         <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) &gt; 0 || strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 1
 </pre>
-<h2 id="9">Running in serial</h2>
+<h2 id="10">Running in serial</h2>
 <pre class="codeinput">            disp(<span class="string">'Running gmx mdrun in serial'</span>)
             dirtypefiles=dir;
             <span class="keyword">if</span> sum(strcmp({dirtypefiles.name},<span class="string">'opt.gro'</span>))==0
                 <span class="syscmd">!bash run_gmx_mdrun.sh 'opt -ntomp 8 -rdd 0.5 -dds 0.90'</span>
             <span class="keyword">end</span>
 </pre>
-<h2 id="10">Running in serial</h2>
+<h2 id="11">Running in serial</h2>
 <pre class="codeinput">        <span class="keyword">end</span>
 
         cd(ParentSimDir);
@@ -216,7 +244,7 @@ numSimulation=sort(numSimulation);
 
 <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) == 0 &amp;&amp; strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
 </pre>
-<h2 id="13">-multidir simulations: requires gmx_mpi runs</h2>
+<h2 id="14">-multidir simulations: requires gmx_mpi runs</h2>
 <pre class="codeinput">    <span class="keyword">try</span>
         <span class="keyword">if</span> numSimulation==1 || ~strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
             tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
@@ -239,7 +267,7 @@ numSimulation=sort(numSimulation);
         cd(ParentSimDir);
     <span class="keyword">end</span>
 </pre>
-<h2 id="14">-multidir simulations: requires gmx_mpi runs</h2>
+<h2 id="15">-multidir simulations: requires gmx_mpi runs</h2>
 <pre class="codeinput">
 <span class="keyword">end</span>
 
@@ -315,7 +343,7 @@ numSimulation=sort(numSimulation);
         mean_temperature=mean_temperature;
     <span class="keyword">end</span>
 </pre>
-<h2 id="17">Analyzing the trajectory</h2>
+<h2 id="18">Analyzing the trajectory</h2>
 <pre class="codeinput">    <span class="syscmd">!bash run_gmx_traj.sh</span>
 
     <span class="keyword">if</span> exist(fullfile(pwd,<span class="string">'prev_res.mat'</span>),<span class="string">'file'</span>) ~= 2
@@ -363,7 +391,7 @@ indexes=[]; <span class="comment">% Matlab struct</span>
         [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(<span class="string">'conf'</span>,<span class="string">'ave'</span>);
     <span class="keyword">end</span>
 </pre>
-<h2 id="20">Since we are only looking at a fractional system, since else too many angles, bonds..</h2>
+<h2 id="21">Since we are only looking at a fractional system, since else too many angles, bonds..</h2>
 <pre class="codeinput">    atom_ave=atom_ave([indexes(i).ind]); <span class="comment">% Also Box_dim_ave,Cell_ave,Box_dim_std,Cell_std...</span>
 
     atom_ave = recalc_bond_atom(atom_ave,Box_dim_ave,target_Bond_index,target_Angle_index);<span class="comment">%,target_Dihedral_index); % Will output new Bond_index, Angle_index, dihedral_index</span>
@@ -378,7 +406,7 @@ indexes=[]; <span class="comment">% Matlab struct</span>
     dlmwrite(<span class="string">'angle.ndx'</span>,{<span class="string">'[ A2A1A3 ]'</span>},<span class="string">'delimiter'</span>,<span class="string">''</span>)
     dlmwrite(<span class="string">'angle.ndx'</span>,target_Angle_index(:,1:3),<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>)
 </pre>
-<h2 id="21">To remove bonds and angles with H's</h2>
+<h2 id="22">To remove bonds and angles with H's</h2>
 <pre class="codeinput">    ind_H=find(strncmpi([atom_ave.type],{<span class="string">'H'</span>},1));
     [H_row,H_col]=ind2sub(size(temp_Bond_index),find(ismember(temp_Bond_index,ind_H)));
     temp_Bond_index(H_row,:)=[];
@@ -432,8 +460,16 @@ indexes=[]; <span class="comment">% Matlab struct</span>
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # eval_systems('minff') % Objective function for the force field optimisation, called by run_opt_ff_lsqnonlin
 
 
+%% See also
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <analyze_atom.html analyze_atom>
+% # <element_atom.html element_atom>
+% # <import_xvg.html import_xvg>
+%
 function eval_systems(dirtype,varargin)
 
 ParentSimDir = pwd;

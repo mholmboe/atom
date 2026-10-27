@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>mass_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="mass_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,7 +97,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Set the occupancy of all sites</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#6">Set the occupancy of all sites</a>
 </li>
 </ul>
 </div>
@@ -111,6 +114,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ol>
 <li>atom = mass_atom(atom)</li>
 <li>atom = mass_atom(atom,Box_dim) % To calculate the density</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="Cell2Box_dim.html">Cell2Box_dim</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+<li>
+<a href="occupancy_atom.html">occupancy_atom</a>
+</li>
+<li>
+<a href="atomic_mass.html">atomic_mass</a>
+</li>
+<li>
+<a href="reduced_mass.html">reduced_mass</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -231,37 +254,33 @@ mass={<span class="keyword">...</span>
     277 <span class="string">'Hassium'</span> <span class="string">'Hs'</span> 108 ;<span class="keyword">...</span>
     };
 
-ind=[];ind_array=[];
-<span class="keyword">if</span> iscell([element.type]) &amp;&amp; length([element.type]) &gt; 1
-    <span class="keyword">for</span> i=1:length([element.type])
-        ind=find(strncmpi([element(i).type],mass(:,3),2));
-        <span class="keyword">if</span> numel(ind) == 0
-            ind=find(strncmpi([element(i).type],mass(:,3),1));
-            <span class="keyword">if</span> numel(ind) == 0
-                disp(<span class="string">'Could not find mass for'</span>)
-                disp([element(i).type])
-                disp(<span class="string">'setting it to 10 au'</span>)
-                ind = 6;
-            <span class="keyword">end</span>
-        <span class="keyword">end</span>
-        ind_array=[ind_array ind(1)];
-    <span class="keyword">end</span>
-    ind=ind_array;
-<span class="keyword">else</span>
-    ind=find(strcmpi([element.type],mass(:,1)))
+<span class="comment">% One lookup per atom, whatever the type is stored as (char or cell)</span>
+ind_array=[];
+<span class="keyword">for</span> i=1:numel(element)
+    t=element(i).type;
+    <span class="keyword">if</span> iscell(t), t=t{1}; <span class="keyword">end</span>
+    ind=find(strncmpi(t,mass(:,3),2));
     <span class="keyword">if</span> numel(ind) == 0
-        ind = 6;
+        ind=find(strncmpi(t,mass(:,3),1));
+        <span class="keyword">if</span> numel(ind) == 0
+            disp(<span class="string">'Could not find mass for'</span>)
+            disp(t)
+            disp(<span class="string">'setting it to 10 au'</span>)
+            ind = 6;
+        <span class="keyword">end</span>
     <span class="keyword">end</span>
+    ind_array=[ind_array ind(1)];
 <span class="keyword">end</span>
+ind=ind_array;
 
 atnum = cell2mat(mass(ind,4));
 mass = cell2mat(mass(ind,1));
-<span class="keyword">for</span> i=1:length([atom.type])
+<span class="keyword">for</span> i=1:numel(atom)
     [atom(i).mass]=mass(i);
     [atom(i).atnum]=atnum(i);
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Set the occupancy of all sites</h2>
+<h2 id="6">Set the occupancy of all sites</h2>
 <pre class="codeinput">occ=1;
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>) || sum([atom.occupancy])==0
     occ=1;
@@ -347,6 +366,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'Mw_occupancy
 %% Examples
 % # atom = mass_atom(atom)
 % # atom = mass_atom(atom,Box_dim) % To calculate the density
+%
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <element_atom.html element_atom>
+% # <occupancy_atom.html occupancy_atom>
+% # <atomic_mass.html atomic_mass>
+% # <reduced_mass.html reduced_mass>
 %
 function atom = mass_atom(atom,varargin)
 
@@ -465,32 +491,28 @@ mass={...
     277 'Hassium' 'Hs' 108 ;...
     };
 
-ind=[];ind_array=[];
-if iscell([element.type]) && length([element.type]) > 1
-    for i=1:length([element.type])
-        ind=find(strncmpi([element(i).type],mass(:,3),2));
-        if numel(ind) == 0
-            ind=find(strncmpi([element(i).type],mass(:,3),1));
-            if numel(ind) == 0
-                disp('Could not find mass for')
-                disp([element(i).type])
-                disp('setting it to 10 au')
-                ind = 6;
-            end
-        end
-        ind_array=[ind_array ind(1)];
-    end
-    ind=ind_array;
-else
-    ind=find(strcmpi([element.type],mass(:,1)))
+% One lookup per atom, whatever the type is stored as (char or cell)
+ind_array=[];
+for i=1:numel(element)
+    t=element(i).type;
+    if iscell(t), t=t{1}; end
+    ind=find(strncmpi(t,mass(:,3),2));
     if numel(ind) == 0
-        ind = 6;
+        ind=find(strncmpi(t,mass(:,3),1));
+        if numel(ind) == 0
+            disp('Could not find mass for')
+            disp(t)
+            disp('setting it to 10 au')
+            ind = 6;
+        end
     end
+    ind_array=[ind_array ind(1)];
 end
+ind=ind_array;
 
 atnum = cell2mat(mass(ind,4));
 mass = cell2mat(mass(ind,1));
-for i=1:length([atom.type])
+for i=1:numel(atom)
     [atom(i).mass]=mass(i);
     [atom(i).atnum]=atnum(i);
 end

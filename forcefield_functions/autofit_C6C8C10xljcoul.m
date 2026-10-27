@@ -1,3 +1,13 @@
+%% Examples
+% # autofit_C6C8C10xljcoul % Script: fit a C6/C8/C10 dispersion potential, parameters are set inside the script
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 clear;
 close all;
 hold on

@@ -10,6 +10,13 @@
 %% Examples
 % # write_atom_pdb(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+%
 function write_atom_pdb(atom,Box_dim,filename_out,varargin)
 
 if regexp(filename_out,'.pdb') ~= false

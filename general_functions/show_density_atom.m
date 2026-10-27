@@ -14,6 +14,13 @@
 % # show_density_atom(atom,Box_dim,0.1,2)
 % # show_density_atom(atom,Box_dim,0.1,2,[1:10:100])
 
+%% See also
+% # <plot_density_atom.html plot_density_atom>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_color.html element_color>
+% # <hist_atom.html hist_atom>
+% # <show_atom.html show_atom>
+%
 function show_density_atom(atom,Box_dim,varargin)
 
 hold off

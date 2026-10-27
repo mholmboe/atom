@@ -11,6 +11,9 @@
 %% Examples
 % # atom = neutralize_atom(atom)
 %
+%% See also
+% # <element_atom.html element_atom>
+%
 function atom = neutralize_atom(atom)
 
 atom=element_atom(atom);

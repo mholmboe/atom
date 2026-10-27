@@ -13,6 +13,10 @@
 % # atom = frac2atom(atom,Box_dim(1:3),[82 93.1212 104.3232],'angle')
 % # atom = frac2atom(atom,Box_dim(1:3),[0.0232 0.002131 0.0],'tiltfactors')
 %
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+%
 function atom = frac2atom(atom,Box_dim,angleparam,angletype)
 
 a=Box_dim(1);

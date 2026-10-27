@@ -12,6 +12,13 @@
 %% Examples with some fixed charges, the rest is smeared over the O's
 % # Total_charge = charge_clayff_atom(atom,Box_dim,{'ao' 'mgo' 'st' 'ho'},[1.575 1.36 2.1 0.425])
 
+%% See also
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <clayff_2004_param.html clayff_2004_param>
+% # <charge_atom.html charge_atom>
+% # <charge_clayffmod_atom.html charge_clayffmod_atom>
+%
 function atom = charge_clayff_2004_atom(atom,Box_dim,varargin)
 nAtoms=size(atom,2);
 [atom.charge]=deal(0);

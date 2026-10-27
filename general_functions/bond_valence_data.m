@@ -17,6 +17,13 @@
 % # [mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R)
 % # [mean_bv,std_bv,bv,bvalue,ideal_dist]=bond_valence_data(ion1,ion2,R,varargin)
 
+%% See also
+% # <bond_valence_atom.html bond_valence_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_angle_type.html bond_angle_type>
+% # <bond_atom.html bond_atom>
+%
 function [mean_bv,std_bv,bv,bvalue]=bond_valence_data(ion1,ion2,R,varargin)
 
 if nargin==3

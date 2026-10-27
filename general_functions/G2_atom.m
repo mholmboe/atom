@@ -13,6 +13,12 @@
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim)
 % * [G2,G_cos,G_sin,Gtwotheta,structure] = G2_atom(atom,Box_dim,filename)
 %
+%% See also
+% # <Wrap_Coord_func.html Wrap_Coord_func>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <translate_atom.html translate_atom>
+% # <wrap_atom.html wrap_atom>
+%
 function [G2,G_cos,G_sin,Gtwotheta,structure,old_structure] = G2_atom(atom,Box_dim,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 format compact;

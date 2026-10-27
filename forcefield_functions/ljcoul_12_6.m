@@ -1,3 +1,13 @@
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_12_6([-1.05 2.1 0.31656 0.3302 0.65017 7.7e-06]) % Plain 12-6 LJ plus Coulomb
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+% # <ljcoul_2x_force.html ljcoul_2x_force>
+%
 function [r,lj,coul,Utot] = ljcoul_12_6(param,varargin)
 
 q1=param(1);

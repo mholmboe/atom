@@ -12,6 +12,13 @@
 % #  Data = import_dat('energy.dat')
 % #  Data = import_dat('energy.dat','plot')
 %
+%% See also
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 function Data = import_dat(filename,varargin)
 
 % Check if .dat is given in the filename

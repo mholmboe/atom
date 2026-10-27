@@ -12,6 +12,13 @@
 % # atom = interface15_silica_atom(atom,Box_dim,1.1,1.8)
 
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <check_interface15_charge.html check_interface15_charge>
+% # <composition_atom.html composition_atom>
+% # <element_atom.html element_atom>
+% # <charge_interface15_atom.html charge_interface15_atom>
+%
 function atom = interface15_silica_atom(atom,Box_dim,varargin)
 
 if nargin > 2

@@ -13,6 +13,13 @@
 % # atom = import_atom_gro('molecule.gro',[10 5 2])
 % # atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
+%% See also
+% # <import_atom_gro.html import_atom_gro>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <center_atom.html center_atom>
+% # <resname_atom.html resname_atom>
+% # <translate_atom.html translate_atom>
+%
 function [atom,Box_dim] = import_atom_gro_legacy(filename,varargin)
 tic
 

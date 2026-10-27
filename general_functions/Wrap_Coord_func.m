@@ -14,6 +14,10 @@
 %% Examples
 % # XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 
+%% See also
+% # <wrap_atom.html wrap_atom>
+% # <wrap_molid.html wrap_molid>
+%
 function XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 %%
 

@@ -1,4 +1,14 @@
 % clear;
+%% Examples
+% # autofit_geometric2LB % Script: convert geometric-mean mixing parameters to Lorentz-Berthelot ones
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_C6C12.html ljcoul_C6C12>
+% # <ljcoul_objective_func.html ljcoul_objective_func>
+% # <autofit_2x2xljcoul.html autofit_2x2xljcoul>
+% # <autofit_2xljcoul.html autofit_2xljcoul>
+%
 close all;
 hold on
 format short;

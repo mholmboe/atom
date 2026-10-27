@@ -31,6 +31,10 @@
 % # [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025)         % Here 0.025 is the binsize in Ångström
 % # [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025,2)       % Here 2 is a smoothing factor
 
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+%
 function [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,varargin)
 
 if nargin>3

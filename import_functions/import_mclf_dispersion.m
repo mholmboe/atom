@@ -11,6 +11,13 @@
 %% Examples
 % # atom = import_mclf_dispersion('XYZ_even_tempered_net_atomic_charges.xyz')
 %
+%% See also
+% # <import_mclf.html import_mclf>
+% # <import_mclf_C10.html import_mclf_C10>
+% # <import_mclf_C6.html import_mclf_C6>
+% # <import_mclf_C8.html import_mclf_C8>
+% # <import_CONECT.html import_CONECT>
+%
 function atom = import_mclf_dispersion(varargin)
 
 if nargin>0

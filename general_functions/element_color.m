@@ -8,7 +8,12 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * color = element_atom('Li') 
+% * color = element_color('Li') 
+%
+%% See also
+% # <element_atom.html element_atom>
+% # <show_atom.html show_atom>
+% # <plot_atom.html plot_atom>
 %
 function color = element_color(Atom_label)
 

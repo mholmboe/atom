@@ -14,6 +14,13 @@
 %% Examples with some fixed charges, the rest is smeared over the O's
 % * atom = charge_minff_atom(atom,Box_dim,{'Al' 'Mgo' 'Si' 'H'},[1.575 1.36 2.1 0.425])
 
+%% See also
+% # <minff_atom.html minff_atom>
+% # <charge_atom.html charge_atom>
+% # <tweak_charge_atom.html tweak_charge_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_atom.html bond_atom>
+%
 function atom = charge_minff_atom(atom,Box_dim,varargin)
 nAtoms=size(atom,2);
 [atom.charge]=deal(0);

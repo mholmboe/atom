@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>write_xvg</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_xvg.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,9 +76,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>write_xvg(twotheta,intensity,'pattern.xvg') % Write two columns of data to a Gromacs .xvg file</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
+<li>
+<a href="#1">See also</a>
+</li>
 <li>
 <a href="#2">write_xvg.m</a>
 </li>
@@ -101,6 +112,23 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#9">Open and read the .xvg file</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="write_ff.html">write_ff</a>
+</li>
+<li>
+<a href="write_ffnonbonded.html">write_ffnonbonded</a>
+</li>
+<li>
+<a href="write_ffnonbonded_C6C12.html">write_ffnonbonded_C6C12</a>
+</li>
+<li>
+<a href="write_tabulated_potentials.html">write_tabulated_potentials</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> write_xvg(xdata,ydata,inputfile,varargin)
@@ -255,6 +283,15 @@ fclose(fid);
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # write_xvg(twotheta,intensity,'pattern.xvg') % Write two columns of data to a Gromacs .xvg file
+%
+%% See also
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+%
 function write_xvg(xdata,ydata,inputfile,varargin)
 %% write_xvg.m
 %% This function allows you to write a xvg file based on a previous file,

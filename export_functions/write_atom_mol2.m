@@ -11,6 +11,13 @@
 % # write_atom_mol2(atom,Box_dim,filename_out) % Basic input arguments
 % # write_atom_mol2(atom,Box_dim,filename_out,1.25,1.25,'clayff','spce') % Specifying the rmaxshort and rmaxlong cutoff's and forcefield to use
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <check_clayff_charge.html check_clayff_charge>
+% # <check_interface_charge.html check_interface_charge>
+% # <clayff_param.html clayff_param>
+% # <interface15_param.html interface15_param>
+%
 function write_atom_mol2(atom,Box_dim,filename_out,varargin)
 
 filename_out=strcat(filename_out,'.mol2');

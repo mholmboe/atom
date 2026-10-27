@@ -14,6 +14,12 @@
 % # atom = rotate_atom(atom,Box_dim,[0 0 90])
 % # atom = rotate_atom(atom,Box_dim,[0 0 90],ind)
 
+%% See also
+% # <COM_atom.html COM_atom>
+% # <plot_atom.html plot_atom>
+% # <write_atom_gro.html write_atom_gro>
+% # <molid_rotate.html molid_rotate>
+%
 function atom = rotate_atom(atom,Box_dim,varargin)
 
 if nargin>2

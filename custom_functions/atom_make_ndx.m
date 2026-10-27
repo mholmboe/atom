@@ -12,6 +12,13 @@
 %% Examples
 % # atom2make_ndx(filename,groupname,atomtypes,molid) % Basic input arguments
 
+%% See also
+% # <import_atom.html import_atom>
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded>
+% # <gmx_make_ndx.html gmx_make_ndx>
+% # <atom_read_ndx.html atom_read_ndx>
+% # <import_ndx.html import_ndx>
+%
 function atom_make_ndx(filename,groupname,atomtypes,molid)
 
 % clear all; format compact;

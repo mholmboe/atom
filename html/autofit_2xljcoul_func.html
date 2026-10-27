@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>autofit_2xljcoul_func</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="autofit_2xljcoul_func.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,9 +76,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>[x,Err] = autofit_2xljcoul_func('Na','Cl','spce',initial_ff,ref_ff1,ref_ff2,0.1) % Fit a two-site LJ+Coulomb potential</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
+<li>
+<a href="#1">See also</a>
+</li>
 <li>
 <a href="#3">In order to keep parameters around 1..</a>
 </li>
@@ -92,6 +103,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#6">Run lsqnonlin</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="ljcoul.html">ljcoul</a>
+</li>
+<li>
+<a href="ljcoul_2x.html">ljcoul_2x</a>
+</li>
+<li>
+<a href="ljcoul_2x_objective_func.html">ljcoul_2x_objective_func</a>
+</li>
+<li>
+<a href="ljcoul_C12C6C4.html">ljcoul_C12C6C4</a>
+</li>
+<li>
+<a href="nonbonded_ff.html">nonbonded_ff</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> [x,Err] = autofit_2xljcoul_func(Ion1,Ion2,Water_model,initial_ff,ref_ff1,ref_ff2,delta,varargin)
@@ -116,20 +147,20 @@ hold <span class="string">on</span>
 <span class="keyword">if</span> nargin&gt;7
     extraff1=varargin{1};
     extraff1=load(extraff1);
-    <span class="comment">% extraff1='ions_Merz_CM_divalent_OPC3_ff';</span>
+    <span class="comment">% extraff1='ions_Merz_CM_divalent_opc3_ff';</span>
     nonbonded_ff([extraff1 ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)},1,<span class="string">'g'</span>);
 
 <span class="keyword">end</span>
 <span class="keyword">if</span> nargin&gt;8
     extraff2=varargin{2};
     extraff2=load(extraff2);
-    <span class="comment">% extraff2='ions_Merz_IOD_divalent_OPC3_ff';</span>
+    <span class="comment">% extraff2='ions_Merz_IOD_divalent_opc3_ff';</span>
     nonbonded_ff([extraff2 ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)},1,<span class="string">'m'</span>);
 <span class="keyword">end</span>
 <span class="keyword">if</span> nargin&gt;9
     extraff3=varargin{3};
     extraff3=load(extraff3);
-    <span class="comment">% extraff3='ions_Merz_HFE_divalent_OPC3_ff';</span>
+    <span class="comment">% extraff3='ions_Merz_HFE_divalent_opc3_ff';</span>
     nonbonded_ff([extraff3 ff2],{Ion1 strcat(Ion2,<span class="string">'_'</span>,Water_model)},1,<span class="string">'c'</span>);
 <span class="keyword">end</span>
 
@@ -236,6 +267,16 @@ hold <span class="string">off</span>
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # [x,Err] = autofit_2xljcoul_func('Na','Cl','spce',initial_ff,ref_ff1,ref_ff2,0.1) % Fit a two-site LJ+Coulomb potential
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 function [x,Err] = autofit_2xljcoul_func(Ion1,Ion2,Water_model,initial_ff,ref_ff1,ref_ff2,delta,varargin)
 
 % initial_ff='ions_Merz_IOD_divalent_opc3_ff';
@@ -257,20 +298,20 @@ hold on
 if nargin>7
     extraff1=varargin{1};
     extraff1=load(extraff1);
-    % extraff1='ions_Merz_CM_divalent_OPC3_ff';
+    % extraff1='ions_Merz_CM_divalent_opc3_ff';
     nonbonded_ff([extraff1 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'g');
     
 end
 if nargin>8
     extraff2=varargin{2};
     extraff2=load(extraff2);
-    % extraff2='ions_Merz_IOD_divalent_OPC3_ff';
+    % extraff2='ions_Merz_IOD_divalent_opc3_ff';
     nonbonded_ff([extraff2 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'m');
 end
 if nargin>9
     extraff3=varargin{3};
     extraff3=load(extraff3);
-    % extraff3='ions_Merz_HFE_divalent_OPC3_ff';
+    % extraff3='ions_Merz_HFE_divalent_opc3_ff';
     nonbonded_ff([extraff3 ff2],{Ion1 strcat(Ion2,'_',Water_model)},1,'c');
 end
 

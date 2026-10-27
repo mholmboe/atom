@@ -11,6 +11,13 @@
 %% Examples
 % # atom = remove_type(atom,{'OW' 'HW1' 'HW2'})
 
+%% See also
+% # <remove_SOL.html remove_SOL>
+% # <remove_molid.html remove_molid>
+% # <remove_occypancy_atom.html remove_occypancy_atom>
+% # <remove_residues.html remove_residues>
+% # <remove_resname.html remove_resname>
+%
 function atom = remove_type(atom,typescell)
 
 rm_ind=[];

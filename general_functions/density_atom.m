@@ -25,6 +25,13 @@
 % # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]
 % # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc
 
+%% See also
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <mass_atom.html mass_atom>
+% # <occupancy_atom.html occupancy_atom>
+% # <orto_atom.html orto_atom>
+% # <density_atom_fast.html density_atom_fast>
+%
 function [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
 
 Fontsize=18;

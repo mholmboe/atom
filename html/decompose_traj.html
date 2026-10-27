@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>decompose_traj.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="decompose_traj.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -194,19 +194,22 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#41">system('gmx editconf -h')</a>
 </li>
 <li>
-<a href="#43">Do something with the coordinates (x or v or f)</a>
+<a href="#42">See also</a>
 </li>
 <li>
-<a href="#44">Write newcoords to a new xtc file</a>
+<a href="#44">Do something with the coordinates (x or v or f)</a>
 </li>
 <li>
-<a href="#47">Do something with the coordinates (x or v or f)</a>
+<a href="#45">Write newcoords to a new xtc file</a>
 </li>
 <li>
-<a href="#48">Do something with the x/y/z components and write new ones</a>
+<a href="#48">Do something with the coordinates (x or v or f)</a>
 </li>
 <li>
-<a href="#49">Write newcoords to a new trr file</a>
+<a href="#49">Do something with the x/y/z components and write new ones</a>
+</li>
+<li>
+<a href="#50">Write newcoords to a new trr file</a>
 </li>
 </ul>
 </div>
@@ -262,6 +265,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <h2 id="39">&gt;&gt;setenv('PATH', [getenv('PATH'),':','/usr/local/gromacs-2016.2/bin'])</h2>
 <h2 id="40">then you could try</h2>
 <h2 id="41">system('gmx editconf -h')</h2>
+<h2 id="42">See also</h2>
+<div>
+<ol>
+<li>
+<a href="gmx.html">gmx</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> decompose_traj(trajname,outtrajname,varargin)
 
@@ -301,13 +312,13 @@ loadmxdrfile
             XYZ_data(:,2)=traj.x.value(2,:)';
             XYZ_data(:,3)=traj.x.value(3,:)';
 </pre>
-<h2 id="43">Do something with the coordinates (x or v or f)</h2>
+<h2 id="44">Do something with the coordinates (x or v or f)</h2>
 <p>XYZ_data=XYZ_data*roty(alfa)*rotx(beta)*rotz(gamma);</p>
 <pre class="codeinput">            traj.x.value(1,:)=XYZ_data(:,1)';
             traj.x.value(2,:)=XYZ_data(:,2)';
             traj.x.value(3,:)=XYZ_data(:,3)';
 </pre>
-<h2 id="44">Write newcoords to a new xtc file</h2>
+<h2 id="45">Write newcoords to a new xtc file</h2>
 <pre class="codeinput">            wstatus=write_xtc(wTraj, traj);
 </pre>
 <pre class="codeinput">        <span class="keyword">end</span> <span class="comment">% end of test of stride</span>
@@ -332,18 +343,18 @@ loadmxdrfile
 <pre class="codeinput">            <span class="comment">%             if ~mod(frame,stride) % Test of stride</span>
             disp(<span class="string">'Frame'</span>),disp(frame)
 </pre>
-<h2 id="47">Do something with the coordinates (x or v or f)</h2>
+<h2 id="48">Do something with the coordinates (x or v or f)</h2>
 <pre class="codeinput">            XYZ_data(:,1)=traj.x.value(1,:)';
             XYZ_data(:,2)=traj.x.value(2,:)';
             XYZ_data(:,3)=traj.x.value(3,:)';
 </pre>
-<h2 id="48">Do something with the x/y/z components and write new ones</h2>
+<h2 id="49">Do something with the x/y/z components and write new ones</h2>
 <p>XYZ_data=XYZ_data*roty(alfa)*rotx(beta)*rotz(gamma);</p>
 <pre class="codeinput">            traj.x.value(1,:)=XYZ_data(:,1)';
             traj.x.value(2,:)=XYZ_data(:,2)';
             traj.x.value(3,:)=XYZ_data(:,3)';
 </pre>
-<h2 id="49">Write newcoords to a new trr file</h2>
+<h2 id="50">Write newcoords to a new trr file</h2>
 <pre class="codeinput">            wstatus=write_trr(wTraj, traj);
 </pre>
 <pre class="codeinput">        <span class="keyword">end</span> <span class="comment">% end of test of stride</span>
@@ -420,6 +431,9 @@ loadmxdrfile
 %% then you could try
 %% system('gmx editconf -h')
 
+%% See also
+% # <gmx.html gmx>
+%
 function decompose_traj(trajname,outtrajname,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

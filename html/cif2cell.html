@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>To run CIF2CELL from MATLAB</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="cif2cell.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -77,7 +77,23 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <body>
 <div class="content">
 <h1>To run CIF2CELL from MATLAB</h1>
+<!--introduction-->
 <p>Add your own path to CIF2CELL here, if you have installed it separately Note that you might need a '\' to skip spaces, or double quotations as in "'PATH'"</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>cif2cell('structure.cif') % Call the external CIF2CELL program, set its path at the top of this file</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> cif2cell(varargin)
 
@@ -105,6 +121,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % in "'PATH'"
 %
 
+%% Examples
+% # cif2cell('structure.cif') % Call the external CIF2CELL program, set its path at the top of this file
+%
 function cif2cell(varargin)
 
 if nargin>0

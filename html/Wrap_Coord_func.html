@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Wrap_Coord_func.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="Wrap_Coord_func.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -101,7 +101,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#4">Examples</a>
 </li>
 <li>
-<a href="#7">Does this work?</a>
+<a href="#5">See also</a>
+</li>
+<li>
+<a href="#8">Does this work?</a>
 </li>
 </ul>
 </div>
@@ -116,6 +119,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ol>
 <li>XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)</li>
+</ol>
+</div>
+<h2 id="5">See also</h2>
+<div>
+<ol>
+<li>
+<a href="wrap_atom.html">wrap_atom</a>
+</li>
+<li>
+<a href="wrap_molid.html">wrap_molid</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -200,7 +214,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="comment">%         end</span>
     <span class="comment">%     end</span>
 </pre>
-<h2 id="7">Does this work?</h2>
+<h2 id="8">Does this work?</h2>
 <pre class="codeinput">    <span class="keyword">for</span> i = 1:3:size(XYZ_data,2)
         indxlo=find(XYZ_data(:,i)&lt;0);
         XYZ_data(indxlo,i)=XYZ_data(indxlo,i)+Box_dim(1);
@@ -252,6 +266,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %% Examples
 % # XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 
+%% See also
+% # <wrap_atom.html wrap_atom>
+% # <wrap_molid.html wrap_molid>
+%
 function XYZ_data = Wrap_Coord_func(XYZ_data,Box_dim)
 %%
 

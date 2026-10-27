@@ -1,3 +1,7 @@
+%% Examples
+% # [r,buck,coul,Utot] = buckinghamcoul([-1.05 2.1 A1 A2 B1 B2 C1 C2]) % param is q1 q2 [e], A1 A2, B1 B2, C1 C2
+% # [r,buck,coul,Utot] = buckinghamcoul(param,0.01:0.0005:1.2) % The same, on a given r [nm]
+%
 function [r,buck,coul,Utot] = buckinghamcoul(param,varargin)
 
 q1=param(1);

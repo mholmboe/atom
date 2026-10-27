@@ -15,6 +15,13 @@
 % # [atom,traj] = import_mc_pdb_traj('molecule.pdb',1000)
 % # [atom,traj] = import_mc_pdb_traj('molecule.pdb',10000,10)
 %
+%% See also
+% # <import_pdb_traj.html import_pdb_traj>
+% # <update_atom.html update_atom>
+% # <write_pdb_traj.html write_pdb_traj>
+% # <import_atom_pdb.html import_atom_pdb>
+% # <import_gro_traj.html import_gro_traj>
+%
 function [atom,traj] = import_mc_pdb_traj(filename,varargin)
 
 % maxframes=100;

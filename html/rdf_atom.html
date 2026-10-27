@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>rdf_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="rdf_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -102,6 +102,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#5">Examples</a>
 </li>
+<li>
+<a href="#6">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -136,6 +139,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,[0:0.025:12]) % The full distance vector in &Aring;ngstr&ouml;m</li>
 <li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025) % Here 0.025 is the binsize in &Aring;ngstr&ouml;m</li>
 <li>[Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025,2) % Here 2 is a smoothing factor</li>
+</ol>
+</div>
+<h2 id="6">See also</h2>
+<div>
+<ol>
+<li>
+<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom</a>
+</li>
+<li>
+<a href="dist_matrix_atom.html">dist_matrix_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -246,6 +260,10 @@ CN=cumsum(Bins./Nsolute);
 % # [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025)         % Here 0.025 is the binsize in Ångström
 % # [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,0.025,2)       % Here 2 is a smoothing factor
 
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+%
 function [Distance,RDF,CN] = rdf_atom(atom1,atom2,Box_dim,varargin)
 
 if nargin>3

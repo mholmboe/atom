@@ -1,3 +1,14 @@
+%% Examples
+% # res = ljcoul_force_objective_func(param,data,r,scalefactors) % Residual used when fitting forces
+% Called by lsqnonlin, not normally called directly
+%
+%% See also
+% # <ljcoul_2x_force_objective_func.html ljcoul_2x_force_objective_func>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul_objective_func.html ljcoul_objective_func>
+% # <ljcoul_2x_force.html ljcoul_2x_force>
+%
 function res = ljcoul_force_objective_func(param,data,r,scalefactors,varargin)
 
 param=param./scalefactors;

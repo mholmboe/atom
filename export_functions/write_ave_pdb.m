@@ -17,6 +17,13 @@
 % # write_ave_pdb(confstring) % Basic input arguments
 % # write_ave_pdb(confstring,'average')
 
+%% See also
+% # <import_atom_pdb.html import_atom_pdb>
+% # <write_atom_pdb.html write_atom_pdb>
+% # <write_ave_gro.html write_ave_gro>
+% # <write_pdb_traj.html write_pdb_traj>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+%
 function write_ave_pdb(confstring,varargin)
 
 % confstring='conf';

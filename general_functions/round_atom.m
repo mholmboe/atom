@@ -10,6 +10,9 @@
 %% Examples
 % # atom = round_atom(atom,Box_dim,varargin)
 %
+%% See also
+% # <update_atom.html update_atom>
+%
 function atom = round_atom(atom,Box_dim,varargin)
 
 disp('Rounding the coordinates')

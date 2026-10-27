@@ -10,6 +10,12 @@
 %% Examples
 % * atom = median_atom(atom)
 %
+%% See also
+% # <ave_atom.html ave_atom>
+% # <COM_atom.html COM_atom>
+% # <center_atom.html center_atom>
+% # <place_atom.html place_atom>
+%
 function atom = median_atom(atom)
 
 for i=1:max([atom(:).molid])

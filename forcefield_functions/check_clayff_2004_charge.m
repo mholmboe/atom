@@ -11,6 +11,13 @@
 %% Examples
 % # atom = check_clayff_charge(atom)
 %
+%% See also
+% # <check_clayff_charge.html check_clayff_charge>
+% # <clayff_2004_param.html clayff_2004_param>
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <check_clayff_H2Odens.html check_clayff_H2Odens>
+%
 function atom = check_clayff_2004_charge(atom)
 
 nAtoms=size(atom,2);

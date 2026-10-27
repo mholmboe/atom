@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>ljcoul_C12C6</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="ljcoul_C12C6.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,6 +76,42 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>[r,lj,coul,Utot] = ljcoul_C12C6(param) % LJ + Coulomb in the C12/C6 convention</li>
+</ol>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">See also</a>
+</li>
+</ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="ljcoul.html">ljcoul</a>
+</li>
+<li>
+<a href="ljcoul_12_6.html">ljcoul_12_6</a>
+</li>
+<li>
+<a href="ljcoul_2x.html">ljcoul_2x</a>
+</li>
+<li>
+<a href="ljcoul_2x2x.html">ljcoul_2x2x</a>
+</li>
+<li>
+<a href="ljcoul_2x2x_objective_func.html">ljcoul_2x2x_objective_func</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> [r,lj,coul,Utot] = ljcoul_C12C6(param,varargin)
 
@@ -141,6 +177,16 @@ ylim(sort([-plotmin plotmin]))
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_C12C6(param) % LJ + Coulomb in the C12/C6 convention
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_12_6.html ljcoul_12_6>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+%
 function [r,lj,coul,Utot] = ljcoul_C12C6(param,varargin)
 
 q1=param(1);

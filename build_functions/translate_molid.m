@@ -10,6 +10,13 @@
 %% Examples
 % # atom = translate_molid(atom,[x y z],molid) % Translate a certain Molid
 
+%% See also
+% # <molid_translate.html molid_translate>
+% # <molid_rotate.html molid_rotate>
+% # <position_molid.html position_molid>
+% # <remove_molid.html remove_molid>
+% # <slice_molid.html slice_molid>
+%
 function atom = translate_molid(atom,trans_vec,molid)
 
 disp('Translating MolID')

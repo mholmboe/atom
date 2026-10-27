@@ -55,6 +55,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% See also
+% # <gmx.html gmx>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_pdb.html import_atom_pdb>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+%
 function [atom,traj] = import_xtc(filenameconf,filenamextc,varargin)
 
 traj=[];   

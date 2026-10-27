@@ -10,9 +10,16 @@
 % * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
-% * [atom,traj] = import_xtcv2('conf.gro',traj.xtc)
-% * [atom,traj] = import_xtcv2('conf.pdb',traj.xtc)
+% * atom = import_xtcv2('conf.gro','traj.xtc')
+% * atom = import_xtcv2('conf.pdb','traj.xtc')
 
+%% See also
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_pdb.html import_atom_pdb>
+% # <write_atom_pdb.html write_atom_pdb>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+%
 function atom = import_xtcv2(filenameconf,filenamextc)
 %%
 

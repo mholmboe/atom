@@ -13,6 +13,13 @@
 % # atom=ff_atom(atom,Box_dim,rmaxlong,Bond_index)
 
 
+%% See also
+% # <adjust_H_atom.html adjust_H_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <cn_atom.html cn_atom>
+% # <element_atom.html element_atom>
+% # <number_type.html number_type>
+%
 function atom=ff_atom(atom,Box_dim,varargin)
 %%
 format compact;

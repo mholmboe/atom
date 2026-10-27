@@ -14,6 +14,9 @@
 % # sigma = sigma_vdw({'O'})
 % # sigma = sigma_vdw('O')
 
+%% See also
+% # <radius_vdw.html radius_vdw>
+%
 function sigma = sigma_vdw(Atom_label)
 
 rvdw = radius_vdw(Atom_label);

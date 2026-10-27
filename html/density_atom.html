@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>density_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="density_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -98,7 +98,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Set the occupancy of all sites</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#6">Set the occupancy of all sites</a>
 </li>
 </ul>
 </div>
@@ -116,6 +119,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',2.3) % sigma [&gt;0] value for Gaussian smoothing</li>
 <li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]</li>
 <li>[Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="atomic_scattering_factors.html">atomic_scattering_factors</a>
+</li>
+<li>
+<a href="mass_atom.html">mass_atom</a>
+</li>
+<li>
+<a href="occupancy_atom.html">occupancy_atom</a>
+</li>
+<li>
+<a href="orto_atom.html">orto_atom</a>
+</li>
+<li>
+<a href="density_atom_fast.html">density_atom_fast</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -180,7 +203,7 @@ Bins = (0:ds:Distance(end)+ds)';
 nBins = numel(Bins);
 assignin(<span class="string">'base'</span>,<span class="string">'Distance'</span>,Bins);
 </pre>
-<h2 id="5">Set the occupancy of all sites</h2>
+<h2 id="6">Set the occupancy of all sites</h2>
 <pre class="codeinput">occ=1;
 <span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>)
     occ=1;
@@ -401,6 +424,13 @@ xlabel(<span class="string">'Distance [&Aring;]'</span>,<span class="string">'Fo
 % # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1) % mirror/symmetrize [0/1]
 % # [Bins,Element_density] = density_atom(atom,Box_dim,0.05,'z',1,1,4.57) % Arbitrary value to shift all coords before mirroring etc
 
+%% See also
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <mass_atom.html mass_atom>
+% # <occupancy_atom.html occupancy_atom>
+% # <orto_atom.html orto_atom>
+% # <density_atom_fast.html density_atom_fast>
+%
 function [Bins,Total_Density] = density_atom(atom,Box_dim,varargin)
 
 Fontsize=18;

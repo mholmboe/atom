@@ -10,6 +10,13 @@
 %% Examples
 % # write_atom_gro(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+%
 function write_atom_gro(atom,Box_dim,filename_out)
 
 if regexp(filename_out,'.gro') ~= false

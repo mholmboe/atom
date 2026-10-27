@@ -1,3 +1,13 @@
+%% Examples
+% # autofit_2xljcoul % Script: set the ion pair and reference force fields at the top, then run it to fit two LJ+Coulomb sites
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 clear;
 close all;
 hold on

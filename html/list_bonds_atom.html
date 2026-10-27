@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>list_bonds_angles_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="list_bonds_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -96,6 +96,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -110,6 +113,23 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index)</li>
 <li>[Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)</li>
 <li>[Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_angle_atom.html">bond_angle_atom</a>
+</li>
+<li>
+<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom</a>
+</li>
+<li>
+<a href="cell_list_dist_matrix_atom1atom2.html">cell_list_dist_matrix_atom1atom2</a>
+</li>
+<li>
+<a href="list_bonded_atom.html">list_bonded_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -287,6 +307,12 @@ i = 1;
 % # [Bond_data,Angle_data] = list_bonds_atom(atom,[],Bond_index,Angle_index)
 % # [Bond_data,Angle_data,Dihedral_data] = list_bonds_atom(atom,[],Bond_index,Angle_index,Dihedral_index)
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <list_bonded_atom.html list_bonded_atom>
+%
 function [Bond_data,Angle_data] = list_bonds_atom(atom,Box_dim,varargin)
 
 Bond_data=[];Angle_data=[];

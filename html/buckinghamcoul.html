@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>buckinghamcoul</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="buckinghamcoul.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -80,9 +80,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ul>
 <li>
+<a href="#1">Examples</a>
+</li>
+<li>
 <a href="#3">Combination rules from Gromacs documentation</a>
 </li>
 </ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>[r,buck,coul,Utot] = buckinghamcoul([-1.05 2.1 A1 A2 B1 B2 C1 C2]) % param is q1 q2 [e], A1 A2, B1 B2, C1 C2</li>
+<li>[r,buck,coul,Utot] = buckinghamcoul(param,0.01:0.0005:1.2) % The same, on a given r [nm]</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> [r,buck,coul,Utot] = buckinghamcoul(param,varargin)
@@ -141,6 +151,10 @@ plot(r,Utot,<span class="string">'k--'</span>);
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # [r,buck,coul,Utot] = buckinghamcoul([-1.05 2.1 A1 A2 B1 B2 C1 C2]) % param is q1 q2 [e], A1 A2, B1 B2, C1 C2
+% # [r,buck,coul,Utot] = buckinghamcoul(param,0.01:0.0005:1.2) % The same, on a given r [nm]
+%
 function [r,buck,coul,Utot] = buckinghamcoul(param,varargin)
 
 q1=param(1);

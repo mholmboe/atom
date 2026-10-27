@@ -10,6 +10,9 @@
 %% Examples
 % # atom = resname_atom(atom) % Basic inout arguments
 %
+%% See also
+% # <remove_resname.html remove_resname>
+%
 function atom = resname_atom(atom,varargin)
 
 nAtoms=size(atom,2);

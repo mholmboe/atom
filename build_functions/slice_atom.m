@@ -12,6 +12,12 @@
 % # atom = slice_atom(atom,limits) % Basic input arguments
 % # atom = slice_atom(atom,limits,1) % Inverts the selected sites
 %
+%% See also
+% # <update_atom.html update_atom>
+% # <slice_box.html slice_box>
+% # <slice_molid.html slice_molid>
+% # <slice_triclinic_atom.html slice_triclinic_atom>
+%
 function atom = slice_atom(atom,limits,varargin)
 
 if numel(limits)==3

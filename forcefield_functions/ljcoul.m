@@ -1,3 +1,15 @@
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul([-1.05 2.1 0.31656 0.3302 0.65017 7.7e-06]) % param is q1 q2 [e], sigma1 sigma2 [nm], epsilon1 epsilon2 [kJ/mol]
+% # [r,lj,coul,Utot] = ljcoul(param,0.1:0.001:1.2) % The same, on a given r [nm]
+% # [r,lj,coul,Utot] = ljcoul([q1 q2 sig1 sig2 eps1 eps2 C41 C42]) % With the 12-6-4 C4 terms appended
+%
+%% See also
+% # <ljcoul_12_6.html ljcoul_12_6>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+% # <ljcoul_2x_force.html ljcoul_2x_force>
+%
 function [r,lj,coul,Utot] = ljcoul(param,varargin)
 
 % clear all;

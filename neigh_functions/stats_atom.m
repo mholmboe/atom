@@ -29,6 +29,16 @@
 %   result =  stats_atom(atom, Box_dim)
 %   result =  stats_atom(atom, Box_dim, log_file)
 %
+% # result = stats_atom(atom,Box_dim) % Print a report of atomtypes, coordination, charges, bonds and angles
+% # result = stats_atom(atom,Box_dim,'stats.log') % The same, also written to a log file
+% # result = stats_atom(atom,Box_dim,'stats.log',1.25,2.45) % The same, with explicit rmaxshort and rmaxlong cutoffs
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <analyze_atom.html analyze_atom>
+% # <composition_atom.html composition_atom>
+% # <check_atom.html check_atom>
+% # <Box_dim2Cell.html Box_dim2Cell>
+%
 function result =  stats_atom(atom,Box_dim,log_file,varargin)
 
 % Box_dim to Cell

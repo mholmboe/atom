@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>import_xyz</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="import_xyz.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,13 +76,44 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>import_xyz('molecule.xyz') % Import a .xyz file, the results are assigned in the calling workspace</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
 <li>
+<a href="#1">See also</a>
+</li>
+<li>
 <a href="#2">import_xyz.m - This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_atom_xyz.html">import_atom_xyz</a>
+</li>
+<li>
+<a href="import_xyz_traj.html">import_xyz_traj</a>
+</li>
+<li>
+<a href="import_CONECT.html">import_CONECT</a>
+</li>
+<li>
+<a href="import_atom.html">import_atom</a>
+</li>
+<li>
+<a href="import_atom_car.html">import_atom_car</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> import_xyz(XYZ_filename)
@@ -126,6 +157,16 @@ assignin(<span class="string">'caller'</span>, <span class="string">'XYZ_labels'
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # import_xyz('molecule.xyz') % Import a .xyz file, the results are assigned in the calling workspace
+%
+%% See also
+% # <import_atom_xyz.html import_atom_xyz>
+% # <import_xyz_traj.html import_xyz_traj>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function import_xyz(XYZ_filename)
 %% import_xyz.m - This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...
 

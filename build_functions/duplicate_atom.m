@@ -11,6 +11,9 @@
 % # atom = duplicate_atom(atom,4)
 % # atom = duplicate_atom(atom,[1 2 3])
 %
+%% See also
+% # <update_atom.html update_atom>
+%
 function atom = duplicate_atom(atom,molID) 
 
 new_atom=atom(ismember([atom.molid],molID));

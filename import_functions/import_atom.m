@@ -14,6 +14,13 @@
 % # [atom,Box_dim] = import_atom('molecule.pdb',[10 5 2]) % Translates the atom struct by a [x y z] Ångströms
 % # [atom,Box_dim] = import_atom('molecule.gro',[10 5 0],[35.24 24.23write 52.23]) % Translates the atom struct by a [x y z] Ångströms and sets new Box_dim
 
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <bond_atom.html bond_atom>
+% # <composition_atom.html composition_atom>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 function [atom,Box_dim] = import_atom(filename,varargin)
 %%
 

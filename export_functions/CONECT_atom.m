@@ -12,6 +12,10 @@
 %% Examples
 % # CONECT_atom(atom,Box_dim,1.25,2.25) 
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_atom.html bond_atom>
+%
 function CONECT_atom(atom,Box_dim,maxrshort,maxrlong) 
 
 nAtoms=size(atom,2);

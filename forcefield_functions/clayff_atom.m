@@ -21,6 +21,13 @@
 % # atom=clayff_atom(atom,Box_dim,'clayff','spc')
 % # atom=clayff_atom(atom,Box_dim,'clayff','spc',heal_iterations)
 
+%% See also
+% # <adjust_H_atom.html adjust_H_atom>
+% # <bond_atom.html bond_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <clayff_param.html clayff_param>
+%
 function atom=clayff_atom(atom,Box_dim,varargin)
 %%
 format compact;

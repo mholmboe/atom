@@ -4,6 +4,9 @@
 % in "'PATH'"
 %
 
+%% Examples
+% # cif2cell('structure.cif') % Call the external CIF2CELL program, set its path at the top of this file
+%
 function cif2cell(varargin)
 
 if nargin>0

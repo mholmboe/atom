@@ -12,6 +12,13 @@
 % # clayff_param(Atom_label)
 % # clayff_param(Atom_label,'spc')
 %
+%% See also
+% # <clayff_param.html clayff_param>
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom>
+% # <check_clayff_2004_charge.html check_clayff_2004_charge>
+% # <clayff_2004_atom.html clayff_2004_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+%
 function clayff_2004_param(Atom_label,varargin)
 
 if nargin < 2

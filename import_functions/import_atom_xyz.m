@@ -11,6 +11,13 @@
 %% Examples
 % # atom = import_atom_xyz('molecule.xyz')
 %
+%% See also
+% # <resname_atom.html resname_atom>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 function [atom,Box_dim] = import_atom_xyz(filename)
 
 if regexp(filename,'.xyz') ~= false

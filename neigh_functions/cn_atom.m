@@ -15,6 +15,11 @@
 % # atom=cn_atom(atom,Box_dim) % Basic input arguments
 % # atom=cn_atom(atom,Box_dim,rmaxlong) % Allows setting the max cutoff
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <recalc_bond_atom.html recalc_bond_atom>
+%
 function atom = cn_atom(atom,Box_dim,varargin)
 
 if nargin>2

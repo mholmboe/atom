@@ -11,6 +11,9 @@
 %% Examples
 % # Hist = hist_atom(atom,Box_dim,varargin)
 %
+%% See also
+% # <density_atom.html density_atom>
+%
 function [Binsx,Countsx,Binsy,Countsy,Binsz,Countsz] = hist_atom(atom,Box_dim,varargin)
 
 if nargin<3

@@ -12,6 +12,13 @@
 % # ff_plotfile % Edit the atomtypes and ffstrings at the top of the script
 %
 
+%% See also
+% # <nonbonded_ff.html nonbonded_ff>
+% # <ff_helpfile.html ff_helpfile>
+% # <ff_helpfile2.html ff_helpfile2>
+% # <ff_helpfile3.html ff_helpfile3>
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+%
 close all;
 
 %%

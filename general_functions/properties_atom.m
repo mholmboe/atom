@@ -21,6 +21,13 @@
 % # properties = properties_atom(atom,Box_dim)
 % # properties = properties_atom(atom,Box_dim,2.5)
 
+%% See also
+% # <analyze_atom.html analyze_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_valence_atom.html bond_valence_atom>
+% # <bond_valence_data.html bond_valence_data>
+% # <element_atom.html element_atom>
+%
 function properties = properties_atom(atom,Box_dim,varargin)
 
 disp('Depreceated function... use analyze_atom(atom,Box_dim,varargin) instead')

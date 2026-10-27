@@ -1,3 +1,13 @@
+%% Examples
+% # import_ff_table % Script: set the table filename inside the script, then run it to read a published force field table
+%
+%% See also
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 format compact
 
 %% Merz 2014

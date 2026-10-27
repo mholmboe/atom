@@ -18,6 +18,12 @@
 % #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5]) % Will also set the Y-axis to be between 0 and 1.5
 % #  Data = plot_xvg('energy.xvg',[1 5 3],[0 200],[0 1.5],2) % Will apply a Gaussian smoothing...
 %
+%% See also
+% # <import_xvg.html import_xvg>
+% # <plot_all_xvg.html plot_all_xvg>
+% # <plot_atom.html plot_atom>
+% # <plot_density_atom.html plot_density_atom>
+%
 function Data = plot_xvg(filename,varargin)
 
 % Check if the filename contains .xvg

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>test_ff_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="test_ff_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,7 +97,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#6">Set fftype names with numbers</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#7">Set fftype names with numbers</a>
 </li>
 </ul>
 </div>
@@ -111,6 +114,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ol>
 <li>atom=ff_atom(atom,Box_dim)</li>
 <li>atom=ff_atom(atom,Box_dim,ff)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="ff_atom.html">ff_atom</a>
+</li>
+<li>
+<a href="adjust_H_atom.html">adjust_H_atom</a>
+</li>
+<li>
+<a href="charge_minff_atom.html">charge_minff_atom</a>
+</li>
+<li>
+<a href="cn_atom.html">cn_atom</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -195,7 +218,7 @@ i=1;
         i=i+1;
     <span class="keyword">end</span>
 </pre>
-<h2 id="6">Set fftype names with numbers</h2>
+<h2 id="7">Set fftype names with numbers</h2>
 <pre class="codeinput">    All_Neighbours=[All_Neighbours All_Neighbours(:,1)];
     <span class="comment">% All_Neighbours(:,2)=lower(All_Neighbours(:,2));</span>
     i=1;
@@ -388,6 +411,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % # atom=ff_atom(atom,Box_dim,ff)
 
 
+%% See also
+% # <ff_atom.html ff_atom>
+% # <adjust_H_atom.html adjust_H_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <cn_atom.html cn_atom>
+% # <element_atom.html element_atom>
+%
 function atom=test_ff_atom(atom,Box_dim,varargin)
 %%
 format compact;

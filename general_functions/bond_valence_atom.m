@@ -18,6 +18,13 @@
 % # atom = bond_valence_atom(atom,Box_dim)
 % # atom = bond_valence_atom(atom,Box_dim,1.25,2.25)
 %
+%% See also
+% # <bond_atom.html bond_atom>
+% # <bond_valence_data.html bond_valence_data>
+% # <element_atom.html element_atom>
+% # <replicate_atom.html replicate_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+%
 function atom = bond_valence_atom(atom,Box_dim,varargin)
 
 if nargin>2

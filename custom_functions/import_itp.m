@@ -1,3 +1,14 @@
+%% Examples
+% # itp = import_itp('topol.itp') % Import a Gromacs .itp topology into a struct
+% # itp = import_itp('extra.itp',itp) % Append a second .itp to an already imported one
+%
+%% See also
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 function itp = import_itp(filename,varargin)
 %% import_itp.m
 %% This function imports a itp file Each existing section should be

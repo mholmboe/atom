@@ -25,6 +25,13 @@
 % # write_atom_psf(atom,Box_dim,filename,1.25,2.25,'interface','tip3p')
 % # write_atom_psf(atom,Box_dim,filename,1.25,2.25,'interface','tip3p',1)
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+%
 function write_atom_psf(atom,Box_dim,filename,varargin)
 
 format long

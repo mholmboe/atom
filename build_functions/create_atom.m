@@ -36,6 +36,13 @@
 % # atom = create_atom('Na','Na',[10 20 30],10,[2 2.25]) % here 2.25 (Å) is the min dist to any other particle
 % # atom = create_atom('Na','Na',[10 20 30],10,2,in_atom) % in_atom any pre-existing atom struct
 
+%% See also
+% # <add2atom.html add2atom>
+% # <insert_atom.html insert_atom>
+% # <ionize_atom.html ionize_atom>
+% # <merge_atom.html merge_atom>
+% # <radius_ion.html radius_ion>
+%
 function atom = create_atom(type,resname,limits,nmax,varargin)
 
 if iscell(type)==0;type={type}; end

@@ -15,6 +15,13 @@
 % # atom=poly_atom(atom,Box_dim,0,2.25,1)                % Last argument (1/0) to plot the Box
 % # atom=poly_atom(atom,Box_dim,0,2.25,1,0.3)            % Last argument sets the transperancy
 
+%% See also
+% # <show_atom.html show_atom>
+% # <bond_atom.html bond_atom>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_atom.html element_atom>
+% # <element_color.html element_color>
+%
 function atom = poly_atom(atom,Box_dim,varargin)
 
 if nargin>2

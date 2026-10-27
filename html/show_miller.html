@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_miller.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="show_miller.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -96,6 +96,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -115,6 +118,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <p>Name&ndash;Value options (pass after the positionals above): 'SinglePlane' true/false (default false) 'PlaneLevel' integer n or 'auto' (default 'auto') for hx+ky+lz = n 'ExcludeBoundary' true/false (default false): suppress edge/vertex-only contacts 'Box_dim' override positional Box_dim if desired (3/6/9) 'Color' override positional Color 'FaceAlpha' override positional FaceAlpha</p>
 <p>Notes &bull; Handles ANY sign combination (e.g., -1 -1 1, -1 -1 -1). &bull; Determines all integer n that intersect the unit fractional cell by scanning s=hx+ky+lz over the 8 corners; optionally draws a single plane. &bull; Box_dim supports [a b c], [a b c α β γ], or [lx ly lz 0 0 xy 0 xz yz].</p>
 <p>Returns: hPatches (column vector of patch handles).</p>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="show_Hbonds_atom.html">show_Hbonds_atom</a>
+</li>
+<li>
+<a href="show_arrow.html">show_arrow</a>
+</li>
+<li>
+<a href="show_atom.html">show_atom</a>
+</li>
+<li>
+<a href="show_atom_springs.html">show_atom_springs</a>
+</li>
+<li>
+<a href="show_atomo.html">show_atomo</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> hPatches = show_miller(h,k,l,Box_dim,color,faceAlpha, varargin)
 
@@ -384,6 +407,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %
 % Returns: hPatches (column vector of patch handles).
 
+%% See also
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_arrow.html show_arrow>
+% # <show_atom.html show_atom>
+% # <show_atom_springs.html show_atom_springs>
+% # <show_atomo.html show_atomo>
+%
 function hPatches = show_miller(h,k,l,Box_dim,color,faceAlpha, varargin)
 
     % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Defaults for positionals REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH

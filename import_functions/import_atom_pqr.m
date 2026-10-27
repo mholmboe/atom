@@ -13,6 +13,13 @@
 % # atom = import_atom_pqr('molecule.pqr',[10 5 2])
 % # atom = import_atom_pqr('molecule.pqr',[10 5 0],[35.24 24.23 52.23])
 %
+%% See also
+% # <center_atom.html center_atom>
+% # <resname_atom.html resname_atom>
+% # <translate_atom.html translate_atom>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function atom = import_atom_pqr(filename,varargin)
 
 if regexp(filename,'.pqr') ~= false

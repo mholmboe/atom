@@ -7,6 +7,12 @@
 % * atom = opls_go_atom(atom,Box_dim,1.1,1.8)
 
 
+%% See also
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <element_atom.html element_atom>
+% # <oplsaa_go_param.html oplsaa_go_param>
+%
 function atom = opls_go_atom(atom,Box_dim,rmin,rlarge)
 
 % atom=atom_full;

@@ -12,6 +12,10 @@
 % # atom = translate_molid(atom,[x y z],'all') % Will translate 'all'
 % # atom = translate_molid(atom,[x y z],'SOL') % Will only translate the resname SOL
 %
+%% See also
+% # <translate_molid.html translate_molid>
+% # <molid_translate.html molid_translate>
+%
 function atom = translate_atom(atom,trans_vec,varargin)
 
 nAtoms=size([atom.x],2);

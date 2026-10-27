@@ -11,6 +11,10 @@
 % # atom=rename_type(atom,'NA','Na') % Basic input arguments
 % # atom=rename_type(atom,'NA','Na',30) % Renames the 30 last entries
 
+%% See also
+% # <remove_type.html remove_type>
+% # <rename_atom.html rename_atom>
+%
 function atom=rename_type(atom,atomtype,new_atomtype,varargin)
 
 % Find all original atomtypes to replace

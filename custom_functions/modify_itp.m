@@ -13,6 +13,9 @@
 % # itp = modify_itp(itp,index,'remove') % Remove the indexed values
 %
 
+%% See also
+% # <import_itp.html import_itp>
+%
 function itp = modify_itp(itp,index,varargin)
 % modify_itp.m
 % This function modifies a itp struct

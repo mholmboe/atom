@@ -12,6 +12,13 @@
 % # atom = slice_molid(atom,limits) % Basic input arguments
 % # atom = slice_molid(atom,limits,1) % Inverts the selected MolID's
 %
+%% See also
+% # <update_atom.html update_atom>
+% # <molid_rotate.html molid_rotate>
+% # <molid_translate.html molid_translate>
+% # <position_molid.html position_molid>
+% # <remove_molid.html remove_molid>
+%
 function atom = slice_molid(atom,limits,varargin)
 
 if size(limits,2)==3

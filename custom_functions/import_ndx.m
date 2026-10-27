@@ -12,6 +12,13 @@
 % # ndx = import_ndx(filename) % Basic input arguments
 % # ndx = import_ndx(filename,atom) % Will generate new atom structs from the defined groups
 
+%% See also
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_atom_mol2.html import_atom_mol2>
+%
 function ndx = import_ndx(filename,varargin)
 
 inputfile = fopen(filename, 'r');

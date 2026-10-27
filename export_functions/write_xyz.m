@@ -13,6 +13,13 @@
 % # write_xyz(XYZ_labels,XYZ_data,Box_dim,filename_out) % Basic input arguments, with Box_dim as a comment
 % # write_xyz(XYZ_labels,XYZ_data,[],filename_out,Comment) % Basic input arguments, with a comment string
 %
+%% See also
+% # <write_atom_xyz.html write_atom_xyz>
+% # <write_atom.html write_atom>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+%
 function write_xyz(XYZ_labels,XYZ_data,varargin)
 
 if nargin==3

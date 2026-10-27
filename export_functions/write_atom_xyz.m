@@ -10,6 +10,13 @@
 %% Examples
 % # write_atom_xyz(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+% # <write_atom_gro.html write_atom_gro>
+% # <write_atom_itp.html write_atom_itp>
+%
 function write_atom_xyz(atom,varargin)
 
 if nargin==2

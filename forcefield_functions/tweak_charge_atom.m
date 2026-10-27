@@ -12,6 +12,13 @@
 % # atom=tweak_charge_atom(atom)
 % # atom=tweak_charge_atom(atom,{'Si'}) % Will only tweak the charges for the atomtype 'Si', and make the system neutral
 %
+%% See also
+% # <charge_atom.html charge_atom>
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+% # <check_clayff_2004_charge.html check_clayff_2004_charge>
+%
 function atom=tweak_charge_atom(atom,varargin)
 
 nAtoms=size(atom,2);

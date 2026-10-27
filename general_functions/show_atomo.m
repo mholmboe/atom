@@ -30,6 +30,13 @@
 % # show_atomo(atom,Box_dim,'radii',rvec) % One radius per atom
 
 
+%% See also
+% # <plot_atom.html plot_atom>
+% # <show_atom.html show_atom>
+% # <bond_atom.html bond_atom>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_atom.html element_atom>
+%
 function show_atom(varargin)
 tic
 

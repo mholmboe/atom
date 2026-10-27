@@ -29,6 +29,13 @@
 %
 % Returns: hPatches (column vector of patch handles).
 
+%% See also
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_arrow.html show_arrow>
+% # <show_atom.html show_atom>
+% # <show_atom_springs.html show_atom_springs>
+% # <show_atomo.html show_atomo>
+%
 function hPatches = show_miller(h,k,l,Box_dim,color,faceAlpha, varargin)
 
     % -------- Defaults for positionals --------

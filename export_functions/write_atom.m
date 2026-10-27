@@ -18,6 +18,13 @@
 % # atom = write_atom(atom,Box_dim,'molecule.sdf')
 % # atom = write_atom(atom,Box_dim,'molecule.itp')
 
+%% See also
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_gro.html write_atom_gro>
+% # <write_atom_itp.html write_atom_itp>
+% # <write_atom_mol2.html write_atom_mol2>
+% # <write_atom_pdb.html write_atom_pdb>
+%
 function atom = write_atom(atom,Box_dim,filename,varargin)
 
 if iscell(filename)

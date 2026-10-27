@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_minff_lmp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_minff_lmp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,19 +97,22 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Find atomtype specific indexes</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">To only keep bonds to H's, uncomment the next three lines</a>
+<a href="#6">Find atomtype specific indexes</a>
 </li>
 <li>
-<a href="#7">To only keep bonds between Osih - H, uncomment the next four lines</a>
+<a href="#7">To only keep bonds to H's, uncomment the next three lines</a>
 </li>
 <li>
-<a href="#9">To reduce the number of bond types</a>
+<a href="#8">To only keep bonds between Osih - H, uncomment the next four lines</a>
 </li>
 <li>
-<a href="#12">To reduce the number of angle types</a>
+<a href="#10">To reduce the number of bond types</a>
+</li>
+<li>
+<a href="#13">To reduce the number of angle types</a>
 </li>
 </ul>
 </div>
@@ -123,6 +126,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ol>
 <li>write_minff_lmp(atom,Box_dim,filename) % Basic input arguments</li>
 <li>write_minff_lmp(atom,Box_dim,filename,ff) % ff being a MATLAB struct containing forcefield parameters</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_angle_atom.html">bond_angle_atom</a>
+</li>
+<li>
+<a href="charge_minff_atom.html">charge_minff_atom</a>
+</li>
+<li>
+<a href="mass_atom.html">mass_atom</a>
+</li>
+<li>
+<a href="write_minff_lmp_max_bondtypes.html">write_minff_lmp_max_bondtypes</a>
+</li>
+<li>
+<a href="write_minff_itp.html">write_minff_itp</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -216,7 +239,7 @@ Masses=[];
     round2dec(Total_charge,5)
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Find atomtype specific indexes</h2>
+<h2 id="6">Find atomtype specific indexes</h2>
 <pre class="codeinput">Bond_index=[];Angle_index=[];Dihedral_index=[];
 
 ind_Hneighbours = find(~cellfun(@isempty,regexpi([atom.type],<span class="string">'h'</span>)));
@@ -244,7 +267,7 @@ atom = bond_angle_atom(atom,Box_dim,maxrshort,maxrlong);
 <span class="comment">%     Bond_index=Bond_index(h_row,:);</span>
 <span class="comment">%     nBonds=size(Bond_index,1);</span>
 </pre>
-<h2 id="6">To only keep bonds to H's, uncomment the next three lines</h2>
+<h2 id="7">To only keep bonds to H's, uncomment the next three lines</h2>
 <pre>   [H_row,H_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_H)));
    Bond_index=Bond_index(H_row,:);
    nBonds=size(Bond_index,1);</pre>
@@ -254,7 +277,7 @@ disp(<span class="string">'Keeping only bonds with H or edge-O '</span>)
 [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Edge)));
 Bond_index=Bond_index(h_row,:);
 </pre>
-<h2 id="7">To only keep bonds between Osih - H, uncomment the next four lines</h2>
+<h2 id="8">To only keep bonds between Osih - H, uncomment the next four lines</h2>
 <pre>   disp('Keeping only bonds with H')
    [h_row,h_col]=ind2sub(size(Bond_index),find(ismember(Bond_index,ind_Osih)));
    Bond_index=Bond_index(h_row,:);
@@ -312,7 +335,7 @@ nDihedrals=size(Dihedral_index,1)
 
 <span class="keyword">if</span> nBonds&gt;0
 </pre>
-<h2 id="9">To reduce the number of bond types</h2>
+<h2 id="10">To reduce the number of bond types</h2>
 <pre class="codeinput">    bond_pairs=sort(string([[atom(Bond_index(:,1)).type]' [atom(Bond_index(:,2)).type]']),2);
 
     bond_info1=[];
@@ -367,7 +390,7 @@ nDihedrals=size(Dihedral_index,1)
 
 <span class="keyword">if</span> nAngles&gt;0
 </pre>
-<h2 id="12">To reduce the number of angle types</h2>
+<h2 id="13">To reduce the number of angle types</h2>
 <pre class="codeinput">    angle_triplets=string([[atom(Angle_index(:,1)).type]' [atom(Angle_index(:,2)).type]' [atom(Angle_index(:,3)).type]']);
 
     angle_endtypes=sort(angle_triplets(:,[1,3]),2);
@@ -648,6 +671,13 @@ fclose(fid);
 % # write_minff_lmp(atom,Box_dim,filename,ff) % ff being a MATLAB struct containing forcefield parameters
 %
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <mass_atom.html mass_atom>
+% # <write_minff_lmp_max_bondtypes.html write_minff_lmp_max_bondtypes>
+% # <write_minff_itp.html write_minff_itp>
+%
 function write_minff_lmp(atom,Box_dim,filename,varargin)
 
 % Some settings needed in order to print a proper lammps in file %%

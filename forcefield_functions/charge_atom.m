@@ -16,6 +16,13 @@
 % * atom = charge_atom(atom,Box_dim,'clayff','spc')
 % * atom = charge_atom(atom,Box_dim,'interface','tip3p','more')
 
+%% See also
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <charge_interface15_atom.html charge_interface15_atom>
+% # <charge_interface_atom.html charge_interface_atom>
+% # <check_clayff_2004_charge.html check_clayff_2004_charge>
+%
 function atom = charge_atom(atom,Box_dim,ffname,watermodel,varargin)
 
 if strcmpi(ffname,'clayff')

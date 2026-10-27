@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>autofit_geometric2LB</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="autofit_geometric2LB.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -80,37 +80,70 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ul>
 <li>
-<a href="#2">Ref c6/c12</a>
+<a href="#2">Examples</a>
 </li>
 <li>
-<a href="#3">Initial guess sig/eps</a>
+<a href="#3">See also</a>
 </li>
 <li>
-<a href="#4">Initial values</a>
+<a href="#4">Ref c6/c12</a>
 </li>
 <li>
-<a href="#5">In order to keep parameters around 1..</a>
+<a href="#5">Initial guess sig/eps</a>
 </li>
 <li>
-<a href="#6">Set lower/upper bounds</a>
+<a href="#6">Initial values</a>
 </li>
 <li>
-<a href="#7">Set Options for Optimization</a>
+<a href="#7">In order to keep parameters around 1..</a>
 </li>
 <li>
-<a href="#8">Run lsqnonlin</a>
+<a href="#8">Set lower/upper bounds</a>
+</li>
+<li>
+<a href="#9">Set Options for Optimization</a>
+</li>
+<li>
+<a href="#10">Run lsqnonlin</a>
 </li>
 </ul>
 </div>
 <pre class="codeinput">
 <span class="comment">% clear;</span>
-close <span class="string">all</span>;
+</pre>
+<h2 id="2">Examples</h2>
+<div>
+<ol>
+<li>autofit_geometric2LB % Script: convert geometric-mean mixing parameters to Lorentz-Berthelot ones</li>
+</ol>
+</div>
+<h2 id="3">See also</h2>
+<div>
+<ol>
+<li>
+<a href="ljcoul.html">ljcoul</a>
+</li>
+<li>
+<a href="ljcoul_C6C12.html">ljcoul_C6C12</a>
+</li>
+<li>
+<a href="ljcoul_objective_func.html">ljcoul_objective_func</a>
+</li>
+<li>
+<a href="autofit_2x2xljcoul.html">autofit_2x2xljcoul</a>
+</li>
+<li>
+<a href="autofit_2xljcoul.html">autofit_2xljcoul</a>
+</li>
+</ol>
+</div>
+<pre class="codeinput">close <span class="string">all</span>;
 hold <span class="string">on</span>
 format <span class="string">short</span>;
 
 r=.2:.001:1.2; <span class="comment">% nm</span>
 </pre>
-<h2 id="2">Ref c6/c12</h2>
+<h2 id="4">Ref c6/c12</h2>
 <pre class="codeinput">q1ref=0;
 q2ref=0;
 c61=2.26195E-03;
@@ -123,7 +156,7 @@ c122=2.634129e-06; <span class="comment">% Ow</span>
 <span class="comment">% OO 3.59595E-04	1.11082E-07</span>
 <span class="comment">% O  0.002261954    1.2769E-06</span>
 </pre>
-<h2 id="3">Initial guess sig/eps</h2>
+<h2 id="5">Initial guess sig/eps</h2>
 <pre class="codeinput">q1=0;
 q2=0;
 sig1=0.31656;
@@ -133,19 +166,19 @@ eps2=0.65017;
 
 [r,lj,coul,data] = ljcoul_C6C12([q1ref,q2ref,c61,c62,c121,c122],r);
 </pre>
-<h2 id="4">Initial values</h2>
+<h2 id="6">Initial values</h2>
 <pre class="codeinput">xinit    = [ q1  q2  sig1  sig2  eps1  eps2 ]
 delta    = [ 1   1   .1    1     1     1   ];
 
 x0=xinit;
 </pre>
-<h2 id="5">In order to keep parameters around 1..</h2>
+<h2 id="7">In order to keep parameters around 1..</h2>
 <pre class="codeinput">scalefactors=1./x0;
 scalefactors(scalefactors==0)=1;
 scalefactors(isinf(scalefactors))=1E18;
 x0=scalefactors.*x0;
 </pre>
-<h2 id="6">Set lower/upper bounds</h2>
+<h2 id="8">Set lower/upper bounds</h2>
 <pre class="codeinput">lb       = delta;
 ub       = 1./delta;
 
@@ -156,7 +189,7 @@ ind_neg=find(lb&gt;ub);
     ub(ind_neg)=temp;
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">Set Options for Optimization</h2>
+<h2 id="9">Set Options for Optimization</h2>
 <pre class="codeinput">objective_func_string=<span class="string">'ljcoul_objective_func(x,data,r,scalefactors)'</span>;
 eval(strcat(<span class="string">'f=@(x)'</span>,objective_func_string,<span class="string">';'</span>));
 options = optimoptions(@lsqnonlin,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'Display'</span>,<span class="string">'iter-detailed'</span>,<span class="string">'MaxFunctionEvaluations'</span>,50000,<span class="string">'MaxIterations'</span>,5000,<span class="string">'Tolfun'</span>,1e-12);
@@ -167,7 +200,7 @@ options.FiniteDifferenceStepSize = eps^(1/3);
 options.CheckGradients = true;
 options.OptimalityTolerance = 1E-18;
 </pre>
-<h2 id="8">Run lsqnonlin</h2>
+<h2 id="10">Run lsqnonlin</h2>
 <pre class="codeinput">fx=lsqnonlin(f,x0,lb,ub,options);
 
 
@@ -204,6 +237,16 @@ r_plot=.2:.001:1.2;
 <!--
 ##### SOURCE BEGIN #####
 % clear;
+%% Examples
+% # autofit_geometric2LB % Script: convert geometric-mean mixing parameters to Lorentz-Berthelot ones
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_C6C12.html ljcoul_C6C12>
+% # <ljcoul_objective_func.html ljcoul_objective_func>
+% # <autofit_2x2xljcoul.html autofit_2x2xljcoul>
+% # <autofit_2xljcoul.html autofit_2xljcoul>
+%
 close all;
 hold on
 format short;

@@ -10,8 +10,16 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # eval_systems('minff') % Objective function for the force field optimisation, called by run_opt_ff_lsqnonlin
 
 
+%% See also
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <analyze_atom.html analyze_atom>
+% # <element_atom.html element_atom>
+% # <import_xvg.html import_xvg>
+%
 function eval_systems(dirtype,varargin)
 
 ParentSimDir = pwd;

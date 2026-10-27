@@ -17,6 +17,13 @@
 % # atom = import_atom_car('molecule.car')
 % # atom = import_atom_car('molecule.car','no_counterions')
 
+%% See also
+% # <center_atom.html center_atom>
+% # <replicate_atom.html replicate_atom>
+% # <resname_atom.html resname_atom>
+% # <translate_atom.html translate_atom>
+% # <update_atom.html update_atom>
+%
 function atom = import_atom_car(filename,varargin)
 
 

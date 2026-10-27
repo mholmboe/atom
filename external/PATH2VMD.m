@@ -12,6 +12,9 @@
 %% Examples
 % # PATH2VMD
 
+%% See also
+% # <vmd.html vmd>
+%
 function PATH2VMD = PATH2VMD(varargin)
 
 % Example on a Mac computer

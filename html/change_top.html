@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>change_top</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="change_top.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,13 +76,39 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>change_top(param) % Replace the #define VAR values in the default topol.top</li>
+<li>change_top(param,'system.top') % The same, in a named topology file</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
 <li>
+<a href="#1">See also</a>
+</li>
+<li>
 <a href="#3">Open and read the topology file</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="replace_row.html">replace_row</a>
+</li>
+<li>
+<a href="replace_string.html">replace_string</a>
+</li>
+<li>
+<a href="print_top.html">print_top</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> change_top(param,varargin)
@@ -137,6 +163,15 @@ copyfile(topfilename,<span class="string">'temp.top'</span>)
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # change_top(param) % Replace the #define VAR values in the default topol.top
+% # change_top(param,'system.top') % The same, in a named topology file
+%
+%% See also
+% # <replace_row.html replace_row>
+% # <replace_string.html replace_string>
+% # <print_top.html print_top>
+%
 function change_top(param,varargin)
 
 if nargin>1

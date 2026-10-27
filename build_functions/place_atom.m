@@ -14,6 +14,10 @@
 %% Examples
 % * atom = place_atom(atom,position)
 %
+%% See also
+% # <COM_atom.html COM_atom>
+% # <translate_atom.html translate_atom>
+%
 function atom=place_atom(atom,position)
 
 if size(atom,2) < 500

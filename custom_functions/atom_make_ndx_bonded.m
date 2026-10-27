@@ -15,6 +15,13 @@
 %% Examples
 % # atom_make_ndx_bonded(filename,groupname,atomtypes) % Basic input arguments
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <import_atom.html import_atom>
+% # <atom_make_ndx.html atom_make_ndx>
+% # <gmx_make_ndx.html gmx_make_ndx>
+% # <atom_read_ndx.html atom_read_ndx>
+%
 function atom_make_ndx_bonded(filename,groupname,atomtypes)
 
 atom = import_atom(filename);

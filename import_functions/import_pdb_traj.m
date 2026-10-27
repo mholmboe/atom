@@ -12,6 +12,13 @@
 % # atom = import_pdb_traj(filename,maxFrames)
 % # atom = import_pdb_traj(filename,maxFrames,stride)
 %
+%% See also
+% # <import_mc_pdb_traj.html import_mc_pdb_traj>
+% # <import_atom_pdb.html import_atom_pdb>
+% # <import_gro_traj.html import_gro_traj>
+% # <import_traj.html import_traj>
+% # <import_xyz_traj.html import_xyz_traj>
+%
 function [atom,traj] = import_pdb_traj(filename,varargin)
 
 inputfile = fopen(filename, 'r');

@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>xrd_atom</title>
+<title>xrd_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-10">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="xrd_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,99 +76,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
-<h2>Contents</h2>
-<div>
-<ul>
-<li>
-<a href="#1">xrd_atom.m</a>
-</li>
-<li>
-<a href="#2">Various settings</a>
-</li>
-<li>
-<a href="#3">Set FWHM</a>
-</li>
-<li>
-<a href="#4">Various settings</a>
-</li>
-<li>
-<a href="#5">Preferential orientation</a>
-</li>
-<li>
-<a href="#6">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</a>
-</li>
-<li>
-<a href="#7">Set the occupancy of all sites</a>
-</li>
-<li>
-<a href="#8">Unit cell parameters</a>
-</li>
-<li>
-<a href="#9">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#10">Setting up the h,k,l values</a>
-</li>
-<li>
-<a href="#11">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#12">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#13">The structure factor, on the grid</a>
-</li>
-<li>
-<a href="#14">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#15">(the axis tables are built further down, once it is known whether the</a>
-</li>
-<li>
-<a href="#16">grid route is the one being taken)</a>
-</li>
-<li>
-<a href="#17">d-spacings and 2theta for every point of the grid</a>
-</li>
-<li>
-<a href="#18">Which reflections survive, worked out before any phase sum is spent on them</a>
-</li>
-<li>
-<a href="#19">The per-element scattering factors, evaluated once on the grid</a>
-</li>
-<li>
-<a href="#20">Apply the mask worked out above</a>
-</li>
-<li>
-<a href="#21">Order by decreasing d-spacing, as xrd_atom.m does</a>
-</li>
-<li>
-<a href="#22">Preferred orientation</a>
-</li>
-<li>
-<a href="#23">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#24">Peak shapes</a>
-</li>
-<li>
-<a href="#25">---------------------------------------------------------------------</a>
-</li>
-<li>
-<a href="#26">Divergence slit</a>
-</li>
-<li>
-<a href="#27">Surface roughness</a>
-</li>
-<li>
-<a href="#29">Accumulate weights onto a grid, splitting each between its two</a>
-</li>
-<li>
-<a href="#30">neighbouring bins so a peak centre off the grid is not snapped onto it.</a>
-</li>
-</ul>
-</div>
-<h2 id="1">xrd_atom.m</h2>
+<h1>xrd_atom.m</h1>
+<!--introduction-->
 <div>
 <ul>
 <li>This function calculates theoretical XRD patterns from an atom struct or an .pdb|.gro coordinate file having a filled orthogonal or triclinic cell. Note that the atom struct may have a occupancy and a B-factor field. If the system consists replicated unit cells, [x y z] replication factors should be passed along as a 1x3 vector, see last Example below. The peak shape can be set to Lorentizan or Gaussian or any mixture thereof. Note that the different hkl XRD reflection witdths can be set individually using the variables FWHM_00l, FWHM_hk0 and FWHM_hkl, resp. There is two ways of setting the prefered orientation, one that relates to the pref. orientation of the hkl planes, and one method dealing with the orientation of the 00l reflections as detailed in the book on Clay XRD analysis by Moore&amp;Reynolds, 1997, and used in 1D-mixed layer modelling.</li>
@@ -180,10 +89,133 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[0 0 1])
 [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[],0)   <span class="comment">% no plot</span>
 </pre>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+<li>
+<a href="#2">See also</a>
+</li>
+<li>
+<a href="#4">Various settings</a>
+</li>
+<li>
+<a href="#5">Set FWHM</a>
+</li>
+<li>
+<a href="#6">Various settings</a>
+</li>
+<li>
+<a href="#7">Preferential orientation</a>
+</li>
+<li>
+<a href="#8">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</a>
+</li>
+<li>
+<a href="#9">Set the occupancy of all sites</a>
+</li>
+<li>
+<a href="#10">Unit cell parameters</a>
+</li>
+<li>
+<a href="#11">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#12">Setting up the h,k,l values</a>
+</li>
+<li>
+<a href="#13">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#14">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#15">The structure factor, on the grid</a>
+</li>
+<li>
+<a href="#16">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#17">(the axis tables are built further down, once it is known whether the</a>
+</li>
+<li>
+<a href="#18">grid route is the one being taken)</a>
+</li>
+<li>
+<a href="#19">d-spacings and 2theta for every point of the grid</a>
+</li>
+<li>
+<a href="#20">Which reflections survive, worked out before any phase sum is spent on them</a>
+</li>
+<li>
+<a href="#21">The per-element scattering factors, evaluated once on the grid</a>
+</li>
+<li>
+<a href="#22">Apply the mask worked out above</a>
+</li>
+<li>
+<a href="#23">Order by decreasing d-spacing, as xrd_atom.m does</a>
+</li>
+<li>
+<a href="#24">Preferred orientation</a>
+</li>
+<li>
+<a href="#25">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#26">Peak shapes</a>
+</li>
+<li>
+<a href="#27">---------------------------------------------------------------------</a>
+</li>
+<li>
+<a href="#28">Divergence slit</a>
+</li>
+<li>
+<a href="#29">Surface roughness</a>
+</li>
+<li>
+<a href="#31">Accumulate weights onto a grid, splitting each between its two</a>
+</li>
+<li>
+<a href="#32">neighbouring bins so a peak centre off the grid is not snapped onto it.</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>[twotheta,intensity] = xrd_atom(atom,Box_dim) % Theoretical XRD pattern from an atom struct</li>
+<li>[twotheta,intensity] = xrd_atom('conf.gro') % The same, straight from a .pdb or .gro file The cell must be filled and either orthogonal or triclinic</li>
+</ol>
+</div>
+<h2 id="2">See also</h2>
+<div>
+<ol>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+<li>
+<a href="Bragg.html">Bragg</a>
+</li>
+<li>
+<a href="Cell2Box_dim.html">Cell2Box_dim</a>
+</li>
+<li>
+<a href="atomic_scattering_factors.html">atomic_scattering_factors</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> [exp_twotheta,intensity] = xrd_atom(varargin)
 </pre>
-<h2 id="2">Various settings</h2>
+<h2 id="4">Various settings</h2>
 <pre class="codeinput">lambda=1.54187;
 anglestep=0.02;
 exp_twotheta=2:anglestep:90;
@@ -194,10 +226,10 @@ hkl_max=0;
 write_file=0;      <span class="comment">% NEW: xrd_atom.m always wrote xrd.dat; that cost 0.35 s</span>
                    <span class="comment">% of a 9 s run and the caller already gets the arrays.</span>
 </pre>
-<h2 id="3">Set FWHM</h2>
+<h2 id="5">Set FWHM</h2>
 <pre class="codeinput">FWHM_00l=1; FWHM_hk0=.5; FWHM_hkl=.5;
 </pre>
-<h2 id="4">Various settings</h2>
+<h2 id="6">Various settings</h2>
 <pre class="codeinput">mode=0; Sample_length=4; Gonio_radius=24; Div_slit=.01; roughness=0;
 sigma_star=45; RNDPWD=1; NA=6.022E23;
 L_type=<span class="string">'normal'</span>; S1=2.3; S2=2.3;
@@ -205,17 +237,17 @@ L_type=<span class="string">'normal'</span>; S1=2.3; S2=2.3;
     monochromator=0; monochromator_angle=26.6;
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Preferential orientation</h2>
+<h2 id="7">Preferential orientation</h2>
 <pre class="codeinput">pref=0; preferred_h=1; preferred_k=1; preferred_l=1;
 </pre>
-<h2 id="6">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</h2>
+<h2 id="8">Fetch either a .pdb|.gro file or use an atom struct with its Box_dim</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> nargin==1
     filename=varargin{1};
     <span class="keyword">if</span> regexp(filename,<span class="string">'.gro'</span>) &gt; 1
-        disp(<span class="string">'Found .gro file'</span>); atom = import_atom_gro(filename);
+        disp(<span class="string">'Found .gro file'</span>); [atom,Box_dim] = import_atom_gro(filename);
     <span class="keyword">elseif</span> regexp(filename,<span class="string">'.pdb'</span>) &gt; 1
-        disp(<span class="string">'Found .pdb file'</span>); atom = import_atom_pdb(filename);
+        disp(<span class="string">'Found .pdb file'</span>); [atom,Box_dim] = import_atom_pdb(filename);
     <span class="keyword">end</span>
     assignin(<span class="string">'caller'</span>,<span class="string">'atom_xrd'</span>,atom);
     assignin(<span class="string">'caller'</span>,<span class="string">'Box_dim_xrd'</span>,Box_dim)
@@ -242,7 +274,7 @@ Cell=Box_dim2Cell(Box_dim);
     lmax=ceil(exp_twotheta(end)/Bragg(lambda,<span class="string">'distance'</span>,Cell(3)));
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">Set the occupancy of all sites</h2>
+<h2 id="9">Set the occupancy of all sites</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> size(atom,2)&lt;1000
     <span class="keyword">if</span> ~isfield(atom,<span class="string">'occupancy'</span>)
@@ -257,7 +289,7 @@ Cell=Box_dim2Cell(Box_dim);
 <span class="keyword">end</span>
 occupancy=[atom.occupancy]';
 </pre>
-<h2 id="8">Unit cell parameters</h2>
+<h2 id="10">Unit cell parameters</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> size(Box_dim,2) == 9
     lx=Box_dim(1); ly=Box_dim(2); lz=Box_dim(3);
@@ -284,10 +316,10 @@ beta=rad2deg(acos(xz/c));
 gamma=rad2deg(acos(xy/b));
 alfa_rad=alfa*pi/180; beta_rad=beta*pi/180; gamma_rad=gamma*pi/180;
 </pre>
-<h2 id="9">---------------------------------------------------------------------</h2>
-<h2 id="10">Setting up the h,k,l values</h2>
-<p>Same ordering l fastest, then k, then h -- because the (0,0,0) removal below indexes into it and because the phase sum is assembled on the (h,k,l) grid and flattened back into it.</p>
 <h2 id="11">---------------------------------------------------------------------</h2>
+<h2 id="12">Setting up the h,k,l values</h2>
+<p>Same ordering l fastest, then k, then h -- because the (0,0,0) removal below indexes into it and because the phase sum is assembled on the (h,k,l) grid and flattened back into it.</p>
+<h2 id="13">---------------------------------------------------------------------</h2>
 <pre class="codeinput">hv=(-hmax:hmax)'; kv=(-kmax:kmax)'; lv=(-lmax:lmax)';
 nH=numel(hv); nK=numel(kv); nL=numel(lv); nHKL=nH*nK*nL;
 
@@ -295,8 +327,8 @@ nH=numel(hv); nK=numel(kv); nL=numel(lv); nHKL=nH*nK*nL;
 h_values_temp = Hg(:)'; k_values_temp = Kg(:)'; l_values_temp = Lg(:)';
 i000 = hmax*nK*nL + kmax*nL + lmax + 1;  <span class="comment">% the (0,0,0) entry</span>
 </pre>
-<h2 id="12">---------------------------------------------------------------------</h2>
-<h2 id="13">The structure factor, on the grid</h2>
+<h2 id="14">---------------------------------------------------------------------</h2>
+<h2 id="15">The structure factor, on the grid</h2>
 <p>xrd_atom_legacy.m adds one atom at a time:</p>
 <pre class="language-matlab">F = F + f_n.*occ(n).*exp(2*pi*1i.*(h*x(n)+k*y(n)+l*z(n)));
 </pre>
@@ -304,10 +336,10 @@ i000 = hmax*nK*nL + kmax*nL + lmax + 1;  <span class="comment">% the (0,0,0) ent
 <pre class="language-matlab">exp(2*pi*i*(h*x + k*y + l*z)) = Ex(h,n) * Ey(k,n) * Ez(l,n)
 </pre>
 <p>so tabulating one factor per axis costs nAtoms*(nH+nK+nL) exponentials -- 909k rather than 1.6e9 -- and what is left is a complex matrix product, which BLAS does far faster than transcendentals. Measured 12.3x on the phase sum alone, agreeing with the loop to 2.9e-15 relative.</p>
-<h2 id="14">---------------------------------------------------------------------</h2>
-<h2 id="15">(the axis tables are built further down, once it is known whether the</h2>
-<h2 id="16">grid route is the one being taken)</h2>
-<h2 id="17">d-spacings and 2theta for every point of the grid</h2>
+<h2 id="16">---------------------------------------------------------------------</h2>
+<h2 id="17">(the axis tables are built further down, once it is known whether the</h2>
+<h2 id="18">grid route is the one being taken)</h2>
+<h2 id="19">d-spacings and 2theta for every point of the grid</h2>
 <pre class="codeinput">V_cell=a*b*c*(1-cos(alfa_rad)^2-cos(beta_rad)^2-cos(gamma_rad)^2+ <span class="keyword">...</span>
     2*cos(alfa_rad)*cos(beta_rad)*cos(gamma_rad))^0.5;
 hh=h_values_temp; kk=k_values_temp; ll=l_values_temp;
@@ -321,7 +353,7 @@ one_over_dhkl=1/V_cell.*<span class="keyword">...</span>
 one_over_dhkl=real(one_over_dhkl);
 two_theta_grid=real(2.*asind(one_over_dhkl*lambda/2));
 </pre>
-<h2 id="18">Which reflections survive, worked out before any phase sum is spent on them</h2>
+<h2 id="20">Which reflections survive, worked out before any phase sum is spent on them</h2>
 <p>xrd_atom.m culled the reflection list first and only then built the structure factor, so asking for one Miller index cost one reflection's worth of work. Building the whole grid and culling afterwards is faster whenever most of the grid is kept and much slower when it is not -- a single selected index went from 0.30 s to 0.68 s -- so the mask is computed first and the cheaper of the two routes is taken.</p>
 <pre class="codeinput">keep_grid = true(nHKL,1);
 keep_grid(i000) = false;                 <span class="comment">% (0,0,0), as xrd_atom.m drops it</span>
@@ -346,7 +378,7 @@ nKeep = sum(keep_grid);
 <span class="comment">% a twentieth of the grid the direct route wins.</span>
 use_grid = nKeep &gt; nHKL/20;
 </pre>
-<h2 id="19">The per-element scattering factors, evaluated once on the grid</h2>
+<h2 id="21">The per-element scattering factors, evaluated once on the grid</h2>
 <p>Grouped by element AND B factor, not by element alone. xrd_atom.m passed Bvalue(ind(1)) -- the first atom of each type -- so every other atom's temperature factor was silently discarded. B enters the scattering factor as exp(-B*(sin(theta)/lambda)^2), which depends on the reflection, so it cannot be folded into the occupancy weight; but it is constant within a (type,B) group, and grouping that way keeps the phase sum separable and costs nothing when B is uniform.</p>
 <pre class="codeinput">Atom_labels=unique(atom_type);
 [uType,~,tid]=unique(atom_type);
@@ -404,12 +436,12 @@ kg = find(keep_grid);
     F_grid = F_grid + f_n(:).*Se(:);
 <span class="keyword">end</span>
 </pre>
-<h2 id="20">Apply the mask worked out above</h2>
+<h2 id="22">Apply the mask worked out above</h2>
 <pre class="codeinput">hkl=[h_values_temp(keep_grid)' k_values_temp(keep_grid)' l_values_temp(keep_grid)'];
 F_grid=F_grid(keep_grid); two_theta_grid=two_theta_grid(keep_grid);
 one_over_dhkl=one_over_dhkl(keep_grid);
 </pre>
-<h2 id="21">Order by decreasing d-spacing, as xrd_atom.m does</h2>
+<h2 id="23">Order by decreasing d-spacing, as xrd_atom.m does</h2>
 <pre class="codeinput">d_hkl=1./one_over_dhkl;
 [d_hkl,hkl_order]=sort(d_hkl,<span class="string">'descend'</span>);
 two_theta_disc=two_theta_grid(hkl_order);
@@ -424,7 +456,7 @@ F_squared=real(F_hkl.*conj(F_hkl));
     h=h./rep_factors(1); k=k./rep_factors(2); l=l./rep_factors(3);
 <span class="keyword">end</span>
 </pre>
-<h2 id="22">Preferred orientation</h2>
+<h2 id="24">Preferred orientation</h2>
 <pre class="codeinput">theta_pref_orient=acos((h*preferred_h + k*preferred_k + l*preferred_l)./ <span class="keyword">...</span>
     ((h.^2+k.^2+l.^2).^0.5*(preferred_h^2+preferred_k^2+preferred_l^2)^0.5));
 <span class="keyword">if</span> theta_pref_orient&gt;pi/2
@@ -433,11 +465,11 @@ F_squared=real(F_hkl.*conj(F_hkl));
 F_squared=F_squared.*exp(pref*cos(2*theta_pref_orient));
 twotheta=two_theta_disc;
 </pre>
-<h2 id="23">---------------------------------------------------------------------</h2>
-<h2 id="24">Peak shapes</h2>
+<h2 id="25">---------------------------------------------------------------------</h2>
+<h2 id="26">Peak shapes</h2>
 <p>xrd_atom_legacy.m evaluates each reflection's profile over the whole 2theta grid, one reflection at a time: nHKL*numel(exp_twotheta) point evaluations, 1.7e9 here. The same sum is a convolution: put F_squared into 2theta bins, then convolve the binned spectrum once per FWHM class. The binning is linear between the two neighbouring bins, so a peak centre off the grid is split between them rather than snapped to one.</p>
 <p>Reflections outside the plotted range still contribute Lorentzian tails, so the working grid runs to 180 deg and the plotted range is cut out of it afterwards; that keeps the out-of-range tails xrd_atom.m includes.</p>
-<h2 id="25">---------------------------------------------------------------------</h2>
+<h2 id="27">---------------------------------------------------------------------</h2>
 <p>Past 180 deg on purpose: reflections beyond the Ewald limit (d &lt; lambda/2) have asind(&gt;1), whose real part pins them at 2theta = 180, and xrd_atom.m lets their Lorentzian tails into the pattern. A grid ending at 180 would clip that pile and change the result by a few percent. Binning quantises a peak centre to the working grid, an error that falls as the square of the step, so the work is done on a grid four times finer than the output and sampled back down. That costs a few percent of the runtime and takes the disagreement with the per-reflection sum from 1e-3 to below 1e-4.</p>
 <pre class="codeinput">refine = 4;
 fstep = anglestep/refine;
@@ -486,7 +518,7 @@ sl = i0:refine:(i0+refine*(numel(exp_twotheta)-1));
 
 intensity=scalefactor*(Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gauss_part);
 </pre>
-<h2 id="26">Divergence slit</h2>
+<h2 id="28">Divergence slit</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> Div_slit&gt;0
     DIV=Sample_length/(Gonio_radius*Div_slit*pi()/180).*sin(exp_twotheta./2*pi()/180);
@@ -495,7 +527,7 @@ intensity=scalefactor*(Lorentzian_factor*lorentz_part+(1-Lorentzian_factor)*gaus
     DIV=[sin(exp_twotheta/2*pi()/180)];
 <span class="keyword">end</span>
 </pre>
-<h2 id="27">Surface roughness</h2>
+<h2 id="29">Surface roughness</h2>
 <pre class="codeinput">SR=0.5*(1+(sin((exp_twotheta/2-roughness)*pi()/180)./sin((exp_twotheta/2+roughness)*pi()/180)));
 
 <span class="keyword">if</span> mode==1
@@ -583,8 +615,8 @@ assignin(<span class="string">'caller'</span>,<span class="string">'hkl'</span>,
 
 <span class="keyword">function</span> s = bin_to_grid(pos, wt, tg, step)
 </pre>
-<h2 id="29">Accumulate weights onto a grid, splitting each between its two</h2>
-<h2 id="30">neighbouring bins so a peak centre off the grid is not snapped onto it.</h2>
+<h2 id="31">Accumulate weights onto a grid, splitting each between its two</h2>
+<h2 id="32">neighbouring bins so a peak centre off the grid is not snapped onto it.</h2>
 <pre class="codeinput">s = zeros(1,numel(tg));
 u = (pos - tg(1))/step + 1;
 u = u(:); wt = wt(:);
@@ -628,6 +660,18 @@ s = s + accumarray(i0+1,wt.*fr,     [numel(tg) 1]).';
 %   [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[0 0 1])
 %   [twotheta,intensity] = xrd_atom(atom,Box_dim,[6 4 3],[],0)   % no plot
 %
+%% Examples
+% # [twotheta,intensity] = xrd_atom(atom,Box_dim) % Theoretical XRD pattern from an atom struct
+% # [twotheta,intensity] = xrd_atom('conf.gro') % The same, straight from a .pdb or .gro file
+% The cell must be filled and either orthogonal or triclinic
+%
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <Bragg.html Bragg>
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <element_atom.html element_atom>
+%
 function [exp_twotheta,intensity] = xrd_atom(varargin)
 
 %% Various settings
@@ -659,9 +703,9 @@ pref=0; preferred_h=1; preferred_k=1; preferred_l=1;
 if nargin==1
     filename=varargin{1};
     if regexp(filename,'.gro') > 1
-        disp('Found .gro file'); atom = import_atom_gro(filename);
+        disp('Found .gro file'); [atom,Box_dim] = import_atom_gro(filename);
     elseif regexp(filename,'.pdb') > 1
-        disp('Found .pdb file'); atom = import_atom_pdb(filename);
+        disp('Found .pdb file'); [atom,Box_dim] = import_atom_pdb(filename);
     end
     assignin('caller','atom_xrd',atom);
     assignin('caller','Box_dim_xrd',Box_dim)

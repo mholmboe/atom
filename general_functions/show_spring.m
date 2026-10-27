@@ -26,6 +26,13 @@
 % # show_spring([0 0 0],[3 0 0],'gap',0.4) % Shrink both ends, e.g. to clear the atoms
 %
 
+%% See also
+% # <show_atom_springs.html show_atom_springs>
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_arrow.html show_arrow>
+% # <show_atom.html show_atom>
+% # <show_atomo.html show_atomo>
+%
 function h = show_spring(p1,p2,varargin)
 %%
 

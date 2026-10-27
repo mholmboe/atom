@@ -11,6 +11,13 @@
 %% Examples
 % # atom = remove_molid(atom,[2 3 10]) % Basic input arguments
 
+%% See also
+% # <composition_atom.html composition_atom>
+% # <update_atom.html update_atom>
+% # <molid_rotate.html molid_rotate>
+% # <molid_translate.html molid_translate>
+% # <position_molid.html position_molid>
+%
 function atom = remove_molid(atom,MolID)
 
 atom(ismember([atom.molid],MolID))=[];

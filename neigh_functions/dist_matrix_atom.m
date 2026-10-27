@@ -14,6 +14,13 @@
 % # dist_matrix = dist_matrix_atom(atom1,Box_dim) % Basic input arguments
 % # dist_matrix = dist_matrix_atom(atom1,atom2,Box_dim) % Calculates the distance matrix between sites in atom1 and in atom2
 %
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <dist_matrix_noPBC_atom.html dist_matrix_noPBC_atom>
+% # <dist_matrix_xyz.html dist_matrix_xyz>
+% # <bond_matrix_atom.html bond_matrix_atom>
+%
 function [dist_matrix,X_dist,Y_dist,Z_dist] = dist_matrix_atom(atom1,varargin) % ,atom2,Box_dim); % or % ,Box_dim);
 
 format compact;

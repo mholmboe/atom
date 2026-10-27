@@ -29,6 +29,13 @@
 % # [twotheta,intensity] = xrd_atom_legacy(atom,Box_dim,[6 4 3],[0 0 1]) % Selected Miller indices
 % # [twotheta,intensity] = xrd_atom_legacy(atom,Box_dim,[6 4 3],[],0) % Do not plot
 %
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <Bragg.html Bragg>
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <element_atom.html element_atom>
+%
 function [exp_twotheta,intensity] = xrd_atom_legacy(varargin)
 
 %% Various settings

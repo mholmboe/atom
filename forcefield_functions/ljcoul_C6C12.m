@@ -14,6 +14,13 @@
 % # [r,lj,coul,Utot] = ljcoul_C6C12(param,r) % Custom distance vector r in nm
 %
 
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_12_6.html ljcoul_12_6>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+%
 function [r,lj,coul,Utot] = ljcoul_C6C12(param,varargin)
 
 q1=param(1);

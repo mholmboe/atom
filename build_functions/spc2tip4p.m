@@ -23,6 +23,13 @@
 % * tip4p_atom = spc2tip4p('SOL.pdb')
 % * tip4p_atom = spc2tip4p('SOL.gro')
 
+%% See also
+% # <import_atom.html import_atom>
+% # <update_atom.html update_atom>
+% # <write_atom_gro.html write_atom_gro>
+% # <spc2tip5p.html spc2tip5p>
+% # <spce2tip4p.html spce2tip4p>
+%
 function tip4p_atom = spc2tip4p(filename)
 
 atom=import_atom(filename); % Import the pdb/gro file

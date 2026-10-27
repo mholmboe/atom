@@ -1,3 +1,12 @@
+%% Examples
+% # change_top(param) % Replace the #define VAR values in the default topol.top
+% # change_top(param,'system.top') % The same, in a named topology file
+%
+%% See also
+% # <replace_row.html replace_row>
+% # <replace_string.html replace_string>
+% # <print_top.html print_top>
+%
 function change_top(param,varargin)
 
 if nargin>1

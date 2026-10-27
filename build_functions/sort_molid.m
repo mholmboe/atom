@@ -10,6 +10,10 @@
 %% Examples
 % * sorted_molid=sort_molid(MolID)
 %
+%% See also
+% # <replace_molid.html replace_molid>
+% # <translate_molid.html translate_molid>
+%
 function sorted_molid=sort_molid(MolID)
 
 Tot_MolID=[];

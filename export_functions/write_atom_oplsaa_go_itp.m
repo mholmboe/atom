@@ -3,6 +3,16 @@
 % * graphene oxide using some OPLS/aa atom types
 
 
+%% Examples
+% # write_atom_oplsaa_go_itp(atom,Box_dim,'go.itp') % Write a Gromacs .itp for graphene oxide using OPLS/aa atom types
+%
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+% # <element_atom.html element_atom>
+% # <oplsaa_go_param.html oplsaa_go_param>
+%
 function write_atom_oplsaa_go_itp(atom,Box_dim,filename,varargin)
 
 format long;

@@ -14,6 +14,11 @@
 % # atom = sphere_atom(atom,Box_dim,30) % Basic input arguments
 % # atom = sphere_atom(atom,Box_dim,30,[50 50 50]) % To set a new Box_dim
 %
+%% See also
+% # <center_atom.html center_atom>
+% # <replicate_atom.html replicate_atom>
+% # <update_atom.html update_atom>
+%
 function atom = sphere_atom(atom,Box_dim,radius,varargin)
 
 if min(Box_dim(1:3))<radius

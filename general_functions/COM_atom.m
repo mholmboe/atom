@@ -10,6 +10,13 @@
 %% Examples
 % * atom = COM_atom(atom,Box_dim)
 %
+%% See also
+% # <COM_molid.html COM_molid>
+% # <ave_atom.html ave_atom>
+% # <median_atom.html median_atom>
+% # <mass_atom.html mass_atom>
+% # <element_atom.html element_atom>
+%
 function atom = COM_atom(atom,varargin)
 
 if nargin > 1

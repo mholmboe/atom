@@ -11,6 +11,13 @@
 %% Examples
 % # atom = check_clayff_charge(atom)
 %
+%% See also
+% # <clayff_param.html clayff_param>
+% # <check_clayff_2004_charge.html check_clayff_2004_charge>
+% # <charge_clayff_2004_atom.html charge_clayff_2004_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <check_clayff_H2Odens.html check_clayff_H2Odens>
+%
 function atom = check_clayff_charge(atom,varargin)
 
 if nargin>1

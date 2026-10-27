@@ -15,6 +15,13 @@
 % # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index) % Also recalculates the dihedrals
 % # atom=recalc_bond_atom(atom,Box_dim,Bond_index,Angle_index,Dihedral_index,rmaxlong) % Allows setting the max cutoff
 
+%% See also
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_angle_type.html bond_angle_type>
+%
 function atom = recalc_bond_atom(atom,Box_dim,varargin)
 
 rmaxlong=2.25; % May be reset below

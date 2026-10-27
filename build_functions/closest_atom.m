@@ -20,6 +20,10 @@
 % # atom1 = closest_atom(atom1,atom2,Box_dim) % Basic input arguments
 % # atom1 = closest_atom(atom1,atom2,Box_dim,nMolId) % Basic input arguments
 %
+%% See also
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <update_atom.html update_atom>
+%
 function atom1 = closest_atom(atom1,atom2,Box_dim,varargin)
 
 atom1=update_atom(atom1);

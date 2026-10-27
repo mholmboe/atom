@@ -1,3 +1,13 @@
+%% Examples
+% # autofit_2xljcoul_batch % Script: run autofit_2xljcoul over a list of ions in one go
+%
+%% See also
+% # <autofit_2xljcoul_func.html autofit_2xljcoul_func>
+% # <radius_ion.html radius_ion>
+% # <autofit_2xljcoul.html autofit_2xljcoul>
+% # <autofit_force_2xljcoul.html autofit_force_2xljcoul>
+% # <autofit_2x2xljcoul.html autofit_2x2xljcoul>
+%
 clear all;clc;close all;
 
 Resultfile='monovalent_pseudo_1264_IOD_SPCE_v1'

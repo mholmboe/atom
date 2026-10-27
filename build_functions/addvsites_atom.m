@@ -13,6 +13,10 @@
 % # new_atom=addvsites_atom(atom,'Na','NaV',[0 0 10]) % Translates the copied sites
 % # new_atom=addvsites_atom(atom,'Na','NaV'[0 0 10],10) % Translates and copies only 10 sites
 %
+%% See also
+% # <translate_atom.html translate_atom>
+% # <update_atom.html update_atom>
+%
 function atom = addvsites_atom(atom,atomtype,new_atomtype,varargin)
 
 % Find all original atomtypes to replace

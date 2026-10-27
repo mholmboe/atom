@@ -10,6 +10,9 @@
 %% Examples
 % # atom = concatenate_atom(atom_1,atom_2) % Basic input arguments
 %
+%% See also
+% # <update_atom.html update_atom>
+%
 function atom = concatenate_atom(atom,varargin)
 disp('This old function concatenats atom sections. Use update_atom({atom_1 atom_2}) instead...')
 

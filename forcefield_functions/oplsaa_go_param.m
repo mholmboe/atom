@@ -1,4 +1,11 @@
 %% oplsaa_go_param.m - This function holds the extended oplsaa_aa ff for graphite oxide
+%% Examples
+% # oplsaa_go_param({'H','Oh','Ow','Hw'},'spc') % Load the OPLS/aa graphene oxide parameters for the listed atomtypes
+%
+%% See also
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+% # <opls_go_atom.html opls_go_atom>
+%
 function oplsaa_go_param(Atom_label,water_model)
 %% 
 

@@ -18,6 +18,12 @@
 % # Hatom = add_H_atom(atom,Box_dim,ind,nH,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
 %
 
+%% See also
+% # <find_H2O.html find_H2O>
+% # <neigh_atom.html neigh_atom>
+% # <xyz2atom.html xyz2atom>
+% # <adjust_H_atom.html adjust_H_atom>
+%
 function H_atom = add_H_atom(atom,Box_dim,varargin)
 
 % Default parameters

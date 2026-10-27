@@ -65,6 +65,13 @@
 % POSSIBILITY OF SUCH DAMAGE.
 %
 
+%% See also
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_atom.html show_atom>
+% # <show_atom_springs.html show_atom_springs>
+% # <show_atomo.html show_atomo>
+% # <show_axis.html show_axis>
+%
 function h = show_arrow(p1,p2,varargin)
 
 propertyNames = {'edgeColor'};

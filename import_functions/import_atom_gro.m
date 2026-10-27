@@ -14,6 +14,13 @@
 % # atom = import_atom_gro('molecule.gro',[10 5 0],[35.24 24.23 52.23])
 
 
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <center_atom.html center_atom>
+% # <translate_atom.html translate_atom>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function [atom, Box_dim] = import_atom_gro(filename, varargin)
 
 fileID = fopen(filename, 'r');

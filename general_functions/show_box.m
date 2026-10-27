@@ -14,6 +14,13 @@
 % # show_box(Box_dim,[0.5 0.5 0.5],2)
 % # show_box(Box_dim,[0.5 0.5 0.5],2,[1 2 3])
 %
+%% See also
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_arrow.html show_arrow>
+% # <show_atom.html show_atom>
+% # <show_atom_springs.html show_atom_springs>
+% # <show_atomo.html show_atomo>
+%
 function Simbox = show_box(Box_dim,varargin)
 
 if nargin>1

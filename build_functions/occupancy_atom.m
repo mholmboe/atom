@@ -11,6 +11,11 @@
 % * atom = occupancy_atom(atom,Box_dim) % Basic input arguments
 % * atom = occupancy_atom(atom,Box_dim,0.85) % Sets rmax to custom value
 
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <update_atom.html update_atom>
+%
 function atom = occupancy_atom(atom,Box_dim,varargin) % ,rmax);
 
 occupancy_atom=atom;

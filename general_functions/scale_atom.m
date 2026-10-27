@@ -11,6 +11,11 @@
 % # atom = scale_atom(atom,Box_dim,[1 1 1.5],'all')
 % # atom = scale_atom(atom,Box_dim,0.9 0.9 0.9,'SOL')
 %
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <update_atom.html update_atom>
+%
 function atom = scale_atom(atom,Box_dim,scale_vec,varargin)
 
 if nargin>3

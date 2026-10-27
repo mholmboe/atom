@@ -11,6 +11,12 @@
 % * atom = fuse_atom(atom,Box_dim) % Basic input arguments, rmax set to 0.85
 % * atom = fuse_atom(atom,Box_dim,1.0) % rmax set to 1 Å
 
+%% See also
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <translate_atom.html translate_atom>
+% # <update_atom.html update_atom>
+% # <wrap_atom.html wrap_atom>
+%
 function atom = fuse_atom(atom,Box_dim,varargin) % ,rmax);
 
 fused_atom=atom;

@@ -18,6 +18,13 @@
 % # write_ave_gro(confstring,'average')
 % # write_ave_gro(confstring,'median')
 
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_ave_gro.html import_ave_gro>
+% # <wrap_atom.html wrap_atom>
+% # <write_atom_gro.html write_atom_gro>
+%
 function [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(confstring,varargin)
 
 numConf=size(dir(strcat(confstring,'*')),1);

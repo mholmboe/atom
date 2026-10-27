@@ -1,3 +1,14 @@
+%% Examples
+% # dataArray = import_red_charges('charges.dat') % Read the R.E.D. charges from the default row 7
+% # dataArray = import_red_charges('charges.dat',7,20) % Read rows 7 to 20 instead
+%
+%% See also
+% # <import_ddec_charges.html import_ddec_charges>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function dataArray = import_red_charges(filename, startRow, endRow)
 %IMPORTFILE Import numeric data from a text file as column vectors.
 %   VARNAME1 = IMPORTFILE(FILENAME) Reads data from text file FILENAME for

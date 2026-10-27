@@ -10,6 +10,13 @@
 %% Examples
 % * atom = molid_rotate(atom,Box_dim,[1 2 4],'xy')
 %
+%% See also
+% # <COM_molid.html COM_molid>
+% # <molid_translate.html molid_translate>
+% # <position_molid.html position_molid>
+% # <remove_molid.html remove_molid>
+% # <slice_molid.html slice_molid>
+%
 function atom = molid_rotate(atom,Box_dim,MolID,rotate_dim)
 
 x_vec=[1 0 0];

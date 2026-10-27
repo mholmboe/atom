@@ -14,6 +14,11 @@
 %% Examples
 % # atom = wrap_molid(atom,Box_dim)
 
+%% See also
+% # <wrap_atom.html wrap_atom>
+% # <median_atom.html median_atom>
+% # <Wrap_Coord_func.html Wrap_Coord_func>
+%
 function atom = wrap_molid(atom,Box_dim)
 
 atom = median_atom(atom);

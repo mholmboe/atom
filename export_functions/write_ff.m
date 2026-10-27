@@ -1,4 +1,14 @@
 %% This function is used in the by the autofit_ff scheme
+%% Examples
+% # ff = write_ff(ff,{'Ow' 'Hw'},parameters) % Overwrite sigma [nm] and epsilon [kJ/mol] of the listed atomtypes
+% parameters is a column vector ordered as sigma1; epsilon1; sigma2; epsilon2; ...
+%
+%% See also
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+% # <write_xvg.html write_xvg>
+%
 function ff = write_ff(ff,Atom_labels,parameters,varargin)
 
 nOpt=size(Atom_labels,2);

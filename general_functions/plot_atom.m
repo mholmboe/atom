@@ -18,6 +18,13 @@
 % # plot_atom(atom,Box_dim,1,[],'axis') % Will indicate the axis ind=find(ismember(Bond_index(:,1),6)|ismember(Bond_index(:,2),6)),:)
 % # plot_atom(atom,Box_dim,Bond_index(ind)) To see all bonds to index=6
 %
+%% See also
+% # <PATH2VMD.html PATH2VMD>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <vmd.html vmd>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_color.html element_color>
+%
 function plot_atom(atom,varargin)
 
 Atom_label=unique([atom.type]);

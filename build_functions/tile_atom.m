@@ -19,6 +19,11 @@
 % # atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz') % tiles in the order of the dimensions x-y-z
 % * atom = tile_atom(atom,Box_dim,[6 4 1],[0 2.7 0],'xyz','addmolid') % Adds an increasingly new MolID to each new tile entry
 %
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <update_atom.html update_atom>
+%
 function atom = tile_atom(atom,Box_dim,replicate,translate,varargin)
 
 if numel(replicate)==1

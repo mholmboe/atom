@@ -5,6 +5,14 @@
 % other trajectory viewers cannot handle non-constant number of particles
 % in a trajectory
 
+%% Examples
+% # cat_atom % Script: set the structure filenames inside the script, then run it to append them into one .gro trajectory
+%
+%% See also
+% # <import_atom.html import_atom>
+% # <import_atom_gro.html import_atom_gro>
+% # <write_gro_traj.html write_gro_traj>
+%
 filename='evap_'
 nSim=120;
 atom0=import_atom(strcat(filename,'120.gro'));

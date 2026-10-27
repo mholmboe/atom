@@ -11,6 +11,9 @@
 %% Examples
 % # atom = spiral_atom(atom,Box_dim,[0 0 90])
 %
+%% See also
+% # <translate_atom.html translate_atom>
+%
 function atom = spiral_atom(atom,Box_dim,angles,varargin)
 
 if nargin>3

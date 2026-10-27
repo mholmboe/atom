@@ -13,6 +13,12 @@
 % # radii = radius_crystal('Fe',+2)
 % # radii = radius_crystal('Fe',+2,6)
 
+%% See also
+% # <radius_atom.html radius_atom>
+% # <radius_ion.html radius_ion>
+% # <radius_vdw.html radius_vdw>
+% # <radius_crystal_old.html radius_crystal_old>
+%
 function [radii,Atom_label] = radius_crystal(Atom_label,varargin)
 
 if ~iscell(Atom_label)

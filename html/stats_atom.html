@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>stats_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="stats_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -98,7 +98,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">What to do if atom(i) is a free ion with no bonds or angles?</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#6">What to do if atom(i) is a free ion with no bonds or angles?</a>
 </li>
 </ul>
 </div>
@@ -111,6 +114,33 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <pre class="language-matlab">result =  stats_atom(atom, Box_dim)
 result =  stats_atom(atom, Box_dim, log_file)
 </pre>
+<div>
+<ol>
+<li>result = stats_atom(atom,Box_dim) % Print a report of atomtypes, coordination, charges, bonds and angles</li>
+<li>result = stats_atom(atom,Box_dim,'stats.log') % The same, also written to a log file</li>
+<li>result = stats_atom(atom,Box_dim,'stats.log',1.25,2.45) % The same, with explicit rmaxshort and rmaxlong cutoffs</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_angle_atom.html">bond_angle_atom</a>
+</li>
+<li>
+<a href="analyze_atom.html">analyze_atom</a>
+</li>
+<li>
+<a href="composition_atom.html">composition_atom</a>
+</li>
+<li>
+<a href="check_atom.html">check_atom</a>
+</li>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> result =  stats_atom(atom,Box_dim,log_file,varargin)
 
@@ -150,7 +180,7 @@ bond_type_pairs = containers.Map(<span class="string">'KeyType'</span>, <span cl
 angle_type_triplets = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 
 <span class="comment">%</span>
-atom=bond_atom(atom,Box_dim,2.45);
+atom=bond_atom(atom,Box_dim,rmaxlong);
 
 <span class="comment">% Gather coordination information</span>
 <span class="keyword">for</span> i = 1:length(atom)
@@ -226,7 +256,7 @@ atom=bond_atom(atom,Box_dim,2.45);
 
         <span class="keyword">if</span> sum([atom(i).angle.index])&gt;0
 </pre>
-<h2 id="5">What to do if atom(i) is a free ion with no bonds or angles?</h2>
+<h2 id="6">What to do if atom(i) is a free ion with no bonds or angles?</h2>
 <pre class="codeinput">            <span class="keyword">for</span> a = 1:size(atom(i).angle.angle, 1)
                 <span class="comment">% angle_data format is expected to be [neigh1_idx, neigh2_idx, angle_value]</span>
                 neigh1_idx = atom(i).angle.index(a, 1);
@@ -728,6 +758,16 @@ result = sprintf(<span class="string">'%s\n'</span>, output{:});
 %   result =  stats_atom(atom, Box_dim)
 %   result =  stats_atom(atom, Box_dim, log_file)
 %
+% # result = stats_atom(atom,Box_dim) % Print a report of atomtypes, coordination, charges, bonds and angles
+% # result = stats_atom(atom,Box_dim,'stats.log') % The same, also written to a log file
+% # result = stats_atom(atom,Box_dim,'stats.log',1.25,2.45) % The same, with explicit rmaxshort and rmaxlong cutoffs
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <analyze_atom.html analyze_atom>
+% # <composition_atom.html composition_atom>
+% # <check_atom.html check_atom>
+% # <Box_dim2Cell.html Box_dim2Cell>
+%
 function result =  stats_atom(atom,Box_dim,log_file,varargin)
 
 % Box_dim to Cell
@@ -766,7 +806,7 @@ bond_type_pairs = containers.Map('KeyType', 'char', 'ValueType', 'any');
 angle_type_triplets = containers.Map('KeyType', 'char', 'ValueType', 'any');
 
 %
-atom=bond_atom(atom,Box_dim,2.45);
+atom=bond_atom(atom,Box_dim,rmaxlong);
 
 % Gather coordination information
 for i = 1:length(atom)

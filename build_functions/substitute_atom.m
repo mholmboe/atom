@@ -15,6 +15,12 @@
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5) % Will perform both octahedral and tetrahedral replacements
 % # atom = substitute_atom(atom,Box_dim,5,'Al','Mgo',5.5,2,'Si','Al',5.5,-2.5,12.5,3) % Only subst. between z>-2.5 and z<12.5 in the z-direction (3).
 %
+%% See also
+% # <composition_atom.html composition_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <translate_atom.html translate_atom>
+% # <substitute_NonCentroSymm_atom.html substitute_NonCentroSymm_atom>
+%
 function atom = substitute_atom(atom,Box_dim,NumOctSubst,O1,O2,minO2O2_dist,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % If you want to replicate the box, edit this section. UCinX,UCinY,UCinY will not be used when building edges

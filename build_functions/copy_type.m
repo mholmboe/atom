@@ -12,6 +12,11 @@
 % # new_atom=copy_type(atom,'Al','Mgo','ION',[0 0 10]) % Translates the copied sites
 % # new_atom=copy_type(atom,'Al','Mgo','ION',[0 0 10],10)  % Translates and copies only 10 sites
 %
+%% See also
+% # <translate_atom.html translate_atom>
+% # <copy_atom.html copy_atom>
+% # <number_type.html number_type>
+%
 function new_atom=copy_type(atom,atomtype,new_atomtype,new_resname,trans_vec,varargin)
 %% 
 

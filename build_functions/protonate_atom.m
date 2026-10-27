@@ -17,6 +17,13 @@
 % # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'}) % {'He'} can be used to change the default atomtype H to He
 % # Hatom = protonate_atom(atom,Box_dim,ind,rmaxlong,{'He'},'minus') % 'minus' or default 'plus' denotes the tilt direction of the added H in the Z-direction
 %
+%% See also
+% # <analyze_atom.html analyze_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+% # <neigh_atom.html neigh_atom>
+% # <translate_atom.html translate_atom>
+%
 function H_atom = protonate_atom(atom,Box_dim,varargin)
 
 if numel(Box_dim)==1

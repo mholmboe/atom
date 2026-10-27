@@ -11,6 +11,11 @@
 % # clayff_param(Atom_label)
 % # clayff_param(Atom_label,'spc')
 %
+%% See also
+% # <clayff_param.html clayff_param>
+% # <minff_atom_mini.html minff_atom_mini>
+% # <clayff_atom_old.html clayff_atom_old>
+%
 function minff_param(Atom_label,varargin)
 
 if nargin < 2

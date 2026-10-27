@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>draw_box_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="draw_box_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -96,6 +96,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -111,6 +114,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2) % Line thickness</li>
 <li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times</li>
 <li>draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+<li>
+<a href="show_box.html">show_box</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -254,6 +268,10 @@ axis <span class="string">normal</span> <span class="string">tight</span> <span 
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2) % Line thickness
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,2) % Replicate box/lattice 2 times
 % # draw_box_atom(Box_dim,[0.5 0.5 0.5],2,[2 3 1]) % Replicate box/lattice [2 3 1] times in x y z directions
+%
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <show_box.html show_box>
 %
 function Simbox = draw_box_atom(Box_dim,varargin)
 

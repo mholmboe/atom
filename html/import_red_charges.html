@@ -6,10 +6,10 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>import_red_charges</title>
+<title>Examples</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="import_red_charges.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,9 +76,21 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<div>
+<ol>
+<li>dataArray = import_red_charges('charges.dat') % Read the R.E.D. charges from the default row 7</li>
+<li>dataArray = import_red_charges('charges.dat',7,20) % Read rows 7 to 20 instead</li>
+</ol>
+</div>
+<!--/introduction-->
 <h2>Contents</h2>
 <div>
 <ul>
+<li>
+<a href="#1">See also</a>
+</li>
 <li>
 <a href="#3">Initialize variables.</a>
 </li>
@@ -122,6 +134,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#17">Allocate imported array to column variable names</a>
 </li>
 </ul>
+</div>
+<h2 id="1">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_ddec_charges.html">import_ddec_charges</a>
+</li>
+<li>
+<a href="import_CONECT.html">import_CONECT</a>
+</li>
+<li>
+<a href="import_atom.html">import_atom</a>
+</li>
+<li>
+<a href="import_atom_car.html">import_atom_car</a>
+</li>
+<li>
+<a href="import_atom_gro.html">import_atom_gro</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> dataArray = import_red_charges(filename, startRow, endRow)
@@ -263,6 +295,17 @@ sum(VarName9)
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Examples
+% # dataArray = import_red_charges('charges.dat') % Read the R.E.D. charges from the default row 7
+% # dataArray = import_red_charges('charges.dat',7,20) % Read rows 7 to 20 instead
+%
+%% See also
+% # <import_ddec_charges.html import_ddec_charges>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function dataArray = import_red_charges(filename, startRow, endRow)
 %IMPORTFILE Import numeric data from a text file as column vectors.
 %   VARNAME1 = IMPORTFILE(FILENAME) Reads data from text file FILENAME for

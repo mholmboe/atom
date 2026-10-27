@@ -11,6 +11,12 @@
 % # interface_param(Atom_label)
 % # interface_param(Atom_label,'tip3p')
 %
+%% See also
+% # <charge_interface_atom.html charge_interface_atom>
+% # <check_interface_charge.html check_interface_charge>
+% # <interface15_param.html interface15_param>
+% # <interface_atom.html interface_atom>
+%
 function interface_param(Atom_label,varargin)
 
 if nargin < 2

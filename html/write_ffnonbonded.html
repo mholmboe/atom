@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_ffnonbonded.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -77,6 +77,43 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <body>
 <div class="content">
 <h1>This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+<li>
+<a href="#2">See also</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>ff = write_ffnonbonded('minff') % Write a ffnonbonded.itp for the named force field</li>
+<li>ff = write_ffnonbonded('clayff',{'Ow'},parameters) % The same, overriding the parameters of selected atomtypes</li>
+</ol>
+</div>
+<h2 id="2">See also</h2>
+<div>
+<ol>
+<li>
+<a href="write_ff.html">write_ff</a>
+</li>
+<li>
+<a href="write_ffnonbonded_C6C12.html">write_ffnonbonded_C6C12</a>
+</li>
+<li>
+<a href="write_tabulated_potentials.html">write_tabulated_potentials</a>
+</li>
+<li>
+<a href="write_xvg.html">write_xvg</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> ff = write_ffnonbonded(ffname,varargin)
 
@@ -207,6 +244,16 @@ disp(<span class="string">'ffnonbonded.itp structure file written'</span>)
 <!--
 ##### SOURCE BEGIN #####
 %% This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol
+%% Examples
+% # ff = write_ffnonbonded('minff') % Write a ffnonbonded.itp for the named force field
+% # ff = write_ffnonbonded('clayff',{'Ow'},parameters) % The same, overriding the parameters of selected atomtypes
+%
+%% See also
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+% # <write_xvg.html write_xvg>
+%
 function ff = write_ffnonbonded(ffname,varargin)
 
 if nargin>1

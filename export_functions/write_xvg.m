@@ -1,3 +1,12 @@
+%% Examples
+% # write_xvg(twotheta,intensity,'pattern.xvg') % Write two columns of data to a Gromacs .xvg file
+%
+%% See also
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+%
 function write_xvg(xdata,ydata,inputfile,varargin)
 %% write_xvg.m
 %% This function allows you to write a xvg file based on a previous file,

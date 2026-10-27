@@ -12,6 +12,13 @@
 % # [atom,traj] = import_gro_traj(filename,maxFrames)
 % # [atom,traj] = import_gro_traj(filename,maxFrames,stride)
 %
+%% See also
+% # <resname_atom.html resname_atom>
+% # <import_atom_gro.html import_atom_gro>
+% # <import_ave_gro.html import_ave_gro>
+% # <import_mc_pdb_traj.html import_mc_pdb_traj>
+% # <import_pdb_traj.html import_pdb_traj>
+%
 function [atom,traj] = import_gro_traj(filename,varargin)
 
 % Get the number of atoms and frames

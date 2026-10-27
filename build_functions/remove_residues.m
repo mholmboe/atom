@@ -11,6 +11,13 @@
 %% Examples
 % # atom = remove_residues(atom,'SOL',10,20,'z') % Basic input arguments
 %
+%% See also
+% # <remove_SOL.html remove_SOL>
+% # <remove_molid.html remove_molid>
+% # <remove_occypancy_atom.html remove_occypancy_atom>
+% # <remove_resname.html remove_resname>
+% # <remove_type.html remove_type>
+%
 function atom = remove_residues(atom,resnames,lo,hi,dim)
 
 nAtoms=size(atom,2);

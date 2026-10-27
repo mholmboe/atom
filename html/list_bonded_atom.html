@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>list_bonded_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="list_bonded_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,10 +97,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#4">Bonds</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#7">Angles</a>
+<a href="#5">Bonds</a>
+</li>
+<li>
+<a href="#8">Angles</a>
 </li>
 </ul>
 </div>
@@ -115,13 +118,30 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>[Bonded_list] = list_bonds_atom(atom,Bond_index)</li>
 </ol>
 </div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="list_bonds_atom.html">list_bonds_atom</a>
+</li>
+<li>
+<a href="cell_list_dist_matrix_atom.html">cell_list_dist_matrix_atom</a>
+</li>
+<li>
+<a href="cell_list_dist_matrix_atom1atom2.html">cell_list_dist_matrix_atom1atom2</a>
+</li>
+<li>
+<a href="find_bonded_atom.html">find_bonded_atom</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> Bond_order = list_bonded_atom(atom,Bond_index)
 
 
 <span class="keyword">if</span> size(Bond_index,2)==3
 </pre>
-<h2 id="4">Bonds</h2>
+<h2 id="5">Bonds</h2>
 <pre class="codeinput">    N = size(Bond_index, 1);
     bondDistances = Bond_index(:,3);
 
@@ -165,7 +185,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </pre>
 <pre class="codeinput">    Angle_index=Bond_index;
 </pre>
-<h2 id="7">Angles</h2>
+<h2 id="8">Angles</h2>
 <pre class="codeinput">    angleTypes = cell(size(Angle_index,1), 3);
     angleAngles = Angle_index(:,4);
 
@@ -290,6 +310,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %% Examples
 % # [Bonded_list] = list_bonds_atom(atom,Bond_index)
 
+%% See also
+% # <list_bonds_atom.html list_bonds_atom>
+% # <cell_list_dist_matrix_atom.html cell_list_dist_matrix_atom>
+% # <cell_list_dist_matrix_atom1atom2.html cell_list_dist_matrix_atom1atom2>
+% # <find_bonded_atom.html find_bonded_atom>
+%
 function Bond_order = list_bonded_atom(atom,Bond_index)
 
 

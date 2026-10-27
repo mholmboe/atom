@@ -10,6 +10,13 @@
 %% Examples
 % # write_atom_sdf(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <bond_atom.html bond_atom>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+% # <write_atom_gro.html write_atom_gro>
+%
 function write_atom_sdf(atom,Box_dim,filename_out,varargin)
 
 if regexp(filename_out,'.sdf') ~= false

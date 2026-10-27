@@ -9,11 +9,20 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
+% # interface15_param({'Si','Al','Ow','Hw'}) % Load the extended INTERFACE parameters for the listed atomtypes
+% # ind = find(ismember({forcefield.interface15.atom},'Hw')) % Find the index of a given atomtype afterwards
 
 %% Examples
 % * interface15_param({'AY1'},'tip3p')
 
 
+%% See also
+% # <charge_interface15_atom.html charge_interface15_atom>
+% # <check_interface15_charge.html check_interface15_charge>
+% # <interface15_atom.html interface15_atom>
+% # <interface15_silica_atom.html interface15_silica_atom>
+% # <interface_param.html interface_param>
+%
 function interface15_param(Atom_label,varargin)
 %
 

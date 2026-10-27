@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_atom_dodecahedron_gro.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_atom_dodecahedron_gro.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,16 +97,19 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Box vectors for the .gro format is (free format, space separated reals), values:</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">Box matrix</a>
+<a href="#6">Box vectors for the .gro format is (free format, space separated reals), values:</a>
 </li>
 <li>
-<a href="#8">Rhombic dodcahdron (xy-hexagon)</a>
+<a href="#7">Box matrix</a>
 </li>
 <li>
-<a href="#10">Rhombic dodcahdron (xy-square, gromacs default)</a>
+<a href="#9">Rhombic dodcahdron (xy-hexagon)</a>
+</li>
+<li>
+<a href="#11">Rhombic dodcahdron (xy-square, gromacs default)</a>
 </li>
 </ul>
 </div>
@@ -119,6 +122,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ol>
 <li>write_atom_gro(atom,Box_dim,d,type,filename_out) % Basic input arguments. d is the corresponding cubic Box size, type is either 'square' or 'hex'. See <a href="http://manual.gromacs.org/current/reference-manual/algorithms/periodic-boundary-conditions.html">http://manual.gromacs.org/current/reference-manual/algorithms/periodic-boundary-conditions.html</a>
+</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="write_atom_gro.html">write_atom_gro</a>
+</li>
+<li>
+<a href="Box_dim2Cell.html">Box_dim2Cell</a>
+</li>
+<li>
+<a href="write_atom_multiple_gro.html">write_atom_multiple_gro</a>
+</li>
+<li>
+<a href="write_atom_all.html">write_atom_all</a>
+</li>
+<li>
+<a href="write_atom_cif.html">write_atom_cif</a>
 </li>
 </ol>
 </div>
@@ -142,16 +165,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     Box_dim(3)=Box_dim(1);
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
+<h2 id="6">Box vectors for the .gro format is (free format, space separated reals), values:</h2>
 <p>v1(x) v2(y) v3(z) v1(y) v1(z) v2(x) v2(z) v3(x) v3(y) the last 6 values may be omitted (they will be set to zero) when all angles are 90 GROMACS only supports boxes with v1(y)=v1(z)=v2(z)=0.</p>
-<h2 id="6">Box matrix</h2>
+<h2 id="7">Box matrix</h2>
 <p>v1(x) v2(x) v3(x) v1(x) v2(x) v3(x) v1(y) v2(y) v3(y) == 0 v2(y) v3(y) v1(z) v2(z) v3(z) 0 0 v3(z)</p>
 <pre class="codeinput">
 <span class="keyword">if</span> strncmpi(type,<span class="string">'hex'</span>,3)
 </pre>
 <pre class="codeinput">    type=<span class="string">'hexagon along xy plane'</span>
 </pre>
-<h2 id="8">Rhombic dodcahdron (xy-hexagon)</h2>
+<h2 id="9">Rhombic dodcahdron (xy-hexagon)</h2>
 <pre class="codeinput">    Box_matrix=[<span class="keyword">...</span>
         d    1/2*d       1/2*d;<span class="keyword">...</span>
         0    1/2*3^0.5*d 1/6*3^0.5*d;<span class="keyword">...</span>
@@ -161,7 +184,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <pre class="codeinput">
 <span class="keyword">else</span>
 </pre>
-<h2 id="10">Rhombic dodcahdron (xy-square, gromacs default)</h2>
+<h2 id="11">Rhombic dodcahdron (xy-square, gromacs default)</h2>
 <pre class="codeinput">    type=<span class="string">'square along xy plane'</span>
     Box_matrix=[<span class="keyword">...</span>
         d    0   1/2*d;<span class="keyword">...</span>
@@ -233,6 +256,13 @@ Cell=Box_dim2Cell(Box_dim)
 % # write_atom_gro(atom,Box_dim,d,type,filename_out) % Basic input
 % arguments. d is the corresponding cubic Box size, type is either 'square'
 % or 'hex'. See http://manual.gromacs.org/current/reference-manual/algorithms/periodic-boundary-conditions.html
+%
+%% See also
+% # <write_atom_gro.html write_atom_gro>
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
 %
 function [atom,Box_dim,Cell] = write_atom_dodecahedron_gro(atom,Box_dim,d,type,varargin)
 

@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_mdp.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_mdp.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -95,7 +95,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#4">Version</a>
 </li>
 <li>
-<a href="#6">Create vars for the sections</a>
+<a href="#5">Examples</a>
+</li>
+<li>
+<a href="#6">See also</a>
+</li>
+<li>
+<a href="#8">Create vars for the sections</a>
 </li>
 </ul>
 </div>
@@ -105,6 +111,21 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </h2>
 <h2 id="4">Version</h2>
 <p>3.0.1</p>
+<h2 id="5">Examples</h2>
+<div>
+<ol>
+<li>write_mdp(mdp) % Write the mdp struct to the default out.mdp</li>
+<li>write_mdp(mdp,'grompp.mdp') % Write the mdp struct to a named file</li>
+</ol>
+</div>
+<h2 id="6">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_mdp.html">import_mdp</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> write_mdp(mdp,varargin)
 </pre>
@@ -115,7 +136,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     mdp_filename_out=<span class="string">'out.mdp'</span>;
 <span class="keyword">end</span>
 </pre>
-<h2 id="6">Create vars for the sections</h2>
+<h2 id="8">Create vars for the sections</h2>
 <pre class="codeinput">param = fieldnames(mdp);
 
 fid = fopen(mdp_filename_out, <span class="string">'wt'</span>);
@@ -171,6 +192,13 @@ fclose(fid);
 %% Version
 % 3.0.1
 
+%% Examples
+% # write_mdp(mdp) % Write the mdp struct to the default out.mdp
+% # write_mdp(mdp,'grompp.mdp') % Write the mdp struct to a named file
+%
+%% See also
+% # <import_mdp.html import_mdp>
+%
 function write_mdp(mdp,varargin)
 
 if nargin>1

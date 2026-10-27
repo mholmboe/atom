@@ -1,3 +1,13 @@
+%% Examples
+% # import_xyz('molecule.xyz') % Import a .xyz file, the results are assigned in the calling workspace
+%
+%% See also
+% # <import_atom_xyz.html import_atom_xyz>
+% # <import_xyz_traj.html import_xyz_traj>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function import_xyz(XYZ_filename)
 %% import_xyz.m - This function imports an .xyz file. Atom types should be made of letters, not numbers... Try the import_atom_xyz function instead...
 

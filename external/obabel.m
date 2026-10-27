@@ -3,6 +3,9 @@
 % Note that you might need a '\' to skip spaces, or double quotations as
 % in "'PATH'"
 
+%% Examples
+% # obabel('-ipdb in.pdb -oxyz out.xyz') % Call the external Open Babel program, set its path at the top of this file
+%
 function obabel(varargin)
 
 if nargin>0

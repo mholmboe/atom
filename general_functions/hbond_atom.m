@@ -12,6 +12,10 @@
 % # atom=hbond_atom(atom,Box_dim,hb_dist) % Sets the X-H-X distance
 % # atom=hbond_atom(atom,Box_dim,hb_dist,hbangle) % Sets the X-H-X angle
 
+%% See also
+% # <bond_angle_type.html bond_angle_type>
+% # <write_atom_pdb.html write_atom_pdb>
+%
 function atom=hbond_atom(atom,Box_dim,varargin)
 
 format short

@@ -1,3 +1,14 @@
+%% Examples
+% # write_itp(itp,'out.itp') % Write an imported itp struct back to a .itp file
+% # write_itp(itp,'out.itp',1.1,0.9) % The same, scaling all sigma by 1.1 and all epsilon by 0.9
+%
+%% See also
+% # <write_atom_itp.html write_atom_itp>
+% # <write_atom_oplsaa_go_itp.html write_atom_oplsaa_go_itp>
+% # <write_custom_itp.html write_custom_itp>
+% # <write_minff_itp.html write_minff_itp>
+% # <write_atom.html write_atom>
+%
 function write_itp(itp,filename,varargin)
 %% write_itp.m
 %% This function prints a gromacs .itp file from a itp struct

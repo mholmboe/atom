@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>write_tabulated_potentials</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="write_tabulated_potentials.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -76,10 +76,47 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </head>
 <body>
 <div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Examples</a>
+</li>
+<li>
+<a href="#3">See also</a>
+</li>
+</ul>
+</div>
 <pre class="codeinput">
 <span class="comment">% function ff = write_tabulated_potentials(r,q,c6,c12)</span>
-
-format <span class="string">long</span>
+</pre>
+<h2 id="2">Examples</h2>
+<div>
+<ol>
+<li>write_tabulated_potentials % Script: set the potential parameters inside the script, then run it to write Gromacs table files</li>
+</ol>
+</div>
+<h2 id="3">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_xvg.html">import_xvg</a>
+</li>
+<li>
+<a href="nonbonded_ff.html">nonbonded_ff</a>
+</li>
+<li>
+<a href="write_ff.html">write_ff</a>
+</li>
+<li>
+<a href="write_ffnonbonded.html">write_ffnonbonded</a>
+</li>
+<li>
+<a href="write_ffnonbonded_C6C12.html">write_ffnonbonded_C6C12</a>
+</li>
+</ol>
+</div>
+<pre class="codeinput">format <span class="string">long</span>
 
 Ion1=<span class="string">'Na+'</span>
 Ion2=<span class="string">'Na+'</span>
@@ -195,6 +232,16 @@ fclose(fid);
 ##### SOURCE BEGIN #####
 % function ff = write_tabulated_potentials(r,q,c6,c12)
 
+%% Examples
+% # write_tabulated_potentials % Script: set the potential parameters inside the script, then run it to write Gromacs table files
+%
+%% See also
+% # <import_xvg.html import_xvg>
+% # <nonbonded_ff.html nonbonded_ff>
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+%
 format long
 
 Ion1='Na+'

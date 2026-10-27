@@ -18,6 +18,13 @@
 % # atom=minff_atom(atom,Box_dim,'minff')
 % # atom=minff_atom(atom,Box_dim,'minff',heal_iterations)
 
+%% See also
+% # <adjust_H_atom.html adjust_H_atom>
+% # <bond_atom.html bond_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <element_atom.html element_atom>
+% # <ff_atom.html ff_atom>
+%
 function atom=minff_atom(atom,Box_dim,varargin)
 %%
 format compact;

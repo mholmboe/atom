@@ -17,6 +17,13 @@
 % # atom = import_atom('molecule.mol2',[10 5 2])
 % # atom = import_atom('molecule.mol2',[10 5 0],[35.24 24.23 52.23])
 %
+%% See also
+% # <import_atom.html import_atom>
+% # <center_atom.html center_atom>
+% # <translate_atom.html translate_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function atom = import_atom_mol2(filename,varargin)
 
 fid = fopen(filename,'r');

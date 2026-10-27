@@ -1,3 +1,13 @@
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_2x(param) % LJ + Coulomb for two interaction sites
+%
+%% See also
+% # <ljcoul_2x_force.html ljcoul_2x_force>
+% # <ljcoul_2x_force_objective_func.html ljcoul_2x_force_objective_func>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul.html ljcoul>
+% # <ljcoul_12_6.html ljcoul_12_6>
+%
 function [r,lj,coul,Utot] = ljcoul_2x(param,varargin)
 
 q11=param(1);

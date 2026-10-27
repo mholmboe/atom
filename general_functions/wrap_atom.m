@@ -13,6 +13,13 @@
 % # atom = wrap_atom(atom,Box_dim)
 % # atom = wrap_atom(atom,Box_dim,'xy')
 %
+%% See also
+% # <Cell2Box_dim.html Cell2Box_dim>
+% # <orto_atom.html orto_atom>
+% # <scale_atom.html scale_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <Wrap_Coord_func.html Wrap_Coord_func>
+%
 function atom = wrap_atom(atom,Box_dim,varargin)
 
 attribut_in=fieldnames(atom);

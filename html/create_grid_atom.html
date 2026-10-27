@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>create_grid_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="create_grid_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -94,13 +94,30 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#1">Examples</a>
 </li>
+<li>
+<a href="#2">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Examples</h2>
 <div>
 <ul>
-<li>atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])</li>
+<li>atom = create_grid_atom(atom_label,12,[20 15 2],'xy',[5 5 0])</li>
 </ul>
+</div>
+<h2 id="2">See also</h2>
+<div>
+<ol>
+<li>
+<a href="create_atom.html">create_atom</a>
+</li>
+<li>
+<a href="add2atom.html">add2atom</a>
+</li>
+<li>
+<a href="translate_atom.html">translate_atom</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">
 <span class="keyword">function</span> atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
@@ -256,8 +273,13 @@ disp(<span class="string">'atom grid created!'</span>);
 % * Please report problems/bugs to michael.holmboe@umu.se
 
 %% Examples
-% * atom = grid2atom(atom_label,12,[20 15 2],'xy',[5 5 0])
+% * atom = create_grid_atom(atom_label,12,[20 15 2],'xy',[5 5 0])
 
+%% See also
+% # <create_atom.html create_atom>
+% # <add2atom.html add2atom>
+% # <translate_atom.html translate_atom>
+%
 function atom = create_grid_atom(atom_label,nM,limits,dim,varargin)
  
 

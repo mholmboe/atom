@@ -10,6 +10,10 @@
 %% Examples
 % # atom = COM_atom(atom,Box_dim)
 %
+%% See also
+% # <COM_atom.html COM_atom>
+% # <COM_molid.html COM_molid>
+%
 function AtomCoords_COM = COM_SOL(MolID,XYZ_data,Atom_label,XYZ_labels,Box_dim)
 
 All_index = MolID{1};

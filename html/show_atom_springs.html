@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_atom_springs.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-10">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="show_atom_springs.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -141,25 +141,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">--- find the bonds and angles, unless an explicit list was given ---</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">--- assemble the spring list ---</a>
+<a href="#6">--- find the bonds and angles, unless an explicit list was given ---</a>
 </li>
 <li>
-<a href="#7">--- set up the figure, as in show_atom ---</a>
+<a href="#7">--- assemble the spring list ---</a>
 </li>
 <li>
-<a href="#8">--- draw the atoms, unless only the springs were asked for ---</a>
+<a href="#8">--- set up the figure, as in show_atom ---</a>
 </li>
 <li>
-<a href="#9">--- draw the springs ---</a>
+<a href="#9">--- draw the atoms, unless only the springs were asked for ---</a>
 </li>
 <li>
-<a href="#10">--- optionally also the usual bond cylinders ---</a>
+<a href="#10">--- draw the springs ---</a>
 </li>
 <li>
-<a href="#11">--- the simulation box ---</a>
+<a href="#11">--- optionally also the usual bond cylinders ---</a>
+</li>
+<li>
+<a href="#12">--- the simulation box ---</a>
 </li>
 </ul>
 </div>
@@ -191,6 +194,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>show_atom_springs(atom,Box_dim,'spring','angles','angleFace','sector','faceAlpha',0.4)</li>
 <li>show_atom_springs(atom,Box_dim,'spring','angles','angleFace','sector','sectorRadius',1.2)</li>
 <li>show_atom_springs(atom,Box_dim,'spring','angles','angleFace','sector','sectorSpan',0.8)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_atom.html">bond_atom</a>
+</li>
+<li>
+<a href="show_atom.html">show_atom</a>
+</li>
+<li>
+<a href="show_spring.html">show_spring</a>
+</li>
+<li>
+<a href="draw_box_atom.html">draw_box_atom</a>
+</li>
+<li>
+<a href="element_color.html">element_color</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -303,7 +326,7 @@ radii(water_ind) = bond_radii;
 <span class="keyword">end</span>
 radii = p.radiiScale * radii;
 </pre>
-<h2 id="5">--- find the bonds and angles, unless an explicit list was given ---</h2>
+<h2 id="6">--- find the bonds and angles, unless an explicit list was given ---</h2>
 <pre class="codeinput">Bond_index = []; Angle_index = [];
 need_scan = isempty(p.spring_index) &amp;&amp; ~strcmpi(p.spring,<span class="string">'none'</span>);
 <span class="keyword">if</span> (need_scan || p.drawbonds) &amp;&amp; ~isempty(Box_dim)
@@ -312,7 +335,7 @@ need_scan = isempty(p.spring_index) &amp;&amp; ~strcmpi(p.spring,<span class="st
     evalc(<span class="string">'atom = bond_atom(atom,1.1*Box_dim,p.rmaxlong,p.distance_factor);'</span>);
 <span class="keyword">end</span>
 </pre>
-<h2 id="6">--- assemble the spring list ---</h2>
+<h2 id="7">--- assemble the spring list ---</h2>
 <pre class="codeinput">springs = [];   <span class="comment">% nx2 (pairs) or nx3 (triplets, spring drawn between col 1 and col 3)</span>
 <span class="keyword">if</span> ~isempty(p.spring_index)
     springs = p.spring_index;
@@ -345,7 +368,7 @@ need_scan = isempty(p.spring_index) &amp;&amp; ~strcmpi(p.spring,<span class="st
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">--- set up the figure, as in show_atom ---</h2>
+<h2 id="8">--- set up the figure, as in show_atom ---</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> ~isempty(Box_dim)
     xlo = floor(min([-5 min([atom.x])-max(radii)])); xhi = ceil(max([max([atom.x])+max(radii) Box_dim(1)])/5)*5;
@@ -367,7 +390,7 @@ ax = gca; ax.XLim=[xlo xhi]; ax.YLim=[ylo yhi]; ax.ZLim=[zlo zhi];
 xlabel(<span class="string">'X [&Aring;]'</span>); ylabel(<span class="string">'Y [&Aring;]'</span>); zlabel(<span class="string">'Z [&Aring;]'</span>);
 view([0,0]);
 </pre>
-<h2 id="8">--- draw the atoms, unless only the springs were asked for ---</h2>
+<h2 id="9">--- draw the atoms, unless only the springs were asked for ---</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> ~p.atoms
     <span class="comment">% nothing drawn here</span>
@@ -403,7 +426,7 @@ view([0,0]);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="9">--- draw the springs ---</h2>
+<h2 id="10">--- draw the springs ---</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> ~isempty(springs)
     <span class="keyword">if</span> ~isempty(p.spring_index), what = <span class="string">'explicit spring_index'</span>; <span class="keyword">else</span>, what = p.spring; <span class="keyword">end</span>
@@ -513,7 +536,7 @@ view([0,0]);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="10">--- optionally also the usual bond cylinders ---</h2>
+<h2 id="11">--- optionally also the usual bond cylinders ---</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> p.drawbonds &amp;&amp; ~isempty(Bond_index)
     disp(<span class="string">'Drawing the bonds'</span>)
@@ -534,7 +557,7 @@ view([0,0]);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="11">--- the simulation box ---</h2>
+<h2 id="12">--- the simulation box ---</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> p.box ~= 0 &amp;&amp; ~isempty(Box_dim)
     <span class="keyword">try</span>
@@ -710,6 +733,13 @@ rotmat = [cosd(gamma) -sind(gamma) 0; sind(gamma) cosd(gamma) 0; 0 0 1];
 % # show_atom_springs(atom,Box_dim,'spring','angles','angleFace','sector','sectorSpan',0.8)
 %
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <show_atom.html show_atom>
+% # <show_spring.html show_spring>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_color.html element_color>
+%
 function show_atom_springs(atom,Box_dim,varargin)
 %%
 

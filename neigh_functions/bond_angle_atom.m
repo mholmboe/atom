@@ -18,6 +18,13 @@
 % # atom=bond_angle_atom(atom,Box_dim,1.25,2.25,'more') % Will write more info to the calling workspace
 %
 
+%% See also
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <radius_ion.html radius_ion>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_angle_type.html bond_angle_type>
+% # <bond_atom.html bond_atom>
+%
 function atom=bond_angle_atom(atom,varargin)
 %%
 % tic

@@ -12,6 +12,10 @@
 % * atom = number_type(atom) % Basic input arguments
 % * atom = number_type(atom,1) % 1 for add numbers, O for remove the numbers in the atom type names
 
+%% See also
+% # <element_atom.html element_atom>
+% # <copy_type.html copy_type>
+%
 function atom = number_type(atom,varargin)
 
 Molids=unique([atom.molid]);

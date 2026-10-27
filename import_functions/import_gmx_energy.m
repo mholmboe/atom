@@ -13,6 +13,13 @@
 % !echo {1..50} | gmx energy -f opt.edr > results.dat # Will import all items 1 to 50
 % #  Data = import_xvg('results.dat')
 %
+%% See also
+% # <gmx.html gmx>
+% # <import_xvg.html import_xvg>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+%
 function data = import_gmx_energy(filename)
 
 % Open the file for reading

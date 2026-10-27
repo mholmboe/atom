@@ -13,6 +13,13 @@
 % # autofit_2x2xljcoul % Edit the reference forcefields at the top of the script
 %
 
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 clear;
 close all;
 hold on

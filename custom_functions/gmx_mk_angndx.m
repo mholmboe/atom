@@ -16,6 +16,11 @@
 % * gmx_mk_angndx(atom,Box_dim,'Mgo','Ohmg','H','MgOH',1,1.95) % Setting rmin and rmax
 % * gmx_mk_angndx(atom,Box_dim,IndexArray_atom1,'Ohmg',IndexArray_atom3,'angle_index_test')
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <atom_mk_angndx.html atom_mk_angndx>
+% # <gmx_make_ndx.html gmx_make_ndx>
+%
 function ind = gmx_mk_angndx(atom,Box_dim,atomtype1,atomtype2,atomtype3,groupname,varargin)
 
 if nargin > 6

@@ -13,6 +13,13 @@
 %% Examples
 % # atom=minff_atom(atom,Box_dim)
 
+%% See also
+% # <minff_atom.html minff_atom>
+% # <bond_atom.html bond_atom>
+% # <element_atom.html element_atom>
+% # <neighbor_func.html neighbor_func>
+% # <old_minff_param.html old_minff_param>
+%
 function atom=minff_atom_mini(atom,Box_dim,varargin)
 %%
 format compact;

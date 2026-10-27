@@ -12,6 +12,9 @@
 % # [r,Ubond] = harmonic_bond(0.16,190000) % dist in nm, kb in kJ/mol/nm^2
 %
 
+%% See also
+% # <mass_atom.html mass_atom>
+%
 function [r,Ubond] = harmonic_bond(dist,kb) % ff and atomtype can be single variables or cell 'tuplets'
 
 % if ischar(atomtype)

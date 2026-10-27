@@ -18,7 +18,13 @@
 %% Examples
 % txt = n2t_atom(atom,Box_dim,'atomtype2name.n2t'); % Basic input arguments
 %
+% # txt = n2t_atom(atom,Box_dim,'atomname2type.n2t') % Write a Gromacs atomname2type.n2t file from the atom struct
 
+%% See also
+% # <element_atom.html element_atom>
+% # <bond_atom.html bond_atom>
+% # <mass_atom.html mass_atom>
+%
 function txt = n2t_atom(atom, Box_dim, outfile, varargin)
 
 if nargin < 3 || isempty(outfile), outfile = 'atomname2type.n2t'; end

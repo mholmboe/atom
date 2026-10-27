@@ -13,6 +13,10 @@
 % # reorder_atom_gro(atom,[35 34 33	30 27 24 23 26],Box_dim,'out.gro')
 % # reorder_atom_gro(atom,[27 26 23 20 17 14 11 8 5 1],Box_dim,'ua_oct.gro')
 
+%% See also
+% # <write_atom_gro.html write_atom_gro>
+% # <reorder_atom.html reorder_atom>
+%
 function reorder_atom_gro(atom,atomlist,Box_dim,filename_out)
 
 nResidues=max([atom.molid]); % How many residues are we talking about?

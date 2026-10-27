@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>cat_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="cat_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -77,10 +77,43 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <body>
 <div class="content">
 <h1>cat_atom.m</h1>
+<!--introduction-->
 <div>
 <ul>
 <li>This is a special script (and not a function) that imports and appends atom structs into a .gro trajectory file. It is useful for generating trajectories where water molecules are evaporated during the simulations, since VMD and other trajectory viewers cannot handle non-constant number of particles in a trajectory</li>
 </ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Examples</a>
+</li>
+<li>
+<a href="#2">See also</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Examples</h2>
+<div>
+<ol>
+<li>cat_atom % Script: set the structure filenames inside the script, then run it to append them into one .gro trajectory</li>
+</ol>
+</div>
+<h2 id="2">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_atom.html">import_atom</a>
+</li>
+<li>
+<a href="import_atom_gro.html">import_atom_gro</a>
+</li>
+<li>
+<a href="write_gro_traj.html">write_gro_traj</a>
+</li>
+</ol>
 </div>
 <pre class="codeinput">filename=<span class="string">'evap_'</span>
 nSim=120;
@@ -149,6 +182,14 @@ write_gro_traj(atom0,traj,Box_dim,<span class="string">'3D_all.gro'</span>);
 % other trajectory viewers cannot handle non-constant number of particles
 % in a trajectory
 
+%% Examples
+% # cat_atom % Script: set the structure filenames inside the script, then run it to append them into one .gro trajectory
+%
+%% See also
+% # <import_atom.html import_atom>
+% # <import_atom_gro.html import_atom_gro>
+% # <write_gro_traj.html write_gro_traj>
+%
 filename='evap_'
 nSim=120;
 atom0=import_atom(strcat(filename,'120.gro'));

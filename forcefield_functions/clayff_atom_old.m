@@ -15,6 +15,13 @@
 % # atom=clayff_atom(atom,Box_dim,'clayff','spc')
 % # atom=clayff_atom(atom,Box_dim,'clayff','spc','edge')
 %
+%% See also
+% # <clayff_atom.html clayff_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <clayff_param.html clayff_param>
+% # <dist_matrix_atom.html dist_matrix_atom>
+%
 function atom=clayff_atom(atom,Box_dim,varargin)
 
 format compact;

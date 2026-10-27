@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>show_spring.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-09-24">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="show_spring.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -105,6 +105,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -120,6 +123,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>show_spring([0 0 0],[3 0 0],'springWidth',0.8,'wireWidth',0.12,'coils',8)</li>
 <li>show_spring([0 0 0],[3 0 0],'style','line','linewidth',2,'color','r')</li>
 <li>show_spring([0 0 0],[3 0 0],'gap',0.4) % Shrink both ends, e.g. to clear the atoms</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="show_atom_springs.html">show_atom_springs</a>
+</li>
+<li>
+<a href="show_Hbonds_atom.html">show_Hbonds_atom</a>
+</li>
+<li>
+<a href="show_arrow.html">show_arrow</a>
+</li>
+<li>
+<a href="show_atom.html">show_atom</a>
+</li>
+<li>
+<a href="show_atomo.html">show_atomo</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -272,6 +295,13 @@ vr = v*cos(th) + cross(k,v)*sin(th) + k*dot(k,v)*(1-cos(th));
 % # show_spring([0 0 0],[3 0 0],'gap',0.4) % Shrink both ends, e.g. to clear the atoms
 %
 
+%% See also
+% # <show_atom_springs.html show_atom_springs>
+% # <show_Hbonds_atom.html show_Hbonds_atom>
+% # <show_arrow.html show_arrow>
+% # <show_atom.html show_atom>
+% # <show_atomo.html show_atomo>
+%
 function h = show_spring(p1,p2,varargin)
 %%
 

@@ -11,6 +11,13 @@
 % # atom = slice_triclinic_atom(atom,Box_dim) % Basic input arguments
 % # atom = slice_triclinic_atom(atom,Box_dim,'xy') % Will only slice along the xy dimensions
 %
+%% See also
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <update_atom.html update_atom>
+% # <slice_atom.html slice_atom>
+% # <slice_box.html slice_box>
+%
 function atom = slice_triclinic_atom(atom,Box_dim,varargin)
 % Which one is fastest? Ortogonal or triclinic?
 

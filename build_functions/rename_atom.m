@@ -10,6 +10,9 @@
 %% Examples
 % # new_atom=rename_atom(atom,'Al','Mgo') % Basic input arguments
 %
+%% See also
+% # <rename_type.html rename_type>
+%
 function new_atom=rename_atom(atom,old_atomtype,new_atomtype)
 
 new_atom=atom;

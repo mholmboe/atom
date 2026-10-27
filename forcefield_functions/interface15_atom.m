@@ -20,6 +20,13 @@
 % # atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'CLAY_MINERALS')
 % # atom = interface15_atom(atom,Box_dim,'interface15','tip3p',heal_iterations,'SILICA')
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <charge_atom.html charge_atom>
+% # <check_interface15_charge.html check_interface15_charge>
+% # <element_atom.html element_atom>
+% # <interface15_phosphate_atom.html interface15_phosphate_atom>
+%
 function atom=interface15_atom(atom,Box_dim,varargin)
 
 format compact;

@@ -1,3 +1,13 @@
+%% Examples
+% # [x,Err] = autofit_2xljcoul_func('Na','Cl','spce',initial_ff,ref_ff1,ref_ff2,0.1) % Fit a two-site LJ+Coulomb potential
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x_objective_func.html ljcoul_2x_objective_func>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 function [x,Err] = autofit_2xljcoul_func(Ion1,Ion2,Water_model,initial_ff,ref_ff1,ref_ff2,delta,varargin)
 
 % initial_ff='ions_Merz_IOD_divalent_opc3_ff';

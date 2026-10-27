@@ -13,6 +13,10 @@
 %% Examples
 % # Cell=Box_dim2Cell(Box_dim)
 
+%% See also
+% # <draw_box_atom.html draw_box_atom>
+% # <show_box.html show_box>
+%
 function Cell=Box_dim2Cell(Box_dim)
 
 if length(Box_dim)==9

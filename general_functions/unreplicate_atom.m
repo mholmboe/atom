@@ -14,6 +14,12 @@
 % # atom = unreplicate_atom(atom,Box_dim,condense_factors,10)
 % # atom = unreplicate_atom(atom,Box_dim,condense_factors,0,'occupancy')
 
+%% See also
+% # <orto_atom.html orto_atom>
+% # <translate_atom.html translate_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <wrap_atom.html wrap_atom>
+%
 function atom = unreplicate_atom(atom,Box_dim,condense_factors,varargin)
 
 if nargin > 3

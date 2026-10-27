@@ -12,8 +12,13 @@
 % Please report problems/bugs to michael.holmboe@umu.se
 %
 %% Examples
-% * atom2mk_angndx(filename,groupname,atomtypes,molid) % Basic input arguments
+% * atom_mk_angndx(filename,groupname,atomtypes) % Basic input arguments
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <import_atom.html import_atom>
+% # <gmx_mk_angndx.html gmx_mk_angndx>
+%
 function atom_mk_angndx(filename,groupname,atomtypes)
 
 % clear all; format compact;

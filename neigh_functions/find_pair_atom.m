@@ -10,6 +10,11 @@
 %% Examples
 % # ind_12 = find_pair_atom(atom,bond_matrix,Atom_label1,Atom_label2)
 
+%% See also
+% # <find_H2O.html find_H2O>
+% # <find_angle_atom.html find_angle_atom>
+% # <find_bonded_atom.html find_bonded_atom>
+%
 function ind_12 = find_pair_atom(atom,bond_matrix,Atom_label1,Atom_label2)
 %% 
 

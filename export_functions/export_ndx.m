@@ -25,6 +25,9 @@
 % # export_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # export_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
+%% See also
+% # <import_ndx.html import_ndx>
+%
 function export_ndx(id,groupname,varargin)
 
 print=1; % 1 to print new group to index fiel, 0 if identical group already exists, see line 74

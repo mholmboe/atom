@@ -25,6 +25,12 @@
 %   varargin{3}       Y-axis limits [ymin ymax]
 %   varargin{4}       Smoothing span (integer for Gaussian smoothing)
 
+%% See also
+% # <import_xvg.html import_xvg>
+% # <plot_xvg.html plot_xvg>
+% # <plot_atom.html plot_atom>
+% # <plot_density_atom.html plot_density_atom>
+%
 function DataAll = plot_all_xvg(filenamePattern,varargin)
 
 % Find matching files

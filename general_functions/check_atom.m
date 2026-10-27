@@ -13,6 +13,11 @@
 %% Examples
 % # atom = check_atom(atom,Box_dim,1.25,2.25)
 %
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <composition_atom.html composition_atom>
+% # <wrap_atom.html wrap_atom>
+%
 function atom = check_atom(atom,Box_dim,rmaxshort,rmaxlong)
 
 nAtoms=size(atom,2);

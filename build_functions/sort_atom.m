@@ -18,6 +18,9 @@
 % # atom = reorder_atom(atom,data_val) % Orders according to index
 %
 
+%% See also
+% # <reorder_atom.html reorder_atom>
+%
 function atom_sorted = sort_atom(atom,data_val,varargin)
 
 % Determine sort direction

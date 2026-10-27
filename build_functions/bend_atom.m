@@ -11,6 +11,9 @@
 %% Examples
 % # atom = bend_atom(atom,Box_dim,Radii)
 
+%% See also
+% # <translate_atom.html translate_atom>
+%
 function atom = bend_atom(atom,Box_dim,radius,varargin)
 
 trans=translate_atom(atom,-Box_dim./2);

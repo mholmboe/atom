@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>eval_sim.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="eval_sim.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -94,46 +94,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#2">Examples</a>
 </li>
 <li>
-<a href="#4">To also fit the charges or other extra parameters</a>
+<a href="#3">See also</a>
 </li>
 <li>
-<a href="#5">PBC variable</a>
+<a href="#5">To also fit the charges or other extra parameters</a>
 </li>
 <li>
-<a href="#6">Directory filename</a>
+<a href="#6">PBC variable</a>
 </li>
 <li>
-<a href="#7">Initiate some variables</a>
+<a href="#7">Directory filename</a>
 </li>
 <li>
-<a href="#9">Set new charges</a>
+<a href="#8">Initiate some variables</a>
 </li>
 <li>
-<a href="#10">Running in serial</a>
+<a href="#10">Set new charges</a>
 </li>
 <li>
 <a href="#11">Running in serial</a>
 </li>
 <li>
-<a href="#14">-multidir simulations: requires gmx_mpi runs</a>
+<a href="#12">Running in serial</a>
 </li>
 <li>
 <a href="#15">-multidir simulations: requires gmx_mpi runs</a>
 </li>
 <li>
-<a href="#18">Analyzing the trajectory</a>
+<a href="#16">-multidir simulations: requires gmx_mpi runs</a>
 </li>
 <li>
-<a href="#22">Since we are only looking at a fractional system, since else too many angles, bonds..</a>
+<a href="#19">Analyzing the trajectory</a>
 </li>
 <li>
-<a href="#24">To analyze the RDF and CN data</a>
+<a href="#23">Since we are only looking at a fractional system, since else too many angles, bonds..</a>
 </li>
 <li>
-<a href="#25">To remove bonds and angles with H's</a>
+<a href="#25">To analyze the RDF and CN data</a>
 </li>
 <li>
-<a href="#26">Make sure we have the same res_temp size due to unknown occasional bug</a>
+<a href="#26">To remove bonds and angles with H's</a>
+</li>
+<li>
+<a href="#27">Make sure we have the same res_temp size due to unknown occasional bug</a>
 </li>
 </ul>
 </div>
@@ -148,6 +151,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>res = eval_sim(fx,scalefactors,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..</li>
 </ol>
 </div>
+<h2 id="3">See also</h2>
+<div>
+<ol>
+<li>
+<a href="run_opt_ff_lsqnonlin.html">run_opt_ff_lsqnonlin</a>
+</li>
+<li>
+<a href="analyze_atom.html">analyze_atom</a>
+</li>
+<li>
+<a href="change_top.html">change_top</a>
+</li>
+<li>
+<a href="charge_clayff_atom.html">charge_clayff_atom</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> res = eval_sim(param,scalefactors,dirtype,varargin)
 </pre>
@@ -156,20 +179,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% Scale back all the parameters</span>
 param=param./scalefactors;
 </pre>
-<h2 id="4">To also fit the charges or other extra parameters</h2>
+<h2 id="5">To also fit the charges or other extra parameters</h2>
 <pre class="codeinput">fextra=nargin-3;
 nparam=size(param,2);
 
 disp(<span class="string">'Will run with these parameters:'</span>)
 param
 </pre>
-<h2 id="5">PBC variable</h2>
+<h2 id="6">PBC variable</h2>
 <pre class="codeinput">PBC=1; <span class="comment">% Assume periodic molecules at first, check later in system_info.mat</span>
 </pre>
-<h2 id="6">Directory filename</h2>
+<h2 id="7">Directory filename</h2>
 <pre class="codeinput">filename=lower(dirtype);
 </pre>
-<h2 id="7">Initiate some variables</h2>
+<h2 id="8">Initiate some variables</h2>
 <pre class="codeinput">all_mean_posres=[];
 all_diff_BoxX=[];all_diff_BoxY=[];all_diff_BoxZ=[];
 skip_simulation=[];
@@ -197,7 +220,7 @@ numSimulation=sort(numSimulation);
 
             cd(tempdir);
 </pre>
-<h2 id="9">Set new charges</h2>
+<h2 id="10">Set new charges</h2>
 <pre class="codeinput">            load(<span class="string">'system_info.mat'</span>);
             nOpt_labels=size(Opt_labels,2);
 
@@ -269,12 +292,12 @@ numSimulation=sort(numSimulation);
             <span class="keyword">end</span>
             <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) &gt; 0 || strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 1
 </pre>
-<h2 id="10">Running in serial</h2>
+<h2 id="11">Running in serial</h2>
 <pre class="codeinput">                disp(<span class="string">'Running gmx mdrun in serial'</span>)
                 <span class="comment">% eval(char(strcat('!gmx mdrun -nt 4 -deffnm',{' '},filename)));</span>
                 <span class="syscmd">!bash run_gmx_mdrun.sh 'opt -ntomp 8 -rdd 0.5 -dds 0.90'</span>
 </pre>
-<h2 id="11">Running in serial</h2>
+<h2 id="12">Running in serial</h2>
 <pre class="codeinput">            <span class="keyword">end</span>
             cd(ParentSimDir);
 </pre>
@@ -286,7 +309,7 @@ numSimulation=sort(numSimulation);
 
     <span class="keyword">if</span> gpuDeviceCount(<span class="string">"available"</span>) == 0 &amp;&amp; strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
 </pre>
-<h2 id="14">-multidir simulations: requires gmx_mpi runs</h2>
+<h2 id="15">-multidir simulations: requires gmx_mpi runs</h2>
 <pre class="codeinput">        <span class="keyword">try</span>
             <span class="keyword">if</span> numSimulation==1 || ~strcmp(computer(<span class="string">'arch'</span>),<span class="string">'maca64'</span>) == 0
                 tempdir=strcat(dirtype,num2str(i),<span class="string">'/'</span>);
@@ -311,7 +334,7 @@ numSimulation=sort(numSimulation);
             cd(ParentSimDir);
         <span class="keyword">end</span>
 </pre>
-<h2 id="15">-multidir simulations: requires gmx_mpi runs</h2>
+<h2 id="16">-multidir simulations: requires gmx_mpi runs</h2>
 <pre class="codeinput">    <span class="keyword">end</span>
 
     <span class="keyword">for</span> i=numSimulation <span class="comment">%1:numSimulation</span>
@@ -401,7 +424,7 @@ numSimulation=sort(numSimulation);
             mean_temperature=mean_temperature;
         <span class="keyword">end</span>
 </pre>
-<h2 id="18">Analyzing the trajectory</h2>
+<h2 id="19">Analyzing the trajectory</h2>
 <pre class="codeinput">        <span class="syscmd">!bash run_gmx_traj.sh</span>
 
         <span class="keyword">if</span> isempty(dir(fullfile(pwd,strcat(<span class="string">'prev_analysis_*.mat'</span>))))
@@ -460,7 +483,7 @@ numSimulation=sort(numSimulation);
                     [atom_ave,Box_dim_ave,Box_dim_std,Cell_ave,Cell_std]=write_ave_gro(<span class="string">'conf'</span>,<span class="string">'ave'</span>);
                 <span class="keyword">end</span>
 </pre>
-<h2 id="22">Since we are only looking at a fractional system, since else too many angles, bonds..</h2>
+<h2 id="23">Since we are only looking at a fractional system, since else too many angles, bonds..</h2>
 <pre class="codeinput">                atom_ave=atom_ave([indexes(i).ind]); <span class="comment">% Also Box_dim_ave,Cell_ave,Box_dim_std,Cell_std...</span>
 
                 atom_ave = recalc_bond_atom(atom_ave,Box_dim_ave,target_Bond_index,target_Angle_index);<span class="comment">%,target_Dihedral_index); % Will output new Bond_index, Angle_index, dihedral_index</span>
@@ -496,7 +519,7 @@ numSimulation=sort(numSimulation);
             <span class="comment">% %         Angle_index(:,4)=mean(angaver)';</span>
             <span class="comment">% %     end</span>
 </pre>
-<h2 id="24">To analyze the RDF and CN data</h2>
+<h2 id="25">To analyze the RDF and CN data</h2>
 <pre class="codeinput">            <span class="keyword">try</span>
                 <span class="keyword">if</span> numel(rdf_target)&gt;0
                     <span class="syscmd">!bash run_gmx_rdf.sh 'ref' 'sel'</span>
@@ -508,7 +531,7 @@ numSimulation=sort(numSimulation);
                 pause(1)
             <span class="keyword">end</span>
 </pre>
-<h2 id="25">To remove bonds and angles with H's</h2>
+<h2 id="26">To remove bonds and angles with H's</h2>
 <pre class="codeinput">            ind_H=find(strncmpi([atom_ave.type],{<span class="string">'H'</span>},1));
             [H_row,H_col]=ind2sub(size(target_Bond_index),find(ismember(target_Bond_index,ind_H)));
             target_Bond_index(H_row,:)=[];
@@ -570,7 +593,7 @@ numSimulation=sort(numSimulation);
 
             dlmwrite(<span class="string">'res_temp.dat'</span>,size(res_temp) ,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>)
 </pre>
-<h2 id="26">Make sure we have the same res_temp size due to unknown occasional bug</h2>
+<h2 id="27">Make sure we have the same res_temp size due to unknown occasional bug</h2>
 <pre class="codeinput">            <span class="keyword">if</span> iteration==1
                 res_temp_size=size(res_temp,1);
                 orig_res_temp=res_temp;
@@ -675,6 +698,13 @@ save(<span class="string">'prev_run.mat'</span>)
 % # f=@(x)eval_sim(x,scalefactors,dirtype,indexes);  % From run_opt_ff_lsqnonlin
 % # res = eval_sim(fx,scalefactors,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..
 
+%% See also
+% # <run_opt_ff_lsqnonlin.html run_opt_ff_lsqnonlin>
+% # <analyze_atom.html analyze_atom>
+% # <change_top.html change_top>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <element_atom.html element_atom>
+%
 function res = eval_sim(param,scalefactors,dirtype,varargin)
 
 ParentSimDir = pwd;

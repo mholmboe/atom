@@ -10,6 +10,13 @@
 %% Examples
 % # atom = position_molid(atom,[0 0 8],1)
 
+%% See also
+% # <COM_atom.html COM_atom>
+% # <molid_rotate.html molid_rotate>
+% # <molid_translate.html molid_translate>
+% # <remove_molid.html remove_molid>
+% # <slice_molid.html slice_molid>
+%
 function atom = position_molid(atom,position_vec,MolID)
 
 disp('Moving MolID (COM) to certain position')

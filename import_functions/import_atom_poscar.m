@@ -11,6 +11,13 @@
 %% Examples
 % # atom = import_atom_poscar('POSCAR')
 %
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <element_atom.html element_atom>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function atom = import_atom_poscar(filename)
 
 if regexp(filename,'POSCAR') ~= false

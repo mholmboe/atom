@@ -11,6 +11,13 @@
 %% Examples
 % # write_atom_multiple_gro(atom,traj,filename_out) % Basic input arguments
 %
+%% See also
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+% # <write_atom_gro.html write_atom_gro>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_cif.html write_atom_cif>
+% # <write_atom_itp.html write_atom_itp>
+%
 function write_atom_multiple_gro(atom,traj,filename_out)
 %% 
 

@@ -12,6 +12,13 @@
 % # SOL=find_H2O(atom,Box_dim) % Basic input arguments
 % # SOL=find_H2O(atom,Box_dim,1.05) % Manually setting the rmin, the minimum distance for the H-O bond in water
 
+%% See also
+% # <remove_H2O.html remove_H2O>
+% # <bond_atom.html bond_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+% # <update_atom.html update_atom>
+%
 function [SOL,atom] = find_H2O(atom,Box_dim,varargin)
 
 if nargin>2

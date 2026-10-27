@@ -14,6 +14,9 @@
 % # atom = update_atom(atom) % Basic input arguments
 % # atom = update_atom({atom1 atom2 atom3}) % Will append atom1 and atom2 and atom3 and update their MolID's, respectively
 %
+%% See also
+% # <resname_atom.html resname_atom>
+%
 function atom = update_atom(atom,varargin)
 
 if iscell(atom)

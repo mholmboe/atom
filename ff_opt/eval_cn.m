@@ -11,6 +11,10 @@
 %% Examples
 % # CoordNum = eval_cn(rdf,cn)
 
+%% See also
+% # <eval_sim.html eval_sim>
+% # <eval_systems.html eval_systems>
+%
 function CoordNum = eval_cn(rdf,cn)
 
 rdf((rdf(:,1)<0.125),2)=0; % To remove O-H 

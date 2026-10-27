@@ -13,6 +13,9 @@
 % # PATH2GMX        % Can be used to invoke Gromacs utilities, see for instance the gmx() function
 % # PATH2GMX('add') % adds Gromacs to the MATLAB path
 
+%% See also
+% # <gmx.html gmx>
+%
 function PATH2GMX = PATH2GMX(varargin)
 
 PATH2GMX ='/usr/local/gromacs-2023.3/bin'; % Note, this is a version compiled wth mpi

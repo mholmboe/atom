@@ -25,6 +25,13 @@
 % # gmx_make_ndx([101 102 103],'SOL') % molID's, groupname, will output a file called index.ndx
 % # gmx_make_ndx([101 102 103],'SOL','SOL_ind.ndx') % molID's, groupname, filename
 
+%% See also
+% # <atom_make_ndx.html atom_make_ndx>
+% # <atom_make_ndx_bonded.html atom_make_ndx_bonded>
+% # <atom_read_ndx.html atom_read_ndx>
+% # <gmx_mk_angndx.html gmx_mk_angndx>
+% # <import_ndx.html import_ndx>
+%
 function gmx_make_ndx(id,groupname,varargin)
 
 if nargin==1

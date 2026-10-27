@@ -14,6 +14,12 @@
 % * rvdw = radius_vdw({'O'})
 % * rvdw = radius_vdw('O')
 %
+%% See also
+% # <radius_atom.html radius_atom>
+% # <radius_ion.html radius_ion>
+% # <radius_crystal.html radius_crystal>
+% # <radius_crystal_old.html radius_crystal_old>
+%
 function rvdw = radius_vdw(Atom_label)
 
 if ~iscell(Atom_label)

@@ -22,6 +22,13 @@
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,{'C1' 'N1'},0.3)
 % * atom = insert_atom(atom,limits,'rotate',r,maxsol,solute_atom,[1 4],0.3)
 
+%% See also
+% # <create_atom.html create_atom>
+% # <fuse_atom.html fuse_atom>
+% # <protonate_atom.html protonate_atom>
+% # <center_atom.html center_atom>
+% # <merge_atom.html merge_atom>
+%
 function atom = insert_atom(atom_in,limits,rotate,r,nmax,varargin)
 
 if numel(limits)==1

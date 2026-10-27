@@ -14,6 +14,13 @@
 % # fit2lattice % Edit the filenames at the top of the script
 %
 
+%% See also
+% # <analyze_atom.html analyze_atom>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <element_atom.html element_atom>
+% # <import_atom.html import_atom>
+%
 clear all;
 format compact;
 

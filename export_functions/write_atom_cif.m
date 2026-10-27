@@ -11,6 +11,13 @@
 %% Examples
 % # write_atom_cif(atom,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <number_type.html number_type>
+% # <orto_atom.html orto_atom>
+% # <wrap_atom.html wrap_atom>
+% # <write_atom_all.html write_atom_all>
+% # <write_atom_dodecahedron_gro.html write_atom_dodecahedron_gro>
+%
 function write_atom_cif(atom,Box_dim,filename_out)
 
 % atom=wrap_atom(atom,Box_dim); % Do we need this?

@@ -12,6 +12,11 @@
 % # atom = mass_atom('Si')
 % # atom = mass_atom(atom(1).type)
 
+%% See also
+% # <mass_atom.html mass_atom>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <reduced_mass.html reduced_mass>
+%
 function mass = atomic_mass(Atom_label)
 
 Mass_data={...

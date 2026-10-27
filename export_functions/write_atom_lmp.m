@@ -13,6 +13,13 @@
 %% Examples
 % # write_atom_lmp(atom,Box_dim,filename,1.25,1.25,'clayff','spce') % Basic input arguments
 %
+%% See also
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <charge_opls_go_atom.html charge_opls_go_atom>
+% # <check_interface15_charge.html check_interface15_charge>
+%
 function write_atom_lmp(atom,Box_dim,filename,varargin)
 format compact
 

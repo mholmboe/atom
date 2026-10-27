@@ -83,6 +83,13 @@
 % # show_atom_springs(atom,Box_dim,'spring','angles','angleFace','sector','sectorSpan',0.8)
 %
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <show_atom.html show_atom>
+% # <show_spring.html show_spring>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_color.html element_color>
+%
 function show_atom_springs(atom,Box_dim,varargin)
 %%
 

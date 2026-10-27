@@ -21,6 +21,13 @@
 % # show_hbonds_atom(atom,Box_dim,'ballstick',0,0,[],[],[0.5 0.5 0.5]) % Single color as given by the 1x3 RGB vector
 
 
+%% See also
+% # <plot_atom.html plot_atom>
+% # <bond_atom.html bond_atom>
+% # <draw_box_atom.html draw_box_atom>
+% # <element_atom.html element_atom>
+% # <element_color.html element_color>
+%
 function show_hbonds_atom(varargin)
 tic
 

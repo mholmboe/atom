@@ -12,6 +12,13 @@
 %% Examples
 % # Bond_index = import_CONECT(filename) % Basic input arguments
 %
+%% See also
+% # <import_atom_pdb.html import_atom_pdb>
+% # <recalc_bond_atom.html recalc_bond_atom>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function Bond_index = import_CONECT(filename)
 
 try

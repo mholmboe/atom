@@ -1,3 +1,13 @@
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_C12C6(param) % LJ + Coulomb in the C12/C6 convention
+%
+%% See also
+% # <ljcoul.html ljcoul>
+% # <ljcoul_12_6.html ljcoul_12_6>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+% # <ljcoul_2x2x_objective_func.html ljcoul_2x2x_objective_func>
+%
 function [r,lj,coul,Utot] = ljcoul_C12C6(param,varargin)
 
 q1=param(1);

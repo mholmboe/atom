@@ -12,6 +12,10 @@
 % # atom = unwrap_atom(atom,Box_dim,'x')
 % # atom = unwrap_atom(atom,Box_dim,'xyz')
 %
+%% See also
+% # <median_atom.html median_atom>
+% # <translate_atom.html translate_atom>
+%
 function atom = unwrap_atom(atom,Box_dim,dim)
 
 atom_Tot=atom;

@@ -11,6 +11,13 @@
 % # write_custom_itp(atom,Box_dim,filename) % Basic input arguments
 % # write_custom_itp(atom,Box_dim,filename,1.25,2.25) % To set the H-O and M-O cutoff radii, resp.
 
+%% See also
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_atom.html bond_atom>
+% # <element_atom.html element_atom>
+% # <mass_atom.html mass_atom>
+% # <update_atom.html update_atom>
+%
 function write_custom_itp(atom,Box_dim,filename,varargin)
 
 format long

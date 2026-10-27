@@ -21,6 +21,13 @@
 % # write_minff_itp(atom,Box_dim,filename) % Basic input arguments
 % # write_minff_itp(atom,Box_dim,filename,1.25,2.45,'minff','opc3') % To set cut off limits for H-bonds and all angles.
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <mass_atom.html mass_atom>
+% # <write_minff_lmp.html write_minff_lmp>
+%
 function write_minff_itp(atom,Box_dim,filename,varargin)
 
 KANGLE=500;

@@ -36,6 +36,13 @@
 % # show_atom_springs(atom,Box_dim,'spring_index',Angle_index(ind,1:3))
 %
 
+%% See also
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_atom.html bond_atom>
+% # <show_atom_springs.html show_atom_springs>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_type.html bond_angle_type>
+%
 function [ind,types] = find_angle_atom(atom,index_matrix,sel_types,varargin)
 %%
 

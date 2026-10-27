@@ -10,6 +10,13 @@
 %% Examples
 % * atom = COM_molid(atom,1)
 %
+%% See also
+% # <element_atom.html element_atom>
+% # <mass_atom.html mass_atom>
+% # <unwrap_atom.html unwrap_atom>
+% # <COM_SOL.html COM_SOL>
+% # <COM_atom.html COM_atom>
+%
 function atom = COM_molid(atom,Box_dim,varargin)
 
 disp('Calculating COM')

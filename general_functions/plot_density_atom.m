@@ -10,6 +10,13 @@
 %% Examples
 % # plot_density_atom(atom,Box_dim)
 
+%% See also
+% # <element_color.html element_color>
+% # <hist_atom.html hist_atom>
+% # <plot_atom.html plot_atom>
+% # <plot_all_xvg.html plot_all_xvg>
+% # <plot_xvg.html plot_xvg>
+%
 function plot_density_atom(atom,Box_dim,varargin)
 
 hold off

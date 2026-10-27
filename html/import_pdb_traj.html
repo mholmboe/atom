@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_pdb_traj.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="import_pdb_traj.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,28 +97,31 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">%% System dimensions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% try</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">CRYST1 section</a>
+<a href="#6">%% System dimensions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% try</a>
 </li>
 <li>
-<a href="#8">MODEL section</a>
+<a href="#7">CRYST1 section</a>
 </li>
 <li>
-<a href="#10">TER section</a>
+<a href="#9">MODEL section</a>
 </li>
 <li>
-<a href="#12">ENDMDL section</a>
+<a href="#11">TER section</a>
 </li>
 <li>
-<a href="#14">DATA section</a>
+<a href="#13">ENDMDL section</a>
 </li>
 <li>
-<a href="#15">Init</a>
+<a href="#15">DATA section</a>
 </li>
 <li>
-<a href="#16">End</a>
+<a href="#16">Init</a>
+</li>
+<li>
+<a href="#17">End</a>
 </li>
 </ul>
 </div>
@@ -135,6 +138,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom = import_pdb_traj(filename,maxFrames,stride)</li>
 </ol>
 </div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="import_mc_pdb_traj.html">import_mc_pdb_traj</a>
+</li>
+<li>
+<a href="import_atom_pdb.html">import_atom_pdb</a>
+</li>
+<li>
+<a href="import_gro_traj.html">import_gro_traj</a>
+</li>
+<li>
+<a href="import_traj.html">import_traj</a>
+</li>
+<li>
+<a href="import_xyz_traj.html">import_xyz_traj</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> [atom,traj] = import_pdb_traj(filename,varargin)
 </pre>
@@ -144,8 +167,8 @@ fclose(inputfile);
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 </pre>
-<h2 id="5">%% System dimensions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% try</h2>
-<h2 id="6">CRYST1 section</h2>
+<h2 id="6">%% System dimensions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% try</h2>
+<h2 id="7">CRYST1 section</h2>
 <pre class="codeinput">    CRYST1_rows = strfind(C{1}, <span class="string">'CRYST1'</span>);
     CRYST1_rows = find(~cellfun(<span class="string">'isempty'</span>, CRYST1_rows));
     CRYST1_data=cell(numel(CRYST1_rows),7);
@@ -179,7 +202,7 @@ fclose(inputfile);
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="keyword">try</span>
 </pre>
-<h2 id="8">MODEL section</h2>
+<h2 id="9">MODEL section</h2>
 <pre class="codeinput">    MODEL_rows = strfind(C{1}, <span class="string">'MODEL'</span>);
     MODEL_rows = find(~cellfun(<span class="string">'isempty'</span>, MODEL_rows));
     MODEL_data=cell(numel(MODEL_rows),2);
@@ -197,7 +220,7 @@ fclose(inputfile);
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="keyword">try</span>
 </pre>
-<h2 id="10">TER section</h2>
+<h2 id="11">TER section</h2>
 <pre class="codeinput">    TER_rows = strfind(C{1}, <span class="string">'TER'</span>);
     TER_rows = find(~cellfun(<span class="string">'isempty'</span>, TER_rows));
     TER_data=cell(numel(TER_rows),2);
@@ -215,7 +238,7 @@ fclose(inputfile);
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="keyword">try</span>
 </pre>
-<h2 id="12">ENDMDL section</h2>
+<h2 id="13">ENDMDL section</h2>
 <pre class="codeinput">    ENDMDL_rows = strfind(C{1}, <span class="string">'ENDMDL'</span>);
     ENDMDL_rows = find(~cellfun(<span class="string">'isempty'</span>, ENDMDL_rows));
     ENDMDL_data=cell(numel(ENDMDL_rows),2);
@@ -232,8 +255,8 @@ fclose(inputfile);
 <span class="keyword">end</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 </pre>
-<h2 id="14">DATA section</h2>
-<h2 id="15">Init</h2>
+<h2 id="15">DATA section</h2>
+<h2 id="16">Init</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> numel(CRYST1_rows)&gt;0
     <span class="keyword">if</span> numel(MODEL_rows)&gt;0
@@ -245,7 +268,7 @@ fclose(inputfile);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="16">End</h2>
+<h2 id="17">End</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> numel(ENDMDL_rows)&gt;0
     <span class="keyword">if</span> numel(TER_rows)&gt;0
@@ -365,6 +388,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'XYZ_data'</s
 % # atom = import_pdb_traj(filename)
 % # atom = import_pdb_traj(filename,maxFrames)
 % # atom = import_pdb_traj(filename,maxFrames,stride)
+%
+%% See also
+% # <import_mc_pdb_traj.html import_mc_pdb_traj>
+% # <import_atom_pdb.html import_atom_pdb>
+% # <import_gro_traj.html import_gro_traj>
+% # <import_traj.html import_traj>
+% # <import_xyz_traj.html import_xyz_traj>
 %
 function [atom,traj] = import_pdb_traj(filename,varargin)
 

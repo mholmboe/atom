@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>clayff_2004_atom.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="clayff_2004_atom.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -102,7 +102,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#8">If the usual atom types</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#9">If the usual atom types</a>
 </li>
 </ul>
 </div>
@@ -117,6 +120,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>atom=clayff_2004_atom(atom,Box_dim)</li>
 <li>atom=clayff_2004_atom(atom,Box_dim,'clayff_2004','spc')</li>
 <li>atom=clayff_2004_atom(atom,Box_dim,'clayff_2004','spc',heal_iterations)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="bond_atom.html">bond_atom</a>
+</li>
+<li>
+<a href="charge_atom.html">charge_atom</a>
+</li>
+<li>
+<a href="charge_clayff_atom.html">charge_clayff_atom</a>
+</li>
+<li>
+<a href="clayff_param.html">clayff_param</a>
+</li>
+<li>
+<a href="element_atom.html">element_atom</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -565,7 +588,7 @@ watermodel
 
 <span class="keyword">try</span>
 </pre>
-<h2 id="8">If the usual atom types</h2>
+<h2 id="9">If the usual atom types</h2>
 <pre class="codeinput">    atom = charge_atom(atom,Box_dim,ffname,watermodel);
     [C,ia,ic]=unique([atom.type],<span class="string">'first'</span>);
     [atom(ia).charge]
@@ -623,6 +646,13 @@ assignin(<span class="string">'caller'</span>,<span class="string">'All_Neighbou
 % # atom=clayff_2004_atom(atom,Box_dim)
 % # atom=clayff_2004_atom(atom,Box_dim,'clayff_2004','spc')
 % # atom=clayff_2004_atom(atom,Box_dim,'clayff_2004','spc',heal_iterations)
+%
+%% See also
+% # <bond_atom.html bond_atom>
+% # <charge_atom.html charge_atom>
+% # <charge_clayff_atom.html charge_clayff_atom>
+% # <clayff_param.html clayff_param>
+% # <element_atom.html element_atom>
 %
 function atom=clayff_2004_atom(atom,Box_dim,varargin)
 %%

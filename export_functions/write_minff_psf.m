@@ -18,6 +18,13 @@
 % # write_atom_psf(atom,Box_dim,filename) % Basic input arguments
 % # write_atom_psf(atom,Box_dim,filename,1.25,2.25,'minff','opc3')
 %
+%% See also
+% # <write_atom_psf.html write_atom_psf>
+% # <bond_angle_atom.html bond_angle_atom>
+% # <charge_minff_atom.html charge_minff_atom>
+% # <mass_atom.html mass_atom>
+% # <write_minff_itp.html write_minff_itp>
+%
 function write_minff_psf(atom,Box_dim,filename,varargin)
 
 format long

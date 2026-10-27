@@ -11,6 +11,13 @@
 %% Examples
 % # atom = check_interface_charge(atom)
 %
+%% See also
+% # <interface_param.html interface_param>
+% # <charge_interface_atom.html charge_interface_atom>
+% # <check_interface15_charge.html check_interface15_charge>
+% # <charge_atom.html charge_atom>
+% # <charge_interface15_atom.html charge_interface15_atom>
+%
 function atom = check_interface_charge(atom)
 
 nAtoms=size(atom,2);

@@ -10,6 +10,13 @@
 %% Examples
 % # write_xyz_traj(atom,traj,Box_dim,filename_out) % Basic input arguments
 %
+%% See also
+% # <write_gro_traj.html write_gro_traj>
+% # <write_pdb_traj.html write_pdb_traj>
+% # <write_atom_multiple_gro.html write_atom_multiple_gro>
+% # <write_ave_gro.html write_ave_gro>
+% # <write_ave_pdb.html write_ave_pdb>
+%
 function write_xyz_traj(atom,traj,Box_dim,filename_out)
 
 

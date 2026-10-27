@@ -18,6 +18,12 @@
 % # [atom, Box_dim] = replicate_atom(atom,Box_dim,[6 4 1],'yxz') % Replicates in the order of the dimensions y-x-z
 % * [atom, Box_dim] = replicate_atom(atom,Box_dim,[6 4 1],'xyz','addmolid') % Adds a new MolID to each new replicate entry
 %
+%% See also
+% # <Box_dim2Cell.html Box_dim2Cell>
+% # <orto_atom.html orto_atom>
+% # <triclinic_atom.html triclinic_atom>
+% # <update_atom.html update_atom>
+%
 function [atom,Box_dim] = replicate_atom(atom,Box_dim,replicate,varargin)
 
 if numel(replicate)==1

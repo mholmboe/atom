@@ -7,10 +7,17 @@
 % * Can varargin be used for stride?
 
 %% Examples
-% * traj = import_trr(traj.trr)
-% * traj = import_trr(traj.trr,varargin)
+% * traj = import_trrv2('traj.trr')
+% * traj = import_trrv2('traj.trr',varargin)
 
 
+%% See also
+% # <import_trr.html import_trr>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom.html import_atom>
+% # <import_atom_car.html import_atom_car>
+% # <import_atom_gro.html import_atom_gro>
+%
 function traj = import_trrv2(filenametrr,varargin)
 %%
 

@@ -1,4 +1,13 @@
 %% This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol
+%% Examples
+% # ff = write_ffnonbonded_C6C12('minff') % As write_ffnonbonded, but in the C6/C12 convention instead of sigma/epsilon
+%
+%% See also
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+% # <write_xvg.html write_xvg>
+%
 function ff = write_ffnonbonded_C6C12(ffname,varargin)
 
 if nargin>1

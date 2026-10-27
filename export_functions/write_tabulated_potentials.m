@@ -1,5 +1,15 @@
 % function ff = write_tabulated_potentials(r,q,c6,c12)
 
+%% Examples
+% # write_tabulated_potentials % Script: set the potential parameters inside the script, then run it to write Gromacs table files
+%
+%% See also
+% # <import_xvg.html import_xvg>
+% # <nonbonded_ff.html nonbonded_ff>
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded.html write_ffnonbonded>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+%
 format long
 
 Ion1='Na+'

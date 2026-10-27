@@ -10,6 +10,13 @@
 %% Examples
 % # resp_charges = import_cp2k_resp('molecule.resp')
 %
+%% See also
+% # <import_atom.html import_atom>
+% # <write_atom_pqr.html write_atom_pqr>
+% # <import_cp2k.html import_cp2k>
+% # <import_CONECT.html import_CONECT>
+% # <import_atom_car.html import_atom_car>
+%
 function resp_charges = import_cp2k_resp(varargin)
 
 if nargin>0

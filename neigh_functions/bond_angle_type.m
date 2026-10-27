@@ -14,6 +14,13 @@
 % # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1)
 % # atom1 = bond_angle_type(atom1,atom2,Box_dim,1.25,2.25,150,1,'reverse')
 
+%% See also
+% # <bond_angle_atom.html bond_angle_atom>
+% # <bond_angle_dihedral_atom.html bond_angle_dihedral_atom>
+% # <bond_atom.html bond_atom>
+% # <bond_matrix_atom.html bond_matrix_atom>
+% # <bond_valence_atom.html bond_valence_atom>
+%
 function atom1 = bond_angle_type(atom1,atom2,Box_dim,rmaxshort,rmaxlong,angle_limit,varargin)
 %%
 

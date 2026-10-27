@@ -17,6 +17,13 @@
 % # [atom,traj] = import_traj('traj.xyz')
 % # [atom,traj] = import_traj('traj.gro')
 %
+%% See also
+% # <import_atom.html import_atom>
+% # <import_gro_traj.html import_gro_traj>
+% # <import_mc_pdb_traj.html import_mc_pdb_traj>
+% # <import_trr.html import_trr>
+% # <import_trrv2.html import_trrv2>
+%
 function [atom,traj] = import_traj(filename,varargin)
 
 if nargin==1

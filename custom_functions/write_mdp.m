@@ -7,6 +7,13 @@
 %% Version
 % 3.0.1
 
+%% Examples
+% # write_mdp(mdp) % Write the mdp struct to the default out.mdp
+% # write_mdp(mdp,'grompp.mdp') % Write the mdp struct to a named file
+%
+%% See also
+% # <import_mdp.html import_mdp>
+%
 function write_mdp(mdp,varargin)
 
 if nargin>1

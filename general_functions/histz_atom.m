@@ -11,6 +11,10 @@
 %% Examples
 % # Hist = histz_atom(atom,Box_dim,0.02)
 %
+%% See also
+% # <density_atom.html density_atom>
+% # <hist_atom.html hist_atom>
+%
 function [Bins,Counts] = histz_atom(atom,Box_dim,s,varargin)
 
 if nargin>3

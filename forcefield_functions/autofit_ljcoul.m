@@ -1,5 +1,15 @@
 % clear;
 % close all;
+%% Examples
+% # autofit_ljcoul % Script: set the ion and reference force field at the top, then run it to fit one LJ+Coulomb site
+%
+%% See also
+% # <buckinghamcoul.html buckinghamcoul>
+% # <ljcoul.html ljcoul>
+% # <ljcoul_C12C6C4.html ljcoul_C12C6C4>
+% # <ljcoul_objective_func.html ljcoul_objective_func>
+% # <nonbonded_ff.html nonbonded_ff>
+%
 figure
 hold on
 format short;

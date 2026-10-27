@@ -11,6 +11,13 @@
 %% Examples
 % # atom = check_interface15_charge(atom)
 %
+%% See also
+% # <interface_param.html interface_param>
+% # <interface15_param.html interface15_param>
+% # <tweak_charge_atom.html tweak_charge_atom>
+% # <charge_interface15_atom.html charge_interface15_atom>
+% # <check_interface_charge.html check_interface_charge>
+%
 function atom = check_interface15_charge(atom,varargin)
 
 if nargin > 1

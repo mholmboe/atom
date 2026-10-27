@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>run_opt_ff_lsqnonlin.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-08-21">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="run_opt_ff_lsqnonlin.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,22 +97,25 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">In order to keep parameters around 1..</a>
+<a href="#4">See also</a>
 </li>
 <li>
-<a href="#6">Initial values</a>
+<a href="#6">In order to keep parameters around 1..</a>
 </li>
 <li>
-<a href="#7">Set Options for Optimization</a>
+<a href="#7">Initial values</a>
 </li>
 <li>
-<a href="#8">Alternatively, use these settings</a>
+<a href="#8">Set Options for Optimization</a>
 </li>
 <li>
-<a href="#9">Run lsqnonlin</a>
+<a href="#9">Alternatively, use these settings</a>
 </li>
 <li>
-<a href="#10">Pass on the scale factors</a>
+<a href="#10">Run lsqnonlin</a>
+</li>
+<li>
+<a href="#11">Pass on the scale factors</a>
 </li>
 </ul>
 </div>
@@ -127,6 +130,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>fx = run_opt_ff_lsqnonlin(x0,delta,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..</li>
 </ol>
 </div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="eval_sim.html">eval_sim</a>
+</li>
+<li>
+<a href="ff_helpfile.html">ff_helpfile</a>
+</li>
+<li>
+<a href="ff_helpfile2.html">ff_helpfile2</a>
+</li>
+<li>
+<a href="ff_helpfile3.html">ff_helpfile3</a>
+</li>
+<li>
+<a href="ff_plotfile.html">ff_plotfile</a>
+</li>
+</ol>
+</div>
 <pre class="codeinput">
 <span class="keyword">function</span> [fx,resnorm,residual,exitflag,output] = run_opt_ff_lsqnonlin(x0,delta,dirtype,varargin)
 </pre>
@@ -137,12 +160,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">In order to keep parameters around 1..</h2>
+<h2 id="6">In order to keep parameters around 1..</h2>
 <pre class="codeinput">scalefactors=(1./x0(1,:));
 scalefactors(scalefactors==0)=1;
 x0=scalefactors.*x0;
 </pre>
-<h2 id="6">Initial values</h2>
+<h2 id="7">Initial values</h2>
 <pre class="codeinput">disp(<span class="string">'Initial parameters and lower/upper bounds!'</span>)
 <span class="keyword">if</span> numel(delta)&gt;1
     x0=x0(1,:)
@@ -154,7 +177,7 @@ x0=scalefactors.*x0;
     ub=max([(1-delta)*x0;(1+delta)*x0])
 <span class="keyword">end</span>
 </pre>
-<h2 id="7">Set Options for Optimization</h2>
+<h2 id="8">Set Options for Optimization</h2>
 <p>custOutput = @(x,optimValues,state,varargin)plot_iterations(x,optimValues,state,varargin);</p>
 <pre class="codeinput">options = optimoptions(@lsqnonlin,<span class="string">'Diagnostics'</span>,<span class="string">'off'</span>,<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'MaxFunctionEvaluations'</span>,5000,<span class="string">'MaxIterations'</span>,500,<span class="string">'Tolfun'</span>,1e-7); <span class="comment">%,'PlotFcns',@plot_iterations);</span>
 <span class="comment">% options = optimset('Diagnostics','on','Display','iter','MaxFunEvals',5000,'MaxIter',500,'Tolfun',1e-7);%,'OutputFcn',custOutput);</span>
@@ -167,9 +190,9 @@ options.FiniteDifferenceType = <span class="string">'central'</span>; <span clas
     options.FiniteDifferenceStepSize = 0.02; <span class="comment">% 0.05;%</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="8">Alternatively, use these settings</h2>
+<h2 id="9">Alternatively, use these settings</h2>
 <p>options.DiffMinChange = 0.05; options.DiffMaxChange = Inf;</p>
-<h2 id="9">Run lsqnonlin</h2>
+<h2 id="10">Run lsqnonlin</h2>
 <pre class="codeinput">
 <span class="keyword">if</span> fextra&gt;0
     fstring=[];
@@ -187,7 +210,7 @@ ub
 options
 [fx,resnorm,residual,exitflag,output]=lsqnonlin(f,x0,lb,ub,options);
 </pre>
-<h2 id="10">Pass on the scale factors</h2>
+<h2 id="11">Pass on the scale factors</h2>
 <pre class="codeinput">assignin(<span class="string">'caller'</span>,<span class="string">'scalefactors'</span>,scalefactors)
 </pre>
 <pre class="codeinput">
@@ -214,6 +237,13 @@ options
 %% Examples
 % # fx = run_opt_ff_lsqnonlin(x0,delta,dirtype,indexes); % f1,f2,f3); % etc to run with extra parameters..
 
+%% See also
+% # <eval_sim.html eval_sim>
+% # <ff_helpfile.html ff_helpfile>
+% # <ff_helpfile2.html ff_helpfile2>
+% # <ff_helpfile3.html ff_helpfile3>
+% # <ff_plotfile.html ff_plotfile>
+%
 function [fx,resnorm,residual,exitflag,output] = run_opt_ff_lsqnonlin(x0,delta,dirtype,varargin)
 
 fextra=nargin-3;

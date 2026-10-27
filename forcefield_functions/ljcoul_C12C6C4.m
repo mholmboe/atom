@@ -1,3 +1,13 @@
+%% Examples
+% # [r,lj,coul,Utot] = ljcoul_C12C6C4(param) % LJ + Coulomb in the C12/C6/C4 convention, as in the 12-6-4 models
+%
+%% See also
+% # <ljcoul_force_C12C6C4.html ljcoul_force_C12C6C4>
+% # <ljcoul.html ljcoul>
+% # <ljcoul_12_6.html ljcoul_12_6>
+% # <ljcoul_2x.html ljcoul_2x>
+% # <ljcoul_2x2x.html ljcoul_2x2x>
+%
 function [r,lj,coul,Utot] = ljcoul_C12C6C4(param,varargin)
 
 q1=param(1);

@@ -11,6 +11,13 @@
 %% Examples
 % # atom = molid_translate(atom,[0 0 12],14) % Basic input arguments
 %
+%% See also
+% # <translate_molid.html translate_molid>
+% # <molid_rotate.html molid_rotate>
+% # <position_molid.html position_molid>
+% # <remove_molid.html remove_molid>
+% # <slice_molid.html slice_molid>
+%
 function atom = molid_translate(atom,trans_vec,MolID)
 %% 
 

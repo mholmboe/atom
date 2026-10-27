@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>atomic_mass.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="atomic_mass.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -96,6 +96,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <li>
 <a href="#3">Examples</a>
 </li>
+<li>
+<a href="#4">See also</a>
+</li>
 </ul>
 </div>
 <h2 id="1">Version</h2>
@@ -108,6 +111,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ol>
 <li>atom = mass_atom('Si')</li>
 <li>atom = mass_atom(atom(1).type)</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="mass_atom.html">mass_atom</a>
+</li>
+<li>
+<a href="atomic_scattering_factors.html">atomic_scattering_factors</a>
+</li>
+<li>
+<a href="reduced_mass.html">reduced_mass</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -226,30 +243,27 @@ Mass_data={<span class="keyword">...</span>
     277 <span class="string">'Hassium'</span> <span class="string">'Hs'</span> 108 ;<span class="keyword">...</span>
     };
 
-ind=[];ind_array=[];
-<span class="keyword">if</span> iscell(Atom_label) &amp;&amp; length(Atom_label) &gt; 1
-    <span class="keyword">for</span> i=1:length(Atom_label)
-        ind=find(strncmpi(Atom_label(i),Mass_data(:,1),2));
-        <span class="keyword">if</span> numel(ind) == 0
-            ind=find(strncmpi(Atom_label(i),Mass_data(:,1),1));
-            <span class="keyword">if</span> numel(ind) == 0
-                disp(<span class="string">'Could not find mass for'</span>)
-                disp(Atom_label(i))
-                disp(<span class="string">'setting it to 10.0'</span>)
-                ind = 10.0;
-            <span class="keyword">end</span>
-        <span class="keyword">end</span>
-        ind_array=[ind_array ind(1)];
+<span class="comment">% Mass_data columns: mass, name, symbol, atomic number. Look the symbol up (exact first, then the</span>
+<span class="comment">% first 2 or 1 characters, so force-field types such as 'Si1' or 'Alo' work) and return the mass.</span>
+<span class="keyword">if</span> ~iscell(Atom_label), Atom_label={Atom_label}; <span class="keyword">end</span>
+ind_array=nan(1,numel(Atom_label));
+<span class="keyword">for</span> i=1:numel(Atom_label)
+    ind=find(strcmpi(Atom_label{i},Mass_data(:,3)));
+    <span class="keyword">if</span> numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),2));
     <span class="keyword">end</span>
-    ind=ind_array;
-<span class="keyword">else</span>
-    ind=find(strcmpi(Atom_label,Mass_data(:,1)));
-    <span class="keyword">if</span> numel(ind) == 0
-        ind = 8;
+    <span class="keyword">if</span> numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),1));
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> numel(ind)==0
+        warning(<span class="string">'atomic_mass:unknown'</span>,<span class="string">'Could not find a mass for %s, returning NaN'</span>,Atom_label{i});
+    <span class="keyword">else</span>
+        ind_array(i)=ind(1);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-
-mass = cell2mat(Mass_data(ind,2));
+mass = nan(numel(ind_array),1);
+found = ~isnan(ind_array);
+mass(found) = cell2mat(Mass_data(ind_array(found),1));
 </pre>
 <p class="footer">
 <br>
@@ -273,6 +287,11 @@ mass = cell2mat(Mass_data(ind,2));
 % # atom = mass_atom('Si')
 % # atom = mass_atom(atom(1).type)
 
+%% See also
+% # <mass_atom.html mass_atom>
+% # <atomic_scattering_factors.html atomic_scattering_factors>
+% # <reduced_mass.html reduced_mass>
+%
 function mass = atomic_mass(Atom_label)
 
 Mass_data={...
@@ -388,30 +407,27 @@ Mass_data={...
     277 'Hassium' 'Hs' 108 ;...
     };
 
-ind=[];ind_array=[];
-if iscell(Atom_label) && length(Atom_label) > 1
-    for i=1:length(Atom_label)
-        ind=find(strncmpi(Atom_label(i),Mass_data(:,1),2));
-        if numel(ind) == 0
-            ind=find(strncmpi(Atom_label(i),Mass_data(:,1),1));
-            if numel(ind) == 0
-                disp('Could not find mass for')
-                disp(Atom_label(i))
-                disp('setting it to 10.0')
-                ind = 10.0;
-            end
-        end
-        ind_array=[ind_array ind(1)];
+% Mass_data columns: mass, name, symbol, atomic number. Look the symbol up (exact first, then the
+% first 2 or 1 characters, so force-field types such as 'Si1' or 'Alo' work) and return the mass.
+if ~iscell(Atom_label), Atom_label={Atom_label}; end
+ind_array=nan(1,numel(Atom_label));
+for i=1:numel(Atom_label)
+    ind=find(strcmpi(Atom_label{i},Mass_data(:,3)));
+    if numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),2));
     end
-    ind=ind_array;
-else
-    ind=find(strcmpi(Atom_label,Mass_data(:,1)));
-    if numel(ind) == 0
-        ind = 8;
+    if numel(ind)==0
+        ind=find(strncmpi(Atom_label{i},Mass_data(:,3),1));
+    end
+    if numel(ind)==0
+        warning('atomic_mass:unknown','Could not find a mass for %s, returning NaN',Atom_label{i});
+    else
+        ind_array(i)=ind(1);
     end
 end
-
-mass = cell2mat(Mass_data(ind,2));
+mass = nan(numel(ind_array),1);
+found = ~isnan(ind_array);
+mass(found) = cell2mat(Mass_data(ind_array(found),1));
 
 ##### SOURCE END #####
 -->

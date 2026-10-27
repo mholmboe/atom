@@ -13,6 +13,9 @@
 % # neigh = neighbor_atom(atom1,atom2,Box_dim) % Basic input arguments
 % # neigh = neighbor_atom(atom1,atom2,Box_dim,2.25) % Set the neighbour cutoff radius manually
 %
+%% See also
+% # <neighbor_func.html neighbor_func>
+%
 function neigh = neighbor_atom(atom1,atom2,Box_dim,varargin)
 
 if nargin < 4

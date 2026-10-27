@@ -1,4 +1,14 @@
 %% This special function is used to write the ffnonboned.itp file with VAR1..N string used in the ff optimization protocol
+%% Examples
+% # ff = write_ffnonbonded('minff') % Write a ffnonbonded.itp for the named force field
+% # ff = write_ffnonbonded('clayff',{'Ow'},parameters) % The same, overriding the parameters of selected atomtypes
+%
+%% See also
+% # <write_ff.html write_ff>
+% # <write_ffnonbonded_C6C12.html write_ffnonbonded_C6C12>
+% # <write_tabulated_potentials.html write_tabulated_potentials>
+% # <write_xvg.html write_xvg>
+%
 function ff = write_ffnonbonded(ffname,varargin)
 
 if nargin>1

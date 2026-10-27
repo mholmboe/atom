@@ -19,6 +19,13 @@
 % * atom = interface_atom(atom,Box_dim,'interface','spc',heal_iterations)
 
 
+%% See also
+% # <bond_atom.html bond_atom>
+% # <charge_atom.html charge_atom>
+% # <element_atom.html element_atom>
+% # <neighbor_func.html neighbor_func>
+% # <remove_sametype_bond.html remove_sametype_bond>
+%
 function atom=interface_atom(atom,Box_dim,varargin)
 
 format compact;

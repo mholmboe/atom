@@ -19,6 +19,12 @@
 % # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'index','C',1.4)
 % # atom2w = merge_atom(SOLUTE,Box_dim,SOLVENT,'molid','Hw',[1.6 1.0])
 %
+%% See also
+% # <dist_matrix_atom.html dist_matrix_atom>
+% # <slice_molid.html slice_molid>
+% # <vmd.html vmd>
+% # <wrap_atom.html wrap_atom>
+%
 function atom2w = merge_atom(atom1,Box1,atom2,type,Atom_label,rmin)
 
 % if max([atom1.x])>Box1(1)

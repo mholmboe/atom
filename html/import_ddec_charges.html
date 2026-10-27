@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>import_atom_ddec.m</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-05-23">
+<meta name="DC.date" content="2026-10-27">
 <meta name="DC.source" content="import_ddec_charges.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -97,7 +97,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <a href="#3">Examples</a>
 </li>
 <li>
-<a href="#5">Close the text file.</a>
+<a href="#4">See also</a>
+</li>
+<li>
+<a href="#6">Close the text file.</a>
 </li>
 </ul>
 </div>
@@ -110,6 +113,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ol>
 <li>atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')</li>
+</ol>
+</div>
+<h2 id="4">See also</h2>
+<div>
+<ol>
+<li>
+<a href="analyze_atom.html">analyze_atom</a>
+</li>
+<li>
+<a href="clayff_atom.html">clayff_atom</a>
+</li>
+<li>
+<a href="replicate_atom.html">replicate_atom</a>
+</li>
+<li>
+<a href="resname_atom.html">resname_atom</a>
+</li>
+<li>
+<a href="write_atom_pdb.html">write_atom_pdb</a>
+</li>
 </ol>
 </div>
 <pre class="codeinput">
@@ -176,7 +199,7 @@ Box_string=strsplit(char(line2));
     Box_dim(9)=str2double(Box_string(22)); <span class="comment">% yz</span>
 <span class="keyword">end</span>
 </pre>
-<h2 id="5">Close the text file.</h2>
+<h2 id="6">Close the text file.</h2>
 <pre class="codeinput">fclose(fileID);
 
 filetempID = fopen(filename,<span class="string">'r'</span>);
@@ -300,6 +323,13 @@ write_atom_pqr(atom(1:nAtoms_init),Box_dim_init,<span class="string">'ddec.pqr'<
 %
 %% Examples
 % # atom = import_atom_ddec('XYZ_even_tempered_net_atomic_charges.xyz')
+%
+%% See also
+% # <analyze_atom.html analyze_atom>
+% # <clayff_atom.html clayff_atom>
+% # <replicate_atom.html replicate_atom>
+% # <resname_atom.html resname_atom>
+% # <write_atom_pdb.html write_atom_pdb>
 %
 function [atom,Box_dim] = import_ddec_charges(varargin)
 
