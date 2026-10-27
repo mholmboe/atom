@@ -13,14 +13,40 @@ Download the whole function library from the:
 For a comprehensive list of the different functions, look here
 - [List all functions by topic](List_all_functions.md)
 
-See also the link to the:
-- [HTML documentation](http://moleculargeo.chem.umu.se/wp-content/uploads/file-manager/atom/Documentation/)
+The complete function documentation is published online:
+- **[atom Toolbox documentation](https://mholmboe.github.io/atom/)** — a page for every function, generated from the function headers
+
+The same pages ship inside the toolbox in [`html/`](html/), so MATLAB's own `doc` browser works offline as well. After editing a function header, regenerate them by running [`publish_html.m`](publish_html.m) from the toolbox root.
 
 ## Installation
 Just download the [**atom Toolbox**](https://github.com/mholmboe/atom) and put it in the MATLAB (or OCTAVE) path.
 
 ### Prerequisites
 - [**MATLAB**](www.mathworks.com) or [**OCTAVE**](https://octave.org)
+
+---
+
+## Examples and Tutorials
+
+Runnable scripts ship with the toolbox. New to it? Start with [`GettingStarted.m`](GettingStarted.m), then work through [`Basic_examples.m`](examples/Basic_examples/Basic_examples.m).
+
+| Folder | What it contains |
+|---|---|
+| [`examples/Basic_examples`](examples/Basic_examples) | One short script per task — see the list below |
+| [`examples/Build_a_2xlayer_clay_system`](examples/Build_a_2xlayer_clay_system) | A longer, start-to-finish build of a two-layer clay system |
+| [`LiveScripts`](LiveScripts) | MATLAB Live Scripts (`.mlx`) to step through interactively |
+| [`ATOM_scripts_lecture`](ATOM_scripts_lecture) | Complete GROMACS build setups used in teaching, for [MINFF](ATOM_scripts_lecture/MINFF), [CLAYFF](ATOM_scripts_lecture/CLAYFF), [INTERFACE](ATOM_scripts_lecture/INTERFACE) and [water](ATOM_scripts_lecture/GMX_Water) |
+
+The task-by-task basic examples:
+
+- [Import and export structures](examples/Basic_examples/Import_and_Export_structures.m)
+- [Make selections](examples/Basic_examples/Make_selections.m)
+- [Move molecules](examples/Basic_examples/Move_molecules.m) and [manipulate molecules](examples/Basic_examples/Manipulate_molecules.m)
+- [Solvate molecules](examples/Basic_examples/Solvate_molecules.m) and [insert molecules](examples/Basic_examples/Insert_molecules.m)
+- [Protonate or heal molecules](examples/Basic_examples/Protonate_or_heal_molecules.m)
+- [Plot molecules](examples/Basic_examples/Plot_molecules.m)
+- Assign [MINFF](examples/Basic_examples/Assign_MINFF_atomtypes.m), [CLAYFF](examples/Basic_examples/Assign_CLAYFF_atomtypes.m) or [INTERFACE](examples/Basic_examples/Assign_INTERFACE_atomtypes.m) atom types
+- [Write topology files](examples/Basic_examples/Write_topology_files.m)
 
 ---
 
@@ -40,7 +66,9 @@ mineral_ff = minff_atom(mineral, Box_dim); % Assign, for instance, the atom name
 
 % or
 
-mineral_ff = clayff{2004}_atom(mineral, Box_dim); % Assign, for instance, the atom names according to the expanded CLAYFF or original CLAYFF2004 (INTERFACE may work) force fields 
+mineral_ff = clayff_atom(mineral, Box_dim);      % ...or the expanded CLAYFF force field
+mineral_ff = clayff_2004_atom(mineral, Box_dim); % ...or the original CLAYFF (Cygan et al., 2004)
+mineral_ff = interface_atom(mineral, Box_dim);   % ...INTERFACE is supported to some extent
 
 ions = ionize_atom(arguments); % Add ions homogeneously or with preference to a surface 
 
@@ -185,7 +213,7 @@ dist_matrix = dist_matrix_atom(atom, Box_dim); dist_matrix = dist_matrix_atom(at
 ---
 
 
-Plus many other functions... see the HTML documentation.
+Plus many other functions — see the [full documentation](https://mholmboe.github.io/atom/).
 
 ### Original reference to cite:
 > Holmboe, M., "Atom: A MATLAB Package for Manipulation of Molecular Systems," Clays and Clay Minerals, Accepted November 2019. DOI:10.1007/s42860-019-00043-y

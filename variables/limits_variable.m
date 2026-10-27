@@ -3,7 +3,7 @@
 % volume. If a 1x1 vector, the volume is a cube expanding from (0,0,0) to
 % (limits(1),limits(1),limits(1)). If a 1x3 vector, the volume expands from
 % (0,0,0) to (limits(1),limits(2),limits(3)). If a 1x6 vector, the volume
-% is a region defined by <limits.html limits>, as in 
+% is a region defined by <limits_variable.html limits>, as in 
 % [xlo ylo zlo xhi yhi zhi]. Note that a 1x6 vector can alo be used to
 % repsresent any arbitrary plane, as in the last example below where
 % zlo equals zhi.

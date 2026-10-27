@@ -1,6 +1,6 @@
 %% Box_dim
 % * This variable is a 1x1 or 1x3 or 1x9 vector, and holds the size
-% parameters of the system box/simulation cell. If <Box_dim.html Box_dim>
+% parameters of the system box/simulation cell. If <Box_dim_variable.html Box_dim>
 % is a 1x1 vector, the box is a cube expanding from (0,0,0) to
 % (Box_dim(1),Box_dim(1),Box_dim(1)). If Box_dim is a 1x3 vector, the box 
 % expands from (0,0,0) to (Box_dim(1),Box_dim(2),Box_dim(3)). If Box_dim is 

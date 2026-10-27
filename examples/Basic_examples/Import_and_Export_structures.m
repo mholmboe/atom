@@ -71,7 +71,7 @@ atom = import_atom_pdb(filename_in);
 %
 % *Note* that when you export a .pdb file, the first cutoff is
 % <rmaxshort_variable.html rmaxshort> for bonded H's and the 
-% second cutoff is (<rmaxlong_variable.html rmaxlong>) for all other 
+% second cutoff is (<rmaxslong_variable.html rmaxlong>) for all other 
 % bonds
 
 write_atom_gro(atom,Box_dim,filename_out)
