@@ -11,6 +11,12 @@
 % # atom = element_atom(atom)
 % # atom = element_atom(atom,'Ow','Hw')
 %
+%% See also
+% # <element_color.html element_color>
+% # <atomic_mass.html atomic_mass>
+% # <mass_atom.html mass_atom>
+% # <composition_atom.html composition_atom>
+%
 function atom = element_atom(atom,varargin)
 
 [atom.fftype]=atom.type;
@@ -61,7 +67,7 @@ for i=1:size(atom,2)
     elseif strncmpi(atom(i).type,{'Fe'},2);atom(i).element={'Fe'};
     elseif strncmpi(atom(i).type,{'F'},1);atom(i).element={'F'};
     elseif strncmpi(atom(i).type,{'Gd'},2);atom(i).element={'Gd'};
-    % elseif strncmpi(atom(i).type,{'Hg'},2);atom(i).element={'Hg'}; % Who models Hg anyway?
+    elseif strncmpi(atom(i).type,{'Hg'},2);atom(i).element={'Hg'};
     elseif strncmpi(atom(i).type,{'Hf'},2);atom(i).element={'Hf'};
     elseif strncmpi(atom(i).type,{'Hw'},2);atom(i).element={water_H};
     elseif strncmpi(atom(i).type,{'H'},1);atom(i).element={'H'};

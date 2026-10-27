@@ -1,4 +1,15 @@
 %% This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&Kirfel, 1995
+%% Examples
+% # f = atomic_scattering_factors('Si',1.5406,30,0) % X-ray scattering factor at 2theta = 30 deg, with Biso = 0
+% # f = atomic_scattering_factors('O2-',1.5406,0:0.1:60,0.5) % The same, over a 2theta range and with a Biso of 0.5
+% Note: ionic labels such as O1-, O2-, Na1+, Al1.5+ are looked up as given
+%
+%% See also
+% # <xrd_atom.html xrd_atom>
+% # <Bragg.html Bragg>
+% # <atomic_mass.html atomic_mass>
+% # <element_atom.html element_atom>
+%
 function f = atomic_scattering_factors(Atom_label,lambda,twotheta,Biso,varargin)
 
 if ~iscell(Atom_label)
@@ -100,10 +111,9 @@ else
         Atom_label={'O1-'};
     end
     
-    % Hg and Hs are kept as real elements. He, Hf and Ho are deliberately treated as hydrogen
-    % because they are CLAYFF/MINFF hydrogen types (He is the edge hydroxyl hydrogen, Ho the
-    % hydroxyl hydrogen). For the elements themselves pass a charged label, e.g. 'Ho3+'.
-    if strncmpi(Atom_label,{'H'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'hg','hs'})
+    % Every form of H, Hs, He, Ho and Hw is hydrogen (force-field hydrogen types such as CLAYFF/MINFF
+    % He and Ho, and water Hw). Hf (hafnium) and Hg (mercury) are the real elements.
+    if strncmpi(Atom_label,{'H'},1) && ~ismember(lower(Atom_label{1}(1:min(2,end))),{'hf','hg'})
         if strncmpi(Atom_label,{'HEF'},2)
             %disp('Treating HEdelamn/Favejee as uncharged H')
             Atom_label={'H'};
