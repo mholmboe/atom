@@ -737,6 +737,25 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
     98 0 238.02891 0;<span class="keyword">...</span>
     ];
 
+<span class="comment">% The partial-charge rows Si2+, Al1.5+, Mg1+, O1- and Fe1.5+ are not oxidation</span>
+<span class="comment">% states.  They are the CLAYFF partial charges of forcefield_functions/clayff_param.m</span>
+<span class="comment">% (Si 2.1, Al 1.575, Mgo 1.36, Ob -1.05, Feo 1.575), rounded, so that a force field</span>
+<span class="comment">% atomtype scatters with the charge the force field gives it.  Feo carries Al's charge</span>
+<span class="comment">% because it substitutes octahedral Al, which is why the iron row is 1.5+ and not</span>
+<span class="comment">% ferric.  Each of these rows is a Waasmaier-Kirfel refit to the mean of the neutral</span>
+<span class="comment">% atom and the highest published cation -- mean(Al,Al3+), mean(Si,Si4+), mean(Mg,Mg2+),</span>
+<span class="comment">% mean(Fe,Fe3+) -- with f(0) = sum(a)+c pinned to the electron count Z - charge.</span>
+<span class="comment">%</span>
+<span class="comment">% The Fe1.5+ row did not have f(0) pinned: it gave 23.9762 instead of 24.5, a deficit</span>
+<span class="comment">% of 0.52 electrons, while its three siblings were correct to within 0.01 electron.</span>
+<span class="comment">% Since Feo, Fet and a bare Fe all resolve to Fe1.5+, that biased every Fe-bearing</span>
+<span class="comment">% structure.  Refitted 2026-10-27 to mean(Fe,Fe3+) with f(0) = 24.500000; the fit</span>
+<span class="comment">% follows that mean to within 0.013 % over 0 &lt;= sin(theta)/lambda &lt;= 1/1.5406, and all</span>
+<span class="comment">% five b coefficients are now positive (the old row had b2 = -0.000399).  Reported from</span>
+<span class="comment">% the atomipy side, where the same row is used.</span>
+<span class="comment">%</span>
+<span class="comment">% Note: a human-readable copy of this table is kept in Waasmaier_Kirfel.dat, which no</span>
+<span class="comment">% code reads.  Any change here must be made there too or that copy becomes misleading.</span>
 coeffs=[<span class="keyword">...</span>
     4.90e-05 0.413048 0.294953 0.187491 0.080701 0.023736 15.569946 32.398468 5.711404 61.889874 1.334118;<span class="keyword">...</span>
     0.000425 0.70226 0.763666 0.248678 0.261323 0.023017 23.945604 74.897919 6.773289 233.58345 1.337531;<span class="keyword">...</span>
@@ -796,7 +815,7 @@ coeffs=[<span class="keyword">...</span>
     -0.093713 6.926972 2.081342 11.128379 2.375107 -0.419287 0.378315 0.015054 5.379957 14.429586 0.004939;<span class="keyword">...</span>
     0.672146 12.409131 7.466993 1.809947 -12.138477 10.780248 0.3004 0.112814 12.520756 0.168653 5.173237;<span class="keyword">...</span>
     -0.304931 12.311098 1.876623 3.066177 2.070451 6.975185 5.009415 0.014461 18.74304 82.767876 0.346506;<span class="keyword">...</span>
-    -61.44564969 12.78432135 62.56327581 1.683751473 1.432130736 6.958358598 6.234159837 -0.000399296 1.0632928865 21.58593936 0.374772458;<span class="keyword">...</span>
+    -1.41375875 12.16796984 2.93541306 2.74435628 1.05974975 7.00626983 4.9525849 0.00772244 16.37702218 82.38092108 0.34251264;<span class="keyword">...</span>
     -9.676919 11.776765 11.165097 3.533495 0.165345 7.036932 4.912232 0.001748 14.166556 42.381958 0.341324;<span class="keyword">...</span>
     -61.930725 9.721638 63.403847 2.141347 2.629274 7.033846 4.869297 0.000293 4.867602 13.539076 0.33852;<span class="keyword">...</span>
     -0.936572 12.91451 2.481908 3.466894 2.106351 6.960892 4.507138 0.009126 16.438129 76.98732 0.314418;<span class="keyword">...</span>
@@ -1663,6 +1682,25 @@ Waasmaier_Kirfel_data=[...
     98 0 238.02891 0;...
     ];
 
+% The partial-charge rows Si2+, Al1.5+, Mg1+, O1- and Fe1.5+ are not oxidation
+% states.  They are the CLAYFF partial charges of forcefield_functions/clayff_param.m
+% (Si 2.1, Al 1.575, Mgo 1.36, Ob -1.05, Feo 1.575), rounded, so that a force field
+% atomtype scatters with the charge the force field gives it.  Feo carries Al's charge
+% because it substitutes octahedral Al, which is why the iron row is 1.5+ and not
+% ferric.  Each of these rows is a Waasmaier-Kirfel refit to the mean of the neutral
+% atom and the highest published cation REPLACE_WITH_DASH_DASH mean(Al,Al3+), mean(Si,Si4+), mean(Mg,Mg2+),
+% mean(Fe,Fe3+) REPLACE_WITH_DASH_DASH with f(0) = sum(a)+c pinned to the electron count Z - charge.
+%
+% The Fe1.5+ row did not have f(0) pinned: it gave 23.9762 instead of 24.5, a deficit
+% of 0.52 electrons, while its three siblings were correct to within 0.01 electron.
+% Since Feo, Fet and a bare Fe all resolve to Fe1.5+, that biased every Fe-bearing
+% structure.  Refitted 2026-10-27 to mean(Fe,Fe3+) with f(0) = 24.500000; the fit
+% follows that mean to within 0.013 % over 0 <= sin(theta)/lambda <= 1/1.5406, and all
+% five b coefficients are now positive (the old row had b2 = -0.000399).  Reported from
+% the atomipy side, where the same row is used.
+%
+% Note: a human-readable copy of this table is kept in Waasmaier_Kirfel.dat, which no
+% code reads.  Any change here must be made there too or that copy becomes misleading.
 coeffs=[...
     4.90e-05 0.413048 0.294953 0.187491 0.080701 0.023736 15.569946 32.398468 5.711404 61.889874 1.334118;...
     0.000425 0.70226 0.763666 0.248678 0.261323 0.023017 23.945604 74.897919 6.773289 233.58345 1.337531;...
@@ -1722,7 +1760,7 @@ coeffs=[...
     -0.093713 6.926972 2.081342 11.128379 2.375107 -0.419287 0.378315 0.015054 5.379957 14.429586 0.004939;...
     0.672146 12.409131 7.466993 1.809947 -12.138477 10.780248 0.3004 0.112814 12.520756 0.168653 5.173237;...
     -0.304931 12.311098 1.876623 3.066177 2.070451 6.975185 5.009415 0.014461 18.74304 82.767876 0.346506;...
-    -61.44564969 12.78432135 62.56327581 1.683751473 1.432130736 6.958358598 6.234159837 -0.000399296 1.0632928865 21.58593936 0.374772458;...
+    -1.41375875 12.16796984 2.93541306 2.74435628 1.05974975 7.00626983 4.9525849 0.00772244 16.37702218 82.38092108 0.34251264;...
     -9.676919 11.776765 11.165097 3.533495 0.165345 7.036932 4.912232 0.001748 14.166556 42.381958 0.341324;...
     -61.930725 9.721638 63.403847 2.141347 2.629274 7.033846 4.869297 0.000293 4.867602 13.539076 0.33852;...
     -0.936572 12.91451 2.481908 3.466894 2.106351 6.960892 4.507138 0.009126 16.438129 76.98732 0.314418;...
