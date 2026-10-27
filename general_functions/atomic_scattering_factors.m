@@ -55,6 +55,58 @@ else
         %disp('Treating Al as Al1.5+')
         Atom_label={'Al1.5+'};
     end
+
+    % Force field site types resolve to the partial-charge row of their element.
+    % Without these a site type falls through the table lookup below, which strips the
+    % label down to an element symbol and matches that directly, so the partial-charge
+    % rows above are bypassed.  The failures were not all benign: 'at' normalises to
+    % 'At' and matched ASTATINE (85 electrons for a tetrahedral aluminium), 'st' became
+    % 'St', missed, truncated to 'S' and matched sulfur, and 'ao', 'ae' and 'DFeo'
+    % truncated to nothing in the table and returned NaN, which propagates through a
+    % whole structure factor instead of merely biasing it.  The rest resolved to the
+    % neutral atom, 13 % high for Alo and 17 % high for Sit.
+    %
+    % The target is the nearest available row to the force field's partial charge.
+    % Note that the charge depends on which force field is loaded -- MINFF and CLAYFF
+    % disagree on the same label (Sit 1.884 vs 2.100, Alo 1.782 vs 1.575, Mgh 1.740 vs
+    % 1.050, Lio 0.860 vs 0.525) -- but the tabulated rows are coarse enough that both
+    % charges round to the same row, so one mapping serves both.  If a finer set of
+    % partial-charge rows is ever added, this mapping becomes force field dependent.
+    %
+    % Labels are matched in their normalised form, first character upper and the rest
+    % lower, as set at the top of this function: 'at' is 'At' here and 'DFeo' is 'Dfeo'.
+    if ismember(Atom_label,{'Alo','Ale','Ao','Ae','At'})
+        %disp('Treating a force field aluminium site as Al1.5+')
+        Atom_label={'Al1.5+'};
+    end
+    if ismember(Atom_label,{'Sit','Sio','St'})
+        %disp('Treating a force field silicon site as Si2+')
+        Atom_label={'Si2+'};
+    end
+    if ismember(Atom_label,{'Mge'})
+        %disp('Treating Mge as Mg1+')
+        Atom_label={'Mg1+'};
+    end
+    if ismember(Atom_label,{'Lio'})
+        %disp('Treating Lio as Li1+')
+        Atom_label={'Li1+'};
+    end
+    % Fee/Feo/Fet carry a 2 or 3 for the ferrous or ferric SITE, but their force field
+    % charges are partial (MINFF Feo2 1.184, Feo3 1.500, Fee3 1.750; CLAYFF Fe2 1.050),
+    % not formal 2+ and 3+, so they all resolve to the partial-charge row like Feo and
+    % Fet below.  Feo3's 1.500 is exactly Fe1.5+.
+    if ismember(Atom_label,{'Fee','Fee2','Fee3','Feo2','Feo3','Fet2','Fet3','Fe2','Dfeo'})
+        %disp('Treating a force field iron site as Fe1.5+')
+        Atom_label={'Fe1.5+'};
+    end
+    if ismember(Atom_label,{'Tio'})
+        %disp('Treating Tio as Ti2+')
+        Atom_label={'Ti2+'};
+    end
+    % Mn, Mn2, Mn3 and Mn4 are deliberately left alone.  Their digits are not oxidation
+    % states either -- CLAYFF gives Mn 2.100, Mn2 1.360, Mn3 1.575, Mn4 2.100 -- so
+    % mapping them onto the published Mn2+, Mn3+ and Mn4+ rows by name would be wrong,
+    % and which row each should take has not been decided.
     if strcmp(Atom_label,{'Si'})
         %disp('Treating Si as Si2+')
         Atom_label={'Si2+'};
