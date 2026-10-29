@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>This function retrieves the atomic scattering factor vs 2theta using the 11-coeff parameters from Waasmaier&amp;Kirfel, 1995</title>
 <meta name="generator" content="MATLAB 24.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-10-27">
+<meta name="DC.date" content="2026-10-29">
 <meta name="DC.source" content="atomic_scattering_factors.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -685,7 +685,7 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
     32 0 72.6400 0;<span class="keyword">...</span>
     32 4 72.6400 1.5;<span class="keyword">...</span>
     33 0 74.9216 0;<span class="keyword">...</span>
-    34 0 31.0350 11;<span class="keyword">...</span>
+    17 0 31.0350 0;<span class="keyword">...</span>
     34 0 78.9600 0;<span class="keyword">...</span>
     35 0 79.9040 0;<span class="keyword">...</span>
     35 -1 79.9040 2;<span class="keyword">...</span>
@@ -847,6 +847,26 @@ ind0=cell2mat(regexp(Atom_label,<span class="string">'0'</span>));
 <span class="comment">%</span>
 <span class="comment">% Note: a human-readable copy of this table is kept in Waasmaier_Kirfel.dat, which no</span>
 <span class="comment">% code reads.  Any change here must be made there too or that copy becomes misleading.</span>
+<span class="comment">%</span>
+<span class="comment">% Column order below is c, a1..a5, b1..b5, giving f(s) = c + sum_i a_i exp(-b_i s^2)</span>
+<span class="comment">% with s = sin(theta)/lambda.  atomipy stores the same rows as a1..a5, c, b1..b5 -- c</span>
+<span class="comment">% after the fifth a rather than first -- so a row copied between the two codes has to</span>
+<span class="comment">% be permuted.  f(0) = sum(a)+c is identical under either order and so cannot catch the</span>
+<span class="comment">% mistake; compare f at s = 1/1.5406 instead, where the two readings disagree plainly.</span>
+<span class="comment">%</span>
+<span class="comment">% Glycol is not an atom.  One Glycol site is a single -CH2OH end of an ethylene glycol</span>
+<span class="comment">% molecule, two per molecule, fitted to the independent-atom sum f_C + 3 f_H + f_O --</span>
+<span class="comment">% 17 electrons, weight 31.035, half of glycol's 62.07.  Its atom_nr above read 34, the</span>
+<span class="comment">% whole-molecule electron count, so nElectrons returned 34 against f(0) = 16.9877 and</span>
+<span class="comment">% doubled the electron density that G2_atom and xrd_atom_legacy derive from it;</span>
+<span class="comment">% corrected to 17 on 2026-10-29.  The debye column read 11, which is the coefficient</span>
+<span class="comment">% count mis-entered, and is now 0.  The coefficients were refitted the same day: they</span>
+<span class="comment">% follow that independent-atom sum to within 0.0186 % out to s = 1/0.5594, all five b</span>
+<span class="comment">% are positive, and f decreases monotonically through Ag Ka.  The row they replace was</span>
+<span class="comment">% accurate to 0.66 % over Cu Ka but had b5 = -0.16291182, so f turned back up at</span>
+<span class="comment">% s = 1.01 and the row was unusable with Mo or Ag Ka.  The refit was done on the</span>
+<span class="comment">% atomipy side and checked here against this table's own C, H and O rows.  No structure</span>
+<span class="comment">% or remap in the toolbox places a Glycol site, so nothing currently reaches it.</span>
 coeffs=[<span class="keyword">...</span>
     4.90e-05 0.413048 0.294953 0.187491 0.080701 0.023736 15.569946 32.398468 5.711404 61.889874 1.334118;<span class="keyword">...</span>
     0.000425 0.70226 0.763666 0.248678 0.261323 0.023017 23.945604 74.897919 6.773289 233.58345 1.337531;<span class="keyword">...</span>
@@ -925,7 +945,7 @@ coeffs=[<span class="keyword">...</span>
     0.018726 16.540613 1.5679 3.727829 3.345098 6.785079 2.866618 0.012198 13.432163 58.866047 0.210974;<span class="keyword">...</span>
     1.086542 6.876636 6.779091 9.969591 3.135857 0.152389 2.025174 0.17665 3.573822 7.685848 16.677574;<span class="keyword">...</span>
     -2.984117 17.025642 4.503441 3.715904 3.9372 6.790175 2.597739 0.003012 14.272119 50.437996 0.193015;<span class="keyword">...</span>
-    180.8052097 7.887361193 -184.185669 4.442661888 3.68850792 4.349643565 13.09791052 0.001710201 1.978601512 36.20862715 -0.16291182;<span class="keyword">...</span>
+    0.403031671 2.72787099 2.82196123 6.90521933 3.55265697 0.589259805 42.9513687 0.369942609 15.9696369 6.44755585 1.34671382;<span class="keyword">...</span>
     -3.160982 17.354071 4.653248 4.259489 4.136455 6.749163 2.349787 0.00255 15.57946 45.181202 0.177432;<span class="keyword">...</span>
     -2.492088 17.55057 5.411882 3.93718 3.880645 6.707793 2.119226 16.557184 0.002481 42.164009 0.162121;<span class="keyword">...</span>
     1.152674 17.71431 6.466926 6.947385 4.402674 -0.697279 2.122554 19.050768 0.152708 58.690361 58.690372;<span class="keyword">...</span>
@@ -1721,7 +1741,7 @@ Waasmaier_Kirfel_data=[...
     32 0 72.6400 0;...
     32 4 72.6400 1.5;...
     33 0 74.9216 0;...
-    34 0 31.0350 11;...
+    17 0 31.0350 0;...
     34 0 78.9600 0;...
     35 0 79.9040 0;...
     35 -1 79.9040 2;...
@@ -1883,6 +1903,26 @@ Waasmaier_Kirfel_data=[...
 %
 % Note: a human-readable copy of this table is kept in Waasmaier_Kirfel.dat, which no
 % code reads.  Any change here must be made there too or that copy becomes misleading.
+%
+% Column order below is c, a1..a5, b1..b5, giving f(s) = c + sum_i a_i exp(-b_i s^2)
+% with s = sin(theta)/lambda.  atomipy stores the same rows as a1..a5, c, b1..b5 REPLACE_WITH_DASH_DASH c
+% after the fifth a rather than first REPLACE_WITH_DASH_DASH so a row copied between the two codes has to
+% be permuted.  f(0) = sum(a)+c is identical under either order and so cannot catch the
+% mistake; compare f at s = 1/1.5406 instead, where the two readings disagree plainly.
+%
+% Glycol is not an atom.  One Glycol site is a single -CH2OH end of an ethylene glycol
+% molecule, two per molecule, fitted to the independent-atom sum f_C + 3 f_H + f_O REPLACE_WITH_DASH_DASH
+% 17 electrons, weight 31.035, half of glycol's 62.07.  Its atom_nr above read 34, the
+% whole-molecule electron count, so nElectrons returned 34 against f(0) = 16.9877 and
+% doubled the electron density that G2_atom and xrd_atom_legacy derive from it;
+% corrected to 17 on 2026-10-29.  The debye column read 11, which is the coefficient
+% count mis-entered, and is now 0.  The coefficients were refitted the same day: they
+% follow that independent-atom sum to within 0.0186 % out to s = 1/0.5594, all five b
+% are positive, and f decreases monotonically through Ag Ka.  The row they replace was
+% accurate to 0.66 % over Cu Ka but had b5 = -0.16291182, so f turned back up at
+% s = 1.01 and the row was unusable with Mo or Ag Ka.  The refit was done on the
+% atomipy side and checked here against this table's own C, H and O rows.  No structure
+% or remap in the toolbox places a Glycol site, so nothing currently reaches it.
 coeffs=[...
     4.90e-05 0.413048 0.294953 0.187491 0.080701 0.023736 15.569946 32.398468 5.711404 61.889874 1.334118;...
     0.000425 0.70226 0.763666 0.248678 0.261323 0.023017 23.945604 74.897919 6.773289 233.58345 1.337531;...
@@ -1961,7 +2001,7 @@ coeffs=[...
     0.018726 16.540613 1.5679 3.727829 3.345098 6.785079 2.866618 0.012198 13.432163 58.866047 0.210974;...
     1.086542 6.876636 6.779091 9.969591 3.135857 0.152389 2.025174 0.17665 3.573822 7.685848 16.677574;...
     -2.984117 17.025642 4.503441 3.715904 3.9372 6.790175 2.597739 0.003012 14.272119 50.437996 0.193015;...
-    180.8052097 7.887361193 -184.185669 4.442661888 3.68850792 4.349643565 13.09791052 0.001710201 1.978601512 36.20862715 -0.16291182;...
+    0.403031671 2.72787099 2.82196123 6.90521933 3.55265697 0.589259805 42.9513687 0.369942609 15.9696369 6.44755585 1.34671382;...
     -3.160982 17.354071 4.653248 4.259489 4.136455 6.749163 2.349787 0.00255 15.57946 45.181202 0.177432;...
     -2.492088 17.55057 5.411882 3.93718 3.880645 6.707793 2.119226 16.557184 0.002481 42.164009 0.162121;...
     1.152674 17.71431 6.466926 6.947385 4.402674 -0.697279 2.122554 19.050768 0.152708 58.690361 58.690372;...
