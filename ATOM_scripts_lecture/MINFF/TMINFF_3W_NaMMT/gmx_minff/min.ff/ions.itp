@@ -11,7 +11,7 @@
 ;
 ; References (water models excluded, should be added..)
 ; 1.  GMINFF - Version 1.0 for the k0, k250, k500, k1500 general (GMINFF) parameter sets 
-; 2.  CLAYFF - Cygan et al., 2004, J. Phys. Chem. B, 108, 15141-15149, DOI:10.1021/jp0363287
+; 2.  CLAYFF - Cygan et al., 2004, J. Phys. Chem. B, 108, 1255-1266, DOI:10.1021/jp0363287
 ; 3.  JC - Joung & Cheatham, 2008, J. Phys. Chem. B, 112, 9020–9041
 ; 4.  AQVIST - Åqvist, J, 1990. J. Phys. Chem. 1990, 94, 8021-8024, 
 ; 5.  BL - Babu & Lim, 2006, J. Phys. Chem. A 2006, 110, 691-699, DOI:10.1021/jp054177x

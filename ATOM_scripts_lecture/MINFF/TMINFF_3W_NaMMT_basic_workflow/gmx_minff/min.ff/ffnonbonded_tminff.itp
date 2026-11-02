@@ -35,7 +35,7 @@
 ;
 ; References (water models excluded, should be added..)
 ; 1.  GMINFF - Version 1.0 for the k0, k250, k500, k1500 general (GMINFF) parameter sets 
-; 2.  CLAYFF - Cygan et al., 2004, J. Phys. Chem. B, 108, 15141-15149, DOI:10.1021/jp0363287
+; 2.  CLAYFF - Cygan et al., 2004, J. Phys. Chem. B, 108, 1255-1266, DOI:10.1021/jp0363287
 ; 3.  JC - Joung & Cheatham, 2008, J. Phys. Chem. B, 112, 9020–9041
 ; 4.  AQVIST - Åqvist, J, 1990. J. Phys. Chem. 1990, 94, 8021-8024, 
 ; 5.  BL - Babu & Lim, 2006, J. Phys. Chem. A 2006, 110, 691-699, DOI:10.1021/jp054177x
@@ -44,7 +44,7 @@
 ; 8.  LM - Sengupta, Li, Song & Merz, 2021, J. Chem. Inf. Model. 2021, 61, 869−880, DOI:10.1021/acs.jcim.0c01390 
 ; 9.  LM - Li, Song, Li & Merz, 2020, : J. Chem. Theory Comput. 2020, 16, 4429−4442, DOI:10.1021/acs.jctc.0c00194
 ; 10. LM - Li, Song & Merz, 2021, J. Chem. Theory Comput. 2021, 17, 2342−2354, DOI:10.1021/acs.jctc.0c01320
-; 11. ZQ - Monovalent ions, Qiu et al., J. Chem. Inf. Model. 2021, 61, 4113-4132, doi 10.1021/acs.jcim.1c00550
+; 11. ZQ - Monovalent ions, Qiu et al., J. Phys. Chem. B 2021, 125, 13502-13518, doi 10.1021/acs.jpcb.1c09103
 ; 12. ZQ - Divalent ions, Zhang et al., J. Chem. Inf. Model. 2021, 61, 4031-4044, doi 10.1021/acs.jcim.1c00580 
 ; 13. ZQ - Polyvalent ions, Zhang et al., J. Chem. Inf. Model. 2021, 61, 4613-4629, doi 10.1021/acs.jcim.1c00723
 ;
@@ -2268,6 +2268,7 @@ Op         8	 15.99941	-1.06500   A  	 0.317427	 0.683690
 ; CLAYFF, ion and water blocks (independent of mineral and angle force constant)
 ; ---------------------------------------------------------------------------
 #ifdef CLAYFF_2004	
+; CLAYFF (Cygan, Liang & Kalinichev 2004), see ref 2
 ho		1	1.007940	0.42500	A	0.000000	0.000000	;	Hydroxyl	hydrogen			
 oh		8	15.99940	-0.9500	A	0.316556	0.650170	;	Hydroxyl	oxygen			
 o 		8	15.99940	-1.0500	A	0.316556	0.650170	;	Bridging	oxygen	
@@ -2418,6 +2419,7 @@ Zn2+	    30	65.41	    2.00000	A	0.204710707	0.13598  	;	Aqueous	zink	ion
 #endif
 
 #ifdef all_IOD_LM
+; Li, Song & Merz 2015 monovalent ion set for the SPC/E, TIP3P and TIP4P-Ew water models, IOD-optimised (16 ions), see ref 6
 H+_Eigen       1	 1.007940	 1.000000   A	 0.149849	 2.76562e-07
 H+_Zundel      1	 1.007940	 1.000000   A	 0.164816	 6.15048e-06
 Li+            3	 6.941000	 1.000000   A	 0.234306	 0.0248938
@@ -2437,6 +2439,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.333196	  1.13991
 #endif
 
 #ifdef SPCE_HFE_LM
+; Li, Song & Merz 2015 monovalent ion set for the SPC/E water model, HFE-optimised (14 ions), see ref 6
 Li+            3	 6.941000	 1.000000   A	  0.22415	 0.011468
 F-             9	 18.998400	-1.000000   A	 0.324109	 0.957249
 H3O+          11	 19.018000	 1.000000   A	 0.236445	 0.0289143
@@ -2454,6 +2457,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.297204	 0.491272
 #endif
 
 #ifdef TIP3P_HFE_LM
+; Li, Song & Merz 2015 monovalent ion set for the TIP3P water model, HFE-optimised (14 ions), see ref 6
 Li+            3	 6.941000	 1.000000   A	 0.225754	 0.0130568
 F-             9	 18.998400	-1.000000   A	 0.317694	 0.834509
 H3O+          11	 19.018100	 1.000000   A	 0.238226	 0.032647
@@ -2471,6 +2475,7 @@ Tl+           81	 204.383300	 1.000000   A	  0.30344	 0.586672
 #endif
 
 #ifdef TIP4PEW_HFE_LM
+; Li, Song & Merz 2015 monovalent ion set for the TIP4P-Ew water model, HFE-optimised (14 ions), see ref 6
 Li+            3	 6.941000	 1.000000   A	 0.218448	 0.00705782
 F-             9	 18.998400	-1.000000   A	 0.328207	  1.03852
 H3O+          11	 19.081000	 1.000000   A	 0.230208	 0.0184478
@@ -2488,6 +2493,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.293284	 0.435864
 #endif
 
 #ifdef OPC3_HFE_LM
+; Sengupta et al. 2021 monovalent ion set for the OPC3 water model, HFE-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.226288	 0.0136252
 F-             9	 18.998400	-1.000000   A	 0.323931	 0.953762
 Na+           11	 22.989700	 1.000000   A	 0.261746	 0.126029
@@ -2503,6 +2509,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.299698	 0.528389
 #endif
 
 #ifdef OPC_HFE_LM
+; Sengupta et al. 2021 monovalent ion set for the OPC water model, HFE-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.221299	 0.00903987
 F-             9	 18.998400	-1.000000   A	 0.327851	  1.03138
 Na+           11	 22.989700	 1.000000   A	  0.26139	 0.123861
@@ -2518,6 +2525,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.295778	 0.470706
 #endif
 
 #ifdef TIP3PFB_HFE_LM
+; Sengupta et al. 2021 monovalent ion set for the TIP3P-FB water model, HFE-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.224506	 0.0118064
 F-             9	 18.998400	-1.000000   A	 0.326782	  1.01003
 Na+           11	 22.989700	 1.000000   A	 0.259964	 0.115455
@@ -2533,6 +2541,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.298629	 0.512308
 #endif
 
 #ifdef TIP4PFB_HFE_LM
+; Sengupta et al. 2021 monovalent ion set for the TIP4P-FB water model, HFE-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.220943	 0.00876912
 F-             9	 18.998400	-1.000000   A	 0.328742	  1.04926
 Na+           11	 22.989700	 1.000000   A	 0.258004	 0.104581
@@ -2548,6 +2557,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.296847	 0.486086
 #endif
 
 #ifdef OPC3_IOD_LM
+; Sengupta et al. 2021 monovalent ion set for the OPC3 water model, IOD-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.235375	 0.0268437
 F-             9	 18.998400	-1.000000   A	 0.309498	 0.687302
 Na+           11	 22.989700	 1.000000   A	 0.261924	 0.127123
@@ -2563,6 +2573,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.332483	  1.12528
 #endif
 
 #ifdef OPC_IOD_LM
+; Sengupta et al. 2021 monovalent ion set for the OPC water model, IOD-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.232525	 0.0218984
 F-             9	 18.998400	-1.000000   A	 0.306469	 0.636053
 Na+           11	 22.989700	 1.000000   A	 0.256579	 0.0971555
@@ -2578,6 +2589,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.328742	  1.04926
 #endif
 
 #ifdef TIP3PFB_IOD_LM
+; Sengupta et al. 2021 monovalent ion set for the TIP3P-FB water model, IOD-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.235197	 0.0265105
 F-             9	 18.998400	-1.000000   A	 0.310567	 0.705817
 Na+           11	 22.989700	 1.000000   A	 0.260142	 0.116483
@@ -2593,6 +2605,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.332305	  1.12163
 #endif
 
 #ifdef TIP4PFB_IOD_LM
+; Sengupta et al. 2021 monovalent ion set for the TIP4P-FB water model, IOD-optimised (12 ions), see ref 8
 Li+            3	 6.941000	 1.000000   A	 0.232703	 0.0221842
 F-             9	 18.998400	-1.000000   A	 0.310033	 0.696532
 Na+           11	 22.989700	 1.000000   A	 0.258361	   0.1065
@@ -2608,6 +2621,7 @@ Tl+           81	 204.383300	 1.000000   A	 0.331414	  1.10342
 #endif
 
 #ifdef OPC3_CM_LM
+; Li et al. 2020 divalent ion set for the OPC3 water model, compromise (CM) (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.173013	 2.59826e-05
 Mg2+          12	 24.305000	 2.000000   A	 0.242859	 0.044157
 Ca2+          20	 40.078000	 2.000000   A	 0.290077	 0.393257
@@ -2635,6 +2649,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.307004	 0.644964
 #endif
 
 #ifdef OPC_CM_LM
+; Li et al. 2020 divalent ion set for the OPC water model, compromise (CM) (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.164104	 5.35552e-06
 Mg2+          12	 24.305000	 2.000000   A	 0.236979	 0.0299964
 Ca2+          20	 40.078000	 2.000000   A	 0.286513	  0.34886
@@ -2662,6 +2677,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.304153	 0.598118
 #endif
 
 #ifdef TIP3PFB_CM_LM
+; Li et al. 2020 divalent ion set for the TIP3P-FB water model, compromise (CM) (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.171587	 2.04598e-05
 Mg2+          12	 24.305000	 2.000000   A	 0.242859	 0.044157
 Ca2+          20	 40.078000	 2.000000   A	 0.291324	 0.409531
@@ -2689,6 +2705,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.308251	  0.66598
 #endif
 
 #ifdef TIP4PFB_CM_LM
+; Li et al. 2020 divalent ion set for the TIP4P-FB water model, compromise (CM) (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.164638	 5.94128e-06
 Mg2+          12	 24.305000	 2.000000   A	 0.239117	 0.0346517
 Ca2+          20	 40.078000	 2.000000   A	 0.289898	 0.390963
@@ -2716,6 +2733,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.307895	 0.659944
 #endif
 
 #ifdef OPC3_HFE_LM
+; Li et al. 2020 divalent ion set for the OPC3 water model, HFE-optimised (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.166598	 8.53536e-06
 Mg2+          12	 24.305000	 2.000000   A	 0.232703	 0.0221842
 Ca2+          20	 40.078000	 2.000000   A	 0.274575	 0.223043
@@ -2743,6 +2761,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.289364	 0.384128
 #endif
 
 #ifdef OPC_HFE_LM
+; Li et al. 2020 divalent ion set for the OPC water model, HFE-optimised (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.151809	 4.184e-07
 Mg2+          12	 24.305000	 2.000000   A	 0.220765	 0.00863636
 Ca2+          20	 40.078000	 2.000000   A	 0.266022	  0.15419
@@ -2770,6 +2789,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.280989	 0.286257
 #endif
 
 #ifdef TIP3PFB_HFE_LM
+; Li et al. 2020 divalent ion set for the TIP3P-FB water model, HFE-optimised (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.162856	 4.22584e-06
 Mg2+          12	 24.305000	 2.000000   A	 0.229496	 0.0174802
 Ca2+          20	 40.078000	 2.000000   A	 0.271724	 0.198172
@@ -2797,6 +2817,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.286335	 0.346723
 #endif
 
 #ifdef TIP4PFB_HFE_LM
+; Li et al. 2020 divalent ion set for the TIP4P-FB water model, HFE-optimised (24 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.149671	 2.5104e-07
 Mg2+          12	 24.305000	 2.000000   A	 0.220587	 0.00850524
 Ca2+          20	 40.078000	 2.000000   A	 0.265131	 0.147991
@@ -2824,6 +2845,7 @@ Pb2+          82	 207.200000	 2.000000   A	 0.280455	 0.280601
 #endif
 
 #ifdef OPC3_IOD_LM
+; Li et al. 2020 divalent ion set for the OPC3 water model, IOD-optimised (16 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.207045	 0.00236358
 Mg2+          12	 24.305000	 2.000000   A	 0.249452	 0.0657201
 Ca2+          20	 40.078000	 2.000000   A	 0.288117	 0.368452
@@ -2843,6 +2865,7 @@ Hg2+          80	 200.590000	 2.000000   A	 0.282237	  0.29973
 #endif
 
 #ifdef OPC_IOD_LM
+; Li et al. 2020 divalent ion set for the OPC water model, IOD-optimised (16 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.202412	 0.00143896
 Mg2+          12	 24.305000	 2.000000   A	 0.244641	 0.049345
 Ca2+          20	 40.078000	 2.000000   A	 0.283306	 0.311587
@@ -2862,6 +2885,7 @@ Hg2+          80	 200.590000	 2.000000   A	 0.278851	 0.264058
 #endif
 
 #ifdef TIP3PFB_IOD_LM
+; Li et al. 2020 divalent ion set for the TIP3P-FB water model, IOD-optimised (16 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.207223	 0.00240764
 Mg2+          12	 24.305000	 2.000000   A	 0.249452	 0.0657201
 Ca2+          20	 40.078000	 2.000000   A	 0.288117	 0.368452
@@ -2881,6 +2905,7 @@ Hg2+          80	 200.590000	 2.000000   A	 0.282237	  0.29973
 #endif
 
 #ifdef TIP4PFB_IOD_LM
+; Li et al. 2020 divalent ion set for the TIP4P-FB water model, IOD-optimised (16 ions), see ref 9
 Be2+           4	 9.012200	 2.000000   A	 0.204907	 0.00188719
 Mg2+          12	 24.305000	 2.000000   A	 0.246423	 0.0549931
 Ca2+          20	 40.078000	 2.000000   A	 0.285088	 0.331979
@@ -2900,6 +2925,7 @@ Hg2+          80	 200.590000	 2.000000   A	 0.280099	 0.276869
 #endif
 
 #ifdef SPCE_HFE_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the SPC/E water model, HFE-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.176576	 4.63169e-05
 Cr3+          24	 51.996100	 3.000000   A	 0.213103	 0.00431822
 Fe3+          26	 55.845000	 3.000000   A	 0.194394	 0.00056325
@@ -2927,6 +2953,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.228248	 0.0158869
 #endif
 
 #ifdef TIP3P_HFE_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the TIP3P water model, HFE-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.174794	 3.48109e-05
 Cr3+          24	 51.996100	 3.000000   A	 0.211678	 0.0037643
 Fe3+          26	 55.845000	 3.000000   A	  0.19279	 0.000460951
@@ -2954,6 +2981,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.226823	 0.0142139
 #endif
 
 #ifdef TIP4PEW_HFE_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the TIP4P-Ew water model, HFE-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.156085	 1.08784e-06
 Cr3+          24	 51.996100	 3.000000   A	 0.195285	 0.000628395
 Fe3+          26	 55.845000	 3.000000   A	 0.175329	 3.79489e-05
@@ -2981,6 +3009,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.208827	 0.00283692
 #endif
 
 #ifdef SPCE_IOD_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the SPC/E water model, IOD-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.230921	 0.0194587
 Cr3+          24	 51.996100	 3.000000   A	 0.239295	 0.0350641
 Fe3+          26	 55.845000	 3.000000   A	 0.246957	 0.0567809
@@ -3008,6 +3037,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.296847	 0.486086
 #endif
 
 #ifdef TIP3P_IOD_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the TIP3P water model, IOD-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.231099	 0.0197183
 Cr3+          24	 51.996100	 3.000000   A	 0.239474	 0.0354803
 Fe3+          26	 55.845000	 3.000000   A	 0.246957	 0.0567809
@@ -3035,6 +3065,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.296135	 0.475803
 #endif
 
 #ifdef TIP4PEW_IOD_LM
+; Li, Song & Merz 2015 trivalent and tetravalent ion set for the TIP4P-Ew water model, IOD-optimised (24 ions), see ref 7
 Al3+          13	 26.981500	 3.000000   A	 0.228961	 0.0167821
 Cr3+          24	 51.996100	 3.000000   A	 0.237514	 0.0311105
 Fe3+          26	 55.845000	 3.000000   A	 0.244997	 0.050437
@@ -3062,6 +3093,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.293106	 0.433432
 #endif
 
 #ifdef OPC3_HFE_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the OPC3 water model, HFE-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.179071    6.8241e-05
 Cr3+          24	 51.996100	 3.000000   A	 0.216845    0.00611383
 Fe3+          26	 55.845000	 3.000000   A	 0.199739    0.00106479
@@ -3089,6 +3121,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.233059    0.0227646
 #endif
 
 #ifdef OPC_HFE_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the OPC water model, HFE-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.164638	  5.94128e-06
 Cr3+          24	 51.996100	 3.000000   A	 0.204016	   0.00171485
 Fe3+          26	 55.845000	 3.000000   A	 0.182278	  0.000110248
@@ -3116,6 +3149,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.217557	   0.00651926
 #endif
 
 #ifdef TIP3PFB_HFE_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the TIP3P-FB water model, HFE-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.173191	  2.67358e-05
 Cr3+          24	 51.996100	 3.000000   A	 0.213281	   0.00439211
 Fe3+          26	 55.845000	 3.000000   A	  0.19582	  0.000670612
@@ -3143,6 +3177,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.228961	   0.0167821
 #endif
 
 #ifdef TIP4PFB_HFE_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the TIP4P-FB water model, HFE-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.163213	  4.51872e-06
 Cr3+          24	 51.996100	 3.000000   A	 0.203125	   0.00155636
 Fe3+          26	 55.845000	 3.000000   A	 0.180496	  8.46842e-05
@@ -3174,6 +3209,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.216488	   0.00591923
 ; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
 ; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef OPC3_IOD_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the OPC3 water model, IOD-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.229317	 0.0172449
 Cr3+          24	 51.996100	 3.000000   A	 0.243037	 0.0446558
 Fe3+          26	 55.845000	 3.000000   A	 0.252837	 0.0795119
@@ -3205,6 +3241,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.299698	 0.528389
 ; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
 ; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef OPC_IOD_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the OPC water model, IOD-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.222725	 0.0101938
 Cr3+          24	 51.996100	 3.000000   A	 0.238048	 0.0322573
 Fe3+          26	 55.845000	 3.000000   A	 0.249452	 0.0657201
@@ -3236,6 +3273,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.295422	 0.465638
 ; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
 ; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef TIP3PFB_IOD_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the TIP3P-FB water model, IOD-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.229317	 0.0172449
 Cr3+          24	 51.996100	 3.000000   A	 0.243037	 0.0446558
 Fe3+          26	 55.845000	 3.000000   A	 0.252837	 0.0795119
@@ -3267,6 +3305,7 @@ Pu4+          94	 244.000000	 4.000000   A	 0.299698	 0.528389
 ; sorted by atomic number, so sigma was attached to the wrong ion for 20 of the 24 ions.
 ; eps was unaffected and is unchanged. In3+ also carried iodine's atomic number and mass.
 #ifdef TIP4PFB_IOD_LM
+; Li, Song & Merz 2021 trivalent and tetravalent ion set for the TIP4P-FB water model, IOD-optimised (24 ions), see ref 10
 Al3+          13	 26.981500	 3.000000   A	 0.225754	 0.0130568
 Cr3+          24	 51.996100	 3.000000   A	 0.239652	 0.0359005
 Fe3+          26	 55.845000	 3.000000   A	 0.250164	 0.0684605
