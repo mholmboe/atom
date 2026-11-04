@@ -322,6 +322,7 @@
 % # <tube_atom.html tube_atom(atom,scale_vec,Box_dim,Resname)> % Create a nanotube structure from the atom struct.
 % # <tweak_charge_atom.html tweak_charge_atom(atom)> % Tweak the charge of the atom struct to correct rounding errors.
 % # <unreplicate_atom.html unreplicate_atom(atom)> % Remove replicated atoms from the structure.
+% # <test_unreplicate_atom.html test_unreplicate_atom> % Check that unreplicate_atom folds a supercell back onto its unit cell, for orthogonal as well as triclinic boxes.
 % # <unwrap_atom.html unwrap_atom(atom,Box_dim,dim)> % Unwrap the atom struct along the specified dimension.
 % # <update_atom.html update_atom(atom)> % Update molecule and atom indices in the atom struct.
 % # <vmd.html vmd(atom,Box_dim)> % Plot the atom struct using VMD.

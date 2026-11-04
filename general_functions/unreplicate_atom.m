@@ -58,7 +58,9 @@ orto=wrap_atom(orto,orto_Box_dim);
 
 Box_dim=[orto_Box_dim(1)/condense_factors(1) orto_Box_dim(2)/condense_factors(2) orto_Box_dim(3)/condense_factors(3)];
 
-XYZ_data=[[atom.x]' [atom.y]' [atom.z]'];
+% Fold the orthogonalized coordinates, not the input ones, or the box tilt
+% leaks into the in-plane positions of a triclinic cell
+XYZ_data=[[orto.x]' [orto.y]' [orto.z]'];
 XYZ_data(:,1) = XYZ_data(:,1) - Box_dim(1)*floor(XYZ_data(:,1)./Box_dim(1));
 XYZ_data(:,2) = XYZ_data(:,2) - Box_dim(2)*floor(XYZ_data(:,2)./Box_dim(2));
 XYZ_data(:,3) = XYZ_data(:,3) - Box_dim(3)*floor(XYZ_data(:,3)./Box_dim(3));

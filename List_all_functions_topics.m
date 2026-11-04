@@ -355,6 +355,7 @@
 % # <sigma_vdw.html sigma_vdw(Atom_label)> % Compute sigma values for van der Waals interactions.
 % # <Bragg.html Bragg(varargin)> % Calculate Bragg peaks for crystallographic or XRD data.
 % # <unreplicate_atom.html unreplicate_atom(atom)> % Remove replicated atoms from the structure.
+% # <test_unreplicate_atom.html test_unreplicate_atom> % Check that unreplicate_atom folds a supercell back onto its unit cell, for orthogonal as well as triclinic boxes.
 % # <atomic_mass.html atomic_mass(Atom_label)> % Fetch the mass for each atom type and put it into the atom.mass field.
 % # <change_atom.html change_atom> % Template script that imports a structure file, changes some atom types and writes it back out.
 % # <check_atom.html check_atom(atom,Box_dim,rmaxshort,rmaxlong)> % Analyse various properties of the atom struct, like bonds, angles and coordination.
